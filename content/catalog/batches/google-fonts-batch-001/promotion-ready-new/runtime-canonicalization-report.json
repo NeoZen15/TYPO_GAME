@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:49:23.756996+00:00",
+    "runtime_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001/promotion-ready-new/font-runtime-assets.promotion-ready.json",
+    "project_root": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2.",
+    "counts": {
+      "total": 40,
+      "canonicalized": 40,
+      "skipped": 0
+    },
+    "notes": [
+      "Canonical runtime records are suitable for main catalog overrides.",
+      "This step copies assets out of public/fonts/staged into the main public/fonts namespace."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "archivo",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/archivo/archivo-primary.woff2",
+      "to_runtime_path": "/fonts/archivo/archivo__5ddebe65abe0.woff2"
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/archivoblack/archivoblack-primary.woff2",
+      "to_runtime_path": "/fonts/archivoblack/archivoblack__b8710fbb9da9.woff2"
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/archivonarrow/archivonarrow-primary.woff2",
+      "to_runtime_path": "/fonts/archivonarrow/archivonarrow__d12a6e92b0a9.woff2"
+    },
+    {
+      "typeface_slug": "manrope",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/manrope/manrope-primary.woff2",
+      "to_runtime_path": "/fonts/manrope/manrope__fdf864497569.woff2"
+    },
+    {
+      "typeface_slug": "rubik",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/rubik/rubik-primary.woff2",
+      "to_runtime_path": "/fonts/rubik/rubik__1920420209a3.woff2"
+    },
+    {
+      "typeface_slug": "outfit",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/outfit/outfit-primary.woff2",
+      "to_runtime_path": "/fonts/outfit/outfit__bee5920b585c.woff2"
+    },
+    {
+      "typeface_slug": "karla",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/karla/karla-primary.woff2",
+      "to_runtime_path": "/fonts/karla/karla__a9ab21b86471.woff2"
+    },
+    {
+      "typeface_slug": "mulish",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/mulish/mulish-primary.woff2",
+      "to_runtime_path": "/fonts/mulish/mulish__5dd514aefdb0.woff2"
+    },
+    {
+      "typeface_slug": "heebo",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/heebo/heebo-primary.woff2",
+      "to_runtime_path": "/fonts/heebo/heebo__4935e7e6cb65.woff2"
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/librefranklin/librefranklin-primary.woff2",
+      "to_runtime_path": "/fonts/librefranklin/librefranklin__6a0426e037e4.woff2"
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/plusjakartasans/plusjakartasans-primary.woff2",
+      "to_runtime_path": "/fonts/plusjakartasans/plusjakartasans__25e8c5abc07f.woff2"
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/alegreyasans/alegreyasans-primary.woff2",
+      "to_runtime_path": "/fonts/alegreyasans/alegreyasans__61b843db8abc.woff2"
+    },
+    {
+      "typeface_slug": "asap",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/asap/asap-primary.woff2",
+      "to_runtime_path": "/fonts/asap/asap__44566ad5936d.woff2"
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/asapcondensed/asapcondensed-primary.woff2",
+      "to_runtime_path": "/fonts/asapcondensed/asapcondensed__a0b8af367f41.woff2"
+    },
+    {
+      "typeface_slug": "exo2",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/exo2/exo2-primary.woff2",
+      "to_runtime_path": "/fonts/exo2/exo2__227e5c35685c.woff2"
+    },
+    {
+      "typeface_slug": "cabin",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/cabin/cabin-primary.woff2",
+      "to_runtime_path": "/fonts/cabin/cabin__13061f816d0e.woff2"
+    },
+    {
+      "typeface_slug": "cantarell",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/cantarell/cantarell-primary.woff2",
+      "to_runtime_path": "/fonts/cantarell/cantarell__89646302826e.woff2"
+    },
+    {
+      "typeface_slug": "barlow",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/barlow/barlow-primary.woff2",
+      "to_runtime_path": "/fonts/barlow/barlow__827da25b89d8.woff2"
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/barlowcondensed/barlowcondensed-primary.woff2",
+      "to_runtime_path": "/fonts/barlowcondensed/barlowcondensed__1b11785f781b.woff2"
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/barlowsemicondensed/barlowsemicondensed-primary.woff2",
+      "to_runtime_path": "/fonts/barlowsemicondensed/barlowsemicondensed__13a17ba03643.woff2"
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/firasanscondensed/firasanscondensed-primary.woff2",
+      "to_runtime_path": "/fonts/firasanscondensed/firasanscondensed__8a8cc095375a.woff2"
+    },
+    {
+      "typeface_slug": "spectral",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/spectral/spectral-primary.woff2",
+      "to_runtime_path": "/fonts/spectral/spectral__458211e46b61.woff2"
+    },
+    {
+      "typeface_slug": "fraunces",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/fraunces/fraunces-primary.woff2",
+      "to_runtime_path": "/fonts/fraunces/fraunces__7ff672e07378.woff2"
+    },
+    {
+      "typeface_slug": "domine",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/domine/domine-primary.woff2",
+      "to_runtime_path": "/fonts/domine/domine__288d6b6dcd98.woff2"
+    },
+    {
+      "typeface_slug": "bitter",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/bitter/bitter-primary.woff2",
+      "to_runtime_path": "/fonts/bitter/bitter__ba40b40db8db.woff2"
+    },
+    {
+      "typeface_slug": "arvo",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/arvo/arvo-primary.woff2",
+      "to_runtime_path": "/fonts/arvo/arvo__a471d449baf5.woff2"
+    },
+    {
+      "typeface_slug": "alegreya",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/alegreya/alegreya-primary.woff2",
+      "to_runtime_path": "/fonts/alegreya/alegreya__93f0f6a51b7b.woff2"
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/josefinslab/josefinslab-primary.woff2",
+      "to_runtime_path": "/fonts/josefinslab/josefinslab__e278ecd7e0ba.woff2"
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/cormorantgaramond/cormorantgaramond-primary.woff2",
+      "to_runtime_path": "/fonts/cormorantgaramond/cormorantgaramond__c4533cae77d2.woff2"
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/crimsontext/crimsontext-primary.woff2",
+      "to_runtime_path": "/fonts/crimsontext/crimsontext__4cc16e369862.woff2"
+    },
+    {
+      "typeface_slug": "notoserif",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/notoserif/notoserif-primary.woff2",
+      "to_runtime_path": "/fonts/notoserif/notoserif__4a80f6398800.woff2"
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/ibmplexserif/ibmplexserif-primary.woff2",
+      "to_runtime_path": "/fonts/ibmplexserif/ibmplexserif__b636b496a8a5.woff2"
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/sourceserif4/sourceserif4-primary.woff2",
+      "to_runtime_path": "/fonts/sourceserif4/sourceserif4__6ec34f630644.woff2"
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/anonymouspro/anonymouspro-primary.woff2",
+      "to_runtime_path": "/fonts/anonymouspro/anonymouspro__2fd380d80fd4.woff2"
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/ibmplexmono/ibmplexmono-primary.woff2",
+      "to_runtime_path": "/fonts/ibmplexmono/ibmplexmono__e6d2e99ada67.woff2"
+    },
+    {
+      "typeface_slug": "spacemono",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/spacemono/spacemono-primary.woff2",
+      "to_runtime_path": "/fonts/spacemono/spacemono__833258fee999.woff2"
+    },
+    {
+      "typeface_slug": "firamono",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/firamono/firamono-primary.woff2",
+      "to_runtime_path": "/fonts/firamono/firamono__61d71a19de37.woff2"
+    },
+    {
+      "typeface_slug": "firacode",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/firacode/firacode-primary.woff2",
+      "to_runtime_path": "/fonts/firacode/firacode__7cfe3501d18e.woff2"
+    },
+    {
+      "typeface_slug": "notosans",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/notosans/notosans-primary.woff2",
+      "to_runtime_path": "/fonts/notosans/notosans__3d44bccf32c3.woff2"
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-batch-001/josefinsans/josefinsans-primary.woff2",
+      "to_runtime_path": "/fonts/josefinsans/josefinsans__fd371ab98889.woff2"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
+  font-size: 1rem;
+  margin: 0;
+  min-height: 100svh;
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+#text-wrapper {
+  width: clamp(16rem, 58vw, 66rem);
+  max-width: 90vw;
+  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: 50% 50%;
+}
+
+#text-wrapper img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+p {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  width: min(60vw, 900px);
+}
+
+.section {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  position: relative;
+  z-index: 10;
+}
+
+.intro-section {
+  background-color: black;
+  color: white;
+}
+
+.black {
+  background-color: white;
+}
+
+.purple {
+  background-color: black;
+  color: white;
+}
+
+.blue {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+}
+
+.container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: clamp(0.75rem, 2vw, 2rem);
+}
+
+@media (max-width: 1024px) {
+  #text-wrapper {
+    width: min(82vw, 48rem);
+  }
+}
+
+@media (max-width: 640px) {
+  #text-wrapper {
+    width: 88vw;
+    max-width: 88vw;
+  }
+}
+
+.template-footer {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 2rem;
+  gap: 2rem;
+  border-radius: 5px 0 0 0;
+  background-color: black;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.6rem;
+  z-index: 100;
+}
+
+.template-footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+}

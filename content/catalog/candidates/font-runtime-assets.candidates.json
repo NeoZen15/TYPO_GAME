@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T15:35:37.875424+00:00",
+    "record_count": 1
+  },
+  "records": [
+    {
+      "typeface_slug": "itc_garamond_std",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts/ITCGaramondStd-Bd.ttf",
+      "source_file_count": 24,
+      "available_formats": [
+        "ttf"
+      ],
+      "has_woff2": false,
+      "runtime_candidate_status": "source_only",
+      "notes": [
+        "candidate runtime asset record",
+        "must be mirrored into the project before production runtime import"
+      ]
+    }
+  ]
+}

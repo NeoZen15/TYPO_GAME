@@ -1,0 +1,1008 @@
+{
+  "meta": {
+    "built_at": "2026-03-19T16:06:28.929773+00:00",
+    "record_count": 50
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "answer_text_guess": "Arimo",
+      "answer_normalized": "arimo",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working libre replacement candidate for Arial / UI sans lane",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "answer_text_guess": "Tinos",
+      "answer_normalized": "tinos",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working libre replacement candidate for Times New Roman",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "answer_text_guess": "Lora",
+      "answer_normalized": "lora",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working serif replacement candidate for Georgia-style runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "answer_text_guess": "Cousine",
+      "answer_normalized": "cousine",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working libre replacement candidate for Courier New-style runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "answer_text_guess": "Space Grotesk",
+      "answer_normalized": "spacegrotesk",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strong contemporary sans and already important in earlier planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "archivo",
+      "answer_text_guess": "Archivo",
+      "answer_normalized": "archivo",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "high-utility sans family for recognition training",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "answer_text_guess": "Archivo Black",
+      "answer_normalized": "archivoblack",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "display-adjacent companion to Archivo",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "answer_text_guess": "Archivo Narrow",
+      "answer_normalized": "archivonarrow",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "width variation useful for visual comparison",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "answer_text_guess": "Fira Sans",
+      "answer_normalized": "firasans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "important alternative text sans family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "manrope",
+      "answer_text_guess": "Manrope",
+      "answer_normalized": "manrope",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "modern UI sans useful for subtle comparison work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "answer_text_guess": "Public Sans",
+      "answer_normalized": "publicsans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strong utilitarian sans for public/system tone",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "rubik",
+      "answer_text_guess": "Rubik",
+      "answer_normalized": "rubik",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "rounded geometric contrast against current sans set",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "outfit",
+      "answer_text_guess": "Outfit",
+      "answer_normalized": "outfit",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "modern geometric sans with current relevance",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "karla",
+      "answer_text_guess": "Karla",
+      "answer_normalized": "karla",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "humanist-ish sans option for comparison diversity",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "mulish",
+      "answer_text_guess": "Mulish",
+      "answer_normalized": "mulish",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "clean text sans candidate for dense training pools",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "heebo",
+      "answer_text_guess": "Heebo",
+      "answer_normalized": "heebo",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "compact sans voice that broadens the pool",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "answer_text_guess": "Libre Franklin",
+      "answer_normalized": "librefranklin",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "useful sans rooted in Franklin Gothic lineage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "answer_text_guess": "Plus Jakarta Sans",
+      "answer_normalized": "plusjakartasans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "current contemporary sans candidate",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "answer_text_guess": "Alegreya Sans",
+      "answer_normalized": "alegreyasans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "paired sans counterpart for Alegreya family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "asap",
+      "answer_text_guess": "Asap",
+      "answer_normalized": "asap",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "text-oriented sans with broad utility",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "answer_text_guess": "Asap Condensed",
+      "answer_normalized": "asapcondensed",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "condensed variant useful for width recognition",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "exo2",
+      "answer_text_guess": "Exo 2",
+      "answer_normalized": "exo2",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "tech-flavored sans useful for distinct silhouette",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cabin",
+      "answer_text_guess": "Cabin",
+      "answer_normalized": "cabin",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "classic web sans candidate missing from the current set",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cantarell",
+      "answer_text_guess": "Cantarell",
+      "answer_normalized": "cantarell",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "distinct UI sans from open-source ecosystem",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "barlow",
+      "answer_text_guess": "Barlow",
+      "answer_normalized": "barlow",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "highly usable grotesk-style family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "answer_text_guess": "Barlow Condensed",
+      "answer_normalized": "barlowcondensed",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "condensed branch useful for width and rhythm work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "answer_text_guess": "Barlow Semi Condensed",
+      "answer_normalized": "barlowsemicondensed",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "intermediate width branch useful pedagogically",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "answer_text_guess": "Fira Sans Condensed",
+      "answer_normalized": "firasanscondensed",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "condensed counterpart for Fira Sans family work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "answer_text_guess": "Crimson Pro",
+      "answer_normalized": "crimsonpro",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "important serif candidate already mentioned in planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spectral",
+      "answer_text_guess": "Spectral",
+      "answer_normalized": "spectral",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "strong editorial serif for recognition and reading contexts",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "answer_text_guess": "EB Garamond",
+      "answer_normalized": "ebgaramond",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "essential old-style serif reference",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "fraunces",
+      "answer_text_guess": "Fraunces",
+      "answer_normalized": "fraunces",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "highly distinctive variable serif family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "domine",
+      "answer_text_guess": "Domine",
+      "answer_normalized": "domine",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "robust text serif with clear identity",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "bitter",
+      "answer_text_guess": "Bitter",
+      "answer_normalized": "bitter",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "slab-ish serif useful for contrast against text serifs",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "arvo",
+      "answer_text_guess": "Arvo",
+      "answer_normalized": "arvo",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "compact slab serif with strong silhouette",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "alegreya",
+      "answer_text_guess": "Alegreya",
+      "answer_normalized": "alegreya",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "paired serif counterpart for Alegreya family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "answer_text_guess": "Josefin Slab",
+      "answer_normalized": "josefinslab",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "distinctive slab direction for recognition breadth",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "answer_text_guess": "Cormorant Garamond",
+      "answer_normalized": "cormorantgaramond",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "elegant serif for advanced recognition lanes",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "answer_text_guess": "Crimson Text",
+      "answer_normalized": "crimsontext",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "text serif sibling to Crimson Pro",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "notoserif",
+      "answer_text_guess": "Noto Serif",
+      "answer_normalized": "notoserif",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "broad-coverage serif family with high practical value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "answer_text_guess": "IBM Plex Serif",
+      "answer_normalized": "ibmplexserif",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "paired serif counterpart to IBM Plex ecosystem",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "answer_text_guess": "Source Serif 4",
+      "answer_normalized": "sourceserif4",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "important open-source serif reference family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "answer_text_guess": "Inconsolata",
+      "answer_normalized": "inconsolata",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "mono_training",
+      "rationale": "core monospace family missing from current set",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "answer_text_guess": "Anonymous Pro",
+      "answer_normalized": "anonymouspro",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "distinct code/editorial mono voice",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "answer_text_guess": "IBM Plex Mono",
+      "answer_normalized": "ibmplexmono",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "paired mono counterpart to IBM Plex ecosystem",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacemono",
+      "answer_text_guess": "Space Mono",
+      "answer_normalized": "spacemono",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "display-leaning mono useful for broader contrast",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firamono",
+      "answer_text_guess": "Fira Mono",
+      "answer_normalized": "firamono",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "paired mono counterpart to Fira Sans family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firacode",
+      "answer_text_guess": "Fira Code",
+      "answer_normalized": "firacode",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "low",
+      "lane": "mono_training",
+      "rationale": "developer-familiar mono family worth exploring later",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "notosans",
+      "answer_text_guess": "Noto Sans",
+      "answer_normalized": "notosans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "broad_coverage",
+      "rationale": "broad-coverage sans with high practical value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "answer_text_guess": "Josefin Sans",
+      "answer_normalized": "josefinsans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "low",
+      "lane": "display_bridge",
+      "rationale": "distinctive art-deco-ish sans for later contrast work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    }
+  ]
+}

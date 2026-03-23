@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-03-19T16:39:17.081891+00:00",
+  "input_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10",
+  "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+  "public_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./public/fonts/staged/google-fonts-pilot-top-10",
+  "artifacts": {
+    "promotion_audit": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-audit.json",
+    "runtime_prep_report": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/runtime-prep/runtime-prep-report.json",
+    "prepared_runtime": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/runtime-prep/font-runtime-assets.prepared.json",
+    "promotion_stage_meta": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-stage/promotion-stage-meta.json",
+    "promotion_stage_audit": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-stage-audit.json"
+  },
+  "summary": {
+    "initial_status_counts": {
+      "needs_review": 10
+    },
+    "runtime_prep_counts": {
+      "total": 10,
+      "prepared": 10,
+      "blocked": 0
+    },
+    "promotion_stage_counts": {
+      "typefaces_total": 10,
+      "runtime_ready_total": 10,
+      "runtime_blocked_total": 0,
+      "expert_total": 10
+    },
+    "post_stage_status_counts": {
+      "needs_review": 10
+    }
+  },
+  "notes": [
+    "This orchestrator does not promote into the main catalog.",
+    "It prepares the batch and leaves remaining editorial review explicit."
+  ]
+}

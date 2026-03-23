@@ -1,0 +1,400 @@
+{
+  "meta": {
+    "generated_at": "2026-03-21T16:14:01.568663+00:00",
+    "source": "google_fonts_developer_api",
+    "request": {
+      "sort": "alpha",
+      "family": null,
+      "subset": null,
+      "category": null,
+      "capabilities": [],
+      "input_json": null,
+      "api_url": "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyD9q1y4OQik7kwrDfcdllx9rvE31sV5rrs&sort=alpha"
+    },
+    "counts": {
+      "api_family_total": 1935,
+      "known_local_total": 1918,
+      "new_to_local_total": 17,
+      "missing_from_api_total": 109,
+      "changed_since_last_sync_total": 0,
+      "known_local_active_total": 73,
+      "known_local_runtime_ready_total": 73
+    },
+    "notes": [
+      "Developer API is used here as an external metadata radar, not as the core runtime source.",
+      "CSS/Web API is intentionally not used as the primary game runtime because the active subset is self-hosted and controlled locally.",
+      "If you self-host the runtime subset, end-user browser requests do not go to Google Fonts servers."
+    ]
+  },
+  "records": [
+    {
+      "api_family": "Edu NSW ACT Cursive",
+      "typeface_slug": "edu_nsw_act_cursive",
+      "api_rank": 446,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-05",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Edu NSW ACT Hand Pre",
+      "typeface_slug": "edu_nsw_act_hand_pre",
+      "api_rank": 448,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-10",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Edu QLD Hand",
+      "typeface_slug": "edu_qld_hand",
+      "api_rank": 450,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-11",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Edu SA Hand",
+      "typeface_slug": "edu_sa_hand",
+      "api_rank": 452,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-08",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Edu VIC WA NT Hand",
+      "typeface_slug": "edu_vic_wa_nt_hand",
+      "api_rank": 455,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-08",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Edu VIC WA NT Hand Pre",
+      "typeface_slug": "edu_vic_wa_nt_hand_pre",
+      "api_rank": 456,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-11",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Google Sans",
+      "typeface_slug": "google_sans",
+      "api_rank": 587,
+      "category": "sans-serif",
+      "version": "v67",
+      "last_modified": "2025-12-10",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700",
+        "italic",
+        "500italic",
+        "600italic",
+        "700italic"
+      ],
+      "subsets": [
+        "armenian",
+        "bengali",
+        "canadian-aboriginal",
+        "cyrillic",
+        "cyrillic-ext",
+        "devanagari",
+        "ethiopic",
+        "georgian",
+        "greek",
+        "greek-ext",
+        "gujarati",
+        "gurmukhi",
+        "hebrew",
+        "khmer",
+        "lao",
+        "latin",
+        "latin-ext",
+        "malayalam",
+        "oriya",
+        "sinhala",
+        "symbols",
+        "tamil",
+        "telugu",
+        "thai",
+        "vietnamese"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Google Sans Flex",
+      "typeface_slug": "google_sans_flex",
+      "api_rank": 589,
+      "category": "sans-serif",
+      "version": "v16",
+      "last_modified": "2025-12-11",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900"
+      ],
+      "subsets": [
+        "canadian-aboriginal",
+        "cherokee",
+        "latin",
+        "latin-ext",
+        "math",
+        "nushu",
+        "symbols",
+        "syriac",
+        "tifinagh",
+        "vietnamese"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Icons",
+      "typeface_slug": "material_icons",
+      "api_rank": 927,
+      "category": "monospace",
+      "version": "v145",
+      "last_modified": "2025-09-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Icons Outlined",
+      "typeface_slug": "material_icons_outlined",
+      "api_rank": 928,
+      "category": "monospace",
+      "version": "v110",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Icons Round",
+      "typeface_slug": "material_icons_round",
+      "api_rank": 929,
+      "category": "monospace",
+      "version": "v109",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Icons Sharp",
+      "typeface_slug": "material_icons_sharp",
+      "api_rank": 930,
+      "category": "monospace",
+      "version": "v110",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Icons Two Tone",
+      "typeface_slug": "material_icons_two_tone",
+      "api_rank": 931,
+      "category": "monospace",
+      "version": "v113",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Symbols",
+      "typeface_slug": "material_symbols",
+      "api_rank": 932,
+      "category": "monospace",
+      "version": "v49",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Symbols Outlined",
+      "typeface_slug": "material_symbols_outlined",
+      "api_rank": 933,
+      "category": "monospace",
+      "version": "v321",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Symbols Rounded",
+      "typeface_slug": "material_symbols_rounded",
+      "api_rank": 934,
+      "category": "monospace",
+      "version": "v323",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "api_family": "Material Symbols Sharp",
+      "typeface_slug": "material_symbols_sharp",
+      "api_rank": 935,
+      "category": "monospace",
+      "version": "v318",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    }
+  ]
+}

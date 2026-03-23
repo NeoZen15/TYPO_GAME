@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-03-19T16:39:17.020272+00:00",
+  "input_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10",
+  "public_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./public/fonts/staged/google-fonts-pilot-top-10",
+  "counts": {
+    "total": 10,
+    "prepared": 10,
+    "blocked": 0
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: Arimo[wght].ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/arimo/Arimo[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/arimo/arimo-primary.woff2",
+      "file_size_bytes": 222748,
+      "sha256_hash": "5bae87c290b2284da619e82e07afc7b7458bb8ceb595e5a094cd146c2bc7a7d8"
+    },
+    {
+      "typeface_slug": "tinos",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: Tinos-Regular.ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/tinos/tinos-primary.woff2",
+      "file_size_bytes": 185004,
+      "sha256_hash": "7aa767376ae4778f92a13b2da07ba6ab96d50ac2461afd68f0d8499d5b0278ce"
+    },
+    {
+      "typeface_slug": "lora",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: Lora[wght].ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/lora/Lora[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/lora/lora-primary.woff2",
+      "file_size_bytes": 84792,
+      "sha256_hash": "539d0616d77b54db7781d218dc1d2628c45b4b20f7e0fb924cffafb5dea303cf"
+    },
+    {
+      "typeface_slug": "cousine",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: Cousine-Regular.ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/cousine/cousine-primary.woff2",
+      "file_size_bytes": 124908,
+      "sha256_hash": "c0eba8577548cb22d3b86602b500c38eda73cf29638456b6fa8f24446515f6b4"
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "status": "prepared",
+      "warnings": [],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacegrotesk/SpaceGrotesk[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/spacegrotesk/spacegrotesk-primary.woff2",
+      "file_size_bytes": 49276,
+      "sha256_hash": "c85917fc3b674c62023ee56e52e455afe1314cb1427e95aa8e740e63c4d2dc58"
+    },
+    {
+      "typeface_slug": "publicsans",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: PublicSans[wght].ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/publicsans/PublicSans[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/publicsans/publicsans-primary.woff2",
+      "file_size_bytes": 41920,
+      "sha256_hash": "442d013f9e8c891a7afaf452e0b06453acf387f6607243cae1009aabda40eb94"
+    },
+    {
+      "typeface_slug": "firasans",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: FiraSans-Regular.ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/firasans/firasans-primary.woff2",
+      "file_size_bytes": 137940,
+      "sha256_hash": "ad0e03d8d62994000c75089187698a4a7c35d18fda002c007c15c26a0bbd0890"
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: CrimsonPro[wght].ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsonpro/CrimsonPro[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/crimsonpro/crimsonpro-primary.woff2",
+      "file_size_bytes": 85896,
+      "sha256_hash": "2e70dfc3942ba7e5e7a1dbe4d790533a49f2f9c9c3040a47a1a71a1e69b720c2"
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "status": "prepared",
+      "warnings": [
+        "preferred path adjusted to better primary source: EBGaramond[wght].ttf"
+      ],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ebgaramond/EBGaramond[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/ebgaramond/ebgaramond-primary.woff2",
+      "file_size_bytes": 303900,
+      "sha256_hash": "adb4653c3b4ac5abb8440bb547004b21ce106121e61c099d718fb3d64315ad07"
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "status": "prepared",
+      "warnings": [],
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/Inconsolata[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-pilot-top-10/inconsolata/inconsolata-primary.woff2",
+      "file_size_bytes": 151736,
+      "sha256_hash": "68da38106986cfa38de7e30339b5e12e60b7d3d4b8396cbf04197c076b0c2e08"
+    }
+  ]
+}

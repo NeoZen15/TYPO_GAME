@@ -1,0 +1,29 @@
+{
+  "built_at": "2026-03-19T16:06:28.929773+00:00",
+  "batch_id": "google-fonts-batch-001",
+  "selection_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001.selection.json",
+  "source_candidates_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/candidates/google-fonts-snapshot",
+  "counts": {
+    "selected_total": 50,
+    "typefaces_records": 50,
+    "runtime_records": 50,
+    "expert_records": 50
+  },
+  "lane_counts": {
+    "replacement": 4,
+    "core_sans": 24,
+    "serif_training": 14,
+    "mono_training": 6,
+    "broad_coverage": 1,
+    "display_bridge": 1
+  },
+  "priority_counts": {
+    "high": 14,
+    "medium": 34,
+    "low": 2
+  },
+  "notes": [
+    "This batch is a curated review packet, not a DB-ready import batch.",
+    "Selected families should be reviewed and then promoted into main catalog overrides in smaller validated waves."
+  ]
+}

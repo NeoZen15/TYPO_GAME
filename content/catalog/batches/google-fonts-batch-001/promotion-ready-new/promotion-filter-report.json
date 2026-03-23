@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-03-19T17:49:12.870937+00:00",
+  "promotion_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001/promotion-ready",
+  "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+  "counts": {
+    "input_typefaces_total": 50,
+    "new_typefaces_total": 40,
+    "skipped_existing_total": 10
+  },
+  "skipped_existing_slugs": [
+    "arimo",
+    "tinos",
+    "lora",
+    "cousine",
+    "spacegrotesk",
+    "firasans",
+    "publicsans",
+    "crimsonpro",
+    "ebgaramond",
+    "inconsolata"
+  ],
+  "notes": [
+    "This filter keeps only slugs not already present in the current main catalog."
+  ]
+}

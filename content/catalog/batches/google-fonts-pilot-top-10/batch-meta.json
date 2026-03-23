@@ -1,0 +1,25 @@
+{
+  "built_at": "2026-03-19T16:19:48.064006+00:00",
+  "batch_id": "google-fonts-pilot-top-10",
+  "selection_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10.selection.json",
+  "source_candidates_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/candidates/google-fonts-snapshot",
+  "counts": {
+    "selected_total": 10,
+    "typefaces_records": 10,
+    "runtime_records": 10,
+    "expert_records": 10
+  },
+  "lane_counts": {
+    "replacement": 4,
+    "core_sans": 3,
+    "serif_training": 2,
+    "mono_training": 1
+  },
+  "priority_counts": {
+    "high": 10
+  },
+  "notes": [
+    "This batch is a curated review packet, not a DB-ready import batch.",
+    "Selected families should be reviewed and then promoted into main catalog overrides in smaller validated waves."
+  ]
+}

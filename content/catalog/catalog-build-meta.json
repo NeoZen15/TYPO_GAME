@@ -1,0 +1,48 @@
+{
+  "built_at": "2026-03-20T23:24:37.661979+00:00",
+  "status": "built",
+  "sources": {
+    "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+    "seeds": [
+      "typefaces-core.seed.json",
+      "font-runtime-assets.seed.json",
+      "expert-answer-keys.seed.json"
+    ],
+    "overrides": [
+      "overrides/typefaces-core.overrides.json",
+      "overrides/font-runtime-assets.overrides.json",
+      "overrides/expert-answer-keys.overrides.json"
+    ]
+  },
+  "counts": {
+    "typefaces_total": 2032,
+    "typefaces_active": 73,
+    "expert_enabled_total": 5,
+    "runtime_assets_total": 78,
+    "runtime_assets_ready": 73,
+    "runtime_assets_system_local": 5,
+    "expert_answer_keys_total": 2032,
+    "expert_answer_keys_approved": 5
+  },
+  "override_stats": {
+    "typefaces_core": {
+      "patched": 10,
+      "added": 2004,
+      "deleted": 0
+    },
+    "font_runtime_assets": {
+      "patched": 0,
+      "added": 50,
+      "deleted": 0
+    },
+    "expert_answer_keys": {
+      "patched": 5,
+      "added": 2004,
+      "deleted": 0
+    }
+  },
+  "notes": [
+    "Built catalog files are the import-ready outputs for DB ingestion.",
+    "Do not edit built files manually; rerun the seed generator or update overrides instead."
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "built_at": "2026-03-19T16:19:48.064006+00:00",
+    "record_count": 10
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/arimo/Arimo-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "apache2",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Arial and general UI sans coverage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "apache2",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Times New Roman",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/lora/Lora-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "strong serif replacement candidate for the Georgia-like runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "apache2",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Courier New-style monospace coverage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacegrotesk/SpaceGrotesk[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strategic contemporary sans already aligned with earlier product planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/publicsans/PublicSans-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "high-utility public-system sans with strong training value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "important alternative text sans for comparison depth",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsonpro/CrimsonPro-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "important serif family already identified as a priority in prior planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ebgaramond/EBGaramond-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "essential old-style serif reference for recognition training",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/Inconsolata[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 83,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "mono_training",
+      "rationale": "core monospace family that materially strengthens the current training pool",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    }
+  ]
+}

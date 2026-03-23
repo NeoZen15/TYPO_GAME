@@ -1,0 +1,26 @@
+{
+  "built_at": "2026-03-19T17:32:02.012502+00:00",
+  "input_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001",
+  "counts": {
+    "typefaces_total": 50,
+    "runtime_ready_total": 50,
+    "runtime_blocked_total": 0,
+    "expert_total": 50
+  },
+  "review_field_counts": {
+    "sub_category": 50,
+    "visual_cluster_id": 50,
+    "dreyfus_tier": 50,
+    "difficulty_base": 50,
+    "rarity_tag": 50,
+    "year_tag": 50,
+    "weight_structure": 50,
+    "contrast_profile": 50,
+    "aperture_profile": 50,
+    "structural_signature": 50
+  },
+  "notes": [
+    "These staging files are semi-automatic promotion inputs, not yet main catalog overrides.",
+    "Only safe fields are auto-filled; editorial classification still needs review."
+  ]
+}

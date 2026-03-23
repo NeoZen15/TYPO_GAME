@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:29:47.058674+00:00",
+    "source_staged_typefaces": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-stage/typefaces-core.staged.json",
+    "record_count": 10,
+    "notes": [
+      "Fill the review_fields object for each typeface.",
+      "Once completed, use the reviewed-batch promotion builder to emit promotion-ready artifacts."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "display_name": "Arimo",
+      "primary_category": "sans_serif",
+      "designer": "Steve Matteson",
+      "license_type": "apache2",
+      "priority": "high",
+      "lane": "replacement",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "tinos",
+      "display_name": "Tinos",
+      "primary_category": "serif",
+      "designer": "Steve Matteson",
+      "license_type": "apache2",
+      "priority": "high",
+      "lane": "replacement",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "lora",
+      "display_name": "Lora",
+      "primary_category": "serif",
+      "designer": "Cyreal",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "replacement",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "cousine",
+      "display_name": "Cousine",
+      "primary_category": "mono",
+      "designer": "Steve Matteson",
+      "license_type": "apache2",
+      "priority": "high",
+      "lane": "replacement",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "display_name": "Space Grotesk",
+      "primary_category": "sans_serif",
+      "designer": "Florian Karsten",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "core_sans",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "publicsans",
+      "display_name": "Public Sans",
+      "primary_category": "sans_serif",
+      "designer": "USWDS, Dan Williams, Pablo Impallari, Rodrigo Fuenzalida",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "core_sans",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "firasans",
+      "display_name": "Fira Sans",
+      "primary_category": "sans_serif",
+      "designer": "Carrois Apostrophe",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "core_sans",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "display_name": "Crimson Pro",
+      "primary_category": "serif",
+      "designer": "Jacques Le Bailly",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "serif_training",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "display_name": "EB Garamond",
+      "primary_category": "serif",
+      "designer": "Georg Duffner, Octavio Pardo",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "serif_training",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "display_name": "Inconsolata",
+      "primary_category": "sans_serif",
+      "designer": "Raph Levien",
+      "license_type": "ofl",
+      "priority": "high",
+      "lane": "mono_training",
+      "runtime_ready": true,
+      "review_fields": {
+        "sub_category": null,
+        "visual_cluster_id": null,
+        "dreyfus_tier": null,
+        "difficulty_base": null,
+        "rarity_tag": null,
+        "year_tag": null,
+        "weight_structure": null,
+        "contrast_profile": null,
+        "aperture_profile": null,
+        "structural_signature": null
+      },
+      "review_status": "pending",
+      "review_notes": ""
+    }
+  ]
+}

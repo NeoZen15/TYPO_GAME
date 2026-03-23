@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "built_at": "2026-03-19T16:39:17.052113+00:00",
+    "record_count": 10
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "answer_text": "Arimo",
+      "answer_normalized": "arimo",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "answer_text": "Tinos",
+      "answer_normalized": "tinos",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "answer_text": "Lora",
+      "answer_normalized": "lora",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "answer_text": "Cousine",
+      "answer_normalized": "cousine",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "answer_text": "Space Grotesk",
+      "answer_normalized": "spacegrotesk",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "answer_text": "Public Sans",
+      "answer_normalized": "publicsans",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "answer_text": "Fira Sans",
+      "answer_normalized": "firasans",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "answer_text": "Crimson Pro",
+      "answer_normalized": "crimsonpro",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "answer_text": "EB Garamond",
+      "answer_normalized": "ebgaramond",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "answer_text": "Inconsolata",
+      "answer_normalized": "inconsolata",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "review",
+      "notes": [
+        "staged automatically from candidate/review batch",
+        "canonical answer should be editor-reviewed before approval"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-03-19T18:01:23.276830+00:00",
+  "source_root": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main",
+  "counts": {
+    "known_catalog_slugs": 2032,
+    "snapshot_family_dirs_total": 2027,
+    "snapshot_family_dirs_skipped_as_known": 2027,
+    "snapshot_family_dirs_skipped_as_known_exact": 2014,
+    "snapshot_family_dirs_skipped_as_known_normalized": 13,
+    "candidate_family_slugs_total": 0
+  },
+  "license_breakdown": {
+    "ofl": 0,
+    "apache2": 0,
+    "unknown": 0
+  },
+  "notes": [
+    "These files are candidates only, not DB-ready records.",
+    "This scan is designed for a google/fonts snapshot or clone."
+  ]
+}

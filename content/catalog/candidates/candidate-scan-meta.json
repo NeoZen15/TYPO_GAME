@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-03-19T15:35:37.875424+00:00",
+  "sources": [
+    "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/01_woff2",
+    "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts"
+  ],
+  "counts": {
+    "known_catalog_slugs": 28,
+    "scanned_files_total": 174,
+    "grouped_family_slugs_total": 24,
+    "candidate_family_slugs_total": 1,
+    "candidate_family_slugs_with_woff2": 0,
+    "candidate_family_slugs_source_only": 1
+  },
+  "notes": [
+    "Candidates are not DB-ready records.",
+    "They widen the review queue without altering the main built catalog."
+  ]
+}

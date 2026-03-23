@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-03-21T16:21:38.349802+00:00",
+  "sync_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/google-api-sync",
+  "sync_counts": {
+    "api_family_total": 1935,
+    "known_local_total": 1918,
+    "new_to_local_total": 17,
+    "missing_from_api_total": 109,
+    "changed_since_last_sync_total": 0,
+    "known_local_active_total": 73,
+    "known_local_runtime_ready_total": 73
+  },
+  "triage_counts": {
+    "ignore": 23,
+    "watch": 101,
+    "candidate": 2
+  },
+  "notes": [
+    "candidate = worth future editorial/product review",
+    "watch = no immediate action, but useful to keep visible in future syncs",
+    "ignore = expected low-value noise for current product goals"
+  ]
+}

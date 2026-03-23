@@ -1,0 +1,1208 @@
+{
+  "meta": {
+    "built_at": "2026-03-19T16:06:28.929773+00:00",
+    "record_count": 50
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/arimo/Arimo-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "apache2",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working libre replacement candidate for Arial / UI sans lane",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "apache2",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working libre replacement candidate for Times New Roman",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/lora/Lora-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working serif replacement candidate for Georgia-style runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "apache2",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "working libre replacement candidate for Courier New-style runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacegrotesk/SpaceGrotesk[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strong contemporary sans and already important in earlier planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "archivo",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/archivo/Archivo-Italic[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "high-utility sans family for recognition training",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/archivoblack/ArchivoBlack-Regular.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "display-adjacent companion to Archivo",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/archivonarrow/ArchivoNarrow-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "width variation useful for visual comparison",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "important alternative text sans family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "manrope",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/manrope/Manrope[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "modern UI sans useful for subtle comparison work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/publicsans/PublicSans-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strong utilitarian sans for public/system tone",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "rubik",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/rubik/Rubik-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "rounded geometric contrast against current sans set",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "outfit",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/outfit/Outfit[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "modern geometric sans with current relevance",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "karla",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/karla/Karla-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "humanist-ish sans option for comparison diversity",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "mulish",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/mulish/Mulish-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "clean text sans candidate for dense training pools",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "heebo",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/heebo/Heebo[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "compact sans voice that broadens the pool",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/librefranklin/LibreFranklin-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "useful sans rooted in Franklin Gothic lineage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/plusjakartasans/PlusJakartaSans-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "current contemporary sans candidate",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/alegreyasans/AlegreyaSans-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 14,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "paired sans counterpart for Alegreya family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "asap",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/asap/Asap-Italic[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "text-oriented sans with broad utility",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/asapcondensed/AsapCondensed-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 16,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "condensed variant useful for width recognition",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "exo2",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/exo2/Exo2-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "tech-flavored sans useful for distinct silhouette",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cabin",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/cabin/Cabin-Italic[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "classic web sans candidate missing from the current set",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cantarell",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/cantarell/Cantarell-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "distinct UI sans from open-source ecosystem",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "barlow",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/barlow/Barlow-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "highly usable grotesk-style family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/barlowcondensed/BarlowCondensed-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "condensed branch useful for width and rhythm work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/barlowsemicondensed/BarlowSemiCondensed-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "intermediate width branch useful pedagogically",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasanscondensed/FiraSansCondensed-Black.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "rationale": "condensed counterpart for Fira Sans family work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsonpro/CrimsonPro-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "important serif candidate already mentioned in planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spectral",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spectral/Spectral-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 14,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "strong editorial serif for recognition and reading contexts",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ebgaramond/EBGaramond-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "essential old-style serif reference",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "fraunces",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/fraunces/Fraunces-Italic[SOFT,WONK,opsz,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "highly distinctive variable serif family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "domine",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/domine/Domine[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "robust text serif with clear identity",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "bitter",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/bitter/Bitter-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "slab-ish serif useful for contrast against text serifs",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "arvo",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/arvo/Arvo-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "compact slab serif with strong silhouette",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "alegreya",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/alegreya/Alegreya-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "paired serif counterpart for Alegreya family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/josefinslab/JosefinSlab-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "distinctive slab direction for recognition breadth",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/cormorantgaramond/CormorantGaramond-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "elegant serif for advanced recognition lanes",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsontext/CrimsonText-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 6,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "text serif sibling to Crimson Pro",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "notoserif",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/notoserif/NotoSerif-Italic[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "broad-coverage serif family with high practical value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ibmplexserif/IBMPlexSerif-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 14,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "paired serif counterpart to IBM Plex ecosystem",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/sourceserif4/SourceSerif4-Italic[opsz,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "rationale": "important open-source serif reference family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/Inconsolata[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 83,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "mono_training",
+      "rationale": "core monospace family missing from current set",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/anonymouspro/AnonymousPro-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "distinct code/editorial mono voice",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ibmplexmono/IBMPlexMono-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 14,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "paired mono counterpart to IBM Plex ecosystem",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacemono",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacemono/SpaceMono-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "display-leaning mono useful for broader contrast",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firamono",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firamono/FiraMono-Bold.ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 3,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "rationale": "paired mono counterpart to Fira Sans family",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firacode",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firacode/FiraCode[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "low",
+      "lane": "mono_training",
+      "rationale": "developer-familiar mono family worth exploring later",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "notosans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/notosans/NotoSans-Italic[wdth,wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "medium",
+      "lane": "broad_coverage",
+      "rationale": "broad-coverage sans with high practical value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "preferred_source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/josefinsans/JosefinSans-Italic[wght].ttf",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "has_woff2": false,
+      "guessed_license_type": "ofl",
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "notes": [
+        "candidate runtime asset record from google/fonts snapshot"
+      ],
+      "batch_id": "google-fonts-batch-001",
+      "promotion_status": "selected_for_review",
+      "priority": "low",
+      "lane": "display_bridge",
+      "rationale": "distinctive art-deco-ish sans for later contrast work",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:41:30.547331+00:00",
+    "runtime_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-ready/font-runtime-assets.promotion-ready.json",
+    "project_root": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2.",
+    "counts": {
+      "total": 10,
+      "canonicalized": 10,
+      "skipped": 0
+    },
+    "notes": [
+      "Canonical runtime records are suitable for main catalog overrides.",
+      "This step copies assets out of public/fonts/staged into the main public/fonts namespace."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/arimo/arimo__5bae87c290b2.woff2",
+      "runtime_path": "/fonts/arimo/arimo__5bae87c290b2.woff2",
+      "file_size_bytes": 222748,
+      "sha256_hash": "5bae87c290b2284da619e82e07afc7b7458bb8ceb595e5a094cd146c2bc7a7d8",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.544183+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Arimo[wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/tinos/tinos__7aa767376ae4.woff2",
+      "runtime_path": "/fonts/tinos/tinos__7aa767376ae4.woff2",
+      "file_size_bytes": 185004,
+      "sha256_hash": "7aa767376ae4778f92a13b2da07ba6ab96d50ac2461afd68f0d8499d5b0278ce",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.544565+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Tinos-Regular.ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/lora/lora__539d0616d77b.woff2",
+      "runtime_path": "/fonts/lora/lora__539d0616d77b.woff2",
+      "file_size_bytes": 84792,
+      "sha256_hash": "539d0616d77b54db7781d218dc1d2628c45b4b20f7e0fb924cffafb5dea303cf",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.544895+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Lora[wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/cousine/cousine__c0eba8577548.woff2",
+      "runtime_path": "/fonts/cousine/cousine__c0eba8577548.woff2",
+      "file_size_bytes": 124908,
+      "sha256_hash": "c0eba8577548cb22d3b86602b500c38eda73cf29638456b6fa8f24446515f6b4",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.545271+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Cousine-Regular.ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/spacegrotesk/spacegrotesk__c85917fc3b67.woff2",
+      "runtime_path": "/fonts/spacegrotesk/spacegrotesk__c85917fc3b67.woff2",
+      "file_size_bytes": 49276,
+      "sha256_hash": "c85917fc3b674c62023ee56e52e455afe1314cb1427e95aa8e740e63c4d2dc58",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.545554+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=SpaceGrotesk[wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/publicsans/publicsans__442d013f9e8c.woff2",
+      "runtime_path": "/fonts/publicsans/publicsans__442d013f9e8c.woff2",
+      "file_size_bytes": 41920,
+      "sha256_hash": "442d013f9e8c891a7afaf452e0b06453acf387f6607243cae1009aabda40eb94",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.545804+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=PublicSans[wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/firasans/firasans__ad0e03d8d629.woff2",
+      "runtime_path": "/fonts/firasans/firasans__ad0e03d8d629.woff2",
+      "file_size_bytes": 137940,
+      "sha256_hash": "ad0e03d8d62994000c75089187698a4a7c35d18fda002c007c15c26a0bbd0890",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.546124+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=FiraSans-Regular.ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/crimsonpro/crimsonpro__2e70dfc3942b.woff2",
+      "runtime_path": "/fonts/crimsonpro/crimsonpro__2e70dfc3942b.woff2",
+      "file_size_bytes": 85896,
+      "sha256_hash": "2e70dfc3942ba7e5e7a1dbe4d790533a49f2f9c9c3040a47a1a71a1e69b720c2",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.546407+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=CrimsonPro[wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/ebgaramond/ebgaramond__adb4653c3b4a.woff2",
+      "runtime_path": "/fonts/ebgaramond/ebgaramond__adb4653c3b4a.woff2",
+      "file_size_bytes": 303900,
+      "sha256_hash": "adb4653c3b4ac5abb8440bb547004b21ce106121e61c099d718fb3d64315ad07",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.546707+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=EBGaramond[wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "public/fonts/inconsolata/inconsolata__68da38106986.woff2",
+      "runtime_path": "/fonts/inconsolata/inconsolata__68da38106986.woff2",
+      "file_size_bytes": 151736,
+      "sha256_hash": "68da38106986cfa38de7e30339b5e12e60b7d3d4b8396cbf04197c076b0c2e08",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_promoted_runtime",
+      "verified_at_utc": "2026-03-19T17:41:30.547326+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Inconsolata[wdth,wght].ttf",
+        "promoted from reviewed candidate batch",
+        "canonicalized from staged runtime path for main catalog promotion"
+      ]
+    }
+  ]
+}

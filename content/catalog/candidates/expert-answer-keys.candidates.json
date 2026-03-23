@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T15:35:37.875424+00:00",
+    "record_count": 1
+  },
+  "records": [
+    {
+      "typeface_slug": "itc_garamond_std",
+      "answer_text_guess": "ITC Garamond STD",
+      "answer_normalized": "itcgaramondstd",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from guessed display name"
+      ]
+    }
+  ]
+}

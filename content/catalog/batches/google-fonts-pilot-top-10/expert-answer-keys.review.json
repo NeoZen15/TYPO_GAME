@@ -1,0 +1,208 @@
+{
+  "meta": {
+    "built_at": "2026-03-19T16:19:48.064006+00:00",
+    "record_count": 10
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "answer_text_guess": "Arimo",
+      "answer_normalized": "arimo",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Arial and general UI sans coverage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "answer_text_guess": "Tinos",
+      "answer_normalized": "tinos",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Times New Roman",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "answer_text_guess": "Lora",
+      "answer_normalized": "lora",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "strong serif replacement candidate for the Georgia-like runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "answer_text_guess": "Cousine",
+      "answer_normalized": "cousine",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Courier New-style monospace coverage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "answer_text_guess": "Space Grotesk",
+      "answer_normalized": "spacegrotesk",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strategic contemporary sans already aligned with earlier product planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "answer_text_guess": "Public Sans",
+      "answer_normalized": "publicsans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "high-utility public-system sans with strong training value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "answer_text_guess": "Fira Sans",
+      "answer_normalized": "firasans",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "important alternative text sans for comparison depth",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "answer_text_guess": "Crimson Pro",
+      "answer_normalized": "crimsonpro",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "important serif family already identified as a priority in prior planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "answer_text_guess": "EB Garamond",
+      "answer_normalized": "ebgaramond",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "essential old-style serif reference for recognition training",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "answer_text_guess": "Inconsolata",
+      "answer_normalized": "inconsolata",
+      "locale": "any",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-generated from snapshot metadata or family directory name"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "mono_training",
+      "rationale": "core monospace family that materially strengthens the current training pool",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    }
+  ]
+}

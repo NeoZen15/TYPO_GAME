@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:40:23.610515+00:00",
+    "review_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/editorial-review/editorial-review.completed.json",
+    "staged_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-stage",
+    "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+    "counts": {
+      "review_records_total": 10,
+      "staged_typefaces_total": 10,
+      "promotable_total": 10,
+      "blocked_total": 0
+    },
+    "approve_expert": false,
+    "notes": [
+      "This script emits promotion-ready fragments only.",
+      "Main catalog overrides should be updated only after reviewing these fragments."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "tinos",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "lora",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "cousine",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "publicsans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "firasans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

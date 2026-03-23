@@ -1,0 +1,316 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T15:35:37.809556+00:00",
+    "record_count": 28
+  },
+  "records": [
+    {
+      "typeface_slug": "arial",
+      "answer_text": "Arial",
+      "answer_normalized": "arial",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "helvetica",
+      "answer_text": "Helvetica",
+      "answer_normalized": "helvetica",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "roboto",
+      "answer_text": "Roboto",
+      "answer_normalized": "roboto",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "inter",
+      "answer_text": "Inter",
+      "answer_normalized": "inter",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "ibm_plex_sans",
+      "answer_text": "IBM Plex Sans",
+      "answer_normalized": "ibmplexsans",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "open_sans",
+      "answer_text": "Open Sans",
+      "answer_normalized": "opensans",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "lato",
+      "answer_text": "Lato",
+      "answer_normalized": "lato",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "source_sans_3",
+      "answer_text": "Source Sans 3",
+      "answer_normalized": "sourcesans3",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "montserrat",
+      "answer_text": "Montserrat",
+      "answer_normalized": "montserrat",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "poppins",
+      "answer_text": "Poppins",
+      "answer_normalized": "poppins",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "nunito",
+      "answer_text": "Nunito",
+      "answer_normalized": "nunito",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "raleway",
+      "answer_text": "Raleway",
+      "answer_normalized": "raleway",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "dm_sans",
+      "answer_text": "DM Sans",
+      "answer_normalized": "dmsans",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "work_sans",
+      "answer_text": "Work Sans",
+      "answer_normalized": "worksans",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "times_new_roman",
+      "answer_text": "Times New Roman",
+      "answer_normalized": "timesnewroman",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "georgia",
+      "answer_text": "Georgia",
+      "answer_normalized": "georgia",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "libre_baskerville",
+      "answer_text": "Libre Baskerville",
+      "answer_normalized": "librebaskerville",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "pt_serif",
+      "answer_text": "PT Serif",
+      "answer_normalized": "ptserif",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "merriweather",
+      "answer_text": "Merriweather",
+      "answer_normalized": "merriweather",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "playfair_display",
+      "answer_text": "Playfair Display",
+      "answer_normalized": "playfairdisplay",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "abril_fatface",
+      "answer_text": "Abril Fatface",
+      "answer_normalized": "abrilfatface",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "courier_new",
+      "answer_text": "Courier New",
+      "answer_normalized": "couriernew",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "roboto_mono",
+      "answer_text": "Roboto Mono",
+      "answer_normalized": "robotomono",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "source_code_pro",
+      "answer_text": "Source Code Pro",
+      "answer_normalized": "sourcecodepro",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "jetbrains_mono",
+      "answer_text": "JetBrains Mono",
+      "answer_normalized": "jetbrainsmono",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "oswald",
+      "answer_text": "Oswald",
+      "answer_normalized": "oswald",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "bebas_neue",
+      "answer_text": "Bebas Neue",
+      "answer_normalized": "bebasneue",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    },
+    {
+      "typeface_slug": "anton",
+      "answer_text": "Anton",
+      "answer_normalized": "anton",
+      "is_canonical": true,
+      "locale": "any",
+      "qa_status": "draft",
+      "notes": [
+        "generated_from_display_name"
+      ]
+    }
+  ]
+}

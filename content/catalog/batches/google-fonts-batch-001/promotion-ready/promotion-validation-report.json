@@ -1,0 +1,341 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:48:35.339338+00:00",
+    "review_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001/editorial-review/editorial-review.completed.json",
+    "staged_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001/promotion-stage",
+    "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+    "counts": {
+      "review_records_total": 50,
+      "staged_typefaces_total": 50,
+      "promotable_total": 50,
+      "blocked_total": 0
+    },
+    "approve_expert": false,
+    "notes": [
+      "This script emits promotion-ready fragments only.",
+      "Main catalog overrides should be updated only after reviewing these fragments."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "archivo",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "firasans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "manrope",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "publicsans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "rubik",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "outfit",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "karla",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "mulish",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "heebo",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "asap",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "exo2",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "cabin",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "cantarell",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "barlow",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "spectral",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "fraunces",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "domine",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "bitter",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "arvo",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "alegreya",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "notoserif",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "status": "promotable",
+      "errors": [],
+      "warnings": [
+        "typeface_slug already exists in current main catalog"
+      ]
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "spacemono",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "firamono",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "firacode",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "notosans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "status": "promotable",
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

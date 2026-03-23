@@ -1,0 +1,794 @@
+{
+  "meta": {
+    "generated_at": "2026-03-21T16:14:01.568663+00:00",
+    "source": "google_fonts_developer_api",
+    "request": {
+      "sort": "alpha",
+      "family": null,
+      "subset": null,
+      "category": null,
+      "capabilities": [],
+      "input_json": null,
+      "api_url": "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyD9q1y4OQik7kwrDfcdllx9rvE31sV5rrs&sort=alpha"
+    },
+    "counts": {
+      "api_family_total": 1935,
+      "known_local_total": 1918,
+      "new_to_local_total": 17,
+      "missing_from_api_total": 109,
+      "changed_since_last_sync_total": 0,
+      "known_local_active_total": 73,
+      "known_local_runtime_ready_total": 73
+    },
+    "notes": [
+      "Developer API is used here as an external metadata radar, not as the core runtime source.",
+      "CSS/Web API is intentionally not used as the primary game runtime because the active subset is self-hosted and controlled locally.",
+      "If you self-host the runtime subset, end-user browser requests do not go to Google Fonts servers."
+    ]
+  },
+  "records": [
+    {
+      "catalog_slug": "42dotsans",
+      "display_name": "42dot Sans",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "adobeblank",
+      "display_name": "Adobe Blank",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "aksarabaligalang",
+      "display_name": "aksarabaligalang",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "alumnisanscollegiateonesc",
+      "display_name": "Alumni Sans Collegiate One SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "amstelvaralpha",
+      "display_name": "amstelvaralpha",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "batang",
+      "display_name": "Batang",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "batangche",
+      "display_name": "BatangChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "betaniapatmosguideline",
+      "display_name": "Betania Patmos Guide Line",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bhavuka",
+      "display_name": "Bhavuka",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersdisplay",
+      "display_name": "Big Shoulders Display",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersdisplaysc",
+      "display_name": "Big Shoulders Display SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersinlinedisplay",
+      "display_name": "Big Shoulders Inline Display",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersinlinedisplaysc",
+      "display_name": "Big Shoulders Inline Display SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersinlinetext",
+      "display_name": "Big Shoulders Inline Text",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersinlinetextsc",
+      "display_name": "Big Shoulders Inline Text SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersstencildisplay",
+      "display_name": "Big Shoulders Stencil Display",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersstencildisplaysc",
+      "display_name": "Big Shoulders Stencil Display SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersstenciltext",
+      "display_name": "Big Shoulders Stencil Text",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshouldersstenciltextsc",
+      "display_name": "Big Shoulders Stencil Text SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshoulderstext",
+      "display_name": "Big Shoulders Text",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bigshoulderstextsc",
+      "display_name": "Big Shoulders Text SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "briemhand",
+      "display_name": "Briem Hand",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "bungeecolor",
+      "display_name": "Bungee Color",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "creepstercaps",
+      "display_name": "Creepster Caps",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "decovaralpha",
+      "display_name": "decovaralpha",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "dhyana",
+      "display_name": "Dhyana",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "digitalnumbers",
+      "display_name": "Digital Numbers",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "dotum",
+      "display_name": "Dotum",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "dotumche",
+      "display_name": "DotumChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "ekmukta",
+      "display_name": "Ek Mukta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "fragmentmonosc",
+      "display_name": "Fragment Mono SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "gulim",
+      "display_name": "Gulim",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "gulimche",
+      "display_name": "GulimChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "gungsuh",
+      "display_name": "Gungsuh",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "gungsuhche",
+      "display_name": "GungsuhChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "hanna",
+      "display_name": "hanna",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "hannari",
+      "display_name": "hannari",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "hermeneusone",
+      "display_name": "Hermeneus One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "hindcolombo",
+      "display_name": "Hind Colombo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "hindjalandhar",
+      "display_name": "Hind Jalandhar",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "hindkochi",
+      "display_name": "Hind Kochi",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jejugothic",
+      "display_name": "jejugothic",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jejuhallasan",
+      "display_name": "jejuhallasan",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jejumyeongjo",
+      "display_name": "jejumyeongjo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jsmathcmbx10",
+      "display_name": "jsMath cmbx10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jsmathcmex10",
+      "display_name": "jsMath cmex10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jsmathcmmi10",
+      "display_name": "jsMath cmmi10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jsmathcmr10",
+      "display_name": "jsMath cmr10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jsmathcmsy10",
+      "display_name": "jsMath cmsy10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "jsmathcmti10",
+      "display_name": "jsMath cmti10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "khyay",
+      "display_name": "khyay",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "kokoro",
+      "display_name": "kokoro",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "kopubbatang",
+      "display_name": "kopubbatang",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "lemonadavfbeta",
+      "display_name": "lemonadavfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "lohitbengali",
+      "display_name": "Lohit Bengali",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "lohitdevanagari",
+      "display_name": "lohitdevanagari",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "lohittamil",
+      "display_name": "Lohit Tamil",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "markazitextvfbeta",
+      "display_name": "markazitextvfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "mavenprovfbeta",
+      "display_name": "mavenprovfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "mergeone",
+      "display_name": "Merge One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "mervalescript",
+      "display_name": "Mervale Script",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "miama",
+      "display_name": "Miama",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "mirandasans",
+      "display_name": "Miranda Sans",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "montserratsubrayada",
+      "display_name": "Montserrat Subrayada",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "myanmarsanspro",
+      "display_name": "myanmarsanspro",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "nats",
+      "display_name": "NATS",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "nicomoji",
+      "display_name": "nicomoji",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "nikukyu",
+      "display_name": "nikukyu",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "nosifercaps",
+      "display_name": "Nosifer Caps",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notocoloremojicompattest",
+      "display_name": "Noto Color Emoji Compat Test",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notonaskharabicui",
+      "display_name": "Noto Naskh Arabic UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansarabicui",
+      "display_name": "Noto Sans Arabic UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansbengaliui",
+      "display_name": "Noto Sans Bengali UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansdevanagariui",
+      "display_name": "Noto Sans Devanagari UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansgujaratiui",
+      "display_name": "Noto Sans Gujarati UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansgurmukhiui",
+      "display_name": "Noto Sans Gurmukhi UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosanskannadaui",
+      "display_name": "Noto Sans Kannada UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosanskhmerui",
+      "display_name": "Noto Sans Khmer UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosanslaoui",
+      "display_name": "Noto Sans Lao UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansmalayalamui",
+      "display_name": "Noto Sans Malayalam UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansmyanmarui",
+      "display_name": "Noto Sans Myanmar UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansnko_todelist",
+      "display_name": "Noto Sans N Ko",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansoriyaui",
+      "display_name": "Noto Sans Oriya UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosanssinhalaui",
+      "display_name": "Noto Sans Sinhala UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosanstamilui",
+      "display_name": "Noto Sans Tamil UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansteluguui",
+      "display_name": "Noto Sans Telugu UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notosansthaiui",
+      "display_name": "Noto Sans Thai UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "notoserifnyiakengpuachuehmong",
+      "display_name": "Noto Serif Nyiakeng Puachue Hmong",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "oflsortsmillgoudytt",
+      "display_name": "OFL Sorts Mill Goudy TT",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "opensanshebrew",
+      "display_name": "opensanshebrew",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "opensanshebrewcondensed",
+      "display_name": "opensanshebrewcondensed",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "otomanopeeone",
+      "display_name": "Otomanopee One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "podkovavfbeta",
+      "display_name": "podkovavfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "portersansblock",
+      "display_name": "Porter Sans Block",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "pushster",
+      "display_name": "Pushster",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "rokkittvfbeta",
+      "display_name": "rokkittvfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "roundedmplus1c",
+      "display_name": "roundedmplus1c",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "rubikone",
+      "display_name": "Rubik One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "sansitaone",
+      "display_name": "Sansita One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "signikanegativesc",
+      "display_name": "Signika Negative SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "signikasc",
+      "display_name": "Signika SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "sitara",
+      "display_name": "Sitara",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "souliyo",
+      "display_name": "souliyo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "stixtwomath",
+      "display_name": "STIX Two Math",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "strong",
+      "display_name": "Strong",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "thabit",
+      "display_name": "Thabit",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "tharlon",
+      "display_name": "tharlon",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "yaldevicolombo",
+      "display_name": "Yaldevi Colombo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "catalog_slug": "yinmar",
+      "display_name": "Yinmar",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    }
+  ]
+}

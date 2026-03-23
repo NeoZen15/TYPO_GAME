@@ -1,0 +1,213 @@
+{
+  "generated_at": "2026-03-19T16:39:17.078678+00:00",
+  "input_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-stage",
+  "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+  "counts": {
+    "records_total": 10,
+    "known_catalog_slugs": 28
+  },
+  "status_counts": {
+    "needs_review": 10
+  },
+  "blocker_counts": {
+    "missing_editorial_fields": 10,
+    "missing_structural_signature": 10
+  },
+  "warning_counts": {},
+  "notes": [
+    "This is a promotion readiness audit, not an import operation.",
+    "A typeface can exist as a candidate while still being blocked for promotion."
+  ],
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "display_name": "Arimo",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "apache2",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "tinos",
+      "display_name": "Tinos",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "apache2",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "lora",
+      "display_name": "Lora",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "cousine",
+      "display_name": "Cousine",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "apache2",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "display_name": "Space Grotesk",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "publicsans",
+      "display_name": "Public Sans",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "firasans",
+      "display_name": "Fira Sans",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "display_name": "Crimson Pro",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "display_name": "EB Garamond",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "display_name": "Inconsolata",
+      "status": "needs_review",
+      "priority": null,
+      "lane": null,
+      "promotion_status": null,
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature"
+      ],
+      "warnings": [],
+      "summary": {
+        "available_formats": null,
+        "runtime_candidate_status": "ready",
+        "guessed_license_type": "ofl",
+        "source_file_count": null
+      }
+    }
+  ]
+}

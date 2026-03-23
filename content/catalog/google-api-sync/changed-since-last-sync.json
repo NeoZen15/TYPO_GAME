@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "generated_at": "2026-03-21T16:14:01.568663+00:00",
+    "source": "google_fonts_developer_api",
+    "request": {
+      "sort": "alpha",
+      "family": null,
+      "subset": null,
+      "category": null,
+      "capabilities": [],
+      "input_json": null,
+      "api_url": "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyD9q1y4OQik7kwrDfcdllx9rvE31sV5rrs&sort=alpha"
+    },
+    "counts": {
+      "api_family_total": 1935,
+      "known_local_total": 1918,
+      "new_to_local_total": 17,
+      "missing_from_api_total": 109,
+      "changed_since_last_sync_total": 0,
+      "known_local_active_total": 73,
+      "known_local_runtime_ready_total": 73
+    },
+    "notes": [
+      "Developer API is used here as an external metadata radar, not as the core runtime source.",
+      "CSS/Web API is intentionally not used as the primary game runtime because the active subset is self-hosted and controlled locally.",
+      "If you self-host the runtime subset, end-user browser requests do not go to Google Fonts servers."
+    ]
+  },
+  "records": []
+}

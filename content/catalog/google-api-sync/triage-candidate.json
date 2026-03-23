@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "generated_at": "2026-03-21T16:21:38.349802+00:00",
+    "sync_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/google-api-sync",
+    "sync_counts": {
+      "api_family_total": 1935,
+      "known_local_total": 1918,
+      "new_to_local_total": 17,
+      "missing_from_api_total": 109,
+      "changed_since_last_sync_total": 0,
+      "known_local_active_total": 73,
+      "known_local_runtime_ready_total": 73
+    },
+    "triage_counts": {
+      "ignore": 23,
+      "watch": 101,
+      "candidate": 2
+    },
+    "notes": [
+      "candidate = worth future editorial/product review",
+      "watch = no immediate action, but useful to keep visible in future syncs",
+      "ignore = expected low-value noise for current product goals"
+    ]
+  },
+  "records": [
+    {
+      "source": "new_to_local",
+      "reason": "real_text_family_not_yet_in_local_catalog",
+      "api_family": "Google Sans",
+      "typeface_slug": "google_sans",
+      "api_rank": 587,
+      "category": "sans-serif",
+      "version": "v67",
+      "last_modified": "2025-12-10",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700",
+        "italic",
+        "500italic",
+        "600italic",
+        "700italic"
+      ],
+      "subsets": [
+        "armenian",
+        "bengali",
+        "canadian-aboriginal",
+        "cyrillic",
+        "cyrillic-ext",
+        "devanagari",
+        "ethiopic",
+        "georgian",
+        "greek",
+        "greek-ext",
+        "gujarati",
+        "gurmukhi",
+        "hebrew",
+        "khmer",
+        "lao",
+        "latin",
+        "latin-ext",
+        "malayalam",
+        "oriya",
+        "sinhala",
+        "symbols",
+        "tamil",
+        "telugu",
+        "thai",
+        "vietnamese"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "real_text_family_not_yet_in_local_catalog",
+      "api_family": "Google Sans Flex",
+      "typeface_slug": "google_sans_flex",
+      "api_rank": 589,
+      "category": "sans-serif",
+      "version": "v16",
+      "last_modified": "2025-12-11",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700",
+        "800",
+        "900"
+      ],
+      "subsets": [
+        "canadian-aboriginal",
+        "cherokee",
+        "latin",
+        "latin-ext",
+        "math",
+        "nushu",
+        "symbols",
+        "syriac",
+        "tifinagh",
+        "vietnamese"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    }
+  ]
+}

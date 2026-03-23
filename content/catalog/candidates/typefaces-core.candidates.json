@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T15:35:37.875424+00:00",
+    "record_count": 1
+  },
+  "records": [
+    {
+      "typeface_slug": "itc_garamond_std",
+      "display_name_guess": "ITC Garamond STD",
+      "display_name_ascii": "itcgaramondstd",
+      "guessed_font_source": "local",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 24,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts/ITCGaramondStd-Bd.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts/ITCGaramondStd-BdCond.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts/ITCGaramondStd-BdCondIta.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts/ITCGaramondStd-BdIta.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/01_fonts/ITCGaramondStd-BdNarrow.ttf"
+      ],
+      "runtime_candidate_status": "non_runtime_source_only",
+      "suggested_activation_status": false,
+      "suggested_expert_enabled": false,
+      "review_status": "needs_editorial_review",
+      "missing_editorial_fields": [
+        "primary_category",
+        "sub_category",
+        "visual_cluster_id",
+        "dreyfus_tier",
+        "difficulty_base",
+        "rarity_tag",
+        "year_tag",
+        "weight_structure",
+        "contrast_profile",
+        "aperture_profile",
+        "structural_signature",
+        "license_type"
+      ],
+      "notes": [
+        "auto-discovered from local font sources",
+        "not import-ready until editorial fields are reviewed"
+      ]
+    }
+  ]
+}

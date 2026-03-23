@@ -23,6 +23,9 @@
 # misc
 .DS_Store
 *.pem
+.venv/
+/tmp/
+/backups/checkpoints/
 
 # debug
 npm-debug.log*

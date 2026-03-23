@@ -1,0 +1,1015 @@
+{
+  "meta": {
+    "generated_at": "2026-03-21T16:21:38.349802+00:00",
+    "sync_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/google-api-sync",
+    "sync_counts": {
+      "api_family_total": 1935,
+      "known_local_total": 1918,
+      "new_to_local_total": 17,
+      "missing_from_api_total": 109,
+      "changed_since_last_sync_total": 0,
+      "known_local_active_total": 73,
+      "known_local_runtime_ready_total": 73
+    },
+    "triage_counts": {
+      "ignore": 23,
+      "watch": 101,
+      "candidate": 2
+    },
+    "notes": [
+      "candidate = worth future editorial/product review",
+      "watch = no immediate action, but useful to keep visible in future syncs",
+      "ignore = expected low-value noise for current product goals"
+    ]
+  },
+  "records": [
+    {
+      "source": "new_to_local",
+      "reason": "educational_handwriting_family_low_product_priority",
+      "api_family": "Edu NSW ACT Cursive",
+      "typeface_slug": "edu_nsw_act_cursive",
+      "api_rank": 446,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-05",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "educational_handwriting_family_low_product_priority",
+      "api_family": "Edu NSW ACT Hand Pre",
+      "typeface_slug": "edu_nsw_act_hand_pre",
+      "api_rank": 448,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-10",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "educational_handwriting_family_low_product_priority",
+      "api_family": "Edu QLD Hand",
+      "typeface_slug": "edu_qld_hand",
+      "api_rank": 450,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-11",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext",
+        "vietnamese"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "educational_handwriting_family_low_product_priority",
+      "api_family": "Edu SA Hand",
+      "typeface_slug": "edu_sa_hand",
+      "api_rank": 452,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-08",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "educational_handwriting_family_low_product_priority",
+      "api_family": "Edu VIC WA NT Hand",
+      "typeface_slug": "edu_vic_wa_nt_hand",
+      "api_rank": 455,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-08",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "educational_handwriting_family_low_product_priority",
+      "api_family": "Edu VIC WA NT Hand Pre",
+      "typeface_slug": "edu_vic_wa_nt_hand_pre",
+      "api_rank": 456,
+      "category": "handwriting",
+      "version": "v3",
+      "last_modified": "2025-09-11",
+      "variants": [
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "42dotsans",
+      "display_name": "42dot Sans",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "adobeblank",
+      "display_name": "Adobe Blank",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "aksarabaligalang",
+      "display_name": "aksarabaligalang",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "alumnisanscollegiateonesc",
+      "display_name": "Alumni Sans Collegiate One SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "batang",
+      "display_name": "Batang",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "batangche",
+      "display_name": "BatangChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "betaniapatmosguideline",
+      "display_name": "Betania Patmos Guide Line",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "bhavuka",
+      "display_name": "Bhavuka",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersdisplay",
+      "display_name": "Big Shoulders Display",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersdisplaysc",
+      "display_name": "Big Shoulders Display SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersinlinedisplay",
+      "display_name": "Big Shoulders Inline Display",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersinlinedisplaysc",
+      "display_name": "Big Shoulders Inline Display SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersinlinetext",
+      "display_name": "Big Shoulders Inline Text",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersinlinetextsc",
+      "display_name": "Big Shoulders Inline Text SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersstencildisplay",
+      "display_name": "Big Shoulders Stencil Display",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersstencildisplaysc",
+      "display_name": "Big Shoulders Stencil Display SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersstenciltext",
+      "display_name": "Big Shoulders Stencil Text",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshouldersstenciltextsc",
+      "display_name": "Big Shoulders Stencil Text SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshoulderstext",
+      "display_name": "Big Shoulders Text",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "family_variant_group_missing_from_api_worth_tracking",
+      "catalog_slug": "bigshoulderstextsc",
+      "display_name": "Big Shoulders Text SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "briemhand",
+      "display_name": "Briem Hand",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "bungeecolor",
+      "display_name": "Bungee Color",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "creepstercaps",
+      "display_name": "Creepster Caps",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "dhyana",
+      "display_name": "Dhyana",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "digitalnumbers",
+      "display_name": "Digital Numbers",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "dotum",
+      "display_name": "Dotum",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "dotumche",
+      "display_name": "DotumChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "ekmukta",
+      "display_name": "Ek Mukta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "fragmentmonosc",
+      "display_name": "Fragment Mono SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "gulim",
+      "display_name": "Gulim",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "gulimche",
+      "display_name": "GulimChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "gungsuh",
+      "display_name": "Gungsuh",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "gungsuhche",
+      "display_name": "GungsuhChe",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "hanna",
+      "display_name": "hanna",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "hannari",
+      "display_name": "hannari",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "hermeneusone",
+      "display_name": "Hermeneus One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "hindcolombo",
+      "display_name": "Hind Colombo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "hindjalandhar",
+      "display_name": "Hind Jalandhar",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "hindkochi",
+      "display_name": "Hind Kochi",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "jejugothic",
+      "display_name": "jejugothic",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "jejuhallasan",
+      "display_name": "jejuhallasan",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "jejumyeongjo",
+      "display_name": "jejumyeongjo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "khyay",
+      "display_name": "khyay",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "kokoro",
+      "display_name": "kokoro",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "legacy_family_present_in_snapshot_but_not_in_current_api",
+      "catalog_slug": "kopubbatang",
+      "display_name": "kopubbatang",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "lohitbengali",
+      "display_name": "Lohit Bengali",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "lohitdevanagari",
+      "display_name": "lohitdevanagari",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "lohittamil",
+      "display_name": "Lohit Tamil",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "mergeone",
+      "display_name": "Merge One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "mervalescript",
+      "display_name": "Mervale Script",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "miama",
+      "display_name": "Miama",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "mirandasans",
+      "display_name": "Miranda Sans",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "montserratsubrayada",
+      "display_name": "Montserrat Subrayada",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "myanmarsanspro",
+      "display_name": "myanmarsanspro",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "nats",
+      "display_name": "NATS",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "nicomoji",
+      "display_name": "nicomoji",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "nikukyu",
+      "display_name": "nikukyu",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "nosifercaps",
+      "display_name": "Nosifer Caps",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notonaskharabicui",
+      "display_name": "Noto Naskh Arabic UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansarabicui",
+      "display_name": "Noto Sans Arabic UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansbengaliui",
+      "display_name": "Noto Sans Bengali UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansdevanagariui",
+      "display_name": "Noto Sans Devanagari UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansgujaratiui",
+      "display_name": "Noto Sans Gujarati UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansgurmukhiui",
+      "display_name": "Noto Sans Gurmukhi UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosanskannadaui",
+      "display_name": "Noto Sans Kannada UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosanskhmerui",
+      "display_name": "Noto Sans Khmer UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosanslaoui",
+      "display_name": "Noto Sans Lao UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansmalayalamui",
+      "display_name": "Noto Sans Malayalam UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansmyanmarui",
+      "display_name": "Noto Sans Myanmar UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "notosansnko_todelist",
+      "display_name": "Noto Sans N Ko",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansoriyaui",
+      "display_name": "Noto Sans Oriya UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosanssinhalaui",
+      "display_name": "Noto Sans Sinhala UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosanstamilui",
+      "display_name": "Noto Sans Tamil UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansteluguui",
+      "display_name": "Noto Sans Telugu UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "ui_variant_missing_from_api_worth_tracking",
+      "catalog_slug": "notosansthaiui",
+      "display_name": "Noto Sans Thai UI",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "notoserifnyiakengpuachuehmong",
+      "display_name": "Noto Serif Nyiakeng Puachue Hmong",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "oflsortsmillgoudytt",
+      "display_name": "OFL Sorts Mill Goudy TT",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "opensanshebrew",
+      "display_name": "opensanshebrew",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "opensanshebrewcondensed",
+      "display_name": "opensanshebrewcondensed",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "otomanopeeone",
+      "display_name": "Otomanopee One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "portersansblock",
+      "display_name": "Porter Sans Block",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "pushster",
+      "display_name": "Pushster",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "roundedmplus1c",
+      "display_name": "roundedmplus1c",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "rubikone",
+      "display_name": "Rubik One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "sansitaone",
+      "display_name": "Sansita One",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "signikanegativesc",
+      "display_name": "Signika Negative SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "signikasc",
+      "display_name": "Signika SC",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "sitara",
+      "display_name": "Sitara",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "souliyo",
+      "display_name": "souliyo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "stixtwomath",
+      "display_name": "STIX Two Math",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "strong",
+      "display_name": "Strong",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "thabit",
+      "display_name": "Thabit",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "tharlon",
+      "display_name": "tharlon",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "yaldevicolombo",
+      "display_name": "Yaldevi Colombo",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "inactive_catalog_family_missing_from_api_no_immediate_action",
+      "catalog_slug": "yinmar",
+      "display_name": "Yinmar",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    }
+  ]
+}

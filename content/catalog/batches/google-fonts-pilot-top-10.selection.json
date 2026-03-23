@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "batch_id": "google-fonts-pilot-top-10",
+    "created_at": "2026-03-19T18:40:00+01:00",
+    "source_candidates_dir": "content/catalog/candidates/google-fonts-snapshot",
+    "purpose": "pilot batch to validate the end-to-end promotion workflow on a compact, high-value set before wider catalog expansion",
+    "notes": [
+      "This pilot batch favors runtime replacements plus a balanced sans/serif/mono core.",
+      "If this batch validates cleanly, the same promotion workflow can be extended to larger batches."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "lane": "replacement",
+      "priority": "high",
+      "rationale": "primary libre replacement candidate for Arial and general UI sans coverage"
+    },
+    {
+      "typeface_slug": "tinos",
+      "lane": "replacement",
+      "priority": "high",
+      "rationale": "primary libre replacement candidate for Times New Roman"
+    },
+    {
+      "typeface_slug": "lora",
+      "lane": "replacement",
+      "priority": "high",
+      "rationale": "strong serif replacement candidate for the Georgia-like runtime slot"
+    },
+    {
+      "typeface_slug": "cousine",
+      "lane": "replacement",
+      "priority": "high",
+      "rationale": "primary libre replacement candidate for Courier New-style monospace coverage"
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "lane": "core_sans",
+      "priority": "high",
+      "rationale": "strategic contemporary sans already aligned with earlier product planning"
+    },
+    {
+      "typeface_slug": "publicsans",
+      "lane": "core_sans",
+      "priority": "high",
+      "rationale": "high-utility public-system sans with strong training value"
+    },
+    {
+      "typeface_slug": "firasans",
+      "lane": "core_sans",
+      "priority": "high",
+      "rationale": "important alternative text sans for comparison depth"
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "lane": "serif_training",
+      "priority": "high",
+      "rationale": "important serif family already identified as a priority in prior planning"
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "lane": "serif_training",
+      "priority": "high",
+      "rationale": "essential old-style serif reference for recognition training"
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "lane": "mono_training",
+      "priority": "high",
+      "rationale": "core monospace family that materially strengthens the current training pool"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "batch_id": "google-fonts-batch-001",
+    "created_at": "2026-03-19T16:10:00+00:00",
+    "source_candidates_dir": "content/catalog/candidates/google-fonts-snapshot",
+    "purpose": "first high-value batch selected from the massive Google Fonts snapshot for gameplay and catalog growth",
+    "notes": [
+      "This batch prioritizes utility for the game over exhaustive coverage.",
+      "It mixes replacement candidates, text sans, serif training families, and monospaced families."
+    ]
+  },
+  "records": [
+    {"typeface_slug": "arimo", "lane": "replacement", "priority": "high", "rationale": "working libre replacement candidate for Arial / UI sans lane"},
+    {"typeface_slug": "tinos", "lane": "replacement", "priority": "high", "rationale": "working libre replacement candidate for Times New Roman"},
+    {"typeface_slug": "lora", "lane": "replacement", "priority": "high", "rationale": "working serif replacement candidate for Georgia-style runtime slot"},
+    {"typeface_slug": "cousine", "lane": "replacement", "priority": "high", "rationale": "working libre replacement candidate for Courier New-style runtime slot"},
+
+    {"typeface_slug": "spacegrotesk", "lane": "core_sans", "priority": "high", "rationale": "strong contemporary sans and already important in earlier planning"},
+    {"typeface_slug": "archivo", "lane": "core_sans", "priority": "high", "rationale": "high-utility sans family for recognition training"},
+    {"typeface_slug": "archivoblack", "lane": "core_sans", "priority": "medium", "rationale": "display-adjacent companion to Archivo"},
+    {"typeface_slug": "archivonarrow", "lane": "core_sans", "priority": "medium", "rationale": "width variation useful for visual comparison"},
+    {"typeface_slug": "firasans", "lane": "core_sans", "priority": "high", "rationale": "important alternative text sans family"},
+    {"typeface_slug": "manrope", "lane": "core_sans", "priority": "high", "rationale": "modern UI sans useful for subtle comparison work"},
+    {"typeface_slug": "publicsans", "lane": "core_sans", "priority": "high", "rationale": "strong utilitarian sans for public/system tone"},
+    {"typeface_slug": "rubik", "lane": "core_sans", "priority": "medium", "rationale": "rounded geometric contrast against current sans set"},
+    {"typeface_slug": "outfit", "lane": "core_sans", "priority": "medium", "rationale": "modern geometric sans with current relevance"},
+    {"typeface_slug": "karla", "lane": "core_sans", "priority": "medium", "rationale": "humanist-ish sans option for comparison diversity"},
+    {"typeface_slug": "mulish", "lane": "core_sans", "priority": "medium", "rationale": "clean text sans candidate for dense training pools"},
+    {"typeface_slug": "heebo", "lane": "core_sans", "priority": "medium", "rationale": "compact sans voice that broadens the pool"},
+    {"typeface_slug": "librefranklin", "lane": "core_sans", "priority": "medium", "rationale": "useful sans rooted in Franklin Gothic lineage"},
+    {"typeface_slug": "plusjakartasans", "lane": "core_sans", "priority": "medium", "rationale": "current contemporary sans candidate"},
+    {"typeface_slug": "alegreyasans", "lane": "core_sans", "priority": "medium", "rationale": "paired sans counterpart for Alegreya family"},
+    {"typeface_slug": "asap", "lane": "core_sans", "priority": "medium", "rationale": "text-oriented sans with broad utility"},
+    {"typeface_slug": "asapcondensed", "lane": "core_sans", "priority": "medium", "rationale": "condensed variant useful for width recognition"},
+    {"typeface_slug": "exo2", "lane": "core_sans", "priority": "medium", "rationale": "tech-flavored sans useful for distinct silhouette"},
+    {"typeface_slug": "cabin", "lane": "core_sans", "priority": "medium", "rationale": "classic web sans candidate missing from the current set"},
+    {"typeface_slug": "cantarell", "lane": "core_sans", "priority": "medium", "rationale": "distinct UI sans from open-source ecosystem"},
+    {"typeface_slug": "barlow", "lane": "core_sans", "priority": "medium", "rationale": "highly usable grotesk-style family"},
+    {"typeface_slug": "barlowcondensed", "lane": "core_sans", "priority": "medium", "rationale": "condensed branch useful for width and rhythm work"},
+    {"typeface_slug": "barlowsemicondensed", "lane": "core_sans", "priority": "medium", "rationale": "intermediate width branch useful pedagogically"},
+    {"typeface_slug": "firasanscondensed", "lane": "core_sans", "priority": "medium", "rationale": "condensed counterpart for Fira Sans family work"},
+    {"typeface_slug": "crimsonpro", "lane": "serif_training", "priority": "high", "rationale": "important serif candidate already mentioned in planning"},
+    {"typeface_slug": "spectral", "lane": "serif_training", "priority": "high", "rationale": "strong editorial serif for recognition and reading contexts"},
+    {"typeface_slug": "ebgaramond", "lane": "serif_training", "priority": "high", "rationale": "essential old-style serif reference"},
+    {"typeface_slug": "fraunces", "lane": "serif_training", "priority": "high", "rationale": "highly distinctive variable serif family"},
+    {"typeface_slug": "domine", "lane": "serif_training", "priority": "medium", "rationale": "robust text serif with clear identity"},
+    {"typeface_slug": "bitter", "lane": "serif_training", "priority": "medium", "rationale": "slab-ish serif useful for contrast against text serifs"},
+    {"typeface_slug": "arvo", "lane": "serif_training", "priority": "medium", "rationale": "compact slab serif with strong silhouette"},
+    {"typeface_slug": "alegreya", "lane": "serif_training", "priority": "medium", "rationale": "paired serif counterpart for Alegreya family"},
+    {"typeface_slug": "josefinslab", "lane": "serif_training", "priority": "medium", "rationale": "distinctive slab direction for recognition breadth"},
+    {"typeface_slug": "cormorantgaramond", "lane": "serif_training", "priority": "medium", "rationale": "elegant serif for advanced recognition lanes"},
+    {"typeface_slug": "crimsontext", "lane": "serif_training", "priority": "medium", "rationale": "text serif sibling to Crimson Pro"},
+    {"typeface_slug": "notoserif", "lane": "serif_training", "priority": "medium", "rationale": "broad-coverage serif family with high practical value"},
+    {"typeface_slug": "ibmplexserif", "lane": "serif_training", "priority": "medium", "rationale": "paired serif counterpart to IBM Plex ecosystem"},
+    {"typeface_slug": "sourceserif4", "lane": "serif_training", "priority": "medium", "rationale": "important open-source serif reference family"},
+
+    {"typeface_slug": "inconsolata", "lane": "mono_training", "priority": "high", "rationale": "core monospace family missing from current set"},
+    {"typeface_slug": "anonymouspro", "lane": "mono_training", "priority": "medium", "rationale": "distinct code/editorial mono voice"},
+    {"typeface_slug": "ibmplexmono", "lane": "mono_training", "priority": "medium", "rationale": "paired mono counterpart to IBM Plex ecosystem"},
+    {"typeface_slug": "spacemono", "lane": "mono_training", "priority": "medium", "rationale": "display-leaning mono useful for broader contrast"},
+    {"typeface_slug": "firamono", "lane": "mono_training", "priority": "medium", "rationale": "paired mono counterpart to Fira Sans family"},
+    {"typeface_slug": "firacode", "lane": "mono_training", "priority": "low", "rationale": "developer-familiar mono family worth exploring later"},
+
+    {"typeface_slug": "notosans", "lane": "broad_coverage", "priority": "medium", "rationale": "broad-coverage sans with high practical value"},
+    {"typeface_slug": "josefinsans", "lane": "display_bridge", "priority": "low", "rationale": "distinctive art-deco-ish sans for later contrast work"}
+  ]
+}

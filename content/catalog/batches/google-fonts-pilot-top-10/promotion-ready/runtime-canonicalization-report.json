@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:41:30.547331+00:00",
+    "runtime_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10/promotion-ready/font-runtime-assets.promotion-ready.json",
+    "project_root": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2.",
+    "counts": {
+      "total": 10,
+      "canonicalized": 10,
+      "skipped": 0
+    },
+    "notes": [
+      "Canonical runtime records are suitable for main catalog overrides.",
+      "This step copies assets out of public/fonts/staged into the main public/fonts namespace."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/arimo/arimo-primary.woff2",
+      "to_runtime_path": "/fonts/arimo/arimo__5bae87c290b2.woff2"
+    },
+    {
+      "typeface_slug": "tinos",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/tinos/tinos-primary.woff2",
+      "to_runtime_path": "/fonts/tinos/tinos__7aa767376ae4.woff2"
+    },
+    {
+      "typeface_slug": "lora",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/lora/lora-primary.woff2",
+      "to_runtime_path": "/fonts/lora/lora__539d0616d77b.woff2"
+    },
+    {
+      "typeface_slug": "cousine",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/cousine/cousine-primary.woff2",
+      "to_runtime_path": "/fonts/cousine/cousine__c0eba8577548.woff2"
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/spacegrotesk/spacegrotesk-primary.woff2",
+      "to_runtime_path": "/fonts/spacegrotesk/spacegrotesk__c85917fc3b67.woff2"
+    },
+    {
+      "typeface_slug": "publicsans",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/publicsans/publicsans-primary.woff2",
+      "to_runtime_path": "/fonts/publicsans/publicsans__442d013f9e8c.woff2"
+    },
+    {
+      "typeface_slug": "firasans",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/firasans/firasans-primary.woff2",
+      "to_runtime_path": "/fonts/firasans/firasans__ad0e03d8d629.woff2"
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/crimsonpro/crimsonpro-primary.woff2",
+      "to_runtime_path": "/fonts/crimsonpro/crimsonpro__2e70dfc3942b.woff2"
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/ebgaramond/ebgaramond-primary.woff2",
+      "to_runtime_path": "/fonts/ebgaramond/ebgaramond__adb4653c3b4a.woff2"
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "status": "canonicalized",
+      "from_runtime_path": "/fonts/staged/google-fonts-pilot-top-10/inconsolata/inconsolata-primary.woff2",
+      "to_runtime_path": "/fonts/inconsolata/inconsolata__68da38106986.woff2"
+    }
+  ]
+}

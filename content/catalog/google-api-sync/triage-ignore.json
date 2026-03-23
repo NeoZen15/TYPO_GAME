@@ -1,0 +1,339 @@
+{
+  "meta": {
+    "generated_at": "2026-03-21T16:21:38.349802+00:00",
+    "sync_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/google-api-sync",
+    "sync_counts": {
+      "api_family_total": 1935,
+      "known_local_total": 1918,
+      "new_to_local_total": 17,
+      "missing_from_api_total": 109,
+      "changed_since_last_sync_total": 0,
+      "known_local_active_total": 73,
+      "known_local_runtime_ready_total": 73
+    },
+    "triage_counts": {
+      "ignore": 23,
+      "watch": 101,
+      "candidate": 2
+    },
+    "notes": [
+      "candidate = worth future editorial/product review",
+      "watch = no immediate action, but useful to keep visible in future syncs",
+      "ignore = expected low-value noise for current product goals"
+    ]
+  },
+  "records": [
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Icons",
+      "typeface_slug": "material_icons",
+      "api_rank": 927,
+      "category": "monospace",
+      "version": "v145",
+      "last_modified": "2025-09-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Icons Outlined",
+      "typeface_slug": "material_icons_outlined",
+      "api_rank": 928,
+      "category": "monospace",
+      "version": "v110",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Icons Round",
+      "typeface_slug": "material_icons_round",
+      "api_rank": 929,
+      "category": "monospace",
+      "version": "v109",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Icons Sharp",
+      "typeface_slug": "material_icons_sharp",
+      "api_rank": 930,
+      "category": "monospace",
+      "version": "v110",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Icons Two Tone",
+      "typeface_slug": "material_icons_two_tone",
+      "api_rank": 931,
+      "category": "monospace",
+      "version": "v113",
+      "last_modified": "2025-06-17",
+      "variants": [
+        "regular"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Symbols",
+      "typeface_slug": "material_symbols",
+      "api_rank": 932,
+      "category": "monospace",
+      "version": "v49",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Symbols Outlined",
+      "typeface_slug": "material_symbols_outlined",
+      "api_rank": 933,
+      "category": "monospace",
+      "version": "v321",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Symbols Rounded",
+      "typeface_slug": "material_symbols_rounded",
+      "api_rank": 934,
+      "category": "monospace",
+      "version": "v323",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "new_to_local",
+      "reason": "icon_font_not_typography_game_candidate",
+      "api_family": "Material Symbols Sharp",
+      "typeface_slug": "material_symbols_sharp",
+      "api_rank": 935,
+      "category": "monospace",
+      "version": "v318",
+      "last_modified": "2026-03-16",
+      "variants": [
+        "100",
+        "200",
+        "300",
+        "regular",
+        "500",
+        "600",
+        "700"
+      ],
+      "subsets": [
+        "latin"
+      ],
+      "axes_count": 0,
+      "tags_count": 0
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "amstelvaralpha",
+      "display_name": "amstelvaralpha",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "decovaralpha",
+      "display_name": "decovaralpha",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "math_support_family_not_product_relevant",
+      "catalog_slug": "jsmathcmbx10",
+      "display_name": "jsMath cmbx10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "math_support_family_not_product_relevant",
+      "catalog_slug": "jsmathcmex10",
+      "display_name": "jsMath cmex10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "math_support_family_not_product_relevant",
+      "catalog_slug": "jsmathcmmi10",
+      "display_name": "jsMath cmmi10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "math_support_family_not_product_relevant",
+      "catalog_slug": "jsmathcmr10",
+      "display_name": "jsMath cmr10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "math_support_family_not_product_relevant",
+      "catalog_slug": "jsmathcmsy10",
+      "display_name": "jsMath cmsy10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "math_support_family_not_product_relevant",
+      "catalog_slug": "jsmathcmti10",
+      "display_name": "jsMath cmti10",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "lemonadavfbeta",
+      "display_name": "lemonadavfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "markazitextvfbeta",
+      "display_name": "markazitextvfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "mavenprovfbeta",
+      "display_name": "mavenprovfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "notocoloremojicompattest",
+      "display_name": "Noto Color Emoji Compat Test",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "podkovavfbeta",
+      "display_name": "podkovavfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    },
+    {
+      "source": "missing_from_api",
+      "reason": "experimental_or_beta_family_not_product_relevant",
+      "catalog_slug": "rokkittvfbeta",
+      "display_name": "rokkittvfbeta",
+      "activation_status": false,
+      "expert_enabled": false,
+      "qa_status": "review"
+    }
+  ]
+}

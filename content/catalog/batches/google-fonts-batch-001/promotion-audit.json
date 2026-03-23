@@ -1,0 +1,1430 @@
+{
+  "generated_at": "2026-03-19T17:31:32.530632+00:00",
+  "input_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001",
+  "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+  "counts": {
+    "records_total": 50,
+    "known_catalog_slugs": 28
+  },
+  "status_counts": {
+    "needs_review": 50
+  },
+  "blocker_counts": {
+    "missing_editorial_fields": 50,
+    "missing_structural_signature": 50,
+    "needs_runtime_conversion_or_mirroring": 50
+  },
+  "warning_counts": {
+    "display_name_is_still_a_guess": 50,
+    "expert_answer_not_reviewed": 50,
+    "google_category_needs_local_mapping": 50,
+    "license_is_still_guessed": 50,
+    "runtime_source_exists_but_is_not_web_ready": 50
+  },
+  "notes": [
+    "This is a promotion readiness audit, not an import operation.",
+    "A typeface can exist as a candidate while still being blocked for promotion."
+  ],
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "display_name": "Arimo",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "replacement",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "apache2",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "tinos",
+      "display_name": "Tinos",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "replacement",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "apache2",
+        "source_file_count": 4
+      }
+    },
+    {
+      "typeface_slug": "lora",
+      "display_name": "Lora",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "replacement",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "cousine",
+      "display_name": "Cousine",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "replacement",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "apache2",
+        "source_file_count": 4
+      }
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "display_name": "Space Grotesk",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "archivo",
+      "display_name": "Archivo",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "display_name": "Archivo Black",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "display_name": "Archivo Narrow",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "firasans",
+      "display_name": "Fira Sans",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 18
+      }
+    },
+    {
+      "typeface_slug": "manrope",
+      "display_name": "Manrope",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "publicsans",
+      "display_name": "Public Sans",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "rubik",
+      "display_name": "Rubik",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "outfit",
+      "display_name": "Outfit",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "karla",
+      "display_name": "Karla",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "mulish",
+      "display_name": "Mulish",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "heebo",
+      "display_name": "Heebo",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "display_name": "Libre Franklin",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "display_name": "Plus Jakarta Sans",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "display_name": "Alegreya Sans",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 14
+      }
+    },
+    {
+      "typeface_slug": "asap",
+      "display_name": "Asap",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "display_name": "Asap Condensed",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 16
+      }
+    },
+    {
+      "typeface_slug": "exo2",
+      "display_name": "Exo 2",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "cabin",
+      "display_name": "Cabin",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "cantarell",
+      "display_name": "Cantarell",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 4
+      }
+    },
+    {
+      "typeface_slug": "barlow",
+      "display_name": "Barlow",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 18
+      }
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "display_name": "Barlow Condensed",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 18
+      }
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "display_name": "Barlow Semi Condensed",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 18
+      }
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "display_name": "Fira Sans Condensed",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "core_sans",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 18
+      }
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "display_name": "Crimson Pro",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "spectral",
+      "display_name": "Spectral",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 14
+      }
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "display_name": "EB Garamond",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "fraunces",
+      "display_name": "Fraunces",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "domine",
+      "display_name": "Domine",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "bitter",
+      "display_name": "Bitter",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "arvo",
+      "display_name": "Arvo",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 4
+      }
+    },
+    {
+      "typeface_slug": "alegreya",
+      "display_name": "Alegreya",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "display_name": "Josefin Slab",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "display_name": "Cormorant Garamond",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "display_name": "Crimson Text",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 6
+      }
+    },
+    {
+      "typeface_slug": "notoserif",
+      "display_name": "Noto Serif",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "display_name": "IBM Plex Serif",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 14
+      }
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "display_name": "Source Serif 4",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "serif_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "display_name": "Inconsolata",
+      "status": "needs_review",
+      "priority": "high",
+      "lane": "mono_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 83
+      }
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "display_name": "Anonymous Pro",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 4
+      }
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "display_name": "IBM Plex Mono",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 14
+      }
+    },
+    {
+      "typeface_slug": "spacemono",
+      "display_name": "Space Mono",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 4
+      }
+    },
+    {
+      "typeface_slug": "firamono",
+      "display_name": "Fira Mono",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "mono_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 3
+      }
+    },
+    {
+      "typeface_slug": "firacode",
+      "display_name": "Fira Code",
+      "status": "needs_review",
+      "priority": "low",
+      "lane": "mono_training",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 1
+      }
+    },
+    {
+      "typeface_slug": "notosans",
+      "display_name": "Noto Sans",
+      "status": "needs_review",
+      "priority": "medium",
+      "lane": "broad_coverage",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "display_name": "Josefin Sans",
+      "status": "needs_review",
+      "priority": "low",
+      "lane": "display_bridge",
+      "promotion_status": "selected_for_review",
+      "blockers": [
+        "missing_editorial_fields",
+        "missing_structural_signature",
+        "needs_runtime_conversion_or_mirroring"
+      ],
+      "warnings": [
+        "display_name_is_still_a_guess",
+        "expert_answer_not_reviewed",
+        "google_category_needs_local_mapping",
+        "license_is_still_guessed",
+        "runtime_source_exists_but_is_not_web_ready"
+      ],
+      "summary": {
+        "available_formats": [
+          "ttf"
+        ],
+        "runtime_candidate_status": "needs_conversion_or_mirroring",
+        "guessed_license_type": "ofl",
+        "source_file_count": 2
+      }
+    }
+  ]
+}

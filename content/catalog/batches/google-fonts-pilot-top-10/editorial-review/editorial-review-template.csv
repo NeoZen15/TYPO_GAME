@@ -1,0 +1,11 @@
+typeface_slug,display_name,primary_category,designer,license_type,priority,lane,runtime_ready,sub_category,visual_cluster_id,dreyfus_tier,difficulty_base,rarity_tag,year_tag,weight_structure,contrast_profile,aperture_profile,structural_signature,review_status,review_notes
+arimo,Arimo,sans_serif,Steve Matteson,apache2,high,replacement,True,,,,,,,,,,,pending,
+tinos,Tinos,serif,Steve Matteson,apache2,high,replacement,True,,,,,,,,,,,pending,
+lora,Lora,serif,Cyreal,ofl,high,replacement,True,,,,,,,,,,,pending,
+cousine,Cousine,mono,Steve Matteson,apache2,high,replacement,True,,,,,,,,,,,pending,
+spacegrotesk,Space Grotesk,sans_serif,Florian Karsten,ofl,high,core_sans,True,,,,,,,,,,,pending,
+publicsans,Public Sans,sans_serif,"USWDS, Dan Williams, Pablo Impallari, Rodrigo Fuenzalida",ofl,high,core_sans,True,,,,,,,,,,,pending,
+firasans,Fira Sans,sans_serif,Carrois Apostrophe,ofl,high,core_sans,True,,,,,,,,,,,pending,
+crimsonpro,Crimson Pro,serif,Jacques Le Bailly,ofl,high,serif_training,True,,,,,,,,,,,pending,
+ebgaramond,EB Garamond,serif,"Georg Duffner, Octavio Pardo",ofl,high,serif_training,True,,,,,,,,,,,pending,
+inconsolata,Inconsolata,sans_serif,Raph Levien,ofl,high,mono_training,True,,,,,,,,,,,pending,

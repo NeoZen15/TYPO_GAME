@@ -1,33 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jeux de Typo V2
 
-## Getting Started
+Interactive typographic learning experience built with Next.js (App Router), React, and GSAP.
 
-First, run the development server:
+## Development
+
+Run the local server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open `http://127.0.0.1:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev`: start local development server on port 3000.
+- `npm run lint`: run ESLint checks.
+- `npm run typecheck`: run TypeScript checks.
+- `npm run quality`: run the internal non-regression quality suite.
+- `npm run build`: production build.
+- `npm run start`: run production server.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `app/`: app router entry files and global styles.
+- `components/blocks`: section-level UI blocks (including Gate sequence).
+- `components/ui`: reusable UI primitives.
+- `content/`: centralized copy constants.
+- `docs/`: implementation notes and product constraints.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Motion timing, trigger boundaries, and layout hierarchy are behavior-critical.
+- Build requires network access to fetch the Google Inter font via `next/font/google`.
 
 ## Deploy on Vercel
 

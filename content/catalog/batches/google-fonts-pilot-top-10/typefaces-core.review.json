@@ -1,0 +1,347 @@
+{
+  "meta": {
+    "built_at": "2026-03-19T16:19:48.064006+00:00",
+    "record_count": 10
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "display_name_guess": "Arimo",
+      "display_name_ascii": "arimo",
+      "guessed_font_source": "google",
+      "guessed_license_type": "apache2",
+      "guessed_designer": "Steve Matteson",
+      "guessed_google_category": "SANS_SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/arimo/Arimo-Italic[wght].ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/arimo/Arimo[wght].ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Arial and general UI sans coverage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "display_name_guess": "Tinos",
+      "display_name_ascii": "tinos",
+      "guessed_font_source": "google",
+      "guessed_license_type": "apache2",
+      "guessed_designer": "Steve Matteson",
+      "guessed_google_category": "SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Bold.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-BoldItalic.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Italic.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Regular.ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Times New Roman",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "display_name_guess": "Lora",
+      "display_name_ascii": "lora",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "Cyreal",
+      "guessed_google_category": "SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/lora/Lora-Italic[wght].ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/lora/Lora[wght].ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "strong serif replacement candidate for the Georgia-like runtime slot",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "display_name_guess": "Cousine",
+      "display_name_ascii": "cousine",
+      "guessed_font_source": "google",
+      "guessed_license_type": "apache2",
+      "guessed_designer": "Steve Matteson",
+      "guessed_google_category": "MONOSPACE",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 4,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Bold.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-BoldItalic.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Italic.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Regular.ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "replacement",
+      "rationale": "primary libre replacement candidate for Courier New-style monospace coverage",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "display_name_guess": "Space Grotesk",
+      "display_name_ascii": "spacegrotesk",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "Florian Karsten",
+      "guessed_google_category": "SANS_SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 1,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacegrotesk/SpaceGrotesk[wght].ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "strategic contemporary sans already aligned with earlier product planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "display_name_guess": "Public Sans",
+      "display_name_ascii": "publicsans",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "USWDS, Dan Williams, Pablo Impallari, Rodrigo Fuenzalida",
+      "guessed_google_category": "SANS_SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/publicsans/PublicSans-Italic[wght].ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/publicsans/PublicSans[wght].ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "high-utility public-system sans with strong training value",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "display_name_guess": "Fira Sans",
+      "display_name_ascii": "firasans",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "Carrois Apostrophe",
+      "guessed_google_category": "SANS_SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 18,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-Black.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-BlackItalic.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-Bold.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-BoldItalic.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-ExtraBold.ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "core_sans",
+      "rationale": "important alternative text sans for comparison depth",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "display_name_guess": "Crimson Pro",
+      "display_name_ascii": "crimsonpro",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "Jacques Le Bailly",
+      "guessed_google_category": "SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsonpro/CrimsonPro-Italic[wght].ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsonpro/CrimsonPro[wght].ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "important serif family already identified as a priority in prior planning",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "display_name_guess": "EB Garamond",
+      "display_name_ascii": "ebgaramond",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "Georg Duffner, Octavio Pardo",
+      "guessed_google_category": "SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 2,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ebgaramond/EBGaramond-Italic[wght].ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ebgaramond/EBGaramond[wght].ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "serif_training",
+      "rationale": "essential old-style serif reference for recognition training",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "display_name_guess": "Inconsolata",
+      "display_name_ascii": "inconsolata",
+      "guessed_font_source": "google",
+      "guessed_license_type": "ofl",
+      "guessed_designer": "Raph Levien",
+      "guessed_google_category": "SANS_SERIF",
+      "available_formats": [
+        "ttf"
+      ],
+      "source_file_count": 83,
+      "sample_source_paths": [
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/Inconsolata[wdth,wght].ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/static/Inconsolata-Black.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/static/Inconsolata-Bold.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/static/Inconsolata-Condensed.ttf",
+        "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/static/Inconsolata-CondensedBlack.ttf"
+      ],
+      "runtime_candidate_status": "needs_conversion_or_mirroring",
+      "review_status": "needs_editorial_review",
+      "notes": [
+        "auto-discovered from google/fonts snapshot",
+        "not import-ready until editorial fields are reviewed"
+      ],
+      "batch_id": "google-fonts-pilot-top-10",
+      "promotion_status": "selected_for_review",
+      "priority": "high",
+      "lane": "mono_training",
+      "rationale": "core monospace family that materially strengthens the current training pool",
+      "next_steps": [
+        "review editorial classification",
+        "decide promotion order",
+        "prepare runtime-ready asset path if selected for activation"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "built_at": "2026-03-19T16:39:17.052113+00:00",
+  "input_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-pilot-top-10",
+  "counts": {
+    "typefaces_total": 10,
+    "runtime_ready_total": 10,
+    "runtime_blocked_total": 0,
+    "expert_total": 10
+  },
+  "review_field_counts": {
+    "sub_category": 10,
+    "visual_cluster_id": 10,
+    "dreyfus_tier": 10,
+    "difficulty_base": 10,
+    "rarity_tag": 10,
+    "year_tag": 10,
+    "weight_structure": 10,
+    "contrast_profile": 10,
+    "aperture_profile": 10,
+    "structural_signature": 10
+  },
+  "notes": [
+    "These staging files are semi-automatic promotion inputs, not yet main catalog overrides.",
+    "Only safe fields are auto-filled; editorial classification still needs review."
+  ]
+}

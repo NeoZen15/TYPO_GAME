@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-03-19T15:35:37.809556+00:00",
+  "status": "seed",
+  "sources": {
+    "excel": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/06_catalogue/JEUX_DE_TYPO_catalogue_v4__VALIDE__20260219_1903.xlsx",
+    "manifest": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/typefaces/font-manifest-v4.json",
+    "sheet": "typefaces"
+  },
+  "counts": {
+    "typefaces_total": 28,
+    "typefaces_active": 28,
+    "runtime_assets_total": 28,
+    "runtime_assets_ready": 23,
+    "expert_answer_keys_total": 28
+  },
+  "notes": [
+    "This is the canonical V1 seed format inside the repo.",
+    "Editorial enrichment and review are expected after generation."
+  ]
+}

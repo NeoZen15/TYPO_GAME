@@ -3,12 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "rm -f .next/dev/lock && next dev --hostname 127.0.0.1 --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "check:artifacts": "node scripts/quality/check-tracked-artifacts.mjs",
+    "check:copy": "node scripts/quality/check-copy-usage.mjs",
+    "check:contracts": "node scripts/quality/check-motion-contracts.mjs",
+    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:copy && npm run check:contracts",
+    "safety:checkpoint": "bash scripts/safety/create_ui_checkpoint.sh",
+    "dev:3000": "rm -f .next/dev/lock && next dev --hostname 127.0.0.1 --port 3000",
+    "dev:clean": "rm -rf .next && next dev --hostname 127.0.0.1 --port 3000"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "gsap": "^3.14.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
@@ -20,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "playwright": "^1.58.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

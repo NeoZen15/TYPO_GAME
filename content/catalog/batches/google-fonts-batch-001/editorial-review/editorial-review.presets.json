@@ -1,0 +1,1464 @@
+{
+  "meta": {
+    "purpose": "editorial review presets for google-fonts-batch-001",
+    "notes": [
+      "This is a first structured editorial pass used to unblock promotion at scale.",
+      "Values should be refined later if more precise typographic classification is needed."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "review_status": "approved",
+      "review_notes": "replacement_for=arial",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_neo_grotesk_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_oblique",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "tinos",
+      "review_status": "approved",
+      "review_notes": "replacement_for=times_new_roman",
+      "review_fields": {
+        "sub_category": "transitional",
+        "visual_cluster_id": "cluster_transitional_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "modern",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "cut_horizontal",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "lora",
+      "review_status": "approved",
+      "review_notes": "replacement_for=georgia",
+      "review_fields": {
+        "sub_category": "transitional",
+        "visual_cluster_id": "cluster_transitional_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "slightly_inclined",
+          "contrast": "medium",
+          "terminals": "cut_oblique",
+          "serifs": "bracketed",
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "cousine",
+      "review_status": "approved",
+      "review_notes": "replacement_for=courier_new",
+      "review_fields": {
+        "sub_category": "slab",
+        "visual_cluster_id": "cluster_mono_slab_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "modern",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "slab",
+          "serifs": "slab",
+          "x_height": "medium",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "review_status": "approved",
+      "review_notes": "pilot_core_sans",
+      "review_fields": {
+        "sub_category": "grotesk",
+        "visual_cluster_id": "cluster_grotesk_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "archivo",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_neo_grotesk_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans_display_weight",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_neo_grotesk_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "single_weight",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      },
+      "primary_category": "display"
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans_condensed",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_display_condensed_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "condensed",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "firasans",
+      "review_status": "approved",
+      "review_notes": "pilot_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "manrope",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "geometric",
+        "visual_cluster_id": "cluster_geometric_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "publicsans",
+      "review_status": "approved",
+      "review_notes": "pilot_core_sans",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_neo_grotesk_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "rubik",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "geometric",
+        "visual_cluster_id": "cluster_geometric_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "outfit",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "geometric",
+        "visual_cluster_id": "cluster_geometric_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "karla",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "cut_oblique",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "mulish",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "heebo",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_neo_grotesk_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "asap",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans_condensed",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_display_condensed_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "condensed",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "exo2",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "geometric",
+        "visual_cluster_id": "cluster_geometric_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "cabin",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "cantarell",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "barlow",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans",
+      "review_fields": {
+        "sub_category": "grotesk",
+        "visual_cluster_id": "cluster_grotesk_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans_condensed",
+      "review_fields": {
+        "sub_category": "grotesk",
+        "visual_cluster_id": "cluster_display_condensed_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "condensed",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans_semicondensed",
+      "review_fields": {
+        "sub_category": "grotesk",
+        "visual_cluster_id": "cluster_display_condensed_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "condensed",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "review_status": "approved",
+      "review_notes": "batch001_core_sans_condensed",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_display_condensed_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "condensed",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "review_status": "approved",
+      "review_notes": "pilot_serif_training",
+      "review_fields": {
+        "sub_category": "old_style",
+        "visual_cluster_id": "cluster_oldstyle_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "slightly_inclined",
+          "contrast": "medium",
+          "terminals": "cut_oblique",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "spectral",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "transitional",
+        "visual_cluster_id": "cluster_transitional_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "medium",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "cut_horizontal",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "review_status": "approved",
+      "review_notes": "pilot_serif_training",
+      "review_fields": {
+        "sub_category": "old_style",
+        "visual_cluster_id": "cluster_oldstyle_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "slightly_inclined",
+          "contrast": "medium",
+          "terminals": "cut_oblique",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "fraunces",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training_display_edge",
+      "review_fields": {
+        "sub_category": "didone",
+        "visual_cluster_id": "cluster_didone_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "high",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "high",
+          "terminals": "cut_horizontal",
+          "serifs": "hairline",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "domine",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training_slab",
+      "review_fields": {
+        "sub_category": "slab",
+        "visual_cluster_id": "cluster_slab_serif_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "slab",
+          "serifs": "slab",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "bitter",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training_slab",
+      "review_fields": {
+        "sub_category": "slab",
+        "visual_cluster_id": "cluster_slab_serif_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "medium",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "slab",
+          "serifs": "slab",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "arvo",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training_slab",
+      "review_fields": {
+        "sub_category": "slab",
+        "visual_cluster_id": "cluster_slab_serif_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "slab",
+          "serifs": "slab",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "alegreya",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "old_style",
+        "visual_cluster_id": "cluster_oldstyle_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "medium",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "medium",
+          "terminals": "cut_oblique",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training_display_edge",
+      "review_fields": {
+        "sub_category": "slab",
+        "visual_cluster_id": "cluster_slab_serif_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "slab",
+          "serifs": "slab",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "old_style",
+        "visual_cluster_id": "cluster_oldstyle_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "slightly_inclined",
+          "contrast": "medium",
+          "terminals": "cut_oblique",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "old_style",
+        "visual_cluster_id": "cluster_oldstyle_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "slightly_inclined",
+          "contrast": "medium",
+          "terminals": "cut_oblique",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "notoserif",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "transitional",
+        "visual_cluster_id": "cluster_transitional_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "cut_horizontal",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "transitional",
+        "visual_cluster_id": "cluster_transitional_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "medium",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "cut_horizontal",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "review_status": "approved",
+      "review_notes": "batch001_serif_training",
+      "review_fields": {
+        "sub_category": "transitional",
+        "visual_cluster_id": "cluster_transitional_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "medium",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "medium",
+          "terminals": "cut_horizontal",
+          "serifs": "bracketed",
+          "x_height": "medium",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "review_status": "approved",
+      "review_notes": "pilot_mono_training",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_mono_sans_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "modern",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      },
+      "primary_category": "mono"
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "review_status": "approved",
+      "review_notes": "batch001_mono_training",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_mono_sans_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "modern",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_oblique",
+          "serifs": null,
+          "x_height": "medium",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "review_status": "approved",
+      "review_notes": "batch001_mono_training",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_mono_sans_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_oblique",
+          "serifs": null,
+          "x_height": "medium",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "spacemono",
+      "review_status": "approved",
+      "review_notes": "batch001_mono_training",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_mono_sans_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "closed",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "closed",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "medium",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "firamono",
+      "review_status": "approved",
+      "review_notes": "batch001_mono_training",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_mono_sans_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_oblique",
+          "serifs": null,
+          "x_height": "medium",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "firacode",
+      "review_status": "approved",
+      "review_notes": "batch001_mono_training_code",
+      "review_fields": {
+        "sub_category": "neo_grotesk",
+        "visual_cluster_id": "cluster_mono_sans_A",
+        "dreyfus_tier": "C",
+        "difficulty_base": "hard",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "semi_open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "semi_open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_oblique",
+          "serifs": null,
+          "x_height": "medium",
+          "fixed_width": true,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "notosans",
+      "review_status": "approved",
+      "review_notes": "batch001_broad_coverage",
+      "review_fields": {
+        "sub_category": "humanist",
+        "visual_cluster_id": "cluster_humanist_A",
+        "dreyfus_tier": "N",
+        "difficulty_base": "easy",
+        "rarity_tag": "common",
+        "year_tag": "contemporary",
+        "weight_structure": "light_to_black",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "double_storey",
+          "e_aperture": "open",
+          "axis": "slightly_inclined",
+          "contrast": "low",
+          "terminals": "rounded",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      }
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "review_status": "approved",
+      "review_notes": "batch001_display_bridge",
+      "review_fields": {
+        "sub_category": "geometric",
+        "visual_cluster_id": "cluster_geometric_A",
+        "dreyfus_tier": "D",
+        "difficulty_base": "medium",
+        "rarity_tag": "uncommon",
+        "year_tag": "contemporary",
+        "weight_structure": "regular_to_bold",
+        "contrast_profile": "low",
+        "aperture_profile": "open",
+        "structural_signature": {
+          "a_type": "single_storey",
+          "e_aperture": "open",
+          "axis": "vertical",
+          "contrast": "low",
+          "terminals": "cut_horizontal",
+          "serifs": null,
+          "x_height": "large",
+          "fixed_width": false,
+          "width": "normal",
+          "caps_only": false,
+          "distinctive_w": false
+        }
+      },
+      "primary_category": "display"
+    }
+  ]
+}

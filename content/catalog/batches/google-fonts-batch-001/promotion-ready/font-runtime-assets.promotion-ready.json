@@ -1,0 +1,971 @@
+{
+  "meta": {
+    "generated_at": "2026-03-19T17:48:35.339338+00:00",
+    "review_file": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001/editorial-review/editorial-review.completed.json",
+    "staged_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog/batches/google-fonts-batch-001/promotion-stage",
+    "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+    "counts": {
+      "review_records_total": 50,
+      "staged_typefaces_total": 50,
+      "promotable_total": 50,
+      "blocked_total": 0
+    },
+    "approve_expert": false,
+    "notes": [
+      "This script emits promotion-ready fragments only.",
+      "Main catalog overrides should be updated only after reviewing these fragments."
+    ]
+  },
+  "records": [
+    {
+      "typeface_slug": "arimo",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/arimo/Arimo[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/arimo/arimo-primary.woff2",
+      "file_size_bytes": 222560,
+      "sha256_hash": "49c9bd4ff2ccb4678ddad8a4c95392e785f33078c0292ae957c5433b5061fee7",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:33.564981+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Arimo[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "tinos",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/tinos/Tinos-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/tinos/tinos-primary.woff2",
+      "file_size_bytes": 184796,
+      "sha256_hash": "1a16eb5392a0b0add9b458fb3e5933e7a62e34b6eead936d84d840ede609b1f5",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:34.373077+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Tinos-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "lora",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/lora/Lora[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/lora/lora-primary.woff2",
+      "file_size_bytes": 84852,
+      "sha256_hash": "c9134342daf81405174929eb2979ea8a4353a480cd7a697461eb1cb4c8c6bf3d",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:34.745294+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Lora[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "cousine",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/apache/cousine/Cousine-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/cousine/cousine-primary.woff2",
+      "file_size_bytes": 125040,
+      "sha256_hash": "3efac7176a4856badcd6f21bab15cbaea112e1fd553b7c01c3cf4886819f0c24",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:35.269239+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Cousine-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "spacegrotesk",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacegrotesk/SpaceGrotesk[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/spacegrotesk/spacegrotesk-primary.woff2",
+      "file_size_bytes": 49248,
+      "sha256_hash": "b1c68a2db13b0310e11ae41796da8e51d06002a346a6630b94299ff06224af28",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:35.515537+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=SpaceGrotesk[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "archivo",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/archivo/Archivo[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/archivo/archivo-primary.woff2",
+      "file_size_bytes": 189244,
+      "sha256_hash": "5ddebe65abe0e6c4075eac150935b57087c0505509b0a36cac8bbd4c8447f25c",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:36.455282+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Archivo[wdth,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "archivoblack",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/archivoblack/ArchivoBlack-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/archivoblack/archivoblack-primary.woff2",
+      "file_size_bytes": 31136,
+      "sha256_hash": "b8710fbb9da9d38750d2ef48c384dae715e2bb1a32492742eac3771146a2ea34",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:36.573070+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=ArchivoBlack-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "archivonarrow",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/archivonarrow/ArchivoNarrow[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/archivonarrow/archivonarrow-primary.woff2",
+      "file_size_bytes": 36268,
+      "sha256_hash": "d12a6e92b0a9c8a1e29a58a7180942b9be6335bf5a89c05e3f91ad2c686c45d2",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:36.716487+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=ArchivoNarrow[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "firasans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasans/FiraSans-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/firasans/firasans-primary.woff2",
+      "file_size_bytes": 137884,
+      "sha256_hash": "0635f727391d3ab59c5dac94f6f47ca04c8f92ea6dc214bf527a4fb3cd5eee0b",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:37.446062+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=FiraSans-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "manrope",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/manrope/Manrope[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/manrope/manrope-primary.woff2",
+      "file_size_bytes": 53824,
+      "sha256_hash": "fdf864497569f785bd4dd0380a80ffcdf38b4523b3e1f0ba32d64e3e6392329a",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:37.706339+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Manrope[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "publicsans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/publicsans/PublicSans[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/publicsans/publicsans-primary.woff2",
+      "file_size_bytes": 42016,
+      "sha256_hash": "20421f153a7c435420619f5acbbace7963dc530704e7ce5c1b50727079359ce8",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:37.882830+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=PublicSans[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "rubik",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/rubik/Rubik[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/rubik/rubik-primary.woff2",
+      "file_size_bytes": 112660,
+      "sha256_hash": "1920420209a396808b4c43aa8ad3abf9d54c1687550884d71a53096a30f2ed3f",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:38.526223+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Rubik[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "outfit",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/outfit/Outfit[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/outfit/outfit-primary.woff2",
+      "file_size_bytes": 45200,
+      "sha256_hash": "bee5920b585cb7ff043f37fc1737caec15665cddddfd2b31b4f8d24cf1c79813",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:38.710426+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Outfit[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "karla",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/karla/Karla[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/karla/karla-primary.woff2",
+      "file_size_bytes": 47636,
+      "sha256_hash": "a9ab21b86471617ddcb68314cc9d511be5dec4d46ce76134f1fdb7bb101fbba7",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:38.892269+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Karla[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "mulish",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/mulish/Mulish[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/mulish/mulish-primary.woff2",
+      "file_size_bytes": 77176,
+      "sha256_hash": "5dd514aefdb04fb1dd0530f773f33f6c48239ac1cf07cdc0cac5d98617823838",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:39.264689+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Mulish[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "heebo",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/heebo/Heebo[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/heebo/heebo-primary.woff2",
+      "file_size_bytes": 63728,
+      "sha256_hash": "4935e7e6cb6591a0e1f0968c5b49256b504bf492362baa479b995e3fc0d36449",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:39.516559+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Heebo[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "librefranklin",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/librefranklin/LibreFranklin[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/librefranklin/librefranklin-primary.woff2",
+      "file_size_bytes": 72316,
+      "sha256_hash": "6a0426e037e4ed944a89a9bd671e5313ad3c3c0fec44b4e017b8092247b88a2a",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:39.883020+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=LibreFranklin[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "plusjakartasans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/plusjakartasans/PlusJakartaSans[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/plusjakartasans/plusjakartasans-primary.woff2",
+      "file_size_bytes": 60640,
+      "sha256_hash": "25e8c5abc07fe6c52bfd49b8879057ca6a2562e3bf252fcb604fceb6e4484dec",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:40.186938+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=PlusJakartaSans[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "alegreyasans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/alegreyasans/AlegreyaSans-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/alegreyasans/alegreyasans-primary.woff2",
+      "file_size_bytes": 88436,
+      "sha256_hash": "61b843db8abc813371f87440903b397b7c14c2bb7c0edc9929327300a6b5b118",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:40.634295+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=AlegreyaSans-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "asap",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/asap/Asap[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/asap/asap-primary.woff2",
+      "file_size_bytes": 141468,
+      "sha256_hash": "44566ad5936d9d575b17b8c0f4a18c6a3a5da5a4eb0291169a8453a876526d4e",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:41.316440+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Asap[wdth,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "asapcondensed",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/asapcondensed/AsapCondensed-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/asapcondensed/asapcondensed-primary.woff2",
+      "file_size_bytes": 38660,
+      "sha256_hash": "a0b8af367f412ef9c6b174980d5d0ff02fcfb7887aa8cf2ffdc53d5b0dff7054",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:41.475599+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=AsapCondensed-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "exo2",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/exo2/Exo2[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/exo2/exo2-primary.woff2",
+      "file_size_bytes": 106028,
+      "sha256_hash": "227e5c35685c5e944d39f31b275473afb20807600cb0936df734bf4bfff34edb",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:42.009291+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Exo2[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "cabin",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/cabin/Cabin[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/cabin/cabin-primary.woff2",
+      "file_size_bytes": 68732,
+      "sha256_hash": "13061f816d0e303792fc7115d8551d8ac4ae00ef1d5c1e2e397b74a14dddee8b",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:42.302161+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Cabin[wdth,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "cantarell",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/cantarell/Cantarell-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/cantarell/cantarell-primary.woff2",
+      "file_size_bytes": 16572,
+      "sha256_hash": "89646302826e432982b5b2fd470a698d1fdea0abf1e21296b9d8461f082bd063",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:42.364020+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Cantarell-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "barlow",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/barlow/Barlow-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/barlow/barlow-primary.woff2",
+      "file_size_bytes": 38512,
+      "sha256_hash": "827da25b89d8962b03ee082afeaa75c3f33a1f7057ba7b338b7f76b2309a510b",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:42.521447+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Barlow-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "barlowcondensed",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/barlowcondensed/BarlowCondensed-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/barlowcondensed/barlowcondensed-primary.woff2",
+      "file_size_bytes": 37288,
+      "sha256_hash": "1b11785f781b75eca927f4834480a31e8967e85d6f1eb1d0a2c6b93f18efa2a2",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:42.671082+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=BarlowCondensed-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "barlowsemicondensed",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/barlowsemicondensed/BarlowSemiCondensed-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/barlowsemicondensed/barlowsemicondensed-primary.woff2",
+      "file_size_bytes": 39032,
+      "sha256_hash": "13a17ba036438f2584b2503414ec05e475c2ae42d048cde7b4f1162398d96dcf",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:42.824907+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=BarlowSemiCondensed-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "firasanscondensed",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firasanscondensed/FiraSansCondensed-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/firasanscondensed/firasanscondensed-primary.woff2",
+      "file_size_bytes": 141536,
+      "sha256_hash": "8a8cc095375a81e3cbea90435f43f72dd37e8f30ac00d7925d1d81afd50c700e",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:43.600692+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=FiraSansCondensed-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "crimsonpro",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsonpro/CrimsonPro[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/crimsonpro/crimsonpro-primary.woff2",
+      "file_size_bytes": 85836,
+      "sha256_hash": "6f019408cf98d0667a7d0cf70931ed0a1f4b98933afd8709dd79218bea2fc2c6",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:43.984633+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=CrimsonPro[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "spectral",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spectral/Spectral-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/spectral/spectral-primary.woff2",
+      "file_size_bytes": 80172,
+      "sha256_hash": "458211e46b61aef20ae660a0f8d37bde22df7926e4d24c7a12415cd0ccf6f2d1",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:44.434833+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Spectral-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "ebgaramond",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ebgaramond/EBGaramond[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/ebgaramond/ebgaramond-primary.woff2",
+      "file_size_bytes": 303904,
+      "sha256_hash": "c128e34a5957cbc24803cededa58cadbc077d22f85cab44d126173fb75829e39",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:46.042332+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=EBGaramond[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "fraunces",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/fraunces/Fraunces[SOFT,WONK,opsz,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/fraunces/fraunces-primary.woff2",
+      "file_size_bytes": 194744,
+      "sha256_hash": "7ff672e0737895369b60de51ce3bb16adc97293d76c803e53b9f75bb310a4e4c",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:46.795533+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Fraunces[SOFT,WONK,opsz,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "domine",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/domine/Domine[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/domine/domine-primary.woff2",
+      "file_size_bytes": 40632,
+      "sha256_hash": "288d6b6dcd98735469e0dbd7ce56c32c99b4ee2c7822faa8196569f06de3c273",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:46.953926+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Domine[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "bitter",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/bitter/Bitter[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/bitter/bitter-primary.woff2",
+      "file_size_bytes": 113768,
+      "sha256_hash": "ba40b40db8db5223a4974d16b38065eebe3c90642bfce628df914141459bb189",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:47.545060+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Bitter[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "arvo",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/arvo/Arvo-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/arvo/arvo-primary.woff2",
+      "file_size_bytes": 17808,
+      "sha256_hash": "a471d449baf53eeb687e3a4b520de675f6fe0802146e50fd5157458cef8e22ee",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:47.595064+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Arvo-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "alegreya",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/alegreya/Alegreya[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/alegreya/alegreya-primary.woff2",
+      "file_size_bytes": 161204,
+      "sha256_hash": "93f0f6a51b7bc0ba73cd8b704010349e4747b013b795416231954fb2a9851d3d",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:48.369678+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Alegreya[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "josefinslab",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/josefinslab/JosefinSlab[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/josefinslab/josefinslab-primary.woff2",
+      "file_size_bytes": 20824,
+      "sha256_hash": "e278ecd7e0baeefe835e3fc6fa27bd0bce8d510ac9bf47bba8e30cdd1b3c47d8",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:48.443157+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=JosefinSlab[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "cormorantgaramond",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/cormorantgaramond/CormorantGaramond[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/cormorantgaramond/cormorantgaramond-primary.woff2",
+      "file_size_bytes": 209152,
+      "sha256_hash": "c4533cae77d21ce7770e6a3f6b46702b78bd0e2eb36fafecd81039b14cd6dd1a",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:50.072155+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=CormorantGaramond[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "crimsontext",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/crimsontext/CrimsonText-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/crimsontext/crimsontext-primary.woff2",
+      "file_size_bytes": 42968,
+      "sha256_hash": "4cc16e369862004c8a3d3426eda8b0c695acf1486a762278f4925783faa15f9a",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:50.239757+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=CrimsonText-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "notoserif",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/notoserif/NotoSerif[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/notoserif/notoserif-primary.woff2",
+      "file_size_bytes": 802048,
+      "sha256_hash": "4a80f639880074144a9e5aab2257b46b71268374585f23db76e5d568429d0203",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:53.671502+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=NotoSerif[wdth,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "ibmplexserif",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ibmplexserif/IBMPlexSerif-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/ibmplexserif/ibmplexserif-primary.woff2",
+      "file_size_bytes": 51092,
+      "sha256_hash": "b636b496a8a53bb4f6065c1d808ea3f1f2993f50897735ab1f5c0cea4fca2a0e",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:53.908276+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=IBMPlexSerif-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "sourceserif4",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/sourceserif4/SourceSerif4[opsz,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/sourceserif4/sourceserif4-primary.woff2",
+      "file_size_bytes": 427836,
+      "sha256_hash": "6ec34f6306441f391dea358197f4c73dd0b5c264cabede89c56470e3d8104d83",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:55.658624+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=SourceSerif4[opsz,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "inconsolata",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/inconsolata/Inconsolata[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/inconsolata/inconsolata-primary.woff2",
+      "file_size_bytes": 151908,
+      "sha256_hash": "08a4940345fcb67de7cb32e8229d57688c521b539f2e83cc0dd64cdfc4a4c3a7",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:56.323737+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=Inconsolata[wdth,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "anonymouspro",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/anonymouspro/AnonymousPro-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/anonymouspro/anonymouspro-primary.woff2",
+      "file_size_bytes": 51800,
+      "sha256_hash": "2fd380d80fd443b370ff34a21f4b696720e4ec3095343d00e3b6dd0d66c41504",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:56.560372+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=AnonymousPro-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "ibmplexmono",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/ibmplexmono/ibmplexmono-primary.woff2",
+      "file_size_bytes": 39164,
+      "sha256_hash": "e6d2e99ada674de5342d8f4ef65bcb3ab4d1641b93bf9001fe54cc617b059678",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:56.747874+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=IBMPlexMono-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "spacemono",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/spacemono/SpaceMono-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/spacemono/spacemono-primary.woff2",
+      "file_size_bytes": 34988,
+      "sha256_hash": "833258fee99960d8fc779525ec1a742936cd00b53d78d7b60b2f09654f797bf5",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:56.880765+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=SpaceMono-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "firamono",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firamono/FiraMono-Regular.ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/firamono/firamono-primary.woff2",
+      "file_size_bytes": 63556,
+      "sha256_hash": "61d71a19de373b4d0628ba77af060651defa82af5530223230f13c7cc9e00a30",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:57.180503+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=FiraMono-Regular.ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "firacode",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/firacode/FiraCode[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/firacode/firacode-primary.woff2",
+      "file_size_bytes": 106284,
+      "sha256_hash": "7cfe3501d18e1d9989f22722fbb103744d47727eac9a1b06be75dacc6d42047e",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:31:57.717702+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=FiraCode[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "notosans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/notosans/NotoSans[wdth,wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/notosans/notosans-primary.woff2",
+      "file_size_bytes": 889520,
+      "sha256_hash": "3d44bccf32c3208403280dc40d31fc147dcd8362bfb6231f13020c6b38015ce0",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:32:01.781554+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=NotoSans[wdth,wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    },
+    {
+      "typeface_slug": "josefinsans",
+      "file_role": "primary",
+      "font_format": "woff2",
+      "weight": 400,
+      "style": "normal",
+      "source_path": "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_TYPO_ASSETS/07_google_fonts/06_repo_snapshot/fonts-main/ofl/josefinsans/JosefinSans[wght].ttf",
+      "runtime_path": "/fonts/staged/google-fonts-batch-001/josefinsans/josefinsans-primary.woff2",
+      "file_size_bytes": 47596,
+      "sha256_hash": "fd371ab988891e889929f27ea57080c275becf9b3278733b00dcaba4aba483b0",
+      "runtime_status": "ready",
+      "asset_origin": "google_fonts_snapshot_conversion",
+      "verified_at_utc": "2026-03-19T17:32:01.977298+00:00",
+      "notes": [
+        "prepared automatically from candidate runtime source",
+        "source_file=JosefinSans[wght].ttf",
+        "promoted from reviewed candidate batch"
+      ]
+    }
+  ]
+}
