@@ -1,0 +1,27 @@
+[
+  {
+    "pairId": "tf_helvetica_neue--tf_inter",
+    "slug": "helvetica-neue-vs-inter",
+    "leftId": "tf_helvetica_neue",
+    "rightId": "tf_inter",
+    "status": "published",
+    "diffHighlights": [
+      {
+        "feature": "aperture",
+        "left": "tight",
+        "right": "open"
+      },
+      {
+        "feature": "xHeight",
+        "left": "medium",
+        "right": "high"
+      }
+    ],
+    "conceptRefs": ["cp_contrast"],
+    "score": 0.82,
+    "seo": {
+      "title": "Helvetica Neue vs Inter",
+      "description": "Comparer les differences visuelles essentielles entre Helvetica Neue et Inter."
+    }
+  }
+]

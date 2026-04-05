@@ -193,7 +193,7 @@ export default function ModeRulesPage({ initialMode }: ModeRulesPageProps) {
         className="mode-page-mascot mode-page-mascot--rules"
         draggable
         comment={rules.mascotComment}
-        commentSide="right"
+        commentSide="left"
       />
 
       <section className="mode-rules-shell" data-mode={activeMode} aria-labelledby="mode-rules-title">

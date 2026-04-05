@@ -28,6 +28,7 @@ Then open `http://127.0.0.1:3000`.
 - `components/ui`: reusable UI primitives.
 - `content/`: centralized copy constants.
 - `docs/`: implementation notes and product constraints.
+- Reference contract: `docs/typography-system-contract.md`.
 
 ## Notes
 

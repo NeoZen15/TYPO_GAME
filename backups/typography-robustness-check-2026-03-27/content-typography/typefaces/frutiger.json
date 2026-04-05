@@ -1,0 +1,24 @@
+{
+  "id": "tf_frutiger",
+  "slug": "frutiger",
+  "status": "published",
+  "name": "Frutiger",
+  "category": "sans-serif",
+  "subCategory": "humanist",
+  "features": {
+    "contrast": "low",
+    "xHeight": "high",
+    "aperture": "open",
+    "terminals": "humanist",
+    "stressAxis": "slightly-diagonal"
+  },
+  "specimen": {
+    "defaultText": "Hamburgefontsiv",
+    "glyphSets": ["latin-basic", "latin-ext"]
+  },
+  "conceptRefs": ["cp_contrast"],
+  "seo": {
+    "title": "Frutiger - specimen et analyse",
+    "description": "Explorer les traits humanistes de Frutiger et ses differences visuelles."
+  }
+}

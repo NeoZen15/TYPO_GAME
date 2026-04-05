@@ -1,0 +1,7 @@
+{
+  "target": "type",
+  "targetId": "tf_inter",
+  "specimen": {
+    "defaultText": "Inter override specimen"
+  }
+}

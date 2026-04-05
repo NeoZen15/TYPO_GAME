@@ -1,0 +1,24 @@
+{
+  "id": "tf_helvetica_neue",
+  "slug": "helvetica-neue",
+  "status": "published",
+  "name": "Helvetica Neue",
+  "category": "sans-serif",
+  "subCategory": "neo-grotesque",
+  "features": {
+    "contrast": "low",
+    "xHeight": "medium",
+    "aperture": "tight",
+    "terminals": "neutral",
+    "stressAxis": "vertical"
+  },
+  "specimen": {
+    "defaultText": "Hamburgefontsiv",
+    "glyphSets": ["latin-basic", "latin-ext"]
+  },
+  "conceptRefs": ["cp_contrast"],
+  "seo": {
+    "title": "Helvetica Neue - specimen et analyse",
+    "description": "Voir la structure de Helvetica Neue et ses differences avec des fontes proches."
+  }
+}

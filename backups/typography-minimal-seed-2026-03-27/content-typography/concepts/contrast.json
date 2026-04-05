@@ -1,0 +1,14 @@
+{
+  "id": "cp_contrast",
+  "slug": "contrast",
+  "status": "published",
+  "title": "Comprendre le contraste typographique",
+  "definitionShort": "Le contraste est la difference d'epaisseur entre pleins et delies.",
+  "featureKeys": ["contrast", "stressAxis"],
+  "exampleTypefaceIds": ["tf_helvetica_neue", "tf_inter"],
+  "body": "Observer le contraste aide a distinguer rapidement deux fontes. On commence par regarder les lettres n, o et a pour evaluer les variations d'epaisseur et l'axe visuel.",
+  "seo": {
+    "title": "Comprendre le contraste en typographie",
+    "description": "Apprendre a lire le contraste visuel et l'utiliser pour differencier les fontes."
+  }
+}

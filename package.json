@@ -11,7 +11,9 @@
     "check:artifacts": "node scripts/quality/check-tracked-artifacts.mjs",
     "check:copy": "node scripts/quality/check-copy-usage.mjs",
     "check:contracts": "node scripts/quality/check-motion-contracts.mjs",
-    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:copy && npm run check:contracts",
+    "check:typography-contract": "node scripts/quality/check-typography-contract.mjs",
+    "specimens:extract-data": "./.venv/bin/python scripts/extract_typeface_specimen_data.py",
+    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:copy && npm run check:contracts && npm run check:typography-contract",
     "safety:checkpoint": "bash scripts/safety/create_ui_checkpoint.sh",
     "dev:3000": "rm -f .next/dev/lock && next dev --hostname 127.0.0.1 --port 3000",
     "dev:clean": "rm -rf .next && next dev --hostname 127.0.0.1 --port 3000"

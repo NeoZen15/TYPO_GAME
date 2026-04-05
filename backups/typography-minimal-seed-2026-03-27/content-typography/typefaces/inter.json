@@ -1,0 +1,24 @@
+{
+  "id": "tf_inter",
+  "slug": "inter",
+  "status": "published",
+  "name": "Inter",
+  "category": "sans-serif",
+  "subCategory": "neo-grotesque",
+  "features": {
+    "contrast": "low",
+    "xHeight": "high",
+    "aperture": "open",
+    "terminals": "neutral",
+    "stressAxis": "vertical"
+  },
+  "specimen": {
+    "defaultText": "Hamburgefontsiv",
+    "glyphSets": ["latin-basic", "latin-ext"]
+  },
+  "conceptRefs": ["cp_contrast"],
+  "seo": {
+    "title": "Inter - specimen et analyse",
+    "description": "Decouvrir les caracteristiques visuelles d'Inter et ses points de comparaison."
+  }
+}

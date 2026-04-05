@@ -1,0 +1,12 @@
+{
+  "target": "compare",
+  "targetId": "tf_helvetica_neue--tf_inter",
+  "heroTitle": "Inter vs Helvetica Neue",
+  "heroIntro": "Regarde d'abord l'ouverture du e et la hauteur d'x.",
+  "pinnedConceptIds": ["cp_contrast"],
+  "ctaGameVariant": "contrast-focus",
+  "seo": {
+    "title": "Inter vs Helvetica Neue - comparaison guidee",
+    "description": "Une page editoriale pour voir les differences de structure en quelques secondes."
+  }
+}
