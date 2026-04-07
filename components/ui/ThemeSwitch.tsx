@@ -17,7 +17,7 @@ const applyTheme = (theme: ThemeMode) => {
 
 export default function ThemeSwitch() {
   const [theme, setTheme] = useState<ThemeMode>(() => {
-    if (typeof window === "undefined") return "light";
+    if (typeof window === "undefined") return "dark";
 
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (isThemeMode(stored)) return stored;
@@ -25,7 +25,7 @@ export default function ThemeSwitch() {
     const currentTheme = document.documentElement.dataset.theme ?? null;
     if (isThemeMode(currentTheme)) return currentTheme;
 
-    return "light";
+    return "dark";
   });
 
   useEffect(() => {

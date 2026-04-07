@@ -2411,9 +2411,30 @@ svg {
 }
 
 .typo-tester {
+  --typo-tester-panel-bg: color-mix(in srgb, var(--typo-shell-bg) 92%, rgba(42, 26, 32, 0.02));
+  --typo-tester-panel-line: color-mix(in srgb, var(--typo-shell-border) 72%, rgba(58, 38, 48, 0.12));
+  --typo-tester-panel-strong: rgba(42, 26, 32, 0.9);
+  --typo-tester-panel-soft: rgba(42, 26, 32, 0.62);
+  --typo-tester-panel-muted: rgba(42, 26, 32, 0.48);
+  --typo-tester-grid-line: rgba(42, 26, 32, 0.1);
+  --typo-tester-grid-fill: rgba(42, 26, 32, 0.02);
+  --typo-tester-chip-bg: color-mix(in srgb, var(--typo-warning-soft) 82%, rgba(255, 255, 255, 0.32));
+  --typo-tester-chip-active-bg: color-mix(in srgb, var(--typo-warning) 16%, rgba(255, 255, 255, 0.28));
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.72rem;
+}
+
+:root[data-theme="dark"] .typo-tester {
+  --typo-tester-panel-bg: var(--typo-shell-bg);
+  --typo-tester-panel-line: rgba(255, 255, 255, 0.1);
+  --typo-tester-panel-strong: #ffffff;
+  --typo-tester-panel-soft: rgba(255, 255, 255, 0.7);
+  --typo-tester-panel-muted: rgba(255, 255, 255, 0.56);
+  --typo-tester-grid-line: rgba(255, 255, 255, 0.08);
+  --typo-tester-grid-fill: rgba(255, 255, 255, 0.035);
+  --typo-tester-chip-bg: color-mix(in srgb, var(--typo-warning-soft) 88%, transparent);
+  --typo-tester-chip-active-bg: color-mix(in srgb, var(--typo-warning) 16%, transparent);
 }
 
 .typo-tester-controls,
@@ -2495,8 +2516,8 @@ svg {
 .typo-tester-field--compact {
   padding: 0.72rem 0.84rem 0.78rem;
   border-radius: calc(var(--radius-card) - 0.12rem);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--typo-tester-panel-line);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 82%, transparent);
 }
 
 .typo-tester-field-head {
@@ -2522,9 +2543,9 @@ svg {
   min-height: 100%;
   border-radius: calc(var(--radius-card) - 0.12rem);
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: var(--typo-shell-bg);
-  color: #fff;
+  border: 1px solid var(--typo-tester-panel-line);
+  background: var(--typo-tester-panel-bg);
+  color: var(--typo-tester-panel-strong);
 }
 
 .typo-tester-editor-head {
@@ -2533,7 +2554,7 @@ svg {
   gap: 0.8rem;
   align-items: start;
   padding: 0.92rem 1rem 0.88rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--typo-tester-panel-line);
 }
 
 .typo-tester-editor-heading {
@@ -2544,13 +2565,13 @@ svg {
 .typo-tester-editor-copy {
   margin: 0;
   max-width: 28rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--typo-tester-panel-soft);
   font-size: 0.92rem;
   line-height: 1.45;
 }
 
 .typo-tester-editor .typo-demo-label {
-  color: rgba(255, 255, 255, 0.56);
+  color: var(--typo-tester-panel-muted);
 }
 
 .typo-tester-editor-stats {
@@ -2559,16 +2580,16 @@ svg {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
   align-self: start;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--typo-tester-panel-line);
   border-radius: 0.78rem;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 84%, transparent);
 }
 
 .typo-tester-editor-stat {
   min-width: 0;
   padding: 0.52rem 0.68rem 0.56rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 92%, transparent);
 }
 
 .typo-tester-editor-stat dt,
@@ -2577,7 +2598,7 @@ svg {
 }
 
 .typo-tester-editor-stat dt {
-  color: rgba(255, 255, 255, 0.48);
+  color: var(--typo-tester-panel-muted);
   font-size: 0.64rem;
   line-height: 1;
   font-weight: 700;
@@ -2587,7 +2608,7 @@ svg {
 
 .typo-tester-editor-stat dd {
   margin-top: 0.34rem;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
   font-size: 0.96rem;
   line-height: 1;
   font-weight: 650;
@@ -2598,13 +2619,13 @@ svg {
   position: relative;
   min-height: var(--editor-panel-min-height, 12.8rem);
   background:
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)),
+    linear-gradient(to bottom, var(--typo-tester-grid-fill), transparent),
     repeating-linear-gradient(
       to bottom,
       transparent 0,
       transparent calc(var(--editor-baseline-step, 3.08rem) - 1px),
-      rgba(255, 255, 255, 0.08) calc(var(--editor-baseline-step, 3.08rem) - 1px),
-      rgba(255, 255, 255, 0.08) var(--editor-baseline-step, 3.08rem)
+      var(--typo-tester-grid-line) calc(var(--editor-baseline-step, 3.08rem) - 1px),
+      var(--typo-tester-grid-line) var(--editor-baseline-step, 3.08rem)
     );
   background-position: 0 0, 0 var(--editor-text-inset, 1rem);
 }
@@ -2637,7 +2658,7 @@ svg {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
   padding: var(--editor-text-inset, 1rem) 1rem 1.14rem;
   letter-spacing: normal;
   resize: none;
@@ -2648,7 +2669,7 @@ svg {
 }
 
 .typo-tester-textarea--editor::placeholder {
-  color: rgba(255, 255, 255, 0.34);
+  color: color-mix(in srgb, var(--typo-tester-panel-muted) 78%, transparent);
 }
 
 .typo-tester-select {
@@ -2713,7 +2734,7 @@ svg {
   padding: 0.34rem 0.62rem;
   border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--typo-warning-line) 78%, transparent);
-  background: color-mix(in srgb, var(--typo-warning-soft) 88%, transparent);
+  background: var(--typo-tester-chip-bg);
   color: var(--typo-warning);
   font: inherit;
   font-size: 0.72rem;
@@ -2730,13 +2751,13 @@ svg {
 .typo-tester-chip:hover,
 .typo-tester-weight-button:hover {
   border-color: color-mix(in srgb, var(--typo-warning) 56%, transparent);
-  background: color-mix(in srgb, var(--typo-warning-soft) 100%, transparent);
+  background: color-mix(in srgb, var(--typo-warning-soft) 100%, rgba(255, 255, 255, 0.22));
 }
 
 .typo-tester-chip.is-active,
 .typo-tester-weight-button.is-active {
   border-color: color-mix(in srgb, var(--typo-warning) 62%, transparent);
-  background: color-mix(in srgb, var(--typo-warning) 16%, transparent);
+  background: var(--typo-tester-chip-active-bg);
   color: color-mix(in srgb, var(--typo-warning) 92%, #fff);
 }
 
@@ -2771,14 +2792,14 @@ svg {
   padding: 0;
   border-radius: 0;
   border: 0;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
 }
 
 .typo-glyph-lab-focus {
   display: grid;
   gap: 0;
   align-content: start;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
 }
 
 .typo-glyph-lab-meta {
@@ -2787,7 +2808,7 @@ svg {
   gap: 0.8rem;
   align-items: start;
   padding: 0.9rem 1rem 0.86rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--typo-tester-panel-line);
 }
 
 .typo-glyph-lab-meta-main {
@@ -2798,12 +2819,12 @@ svg {
 .typo-glyph-lab-meta .typo-demo-label,
 .typo-glyph-panel .typo-demo-label,
 .typo-glyph-caption {
-  color: rgba(255, 255, 255, 0.56);
+  color: var(--typo-tester-panel-muted);
 }
 
 .typo-glyph-lab-name {
   margin: 0;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
   font-size: clamp(1.5rem, 2vw, 1.84rem);
   line-height: 1;
   font-weight: 650;
@@ -2814,7 +2835,7 @@ svg {
   position: relative;
   min-height: clamp(30rem, 54vw, 42rem);
   overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--typo-tester-panel-line);
   background: var(--typo-shell-bg);
 }
 
@@ -2831,7 +2852,7 @@ svg {
   left: 0;
   right: 0;
   z-index: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.76);
+  border-top: 1px solid color-mix(in srgb, var(--typo-tester-panel-strong) 76%, transparent);
   pointer-events: none;
 }
 
@@ -2839,7 +2860,7 @@ svg {
   position: absolute;
   left: 0.8rem;
   top: -1.1rem;
-  color: rgba(255, 255, 255, 0.88);
+  color: color-mix(in srgb, var(--typo-tester-panel-strong) 88%, transparent);
   font-size: 0.72rem;
   font-weight: 650;
   letter-spacing: 0.02em;
@@ -2854,19 +2875,19 @@ svg {
 }
 
 .typo-tester-preview--mini .typo-demo-label {
-  color: rgba(255, 255, 255, 0.56);
+  color: var(--typo-tester-panel-muted);
 }
 
 .typo-tester-surface--mini {
   min-height: 8rem;
   padding: 0.84rem 0.96rem;
   border-radius: 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--typo-tester-panel-line);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 78%, transparent);
 }
 
 .typo-tester-output--mini {
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
   font-size: clamp(1.3rem, 2.2vw, 2rem) !important;
 }
 
@@ -2877,8 +2898,8 @@ svg {
   gap: 0.6rem;
   align-items: baseline;
   padding: 0.9rem 1rem 0.86rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid var(--typo-tester-panel-line);
+  border-bottom: 1px solid var(--typo-tester-panel-line);
 }
 
 .typo-glyph-focus {
@@ -2905,7 +2926,7 @@ svg {
   display: grid;
   gap: 0.24rem;
   padding: 0.72rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--typo-tester-panel-line);
 }
 
 .typo-glyph-group:first-child {
@@ -2914,7 +2935,7 @@ svg {
 
 .typo-glyph-group-sample {
   margin: 0;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
   font-size: 1rem;
   line-height: 1.4;
   letter-spacing: 0.01em;
@@ -2929,7 +2950,7 @@ svg {
 .typo-glyph-grid--matrix {
   grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid var(--typo-tester-panel-line);
 }
 
 .typo-glyph-button {
@@ -2939,9 +2960,9 @@ svg {
   min-height: 2.8rem;
   padding: 0.36rem;
   border-radius: var(--radius-soft);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: #fff;
+  border: 1px solid var(--typo-tester-panel-line);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 78%, transparent);
+  color: var(--typo-tester-panel-strong);
   font-size: 1.22rem;
   line-height: 1;
 }
@@ -2951,26 +2972,22 @@ svg {
   padding: 0.4rem;
   border-radius: 0;
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--typo-tester-panel-line);
+  border-right: 1px solid var(--typo-tester-panel-line);
   background: transparent;
-  color: #fff;
+  color: var(--typo-tester-panel-strong);
   font-size: clamp(2rem, 3.6vw, 3rem);
   line-height: 1;
 }
 
 .typo-glyph-button.is-active {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: color-mix(in srgb, var(--typo-tester-panel-strong) 18%, transparent);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 66%, rgba(255, 255, 255, 0.08));
 }
 
 .typo-glyph-button--matrix.is-active {
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
-}
-
-:root[data-theme="dark"] .typo-glyph-button {
-  background: rgba(255, 255, 255, 0.04);
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 60%, rgba(255, 255, 255, 0.1));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--typo-tester-panel-strong) 18%, transparent);
 }
 
 
@@ -3058,14 +3075,31 @@ svg {
 }
 
 .compare-stage-shell {
+  --compare-stage-bg: color-mix(in srgb, var(--typo-shell-bg) 95%, #fbf7f2 5%);
+  --compare-stage-line-soft: rgba(17, 17, 20, 0.07);
+  --compare-stage-line-strong: rgba(17, 17, 20, 0.16);
+  --compare-stage-ink: #050505;
+  --compare-stage-ink-soft: rgba(17, 17, 20, 0.42);
+  --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 88%, rgba(255, 255, 255, 0.76));
+  --compare-stage-switch-line: color-mix(in srgb, var(--typo-shell-border) 76%, rgba(17, 17, 20, 0.12));
   display: grid;
-  gap: 0.9rem;
+  gap: 0.78rem;
   padding: clamp(1rem, 1.6vw, 1.2rem);
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-positive-line) 42%, var(--typo-shell-border));
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-positive-soft) 26%, transparent), transparent 28%),
     color-mix(in srgb, var(--typo-shell-bg) 42%, rgba(255, 255, 255, 0.08));
+}
+
+:root[data-theme="dark"] .compare-stage-shell {
+  --compare-stage-bg: var(--typo-page-bg);
+  --compare-stage-line-soft: rgba(255, 255, 255, 0.08);
+  --compare-stage-line-strong: rgba(255, 255, 255, 0.16);
+  --compare-stage-ink: rgba(255, 255, 255, 0.94);
+  --compare-stage-ink-soft: rgba(255, 255, 255, 0.58);
+  --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.04));
+  --compare-stage-switch-line: rgba(255, 255, 255, 0.08);
 }
 
 .compare-stage-head {
@@ -3076,12 +3110,45 @@ svg {
   align-items: end;
 }
 
+.compare-stage-head-copy {
+  display: grid;
+  gap: 0.5rem;
+}
+
 .compare-stage-title {
   margin: 0.12rem 0 0;
   color: var(--typo-ink);
   font-size: clamp(1.6rem, 2.8vw, 2.35rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
+}
+
+.compare-stage-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.compare-stage-meta-item {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-height: 1.85rem;
+  padding: 0.3rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
+  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.12));
+  color: var(--typo-muted);
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.compare-stage-meta-item span {
+  color: var(--typo-ink);
 }
 
 .compare-stage-controls {
@@ -3123,13 +3190,13 @@ svg {
   position: relative;
   display: grid;
   align-items: stretch;
-  min-height: clamp(18rem, 44vw, 28rem);
+  min-height: clamp(21rem, 48vw, 32rem);
   overflow: hidden;
   border-radius: calc(var(--radius-card) - 0.1rem);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 20%),
-    var(--typo-page-bg);
+    linear-gradient(180deg, color-mix(in srgb, var(--compare-stage-line-soft) 66%, transparent), transparent 20%),
+    var(--compare-stage-bg);
 }
 
 .compare-stage::before,
@@ -3147,15 +3214,15 @@ svg {
       90deg,
       transparent 0,
       transparent calc(12.5% - 1px),
-      rgba(255, 255, 255, 0.035) calc(12.5% - 1px),
-      rgba(255, 255, 255, 0.035) 12.5%
+      color-mix(in srgb, var(--compare-stage-line-soft) 56%, transparent) calc(12.5% - 1px),
+      color-mix(in srgb, var(--compare-stage-line-soft) 56%, transparent) 12.5%
     ),
     repeating-linear-gradient(
       180deg,
       transparent 0,
       transparent calc(20% - 1px),
-      rgba(255, 255, 255, 0.03) calc(20% - 1px),
-      rgba(255, 255, 255, 0.03) 20%
+      color-mix(in srgb, var(--compare-stage-line-soft) 48%, transparent) calc(20% - 1px),
+      color-mix(in srgb, var(--compare-stage-line-soft) 48%, transparent) 20%
     );
 }
 
@@ -3166,8 +3233,8 @@ svg {
       90deg,
       transparent 0,
       transparent calc(50% - 0.5px),
-      rgba(255, 255, 255, 0.12) calc(50% - 0.5px),
-      rgba(255, 255, 255, 0.12) calc(50% + 0.5px),
+      var(--compare-stage-line-strong) calc(50% - 0.5px),
+      var(--compare-stage-line-strong) calc(50% + 0.5px),
       transparent calc(50% + 0.5px),
       transparent 100%
     ),
@@ -3175,8 +3242,8 @@ svg {
       180deg,
       transparent 0,
       transparent calc(50% - 0.5px),
-      rgba(255, 255, 255, 0.12) calc(50% - 0.5px),
-      rgba(255, 255, 255, 0.12) calc(50% + 0.5px),
+      var(--compare-stage-line-strong) calc(50% - 0.5px),
+      var(--compare-stage-line-strong) calc(50% + 0.5px),
       transparent calc(50% + 0.5px),
       transparent 100%
     );
@@ -3193,7 +3260,7 @@ svg {
   position: absolute;
   left: 0;
   right: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--compare-stage-line-soft);
 }
 
 .compare-stage-guides span:first-child {
@@ -3202,7 +3269,7 @@ svg {
 
 .compare-stage-guides span:nth-child(2) {
   top: 50%;
-  border-top-color: rgba(255, 255, 255, 0.16);
+  border-top-color: var(--compare-stage-line-strong);
 }
 
 .compare-stage-guides span:nth-child(3) {
@@ -3219,21 +3286,21 @@ svg {
 .compare-stage-overlay {
   display: grid;
   place-items: center;
-  padding: clamp(1.5rem, 4vw, 2.6rem);
+  padding: clamp(1.6rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2.6rem) clamp(5.4rem, 9vw, 6.8rem);
 }
 
 .compare-stage-focus-switch {
   position: absolute;
   left: 50%;
-  bottom: clamp(1rem, 2.2vw, 1.35rem);
+  bottom: clamp(1.1rem, 2.2vw, 1.45rem);
   z-index: 5;
   display: inline-flex;
   align-items: center;
   gap: 0.34rem;
   padding: 0.34rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--compare-stage-switch-line);
+  background: var(--compare-stage-switch-bg);
   box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(10px);
   transform: translateX(-50%);
@@ -3247,7 +3314,7 @@ svg {
   min-height: 2rem;
   padding: 0.34rem 0.72rem;
   border-radius: 999px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--compare-stage-ink-soft);
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
@@ -3260,8 +3327,8 @@ svg {
 }
 
 .compare-stage-focus-name.is-active {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
+  background: color-mix(in srgb, var(--compare-stage-line-soft) 92%, transparent);
+  color: var(--compare-stage-ink);
 }
 
 .compare-stage-focus-toggle {
@@ -3271,27 +3338,33 @@ svg {
   min-height: 2rem;
   padding: 0.34rem 0.72rem;
   border-radius: var(--radius-pill);
-  border: 1px solid color-mix(in srgb, var(--typo-positive-line) 70%, transparent);
-  background: color-mix(in srgb, var(--typo-positive-soft) 70%, rgba(255, 255, 255, 0.04));
-  color: var(--typo-positive);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #ffffff;
+  color: #111114;
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
 .compare-stage-focus-toggle:hover {
-  border-color: color-mix(in srgb, var(--typo-positive) 62%, transparent);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: #ffffff;
+  color: #000000;
 }
 
 .compare-stage-layer {
   grid-area: 1 / 1;
-  width: min(100%, 31rem);
+  width: min(100%, 33rem);
   margin: 0;
   position: relative;
-  color: #fff;
+  color: var(--compare-stage-ink);
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -3323,21 +3396,31 @@ svg {
 }
 
 .compare-stage--emphasis-left .compare-stage-layer--left {
+  color: var(--compare-stage-ink);
+  text-shadow: none;
+}
+
+.compare-stage--emphasis-left .compare-stage-layer--right {
+  color: var(--compare-stage-ink-soft);
+}
+
+.compare-stage--emphasis-right .compare-stage-layer--right {
+  color: var(--compare-stage-ink);
+  text-shadow: none;
+}
+
+.compare-stage--emphasis-right .compare-stage-layer--left {
+  color: var(--compare-stage-ink-soft);
+}
+
+:root[data-theme="dark"] .compare-stage--emphasis-left .compare-stage-layer--left {
   color: color-mix(in srgb, #ffffff 92%, var(--typo-info));
   text-shadow: 0 0 18px color-mix(in srgb, var(--typo-info) 24%, transparent);
 }
 
-.compare-stage--emphasis-left .compare-stage-layer--right {
-  color: color-mix(in srgb, var(--typo-positive) 62%, rgba(255, 255, 255, 0.55));
-}
-
-.compare-stage--emphasis-right .compare-stage-layer--right {
+:root[data-theme="dark"] .compare-stage--emphasis-right .compare-stage-layer--right {
   color: color-mix(in srgb, #ffffff 92%, var(--typo-positive));
   text-shadow: 0 0 18px color-mix(in srgb, var(--typo-positive) 24%, transparent);
-}
-
-.compare-stage--emphasis-right .compare-stage-layer--left {
-  color: color-mix(in srgb, var(--typo-info) 64%, rgba(255, 255, 255, 0.5));
 }
 
 .compare-stage-split {
@@ -3355,12 +3438,12 @@ svg {
 }
 
 .compare-stage-pane--left {
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid var(--compare-stage-line-soft);
 }
 
 .compare-stage-pane-label {
   margin: 0;
-  color: rgba(255, 255, 255, 0.58);
+  color: var(--compare-stage-ink-soft);
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
@@ -3371,7 +3454,7 @@ svg {
 .compare-stage-pane-text {
   width: min(100%, 22rem);
   margin: 0;
-  color: #fff;
+  color: var(--compare-stage-ink);
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -3404,10 +3487,10 @@ svg {
   max-width: 100%;
   justify-self: center;
   text-align: center;
-  font-size: clamp(11rem, 34vw, 24rem);
+  font-size: clamp(12.5rem, 36vw, 26rem);
   line-height: 1;
   letter-spacing: 0;
-  transform: translateY(-0.04em);
+  transform: translateY(-0.15em);
   text-wrap: nowrap;
 }
 
@@ -3419,14 +3502,18 @@ svg {
   align-items: stretch;
 }
 
+.compare-stage-split--measured {
+  align-items: stretch;
+}
+
 .compare-stage--sample-word .compare-stage-pane {
   align-content: center;
   justify-items: center;
 }
 
 .compare-stage--sample-glyph .compare-stage-pane {
-  align-content: center;
-  justify-items: center;
+  align-content: stretch;
+  justify-items: stretch;
 }
 
 .compare-stage--sample-word .compare-stage-pane-label {
@@ -3439,6 +3526,7 @@ svg {
   position: absolute;
   top: clamp(1rem, 2vw, 1.2rem);
   left: clamp(1rem, 2vw, 1.2rem);
+  z-index: 2;
 }
 
 .compare-stage--sample-word .compare-stage-pane-text {
@@ -3461,8 +3549,51 @@ svg {
   font-size: clamp(8.5rem, 24vw, 16rem);
   line-height: 1;
   letter-spacing: 0;
-  transform: translateY(-0.04em);
+  transform: translateY(-0.1em);
   text-wrap: nowrap;
+  z-index: 1;
+}
+
+.compare-stage-pane--measured {
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: clamp(1.15rem, 3vw, 1.8rem);
+}
+
+.compare-stage-pane-measured-shell {
+  position: relative;
+  min-height: clamp(16rem, 34vw, 22rem);
+  height: 100%;
+}
+
+.compare-stage-pane-measured-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.compare-stage-pane-guide {
+  stroke: color-mix(in srgb, var(--compare-stage-line-strong) 86%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.compare-stage-pane-guide--focus,
+.compare-stage-pane-guide--baseline {
+  stroke-dasharray: 4 4;
+}
+
+.compare-stage-pane-guide-label {
+  fill: var(--compare-stage-ink-soft);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.compare-stage-pane-measured-glyph {
+  fill: var(--compare-stage-ink);
+  font-weight: 500;
 }
 
 .compare-stage-pane--left .compare-stage-pane-text {
@@ -3481,33 +3612,381 @@ svg {
   align-items: center;
 }
 
+.compare-stage-takeaway {
+  margin: 0;
+  max-width: 74ch;
+  color: var(--typo-ink);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.compare-stage-reading-brief {
+  display: grid;
+  grid-template-columns: auto repeat(3, minmax(0, 1fr));
+  gap: 0.56rem;
+  align-items: start;
+}
+
+.compare-stage-reading-chip,
+.compare-stage-reading-item {
+  margin: 0;
+  display: grid;
+  gap: 0.22rem;
+  min-height: 100%;
+  padding: 0.72rem 0.82rem;
+  border-radius: var(--radius-card);
+  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
+  background: color-mix(in srgb, var(--typo-shell-bg) 76%, rgba(255, 255, 255, 0.1));
+  color: var(--typo-muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.compare-stage-reading-chip span,
+.compare-stage-reading-item span {
+  color: var(--typo-ink);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  font-weight: 520;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.compare-proof-strip {
+  display: grid;
+  gap: 0.72rem;
+  padding: 0.92rem 1rem;
+  border-radius: var(--radius-card);
+  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
+  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.06));
+}
+
+.compare-proof-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.compare-proof-title {
+  margin: 0.14rem 0 0;
+  color: var(--typo-ink);
+  font-size: clamp(1.08rem, 1.8vw, 1.24rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.compare-proof-copy {
+  margin: 0;
+  color: var(--typo-muted);
+  font-size: 0.95rem;
+  line-height: 1.52;
+}
+
+.compare-proof-copy--spacing {
+  max-width: 68ch;
+}
+
+.compare-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.68rem;
+}
+
+.compare-proof-card {
+  display: grid;
+  gap: 0.52rem;
+  align-content: start;
+  padding: 0.82rem 0.88rem;
+  border-radius: calc(var(--radius-card) - 0.14rem);
+  border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 76%, transparent);
+  background: color-mix(in srgb, var(--compare-stage-bg) 92%, transparent);
+}
+
+.compare-proof-label {
+  margin: 0;
+  color: var(--compare-stage-ink-soft);
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.compare-proof-word {
+  display: flex;
+  align-items: end;
+  gap: 0;
+  min-height: 4.6rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--compare-stage-line-strong);
+}
+
+.compare-proof-word--left {
+  font-family: var(--compare-left-family);
+}
+
+.compare-proof-word--right {
+  font-family: var(--compare-right-family);
+}
+
+.compare-proof-cell {
+  position: relative;
+  display: inline-flex;
+  align-items: end;
+  justify-content: center;
+  min-height: 4rem;
+  padding: 0 0.24rem;
+  color: var(--compare-stage-ink);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.compare-proof-cell::after {
+  content: "";
+  position: absolute;
+  top: 0.15rem;
+  right: -0.04rem;
+  bottom: 0.15rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--compare-stage-line-soft) 82%, transparent);
+}
+
+.compare-proof-cell:last-child::after {
+  display: none;
+}
+
+.compare-detail-focus {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.88rem 1rem 1rem;
+  border-radius: var(--radius-card);
+  border: 1px solid color-mix(in srgb, var(--typo-info-line) 52%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--typo-info-soft) 18%, transparent), transparent 65%),
+    color-mix(in srgb, var(--typo-shell-bg) 74%, rgba(255, 255, 255, 0.08));
+}
+
+.compare-detail-focus-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.72rem;
+  align-items: end;
+}
+
+.compare-detail-focus-title {
+  margin: 0.14rem 0 0;
+  color: var(--typo-ink);
+  font-size: clamp(1.08rem, 1.8vw, 1.28rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.compare-detail-focus-nav {
+  display: inline-flex;
+  gap: 0.38rem;
+  align-items: center;
+}
+
+.compare-detail-focus-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.34rem 0.7rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
+  background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(255, 255, 255, 0.08));
+  color: var(--typo-ink);
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.compare-detail-focus-link:hover {
+  border-color: color-mix(in srgb, var(--typo-info-line) 72%, transparent);
+  background: color-mix(in srgb, var(--typo-info-soft) 24%, rgba(255, 255, 255, 0.06));
+}
+
+.compare-detail-focus-body {
+  display: grid;
+  grid-template-columns: minmax(5rem, auto) minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.compare-detail-focus-glyph {
+  margin: 0;
+  color: var(--typo-ink);
+  font-size: clamp(5.2rem, 10vw, 8.2rem);
+  line-height: 0.9;
+  font-weight: 620;
+  letter-spacing: -0.06em;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.compare-detail-focus-content {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.compare-detail-focus-copy {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--typo-ink);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 520;
+}
+
+.compare-detail-focus-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.48rem;
+}
+
+.compare-detail-focus-chip {
+  margin: 0;
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.62rem 0.72rem;
+  border-radius: calc(var(--radius-card) - 0.18rem);
+  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 66%, transparent);
+  background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(255, 255, 255, 0.06));
+  color: var(--typo-muted);
+  font-size: 0.84rem;
+  line-height: 1.46;
+}
+
+.compare-detail-focus-chip span {
+  color: var(--typo-ink);
+  font-size: 0.68rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.compare-detail-focus-chip strong {
+  color: var(--typo-ink);
+  font-weight: 680;
+}
+
+.compare-stage-glyph-tools {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.52rem;
+}
+
 .compare-stage-glyph-picker {
   display: inline-flex;
-  flex-wrap: wrap;
-  gap: 0.18rem;
+  flex-wrap: nowrap;
+  gap: 0.14rem;
   align-items: center;
-  padding: 0.28rem;
+  padding: 0.22rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 86%, rgba(255, 255, 255, 0.04));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 88%, transparent);
+  background: color-mix(in srgb, var(--compare-stage-switch-bg) 98%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--compare-stage-line-soft) 34%, transparent),
+    0 0.18rem 0.8rem rgba(0, 0, 0, 0.06);
+}
+
+.compare-stage-glyph-library {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.compare-stage-glyph-library::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 0.55rem;
+}
+
+.compare-stage-glyph-library-label {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.34rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 88%, transparent);
+  background: color-mix(in srgb, var(--compare-stage-switch-bg) 98%, transparent);
+  color: var(--compare-stage-ink-soft);
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.compare-stage-glyph-library:hover .compare-stage-glyph-library-label,
+.compare-stage-glyph-library:focus-within .compare-stage-glyph-library-label {
+  color: var(--compare-stage-ink);
+  border-color: color-mix(in srgb, var(--typo-positive-line) 72%, transparent);
+}
+
+.compare-stage-glyph-library-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.08rem);
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.22rem;
+  width: min(20rem, 70vw);
+  padding: 0.36rem;
+  border-radius: calc(var(--radius-card) - 0.12rem);
+  border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 88%, transparent);
+  background: color-mix(in srgb, var(--compare-stage-switch-bg) 98%, transparent);
+  box-shadow: 0 0.55rem 1.4rem rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.3rem);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.compare-stage-glyph-library:hover .compare-stage-glyph-library-panel,
+.compare-stage-glyph-library:focus-within .compare-stage-glyph-library-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .compare-stage-glyph-choice {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  min-height: 2rem;
-  padding: 0.16rem 0.42rem;
+  min-width: 1.86rem;
+  min-height: 1.86rem;
+  padding: 0.1rem 0.34rem;
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
-  color: color-mix(in srgb, var(--typo-muted) 82%, #fff);
-  font-size: 0.9rem;
+  color: var(--compare-stage-ink-soft);
+  font-size: 0.84rem;
   line-height: 1;
   font-weight: 680;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-decoration: none;
   transition:
     border-color 160ms ease,
@@ -3516,12 +3995,17 @@ svg {
     transform 160ms ease;
 }
 
+.compare-stage-glyph-choice--library {
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
 .compare-stage-glyph-choice:hover,
 .compare-stage-glyph-choice.is-active {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--typo-positive-line) 76%, transparent);
-  background: color-mix(in srgb, var(--typo-positive-soft) 24%, rgba(255, 255, 255, 0.04));
-  color: #fff;
+  background: color-mix(in srgb, var(--typo-positive-soft) 32%, rgba(255, 255, 255, 0.04));
+  color: var(--compare-stage-ink);
 }
 
 .compare-stage-toolbar-copy {
@@ -3573,6 +4057,13 @@ svg {
   line-height: 1.42;
 }
 
+.compare-anchor-note {
+  margin: 0;
+  color: var(--typo-muted);
+  font-size: 0.92rem;
+  line-height: 1.48;
+}
+
 .compare-anchor-values {
   margin: 0;
   color: var(--typo-muted);
@@ -3604,6 +4095,10 @@ svg {
 
 .compare-next-card {
   border-color: color-mix(in srgb, var(--typo-positive-line) 52%, transparent);
+}
+
+.compare-next-card .typo-actions {
+  gap: 0.58rem;
 }
 
 .compare-mini-title {
@@ -3761,6 +4256,28 @@ svg {
   .compare-stage-head,
   .compare-stage-toolbar {
     align-items: start;
+  }
+
+  .compare-stage-reading-brief,
+  .compare-proof-head,
+  .compare-proof-grid,
+  .compare-detail-focus-body,
+  .compare-detail-focus-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .compare-stage-glyph-tools {
+    flex-wrap: wrap;
+  }
+
+  .compare-stage-glyph-library-panel {
+    position: static;
+    width: 100%;
+    margin-top: 0.42rem;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .compare-stage-split {

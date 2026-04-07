@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import TypefaceTester from "@/components/typography/TypefaceTester";
+import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import {
   getComparisonsForTypeface,
   getConceptsByIds,
@@ -139,6 +140,7 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
 
   return (
     <main className="typo-page">
+      <ThemeSwitch />
       {specimenFontCss ? <style>{specimenFontCss}</style> : null}
       <article className="typo-shell">
         <nav className="typo-breadcrumbs" aria-label="Typeface navigation">

@@ -22,13 +22,13 @@ const themeBootstrapScript = `
     const isValid = stored === "dark" || stored === "light";
     const theme = isValid
       ? stored
-      : "light";
+      : "dark";
     const root = document.documentElement;
     root.dataset.theme = theme;
     root.style.colorScheme = theme;
   } catch {
-    document.documentElement.dataset.theme = "light";
-    document.documentElement.style.colorScheme = "light";
+    document.documentElement.dataset.theme = "dark";
+    document.documentElement.style.colorScheme = "dark";
   }
 })();
 `;
@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>

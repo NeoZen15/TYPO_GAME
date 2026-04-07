@@ -29,7 +29,7 @@
     "slug": "frutiger-vs-inter",
     "leftId": "tf_frutiger",
     "rightId": "tf_inter",
-    "status": "published",
+    "status": "draft",
     "diffHighlights": [
       {
         "feature": "terminals",
