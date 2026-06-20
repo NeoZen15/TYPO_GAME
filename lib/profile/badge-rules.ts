@@ -9,7 +9,7 @@ import type { ProfileBadge } from "@/lib/profile/mock-profile";
 // (rarity), and the scoring signal it watches live HERE — not scattered across
 // the mock and the board component.
 //
-// Spec: docs/profile-tabs-spec.md §5 — families Progression · Streak · Speed ·
+// Spec: docs/ui/profile-tabs-spec.md §5 — families Progression · Streak · Speed ·
 // Exploration · Mastery. Per spec, badges unlock on REAL scoring events
 // (scoring-and-selection-math.md §5.7 / §16), not invented counters. Today the
 // values are fed by the mock (`MOCK_BADGE_METRICS`); tomorrow `/api/profile/*`

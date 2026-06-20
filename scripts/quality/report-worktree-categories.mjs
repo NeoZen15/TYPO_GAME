@@ -42,8 +42,8 @@ function categorize(filePath) {
     filePath === "backups/README.md" ||
     filePath === "data/typography-profiles/README.md" ||
     filePath === "data/typography-profiles/tmp/.gitignore" ||
-    filePath === "docs/repo-organization.md" ||
-    filePath === "docs/worktree-stabilization.md" ||
+    filePath === "docs/overview/repo-organization.md" ||
+    filePath === "docs/process/worktree-stabilization.md" ||
     filePath === "lib/dev-mode.ts"
   ) {
     return "B";

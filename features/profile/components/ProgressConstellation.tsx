@@ -11,7 +11,7 @@ import {
 } from "@/lib/profile/mock-profile";
 
 // ---------------------------------------------------------------------------
-// The map of seeing — the DWIGGINS galaxy map (docs/handoff-page-parcours.md).
+// The map of seeing — the DWIGGINS galaxy map (docs/archive/handoff-page-parcours.md).
 //
 // The 8 axes are 8 LETTER-galaxies that spell D·W·I·G·G·I·N·S. Each letter is
 // traced by its paliers (stars sampled along the letter's skeleton — the star

@@ -17,8 +17,8 @@ Les sources réelles pour cette fiche sont:
 - `app/globals.css`
 - `features/modes/components/ModeSelectPage.tsx` (page `/play`, **référence couleur validée**)
 - `features/game/components/CompetitionScreen.tsx`
-- `docs/ui-consistency-contract.md`
-- `docs/front-ui-master-spec.md`
+- `docs/ui/ui-consistency-contract.md`
+- `docs/ui/front-ui-master-spec.md`
 
 Important:
 - cette fiche décrit l'état actuel du code,
@@ -175,7 +175,7 @@ Page de preview:
 
 ### A. Docs de contrat trop strictes vs code réel
 
-`docs/ui-consistency-contract.md` dit aujourd'hui:
+`docs/ui/ui-consistency-contract.md` dit aujourd'hui:
 - noir / blanc / jaune pour la structure
 - vert / rouge seulement pour validation
 - accents mode surtout sur `/play` et `/rules`
@@ -263,8 +263,8 @@ Ma reco actuelle:
 
 Ordre recommandé:
 1. valider la palette canonique finale
-2. corriger `docs/ui-consistency-contract.md`
-3. corriger `docs/front-ui-master-spec.md`
+2. corriger `docs/ui/ui-consistency-contract.md`
+3. corriger `docs/ui/front-ui-master-spec.md`
 4. faire un passage CSS pour unifier les teintes incohérentes
 5. refaire une mini passe visuelle sur `competition` et `training`
 

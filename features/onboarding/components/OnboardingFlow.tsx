@@ -4,7 +4,18 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 
-type StepId = "welcome" | "pace" | "familiarity" | "micro" | "launch";
+// ---------------------------------------------------------------------------
+// Onboarding — a short, honest "first look", NOT a settings survey.
+//
+// The product thesis is "we train your eye, the engine adapts" (see
+// docs/perceptual-progression-spec.md, scoring-and-selection-math.md). So we do
+// NOT ask the player to hand-pick a difficulty — the adaptive engine owns that.
+// We ask one thing the engine can't infer cold (familiarity = the cold-start
+// prior), then let them FEEL one round (a warm-up that is never pass/fail), then
+// launch. Voice matches the rest of the site (English, calm, "teach your eye").
+// ---------------------------------------------------------------------------
+
+type StepId = "welcome" | "familiarity" | "micro" | "launch";
 
 type StepConfig = {
   id: StepId;
@@ -13,17 +24,17 @@ type StepConfig = {
   options?: readonly string[];
 };
 
+// The only answer we keep: a cold-start prior for the difficulty/Leitner seeding.
+// Written here, read by the engine when seeding the first round.
+// TODO(engine): consume `familiarity` in /play to seed initial Leitner boxes
+// (today it is captured honestly but the seeding wiring is not in place yet).
 type StoredOnboardingAnswers = {
-  pace?: string;
   familiarity?: string;
 };
 
 type MicroChoice = "left" | "right";
 
 const ONBOARDING_STORAGE_KEY = "jdt-onboarding-v1";
-
-const PACE_OPTIONS = ["Relaxed", "Balanced", "Challenging"] as const;
-type PaceOption = (typeof PACE_OPTIONS)[number];
 
 const FAMILIARITY_OPTIONS = [
   "Not at all",
@@ -33,25 +44,11 @@ const FAMILIARITY_OPTIONS = [
 ] as const;
 type FamiliarityOption = (typeof FAMILIARITY_OPTIONS)[number];
 
-const PACE_DETAILS: Record<PaceOption, OptionDetail> = {
-  Relaxed: {
-    label: "Relaxed",
-    title: "More guidance, softer tempo",
-    description: "A gentler first session with more room to observe before reacting.",
-    meta: "Calm start",
-  },
-  Balanced: {
-    label: "Balanced",
-    title: "Standard rhythm",
-    description: "A clear, steady onboarding pace close to the core game experience.",
-    meta: "Default flow",
-  },
-  Challenging: {
-    label: "Challenging",
-    title: "Sharper contrasts, less help",
-    description: "A more demanding first session with reduced assistance from the start.",
-    meta: "Fast track",
-  },
+type OptionDetail = {
+  label: string;
+  title: string;
+  description: string;
+  meta: string;
 };
 
 const FAMILIARITY_DETAILS: Record<FamiliarityOption, OptionDetail> = {
@@ -82,35 +79,27 @@ const FAMILIARITY_DETAILS: Record<FamiliarityOption, OptionDetail> = {
 };
 
 type MicroProfile = {
-  prompt: string;
-  task: string;
   leftLabel: string;
   rightLabel: string;
   leftClass: string;
   rightClass: string;
 };
 
-type OptionDetail = {
-  label: string;
-  title: string;
-  description: string;
-  meta: string;
-};
-
+// Decorative word shown in the warm-up. The task is "serif or sans-serif?", so
+// the word's meaning is irrelevant — these just read well set large, in English
+// to match the rest of the UI.
 const MICRO_WORD_POOL = [
   "ALPHABET",
   "STRUCTURE",
-  "GLYPHES",
-  "CONTRASTE",
-  "RHYTHME",
+  "CHARACTER",
+  "CONTRAST",
+  "RHYTHM",
   "PROPORTION",
 ] as const;
 
 const MICRO_DEMO: MicroProfile = {
-  prompt: "A single word is shown in one typestyle.",
-  task: "Task: choose the matching typestyle name below.",
   leftLabel: "Serif",
-  rightLabel: "Sans Serif",
+  rightLabel: "Sans-serif",
   leftClass: "onboarding-micro-word--serif",
   rightClass: "onboarding-micro-word--sans",
 };
@@ -122,26 +111,20 @@ const STEPS: readonly StepConfig[] = [
     body: "This is visual training, not a knowledge test. Observe first, then decide.",
   },
   {
-    id: "pace",
-    title: "Choose your learning pace.",
-    body: "Select how intense you want your first session to feel.",
-    options: PACE_OPTIONS,
-  },
-  {
     id: "familiarity",
     title: "How familiar are you with typography?",
-    body: "Pick the option that best matches your current level.",
+    body: "Pick what's closest — it only sets where your eye begins. The game adapts from there.",
     options: FAMILIARITY_OPTIONS,
   },
   {
     id: "micro",
-    title: "Mini test (not scored).",
-    body: "This quick test just shows how the game works before you start.",
+    title: "A first look.",
+    body: "No score here — just notice the letters. This is exactly how a round feels.",
   },
   {
     id: "launch",
-    title: "Ready for round one?",
-    body: "Your first round is now calibrated from your choices.",
+    title: "Your eye starts here.",
+    body: "Every round lights it up a little more.",
   },
 ];
 
@@ -159,27 +142,8 @@ const writeStoredAnswers = (answers: StoredOnboardingAnswers) => {
   }
 };
 
-const paceImpactCopy = (pace: PaceOption) => {
-  if (pace === "Relaxed") {
-    return "Relaxed mode active: more guidance and softer pacing from the next step.";
-  }
-  if (pace === "Challenging") {
-    return "Challenging mode active: closer contrasts and reduced assistance from now on.";
-  }
-  return "Balanced mode active: standard pacing and standard assistance.";
-};
-
-const getOptionDetail = (stepId: StepId, option: string): OptionDetail => {
-  if (stepId === "pace") {
-    return PACE_DETAILS[option as PaceOption];
-  }
-
-  return FAMILIARITY_DETAILS[option as FamiliarityOption];
-};
-
 export default function OnboardingFlow() {
   const [stepIndex, setStepIndex] = useState(0);
-  const [pace, setPace] = useState<PaceOption | "">("");
   const [familiarity, setFamiliarity] = useState<FamiliarityOption | "">("");
   const [microWord, setMicroWord] = useState<(typeof MICRO_WORD_POOL)[number]>("ALPHABET");
   const [microExpected, setMicroExpected] = useState<MicroChoice>("left");
@@ -191,14 +155,16 @@ export default function OnboardingFlow() {
 
   const step = STEPS[stepIndex];
   const stepNumber = stepIndex + 1;
-  const microResolved = microResult === "correct";
+  // The warm-up is never pass/fail: once the player has checked their answer
+  // (right OR wrong), they move on. Gating "continue" on a correct answer would
+  // contradict the welcome promise ("not a knowledge test, observe first").
+  const microResolved = microChecked;
 
   const canContinue = useMemo(() => {
-    if (step.id === "pace") return pace.length > 0;
     if (step.id === "familiarity") return familiarity.length > 0;
     if (step.id === "micro") return microResolved;
     return true;
-  }, [familiarity, microResolved, pace, step.id]);
+  }, [familiarity, microResolved, step.id]);
 
   const helperVisible = Boolean(step.options) && !canContinue;
   const helperId = step.options ? `onboarding-helper-${step.id}` : undefined;
@@ -215,19 +181,18 @@ export default function OnboardingFlow() {
   const microFeedback = useMemo(() => {
     if (microChecked) {
       if (microResult === "correct") {
-        return "Correct. Great eye.";
+        return "Yes — those little feet on the strokes are serifs. That's the kind of seeing you'll train.";
       }
-      return "Not this one. You can select again, then click Validate.";
+      return "Look again at the stroke ends — feet mean serif, clean ends mean sans-serif. No score here, it's just the warm-up.";
     }
-    return " ";
+    return " ";
   }, [microChecked, microResult]);
 
   useEffect(() => {
     writeStoredAnswers({
-      pace: pace || undefined,
       familiarity: familiarity || undefined,
     });
-  }, [familiarity, pace]);
+  }, [familiarity]);
 
   useEffect(() => {
     optionRefs.current = [];
@@ -255,7 +220,6 @@ export default function OnboardingFlow() {
 
       <section
         className="onboarding-shell"
-        data-pace={pace ? slugify(pace) : "unset"}
         data-familiarity={familiarity ? slugify(familiarity) : "unset"}
         data-step={step.id}
         aria-labelledby="onboarding-title"
@@ -305,11 +269,6 @@ export default function OnboardingFlow() {
             </div>
           </div>
 
-          {step.id === "familiarity" && pace ? (
-            <p className="onboarding-impact-note">{paceImpactCopy(pace)}</p>
-          ) : null}
-
-
           {step.options ? (
             <div className="onboarding-stage-card onboarding-stage-card--choices">
               <div
@@ -319,10 +278,8 @@ export default function OnboardingFlow() {
                 aria-required="true"
               >
                 {step.options.map((option, index) => {
-                  const detail = getOptionDetail(step.id, option);
-                  const selected =
-                    (step.id === "pace" && pace === option) ||
-                    (step.id === "familiarity" && familiarity === option);
+                  const detail = FAMILIARITY_DETAILS[option as FamiliarityOption];
+                  const selected = familiarity === option;
 
                   return (
                     <button
@@ -337,13 +294,7 @@ export default function OnboardingFlow() {
                         optionRefs.current[index] = element;
                       }}
                       onClick={() => {
-                        if (step.id === "pace") {
-                          setPace(option as PaceOption);
-                          return;
-                        }
-                        if (step.id === "familiarity") {
-                          setFamiliarity(option as FamiliarityOption);
-                        }
+                        setFamiliarity(option as FamiliarityOption);
                       }}
                       onKeyDown={(event) => {
                         const options = step.options ?? [];
@@ -364,12 +315,7 @@ export default function OnboardingFlow() {
                         const nextIndex = (index + direction + options.length) % options.length;
                         const nextOption = options[nextIndex];
 
-                        if (step.id === "pace") {
-                          setPace(nextOption as PaceOption);
-                        } else if (step.id === "familiarity") {
-                          setFamiliarity(nextOption as FamiliarityOption);
-                        }
-
+                        setFamiliarity(nextOption as FamiliarityOption);
                         optionRefs.current[nextIndex]?.focus();
                       }}
                     >
@@ -388,7 +334,7 @@ export default function OnboardingFlow() {
                 data-visible={helperVisible ? "true" : "false"}
                 aria-live="polite"
               >
-                {helperVisible ? "Select one option to continue." : "\u00A0"}
+                {helperVisible ? "Select one option to continue." : " "}
               </p>
             </div>
           ) : null}
@@ -397,7 +343,6 @@ export default function OnboardingFlow() {
             <section className="onboarding-stage-card onboarding-stage-card--micro">
               <div
                 className="onboarding-micro"
-                data-pace={pace ? slugify(pace) : "balanced"}
                 data-state={microResolved ? "resolved" : "active"}
                 aria-label="Micro visual warm-up"
               >
@@ -434,7 +379,7 @@ export default function OnboardingFlow() {
                   <div
                     className="onboarding-micro-answers"
                     role="radiogroup"
-                    aria-label="Typestyle options"
+                    aria-label="Does this word have serifs?"
                   >
                     <button
                       type="button"
@@ -498,7 +443,7 @@ export default function OnboardingFlow() {
                   </div>
                 </div>
 
-                <p className="onboarding-micro-feedback" data-state={microResult || "idle"}>
+                <p className="onboarding-micro-feedback" data-state={microResult || "idle"} aria-live="polite">
                   {microFeedback}
                 </p>
               </div>
@@ -507,16 +452,16 @@ export default function OnboardingFlow() {
 
           {step.id === "launch" ? (
             <div className="onboarding-stage-card onboarding-stage-card--launch">
-              <div className="onboarding-summary" aria-label="Calibration summary">
+              <div className="onboarding-summary" aria-label="Where you begin">
                 <article className="onboarding-summary-card">
-                  <span className="onboarding-summary-card__label">Pace</span>
-                  <strong className="onboarding-summary-card__value">{pace || "Balanced"}</strong>
-                </article>
-                <article className="onboarding-summary-card">
-                  <span className="onboarding-summary-card__label">Familiarity</span>
+                  <span className="onboarding-summary-card__label">Starting point</span>
                   <strong className="onboarding-summary-card__value">
                     {familiarity || "A little"}
                   </strong>
+                </article>
+                <article className="onboarding-summary-card">
+                  <span className="onboarding-summary-card__label">First mode</span>
+                  <strong className="onboarding-summary-card__value">Training</strong>
                 </article>
               </div>
             </div>
@@ -529,7 +474,7 @@ export default function OnboardingFlow() {
               type="button"
               className="onboarding-btn onboarding-btn--solid"
               onClick={() => {
-                if (step.id === "micro" && !microResolved) {
+                if (step.id === "micro" && !microChecked) {
                   if (!microChoice) return;
                   const isCorrect = microChoice === microExpected;
                   setMicroChecked(true);
@@ -538,9 +483,9 @@ export default function OnboardingFlow() {
                 }
                 setStepIndex((prev) => clampStep(prev + 1));
               }}
-              disabled={step.id === "micro" && !microResolved ? microChoice === "" : !canContinue}
+              disabled={step.id === "micro" && !microChecked ? microChoice === "" : !canContinue}
             >
-              {step.id === "micro" ? (microResolved ? "Start session" : "Validate") : "Continue"}
+              {step.id === "micro" ? (microChecked ? "Continue" : "Check") : "Continue"}
             </button>
           ) : (
             <Link

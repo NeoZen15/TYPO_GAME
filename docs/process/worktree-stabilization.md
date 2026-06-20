@@ -22,8 +22,8 @@ These files belong to the stabilization wave and can be reviewed together:
 - `scripts/quality/check-runtime-boundaries.mjs`
 - `scripts/quality/check-tracked-artifacts.mjs`
 - `scripts/quality/report-worktree-categories.mjs`
-- `docs/repo-organization.md`
-- `docs/worktree-stabilization.md`
+- `docs/overview/repo-organization.md`
+- `docs/process/worktree-stabilization.md`
 - `data/typography-profiles/README.md`
 - `data/typography-profiles/tmp/.gitignore`
 - `backups/README.md`
@@ -42,7 +42,7 @@ These files affect user-facing behavior and should be reviewed as product change
 - `components/dev/UiDebugProbe.tsx`
 - `components/typography/MeasuredGlyphSplit.tsx`
 - `components/typography/TypefaceTester.tsx`
-- `docs/ui-palette-reference.md`
+- `docs/ui/ui-palette-reference.md`
 
 ## Current commit assembly rule
 

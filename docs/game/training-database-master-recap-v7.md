@@ -4,12 +4,12 @@ Ce document sert de source unique avant tout prompt Claude.
 Il récapitule exactement ce qui a été validé, ce qui manque, et le niveau de cible à atteindre.
 
 Compléments opérationnels associés:
-- `docs/site-system-overview.md`
-- `docs/catalog-workbook-1000-spec.md`
-- `docs/claude-prompt-catalog-workbook-1000.md`
-- `docs/catalog-automation-roadmap.md`
-- `docs/specimen-layer-strategy.md`
-- `docs/massive-font-source-strategy.md`
+- `docs/overview/site-system-overview.md`
+- `docs/catalog/catalog-workbook-1000-spec.md`
+- `docs/catalog/claude-prompt-catalog-workbook-1000.md`
+- `docs/catalog/catalog-automation-roadmap.md`
+- `docs/typography/specimen-layer-strategy.md`
+- `docs/catalog/massive-font-source-strategy.md`
 
 ## 1) Objectif global
 
@@ -32,9 +32,9 @@ avec une logique moteur centrée sur la pédagogie visuelle (répétition espac�
 ## 3) État actuel observé (audit docs + Excel)
 
 ### 3.1 Docs relus
-- `docs/training-engine-spec-v2-clean.md`
-- `docs/game-unified-spec-v1.md`
-- `docs/game-v4-executable-spec.md`
+- `docs/game/training-engine-spec-v2-clean.md`
+- `docs/game/game-unified-spec-v1.md`
+- `docs/game/game-v4-executable-spec.md`
 
 ### 3.2 Excel relu
 - Source: `JEUX_DE_TYPO_catalogue_v4__VALIDE__20260219_1903.xlsx`

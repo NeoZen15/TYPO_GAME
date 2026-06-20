@@ -16,9 +16,9 @@ Covered areas:
 - persistence contract (front V1)
 
 Related game product draft:
-- see `docs/game-mode-normal-spec.md`
+- see `docs/game/game-mode-normal-spec.md`
 - visual/runtime source of truth:
-  - `docs/front-ui-master-spec.md`
+  - `docs/ui/front-ui-master-spec.md`
 
 ## 2) Product Goal
 

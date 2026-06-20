@@ -12,7 +12,7 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Build still blocked in sandbox because `next/font/google` cannot fetch Inter without network access.
 - `npm run dev` starts in interactive TTY, but non-interactive server bind checks can fail with sandbox `EPERM` on `127.0.0.1:3000`.
 - Refactored Block 5 ("A" guides) animation internals into named helpers while keeping the same trigger windows and animation timings.
-- Added Block 5 implementation map to `docs/motion.md` to make the animation flow easier to understand.
+- Added Block 5 implementation map to `docs/ui/motion.md` to make the animation flow easier to understand.
 - Fixed premature Block 5 animation start on page reload by gating play-in to actual visual viewport presence and adding an onUpdate fallback for delayed trigger activation.
 - Converted Block 5 to a true scroll-scrub animation (`start: "center 70%"`, `end: "center center"`, `scrub: true`) so the guide drawing follows scroll instead of auto-playing.
 - Replaced fragile start/end-only behavior with explicit viewport-mapped progress (`A` center from 70% to 50% viewport height) for deterministic scroll-driven drawing.
@@ -216,7 +216,7 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Restored stronger neon accent effect on game option color bars (base + hover + selected states), including dark-theme tuning.
 - Kept responsive adaptation: bar/glow intensity still scales with mobile overrides and clamp sizing.
 - Validation after neon restore: `npm run typecheck` ✅, `npm run lint` ✅, `npm run quality` ✅.
-- Updated `docs/game-mode-normal-spec.md` to sync current front state on `/game` (visual snapshot, rounded card layout, side neon accents, centered labels, dark mode support, no wrong-flip animation).
+- Updated `docs/game/game-mode-normal-spec.md` to sync current front state on `/game` (visual snapshot, rounded card layout, side neon accents, centered labels, dark mode support, no wrong-flip animation).
 - Clarified Type Card implementation status in spec: Reading implemented, Misread pending.
 - Removed fullscreen Type Card display from `/game` flow (no Reading/Misread overlay in current UI pass).
 - Kept immediate answer feedback; correct answers now visibly tint the selected option green (light + dark theme variants).
@@ -229,7 +229,7 @@ Original prompt: Audit and technically clean the project without any visual or b
   - `app/page.tsx` now imports `@/features/landing/components/Gate`
   - `app/onboarding/page.tsx` now imports `@/features/onboarding/components/OnboardingFlow`
   - `app/game/page.tsx` now imports `@/features/game/components/GameScreen`
-- Updated documentation path reference in `docs/motion.md` to new Gate location.
+- Updated documentation path reference in `docs/ui/motion.md` to new Gate location.
 - Removed now-empty directories `components/blocks` and `components/onboarding`.
 - Validation after migration: `npm run typecheck` ✅, `npm run lint` ✅, `npm run quality` ✅.
 - Added mode selection transition page before gameplay:
@@ -245,8 +245,8 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Added new styles for mode pages in `app/globals.css`:
   - `.mode-select-*` and `.mode-placeholder-*`
   - responsive behavior under existing mobile media query
-- Added documentation contract `docs/ui-consistency-contract.md` (site-wide typography/spacing/case/theme-switch rules).
-- Linked unified spec to the new UI consistency contract (`docs/game-unified-spec-v1.md`).
+- Added documentation contract `docs/ui/ui-consistency-contract.md` (site-wide typography/spacing/case/theme-switch rules).
+- Linked unified spec to the new UI consistency contract (`docs/game/game-unified-spec-v1.md`).
 - Validation after this pass: `npm run typecheck` ✅, `npm run lint` ✅, `npm run quality` ✅.
 - Rules page visual harmonization pass (`/play/*/rules`) to match existing site language:
   - Added shared yellow top accent rail on `.mode-rules-shell`.
@@ -264,7 +264,7 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Added a local safety workflow so risky UI passes no longer depend on editor history:
   - new checkpoint script: `scripts/safety/create_ui_checkpoint.sh`
   - new npm command: `npm run safety:checkpoint`
-  - new guide: `docs/safety-workflow.md`
+  - new guide: `docs/process/safety-workflow.md`
 - Checkpoint output is stored in `backups/checkpoints/<timestamp>/` and includes:
   - copies of critical UI files
   - git branch and git status snapshots
@@ -306,15 +306,15 @@ Original prompt: Audit and technically clean the project without any visual or b
 - This keeps a consistent panel-level scrolling experience across Training, Competition, and Expert tabs.
 - Validation: `npm run typecheck` ✅ and `npm run lint` ✅.
 - Updated documentation with high-precision rules-page contracts and current route reality:
-  - `docs/game-unified-spec-v1.md`
+  - `docs/game/game-unified-spec-v1.md`
     - routes for `/play/*/rules` changed from placeholder to active
     - transitions added for rules navigation
     - new section `9.6 Contrat /play/{mode}/rules` with exact behavior (no progress bar, centered kicker, panel-level scroll, no nested scroll, section inventory per mode, action buttons, mascot placement)
-  - `docs/front-ui-master-spec.md`
+  - `docs/ui/front-ui-master-spec.md`
     - route tree and transitions aligned with active rules pages
     - explicit update of canonical route transition (`/` -> `/onboarding` -> `/play` -> mode)
     - new `12) Mode Rules Contract` section with exact UI/runtime constraints
-  - `docs/ui-consistency-contract.md`
+  - `docs/ui/ui-consistency-contract.md`
     - mode accent allowance extended from `/play` cards to `/play/{mode}/rules`
 
 ## 2026-03-22
@@ -341,9 +341,9 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Validation: `npm run typecheck` ✅ and `npm run lint` ✅.
 - Documentation aligned with latest validated `/game` visual decision: no outer frame container.
 - Updated:
-  - `docs/front-ui-master-spec.md` (Game contract now explicitly states no visible outer shell frame on `/game`).
-  - `docs/game-unified-spec-v1.md` (`/game` front constraints now include no visible container frame).
-  - `docs/game-mode-normal-spec.md` (snapshot + locked layout rules updated; date bumped to 2026-03-13).
+  - `docs/ui/front-ui-master-spec.md` (Game contract now explicitly states no visible outer shell frame on `/game`).
+  - `docs/game/game-unified-spec-v1.md` (`/game` front constraints now include no visible container frame).
+  - `docs/game/game-mode-normal-spec.md` (snapshot + locked layout rules updated; date bumped to 2026-03-13).
 - Validation after doc updates: `npm run typecheck` ✅ and `npm run lint` ✅.
 - Added automated manifest generator: `scripts/generate_font_manifest.py`.
 - Generated `content/typefaces/font-manifest-v4.json` from:
@@ -392,15 +392,15 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Next logical step: replace `/play/training -> /game` redirect semantics with a more explicit training-session entry contract if product wants separate route behavior later.
 - Competition and Expert are still not connected to the DB-backed provider flow.
 - Added catalogue scale-up planning docs for the next major phase:
-  - `docs/catalog-workbook-1000-spec.md` defines the target workbook structure and QA gates for a 1000+ runtime-ready typography catalogue.
-  - `docs/claude-prompt-catalog-workbook-1000.md` provides the Claude prompt aligned with that spec.
+  - `docs/catalog/catalog-workbook-1000-spec.md` defines the target workbook structure and QA gates for a 1000+ runtime-ready typography catalogue.
+  - `docs/catalog/claude-prompt-catalog-workbook-1000.md` provides the Claude prompt aligned with that spec.
 - Linked the master recap doc to these new catalogue-planning docs.
-- Added `docs/catalog-automation-roadmap.md` to preserve the detailed rationale for catalogue automation:
+- Added `docs/catalog/catalog-automation-roadmap.md` to preserve the detailed rationale for catalogue automation:
   - why V1 (auto draft pipeline) is the right first step,
   - what V2 and V3 would add later,
   - what the machine should do vs what must stay human-reviewed,
   - and why Excel/workbook should not remain the sole source of truth for a 1000+ catalogue.
-- Linked this roadmap from `docs/training-database-master-recap-v7.md` and `docs/catalog-workbook-1000-spec.md`.
+- Linked this roadmap from `docs/game/training-database-master-recap-v7.md` and `docs/catalog/catalog-workbook-1000-spec.md`.
 - Started V1 catalogue automation concretely:
   - added canonical repo folder `content/catalog/`
   - added `content/catalog/README.md` to define the machine-first JSON format
@@ -492,14 +492,14 @@ Original prompt: Audit and technically clean the project without any visual or b
     - candidate generation
   - validated locally without DB import
 - Added a parked strategic doc for the future specimen / editorial / SEO layer:
-  - `docs/specimen-layer-strategy.md`
+  - `docs/typography/specimen-layer-strategy.md`
   - based on the external idea observed in `markboulton/specimen-builder`
   - conclusion locked:
     - very interesting for product, pedagogy, QA, and SEO
     - not a direct integration target for now
     - should be revisited once the core game and catalog are further stabilized
 - Added the concrete sourcing strategy for growing the catalog beyond the current local corpus:
-  - `docs/massive-font-source-strategy.md`
+  - `docs/catalog/massive-font-source-strategy.md`
   - locks:
     - primary large source recommendation = official `google/fonts`
     - source corpus should live in assets, not directly in runtime app folders
@@ -563,7 +563,7 @@ Original prompt: Audit and technically clean the project without any visual or b
     - `10` runtime review records
     - `10` expert review records
 - Added a transmission-oriented architecture summary doc:
-  - `docs/site-system-overview.md`
+  - `docs/overview/site-system-overview.md`
   - explains the current site structure, catalog pipeline, candidates vs batches vs main catalog, and where to look depending on the question
 - Added promotion-readiness audit automation:
   - `scripts/audit_catalog_promotion.py`
@@ -662,8 +662,8 @@ Original prompt: Audit and technically clean the project without any visual or b
 - Updated documentation to reflect the locked state of the promotion workflow:
   - `content/catalog/README.md`
   - `content/catalog/batches/README.md`
-  - `docs/site-system-overview.md`
-  - `docs/catalog-automation-roadmap.md`
+  - `docs/overview/site-system-overview.md`
+  - `docs/catalog/catalog-automation-roadmap.md`
 - Completed the full promotion flow for the pilot lot of 10:
   - created `content/catalog/batches/google-fonts-pilot-top-10/editorial-review/editorial-review.completed.json`
   - filled and approved the editorial review fields for:
@@ -793,7 +793,7 @@ Original prompt: Audit and technically clean the project without any visual or b
   - `font_runtime_assets`: `+0 / ~73`
   - `expert_answer_keys`: `+0 / ~2032`
 - Added a Google Fonts Developer API sync lane for watch/verification:
-  - new doc: `docs/google-fonts-api-strategy.md`
+  - new doc: `docs/catalog/google-fonts-api-strategy.md`
   - new script: `scripts/sync_google_fonts_api.py`
   - script compares the official Developer API metadata against `content/catalog/`
   - outputs local reports for:
@@ -943,7 +943,7 @@ Original prompt: Audit and technically clean the project without any visual or b
   - hero deck now highlights correctness / accuracy / reviewed counts with info / positive / warning accents
   - refreshed preview capture at `tmp/playwright/competition-summary-preview-color/shot-0.png`
 
-- 2026-03-22: added `docs/ui-palette-reference.md` as the working color + text reference and inconsistency checklist for visual review.
+- 2026-03-22: added `docs/ui/ui-palette-reference.md` as the working color + text reference and inconsistency checklist for visual review.
 - 2026-03-22: replaced the fragile `Category accuracy` panel on competition summary with a safer `Categories seen` panel focused on session volume instead of overconfident diagnosis.
   - refreshed preview capture at `tmp/playwright/competition-summary-preview-categories-seen/shot-0.png`
 - 2026-03-22: simplified the session category panel again so it matches the rest of the summary grammar.
@@ -987,7 +987,7 @@ Original prompt: Audit and technically clean the project without any visual or b
 
 - Audited the project from a translator/reviewer handoff perspective.
 - Kept a single translator-facing review doc:
-  - `docs/translator-review-packet.md`
+  - `docs/archive/translator-review-packet.md`
 - Verified translator context with fresh local screenshots:
   - `tmp/playwright/translator-home/shot-0.png`
   - `tmp/playwright/translator-onboarding/shot-0.png`
@@ -1001,7 +1001,7 @@ Original prompt: Audit and technically clean the project without any visual or b
   - copy is still mostly inline in React components and backend providers, not centralized
   - product language is mixed rather than truly localized
   - the app renders with `lang="en"` while training/competition display words still include French typography vocabulary
-- Reworked `docs/translator-review-packet.md` into a clearer page-by-page flow:
+- Reworked `docs/archive/translator-review-packet.md` into a clearer page-by-page flow:
   - removed screenshot references from the sendable packet
   - reordered content in actual UX/UI sequence
   - added exact page location, page role, intended meaning, mode context, and mascot copy where relevant

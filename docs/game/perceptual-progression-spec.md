@@ -4,12 +4,12 @@ Status: draft / proposal
 Last update: 2026-06-16
 Aligné avec `scoring-and-selection-math.md` v3.1 — modèle **palier→axe**, **XP = système**, **jetons**.
 
-Vision source (joueur): `docs/NIVEAU.rtf`
+Vision source (joueur): `docs/archive/NIVEAU.rtf`
 Docs liés:
 
-- `docs/training-database-master-recap-v7.md` — moteur mastery + scheduler + tables data cibles
-- `docs/training-engine-spec-v2-clean.md` — moteur d'entraînement
-- `docs/game-unified-spec-v1.md` — modes, routes, contrats
+- `docs/game/training-database-master-recap-v7.md` — moteur mastery + scheduler + tables data cibles
+- `docs/game/training-engine-spec-v2-clean.md` — moteur d'entraînement
+- `docs/game/game-unified-spec-v1.md` — modes, routes, contrats
 - `lib/profile/mock-profile.ts` — modèle profil actuel (à migrer)
 - `features/profile/components/ProgressBoard.tsx` — board linéaire actuel (à migrer)
 

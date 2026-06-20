@@ -12,9 +12,9 @@ This document is the single source of truth for:
 - interaction timing and feedback behavior
 
 Related docs:
-- `docs/onboarding-game-contract.md`
-- `docs/game-mode-normal-spec.md`
-- `docs/game-v4-executable-spec.md`
+- `docs/game/onboarding-game-contract.md`
+- `docs/game/game-mode-normal-spec.md`
+- `docs/game/game-v4-executable-spec.md`
 
 ## 2) Information Architecture (Current)
 

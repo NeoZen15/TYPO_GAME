@@ -233,8 +233,8 @@ export const MOCK_PROFILE: PlayerProfile = {
 // EYE PROFILE — the non-linear "map of seeing" model
 // ===========================================================================
 //
-// Source of truth: docs/perceptual-progression-spec.md (§3, §4·B, §6.3) and
-// docs/scoring-and-selection-math.md (§2, §4, §6). This SUPERSEDES the linear
+// Source of truth: docs/game/perceptual-progression-spec.md (§3, §4·B, §6.3) and
+// docs/game/scoring-and-selection-math.md (§2, §4, §6). This SUPERSEDES the linear
 // `ProfileBoard`/`chapters` model above (done/current/locked + single pawn),
 // which is kept only as a fallback for the legacy snake board.
 //

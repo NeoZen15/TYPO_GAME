@@ -16,7 +16,7 @@ import MasteryClimb from "@/features/landing/components/MasteryClimb";
  * New main landing page — built section by section.
  * Reference universe: Bramus's modern-CSS Google Antigravity rework,
  * adapted strictly to the JEUX DE TYPO validated design system
- * (see docs/ui-palette-reference.md):
+ * (see docs/ui/ui-palette-reference.md):
  *   - colour lives on contours/halos, never on button fills or text
  *   - yellow #ffd213 = brand chrome only (borders, focus, progress)
  *   - validated primary CTA = soft white pill / dark text

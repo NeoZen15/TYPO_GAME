@@ -5,7 +5,7 @@ Ce document définit la cible exacte du workbook catalogue pour faire passer JEU
 Il doit servir de référence avant toute demande à Claude, avant tout travail Excel massif, et avant tout import en base.
 
 Pour la stratégie d'automatisation progressive associée, voir aussi:
-- `docs/catalog-automation-roadmap.md`
+- `docs/catalog/catalog-automation-roadmap.md`
 
 ## 1) Objectif
 

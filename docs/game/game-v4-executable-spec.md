@@ -12,10 +12,10 @@ This document turns the V4 product intent into executable rules:
 - V1 front-only implementation checklist
 
 Companion docs:
-- `docs/game-unified-spec-v1.md` (merged canonical source without duplication)
-- `docs/front-ui-master-spec.md` (canonical UI/runtime values and route flow)
-- `docs/game-mode-normal-spec.md` (UX and pedagogical intent)
-- `docs/onboarding-game-contract.md` (onboarding handoff contract)
+- `docs/game/game-unified-spec-v1.md` (merged canonical source without duplication)
+- `docs/ui/front-ui-master-spec.md` (canonical UI/runtime values and route flow)
+- `docs/game/game-mode-normal-spec.md` (UX and pedagogical intent)
+- `docs/game/onboarding-game-contract.md` (onboarding handoff contract)
 
 ## 2) Canonical Entities
 

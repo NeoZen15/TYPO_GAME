@@ -3,7 +3,7 @@
 Status: draft
 Last update: 2026-06-16
 
-**Ce doc = le branchement, PAS les formules.** Les formules vivent dans `docs/scoring-and-selection-math.md` (référencé ici par `math §X`). On ne les recopie pas — en cas de doute, **la math-spec fait foi**.
+**Ce doc = le branchement, PAS les formules.** Les formules vivent dans `docs/game/scoring-and-selection-math.md` (référencé ici par `math §X`). On ne les recopie pas — en cas de doute, **la math-spec fait foi**.
 
 But : dire au dev **d'où vient chaque nombre affiché**, **quand** on le calcule, **où** vit l'état, et **quelles fonctions** écrire pour passer du **mock** au **vrai jeu**.
 

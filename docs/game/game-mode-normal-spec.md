@@ -5,10 +5,10 @@ Status: active draft
 
 ## 0) Linked Docs
 
-- `docs/game-unified-spec-v1.md` as merged canonical reference (learning system + interface/runtime).
-- `docs/front-ui-master-spec.md` as canonical UI/runtime reference (colors, radius, timings, route flow).
-- `docs/game-v4-executable-spec.md` for front-runtime contracts and data/API contracts.
-- `docs/onboarding-game-contract.md` for onboarding handoff and calibration context.
+- `docs/game/game-unified-spec-v1.md` as merged canonical reference (learning system + interface/runtime).
+- `docs/ui/front-ui-master-spec.md` as canonical UI/runtime reference (colors, radius, timings, route flow).
+- `docs/game/game-v4-executable-spec.md` for front-runtime contracts and data/API contracts.
+- `docs/game/onboarding-game-contract.md` for onboarding handoff and calibration context.
 
 ## 1) Scope
 

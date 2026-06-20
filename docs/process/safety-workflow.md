@@ -29,8 +29,8 @@ That command creates a dated snapshot in `backups/checkpoints/<timestamp>/` with
 - `features/game/components/GameScreen.tsx`
 - `features/modes/components/ModeRulesPage.tsx`
 - `features/onboarding/components/OnboardingFlow.tsx`
-- `docs/front-ui-master-spec.md`
-- `docs/ui-consistency-contract.md`
+- `docs/ui/front-ui-master-spec.md`
+- `docs/ui/ui-consistency-contract.md`
 - `progress.md`
 
 ## The safe ritual

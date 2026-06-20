@@ -4,7 +4,7 @@ Last update: 2026-03-13
 Status: canonical merged spec
 
 Related style governance:
-- `docs/ui-consistency-contract.md` (site-wide typography/spacing/theme-switch consistency)
+- `docs/ui/ui-consistency-contract.md` (site-wide typography/spacing/theme-switch consistency)
 
 ## 1) Positionnement documentaire
 

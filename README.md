@@ -39,9 +39,9 @@ Then open `http://127.0.0.1:3000`.
 - `backups/`: historical recovery material, not an active work area.
 - `content/`: centralized copy constants.
 - `docs/`: implementation notes and product constraints.
-- Reference contract: `docs/typography-system-contract.md`.
-- Repo boundary guide: `docs/repo-organization.md`.
-- Worktree review note: `docs/worktree-stabilization.md`.
+- Reference contract: `docs/typography/typography-system-contract.md`.
+- Repo boundary guide: `docs/overview/repo-organization.md`.
+- Worktree review note: `docs/process/worktree-stabilization.md`.
 
 ## Notes
 

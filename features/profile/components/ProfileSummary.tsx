@@ -284,7 +284,7 @@ export default function ProfileSummary({
         </div>
 
         {/* Live standings + match history need a real player population — they
-            wake up after launch (docs/backend-todo.md). Honest placeholder until
+            wake up after launch (docs/process/backend-todo.md). Honest placeholder until
             then (no fake opponents / fake matches). */}
         <div className="ps-arena__soon">
           <span className="ps-arena__soontag">Arrives with the crowd</span>

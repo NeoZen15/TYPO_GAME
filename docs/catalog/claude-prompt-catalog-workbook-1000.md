@@ -331,7 +331,7 @@ Important
 
 Ordre conseillé:
 
-1. relire le spec dans [catalog-workbook-1000-spec.md](/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./docs/catalog-workbook-1000-spec.md)
+1. relire le spec dans [catalog-workbook-1000-spec.md](/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./docs/catalog/catalog-workbook-1000-spec.md)
 2. envoyer ce prompt à Claude
 3. récupérer sa proposition
 4. me la renvoyer pour audit avant exécution ou adaptation

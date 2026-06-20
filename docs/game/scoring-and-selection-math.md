@@ -2,8 +2,8 @@
 
 Status: draft
 Last update: 2026-06-15
-Counterpart (contexte): `docs/perceptual-progression-spec.md`
-Engine source-of-truth: `docs/training-database-master-recap-v7.md`
+Counterpart (contexte): `docs/game/perceptual-progression-spec.md`
+Engine source-of-truth: `docs/game/training-database-master-recap-v7.md`
 
 Formules, tables, pseudocode. Constantes en §13. Conventions/invariants en §0/§15.
 

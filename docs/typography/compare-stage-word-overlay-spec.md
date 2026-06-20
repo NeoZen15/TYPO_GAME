@@ -40,8 +40,8 @@ That means:
 
 `Word` must reuse the canonical projection logic from:
 
-- [anatomy-metrics-system.md](/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2/docs/anatomy-metrics-system.md)
-- [compare-stage-annotation-system.md](/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2/docs/compare-stage-annotation-system.md)
+- [anatomy-metrics-system.md](/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2/docs/typography/anatomy-metrics-system.md)
+- [compare-stage-annotation-system.md](/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2/docs/typography/compare-stage-annotation-system.md)
 
 `Word` should become its own dedicated engine, just as `Letter` now has a dedicated geometry engine.
 

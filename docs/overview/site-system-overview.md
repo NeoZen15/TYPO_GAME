@@ -451,9 +451,9 @@ Regarder:
 Pour quelqu'un qui arrive sur le projet, l'ordre conseillé est:
 
 1. ce document
-2. `docs/training-database-master-recap-v7.md`
-3. `docs/catalog-automation-roadmap.md`
-4. `docs/massive-font-source-strategy.md`
+2. `docs/game/training-database-master-recap-v7.md`
+3. `docs/catalog/catalog-automation-roadmap.md`
+4. `docs/catalog/massive-font-source-strategy.md`
 5. ensuite seulement les scripts et le code
 
 ## 12) Résumé final
