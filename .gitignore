@@ -39,6 +39,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# transient font staging workspace (assets are canonicalized out of staged/)
+/public/fonts/staged/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
