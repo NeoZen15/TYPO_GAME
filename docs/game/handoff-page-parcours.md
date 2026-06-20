@@ -4,7 +4,7 @@ Pour le dev (Claude) qui implémente. À lire **avec** les 3 autres docs.
 Direction **décidée le 2026-06-16** : carte-galaxie qui écrit **DWIGGINS** · **un seul écran zoomable** (le zoom = la navigation) · **HUD compact** (pas de bloc avatar).
 
 ## 0. Les 4 docs (ordre de lecture)
-1. `docs/archive/NIVEAU.rtf` — la **vision joueur** (le pourquoi, le ton).
+1. `docs/game/NIVEAU.rtf` — la **vision joueur** (le pourquoi, le ton).
 2. `docs/game/perceptual-progression-spec.md` — **modèle data + 35 paliers (§4·B) + types TS (§6.3) + migration profil**.
 3. `docs/game/scoring-and-selection-math.md` — **formules + constantes (§13) + MVP (§18)**.
 4. Ce brief — la **direction visuelle de la page Parcours**.

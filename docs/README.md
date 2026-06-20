@@ -10,6 +10,7 @@ Pour comprendre le projet, commencer par [`overview/site-system-overview.md`](ov
 - [`naming.md`](overview/naming.md) — conventions de nommage.
 
 ## game/ — moteur de jeu & pédagogie
+- [`NIVEAU.rtf`](game/NIVEAU.rtf) — **vision joueur** (le pourquoi, le ton) : DWIGGINS, l'entraînement du regard.
 - [`game-unified-spec-v1.md`](game/game-unified-spec-v1.md) — spec unifiée des modes de jeu.
 - [`game-mode-normal-spec.md`](game/game-mode-normal-spec.md) — spec du mode training (`/game`).
 - [`game-v4-executable-spec.md`](game/game-v4-executable-spec.md) — spec exécutable v4.
@@ -17,6 +18,7 @@ Pour comprendre le projet, commencer par [`overview/site-system-overview.md`](ov
 - [`perceptual-progression-spec.md`](game/perceptual-progression-spec.md) — modèle de progression perceptive (carte du regard).
 - [`scoring-and-selection-math.md`](game/scoring-and-selection-math.md) — maths du scoring et de la sélection de questions.
 - [`scoring-implementation-contract.md`](game/scoring-implementation-contract.md) — contrat d'implémentation du scoring.
+- [`handoff-page-parcours.md`](game/handoff-page-parcours.md) — brief dev de la page Parcours (carte-galaxie DWIGGINS).
 - [`training-database-master-recap-v7.md`](game/training-database-master-recap-v7.md) — récap base de données training.
 - [`training-engine-spec-v2-clean.md`](game/training-engine-spec-v2-clean.md) — spec du moteur training v2.
 
@@ -51,7 +53,5 @@ Pour comprendre le projet, commencer par [`overview/site-system-overview.md`](ov
 - [`backend-todo.md`](process/backend-todo.md) — TODO backend.
 
 ## archive/ — handoffs & références historiques
-- [`NIVEAU.rtf`](archive/NIVEAU.rtf) — référence texte du jeu (niveaux).
 - [`context-handoff-2026-03-27-play-onboarding.md`](archive/context-handoff-2026-03-27-play-onboarding.md) — handoff de contexte.
-- [`handoff-page-parcours.md`](archive/handoff-page-parcours.md) — handoff page parcours.
 - [`translator-review-packet.md`](archive/translator-review-packet.md) — packet de review traduction.

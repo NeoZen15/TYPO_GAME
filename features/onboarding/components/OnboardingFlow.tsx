@@ -489,7 +489,7 @@ export default function OnboardingFlow() {
             </button>
           ) : (
             <Link
-              href="/play"
+              href="/game"
               className="onboarding-btn onboarding-btn--solid"
             >
               Start playing

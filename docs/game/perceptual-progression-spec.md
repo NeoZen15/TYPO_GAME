@@ -4,7 +4,7 @@ Status: draft / proposal
 Last update: 2026-06-16
 Aligné avec `scoring-and-selection-math.md` v3.1 — modèle **palier→axe**, **XP = système**, **jetons**.
 
-Vision source (joueur): `docs/archive/NIVEAU.rtf`
+Vision source (joueur): `docs/game/NIVEAU.rtf`
 Docs liés:
 
 - `docs/game/training-database-master-recap-v7.md` — moteur mastery + scheduler + tables data cibles
