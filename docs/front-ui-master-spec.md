@@ -79,7 +79,9 @@ Progress yellow gradient:
 - `linear-gradient(90deg, #ffe160 0%, #ffd213 56%, #ffc901 100%)`
 
 Typography base:
-- UI stack: `SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif`
+- UI stack (token `--ui-sans`): `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif`
+- **Inter** (SIL OFL) is self-hosted in `public/fonts/ui/` — two variable fonts: `InterVariable.woff2` (roman) + `InterVariable-Italic.woff2` (italic), each covering all weights 100–900 + optical sizing (opsz 14–32) in one file. Embedded via two `@font-face` → the SAME UI font on every platform (Apple / Windows / Android). `system-ui` is only a load-time fallback.
+- ⚠️ SF Pro / `"SF Pro Display"` must NEVER be named in the UI stack or embedded — Apple's font licence forbids self-hosting / web / brand use. Do not reintroduce it.
 - body base size: `1rem`
 
 ## 5) Landing Screen Contract (`/`)

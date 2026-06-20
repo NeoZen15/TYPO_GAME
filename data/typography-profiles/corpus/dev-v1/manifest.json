@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-05-26T12:59:03.630Z",
+  "runtime": "fallback",
+  "version": "dev-v1",
+  "profileCount": 2,
+  "fontIds": [
+    "helvetica-neue",
+    "inter"
+  ],
+  "files": [
+    {
+      "fontId": "helvetica-neue",
+      "familyName": "Helvetica Neue",
+      "file": "helvetica-neue.measurement-profile.json"
+    },
+    {
+      "fontId": "inter",
+      "familyName": "Inter",
+      "file": "inter.measurement-profile.json"
+    }
+  ]
+}

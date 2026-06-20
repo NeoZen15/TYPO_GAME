@@ -1,0 +1,214 @@
+{
+  "generatedAt": "2026-05-26T14:43:10.396Z",
+  "left": {
+    "version": "headless-v1",
+    "generatedAt": "2026-05-26T13:36:32.152Z",
+    "runtime": "headless"
+  },
+  "right": {
+    "version": "headless-v2",
+    "generatedAt": "2026-05-26T14:43:00.159Z",
+    "runtime": "headless"
+  },
+  "fontCount": 6,
+  "fonts": [
+    {
+      "fontId": "arial",
+      "familyName": "Arial",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": 0,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "georgia",
+      "familyName": "Georgia",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": 0,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "helvetica-neue",
+      "familyName": "Helvetica Neue",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0.1075,
+        "xHeight": -1.092,
+        "capHeight": -0.0191,
+        "ascender": -0.2297,
+        "descender": -0.079,
+        "advanceWidth": -0.2512
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "inter",
+      "familyName": "Inter",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": -0.1646,
+        "xHeight": -2.9415,
+        "capHeight": -0.3033,
+        "ascender": -0.4498,
+        "descender": -1.879,
+        "advanceWidth": -0.7176
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "libre_baskerville",
+      "familyName": "Libre Baskerville",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": 0,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "times_new_roman",
+      "familyName": "Times New Roman",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": 0,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    }
+  ]
+}

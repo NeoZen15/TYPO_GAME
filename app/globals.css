@@ -1,19 +1,49 @@
 @import "tailwindcss";
 
+/* UI typeface — Inter (SIL Open Font License), self-hosted so EVERY platform
+   renders the SAME face instead of the per-OS system font (SF on Apple, Segoe
+   on Windows, Roboto on Android). SF Pro is never embedded (Apple licence
+   forbids it); Inter is the open, SF-Pro-adjacent face we ship instead.
+   system-ui etc. stay only as load-time / no-webfont fallback. */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/ui/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* Italic axis (loaded by the browser only when italic UI text is rendered). */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/ui/InterVariable-Italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --font-inter: "Inter";
-  --background: #ffffff;
-  --foreground: #111114;
-  --surface: rgba(255, 255, 255, 0.84);
-  --surface-strong: #ffffff;
-  --surface-soft: rgba(17, 17, 20, 0.035);
-  --line: rgba(17, 17, 20, 0.12);
-  --line-strong: rgba(17, 17, 20, 0.22);
-  --shadow-soft: 0 24px 80px rgba(17, 17, 20, 0.08);
-  --shadow-card: 0 12px 30px rgba(17, 17, 20, 0.07);
-  --ink-strong: rgba(16, 16, 20, 0.94);
-  --ink-muted: rgba(16, 16, 20, 0.58);
-  --ink-soft: rgba(16, 16, 20, 0.34);
+  --ui-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Bichromie de marque : noir + beige. Le beige `#f4f3ee` est le "paper"
+     historique de la marque Dwiggins (cf public/brand/*). Deux thèmes :
+     - light = "beige et noir" : fond beige, encre noire (ce bloc :root)
+     - dark  = "noir et beige" : fond noir, encre beige (bloc data-theme=dark)
+     Triplet beige réutilisé partout : 244, 243, 238 ; encre chaude : 25, 21, 16. */
+  --beige: #f4f3ee;
+  --beige-raised: #faf9f5;
+  --noir: #191510;
+  --background: var(--beige);
+  --foreground: var(--noir);
+  --surface: rgba(250, 249, 245, 0.84);
+  --surface-strong: var(--beige-raised);
+  --surface-soft: rgba(25, 21, 16, 0.035);
+  --line: rgba(25, 21, 16, 0.12);
+  --line-strong: rgba(25, 21, 16, 0.22);
+  --shadow-soft: 0 24px 80px rgba(25, 21, 16, 0.08);
+  --shadow-card: 0 12px 30px rgba(25, 21, 16, 0.07);
+  --ink-strong: rgba(25, 21, 16, 0.94);
+  --ink-muted: rgba(25, 21, 16, 0.58);
+  --ink-soft: rgba(25, 21, 16, 0.34);
   --ink-warm: #2a1a20;
   --accent-yellow: #ffd213;
   --success-green: #00c853;
@@ -44,18 +74,18 @@
 
 :root[data-theme="dark"] {
   --background: #000000;
-  --foreground: #ffffff;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-strong: rgba(255, 255, 255, 0.06);
-  --surface-soft: rgba(255, 255, 255, 0.02);
-  --line: rgba(255, 255, 255, 0.12);
-  --line-strong: rgba(255, 255, 255, 0.2);
+  --foreground: var(--beige);
+  --surface: rgba(244, 243, 238, 0.04);
+  --surface-strong: rgba(244, 243, 238, 0.06);
+  --surface-soft: rgba(244, 243, 238, 0.02);
+  --line: rgba(244, 243, 238, 0.12);
+  --line-strong: rgba(244, 243, 238, 0.2);
   --shadow-soft: 0 24px 80px rgba(0, 0, 0, 0.42);
   --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.34);
-  --ink-strong: rgba(255, 255, 255, 0.96);
-  --ink-muted: rgba(255, 255, 255, 0.62);
-  --ink-soft: rgba(255, 255, 255, 0.34);
-  --ink-warm: rgba(255, 255, 255, 0.9);
+  --ink-strong: rgba(244, 243, 238, 0.96);
+  --ink-muted: rgba(244, 243, 238, 0.62);
+  --ink-soft: rgba(244, 243, 238, 0.34);
+  --ink-warm: rgba(244, 243, 238, 0.9);
 }
 
 @theme inline {
@@ -82,7 +112,7 @@ body {
     radial-gradient(circle at top, rgba(255, 210, 19, 0.08), transparent 24%),
     var(--background);
   color: var(--foreground);
-  font-family: SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: var(--ui-sans);
   font-size: 1rem;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -170,12 +200,12 @@ svg {
   border-radius: 999px;
   border: 1px solid var(--line-strong);
   background: rgba(17, 17, 20, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(244, 243, 238, 0.08);
   transition: background-color 180ms ease, border-color 180ms ease;
 }
 
 :root[data-theme="dark"] .theme-switch__track {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(244, 243, 238, 0.08);
 }
 
 .theme-switch__thumb {
@@ -420,11 +450,11 @@ svg {
   place-items: center;
 }
 
-/* Onboarding mirrors /play exactly: pure black page (like the dark body),
-   always dark whatever the theme. */
+/* Onboarding mirrors /play: follows the theme — black page in dark,
+   beige page in light (via the global --background token). */
 .onboarding-page {
   align-content: center;
-  background: #000000;
+  background: var(--background);
 }
 
 .game-v1-page.game-v2-page {
@@ -476,7 +506,7 @@ svg {
 }
 
 :root[data-theme="dark"] .game-v2-word {
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(244, 243, 238, 0.92);
 }
 
 .game-v2-options {
@@ -816,20 +846,20 @@ svg {
 }
 
 :root[data-theme="dark"] .mode-select-card {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(244, 243, 238, 0.12);
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--mode-accent) 5%, rgba(255, 255, 255, 0.05)) 0%,
-    color-mix(in srgb, var(--mode-accent) 3%, rgba(255, 255, 255, 0.03)) 100%
+    color-mix(in srgb, var(--mode-accent) 5%, rgba(244, 243, 238, 0.05)) 0%,
+    color-mix(in srgb, var(--mode-accent) 3%, rgba(244, 243, 238, 0.03)) 100%
   );
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--mode-accent) 16%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    inset 0 1px 0 rgba(244, 243, 238, 0.02);
 }
 
 :root[data-theme="dark"] .mode-select-card:hover {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.028),
+    inset 0 1px 0 rgba(244, 243, 238, 0.028),
     0 10px 18px rgba(0, 0, 0, 0.18);
 }
 
@@ -843,11 +873,11 @@ svg {
     radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 40%),
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.048) 0%,
-      rgba(255, 255, 255, 0.028) 100%
+      rgba(244, 243, 238, 0.048) 0%,
+      rgba(244, 243, 238, 0.028) 100%
     );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.014),
+    inset 0 1px 0 rgba(244, 243, 238, 0.014),
     0 0 0 1px rgba(255, 210, 19, 0.04),
     0 14px 28px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(10px);
@@ -868,7 +898,7 @@ svg {
   max-width: 34rem;
   font-size: 0.96rem;
   line-height: 1.38;
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(244, 243, 238, 0.62);
 }
 
 :root[data-theme="dark"] .mode-select-grid {
@@ -914,14 +944,14 @@ svg {
   border-color: color-mix(
     in srgb,
     var(--mode-accent) 30%,
-    rgba(255, 255, 255, 0.1)
+    rgba(244, 243, 238, 0.1)
   );
   background: color-mix(
     in srgb,
     var(--mode-accent) 3%,
-    rgba(255, 255, 255, 0.02)
+    rgba(244, 243, 238, 0.02)
   );
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(244, 243, 238, 0.84);
 }
 
 :root[data-theme="dark"] .mode-select-card__title {
@@ -933,7 +963,7 @@ svg {
 :root[data-theme="dark"] .mode-select-card__copy {
   font-size: 0.78rem;
   line-height: 1.42;
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(244, 243, 238, 0.56);
 }
 
 :root[data-theme="dark"] .mode-select-card__rules {
@@ -946,15 +976,15 @@ svg {
   border-color: color-mix(
     in srgb,
     var(--mode-accent) 30%,
-    rgba(255, 255, 255, 0.1)
+    rgba(244, 243, 238, 0.1)
   );
   background: color-mix(
     in srgb,
     var(--mode-accent) 3%,
-    rgba(255, 255, 255, 0.02)
+    rgba(244, 243, 238, 0.02)
   );
-  color: rgba(255, 255, 255, 0.84);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.012);
+  color: rgba(244, 243, 238, 0.84);
+  box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.012);
 }
 
 .mode-rules-shell,
@@ -1081,11 +1111,11 @@ svg {
   background:
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.032) 0%,
-      rgba(255, 255, 255, 0.018) 100%
+      rgba(244, 243, 238, 0.032) 0%,
+      rgba(244, 243, 238, 0.018) 100%
     );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.012),
+    inset 0 1px 0 rgba(244, 243, 238, 0.012),
     0 14px 32px rgba(0, 0, 0, 0.14);
 }
 
@@ -1093,53 +1123,53 @@ svg {
   border-color: color-mix(
     in srgb,
     var(--mode-accent) 30%,
-    rgba(255, 255, 255, 0.1)
+    rgba(244, 243, 238, 0.1)
   );
   background: color-mix(
     in srgb,
     var(--mode-accent) 3%,
-    rgba(255, 255, 255, 0.02)
+    rgba(244, 243, 238, 0.02)
   );
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(244, 243, 238, 0.84);
 }
 
 :root[data-theme="dark"] .mode-rules-tab {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.02);
-  color: rgba(255, 255, 255, 0.62);
+  border-color: rgba(244, 243, 238, 0.12);
+  background: rgba(244, 243, 238, 0.02);
+  color: rgba(244, 243, 238, 0.62);
 }
 
 :root[data-theme="dark"] .mode-rules-tab[data-selected="true"] {
   border-color: color-mix(
     in srgb,
     var(--mode-accent) 30%,
-    rgba(255, 255, 255, 0.12)
+    rgba(244, 243, 238, 0.12)
   );
   background: color-mix(
     in srgb,
     var(--mode-accent) 3%,
-    rgba(255, 255, 255, 0.02)
+    rgba(244, 243, 238, 0.02)
   );
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(244, 243, 238, 0.84);
 }
 
 :root[data-theme="dark"] .mode-rules-section {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.018);
+  border-color: rgba(244, 243, 238, 0.12);
+  background: rgba(244, 243, 238, 0.018);
 }
 
 :root[data-theme="dark"] .mode-rules-shell .mode-placeholder-btn:not(.mode-placeholder-btn--solid) {
   border-color: color-mix(
     in srgb,
     var(--mode-accent) 30%,
-    rgba(255, 255, 255, 0.12)
+    rgba(244, 243, 238, 0.12)
   );
   background: color-mix(
     in srgb,
     var(--mode-accent) 3%,
-    rgba(255, 255, 255, 0.02)
+    rgba(244, 243, 238, 0.02)
   );
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(244, 243, 238, 0.84);
 }
 
 .mode-placeholder-shell {
@@ -1150,11 +1180,12 @@ svg {
 
 .onboarding-shell {
   --onboarding-accent: var(--mode-training);
-  --onboarding-bg: rgba(255, 255, 255, 0.045);
-  --onboarding-line-soft: rgba(255, 255, 255, 0.06);
-  --onboarding-line-strong: rgba(255, 255, 255, 0.12);
-  --onboarding-ink: rgba(255, 255, 255, 0.96);
-  --onboarding-ink-soft: rgba(255, 255, 255, 0.6);
+  /* Theme-aware: beige inks/films on black in dark, dark inks on beige in light. */
+  --onboarding-bg: var(--surface-soft);
+  --onboarding-line-soft: var(--line);
+  --onboarding-line-strong: var(--line-strong);
+  --onboarding-ink: var(--ink-strong);
+  --onboarding-ink-soft: var(--ink-muted);
   position: relative;
   width: min(94vw, 58rem);
   max-height: calc(100svh - var(--page-gutter-y-top) - var(--page-gutter-y-bottom));
@@ -1166,11 +1197,11 @@ svg {
   border-radius: 1.18rem;
   background:
     radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.048) 0%, rgba(255, 255, 255, 0.028) 100%);
+    var(--surface-strong);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.014),
+    inset 0 1px 0 rgba(244, 243, 238, 0.014),
     0 0 0 1px rgba(255, 210, 19, 0.04),
-    0 14px 28px rgba(0, 0, 0, 0.12);
+    var(--shadow-card);
   backdrop-filter: blur(10px);
 }
 
@@ -1278,7 +1309,7 @@ svg {
 
 .onboarding-specimen-glyph {
   fill: var(--onboarding-ink);
-  font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--ui-sans);
   font-size: 150px;
   font-weight: 600;
   letter-spacing: -6px;
@@ -1539,8 +1570,8 @@ svg {
   border-radius: 0.95rem;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--onboarding-accent) 6%, rgba(255, 255, 255, 0.035)) 0%,
-    color-mix(in srgb, var(--onboarding-accent) 3%, rgba(255, 255, 255, 0.02)) 100%
+    color-mix(in srgb, var(--onboarding-accent) 6%, rgba(244, 243, 238, 0.035)) 0%,
+    color-mix(in srgb, var(--onboarding-accent) 3%, rgba(244, 243, 238, 0.02)) 100%
   );
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--onboarding-accent) 14%, transparent);
 }
@@ -1560,8 +1591,8 @@ svg {
 }
 
 .onboarding-options--familiarity .onboarding-option[data-selected="true"] {
-  border-color: color-mix(in srgb, var(--onboarding-accent) 42%, rgba(255, 255, 255, 0.12));
-  background: color-mix(in srgb, var(--onboarding-accent) 10%, rgba(255, 255, 255, 0.04));
+  border-color: color-mix(in srgb, var(--onboarding-accent) 42%, rgba(244, 243, 238, 0.12));
+  background: color-mix(in srgb, var(--onboarding-accent) 10%, rgba(244, 243, 238, 0.04));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--onboarding-accent) 32%, transparent);
 }
 
@@ -1589,16 +1620,16 @@ svg {
   align-items: flex-start;
   gap: 0.62rem;
   padding: 0.94rem 0.92rem 0.86rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(244, 243, 238, 0.12);
   border-radius: 1.04rem;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--onboarding-accent) 5%, rgba(255, 255, 255, 0.05)) 0%,
-    color-mix(in srgb, var(--onboarding-accent) 3%, rgba(255, 255, 255, 0.03)) 100%
+    color-mix(in srgb, var(--onboarding-accent) 5%, rgba(244, 243, 238, 0.05)) 0%,
+    color-mix(in srgb, var(--onboarding-accent) 3%, rgba(244, 243, 238, 0.03)) 100%
   );
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--onboarding-accent) 16%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    inset 0 1px 0 rgba(244, 243, 238, 0.02);
   text-align: left;
   overflow: hidden;
   transition:
@@ -1628,11 +1659,11 @@ svg {
 }
 
 .onboarding-option[data-selected="true"] {
-  border-color: color-mix(in srgb, var(--onboarding-accent) 40%, rgba(255, 255, 255, 0.12));
+  border-color: color-mix(in srgb, var(--onboarding-accent) 40%, rgba(244, 243, 238, 0.12));
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--onboarding-accent) 10%, rgba(255, 255, 255, 0.06)) 0%,
-    color-mix(in srgb, var(--onboarding-accent) 5%, rgba(255, 255, 255, 0.03)) 100%
+    color-mix(in srgb, var(--onboarding-accent) 10%, rgba(244, 243, 238, 0.06)) 0%,
+    color-mix(in srgb, var(--onboarding-accent) 5%, rgba(244, 243, 238, 0.03)) 100%
   );
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--onboarding-accent) 34%, transparent);
 }
@@ -1646,13 +1677,13 @@ svg {
   border: 1px solid color-mix(in srgb, var(--onboarding-accent) 30%, var(--onboarding-line-strong));
   border-radius: 999px;
   background: color-mix(in srgb, var(--onboarding-accent) 4%, transparent);
-  color: rgba(255, 255, 255, 0.84);
+  color: rgba(244, 243, 238, 0.84);
   line-height: 1;
 }
 
 .onboarding-option__copy {
   max-width: 26ch;
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(244, 243, 238, 0.56);
   font-size: 0.78rem;
   font-weight: 400;
   letter-spacing: 0;
@@ -1748,7 +1779,7 @@ svg {
 }
 
 .onboarding-micro-word--sans {
-  font-family: SF Pro Display, Helvetica Neue, Arial, sans-serif;
+  font-family: var(--ui-sans);
 }
 
 .onboarding-micro-answers {
@@ -1769,8 +1800,8 @@ svg {
   gap: 0;
   padding: 0.9rem 1rem 0.9rem 1.3rem;
   border-radius: 1.12rem;
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgba(244, 243, 238, 0.035);
+  box-shadow: inset 0 0 0 1px rgba(244, 243, 238, 0.05);
 }
 
 .onboarding-micro-answer::after {
@@ -1806,9 +1837,9 @@ svg {
 
 /* Selected before Validate = neutral highlight, NOT coloured */
 .onboarding-micro-answer[data-selected="true"] {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  border-color: rgba(244, 243, 238, 0.28);
+  background: rgba(244, 243, 238, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(244, 243, 238, 0.16);
 }
 
 .onboarding-micro-answer--correct,
@@ -1874,26 +1905,26 @@ svg {
 }
 
 .onboarding-btn--solid {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(244, 243, 238, 0.12);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(238, 242, 255, 0.88)),
+    linear-gradient(180deg, rgba(244, 243, 238, 0.96), rgba(238, 242, 255, 0.88)),
     #f4f5fb;
   color: #0d1018;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 1px 0 rgba(244, 243, 238, 0.92),
     0 0.2rem 0.5rem rgba(0, 0, 0, 0.16);
 }
 
 .onboarding-btn--solid:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 1px 0 rgba(244, 243, 238, 1),
     0 0.32rem 0.75rem rgba(0, 0, 0, 0.18);
 }
 
 .onboarding-btn--solid:disabled {
-  background: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.34);
+  background: rgba(244, 243, 238, 0.07);
+  color: rgba(244, 243, 238, 0.34);
   opacity: 1;
   cursor: not-allowed;
 }
@@ -1977,7 +2008,7 @@ svg {
 
 .block-2 .section-title,
 .block-2-copy {
-  color: #ffffff;
+  color: var(--beige);
 }
 
 .block-2-morph {
@@ -1999,11 +2030,11 @@ svg {
 }
 
 .block-2-morph-word--solid {
-  color: #ffffff;
+  color: var(--beige);
 }
 
 .block-2-morph-word--muted {
-  color: rgba(255, 255, 255, 0.34);
+  color: rgba(244, 243, 238, 0.34);
 }
 
 .block-2-copy {
@@ -2014,11 +2045,11 @@ svg {
 }
 
 .block-2-copy-muted {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(244, 243, 238, 0.72);
 }
 
 .block-2-copy-strong {
-  color: #ffffff;
+  color: var(--beige);
 }
 
 @keyframes block2-rotate-words {
@@ -2040,7 +2071,7 @@ svg {
 }
 
 .block-3 {
-  background: #ffffff;
+  background: var(--beige);
 }
 
 .choice-panel {
@@ -2098,7 +2129,7 @@ svg {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(244, 243, 238, 0.72);
   box-shadow: var(--shadow-card);
 }
 
@@ -2126,7 +2157,7 @@ svg {
 }
 
 .block-4-reel-word--sans .block-4-reel-word-label {
-  font-family: SF Pro Display, Helvetica Neue, Arial, sans-serif;
+  font-family: var(--ui-sans);
 }
 
 .block-4-reel-word--serif .block-4-reel-word-label {
@@ -2145,11 +2176,11 @@ svg {
 
 .block-5 {
   background: #111114;
-  color: #ffffff;
+  color: var(--beige);
 }
 
 .block-5-copy {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(244, 243, 238, 0.72);
 }
 
 .block-5-lockup {
@@ -2167,7 +2198,7 @@ svg {
 }
 
 .block-5-a {
-  color: #ffffff;
+  color: var(--beige);
 }
 
 .block-5-guides [data-guide-draw] {
@@ -2211,10 +2242,10 @@ svg {
 :root[data-theme="dark"] .typo-page {
   --typo-page-bg: #111114;
   --typo-shell-bg: rgba(17, 17, 20, 0.86);
-  --typo-shell-border: rgba(245, 245, 247, 0.12);
-  --typo-ink: #f5f5f7;
-  --typo-muted: rgba(245, 245, 247, 0.62);
-  --typo-soft: rgba(245, 245, 247, 0.48);
+  --typo-shell-border: rgba(244, 243, 238, 0.12);
+  --typo-ink: #f4f3ee;
+  --typo-muted: rgba(244, 243, 238, 0.62);
+  --typo-soft: rgba(244, 243, 238, 0.48);
   --typo-info: #b9c4ff;
   --typo-info-soft: rgba(142, 162, 255, 0.14);
   --typo-info-line: rgba(142, 162, 255, 0.34);
@@ -2230,10 +2261,10 @@ svg {
   --typo-page-bg: #000000;
 }
 
-.typo-page.typo-page--black {
-  --typo-page-bg: #000000;
-}
-
+/* `.typo-page--black` (the Inter flagship specimen) uses pure black ONLY in the
+   dark theme; in the light theme it follows the normal beige `.typo-page` look,
+   so the global noir+beige toggle works on this page too (was forced black in
+   both themes, which broke the light variant: dark ink on a black page). */
 :root[data-theme="dark"] .typo-page.typo-page--black {
   --typo-page-bg: #000000;
 }
@@ -2273,11 +2304,11 @@ svg {
   padding: 0.58rem 0.84rem;
   margin-bottom: 0.32rem;
   overflow: visible;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(244, 243, 238, 0.1);
   border-radius: 1.62rem;
   background: #000000;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(244, 243, 238, 0.05),
     0 0.45rem 1.1rem rgba(0, 0, 0, 0.28);
   backdrop-filter: none;
 }
@@ -2302,7 +2333,7 @@ svg {
   padding: 1px;
   z-index: -1;
   border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+  background: linear-gradient(180deg, rgba(244, 243, 238, 0.12), rgba(244, 243, 238, 0.02));
   opacity: 0.56;
   mask:
     linear-gradient(#fff 0 0) content-box,
@@ -2404,9 +2435,9 @@ svg {
 
 .compare-site-nav__cta {
   padding: 0.3rem 0.76rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(244, 243, 238, 0.12);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(238, 242, 255, 0.88)),
+    linear-gradient(180deg, rgba(244, 243, 238, 0.96), rgba(238, 242, 255, 0.88)),
     #f4f5fb;
   color: #0d1018;
   font-size: 0.68rem;
@@ -2415,14 +2446,14 @@ svg {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 1px 0 rgba(244, 243, 238, 0.92),
     0 0.2rem 0.5rem rgba(0, 0, 0, 0.16);
 }
 
 .compare-site-nav__cta:hover {
   transform: translateY(-1px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 1px 0 rgba(244, 243, 238, 1),
     0 0.32rem 0.75rem rgba(0, 0, 0, 0.18);
 }
 
@@ -2463,7 +2494,7 @@ svg {
   padding: 0.34rem 0.62rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(58, 38, 48, 0.14);
-  background: rgba(255, 255, 255, 0.66);
+  background: rgba(244, 243, 238, 0.66);
   box-shadow: 0 0.12rem 0.3rem rgba(42, 26, 32, 0.04);
   font-size: 0.72rem;
   line-height: 1;
@@ -2579,11 +2610,11 @@ svg {
   padding: clamp(0.94rem, 1.6vw, 1.06rem);
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(244, 243, 238, 0.4);
 }
 
 :root[data-theme="dark"] .typo-section {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(244, 243, 238, 0.03);
 }
 
 .typo-section-head {
@@ -2751,7 +2782,7 @@ svg {
 }
 
 :root[data-theme="dark"] .typo-kv-row {
-  border-bottom-color: rgba(245, 245, 247, 0.16);
+  border-bottom-color: rgba(244, 243, 238, 0.16);
 }
 
 .typo-kv-row:last-child {
@@ -2819,7 +2850,7 @@ svg {
   padding: 0.52rem 0.86rem;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(58, 38, 48, 0.16);
-  background: rgba(255, 255, 255, 0.66);
+  background: rgba(244, 243, 238, 0.66);
   color: var(--typo-ink);
   font-size: 0.86rem;
   line-height: 1;
@@ -2828,7 +2859,7 @@ svg {
 }
 
 :root[data-theme="dark"] .typo-link-pill {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(244, 243, 238, 0.05);
 }
 
 .typo-demo-label {
@@ -2866,7 +2897,7 @@ svg {
 }
 
 :root[data-theme="dark"] .typo-observation-side {
-  border-left-color: rgba(245, 245, 247, 0.14);
+  border-left-color: rgba(244, 243, 238, 0.14);
 }
 
 .typo-observation-text {
@@ -2919,12 +2950,12 @@ svg {
   padding: 0.94rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-warning-line) 56%, transparent);
-  background: color-mix(in srgb, var(--typo-warning-soft) 64%, rgba(255, 255, 255, 0.32));
+  background: color-mix(in srgb, var(--typo-warning-soft) 64%, rgba(244, 243, 238, 0.32));
   box-shadow: 0 0.16rem 0.42rem rgba(42, 26, 32, 0.04);
 }
 
 :root[data-theme="dark"] .typo-concept-card {
-  background: color-mix(in srgb, var(--typo-warning-soft) 36%, rgba(255, 255, 255, 0.02));
+  background: color-mix(in srgb, var(--typo-warning-soft) 36%, rgba(244, 243, 238, 0.02));
 }
 
 .typo-concept-copy {
@@ -2951,13 +2982,13 @@ svg {
   padding: 0.94rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(255, 255, 255, 0.28));
+  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.28));
   box-shadow: 0 0.16rem 0.42rem rgba(42, 26, 32, 0.035);
 }
 
 :root[data-theme="dark"] .typo-analysis-card,
 :root[data-theme="dark"] .typo-system-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(244, 243, 238, 0.03);
 }
 
 .typo-analysis-value {
@@ -2999,8 +3030,8 @@ svg {
 }
 
 :root[data-theme="dark"] .typo-gateway-card {
-  border-top-color: color-mix(in srgb, var(--typo-positive-line) 54%, rgba(245, 245, 247, 0.12));
-  background: color-mix(in srgb, var(--typo-positive-soft) 20%, rgba(255, 255, 255, 0.015));
+  border-top-color: color-mix(in srgb, var(--typo-positive-line) 54%, rgba(244, 243, 238, 0.12));
+  background: color-mix(in srgb, var(--typo-positive-soft) 20%, rgba(244, 243, 238, 0.015));
 }
 
 .typo-gateway-title {
@@ -3036,13 +3067,13 @@ svg {
   padding: 0.94rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(244, 243, 238, 0.45);
   color: var(--typo-ink);
   text-decoration: none;
 }
 
 :root[data-theme="dark"] .typo-related-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(244, 243, 238, 0.03);
 }
 
 .typo-related-name {
@@ -3097,8 +3128,8 @@ svg {
   --typo-tester-panel-muted: rgba(42, 26, 32, 0.48);
   --typo-tester-grid-line: rgba(42, 26, 32, 0.1);
   --typo-tester-grid-fill: rgba(42, 26, 32, 0.02);
-  --typo-tester-chip-bg: color-mix(in srgb, var(--typo-warning-soft) 82%, rgba(255, 255, 255, 0.32));
-  --typo-tester-chip-active-bg: color-mix(in srgb, var(--typo-warning) 16%, rgba(255, 255, 255, 0.28));
+  --typo-tester-chip-bg: color-mix(in srgb, var(--typo-warning-soft) 82%, rgba(244, 243, 238, 0.32));
+  --typo-tester-chip-active-bg: color-mix(in srgb, var(--typo-warning) 16%, rgba(244, 243, 238, 0.28));
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.72rem;
@@ -3106,12 +3137,12 @@ svg {
 
 :root[data-theme="dark"] .typo-tester {
   --typo-tester-panel-bg: var(--typo-shell-bg);
-  --typo-tester-panel-line: rgba(255, 255, 255, 0.1);
-  --typo-tester-panel-strong: #ffffff;
-  --typo-tester-panel-soft: rgba(255, 255, 255, 0.7);
-  --typo-tester-panel-muted: rgba(255, 255, 255, 0.56);
-  --typo-tester-grid-line: rgba(255, 255, 255, 0.08);
-  --typo-tester-grid-fill: rgba(255, 255, 255, 0.035);
+  --typo-tester-panel-line: rgba(244, 243, 238, 0.1);
+  --typo-tester-panel-strong: #f4f3ee;
+  --typo-tester-panel-soft: rgba(244, 243, 238, 0.7);
+  --typo-tester-panel-muted: rgba(244, 243, 238, 0.56);
+  --typo-tester-grid-line: rgba(244, 243, 238, 0.08);
+  --typo-tester-grid-fill: rgba(244, 243, 238, 0.035);
   --typo-tester-chip-bg: color-mix(in srgb, var(--typo-warning-soft) 88%, transparent);
   --typo-tester-chip-active-bg: color-mix(in srgb, var(--typo-warning) 16%, transparent);
 }
@@ -3130,7 +3161,7 @@ svg {
   padding: 0.94rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: rgba(255, 255, 255, 0.38);
+  background: rgba(244, 243, 238, 0.38);
 }
 
 .typo-tester-body {
@@ -3159,12 +3190,12 @@ svg {
   padding: 0.94rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(244, 243, 238, 0.28);
 }
 
 :root[data-theme="dark"] .typo-tester-controls,
 :root[data-theme="dark"] .typo-tester-preview {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(244, 243, 238, 0.03);
 }
 
 .typo-tester-field {
@@ -3314,14 +3345,14 @@ svg {
   width: 100%;
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   border-radius: var(--radius-soft);
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(244, 243, 238, 0.72);
   color: var(--typo-ink);
   font: inherit;
 }
 
 :root[data-theme="dark"] .typo-tester-textarea,
 :root[data-theme="dark"] .typo-tester-select {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(244, 243, 238, 0.04);
 }
 
 .typo-tester-textarea {
@@ -3368,7 +3399,7 @@ svg {
 .typo-tester-range::-webkit-slider-runnable-track {
   height: 0.32rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--typo-warning-line) 72%, rgba(255, 255, 255, 0.14));
+  background: color-mix(in srgb, var(--typo-warning-line) 72%, rgba(244, 243, 238, 0.14));
 }
 
 .typo-tester-range::-webkit-slider-thumb {
@@ -3397,7 +3428,7 @@ svg {
 .typo-tester-range::-moz-range-track {
   height: 0.32rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--typo-warning-line) 72%, rgba(255, 255, 255, 0.14));
+  background: color-mix(in srgb, var(--typo-warning-line) 72%, rgba(244, 243, 238, 0.14));
 }
 
 .typo-tester-chip-list,
@@ -3430,7 +3461,7 @@ svg {
 .typo-tester-chip:hover,
 .typo-tester-weight-button:hover {
   border-color: color-mix(in srgb, var(--typo-warning) 56%, transparent);
-  background: color-mix(in srgb, var(--typo-warning-soft) 100%, rgba(255, 255, 255, 0.22));
+  background: color-mix(in srgb, var(--typo-warning-soft) 100%, rgba(244, 243, 238, 0.22));
 }
 
 .typo-tester-chip.is-active,
@@ -3447,13 +3478,13 @@ svg {
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background:
     linear-gradient(to bottom, rgba(58, 38, 48, 0.04), rgba(58, 38, 48, 0.01)),
-    rgba(255, 255, 255, 0.72);
+    rgba(244, 243, 238, 0.72);
 }
 
 :root[data-theme="dark"] .typo-tester-surface {
   background:
-    linear-gradient(to bottom, rgba(245, 245, 247, 0.04), rgba(245, 245, 247, 0.01)),
-    rgba(255, 255, 255, 0.04);
+    linear-gradient(to bottom, rgba(244, 243, 238, 0.04), rgba(244, 243, 238, 0.01)),
+    rgba(244, 243, 238, 0.04);
 }
 
 .typo-tester-output {
@@ -3597,8 +3628,8 @@ svg {
 .typo-glyph-groups {
   display: grid;
   gap: 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid rgba(244, 243, 238, 0.1);
+  border-top: 1px solid rgba(244, 243, 238, 0.1);
 }
 
 .typo-glyph-group {
@@ -3661,11 +3692,11 @@ svg {
 
 .typo-glyph-button.is-active {
   border-color: color-mix(in srgb, var(--typo-tester-panel-strong) 18%, transparent);
-  background: color-mix(in srgb, var(--typo-tester-panel-bg) 66%, rgba(255, 255, 255, 0.08));
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 66%, rgba(244, 243, 238, 0.08));
 }
 
 .typo-glyph-button--matrix.is-active {
-  background: color-mix(in srgb, var(--typo-tester-panel-bg) 60%, rgba(255, 255, 255, 0.1));
+  background: color-mix(in srgb, var(--typo-tester-panel-bg) 60%, rgba(244, 243, 238, 0.1));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--typo-tester-panel-strong) 18%, transparent);
 }
 
@@ -3750,7 +3781,7 @@ svg {
   border: 1px solid color-mix(in srgb, var(--typo-positive-line) 72%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-positive-soft) 72%, transparent), transparent),
-    color-mix(in srgb, var(--typo-shell-bg) 70%, rgba(255, 255, 255, 0.2));
+    color-mix(in srgb, var(--typo-shell-bg) 70%, rgba(244, 243, 238, 0.2));
 }
 
 .compare-hero-feature {
@@ -3775,7 +3806,7 @@ svg {
   --compare-stage-line-strong: rgba(17, 17, 20, 0.16);
   --compare-stage-ink: #050505;
   --compare-stage-ink-soft: rgba(17, 17, 20, 0.42);
-  --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 88%, rgba(255, 255, 255, 0.76));
+  --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 88%, rgba(244, 243, 238, 0.76));
   --compare-stage-switch-line: color-mix(in srgb, var(--typo-shell-border) 76%, rgba(17, 17, 20, 0.12));
   display: grid;
   gap: 0.78rem;
@@ -3784,17 +3815,17 @@ svg {
   border: 1px solid color-mix(in srgb, var(--typo-positive-line) 42%, var(--typo-shell-border));
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-positive-soft) 26%, transparent), transparent 28%),
-    color-mix(in srgb, var(--typo-shell-bg) 42%, rgba(255, 255, 255, 0.08));
+    color-mix(in srgb, var(--typo-shell-bg) 42%, rgba(244, 243, 238, 0.08));
 }
 
 :root[data-theme="dark"] .compare-stage-shell {
   --compare-stage-bg: var(--typo-page-bg);
-  --compare-stage-line-soft: rgba(255, 255, 255, 0.08);
-  --compare-stage-line-strong: rgba(255, 255, 255, 0.16);
-  --compare-stage-ink: rgba(255, 255, 255, 0.94);
-  --compare-stage-ink-soft: rgba(255, 255, 255, 0.58);
-  --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.04));
-  --compare-stage-switch-line: rgba(255, 255, 255, 0.08);
+  --compare-stage-line-soft: rgba(244, 243, 238, 0.08);
+  --compare-stage-line-strong: rgba(244, 243, 238, 0.16);
+  --compare-stage-ink: rgba(244, 243, 238, 0.94);
+  --compare-stage-ink-soft: rgba(244, 243, 238, 0.58);
+  --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(244, 243, 238, 0.04));
+  --compare-stage-switch-line: rgba(244, 243, 238, 0.08);
 }
 
 .compare-stage-head {
@@ -3833,7 +3864,7 @@ svg {
   padding: 0.3rem 0.72rem;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.12));
+  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(244, 243, 238, 0.12));
   color: var(--typo-muted);
   font-size: 0.72rem;
   line-height: 1;
@@ -4427,14 +4458,14 @@ svg {
   min-width: 6.9rem;
   min-height: 1.86rem;
   padding-inline: 0.86rem;
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(244, 243, 238, 0.28);
+  background: rgba(244, 243, 238, 0.95);
   color: #111114;
 }
 
 .compare-stage-focus-switch > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary):hover,
 .compare-stage-focus-rail > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary):hover {
-  border-color: rgba(255, 255, 255, 0.34);
+  border-color: rgba(244, 243, 238, 0.34);
   background: #ffffff;
   color: #000000;
 }
@@ -5521,7 +5552,7 @@ svg {
   padding: 0.72rem 0.82rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 76%, rgba(255, 255, 255, 0.1));
+  background: color-mix(in srgb, var(--typo-shell-bg) 76%, rgba(244, 243, 238, 0.1));
   color: var(--typo-muted);
   font-size: 0.78rem;
   line-height: 1.35;
@@ -5546,7 +5577,7 @@ svg {
   padding: 0.92rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(255, 255, 255, 0.06));
+  background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(244, 243, 238, 0.06));
 }
 
 .compare-proof-head {
@@ -5653,7 +5684,7 @@ svg {
   border: 1px solid color-mix(in srgb, var(--typo-info-line) 52%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-info-soft) 18%, transparent), transparent 65%),
-    color-mix(in srgb, var(--typo-shell-bg) 74%, rgba(255, 255, 255, 0.08));
+    color-mix(in srgb, var(--typo-shell-bg) 74%, rgba(244, 243, 238, 0.08));
 }
 
 .compare-detail-focus-head {
@@ -5686,7 +5717,7 @@ svg {
   padding: 0.34rem 0.7rem;
   border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(255, 255, 255, 0.08));
+  background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(244, 243, 238, 0.08));
   color: var(--typo-ink);
   font-size: 0.72rem;
   line-height: 1;
@@ -5698,7 +5729,7 @@ svg {
 
 .compare-detail-focus-link:hover {
   border-color: color-mix(in srgb, var(--typo-info-line) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-info-soft) 24%, rgba(255, 255, 255, 0.06));
+  background: color-mix(in srgb, var(--typo-info-soft) 24%, rgba(244, 243, 238, 0.06));
 }
 
 .compare-detail-focus-body {
@@ -5747,7 +5778,7 @@ svg {
   padding: 0.62rem 0.72rem;
   border-radius: calc(var(--radius-card) - 0.18rem);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 66%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(255, 255, 255, 0.06));
+  background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(244, 243, 238, 0.06));
   color: var(--typo-muted);
   font-size: 0.84rem;
   line-height: 1.46;
@@ -6126,7 +6157,7 @@ svg {
 .compare-stage-glyph-choice.is-active {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--typo-positive-line) 76%, transparent);
-  background: color-mix(in srgb, var(--typo-positive-soft) 32%, rgba(255, 255, 255, 0.04));
+  background: color-mix(in srgb, var(--typo-positive-soft) 32%, rgba(244, 243, 238, 0.04));
   color: var(--compare-stage-ink);
 }
 
@@ -6149,7 +6180,7 @@ svg {
   padding: 0.94rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(255, 255, 255, 0.14));
+  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.14));
   text-decoration: none;
   transition:
     transform 180ms ease,
@@ -6161,7 +6192,7 @@ svg {
 .compare-anchor.is-active {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--typo-positive-line) 82%, transparent);
-  background: color-mix(in srgb, var(--typo-positive-soft) 34%, rgba(255, 255, 255, 0.06));
+  background: color-mix(in srgb, var(--typo-positive-soft) 34%, rgba(244, 243, 238, 0.06));
 }
 
 .compare-anchor-directive {
@@ -6220,7 +6251,7 @@ svg {
     radial-gradient(circle at 78% 76%, color-mix(in srgb, var(--card-2) 16%, transparent), transparent 28%),
     linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 78%, transparent), color-mix(in srgb, var(--surface) 88%, transparent));
   box-shadow:
-    0 0 0 1px color-mix(in srgb, rgba(255, 255, 255, 0.04) 70%, transparent) inset,
+    0 0 0 1px color-mix(in srgb, rgba(244, 243, 238, 0.04) 70%, transparent) inset,
     0 0.75rem 1.8rem rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(20px);
   overflow: hidden;
@@ -6237,7 +6268,7 @@ svg {
   background:
     radial-gradient(circle at left center, color-mix(in srgb, var(--card-1) 18%, transparent), transparent 28%),
     radial-gradient(circle at right center, color-mix(in srgb, var(--card-2) 18%, transparent), transparent 28%),
-    linear-gradient(180deg, color-mix(in srgb, rgba(255, 255, 255, 0.08) 88%, transparent), color-mix(in srgb, rgba(255, 255, 255, 0.03) 72%, transparent));
+    linear-gradient(180deg, color-mix(in srgb, rgba(244, 243, 238, 0.08) 88%, transparent), color-mix(in srgb, rgba(244, 243, 238, 0.03) 72%, transparent));
 }
 
 .compare-help-widget__lens-mark,
@@ -6247,7 +6278,7 @@ svg {
   height: 0.74rem;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.12) 42%, transparent 44%),
+    radial-gradient(circle at 35% 35%, rgba(244, 243, 238, 0.9), rgba(244, 243, 238, 0.12) 42%, transparent 44%),
     linear-gradient(135deg, color-mix(in srgb, var(--card-1) 84%, white), color-mix(in srgb, var(--card-2) 76%, white));
   box-shadow:
     0 0 0 0.2rem color-mix(in srgb, var(--card-1) 12%, transparent),
@@ -6475,12 +6506,12 @@ svg {
   padding: 0.96rem 1rem;
   border-radius: var(--radius-card);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(255, 255, 255, 0.18));
+  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.18));
 }
 
 .compare-concept-card {
   border-color: color-mix(in srgb, var(--typo-warning-line) 62%, transparent);
-  background: color-mix(in srgb, var(--typo-warning-soft) 34%, rgba(255, 255, 255, 0.12));
+  background: color-mix(in srgb, var(--typo-warning-soft) 34%, rgba(244, 243, 238, 0.12));
 }
 
 .compare-next-card {
@@ -6656,7 +6687,7 @@ svg {
 
   :root[data-theme="dark"] .typo-specimen-rail,
   :root[data-theme="dark"] .typo-observation-side {
-    border-top-color: rgba(245, 245, 247, 0.14);
+    border-top-color: rgba(244, 243, 238, 0.14);
   }
 
   .section-title {
@@ -6729,7 +6760,7 @@ svg {
 
   .compare-stage-pane--left {
     border-right: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(244, 243, 238, 0.08);
   }
 
   .compare-stage-layer,
@@ -6846,7 +6877,24 @@ svg {
   width: 100%;
   color: var(--foreground);
 
-  --lp-mono: ui-monospace, SFMono-Regular, Menlo, "Roboto Mono", monospace;
+  --lp-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --lp-stage-line: rgba(17, 17, 20, 0.05);
+  --lp-stage-glow: rgba(17, 17, 20, 0.05);
+}
+
+/* Brand tint: on the landing the dark-theme "white" is the brand beige #f4f3ee
+   (rgb 244, 243, 238), not pure white. Scoped to .lp; light theme uses the
+   global beige page + dark ink like the rest of the site. */
+:root[data-theme="dark"] .lp {
+  --foreground: #f4f3ee;
+  --ink-strong: rgba(244, 243, 238, 0.96);
+  --ink-muted: rgba(244, 243, 238, 0.62);
+  --ink-soft: rgba(244, 243, 238, 0.36);
+  --surface-strong: rgba(244, 243, 238, 0.06);
+  --line: rgba(244, 243, 238, 0.12);
+  --line-strong: rgba(244, 243, 238, 0.22);
+  --lp-stage-line: rgba(244, 243, 238, 0.05);
+  --lp-stage-glow: rgba(244, 243, 238, 0.07);
 }
 
 /* Calm monochrome dot field (canvas). Neutral, restrained. */
@@ -6888,6 +6936,163 @@ svg {
   color: var(--ink-soft);
 }
 
+/* ── Header — floating black pill, mirrors validated `compare-site-nav` ── */
+
+.lp-header {
+  position: sticky;
+  top: clamp(0.6rem, 1.6vw, 1rem);
+  z-index: 90;
+  isolation: isolate;
+  width: min(94vw, 70rem);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.46rem 1rem;
+  padding: 0.5rem 0.7rem 0.5rem 0.95rem;
+  border: 1px solid rgba(20, 16, 25, 0.08);
+  /* Clean rounded rectangle — all four corners equal. */
+  border-radius: 1.4rem;
+  background: #f4f3ee;
+  color: #141019;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.55),
+    0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
+  transition: padding 220ms ease, box-shadow 220ms ease;
+}
+
+.lp-header.is-scrolled {
+  padding-block: 0.4rem;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.6),
+    0 0.7rem 1.9rem rgba(0, 0, 0, 0.46);
+}
+
+/* The neon-era glyph ring no longer fits the cream tab — the cream + lockup
+   carry the brand now. */
+.lp-header__field {
+  display: none;
+}
+
+/* No tab feet — the nav is a plain rounded rectangle. */
+.lp-header::before,
+.lp-header::after {
+  content: none;
+}
+
+.lp-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-width: 0;
+  padding-inline: 0.2rem 0.15rem;
+}
+
+/* Running-figures mark sits to the left of the wordmark — same lockup as the
+   hero crown and the footer dossier mark. */
+.lp-header__figures {
+  display: block;
+  width: auto;
+  height: clamp(0.92rem, 1.3vw, 1.08rem);
+  flex: none; /* never grow/shrink — can't balloon over the wordmark */
+}
+
+.lp-header__logo {
+  display: block;
+  width: auto;
+  height: clamp(1.05rem, 1.5vw, 1.2rem);
+  flex: none; /* never shrink — keeps its full width */
+}
+
+.lp-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.lp-header__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  color: rgba(20, 16, 25, 0.55);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.lp-header__link:hover {
+  color: rgba(20, 16, 25, 0.95);
+}
+
+.lp-header__link.is-active {
+  color: rgba(20, 16, 25, 0.95);
+  background: rgba(20, 16, 25, 0.07);
+}
+
+/* Dark pill on the cream tab — mirrors the footer's primary CTA. */
+.lp-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.34rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(20, 16, 25, 0.12);
+  background: #141019;
+  color: #f4f3ee;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.08),
+    0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.lp-header__cta:hover {
+  transform: translateY(-1px);
+  background: #000;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.12),
+    0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
+}
+
+.lp-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+/* Theme toggle sits in the pill, not floating. On the cream tab it must read
+   as a dark control (the cream-scoped tokens would render it invisible). */
+.lp-header .theme-switch {
+  position: static;
+  top: auto;
+  right: auto;
+}
+
+.lp-header .theme-switch__track {
+  border-color: rgba(20, 16, 25, 0.28);
+  background: rgba(20, 16, 25, 0.1);
+  box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
+}
+
+.lp-header .theme-switch__thumb {
+  background: #141019;
+  box-shadow: 0 1px 3px rgba(20, 16, 25, 0.35);
+}
+
+@media (max-width: 760px) {
+  .lp-header__nav { display: none; }
+}
+
 /* ── Block 1 — Hero ─────────────────────────────────────────────── */
 
 .lp-hero {
@@ -6910,6 +7115,15 @@ svg {
   justify-items: center;
   gap: clamp(0.85rem, 2vh, 1.35rem);
   text-align: center;
+}
+
+/* Dwiggins symbol — small cream brand mark crowning the hero word
+   (negative margin pulls it snug against "Character"). */
+.lp-hero__symbol {
+  display: block;
+  width: clamp(3.2rem, 6vw, 4.8rem);
+  height: auto;
+  margin-bottom: -1.85rem;
 }
 
 .lp-hero__title {
@@ -6981,19 +7195,30 @@ svg {
     box-shadow 180ms ease;
 }
 
+/* Primary CTA — brand cream pill / dark text (the charte colour, not white). */
 .lp-btn--primary {
+  border: 1px solid rgba(244, 243, 238, 0.16);
+  background: #f4f3ee;
+  color: #141019;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.4),
+    0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+/* In light theme the page is white, so flip to a dark pill for contrast. */
+:root[data-theme="light"] .lp-btn--primary {
   border: 1px solid color-mix(in srgb, var(--foreground) 14%, transparent);
   background: var(--foreground);
   color: var(--background);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #ffffff 34%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 22%, transparent),
     0 0.2rem 0.55rem rgba(0, 0, 0, 0.16);
 }
 
 .lp-btn--primary:hover {
   transform: translateY(-1px);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #ffffff 46%, transparent),
+    inset 0 1px 0 rgba(244, 243, 238, 1),
     0 0.34rem 0.8rem rgba(0, 0, 0, 0.2);
 }
 
@@ -7049,6 +7274,7 @@ svg {
   padding:
     clamp(4.5rem, 12vh, 9rem)
     var(--page-gutter-x);
+  scroll-margin-top: 4.5rem;
 }
 
 .lp-section__title {
@@ -7080,6 +7306,27 @@ svg {
   margin: 0 auto;
 }
 
+/* The card sits on a faint "studio" stage so it isn't floating in black. */
+.lp-demo-stagewrap {
+  position: relative;
+  perspective: 760px;
+}
+
+.lp-demo-stage {
+  position: absolute;
+  inset: -12% -8%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(42% 42% at var(--gx, 50%) var(--gy, 42%), var(--lp-stage-glow), transparent 72%),
+    linear-gradient(var(--lp-stage-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lp-stage-line) 1px, transparent 1px);
+  background-size: 100% 100%, 30px 30px, 30px 30px;
+  -webkit-mask-image: radial-gradient(72% 72% at 50% 46%, #000 38%, transparent 86%);
+  mask-image: radial-gradient(72% 72% at 50% 46%, #000 38%, transparent 86%);
+  transition: background-position 0.3s ease;
+}
+
 @media (max-width: 860px) {
   .lp-demo {
     grid-template-columns: 1fr;
@@ -7089,24 +7336,32 @@ svg {
 
 .lp-demo-board {
   position: relative;
+  z-index: 1;
   display: grid;
   gap: 0.9rem;
   padding: clamp(1.3rem, 3vw, 2rem);
   border-radius: 1.3rem;
   border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
   background: color-mix(in srgb, var(--surface-strong) 50%, transparent);
-  box-shadow: 0 18px 44px rgba(17, 17, 20, 0.06);
+  box-shadow: 0 26px 60px rgba(17, 17, 20, 0.1);
   backdrop-filter: blur(10px);
-  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
+
+/* Layered depth so the card reads as genuinely 3D when it tilts. */
+.lp-demo-board__prompt { transform: translateZ(44px); }
+.lp-demo-board__word { transform: translateZ(72px); }
+.lp-demo-board__options { transform: translateZ(34px); transform-style: preserve-3d; }
+.lp-demo-board__feedback { transform: translateZ(24px); }
 
 :root[data-theme="dark"] .lp-demo-board {
   border: 1px solid rgba(255, 210, 19, 0.22);
   background:
     radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 42%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.028) 100%);
+    linear-gradient(180deg, rgba(244, 243, 238, 0.05) 0%, rgba(244, 243, 238, 0.028) 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.014),
+    inset 0 1px 0 rgba(244, 243, 238, 0.014),
     0 0 0 1px rgba(255, 210, 19, 0.04),
     0 18px 40px rgba(0, 0, 0, 0.3);
 }
@@ -7132,7 +7387,7 @@ svg {
 }
 
 :root[data-theme="dark"] .lp-demo-board__word {
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(244, 243, 238, 0.92);
 }
 
 .lp-demo-board__options {
@@ -7150,12 +7405,34 @@ svg {
   padding: 0.9rem 0.9rem 0.9rem 1.25rem;
   border-radius: 1.05rem;
   border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
-  background: color-mix(in srgb, var(--surface-strong) 60%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface-strong) 74%, transparent) 0%,
+    color-mix(in srgb, var(--surface-strong) 48%, transparent) 100%
+  );
   color: var(--ink-strong);
+  transform: translateZ(34px);
+  transform-style: preserve-3d;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 18%, transparent),
+    0 4px 0 color-mix(in srgb, #000000 16%, transparent),
+    0 16px 26px rgba(17, 17, 20, 0.18);
   transition:
     border-color 200ms ease,
     background-color 200ms ease,
     color 200ms ease;
+}
+
+:root[data-theme="dark"] .lp-demo-opt {
+  background: linear-gradient(
+    180deg,
+    rgba(244, 243, 238, 0.085) 0%,
+    rgba(244, 243, 238, 0.03) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.14),
+    0 5px 0 rgba(0, 0, 0, 0.55),
+    0 18px 32px rgba(0, 0, 0, 0.55);
 }
 
 .lp-demo-opt::before {
@@ -7229,28 +7506,46 @@ svg {
 
 .lp-anatomy {
   display: grid;
-  justify-items: center;
-  gap: clamp(2.5rem, 6vh, 4rem);
-  width: min(94vw, 70rem);
+  grid-template-columns: 1fr 1.02fr;
+  align-items: center;
+  gap: clamp(2.2rem, 5.5vw, 5rem);
+  width: min(95vw, 82rem);
   margin: 0 auto;
-  text-align: center;
 }
 
 .lp-anatomy__head {
-  max-width: 42ch;
+  grid-column: 2;
+  grid-row: 1;
+  max-width: 46ch;
 }
 
 .lp-anatomy__stage {
+  grid-column: 1;
+  grid-row: 1;
   position: relative;
   display: grid;
   place-items: center;
-  padding: clamp(1.5rem, 5vw, 3.5rem);
+  padding: clamp(1.4rem, 3.5vw, 2.6rem) clamp(2.6rem, 5vw, 4rem);
 }
 
 .lp-anatomy__lockup {
   position: relative;
-  width: clamp(13rem, 26vw, 19rem);
+  width: clamp(14rem, 30vw, 22rem);
   color: var(--ink-strong);
+}
+
+@media (max-width: 860px) {
+  .lp-anatomy {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    justify-items: center;
+    text-align: center;
+  }
+  .lp-anatomy__head,
+  .lp-anatomy__stage {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }
 
 .lp-anatomy__glyph,
@@ -7264,17 +7559,22 @@ svg {
   position: absolute;
   inset: 0;
   fill: none;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+  /* In viewBox units (~305 wide rendered at ~300px ⇒ ≈1px hairline).
+     We deliberately avoid vector-effect:non-scaling-stroke here: it makes
+     stroke-dasharray render in screen space while getTotalLength() measures
+     in user units, which breaks the scroll draw-in (lines never fully reveal). */
+  stroke-width: 1.4;
+  stroke-linecap: round;
 }
 
-.lp-anatomy__guides [data-guide-draw] {
-  vector-effect: non-scaling-stroke;
-}
-
-.lp-guide-frame { stroke: var(--ink-soft); opacity: 0.55; }
-.lp-guide-diagonal { stroke: var(--ink-soft); opacity: 0.4; }
-.lp-guide-circle { stroke: color-mix(in srgb, var(--mode-expert) 60%, transparent); opacity: 0.9; }
+/* Each construction system reads in its own validated accent (colour on
+   contours, never on text): yellow = the em-square / metric frame,
+   green = the modular grid, blue = the curve construction,
+   orange = the diagonal axes. */
+.lp-guide-frame { stroke: color-mix(in srgb, var(--accent-yellow) 78%, transparent); opacity: 0.62; }
+.lp-guide-inner { stroke: color-mix(in srgb, var(--mode-training) 70%, transparent); opacity: 0.5; }
+.lp-guide-ellipse { stroke: color-mix(in srgb, var(--mode-expert) 78%, transparent); opacity: 0.78; }
+.lp-guide-diagonal { stroke: color-mix(in srgb, var(--mode-competition) 75%, transparent); opacity: 0.6; }
 
 /* Anatomy annotations — mono labels around the lockup. */
 .lp-annot {
@@ -7306,7 +7606,7 @@ svg {
 }
 
 .lp-annot--crossbar {
-  top: 56%;
+  top: 62%;
   left: calc(100% + 1.4rem);
 }
 .lp-annot--crossbar::before {
@@ -7344,3 +7644,870 @@ svg {
   .lp-annot--crossbar,
   .lp-annot--counter { display: none; }
 }
+
+/* ── Generic feature block (text + visual, two columns) ─────────── */
+
+.lp-feature {
+  display: grid;
+  grid-template-columns: 1.02fr 1fr;
+  align-items: center;
+  gap: clamp(2.2rem, 5.5vw, 5rem);
+  width: min(95vw, 82rem);
+  margin: 0 auto;
+}
+
+.lp-feature__cta {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 860px) {
+  .lp-feature {
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+}
+
+/* ── Block 4 — compare visual ───────────────────────────────────── */
+
+.lp-compare-vis {
+  position: relative;
+  display: grid;
+  gap: clamp(0.7rem, 1.6vw, 1rem);
+  padding: clamp(1rem, 2.2vw, 1.5rem);
+  border-radius: 1.3rem;
+  border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  background: color-mix(in srgb, var(--surface-strong) 50%, transparent);
+  box-shadow: 0 18px 44px rgba(17, 17, 20, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+:root[data-theme="dark"] .lp-compare-vis {
+  border: 1px solid rgba(255, 210, 19, 0.22);
+  background:
+    radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 42%),
+    linear-gradient(180deg, rgba(244, 243, 238, 0.05) 0%, rgba(244, 243, 238, 0.028) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.014),
+    0 0 0 1px rgba(255, 210, 19, 0.04),
+    0 18px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Header: "one difference at a time" + the cycling tell. */
+.lp-compare-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--lp-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+}
+
+.lp-compare-kicker {
+  color: var(--ink-soft);
+}
+
+/* Tell tabs the ghost cursor clicks through. */
+.lp-compare-tabs {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.lp-compare-tab {
+  color: var(--ink-soft);
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.lp-compare-tab.is-active {
+  color: var(--ink-strong);
+  border-color: color-mix(in srgb, var(--mode-expert) 60%, transparent);
+  background: color-mix(in srgb, var(--mode-expert) 10%, transparent);
+}
+
+/* Host the real compare engine (MeasuredGlyphSplit). The shell only scopes the
+   --compare-stage-* variables (incl. the dark-theme variants); its own frame is
+   neutralised so the landing's panel is the only frame. */
+.lp-compare-shell.compare-stage-shell {
+  border: none;
+  background: none;
+  padding: 0;
+  gap: 0;
+}
+
+/* Ensure the measured split sits in two columns even without the compare
+   page's parent state classes. */
+.lp-compare-shell .compare-stage-split--measured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.6rem, 2.4vw, 1.8rem);
+}
+
+.lp-compare-shell .compare-stage-pane--measured {
+  padding-top: clamp(0.9rem, 1.8vw, 1.3rem);
+}
+
+/* Normal card size: shrink the (otherwise full-page) measured canvas and keep
+   only the essentials so it stays readable small — the glyphs, the names, and
+   the x-height + baseline guides. Hide the heavier instrumentation (metric
+   chips, width dimension line, vertical axis measures). */
+.lp-compare-shell .compare-stage-pane-measured-shell {
+  min-height: clamp(5.5rem, 8vw, 7rem);
+  height: clamp(5.5rem, 8vw, 7rem);
+  max-height: clamp(5.5rem, 8vw, 7rem);
+}
+
+/* Keep the real measurements visible via the tidy metric chips (X-HEIGHT /
+   WIDTH) at the top, plus the x-height + baseline guide LINES on the glyph.
+   Hide the on-glyph value labels (they duplicate the chips and collide at this
+   size), the width dimension line, the side axis rulers, and the secondary
+   guides (ascender / cap / descender). The cycled glyph is a clean 'a'. */
+.lp-compare-shell .compare-stage-pane-guide-label,
+.lp-compare-shell .compare-stage-pane-dimension-line,
+.lp-compare-shell .compare-stage-pane-dimension-tick,
+.lp-compare-shell .compare-stage-pane-dimension-label,
+.lp-compare-shell .compare-stage-pane-axis,
+.lp-compare-shell .compare-stage-pane-axis-tick,
+.lp-compare-shell .compare-stage-pane-guide--subtle {
+  display: none;
+}
+
+/* The metric chips are calibrated for the full /compare stage; shrink them for
+   the card and keep them on one row so they don't crowd the glyph. */
+.lp-compare-shell .compare-stage-pane-measure-strip {
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  margin-right: 0;
+}
+
+.lp-compare-shell .compare-stage-pane-measure-chip {
+  min-width: 0;
+  min-height: 1.3rem;
+  padding: 0.18rem 0.5rem;
+  gap: 0.3rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+/* The three modes stay mounted, stacked; only the active one fades in. */
+.lp-compare-modes {
+  position: relative;
+  min-height: clamp(9.5rem, 13vw, 11.5rem);
+}
+
+.lp-compare-mode {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.lp-compare-mode.is-active {
+  opacity: 1;
+}
+
+.lp-compare-vs {
+  color: var(--ink-soft);
+}
+
+/* Mode: Split — two glyphs plain, side by side. */
+.lp-compare-split {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(0.6rem, 2.4vw, 1.8rem);
+  min-height: clamp(6.5rem, 9vw, 8rem);
+}
+
+.lp-compare-split__pane {
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+}
+
+.lp-compare-split__glyph {
+  font-size: clamp(3.6rem, 8vw, 5.4rem);
+  line-height: 1;
+  color: var(--compare-stage-ink);
+}
+
+.lp-compare-split__name {
+  font-family: var(--lp-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--compare-stage-ink-soft);
+}
+
+.lp-compare-split__rule {
+  align-self: stretch;
+  width: 1px;
+  background: var(--compare-stage-line-strong);
+}
+
+/* Mode: Overlay — the two faces superimposed, the difference as the mismatch. */
+.lp-compare-overlay.compare-stage-overlay {
+  display: grid;
+  place-items: center;
+  padding: clamp(0.6rem, 2vw, 1.2rem);
+  min-height: clamp(6.5rem, 9vw, 8rem);
+}
+
+.lp-compare-overlay .compare-stage-layer {
+  grid-area: 1 / 1;
+  width: auto;
+  font-size: clamp(4rem, 9vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  color: var(--compare-stage-ink);
+}
+
+.lp-compare-overlay .lp-compare-ghost {
+  color: color-mix(in srgb, var(--mode-expert) 70%, transparent);
+  opacity: 0.55;
+}
+
+/* ── Block 5 — typefaces rail ───────────────────────────────────── */
+
+.lp-typefaces {
+  display: grid;
+  gap: clamp(1.8rem, 4.5vh, 3rem);
+  padding-inline: 0;
+}
+
+.lp-typefaces__head {
+  width: min(95vw, 82rem);
+  margin: 0 auto;
+  padding-inline: var(--page-gutter-x);
+}
+
+/* Hand-scrollable + auto-drift rail (JS-driven); edges faded; cards tilt. */
+.lp-typeface-rail {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1.3rem 0 1.8rem;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  cursor: grab;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+
+.lp-typeface-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.lp-typeface-rail.is-dragging {
+  cursor: grabbing;
+}
+
+.lp-typeface-track {
+  display: flex;
+  gap: 1.1rem;
+  width: max-content;
+  padding-inline: var(--page-gutter-x);
+  perspective: 700px;
+}
+
+.lp-typeface-card {
+  flex: 0 0 clamp(14.5rem, 24vw, 18rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-height: 11rem;
+  padding: clamp(1.4rem, 2.5vw, 1.9rem);
+  border-radius: 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--surface-strong) 45%, transparent);
+  box-shadow: 0 14px 32px rgba(17, 17, 20, 0.05);
+  backdrop-filter: blur(8px);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+:root[data-theme="dark"] .lp-typeface-card {
+  border: 1px solid rgba(244, 243, 238, 0.1);
+  background: linear-gradient(180deg, rgba(244, 243, 238, 0.05) 0%, rgba(244, 243, 238, 0.025) 100%);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+}
+
+.lp-typeface-card:hover {
+  --lift: -5px;
+  border-color: color-mix(in srgb, var(--foreground) 28%, transparent);
+  box-shadow: 0 24px 46px rgba(0, 0, 0, 0.34);
+}
+
+/* The specimen IS the typeface name, set in its own face. */
+.lp-typeface-card__specimen {
+  color: var(--ink-warm);
+  font-size: clamp(1.7rem, 2.4vw, 2.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+:root[data-theme="dark"] .lp-typeface-card__specimen {
+  color: rgba(244, 243, 238, 0.94);
+}
+
+.lp-typeface-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.lp-typeface-card__cat {
+  font-family: var(--lp-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.lp-typeface-card__arrow {
+  color: var(--ink-soft);
+  transition: transform 200ms ease;
+}
+
+.lp-typeface-card:hover .lp-typeface-card__arrow {
+  transform: translateX(3px);
+}
+
+/* ── Block 6 — modes (accent on contour only, validated /play) ──── */
+
+.lp-modes {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.2rem);
+  width: min(95vw, 82rem);
+  margin: 0 auto;
+}
+
+.lp-modes__head {
+  max-width: 40ch;
+}
+
+@media (max-width: 900px) {
+  .lp-modes {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.lp-modes__grid {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  perspective: 1100px;
+}
+
+/* Overlapping fanned deck, cascading down-right (modern), pushed right. */
+.lp-mode-card { flex: 0 0 clamp(13.5rem, 22vw, 16.5rem); }
+.lp-mode-card:nth-child(1) { z-index: 1; }
+.lp-mode-card:nth-child(2) {
+  z-index: 2;
+  margin-left: clamp(-4.5rem, -5.5vw, -3rem);
+  margin-top: clamp(0.8rem, 2vw, 1.6rem);
+}
+.lp-mode-card:nth-child(3) {
+  z-index: 3;
+  margin-left: clamp(-4.5rem, -5.5vw, -3rem);
+  margin-top: clamp(1.6rem, 4vw, 3.2rem);
+}
+
+@media (max-width: 900px) {
+  .lp-modes__grid { flex-direction: column; align-items: stretch; }
+  .lp-mode-card:nth-child(2),
+  .lp-mode-card:nth-child(3) { margin-left: 0; margin-top: 0; }
+}
+
+/* Staggered entrance — uses `translate`/`scale`/`opacity` (independent of the
+   tilt `transform`), so the 3D hover tilt is never disturbed. Armed by JS only
+   when motion is allowed; cards are visible by default otherwise. */
+.lp-modes--armed .lp-mode-card {
+  opacity: 0;
+  translate: 0 2rem;
+  scale: 0.96;
+}
+
+.lp-modes--armed.lp-modes--in .lp-mode-card {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  transition:
+    opacity 0.6s ease,
+    translate 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
+    scale 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lp-modes--armed.lp-modes--in .lp-mode-card:nth-child(1) { transition-delay: 0.05s; }
+.lp-modes--armed.lp-modes--in .lp-mode-card:nth-child(2) { transition-delay: 0.17s; }
+.lp-modes--armed.lp-modes--in .lp-mode-card:nth-child(3) { transition-delay: 0.29s; }
+
+.lp-mode-card {
+  --mode-accent: var(--mode-training);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  min-height: 10.5rem;
+  padding: clamp(1.2rem, 2.2vw, 1.55rem);
+  border-radius: 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) 7%, transparent) 0%, transparent 55%),
+    color-mix(in srgb, var(--foreground) 5%, var(--background));
+  box-shadow: var(--shadow-card);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  will-change: transform;
+  transition: transform 220ms ease, border-color 200ms ease, box-shadow 220ms ease;
+}
+
+.lp-mode-card::after {
+  content: "";
+  position: absolute;
+  top: -22%;
+  right: -14%;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mode-accent) 10%, transparent);
+  filter: blur(34px);
+  pointer-events: none;
+  transition: transform 320ms ease, background-color 320ms ease;
+}
+
+.lp-mode-card:hover {
+  --lift: -8px;
+  z-index: 10;
+  border-color: color-mix(in srgb, var(--mode-accent) 52%, var(--line));
+  box-shadow:
+    0 26px 50px rgba(0, 0, 0, 0.42),
+    0 8px 38px color-mix(in srgb, var(--mode-accent) 26%, transparent);
+}
+
+.lp-mode-card:hover::after {
+  background: color-mix(in srgb, var(--mode-accent) 20%, transparent);
+  transform: scale(1.25);
+}
+
+.lp-mode-card__chip {
+  justify-self: start;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--mode-accent) 38%, transparent);
+  background: color-mix(in srgb, var(--mode-accent) 6%, transparent);
+  color: var(--ink-strong);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lp-mode-card__title {
+  margin: 0.3rem 0 0;
+  color: var(--ink-strong);
+  font-size: 1.32rem;
+  font-weight: 640;
+  letter-spacing: -0.01em;
+}
+
+.lp-mode-card__desc {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
+.lp-mode-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.8rem;
+  font-family: var(--lp-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.lp-mode-card__arrow {
+  transition: transform 200ms ease;
+}
+
+.lp-mode-card:hover .lp-mode-card__arrow {
+  transform: translateX(3px);
+}
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+
+/* ── Footer — the whole bar IS the cream "dossier" (full-width) ───── */
+.lp-footer {
+  position: relative;
+  width: 100%;
+  margin-top: clamp(3.5rem, 9vh, 7rem); /* dark gap above; the tab sits in it */
+  padding: clamp(2.2rem, 4.5vw, 3.4rem) var(--page-gutter-x) clamp(1.8rem, 3vw, 2.6rem);
+  background: #f4f3ee;
+  border-radius: 0 1.7rem 0 0; /* top-left is provided by the tab */
+  color: #141019;
+}
+
+/* Folder tab — a single inline SVG path (see LandingExperience.tsx). Drawn as
+   one vector shape so the sweep into the body is perfectly smooth and crisp:
+   no rectangle/gradient seam, no feathered (blurry) edge. `bottom: 100%` pins
+   its bottom edge to the footer's top edge at any width; `height: auto` keeps
+   the curve proportional (never stretched). */
+.lp-footer__tab {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  width: clamp(16rem, 40%, 30rem);
+  height: auto;
+  margin-bottom: -1px; /* 1px overlap removes any sub-pixel hairline seam */
+  display: block;
+}
+
+.lp-footer__inner {
+  position: relative;
+  width: min(96vw, 84rem);
+  margin: 0 auto;
+}
+
+/* Circled © — top-right (dark on cream). */
+.lp-footer__copyright {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  border: 1.5px solid #141019;
+  font-family: var(--lp-mono);
+  font-size: 0.95rem;
+  color: #141019;
+}
+
+.lp-footer__main {
+  display: grid;
+  grid-template-columns: 1.15fr 1.6fr;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .lp-footer__main { grid-template-columns: 1fr; gap: 2.4rem; }
+}
+
+.lp-footer__brand {
+  display: grid;
+  justify-items: start;
+  gap: 1.1rem;
+}
+
+/* Icon + wordmark share one box so they stay left-aligned and the icon keeps
+   the brand-panel proportion (~21% of the wordmark width). */
+.lp-footer__mark {
+  display: grid;
+  justify-items: start;
+  gap: 0.35rem;
+  width: min(100%, 25rem);
+}
+
+.lp-footer__figures {
+  display: block;
+  width: 21%;
+  height: auto;
+}
+
+.lp-footer__wordmark-link {
+  display: block;
+  width: 100%;
+  transition: opacity 160ms ease;
+}
+
+.lp-footer__wordmark-link:hover { opacity: 0.72; }
+
+.lp-footer__wordmark {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lp-footer__tagline {
+  margin: 0.1rem 0 0;
+  max-width: 32ch;
+  color: #3a352d;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.lp-footer__cta {
+  margin-top: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.7rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 999px;
+  background: #141019;
+  color: #f4f3ee;
+  font-size: 0.94rem;
+  font-weight: 640;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.lp-footer__cta:hover {
+  transform: translateY(-1px);
+  background: #000;
+}
+
+.lp-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+}
+
+@media (max-width: 540px) {
+  .lp-footer__cols { grid-template-columns: repeat(2, 1fr); gap: 1.8rem; }
+}
+
+.lp-footer__col {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.lp-footer__col-title {
+  margin: 0 0 0.2rem;
+  font-family: var(--lp-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6a6356;
+}
+
+.lp-footer__link {
+  width: fit-content;
+  color: #2a2620;
+  font-size: 0.92rem;
+  line-height: 1.3;
+  transition: color 150ms ease;
+}
+
+.lp-footer__link:hover { color: #000; }
+
+/* Descriptor strip + copyright along the bottom of the dossier. */
+.lp-footer__strip {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.7rem, 2vw, 1.4rem);
+  margin-top: clamp(1.8rem, 4vw, 3rem);
+  font-family: var(--lp-mono);
+  font-size: clamp(0.56rem, 1.1vw, 0.7rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6a6356;
+  white-space: nowrap;
+}
+
+.lp-footer__rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(20, 16, 25, 0.26);
+}
+
+@media (max-width: 600px) {
+  .lp-footer__strip { flex-wrap: wrap; white-space: normal; justify-content: center; text-align: center; }
+  .lp-footer__rule { display: none; }
+}
+
+/* ── Block — progression climax ("watch your eye sharpen") ──────── */
+/* Brand-yellow progress fill (palette-legal: yellow lives on the fill);
+   text stays neutral, colour only on the fill / streak contour. */
+
+.lp-climb {
+  display: grid;
+  justify-items: center;
+  gap: clamp(2rem, 4.5vw, 3.4rem);
+  width: min(95vw, 70rem);
+  margin: 0 auto;
+}
+
+.lp-climb__head {
+  max-width: 52ch;
+  text-align: center;
+}
+
+.lp-climb__head .lp-kicker { margin-bottom: 0.7rem; }
+.lp-climb__head .lp-section__lede { margin-left: auto; margin-right: auto; }
+
+/* Framed panel on a faint design-canvas grid (mirrors .lp-demo-stage spirit). */
+.lp-climb__panel {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  gap: clamp(1.5rem, 3.4vw, 2.6rem);
+  width: 100%;
+  padding: clamp(1.6rem, 3.4vw, 2.8rem);
+  border-radius: 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--surface-strong) 45%, transparent);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.lp-climb__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--lp-stage-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lp-stage-line) 1px, transparent 1px);
+  background-size: 30px 30px, 30px 30px;
+  -webkit-mask-image: radial-gradient(92% 92% at 50% 38%, #000 35%, transparent 92%);
+  mask-image: radial-gradient(92% 92% at 50% 38%, #000 35%, transparent 92%);
+  pointer-events: none;
+}
+
+/* The wall — real catalog specimens that sharpen into focus (the eye training
+   itself). Mastered faces are crisp and named; the ones you're still learning
+   stay soft and unlabelled. On reveal the whole wall snaps from blur to focus,
+   enacting "watch your eye sharpen". Monochrome — colour stays out of it. */
+.lp-climb__wall {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.6rem, 1.4vw, 0.95rem);
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .lp-climb__wall { grid-template-columns: repeat(2, 1fr); }
+}
+
+.lp-glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 0.55rem;
+  aspect-ratio: 5 / 4;
+  padding: clamp(0.6rem, 1.6vw, 1rem);
+  border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--surface-strong) 28%, transparent);
+}
+
+.lp-glyph[data-focus="true"] {
+  border-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.lp-glyph__char {
+  font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+  line-height: 1;
+  color: var(--ink-strong);
+}
+
+.lp-glyph__name {
+  font-family: var(--lp-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* Still-learning tiles: soft + dim, with a neutral placeholder caption. */
+.lp-glyph[data-focus="false"] .lp-glyph__char {
+  filter: blur(3px);
+  opacity: 0.42;
+}
+
+.lp-glyph[data-focus="false"] .lp-glyph__name {
+  color: color-mix(in srgb, var(--foreground) 22%, transparent);
+}
+
+/* Tier readout — an editorial mono strip (echoes the footer strip); no bars. */
+.lp-climb__tiers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.8rem, 2.4vw, 1.8rem);
+  font-family: var(--lp-mono);
+}
+
+.lp-climb-tier { display: inline-flex; align-items: baseline; gap: 0.5rem; }
+
+.lp-climb-tier__label {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+
+.lp-climb-tier__frac {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-climb-tier__frac em {
+  font-style: normal;
+  font-size: 1.3em;
+  font-weight: 640;
+  color: var(--ink-strong);
+}
+
+.lp-climb-tier__sep {
+  width: 1px;
+  height: 0.95rem;
+  background: color-mix(in srgb, var(--line) 90%, transparent);
+}
+
+@media (max-width: 560px) {
+  .lp-climb-tier__sep { display: none; }
+}
+
+/* Focus-in: the final state is the CSS default (crisp / soft as set above). JS
+   arms the extra-blurred start only when motion is allowed, then reveals it. */
+.lp-climb--armed .lp-glyph__char { filter: blur(14px); opacity: 0.18; }
+.lp-climb--armed .lp-glyph[data-focus="true"] .lp-glyph__name { opacity: 0; }
+
+.lp-climb--armed.lp-climb--in .lp-glyph[data-focus="true"] .lp-glyph__char {
+  filter: blur(0);
+  opacity: 1;
+  transition: filter 0.95s ease, opacity 0.95s ease;
+}
+.lp-climb--armed.lp-climb--in .lp-glyph[data-focus="false"] .lp-glyph__char {
+  filter: blur(3px);
+  opacity: 0.42;
+  transition: filter 0.95s ease, opacity 0.95s ease;
+}
+.lp-climb--armed.lp-climb--in .lp-glyph[data-focus="true"] .lp-glyph__name {
+  opacity: 1;
+  transition: opacity 0.6s ease 0.45s;
+}
+
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(1) .lp-glyph__char { transition-delay: 0.02s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(2) .lp-glyph__char { transition-delay: 0.1s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(3) .lp-glyph__char { transition-delay: 0.18s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(4) .lp-glyph__char { transition-delay: 0.26s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(5) .lp-glyph__char { transition-delay: 0.34s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(6) .lp-glyph__char { transition-delay: 0.42s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(7) .lp-glyph__char { transition-delay: 0.5s; }
+.lp-climb--armed.lp-climb--in .lp-glyph:nth-child(8) .lp-glyph__char { transition-delay: 0.58s; }

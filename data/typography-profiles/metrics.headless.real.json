@@ -1,0 +1,653 @@
+{
+  "generatedAt": "2026-05-26T15:21:30.781Z",
+  "source": "Extracted from font files in public/fonts via fontkit.",
+  "fontsDir": "public/fonts",
+  "familiesFile": "data/typography-profiles/families.dev.json",
+  "overrideCount": 2,
+  "skipped": [
+    {
+      "fontId": "helvetica-neue",
+      "familyName": "Helvetica Neue",
+      "reason": "no font file found in fonts-dir"
+    },
+    {
+      "fontId": "arial",
+      "familyName": "Arial",
+      "reason": "no font file found in fonts-dir"
+    },
+    {
+      "fontId": "georgia",
+      "familyName": "Georgia",
+      "reason": "no font file found in fonts-dir"
+    },
+    {
+      "fontId": "times_new_roman",
+      "familyName": "Times New Roman",
+      "reason": "no font file found in fonts-dir"
+    }
+  ],
+  "overrides": [
+    {
+      "fontId": "inter",
+      "familyName": "Inter",
+      "preset": {
+        "capRatio": 0.7275,
+        "xRatio": 0.5459,
+        "ascenderRatio": 0.9688,
+        "descenderRatio": 0.2412,
+        "defaultWidthFactor": 0.5363,
+        "uppercaseWidthFactor": 0.6815,
+        "roundWidthFactor": 0.5914,
+        "narrowWidthFactor": 0.3094,
+        "wideWidthFactor": 0.8993
+      },
+      "samples": {
+        "glyphs": {
+          "0": {
+            "advanceWidthRatio": 0.6309,
+            "leftRatio": 0,
+            "rightRatio": 0.5713,
+            "ascentRatio": 0.7373,
+            "descentRatio": 0.0098
+          },
+          "x": {
+            "advanceWidthRatio": 0.5459,
+            "leftRatio": 0,
+            "rightRatio": 0.5142,
+            "ascentRatio": 0.5459,
+            "descentRatio": 0
+          },
+          "a": {
+            "advanceWidthRatio": 0.5615,
+            "leftRatio": 0,
+            "rightRatio": 0.4844,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.0127
+          },
+          "e": {
+            "advanceWidthRatio": 0.583,
+            "leftRatio": 0,
+            "rightRatio": 0.5342,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.0117
+          },
+          "n": {
+            "advanceWidthRatio": 0.5908,
+            "leftRatio": 0,
+            "rightRatio": 0.5137,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0
+          },
+          "o": {
+            "advanceWidthRatio": 0.5996,
+            "leftRatio": 0,
+            "rightRatio": 0.5488,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.0117
+          },
+          "s": {
+            "advanceWidthRatio": 0.5278,
+            "leftRatio": 0,
+            "rightRatio": 0.478,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.0117
+          },
+          "c": {
+            "advanceWidthRatio": 0.5713,
+            "leftRatio": 0,
+            "rightRatio": 0.5225,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.0117
+          },
+          "r": {
+            "advanceWidthRatio": 0.3765,
+            "leftRatio": 0,
+            "rightRatio": 0.354,
+            "ascentRatio": 0.5537,
+            "descentRatio": 0
+          },
+          "m": {
+            "advanceWidthRatio": 0.876,
+            "leftRatio": 0,
+            "rightRatio": 0.7988,
+            "ascentRatio": 0.5557,
+            "descentRatio": 0
+          },
+          "z": {
+            "advanceWidthRatio": 0.5522,
+            "leftRatio": 0,
+            "rightRatio": 0.4907,
+            "ascentRatio": 0.5459,
+            "descentRatio": 0
+          },
+          "b": {
+            "advanceWidthRatio": 0.6123,
+            "leftRatio": 0,
+            "rightRatio": 0.5615,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0.0117
+          },
+          "d": {
+            "advanceWidthRatio": 0.6123,
+            "leftRatio": 0,
+            "rightRatio": 0.5352,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0.0117
+          },
+          "h": {
+            "advanceWidthRatio": 0.5913,
+            "leftRatio": 0,
+            "rightRatio": 0.5142,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "k": {
+            "advanceWidthRatio": 0.5488,
+            "leftRatio": 0,
+            "rightRatio": 0.5352,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "l": {
+            "advanceWidthRatio": 0.2422,
+            "leftRatio": 0,
+            "rightRatio": 0.165,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "t": {
+            "advanceWidthRatio": 0.3271,
+            "leftRatio": 0,
+            "rightRatio": 0.3071,
+            "ascentRatio": 0.6758,
+            "descentRatio": 0.0068
+          },
+          "f": {
+            "advanceWidthRatio": 0.3701,
+            "leftRatio": 0,
+            "rightRatio": 0.3545,
+            "ascentRatio": 0.7617,
+            "descentRatio": 0
+          },
+          "p": {
+            "advanceWidthRatio": 0.6123,
+            "leftRatio": 0,
+            "rightRatio": 0.5615,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.2041
+          },
+          "q": {
+            "advanceWidthRatio": 0.6123,
+            "leftRatio": 0,
+            "rightRatio": 0.5352,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.2041
+          },
+          "g": {
+            "advanceWidthRatio": 0.6133,
+            "leftRatio": 0,
+            "rightRatio": 0.5361,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.2158
+          },
+          "j": {
+            "advanceWidthRatio": 0.2422,
+            "leftRatio": 0.0127,
+            "rightRatio": 0.1826,
+            "ascentRatio": 0.7515,
+            "descentRatio": 0.2041
+          },
+          "y": {
+            "advanceWidthRatio": 0.562,
+            "leftRatio": 0,
+            "rightRatio": 0.5356,
+            "ascentRatio": 0.5459,
+            "descentRatio": 0.208
+          },
+          "H": {
+            "advanceWidthRatio": 0.7432,
+            "leftRatio": 0,
+            "rightRatio": 0.6553,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "E": {
+            "advanceWidthRatio": 0.6011,
+            "leftRatio": 0,
+            "rightRatio": 0.5356,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "T": {
+            "advanceWidthRatio": 0.6455,
+            "leftRatio": 0,
+            "rightRatio": 0.5977,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "I": {
+            "advanceWidthRatio": 0.2686,
+            "leftRatio": 0,
+            "rightRatio": 0.1807,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "A": {
+            "advanceWidthRatio": 0.6899,
+            "leftRatio": 0,
+            "rightRatio": 0.6646,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "M": {
+            "advanceWidthRatio": 0.9033,
+            "leftRatio": 0,
+            "rightRatio": 0.8154,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0
+          },
+          "O": {
+            "advanceWidthRatio": 0.7646,
+            "leftRatio": 0,
+            "rightRatio": 0.7051,
+            "ascentRatio": 0.7373,
+            "descentRatio": 0.0098
+          },
+          "C": {
+            "advanceWidthRatio": 0.7305,
+            "leftRatio": 0,
+            "rightRatio": 0.6758,
+            "ascentRatio": 0.7373,
+            "descentRatio": 0.0098
+          },
+          "G": {
+            "advanceWidthRatio": 0.7461,
+            "leftRatio": 0,
+            "rightRatio": 0.6836,
+            "ascentRatio": 0.7373,
+            "descentRatio": 0.0098
+          },
+          "S": {
+            "advanceWidthRatio": 0.6416,
+            "leftRatio": 0,
+            "rightRatio": 0.585,
+            "ascentRatio": 0.7373,
+            "descentRatio": 0.0127
+          },
+          "Q": {
+            "advanceWidthRatio": 0.7646,
+            "leftRatio": 0,
+            "rightRatio": 0.7051,
+            "ascentRatio": 0.7373,
+            "descentRatio": 0.0684
+          }
+        },
+        "words": {
+          "access": {
+            "advanceWidthRatio": 3.3428,
+            "leftRatio": 0,
+            "rightRatio": 3.293,
+            "ascentRatio": 0.5527,
+            "descentRatio": 0.0127
+          },
+          "minimum": {
+            "advanceWidthRatio": 4.2944,
+            "leftRatio": 0,
+            "rightRatio": 4.2173,
+            "ascentRatio": 0.7515,
+            "descentRatio": 0.0068
+          },
+          "play": {
+            "advanceWidthRatio": 1.9634,
+            "leftRatio": 0,
+            "rightRatio": 1.937,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0.208
+          },
+          "Atlas": {
+            "advanceWidthRatio": 2.3291,
+            "leftRatio": 0,
+            "rightRatio": 2.2793,
+            "ascentRatio": 0.7275,
+            "descentRatio": 0.0127
+          },
+          "terminals": {
+            "advanceWidthRatio": 4.333,
+            "leftRatio": 0,
+            "rightRatio": 4.2832,
+            "ascentRatio": 0.7515,
+            "descentRatio": 0.0127
+          },
+          "contrast": {
+            "advanceWidthRatio": 3.8818,
+            "leftRatio": 0,
+            "rightRatio": 3.8618,
+            "ascentRatio": 0.6758,
+            "descentRatio": 0.0127
+          }
+        }
+      },
+      "meta": {
+        "sourceFile": "public/fonts/inter/inter__29ede7bd4be3.woff2",
+        "fontType": "WOFF2",
+        "sampleCounts": {
+          "glyphsExtracted": 34,
+          "wordsExtracted": 6,
+          "missingGlyphs": [],
+          "missingWords": []
+        }
+      }
+    },
+    {
+      "fontId": "libre_baskerville",
+      "familyName": "Libre Baskerville",
+      "preset": {
+        "capRatio": 0.77,
+        "xRatio": 0.53,
+        "ascenderRatio": 0.97,
+        "descenderRatio": 0.27,
+        "defaultWidthFactor": 0.5873,
+        "uppercaseWidthFactor": 0.7955,
+        "roundWidthFactor": 0.6129,
+        "narrowWidthFactor": 0.3873,
+        "wideWidthFactor": 0.977
+      },
+      "samples": {
+        "glyphs": {
+          "0": {
+            "advanceWidthRatio": 0.714,
+            "leftRatio": 0,
+            "rightRatio": 0.653,
+            "ascentRatio": 0.78,
+            "descentRatio": 0.01
+          },
+          "x": {
+            "advanceWidthRatio": 0.609,
+            "leftRatio": 0,
+            "rightRatio": 0.598,
+            "ascentRatio": 0.53,
+            "descentRatio": 0
+          },
+          "a": {
+            "advanceWidthRatio": 0.554,
+            "leftRatio": 0,
+            "rightRatio": 0.555,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.01
+          },
+          "e": {
+            "advanceWidthRatio": 0.573,
+            "leftRatio": 0,
+            "rightRatio": 0.526,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.01
+          },
+          "n": {
+            "advanceWidthRatio": 0.689,
+            "leftRatio": 0,
+            "rightRatio": 0.665,
+            "ascentRatio": 0.54,
+            "descentRatio": 0
+          },
+          "o": {
+            "advanceWidthRatio": 0.654,
+            "leftRatio": 0,
+            "rightRatio": 0.606,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.01
+          },
+          "s": {
+            "advanceWidthRatio": 0.454,
+            "leftRatio": 0,
+            "rightRatio": 0.407,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.01
+          },
+          "c": {
+            "advanceWidthRatio": 0.536,
+            "leftRatio": 0,
+            "rightRatio": 0.506,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.01
+          },
+          "r": {
+            "advanceWidthRatio": 0.477,
+            "leftRatio": 0,
+            "rightRatio": 0.472,
+            "ascentRatio": 0.54,
+            "descentRatio": 0
+          },
+          "m": {
+            "advanceWidthRatio": 1.073,
+            "leftRatio": 0,
+            "rightRatio": 1.053,
+            "ascentRatio": 0.54,
+            "descentRatio": 0
+          },
+          "z": {
+            "advanceWidthRatio": 0.557,
+            "leftRatio": 0,
+            "rightRatio": 0.515,
+            "ascentRatio": 0.53,
+            "descentRatio": 0
+          },
+          "b": {
+            "advanceWidthRatio": 0.654,
+            "leftRatio": 0.001,
+            "rightRatio": 0.606,
+            "ascentRatio": 0.83,
+            "descentRatio": 0.011
+          },
+          "d": {
+            "advanceWidthRatio": 0.675,
+            "leftRatio": 0,
+            "rightRatio": 0.65,
+            "ascentRatio": 0.83,
+            "descentRatio": 0.01
+          },
+          "h": {
+            "advanceWidthRatio": 0.688,
+            "leftRatio": 0,
+            "rightRatio": 0.665,
+            "ascentRatio": 0.83,
+            "descentRatio": 0
+          },
+          "k": {
+            "advanceWidthRatio": 0.616,
+            "leftRatio": 0,
+            "rightRatio": 0.611,
+            "ascentRatio": 0.83,
+            "descentRatio": 0
+          },
+          "l": {
+            "advanceWidthRatio": 0.325,
+            "leftRatio": 0,
+            "rightRatio": 0.298,
+            "ascentRatio": 0.83,
+            "descentRatio": 0
+          },
+          "t": {
+            "advanceWidthRatio": 0.378,
+            "leftRatio": 0,
+            "rightRatio": 0.369,
+            "ascentRatio": 0.64,
+            "descentRatio": 0.01
+          },
+          "f": {
+            "advanceWidthRatio": 0.412,
+            "leftRatio": 0,
+            "rightRatio": 0.508,
+            "ascentRatio": 0.83,
+            "descentRatio": 0
+          },
+          "p": {
+            "advanceWidthRatio": 0.679,
+            "leftRatio": 0,
+            "rightRatio": 0.63,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.25
+          },
+          "q": {
+            "advanceWidthRatio": 0.653,
+            "leftRatio": 0,
+            "rightRatio": 0.665,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.25
+          },
+          "g": {
+            "advanceWidthRatio": 0.599,
+            "leftRatio": 0,
+            "rightRatio": 0.609,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.26
+          },
+          "j": {
+            "advanceWidthRatio": 0.304,
+            "leftRatio": 0.137,
+            "rightRatio": 0.224,
+            "ascentRatio": 0.805,
+            "descentRatio": 0.26
+          },
+          "y": {
+            "advanceWidthRatio": 0.639,
+            "leftRatio": 0,
+            "rightRatio": 0.628,
+            "ascentRatio": 0.53,
+            "descentRatio": 0.26
+          },
+          "H": {
+            "advanceWidthRatio": 0.925,
+            "leftRatio": 0,
+            "rightRatio": 0.879,
+            "ascentRatio": 0.77,
+            "descentRatio": 0
+          },
+          "E": {
+            "advanceWidthRatio": 0.726,
+            "leftRatio": 0,
+            "rightRatio": 0.681,
+            "ascentRatio": 0.77,
+            "descentRatio": 0
+          },
+          "T": {
+            "advanceWidthRatio": 0.803,
+            "leftRatio": 0,
+            "rightRatio": 0.786,
+            "ascentRatio": 0.77,
+            "descentRatio": 0
+          },
+          "I": {
+            "advanceWidthRatio": 0.415,
+            "leftRatio": 0,
+            "rightRatio": 0.369,
+            "ascentRatio": 0.77,
+            "descentRatio": 0
+          },
+          "A": {
+            "advanceWidthRatio": 0.772,
+            "leftRatio": 0.006,
+            "rightRatio": 0.785,
+            "ascentRatio": 0.77,
+            "descentRatio": 0
+          },
+          "M": {
+            "advanceWidthRatio": 1.09,
+            "leftRatio": 0,
+            "rightRatio": 1.044,
+            "ascentRatio": 0.77,
+            "descentRatio": 0.01
+          },
+          "O": {
+            "advanceWidthRatio": 0.946,
+            "leftRatio": 0,
+            "rightRatio": 0.889,
+            "ascentRatio": 0.78,
+            "descentRatio": 0.01
+          },
+          "C": {
+            "advanceWidthRatio": 0.802,
+            "leftRatio": 0,
+            "rightRatio": 0.744,
+            "ascentRatio": 0.78,
+            "descentRatio": 0.01
+          },
+          "G": {
+            "advanceWidthRatio": 0.87,
+            "leftRatio": 0,
+            "rightRatio": 0.843,
+            "ascentRatio": 0.78,
+            "descentRatio": 0.01
+          },
+          "S": {
+            "advanceWidthRatio": 0.645,
+            "leftRatio": 0,
+            "rightRatio": 0.591,
+            "ascentRatio": 0.78,
+            "descentRatio": 0.01
+          },
+          "Q": {
+            "advanceWidthRatio": 0.948,
+            "leftRatio": 0,
+            "rightRatio": 0.933,
+            "ascentRatio": 0.78,
+            "descentRatio": 0.26
+          }
+        },
+        "words": {
+          "access": {
+            "advanceWidthRatio": 3.107,
+            "leftRatio": 0,
+            "rightRatio": 3.06,
+            "ascentRatio": 0.54,
+            "descentRatio": 0.01
+          },
+          "minimum": {
+            "advanceWidthRatio": 5.26,
+            "leftRatio": 0,
+            "rightRatio": 5.24,
+            "ascentRatio": 0.805,
+            "descentRatio": 0.011
+          },
+          "play": {
+            "advanceWidthRatio": 2.176,
+            "leftRatio": 0,
+            "rightRatio": 2.165,
+            "ascentRatio": 0.83,
+            "descentRatio": 0.26
+          },
+          "Atlas": {
+            "advanceWidthRatio": 2.477,
+            "leftRatio": 0.006,
+            "rightRatio": 2.43,
+            "ascentRatio": 0.83,
+            "descentRatio": 0.01
+          },
+          "terminals": {
+            "advanceWidthRatio": 4.864,
+            "leftRatio": 0,
+            "rightRatio": 4.817,
+            "ascentRatio": 0.83,
+            "descentRatio": 0.01
+          },
+          "contrast": {
+            "advanceWidthRatio": 4.12,
+            "leftRatio": 0,
+            "rightRatio": 4.111,
+            "ascentRatio": 0.64,
+            "descentRatio": 0.01
+          }
+        }
+      },
+      "meta": {
+        "sourceFile": "public/fonts/libre_baskerville/libre_baskerville__43bd400c3466.woff2",
+        "fontType": "WOFF2",
+        "sampleCounts": {
+          "glyphsExtracted": 34,
+          "wordsExtracted": 6,
+          "missingGlyphs": [],
+          "missingWords": []
+        }
+      }
+    }
+  ]
+}

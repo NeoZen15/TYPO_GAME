@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-05-26T13:13:48.749Z",
+  "left": {
+    "version": "dev-v2",
+    "generatedAt": "2026-05-26T13:01:02.483Z",
+    "runtime": "fallback"
+  },
+  "right": {
+    "version": "dev-v3",
+    "generatedAt": "2026-05-26T13:13:31.290Z",
+    "runtime": "fallback"
+  },
+  "fontCount": 2,
+  "fonts": [
+    {
+      "fontId": "helvetica-neue",
+      "familyName": "Helvetica Neue",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 2,
+        "confidenceChanged": false,
+        "issueCountDelta": -1
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": null,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [
+          {
+            "id": "missing-metric-descender",
+            "severity": "warning",
+            "status": "review",
+            "scope": "font",
+            "metric": "descender",
+            "message": "Missing aggregate descender metric.",
+            "expected": "A measured canonical metric from glyph or word profiles.",
+            "observed": "No compatible profile candidate was available.",
+            "suggestedAction": "Add a canonical witness glyph or word that exposes this metric."
+          }
+        ],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "inter",
+      "familyName": "Inter",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 2,
+        "confidenceChanged": false,
+        "issueCountDelta": -1
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": null,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [
+          {
+            "id": "missing-metric-descender",
+            "severity": "warning",
+            "status": "review",
+            "scope": "font",
+            "metric": "descender",
+            "message": "Missing aggregate descender metric.",
+            "expected": "A measured canonical metric from glyph or word profiles.",
+            "observed": "No compatible profile candidate was available.",
+            "suggestedAction": "Add a canonical witness glyph or word that exposes this metric."
+          }
+        ],
+        "changed": []
+      }
+    }
+  ]
+}

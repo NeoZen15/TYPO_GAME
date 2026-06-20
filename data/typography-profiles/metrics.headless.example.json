@@ -1,0 +1,36 @@
+{
+  "source": "example: small perturbations of existing fallback presets to demonstrate the headless --metrics-file mechanism",
+  "generatedAt": "2026-05-26",
+  "overrides": [
+    {
+      "fontId": "inter",
+      "familyName": "Inter",
+      "preset": {
+        "capRatio": 0.735,
+        "xRatio": 0.56,
+        "ascenderRatio": 0.78,
+        "descenderRatio": 0.218,
+        "defaultWidthFactor": 0.462,
+        "uppercaseWidthFactor": 0.592,
+        "roundWidthFactor": 0.482,
+        "narrowWidthFactor": 0.284,
+        "wideWidthFactor": 0.742
+      }
+    },
+    {
+      "fontId": "helvetica-neue",
+      "familyName": "Helvetica Neue",
+      "preset": {
+        "capRatio": 0.72,
+        "xRatio": 0.528,
+        "ascenderRatio": 0.758,
+        "descenderRatio": 0.214,
+        "defaultWidthFactor": 0.448,
+        "uppercaseWidthFactor": 0.586,
+        "roundWidthFactor": 0.474,
+        "narrowWidthFactor": 0.276,
+        "wideWidthFactor": 0.734
+      }
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
 
 declare global {
   interface Window {
@@ -62,9 +61,6 @@ const collectNodeSnapshot = (selector: string) => {
 };
 
 export default function UiDebugProbe() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   useEffect(() => {
     const existing = window.render_game_to_text;
     if (existing) return;
@@ -77,8 +73,8 @@ export default function UiDebugProbe() {
 
       return JSON.stringify({
         mode: "ui-audit",
-        pathname,
-        search: searchParams.toString(),
+        pathname: window.location.pathname,
+        search: window.location.search.replace(/^\?/, ""),
         theme: document.documentElement.dataset.theme ?? null,
         body: {
           backgroundColor: bodyStyle.backgroundColor,
@@ -104,7 +100,7 @@ export default function UiDebugProbe() {
       if (window.render_game_to_text === existing) return;
       delete window.render_game_to_text;
     };
-  }, [pathname, searchParams]);
+  }, []);
 
   return null;
 }

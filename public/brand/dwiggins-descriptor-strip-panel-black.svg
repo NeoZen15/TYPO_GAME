@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_9" data-name="Calque 9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 392.618">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e1e1d7;
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .cls-2 {
+        letter-spacing: -.053em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-5 {
+        letter-spacing: -.015em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.018em;
+      }
+
+      .cls-7 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <text class="cls-1" transform="translate(246.165 217.223)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="cls-1" transform="translate(308.968 217.222)"><tspan class="cls-5" x="0" y="0">S</tspan><tspan class="cls-6" x="5.7" y="0">Y</tspan><tspan class="cls-3" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="cls-1" transform="translate(507.745 217.223)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="cls-1" transform="translate(467.008 217.561)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="cls-1" transform="translate(376.33 217.223)"><tspan class="cls-4" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="cls-7" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="cls-2" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g>
+</svg>

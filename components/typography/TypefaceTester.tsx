@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { buildGlyphOverlayModel, measureGlyph } from "@/lib/typography/glyph-overlay-engine";
 
 type TypefaceAxis = {
   tag: string;
@@ -21,18 +22,6 @@ type TypefaceTesterProps = {
   }>;
   initialText: string;
 };
-
-type GlyphGuide = {
-  id: string;
-  label: string;
-  topPercent: number;
-};
-
-const GLYPH_GUIDES: GlyphGuide[] = [
-  { id: "top", label: "Cap height", topPercent: 28 },
-  { id: "middle", label: "x-height", topPercent: 48 },
-  { id: "bottom", label: "Baseline", topPercent: 76 },
-];
 
 const QUICK_FONT_SIZES = [32, 48, 64] as const;
 const QUICK_LINE_HEIGHTS = [1, 1.2, 1.4] as const;
@@ -80,30 +69,20 @@ export default function TypefaceTester({
   const glyphCodepoint = selectedGlyph.codePointAt(0)?.toString(16).toUpperCase().padStart(4, "0") ?? "0000";
   const glyphCanvasRef = useRef<HTMLCanvasElement>(null);
   const glyphCanvasWrapRef = useRef<HTMLDivElement>(null);
+  const [glyphLabSize, setGlyphLabSize] = useState({ width: 0, height: 0 });
+  const [glyphLabOverlay, setGlyphLabOverlay] = useState<{
+    metrics: Awaited<ReturnType<typeof measureGlyph>>;
+    guideLines: ReturnType<typeof buildGlyphOverlayModel>["guideLines"];
+  } | null>(null);
   const glyphGuides = useMemo(() => {
-    if (typeof document === "undefined") return GLYPH_GUIDES;
+    if (!glyphLabOverlay || glyphLabSize.height <= 0) return [];
 
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    if (!ctx) return GLYPH_GUIDES;
-
-    const measureSize = 1000;
-    ctx.font = `${weight} ${measureSize}px ${fontFamily}`;
-    ctx.textBaseline = "alphabetic";
-
-    const capAscent = ctx.measureText("H").actualBoundingBoxAscent || measureSize * 0.7;
-    const xAscent = ctx.measureText("x").actualBoundingBoxAscent || measureSize * 0.48;
-    const middlePercent =
-      GLYPH_GUIDES[2].topPercent -
-      (GLYPH_GUIDES[2].topPercent - GLYPH_GUIDES[0].topPercent) * (xAscent / capAscent);
-
-    return [
-      GLYPH_GUIDES[0],
-      { ...GLYPH_GUIDES[1], topPercent: middlePercent },
-      GLYPH_GUIDES[2],
-    ];
-  }, [fontFamily, weight]);
+    return glyphLabOverlay.guideLines.map((guide) => ({
+      id: guide.key,
+      label: guide.label[0] + guide.label.slice(1).toLowerCase(),
+      topPercent: (guide.y / glyphLabSize.height) * 100,
+    }));
+  }, [glyphLabOverlay, glyphLabSize.height]);
 
   const previewStyle = {
     fontFamily,
@@ -122,78 +101,85 @@ export default function TypefaceTester({
 
   useEffect(() => {
     const wrap = glyphCanvasWrapRef.current;
-    const canvas = glyphCanvasRef.current;
-    if (!wrap || !canvas) return;
+    if (!wrap) return;
 
-    const draw = () => {
+    const updateSize = () => {
       const rect = wrap.getBoundingClientRect();
-      const width = Math.max(rect.width, 1);
-      const height = Math.max(rect.height, 1);
-      const dpr = window.devicePixelRatio || 1;
-      const ctx = canvas.getContext("2d");
-
-      if (!ctx) return;
-
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, width, height);
-
-      const measureSize = 1000;
-      const fontSpec = `${weight} ${measureSize}px ${fontFamily}`;
-      ctx.font = fontSpec;
-      ctx.textBaseline = "alphabetic";
-      ctx.textAlign = "left";
-
-      const capMetrics = ctx.measureText("H");
-      const descMetrics = ["p", "g", "y", "q"].map((sample) => ctx.measureText(sample));
-      const capAscent = capMetrics.actualBoundingBoxAscent || measureSize * 0.7;
-      const descDepth = Math.max(...descMetrics.map((metric) => metric.actualBoundingBoxDescent || 0), measureSize * 0.2);
-      const capGuideY = height * (glyphGuides[0].topPercent / 100);
-      const baselineGuideY = height * (glyphGuides[2].topPercent / 100);
-      const availableCapHeight = baselineGuideY - capGuideY;
-      const sidePadding = width * 0.08;
-      const availableWidth = width - sidePadding * 2;
-      const bottomPadding = height * 0.08;
-      const availableDescent = Math.max(height - bottomPadding - baselineGuideY, 1);
-
-      const maxGlyphWidth = availableGlyphs.reduce((maxWidth, glyph) => {
-        const metrics = ctx.measureText(glyph);
-        const glyphWidth =
-          (metrics.actualBoundingBoxLeft || 0) +
-          (metrics.actualBoundingBoxRight || 0) ||
-          metrics.width ||
-          measureSize * 0.6;
-        return Math.max(maxWidth, glyphWidth);
-      }, measureSize * 0.4);
-
-      const scaleByHeight = availableCapHeight / Math.max(capAscent, 1);
-      const scaleByDescent = availableDescent / Math.max(descDepth, 1);
-      const scaleByWidth = availableWidth / Math.max(maxGlyphWidth, 1);
-      const drawScale = Math.min(scaleByHeight, scaleByDescent, scaleByWidth);
-      const drawSize = measureSize * drawScale;
-      const baselineY = baselineGuideY;
-
-      ctx.font = `${weight} ${drawSize}px ${fontFamily}`;
-      ctx.fillStyle = "#ffffff";
-      const drawnMetrics = ctx.measureText(selectedGlyph);
-      const visualWidth =
-        (drawnMetrics.actualBoundingBoxLeft || 0) + (drawnMetrics.actualBoundingBoxRight || 0) || drawnMetrics.width;
-      const leftBearing = drawnMetrics.actualBoundingBoxLeft || 0;
-      const drawX = width / 2 - visualWidth / 2 + leftBearing;
-
-      ctx.fillText(selectedGlyph, drawX, baselineY);
+      setGlyphLabSize({
+        width: Math.max(rect.width, 1),
+        height: Math.max(rect.height, 1),
+      });
     };
 
-    const observer = new ResizeObserver(draw);
+    const observer = new ResizeObserver(updateSize);
     observer.observe(wrap);
-    draw();
+    updateSize();
 
     return () => observer.disconnect();
-  }, [availableGlyphs, fontFamily, glyphGuides, selectedGlyph, weight]);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const runMeasurement = async () => {
+      if (!glyphLabSize.width || !glyphLabSize.height) {
+        setGlyphLabOverlay(null);
+        return;
+      }
+
+      const metrics = await measureGlyph({
+        family: fontFamily,
+        glyph: selectedGlyph,
+        width: glyphLabSize.width,
+        height: glyphLabSize.height,
+        weight,
+      });
+      const overlay = buildGlyphOverlayModel(selectedGlyph, metrics, glyphLabSize);
+
+      if (!cancelled) {
+        setGlyphLabOverlay({
+          metrics,
+          guideLines: overlay.guideLines,
+        });
+      }
+    };
+
+    runMeasurement().catch(() => {
+      if (!cancelled) {
+        setGlyphLabOverlay(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fontFamily, glyphLabSize, selectedGlyph, weight]);
+
+  useEffect(() => {
+    const canvas = glyphCanvasRef.current;
+    const metrics = glyphLabOverlay?.metrics;
+    if (!canvas || !metrics) return;
+
+    const width = Math.max(glyphLabSize.width, 1);
+    const height = Math.max(glyphLabSize.height, 1);
+    const dpr = window.devicePixelRatio || 1;
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) return;
+
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+    ctx.font = `${weight} ${metrics.fontSize}px ${fontFamily}`;
+    ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(selectedGlyph, metrics.drawX, metrics.baseline);
+  }, [fontFamily, glyphLabOverlay, glyphLabSize.height, glyphLabSize.width, selectedGlyph, weight]);
 
   return (
     <div className="typo-tester">

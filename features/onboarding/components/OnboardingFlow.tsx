@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import InlineMascot from "@/components/ui/InlineMascot";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 
 type StepId = "welcome" | "pace" | "familiarity" | "micro" | "launch";
@@ -34,6 +33,54 @@ const FAMILIARITY_OPTIONS = [
 ] as const;
 type FamiliarityOption = (typeof FAMILIARITY_OPTIONS)[number];
 
+const PACE_DETAILS: Record<PaceOption, OptionDetail> = {
+  Relaxed: {
+    label: "Relaxed",
+    title: "More guidance, softer tempo",
+    description: "A gentler first session with more room to observe before reacting.",
+    meta: "Calm start",
+  },
+  Balanced: {
+    label: "Balanced",
+    title: "Standard rhythm",
+    description: "A clear, steady onboarding pace close to the core game experience.",
+    meta: "Default flow",
+  },
+  Challenging: {
+    label: "Challenging",
+    title: "Sharper contrasts, less help",
+    description: "A more demanding first session with reduced assistance from the start.",
+    meta: "Fast track",
+  },
+};
+
+const FAMILIARITY_DETAILS: Record<FamiliarityOption, OptionDetail> = {
+  "Not at all": {
+    label: "Not at all",
+    title: "Start from observation",
+    description: "We keep the language simple and foreground structure over terminology.",
+    meta: "Beginner",
+  },
+  "A little": {
+    label: "A little",
+    title: "Some vocabulary, still training the eye",
+    description: "A middle ground for people who know a few terms but want visual stability.",
+    meta: "Growing confidence",
+  },
+  "Quite familiar": {
+    label: "Quite familiar",
+    title: "You know the terrain",
+    description: "Less explanation, more emphasis on subtle distinctions and consistency.",
+    meta: "Comfortable",
+  },
+  Designer: {
+    label: "Designer",
+    title: "You already read type structurally",
+    description: "A sharper starting point for practiced eyes and stronger recognition habits.",
+    meta: "Advanced eye",
+  },
+};
+
 type MicroProfile = {
   prompt: string;
   task: string;
@@ -41,6 +88,13 @@ type MicroProfile = {
   rightLabel: string;
   leftClass: string;
   rightClass: string;
+};
+
+type OptionDetail = {
+  label: string;
+  title: string;
+  description: string;
+  meta: string;
 };
 
 const MICRO_WORD_POOL = [
@@ -115,6 +169,14 @@ const paceImpactCopy = (pace: PaceOption) => {
   return "Balanced mode active: standard pacing and standard assistance.";
 };
 
+const getOptionDetail = (stepId: StepId, option: string): OptionDetail => {
+  if (stepId === "pace") {
+    return PACE_DETAILS[option as PaceOption];
+  }
+
+  return FAMILIARITY_DETAILS[option as FamiliarityOption];
+};
+
 export default function OnboardingFlow() {
   const [stepIndex, setStepIndex] = useState(0);
   const [pace, setPace] = useState<PaceOption | "">("");
@@ -128,18 +190,8 @@ export default function OnboardingFlow() {
   const microOptionRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const step = STEPS[stepIndex];
-  const totalQuestionCount = 3;
+  const stepNumber = stepIndex + 1;
   const microResolved = microResult === "correct";
-
-  const answeredQuestionCount = useMemo(() => {
-    let count = 0;
-    if (pace) count += 1;
-    if (familiarity) count += 1;
-    if (microResolved) count += 1;
-    return count;
-  }, [familiarity, microResolved, pace]);
-
-  const progress = totalQuestionCount > 0 ? answeredQuestionCount / totalQuestionCount : 0;
 
   const canContinue = useMemo(() => {
     if (step.id === "pace") return pace.length > 0;
@@ -167,7 +219,7 @@ export default function OnboardingFlow() {
       }
       return "Not this one. You can select again, then click Validate.";
     }
-    return "Pick one option, then click Validate.";
+    return " ";
   }, [microChecked, microResult]);
 
   useEffect(() => {
@@ -205,247 +257,269 @@ export default function OnboardingFlow() {
         className="onboarding-shell"
         data-pace={pace ? slugify(pace) : "unset"}
         data-familiarity={familiarity ? slugify(familiarity) : "unset"}
+        data-step={step.id}
         aria-labelledby="onboarding-title"
       >
         <header className="onboarding-progress-top">
-          <div
-            className="onboarding-progress-track"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={totalQuestionCount}
-            aria-valuenow={answeredQuestionCount}
-          >
-            <span
-              className="onboarding-progress-fill"
-              style={{ transform: `scaleX(${progress})` }}
-            />
+          <div className="onboarding-progress-meta">
+            <p className="onboarding-step-counter">
+              Step {stepNumber} / {STEPS.length}
+            </p>
           </div>
         </header>
 
         <div className="onboarding-content">
-          <div className="onboarding-question-row">
-            <InlineMascot className="onboarding-question-mascot" />
-            <h1 id="onboarding-title" className="onboarding-title onboarding-title--speech">
-              {step.title}
-            </h1>
+          <div className="onboarding-hero">
+            {step.id === "welcome" ? (
+              <svg
+                className="onboarding-specimen"
+                viewBox="0 0 440 210"
+                role="img"
+                aria-label="Letterforms with cap-height, x-height and baseline guides"
+              >
+                <g className="onboarding-specimen-grid">
+                  <line x1="20" y1="61" x2="420" y2="61" />
+                  <line x1="20" y1="90" x2="420" y2="90" />
+                  <line x1="20" y1="168" x2="420" y2="168" />
+                </g>
+                <g className="onboarding-specimen-tick">
+                  <text x="20" y="55">CAP</text>
+                  <text x="20" y="84">X-HEIGHT</text>
+                  <text x="20" y="162">BASELINE</text>
+                </g>
+                <text
+                  className="onboarding-specimen-glyph"
+                  x="220"
+                  y="168"
+                  textAnchor="middle"
+                >
+                  Rg
+                </text>
+              </svg>
+            ) : null}
+            <div className="onboarding-header">
+              <h1 id="onboarding-title" className="ui-page-title onboarding-title">
+                {step.title}
+              </h1>
+              <p className="ui-page-subtitle onboarding-copy">{step.body}</p>
+            </div>
           </div>
-
-          <p className="onboarding-copy">{step.body}</p>
 
           {step.id === "familiarity" && pace ? (
             <p className="onboarding-impact-note">{paceImpactCopy(pace)}</p>
           ) : null}
 
+
           {step.options ? (
-            <div
-              className="onboarding-options"
-              role="radiogroup"
-              aria-label={step.title}
-              aria-required="true"
-            >
-              {step.options.map((option, index) => {
-                const selected =
-                  (step.id === "pace" && pace === option) ||
-                  (step.id === "familiarity" && familiarity === option);
+            <div className="onboarding-stage-card onboarding-stage-card--choices">
+              <div
+                className={`onboarding-options onboarding-options--${step.id}`}
+                role="radiogroup"
+                aria-label={step.title}
+                aria-required="true"
+              >
+                {step.options.map((option, index) => {
+                  const detail = getOptionDetail(step.id, option);
+                  const selected =
+                    (step.id === "pace" && pace === option) ||
+                    (step.id === "familiarity" && familiarity === option);
 
-                return (
-                  <button
-                    key={option}
-                    type="button"
-                    className="onboarding-option"
-                    data-selected={selected ? "true" : "false"}
-                    role="radio"
-                    aria-checked={selected}
-                    aria-describedby={helperId}
-                    ref={(element) => {
-                      optionRefs.current[index] = element;
-                    }}
-                    onClick={() => {
-                      if (step.id === "pace") {
-                        setPace(option as PaceOption);
-                        return;
-                      }
-                      if (step.id === "familiarity") {
-                        setFamiliarity(option as FamiliarityOption);
-                      }
-                    }}
-                    onKeyDown={(event) => {
-                      const options = step.options ?? [];
-                      if (options.length === 0) return;
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      className="onboarding-option"
+                      data-selected={selected ? "true" : "false"}
+                      role="radio"
+                      aria-checked={selected}
+                      aria-describedby={helperId}
+                      ref={(element) => {
+                        optionRefs.current[index] = element;
+                      }}
+                      onClick={() => {
+                        if (step.id === "pace") {
+                          setPace(option as PaceOption);
+                          return;
+                        }
+                        if (step.id === "familiarity") {
+                          setFamiliarity(option as FamiliarityOption);
+                        }
+                      }}
+                      onKeyDown={(event) => {
+                        const options = step.options ?? [];
+                        if (options.length === 0) return;
 
-                      const key = event.key;
-                      if (
-                        key !== "ArrowRight" &&
-                        key !== "ArrowLeft" &&
-                        key !== "ArrowDown" &&
-                        key !== "ArrowUp"
-                      ) {
-                        return;
-                      }
+                        const key = event.key;
+                        if (
+                          key !== "ArrowRight" &&
+                          key !== "ArrowLeft" &&
+                          key !== "ArrowDown" &&
+                          key !== "ArrowUp"
+                        ) {
+                          return;
+                        }
 
-                      event.preventDefault();
-                      const direction = key === "ArrowRight" || key === "ArrowDown" ? 1 : -1;
-                      const nextIndex = (index + direction + options.length) % options.length;
-                      const nextOption = options[nextIndex];
+                        event.preventDefault();
+                        const direction = key === "ArrowRight" || key === "ArrowDown" ? 1 : -1;
+                        const nextIndex = (index + direction + options.length) % options.length;
+                        const nextOption = options[nextIndex];
 
-                      if (step.id === "pace") {
-                        setPace(nextOption as PaceOption);
-                      } else if (step.id === "familiarity") {
-                        setFamiliarity(nextOption as FamiliarityOption);
-                      }
+                        if (step.id === "pace") {
+                          setPace(nextOption as PaceOption);
+                        } else if (step.id === "familiarity") {
+                          setFamiliarity(nextOption as FamiliarityOption);
+                        }
 
-                      optionRefs.current[nextIndex]?.focus();
-                    }}
-                  >
-                    {option}
-                  </button>
-                );
-              })}
+                        optionRefs.current[nextIndex]?.focus();
+                      }}
+                    >
+                      <span className="onboarding-option__label">{detail.label}</span>
+                      <span className="onboarding-option__title">{detail.title}</span>
+                      <span className="onboarding-option__copy">{detail.description}</span>
+                      <span className="onboarding-option__meta">{detail.meta}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p
+                id={helperId}
+                className="onboarding-helper"
+                data-visible={helperVisible ? "true" : "false"}
+                aria-live="polite"
+              >
+                {helperVisible ? "Select one option to continue." : "\u00A0"}
+              </p>
             </div>
           ) : null}
 
           {step.id === "micro" ? (
-            <section
-              className="onboarding-micro"
-              data-pace={pace ? slugify(pace) : "balanced"}
-              data-state={microResolved ? "resolved" : "active"}
-              aria-label="Micro visual warm-up"
-            >
-              <p className="onboarding-micro-prompt">{microProfile.prompt}</p>
-              <p className="onboarding-micro-guide">{microProfile.task}</p>
-
-              <div className="onboarding-micro-stage">
-                <svg
-                  className="onboarding-micro-curves"
-                  viewBox="0 0 820 220"
-                  aria-hidden="true"
-                >
-                  <path
-                    className="onboarding-micro-curve onboarding-micro-curve--a"
-                    d="M10 164 C 190 14, 360 24, 810 138"
-                  />
-                  <path
-                    className="onboarding-micro-curve onboarding-micro-curve--b"
-                    d="M18 198 C 236 108, 486 236, 808 110"
-                  />
-                </svg>
-
-                <div className="onboarding-micro-sample" aria-hidden="true">
-                  <span
-                    className={`onboarding-micro-word ${
-                      microExpected === "left"
-                        ? microProfile.leftClass
-                        : microProfile.rightClass
-                    }`}
-                  >
-                    {microWord}
-                  </span>
-                </div>
-
-                <div
-                  className="onboarding-micro-answers"
-                  role="radiogroup"
-                  aria-label="Typestyle options"
-                >
-                  <button
-                    type="button"
-                    className={`onboarding-option onboarding-micro-answer ${
-                      microLeftCorrect ? "onboarding-micro-answer--correct" : ""
-                    } ${microLeftWrong ? "onboarding-micro-answer--wrong" : ""}`}
-                    data-selected={microChoice === "left" ? "true" : "false"}
-                    role="radio"
-                    aria-checked={microChoice === "left"}
-                    ref={(element) => {
-                      microOptionRefs.current[0] = element;
-                    }}
-                    onClick={() => {
-                      setMicroChoice("left");
-                      setMicroChecked(false);
-                      setMicroResult("");
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-                      event.preventDefault();
-                      setMicroChoice("right");
-                      setMicroChecked(false);
-                      setMicroResult("");
-                      microOptionRefs.current[1]?.focus();
-                    }}
-                    data-correct={
-                      microLeftCorrect ? "true" : "false"
-                    }
-                    data-wrong={
-                      microLeftWrong ? "true" : "false"
-                    }
-                  >
-                    {microProfile.leftLabel}
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`onboarding-option onboarding-micro-answer ${
-                      microRightCorrect ? "onboarding-micro-answer--correct" : ""
-                    } ${microRightWrong ? "onboarding-micro-answer--wrong" : ""}`}
-                    data-selected={microChoice === "right" ? "true" : "false"}
-                    role="radio"
-                    aria-checked={microChoice === "right"}
-                    ref={(element) => {
-                      microOptionRefs.current[1] = element;
-                    }}
-                    onClick={() => {
-                      setMicroChoice("right");
-                      setMicroChecked(false);
-                      setMicroResult("");
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-                      event.preventDefault();
-                      setMicroChoice("left");
-                      setMicroChecked(false);
-                      setMicroResult("");
-                      microOptionRefs.current[0]?.focus();
-                    }}
-                    data-correct={
-                      microRightCorrect ? "true" : "false"
-                    }
-                    data-wrong={
-                      microRightWrong ? "true" : "false"
-                    }
-                  >
-                    {microProfile.rightLabel}
-                  </button>
-                </div>
-              </div>
-
-              <p
-                className="onboarding-micro-feedback"
-                data-state={microResult || "idle"}
+            <section className="onboarding-stage-card onboarding-stage-card--micro">
+              <div
+                className="onboarding-micro"
+                data-pace={pace ? slugify(pace) : "balanced"}
+                data-state={microResolved ? "resolved" : "active"}
+                aria-label="Micro visual warm-up"
               >
-                {microFeedback}
-              </p>
+                <div className="onboarding-micro-stage">
+                  <div className="onboarding-micro-sample" aria-hidden="true">
+                    <svg
+                      className="onboarding-micro-specimen"
+                      viewBox="0 0 760 200"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <g className="onboarding-micro-guides">
+                        <line x1="30" y1="69" x2="730" y2="69" />
+                        <line x1="30" y1="140" x2="730" y2="140" />
+                      </g>
+                      <g className="onboarding-micro-metric">
+                        <text x="36" y="64">700</text>
+                        <text x="36" y="158">0</text>
+                      </g>
+                      <text
+                        className={`onboarding-micro-glyph ${
+                          microExpected === "left"
+                            ? microProfile.leftClass
+                            : microProfile.rightClass
+                        }`}
+                        x="380"
+                        y="140"
+                        textAnchor="middle"
+                      >
+                        {microWord}
+                      </text>
+                    </svg>
+                  </div>
 
-              <p className="onboarding-micro-timer">Take your time. No timer on this test.</p>
+                  <div
+                    className="onboarding-micro-answers"
+                    role="radiogroup"
+                    aria-label="Typestyle options"
+                  >
+                    <button
+                      type="button"
+                      className={`onboarding-option onboarding-micro-answer ${
+                        microLeftCorrect ? "onboarding-micro-answer--correct" : ""
+                      } ${microLeftWrong ? "onboarding-micro-answer--wrong" : ""}`}
+                      data-selected={microChoice === "left" ? "true" : "false"}
+                      role="radio"
+                      aria-checked={microChoice === "left"}
+                      ref={(element) => {
+                        microOptionRefs.current[0] = element;
+                      }}
+                      onClick={() => {
+                        setMicroChoice("left");
+                        setMicroChecked(false);
+                        setMicroResult("");
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+                        event.preventDefault();
+                        setMicroChoice("right");
+                        setMicroChecked(false);
+                        setMicroResult("");
+                        microOptionRefs.current[1]?.focus();
+                      }}
+                      data-correct={microLeftCorrect ? "true" : "false"}
+                      data-wrong={microLeftWrong ? "true" : "false"}
+                    >
+                      <span className="onboarding-micro-answer__name">{microProfile.leftLabel}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={`onboarding-option onboarding-micro-answer ${
+                        microRightCorrect ? "onboarding-micro-answer--correct" : ""
+                      } ${microRightWrong ? "onboarding-micro-answer--wrong" : ""}`}
+                      data-selected={microChoice === "right" ? "true" : "false"}
+                      role="radio"
+                      aria-checked={microChoice === "right"}
+                      ref={(element) => {
+                        microOptionRefs.current[1] = element;
+                      }}
+                      onClick={() => {
+                        setMicroChoice("right");
+                        setMicroChecked(false);
+                        setMicroResult("");
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+                        event.preventDefault();
+                        setMicroChoice("left");
+                        setMicroChecked(false);
+                        setMicroResult("");
+                        microOptionRefs.current[0]?.focus();
+                      }}
+                      data-correct={microRightCorrect ? "true" : "false"}
+                      data-wrong={microRightWrong ? "true" : "false"}
+                    >
+                      <span className="onboarding-micro-answer__name">{microProfile.rightLabel}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <p className="onboarding-micro-feedback" data-state={microResult || "idle"}>
+                  {microFeedback}
+                </p>
+              </div>
             </section>
           ) : null}
 
           {step.id === "launch" ? (
-            <div className="onboarding-summary" aria-label="Calibration summary">
-              <span className="onboarding-summary-chip">Pace: {pace || "Balanced"}</span>
-              <span className="onboarding-summary-chip">
-                Familiarity: {familiarity || "A little"}
-              </span>
+            <div className="onboarding-stage-card onboarding-stage-card--launch">
+              <div className="onboarding-summary" aria-label="Calibration summary">
+                <article className="onboarding-summary-card">
+                  <span className="onboarding-summary-card__label">Pace</span>
+                  <strong className="onboarding-summary-card__value">{pace || "Balanced"}</strong>
+                </article>
+                <article className="onboarding-summary-card">
+                  <span className="onboarding-summary-card__label">Familiarity</span>
+                  <strong className="onboarding-summary-card__value">
+                    {familiarity || "A little"}
+                  </strong>
+                </article>
+              </div>
             </div>
-          ) : null}
-
-          {step.options ? (
-            <p
-              id={helperId}
-              className="onboarding-helper"
-              data-visible={helperVisible ? "true" : "false"}
-              aria-live="polite"
-            >
-              {helperVisible ? "Select one option to continue." : "\u00A0"}
-            </p>
           ) : null}
         </div>
 

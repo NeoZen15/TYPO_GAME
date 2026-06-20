@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_8" data-name="Calque 8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 392.618">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-size: 75.02px;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #e1e1d7;
+      }
+
+      .cls-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.053em;
+      }
+
+      .cls-5 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-7 {
+        letter-spacing: -.015em;
+      }
+
+      .cls-8 {
+        letter-spacing: -.018em;
+      }
+
+      .cls-9 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-10 {
+        fill: none;
+        opacity: .35;
+        stroke: #e1e1d7;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-11 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <ellipse class="cls-10" cx="274.165" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="cls-10" cx="421.292" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="cls-10" cx="567.725" cy="215.668" rx="113.184" ry="70.903"/>
+  <text class="cls-1" transform="translate(213.414 246.829)"><tspan class="cls-9" x="0" y="0">D</tspan><tspan class="cls-3" x="55.214" y="0">WIGGINS</tspan></text>
+  <g>
+    <text class="cls-2" transform="translate(267.179 308.175)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="cls-2" transform="translate(329.983 308.174)"><tspan class="cls-7" x="0" y="0">S</tspan><tspan class="cls-8" x="5.7" y="0">Y</tspan><tspan class="cls-5" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="cls-2" transform="translate(528.76 308.175)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="cls-2" transform="translate(488.023 308.513)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="cls-2" transform="translate(397.344 308.175)"><tspan class="cls-6" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="cls-11" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="cls-4" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g>
+</svg>

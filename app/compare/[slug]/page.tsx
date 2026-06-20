@@ -1,10 +1,34 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CompareQuickHelpWidget from "@/components/typography/CompareQuickHelpWidget";
 import MeasuredGlyphSplit from "@/components/typography/MeasuredGlyphSplit";
+import MeasuredWordSplit from "@/components/typography/MeasuredWordSplit";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
+import {
+  buildQuery,
+  getAnchorConfig,
+  getFeatureMeasureLabel,
+  getGlyphPool,
+  getSampleLabel,
+  getSuggestedEmphasis,
+  prioritizeGlyph,
+  type CompareEmphasis,
+  type CompareSample,
+  type CompareView,
+} from "@/lib/typography/compare-page-helpers";
+import {
+  buildCorpusPedagogyLine,
+  buildCompareProfileInsight,
+  pickBestCorpusGlyphSample,
+  pickBestCorpusSampleMode,
+  pickBestCorpusWordSample,
+} from "@/lib/typography/compare-profile-insights";
+import { buildCompareExplanationData, buildRichCompareQuickQuestions } from "@/lib/typography/compare-explanation";
 import { getComparisonBySlug, getComparisonsForTypeface, getConceptsByIds, getTypefaceById } from "@/lib/typography/content";
 import { getSpecimenFontFaceCss, getSpecimenPreviewFamily } from "@/lib/typography/specimen-data";
+import { getLatestTypefaceCorpusVersion, getTypefaceProfileFromCorpus } from "@/lib/typography/typeface-profile-corpus";
 
 type ComparisonPageProps = {
   params: Promise<{
@@ -12,249 +36,11 @@ type ComparisonPageProps = {
   }>;
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
-
-type CompareView = "overlay" | "split";
-type CompareSample = "text" | "word" | "glyph";
-type CompareEmphasis = "left" | "right";
-const FULL_GLYPH_SET = "abcdefghijklmnopqrstuvwxyz".split("");
-
-type AnchorConfig = {
-  feature: string;
-  title: string;
-  directive: string;
-  note: string;
-  sampleText: string;
-  sampleWord: string;
-  sampleGlyphs: string[];
-  glyphPrompts: string[];
-  defaultGlyphIndex: number;
-  recommendedView: CompareView;
-  defaultSample: CompareSample;
-  defaultEmphasis?: CompareEmphasis;
-  takeaway: string;
-  whyItConfuses: string;
-  whatBreaksIt: string;
-  whereItMatters: string;
-  alignmentTitle: string;
-  alignmentNote: string;
-  spacingNote: string;
-};
-
-const FEATURE_COPY: Record<string, Omit<AnchorConfig, "feature">> = {
-  aperture: {
-    title: "Aperture",
-    directive: "Regarde d'abord l'ouverture du e, du c et du s.",
-    note: "Laisse ton oeil comparer l'air qui entre dans les lettres avant de lire la phrase entière.",
-    sampleText: "See the steel echo: secret cities keep decent space between counters.",
-    sampleWord: "access",
-    sampleGlyphs: ["e", "c", "s", "a", "g"],
-    glyphPrompts: [
-      "Observe l'ouverture du e: Inter laisse entrer davantage d'air avant la barre horizontale.",
-      "Sur le c, regarde la bouche: l'espace s'ouvre plus vite dans Inter.",
-      "Le s montre si la forme se referme ou respire quand la courbe revient vers l'interieur.",
-      "Le a aide a confirmer la meme logique d'ouverture dans une structure plus complexe.",
-      "Le g sert de verification finale quand tu veux tester la sensation d'ouverture sur une forme plus dense.",
-    ],
-    defaultGlyphIndex: 0,
-    recommendedView: "overlay",
-    defaultSample: "glyph",
-    defaultEmphasis: "right",
-    takeaway: "What changes: Inter ouvre davantage ses contreformes, ce qui rend la ligne plus aeree des petites tailles.",
-    whyItConfuses: "Les deux fontes paraissent neutres et fiables au premier coup d'oeil.",
-    whatBreaksIt: "Les ouvertures d'Inter respirent plus vite dans les minuscules que celles de Helvetica Neue.",
-    whereItMatters: "C'est surtout visible dans les interfaces, les petites tailles et les lignes denses.",
-    alignmentTitle: "Counter opening guide",
-    alignmentNote: "Garde la meme ligne de base et compare la vitesse avec laquelle l'oeil entre dans e, c et s.",
-    spacingNote: "Le mot test montre aussi si l'air circule plus librement d'une lettre a l'autre.",
-  },
-  xHeight: {
-    title: "x-height",
-    directive: "Compare la hauteur du corps minuscule avant de regarder les capitales.",
-    note: "La sensation de densité vient souvent de la hauteur perçue des minuscules, pas du poids seul.",
-    sampleText: "Minimum letters build a tall texture when the lowercase body climbs higher.",
-    sampleWord: "minimum",
-    sampleGlyphs: ["x", "n", "o", "m", "u"],
-    glyphPrompts: [
-      "Le x sert de repere direct pour estimer la hauteur utile des minuscules.",
-      "Le n montre comment la hauteur percue compacte la ligne sans changer brutalement le poids.",
-      "Le o aide a comparer la hauteur du corps minuscule sur une forme plus ronde.",
-      "Le m rend tout de suite visible la densite induite par une x-height plus haute.",
-      "Le u confirme si la ligne reste haute ou retombe quand la forme s'ouvre davantage.",
-    ],
-    defaultGlyphIndex: 0,
-    recommendedView: "split",
-    defaultSample: "word",
-    defaultEmphasis: "right",
-    takeaway: "What changes: une x-height plus haute compacte la texture et fait monter la ligne avant meme que le poids change.",
-    whyItConfuses: "Les deux dessins peuvent sembler proches tant qu'on regarde surtout les capitales.",
-    whatBreaksIt: "La hauteur des minuscules d'Inter remplit plus vite la ligne et change la densite generale.",
-    whereItMatters: "On le voit surtout dans les mots repetitifs, les listes et les systemes d'interface.",
-    alignmentTitle: "x-height guide",
-    alignmentNote: "Aligne la base du x et regarde jusqu'ou monte le corps minuscule dans chaque fonte.",
-    spacingNote: "Le mot minimum fait ressortir comment la hauteur et la largeur construisent une texture differente.",
-  },
-  terminals: {
-    title: "Terminals",
-    directive: "Observe la manière dont les fins de traits ferment ou laissent respirer la forme.",
-    note: "Les terminaisons changent le ton d'une fonte même quand la structure générale semble proche.",
-    sampleText: "Humanist endings soften the line while neutral cuts keep the rhythm restrained.",
-    sampleWord: "terminals",
-    sampleGlyphs: ["a", "r", "t", "f", "j"],
-    glyphPrompts: [
-      "Le a fait sentir la difference entre une fin plus humaniste et une coupe plus neutre.",
-      "Le r laisse voir comment la terminaison donne du ton a toute la ligne.",
-      "Le t permet de comparer la maniere dont le trait se ferme sur un dessin tres simple.",
-      "Le f accentue la personnalite des terminaisons quand la forme devient plus tendue.",
-      "Le j confirme la meme logique sur une lettre plus mobile et plus asymetrique.",
-    ],
-    defaultGlyphIndex: 0,
-    recommendedView: "overlay",
-    defaultSample: "glyph",
-    defaultEmphasis: "left",
-    takeaway: "What changes: des terminaisons plus humanistes assouplissent le ton, la ou des coupes neutres gardent la ligne plus retenue.",
-    whyItConfuses: "A distance, la structure globale semble proche et les terminaisons passent au second plan.",
-    whatBreaksIt: "Les fins de traits plus humanistes de Frutiger changent le ton avant meme la silhouette globale.",
-    whereItMatters: "Cela compte surtout quand on compare des sans serif tres proches en signaletique ou en lecture fonctionnelle.",
-    alignmentTitle: "Terminal guide",
-    alignmentNote: "Aligne les lettres et regarde surtout comment les fins de traits coupent ou relachent la forme.",
-    spacingNote: "Le mot test aide a voir si ces terminaisons serrent ou relachent le rythme general.",
-  },
-  contrast: {
-    title: "Contrast",
-    directive: "Regarde l'écart entre pleins et déliés avant toute autre chose.",
-    note: "Le contraste change la tension visuelle d'un mot avant même que sa silhouette soit identifiée.",
-    sampleText: "Strong contrast creates a sharper pulse; calmer strokes keep the colour more even.",
-    sampleWord: "contrast",
-    sampleGlyphs: ["n", "o", "s", "v", "w"],
-    glyphPrompts: [
-      "Le n aide a voir si les pleins et delies s'opposent fortement ou restent reguliers.",
-      "Le o montre le contraste sans l'aide d'angles ou de terminaisons plus demonstratives.",
-      "Le s fait ressortir la tension du trait quand la courbe change de direction.",
-      "Le v expose la difference de tension sur une forme plus pointue.",
-      "Le w verifie si cette pulsation reste stable quand la lettre se repete.",
-    ],
-    defaultGlyphIndex: 0,
-    recommendedView: "overlay",
-    defaultSample: "word",
-    defaultEmphasis: "right",
-    takeaway: "What changes: plus le contraste monte, plus la pulsation du mot devient nerveuse et moins la couleur parait uniforme.",
-    whyItConfuses: "La silhouette du mot reste lisible meme quand le contraste change fortement.",
-    whatBreaksIt: "La tension des pleins et delies modifie la pulsation interne du mot avant son contour global.",
-    whereItMatters: "On le sent tres vite sur les grands corps, les titres et les rythmes editoriaux.",
-    alignmentTitle: "Stroke guide",
-    alignmentNote: "Garde les formes superposees et regarde comment la tension du trait monte ou se calme.",
-    spacingNote: "Le mot test permet de sentir si la pulsation reste reguliere ou devient plus nerveuse.",
-  },
-};
-
-const getAnchorConfig = (feature: string): AnchorConfig => ({
-  feature,
-  ...(FEATURE_COPY[feature] ?? {
-    title: feature,
-    directive: "Regarde d'abord ce détail structurel dans le stage.",
-    note: "Ici, on cherche un indice simple qui modifie la texture générale de la ligne.",
-    sampleText: "A precise difference becomes easier to see once the page forces the right comparison.",
-    sampleWord: "observe",
-    sampleGlyphs: ["a", "e", "s", "r", "g"],
-    glyphPrompts: [
-      "Observe la premiere lettre comme point d'entree, puis confirme avec les autres.",
-      "Chaque lettre isolee sert ici de verification plus que de demonstration autonome.",
-      "La forme se comprend mieux quand tu regardes la structure avant le mot entier.",
-      "Utilise cette etape pour confirmer un detail deja soupconne dans le stage.",
-      "La derniere lettre sert de rappel: on cherche un indice simple, pas une lecture complete.",
-    ],
-    defaultGlyphIndex: 0,
-    recommendedView: "overlay" as const,
-    defaultSample: "word" as const,
-    defaultEmphasis: "right" as const,
-    takeaway: "What changes: une difference simple devient visible des que la page force le bon niveau de comparaison.",
-    whyItConfuses: "La paire semble proche tant qu'on reste dans une lecture trop globale.",
-    whatBreaksIt: "Un detail structurel bien choisi suffit a casser cette proximite visuelle.",
-    whereItMatters: "Le plus utile est de confirmer ce detail a plusieurs echelles, du glyphe a la ligne.",
-    alignmentTitle: "Alignment guide",
-    alignmentNote: "Aligne la base et compare un seul indice structurel avant de revenir au mot entier.",
-    spacingNote: "Le strip de lettres sert ensuite a confirmer si le meme indice modifie vraiment le rythme.",
-  }),
-});
-
 const getDisplayFamily = (slug: string, name: string) => {
   const previewFamily = getSpecimenPreviewFamily(slug);
   return previewFamily
     ? `"${previewFamily}", "${name}", "Helvetica Neue", Arial, sans-serif`
     : `"${name}", "Helvetica Neue", Arial, sans-serif`;
-};
-
-const getValueStrength = (value: string) => {
-  const normalized = value.toLowerCase();
-  if (["open", "high", "humanist", "strong"].includes(normalized)) return 2;
-  if (["medium", "neutral", "balanced"].includes(normalized)) return 1;
-  return 0;
-};
-
-const getSuggestedEmphasis = (left: string, right: string): CompareEmphasis => {
-  return getValueStrength(right) >= getValueStrength(left) ? "right" : "left";
-};
-
-const getSampleLabel = (sample: CompareSample, glyph: string) => {
-  if (sample === "glyph") return glyph || "letter";
-  if (sample === "word") return "word";
-  return "text";
-};
-
-const getSampleLead = (sample: CompareSample) => {
-  if (sample === "glyph") return "Detail level";
-  if (sample === "word") return "Silhouette level";
-  return "Reading level";
-};
-
-const getFeatureMeasureLabel = (feature: string) => {
-  switch (feature) {
-    case "xHeight":
-      return "x-height";
-    case "aperture":
-      return "opening";
-    case "terminals":
-      return "ending";
-    case "contrast":
-      return "stroke";
-    default:
-      return "focus";
-  }
-};
-
-const getGlyphPool = (focusedGlyphs: string[]) => {
-  const seen = new Set<string>();
-  const ordered = [...focusedGlyphs, ...FULL_GLYPH_SET].filter((glyph) => {
-    const normalized = glyph.toLowerCase();
-    if (seen.has(normalized)) return false;
-    seen.add(normalized);
-    return true;
-  });
-  return ordered;
-};
-
-const getGenericGlyphPrompt = (feature: string, glyph: string) => {
-  switch (feature) {
-    case "aperture":
-      return `Observe comment ${glyph} s'ouvre ou se referme quand le trait revient vers l'interieur.`;
-    case "xHeight":
-      return `Regarde jusqu'ou monte ${glyph} au-dessus de la ligne de base pour estimer la hauteur utile des minuscules.`;
-    case "terminals":
-      return `Observe comment ${glyph} termine son trait et si la fin de forme reste neutre ou plus humaniste.`;
-    case "contrast":
-      return `Observe comment ${glyph} distribue ses pleins et delies avant de revenir au mot complet.`;
-    default:
-      return `Observe ${glyph} comme un indice structurel isole avant de revenir au mot entier.`;
-  }
-};
-
-const getWordCells = (word: string) => word.split("").filter(Boolean);
-
-const buildQuery = (params: URLSearchParams, patch: Record<string, string>) => {
-  const next = new URLSearchParams(params);
-  Object.entries(patch).forEach(([key, value]) => next.set(key, value));
-  const query = next.toString();
-  return query ? `?${query}` : "";
 };
 
 export default async function ComparisonPage({ params, searchParams }: ComparisonPageProps) {
@@ -316,40 +102,130 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
     resolvedSearchParams.emphasis === "left" || resolvedSearchParams.emphasis === "right"
       ? resolvedSearchParams.emphasis
       : defaultEmphasis;
+  const corpusVersion = getLatestTypefaceCorpusVersion();
+  const leftProfile = getTypefaceProfileFromCorpus({ fontId: leftTypeface.slug, version: corpusVersion?.version });
+  const rightProfile = getTypefaceProfileFromCorpus({ fontId: rightTypeface.slug, version: corpusVersion?.version });
+  const corpusSampleWord =
+    corpusVersion && leftProfile && rightProfile
+      ? pickBestCorpusWordSample({
+          feature: activeAnchor.feature,
+          fallbackWord: activeAnchor.config.sampleWord,
+          leftProfile,
+          rightProfile,
+        })
+      : activeAnchor.config.sampleWord;
+  const corpusSuggestedSample =
+    corpusVersion && leftProfile && rightProfile
+      ? pickBestCorpusSampleMode({
+          feature: activeAnchor.feature,
+          fallbackSample: activeAnchor.config.defaultSample,
+          sampleWord: corpusSampleWord,
+          leftProfile,
+          rightProfile,
+        })
+      : activeAnchor.config.defaultSample;
   const view: CompareView =
-    resolvedSearchParams.view === "split" || resolvedSearchParams.view === "overlay"
+    resolvedSearchParams.view === "split" || resolvedSearchParams.view === "overlay" || resolvedSearchParams.view === "measure"
       ? resolvedSearchParams.view
       : activeAnchor.config.recommendedView;
   const sample: CompareSample =
     resolvedSearchParams.sample === "word" || resolvedSearchParams.sample === "text" || resolvedSearchParams.sample === "glyph"
       ? resolvedSearchParams.sample
-      : activeAnchor.config.defaultSample;
+      : corpusSuggestedSample;
 
   const stageText =
     sample === "glyph"
       ? activeAnchor.config.sampleGlyphs.join(" ")
       : sample === "word"
-        ? activeAnchor.config.sampleWord
+        ? corpusSampleWord
         : activeAnchor.config.sampleText;
-  const stageGlyphs = getGlyphPool(activeAnchor.config.sampleGlyphs);
+  const guidedGlyphs = activeAnchor.config.sampleGlyphs;
+  const libraryGlyphs = getGlyphPool(activeAnchor.config.sampleGlyphs);
+  const stageGlyphs = libraryGlyphs;
+  const defaultGuidedGlyph = guidedGlyphs[activeAnchor.config.defaultGlyphIndex] ?? guidedGlyphs[0] ?? "";
+  const corpusSampleGlyph =
+    corpusVersion && leftProfile && rightProfile
+      ? pickBestCorpusGlyphSample({
+          feature: activeAnchor.feature,
+          fallbackGlyph: defaultGuidedGlyph,
+          candidateGlyphs: guidedGlyphs,
+          sampleWord: corpusSampleWord,
+          leftProfile,
+          rightProfile,
+        })
+      : defaultGuidedGlyph;
+  const prioritizedGuidedGlyphs = prioritizeGlyph(guidedGlyphs, corpusSampleGlyph);
+  const defaultLibraryGlyphIndex = Math.max(libraryGlyphs.findIndex((glyph) => glyph === corpusSampleGlyph), 0);
   const requestedGlyphIndex =
     typeof resolvedSearchParams.glyph === "string" ? Number.parseInt(resolvedSearchParams.glyph, 10) : Number.NaN;
   const glyphIndex =
     Number.isFinite(requestedGlyphIndex) && requestedGlyphIndex >= 0 && requestedGlyphIndex < stageGlyphs.length
       ? requestedGlyphIndex
-      : activeAnchor.config.defaultGlyphIndex;
+      : defaultLibraryGlyphIndex;
   const activeGlyph = stageGlyphs[glyphIndex] ?? "";
-  const focusedGlyphIndex = activeAnchor.config.sampleGlyphs.findIndex((glyph) => glyph === activeGlyph);
-  const activeGlyphPrompt =
-    focusedGlyphIndex >= 0
-      ? activeAnchor.config.glyphPrompts[focusedGlyphIndex] ?? activeAnchor.config.note
-      : getGenericGlyphPrompt(activeAnchor.feature, activeGlyph);
-  const previousGlyphIndex = glyphIndex > 0 ? glyphIndex - 1 : stageGlyphs.length - 1;
-  const nextGlyphIndex = glyphIndex < stageGlyphs.length - 1 ? glyphIndex + 1 : 0;
-  const nextGlyph = stageGlyphs[nextGlyphIndex] ?? "";
-  const spacingCells = getWordCells(activeAnchor.config.sampleWord);
   const leftFontCss = getSpecimenFontFaceCss(leftTypeface.slug);
   const rightFontCss = getSpecimenFontFaceCss(rightTypeface.slug);
+  const defaultStageGlyph = activeAnchor.config.sampleGlyphs[activeAnchor.config.defaultGlyphIndex] ?? "";
+  const stageSampleLabel = getSampleLabel(activeAnchor.config.defaultSample, defaultStageGlyph);
+  const featureMetricInsight =
+    corpusVersion && leftProfile && rightProfile
+      ? buildCompareProfileInsight({
+          feature: activeAnchor.feature,
+          sampleWord: corpusSampleWord,
+          leftProfile,
+          rightProfile,
+        })
+      : null;
+  const corpusPedagogyLine = buildCorpusPedagogyLine({
+    insight: featureMetricInsight,
+    sampleWord: corpusSampleWord,
+    sampleGlyph: corpusSampleGlyph,
+    sampleMode: sample,
+    leftName: leftTypeface.name,
+    rightName: rightTypeface.name,
+  });
+  const heroSupportLine =
+    featureMetricInsight && featureMetricInsight.mode !== "missing"
+      ? featureMetricInsight.strongerSide === "tie"
+        ? "This one is subtle, so trust the stage more than the labels."
+        : `${featureMetricInsight.strongerSide === "left" ? leftTypeface.name : rightTypeface.name} is the clearer side to inspect first.`
+      : null;
+  const unifiedHeroNote = [
+    corpusPedagogyLine ?? `${fallbackIntro} ${activeAnchor.config.note}`,
+    heroSupportLine,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const compactCorpusChip =
+    featureMetricInsight && featureMetricInsight.mode !== "missing"
+      ? featureMetricInsight.strongerSide === "tie"
+        ? `Corpus read · ${featureMetricInsight.signal === "low" ? "subtle" : "balanced"}`
+        : `${featureMetricInsight.strongerSide === "left" ? leftTypeface.name : rightTypeface.name} leads`
+      : null;
+  const stageSampleFocusLabel =
+    corpusSuggestedSample === "word"
+      ? corpusSampleWord
+      : corpusSuggestedSample === "glyph"
+        ? corpusSampleGlyph
+        : stageSampleLabel;
+  const compareExplanation =
+    corpusVersion && leftProfile && rightProfile
+      ? buildCompareExplanationData({
+          version: corpusVersion.version,
+          feature: activeAnchor.feature,
+          featureLabel: activeAnchor.config.title,
+          leftProfile,
+          rightProfile,
+          fallbackSampleMode: activeAnchor.config.defaultSample,
+          selectedSampleMode: corpusSuggestedSample,
+          fallbackWord: activeAnchor.config.sampleWord,
+          selectedWord: corpusSampleWord,
+          fallbackGlyph: defaultGuidedGlyph,
+          selectedGlyph: corpusSampleGlyph,
+          candidateGlyphs: guidedGlyphs,
+        })
+      : null;
+  const quickQuestions = compareExplanation ? buildRichCompareQuickQuestions({ explanation: compareExplanation }) : [];
   const leftFamily = getDisplayFamily(leftTypeface.slug, leftTypeface.name);
   const rightFamily = getDisplayFamily(rightTypeface.slug, rightTypeface.name);
   const stageStyle = {
@@ -357,29 +233,58 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
     "--compare-right-family": rightFamily,
   } as CSSProperties & Record<`--${string}`, string>;
 
-  const stageClasses = `compare-stage compare-stage--${view} compare-stage--emphasis-${emphasis} compare-stage--sample-${sample}`;
+  const stageClasses = `compare-stage compare-stage--feature-${activeAnchor.feature} compare-stage--${view} compare-stage--emphasis-${emphasis} compare-stage--sample-${sample}`;
+  const isMeasureMode = view === "measure";
   const swapHref = buildQuery(currentParams, { emphasis: emphasis === "left" ? "right" : "left" });
   const stageObserveLabel = activeAnchor.config.title;
-  const defaultStageGlyph = activeAnchor.config.sampleGlyphs[activeAnchor.config.defaultGlyphIndex] ?? "";
-  const stageSampleLabel = getSampleLabel(activeAnchor.config.defaultSample, defaultStageGlyph);
-  const currentSampleLead = getSampleLead(sample);
   const featureMeasureLabel = getFeatureMeasureLabel(activeAnchor.feature);
-  const anchorHrefFor = (anchor: (typeof anchors)[number]) =>
-    buildQuery(currentParams, {
-      focus: anchor.feature,
-      view: anchor.config.recommendedView,
-      sample: anchor.config.defaultSample,
-      emphasis: anchor.config.defaultEmphasis ?? getSuggestedEmphasis(anchor.left, anchor.right),
-      glyph: String(anchor.config.defaultGlyphIndex),
-    });
   const gameHref = comparison.ctaGameVariant ? `/play?variant=${comparison.ctaGameVariant}` : "/play";
   const dominantTypeface = emphasis === "left" ? leftTypeface : rightTypeface;
+  const primaryNavItems: Array<{ label: string; href: string; isActive?: boolean }> = [
+    { label: "Compare", href: `/compare/${comparison.slug}`, isActive: true },
+    { label: "Learn", href: "/onboarding" },
+    { label: "Play", href: "/play" },
+  ];
 
   return (
-    <main className="typo-page">
+    <main className="typo-page compare-page">
       <ThemeSwitch />
       {leftFontCss || rightFontCss ? <style>{[leftFontCss, rightFontCss].filter(Boolean).join("\n\n")}</style> : null}
       <article className="typo-shell">
+        <header className="compare-site-nav" aria-label="Primary navigation">
+          <Link href="/" className="compare-site-nav__brand" aria-label="Dwiggins home">
+            <Image
+              src="/brand/dwiggins-wordmark-full-ivory.svg"
+              alt="Dwiggins"
+              className="compare-site-nav__brand-mark compare-site-nav__brand-mark--full"
+              width={1394}
+              height={200}
+            />
+          </Link>
+
+          <nav className="compare-site-nav__links" aria-label="Site sections">
+            {primaryNavItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`compare-site-nav__link ${item.isActive ? "is-active" : ""}`}
+                aria-current={item.isActive ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="compare-site-nav__actions">
+            <Link href="/onboarding" className="compare-site-nav__rules">
+              Rules
+            </Link>
+            <Link href={gameHref} className="compare-site-nav__cta">
+              Start playing
+            </Link>
+          </div>
+        </header>
+
         <nav className="typo-breadcrumbs" aria-label="Comparison navigation">
           <Link href="/" className="typo-link">
             Home
@@ -396,6 +301,11 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
           <p className="typo-chip typo-chip--info">Category · {leftTypeface.category}</p>
           <p className="typo-chip typo-chip--positive">Comparaison · {comparison.score}</p>
           <p className="typo-chip typo-chip--warning">Concepts · {concepts.length}</p>
+          {compactCorpusChip ? (
+            <p className="typo-chip typo-chip--positive">
+              {compactCorpusChip}
+            </p>
+          ) : null}
         </div>
 
         <header className="compare-hero">
@@ -403,13 +313,10 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
             <p className="compare-hero-kicker">Guided comparison</p>
             <h1 className="compare-hero-title">{heroTitle}</h1>
             <p className="compare-hero-directive">{activeAnchor.config.directive}</p>
-            <p className="compare-hero-note">{fallbackIntro} {activeAnchor.config.note}</p>
-          </div>
-          <div className="compare-hero-side">
-            <p className="typo-demo-label">Current cue</p>
-            <p className="compare-hero-feature">{activeAnchor.config.title}</p>
-            <p className="compare-hero-values">
-              {leftTypeface.name}: {activeAnchor.left} · {rightTypeface.name}: {activeAnchor.right}
+            <p className="compare-hero-note">{unifiedHeroNote}</p>
+            <p className="compare-hero-cue">
+              Best entry: <strong>{corpusSuggestedSample}</strong>
+              <span> · {stageSampleFocusLabel}</span>
             </p>
           </div>
         </header>
@@ -426,276 +333,170 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
                   Observe first <span>{stageObserveLabel}</span>
                 </p>
                 <p className="compare-stage-meta-item">
-                  Default sample <span>{stageSampleLabel}</span>
+                  Start with <span>{corpusSuggestedSample}</span>
+                </p>
+                <p className="compare-stage-meta-item">
+                  Look at <span>{stageSampleFocusLabel}</span>
                 </p>
               </div>
-            </div>
-            <div className="compare-stage-controls">
-              <Link
-                href={buildQuery(currentParams, { focus: activeAnchor.feature, view: "overlay" })}
-                scroll={false}
-                className={`compare-control ${view === "overlay" ? "is-active" : ""}`}
-              >
-                Overlay
-              </Link>
-              <Link
-                href={buildQuery(currentParams, { focus: activeAnchor.feature, view: "split" })}
-                scroll={false}
-                className={`compare-control ${view === "split" ? "is-active" : ""}`}
-              >
-                Split
-              </Link>
             </div>
           </div>
 
           <div className={stageClasses} style={stageStyle}>
-            <div className="compare-stage-guides" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
-
-            {view === "overlay" ? (
-              <div className="compare-stage-overlay">
-                <div className="compare-stage-focus-switch">
-                  <p className={`compare-stage-focus-name ${emphasis === "left" ? "is-active" : ""}`}>
-                    {leftTypeface.name}
-                  </p>
-                  <Link href={swapHref} scroll={false} className="compare-stage-focus-toggle">
-                    Flip focus
+            <div className="compare-stage-view">
+              <div className="compare-stage-control-cluster" aria-label="Compare controls">
+                <div className="compare-stage-control-row compare-stage-control-row--mode">
+                  <Link
+                    href={buildQuery(currentParams, { focus: activeAnchor.feature, view: "overlay" })}
+                    scroll={false}
+                    className={`compare-control ${view === "overlay" ? "is-active" : ""}`}
+                  >
+                    Overlay
                   </Link>
-                  <p className={`compare-stage-focus-name ${emphasis === "right" ? "is-active" : ""}`}>
-                    {rightTypeface.name}
-                  </p>
+                  <Link
+                    href={buildQuery(currentParams, { focus: activeAnchor.feature, view: "measure" })}
+                    scroll={false}
+                    className={`compare-control ${view === "measure" ? "is-active" : ""}`}
+                  >
+                    Measure
+                  </Link>
                 </div>
-                {sample === "glyph" ? (
-                  <>
-                    <p className="compare-stage-layer compare-stage-layer--left" aria-hidden="true">
-                      {activeGlyph}
-                    </p>
-                    <p className="compare-stage-layer compare-stage-layer--right" aria-hidden="true">
-                      {activeGlyph}
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p className="compare-stage-layer compare-stage-layer--left">{stageText}</p>
-                    <p className="compare-stage-layer compare-stage-layer--right">{stageText}</p>
-                  </>
-                )}
               </div>
-            ) : sample === "glyph" ? (
-              <MeasuredGlyphSplit
-                glyph={activeGlyph}
-                guideLabel={featureMeasureLabel}
-                left={{ label: leftTypeface.name, family: leftFamily }}
-                right={{ label: rightTypeface.name, family: rightFamily }}
-              />
-            ) : (
-              <div className="compare-stage-split">
-                <article className="compare-stage-pane compare-stage-pane--left">
-                  <p className="compare-stage-pane-label">{leftTypeface.name}</p>
-                  <p className="compare-stage-pane-text">{stageText}</p>
-                </article>
-                <article className="compare-stage-pane compare-stage-pane--right">
-                  <p className="compare-stage-pane-label">{rightTypeface.name}</p>
-                  <p className="compare-stage-pane-text">{stageText}</p>
-                </article>
+              <div className="compare-stage-guides" aria-hidden="true">
+                <span />
+                <span />
+                <span />
               </div>
-            )}
-          </div>
 
-          <p className="compare-stage-takeaway">{activeAnchor.config.takeaway}</p>
-
-          <div className="compare-stage-toolbar">
-            <div className="compare-stage-controls">
-              <Link
-                href={buildQuery(currentParams, { sample: "text", focus: activeAnchor.feature })}
-                scroll={false}
-                className={`compare-control ${sample === "text" ? "is-active" : ""}`}
-              >
-                Text
-              </Link>
-              <Link
-                href={buildQuery(currentParams, { sample: "word", focus: activeAnchor.feature })}
-                scroll={false}
-                className={`compare-control ${sample === "word" ? "is-active" : ""}`}
-              >
-                Word
-              </Link>
-              <Link
-                href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: "0" })}
-                scroll={false}
-                className={`compare-control ${sample === "glyph" ? "is-active" : ""}`}
-              >
-                Letters
-              </Link>
+              {view === "overlay" ? (
+                <div className="compare-stage-overlay">
+                  {sample === "glyph" ? (
+                    <>
+                      <p className="compare-stage-layer compare-stage-layer--left" aria-hidden="true">
+                        {activeGlyph}
+                      </p>
+                      <p className="compare-stage-layer compare-stage-layer--right" aria-hidden="true">
+                        {activeGlyph}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="compare-stage-layer compare-stage-layer--left">{stageText}</p>
+                      <p className="compare-stage-layer compare-stage-layer--right">{stageText}</p>
+                    </>
+                  )}
+                </div>
+              ) : sample === "glyph" ? (
+                <MeasuredGlyphSplit
+                  glyph={activeGlyph}
+                  feature={activeAnchor.feature}
+                  guideLabel={featureMeasureLabel}
+                  left={{ label: leftTypeface.name, family: leftFamily }}
+                  right={{ label: rightTypeface.name, family: rightFamily }}
+                  showMeasurements={isMeasureMode}
+                />
+              ) : sample === "word" && (view === "measure" || (view === "split" && activeAnchor.feature === "xHeight")) ? (
+                <MeasuredWordSplit
+                  word={stageText}
+                  left={{ label: leftTypeface.name, family: leftFamily }}
+                  right={{ label: rightTypeface.name, family: rightFamily }}
+                  feature={activeAnchor.feature}
+                  showMeasurements={isMeasureMode}
+                />
+              ) : (
+                <div className="compare-stage-split">
+                  <article className="compare-stage-pane compare-stage-pane--left">
+                    <p className="compare-stage-pane-label">{leftTypeface.name}</p>
+                    <p className="compare-stage-pane-text">{stageText}</p>
+                  </article>
+                  <article className="compare-stage-pane compare-stage-pane--right">
+                    <p className="compare-stage-pane-label">{rightTypeface.name}</p>
+                    <p className="compare-stage-pane-text">{stageText}</p>
+                  </article>
+                </div>
+              )}
             </div>
-            {sample === "glyph" && stageGlyphs.length > 0 ? (
-              <div className="compare-stage-glyph-tools" aria-label="Letter picker">
-                <div className="compare-stage-glyph-picker compare-stage-glyph-picker--focused">
-                  {activeAnchor.config.sampleGlyphs.map((glyph) => {
-                    const index = stageGlyphs.findIndex((entry) => entry === glyph);
-                    return (
-                      <Link
-                        key={`${glyph}-${index}`}
-                        href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: String(index) })}
-                        scroll={false}
-                        className={`compare-stage-glyph-choice ${index === glyphIndex ? "is-active" : ""}`}
-                      >
-                        {glyph}
-                      </Link>
-                    );
-                  })}
+
+            <div className={`compare-stage-controls-zone compare-stage-controls-zone--${view === "overlay" ? "overlay" : "measure"}`}>
+              {view === "overlay" ? (
+                <div className="compare-stage-bottom-bar">
+                  <div className="compare-stage-focus-rail" aria-label="Typeface focus">
+                    <p className={`compare-stage-focus-name ${emphasis === "left" ? "is-active" : ""}`}>
+                      {leftTypeface.name}
+                    </p>
+                    <Link href={swapHref} scroll={false} className="compare-stage-focus-toggle">
+                      Flip focus
+                    </Link>
+                    <p className={`compare-stage-focus-name ${emphasis === "right" ? "is-active" : ""}`}>
+                      {rightTypeface.name}
+                    </p>
+                  </div>
                 </div>
-                <div className="compare-stage-glyph-library">
-                  <p className="compare-stage-glyph-library-label">Alphabet</p>
-                  <div className="compare-stage-glyph-library-panel">
-                    {FULL_GLYPH_SET.map((glyph) => {
-                      const index = stageGlyphs.findIndex((entry) => entry === glyph);
-                      return (
-                        <Link
-                          key={`library-${glyph}-${index}`}
-                          href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: String(index) })}
-                          scroll={false}
-                          className={`compare-stage-glyph-choice compare-stage-glyph-choice--library ${index === glyphIndex ? "is-active" : ""}`}
-                        >
-                          {glyph}
-                        </Link>
-                      );
+              ) : null}
+              <div className="compare-stage-bottom-bar compare-stage-bottom-bar--measure">
+                <div className="compare-stage-sample-switch compare-stage-sample-switch--measure" aria-label="Sample controls">
+                  <Link
+                    href={buildQuery(currentParams, { sample: "word", focus: activeAnchor.feature })}
+                    scroll={false}
+                    className={`compare-stage-focus-toggle compare-stage-focus-toggle--secondary ${sample === "word" ? "is-active" : ""}`}
+                  >
+                    Word
+                  </Link>
+                  <Link
+                    href={buildQuery(currentParams, {
+                      sample: "glyph",
+                      focus: activeAnchor.feature,
+                      glyph: String(defaultLibraryGlyphIndex),
                     })}
-                  </div>
-                </div>
-              </div>
-            ) : null}
-            <p className="compare-stage-toolbar-copy">
-              Commence par l&apos;etat guide, puis confirme la difference en changeant le mode ou la dominance.
-            </p>
-          </div>
-
-          <div className="compare-stage-reading-brief" aria-label="Guided reading brief">
-            <p className="compare-stage-reading-chip">
-              {currentSampleLead} <span>{sample === "glyph" ? activeGlyph : sample}</span>
-            </p>
-            <p className="compare-stage-reading-item">
-              Why they get confused <span>{activeAnchor.config.whyItConfuses}</span>
-            </p>
-            <p className="compare-stage-reading-item">
-              What breaks it <span>{activeAnchor.config.whatBreaksIt}</span>
-            </p>
-            <p className="compare-stage-reading-item">
-              Where it matters <span>{activeAnchor.config.whereItMatters}</span>
-            </p>
-          </div>
-
-          <section className="compare-proof-strip" aria-labelledby="compare-proof-strip-title">
-            <div className="compare-proof-head">
-              <div>
-                <p className="typo-demo-label">Comparison proof</p>
-                <h3 id="compare-proof-strip-title" className="compare-proof-title">
-                  {activeAnchor.config.alignmentTitle}
-                </h3>
-              </div>
-              <p className="compare-proof-copy">{activeAnchor.config.alignmentNote}</p>
-            </div>
-            <div className="compare-proof-grid">
-              <article className="compare-proof-card">
-                <p className="compare-proof-label">{leftTypeface.name}</p>
-                <div className="compare-proof-word compare-proof-word--left">
-                  {spacingCells.map((cell, index) => (
-                    <span key={`${leftTypeface.slug}-${cell}-${index}`} className="compare-proof-cell">
-                      {cell}
-                    </span>
-                  ))}
-                </div>
-              </article>
-              <article className="compare-proof-card">
-                <p className="compare-proof-label">{rightTypeface.name}</p>
-                <div className="compare-proof-word compare-proof-word--right">
-                  {spacingCells.map((cell, index) => (
-                    <span key={`${rightTypeface.slug}-${cell}-${index}`} className="compare-proof-cell">
-                      {cell}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            </div>
-            <p className="compare-proof-copy compare-proof-copy--spacing">{activeAnchor.config.spacingNote}</p>
-          </section>
-
-          {sample === "glyph" && stageGlyphs.length > 0 ? (
-            <section className="compare-detail-focus" aria-labelledby="compare-detail-focus-title">
-              <div className="compare-detail-focus-head">
-                <div>
-                  <p className="typo-demo-label">Focus detail</p>
-                  <h3 id="compare-detail-focus-title" className="compare-detail-focus-title">
-                    {activeAnchor.config.title} · step {glyphIndex + 1}/{stageGlyphs.length}
-                  </h3>
-                </div>
-                <div className="compare-detail-focus-nav">
-                  <Link
-                    href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: String(previousGlyphIndex) })}
                     scroll={false}
-                    className="compare-detail-focus-link"
+                    className={`compare-stage-focus-toggle compare-stage-focus-toggle--secondary ${sample === "glyph" ? "is-active" : ""}`}
                   >
-                    Previous
-                  </Link>
-                  <Link
-                    href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: String(nextGlyphIndex) })}
-                    scroll={false}
-                    className="compare-detail-focus-link"
-                  >
-                    Next
+                    Letter
                   </Link>
                 </div>
               </div>
-              <div className="compare-detail-focus-body">
-                <p className="compare-detail-focus-glyph">{activeGlyph}</p>
-                <div className="compare-detail-focus-content">
-                  <p className="compare-detail-focus-copy">{activeGlyphPrompt}</p>
-                  <div className="compare-detail-focus-rail" aria-label="Focus detail cues">
-                    <p className="compare-detail-focus-chip">
-                      <span>Look for</span>
-                      Observe comment l&apos;ouverture reste stable ou se referme quand la courbe revient vers l&apos;interieur.
-                    </p>
-                    <p className="compare-detail-focus-chip">
-                      <span>Then check</span>
-                      Passe ensuite sur <strong>{nextGlyph}</strong> pour confirmer la meme logique sur une autre forme.
-                    </p>
-                    <p className="compare-detail-focus-chip">
-                      <span>Why this step</span>
-                      Cette lettre sert de verification intermediaire avant de revenir au mot complet.
-                    </p>
+              <div className="compare-stage-bottom-drawer">
+                {sample === "glyph" && stageGlyphs.length > 0 ? (
+                  <div className="compare-stage-glyph-tools" aria-label="Letter picker">
+                    <div className="compare-stage-glyph-picker compare-stage-glyph-picker--focused">
+                      {prioritizedGuidedGlyphs.map((glyph) => {
+                        const index = libraryGlyphs.findIndex((entry) => entry === glyph);
+                        return (
+                          <Link
+                            key={`${glyph}-${index}`}
+                            href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: String(index) })}
+                            scroll={false}
+                            className={`compare-stage-glyph-choice ${index === glyphIndex ? "is-active" : ""}`}
+                          >
+                            {glyph}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                    <div className="compare-stage-glyph-library">
+                      <p className="compare-stage-glyph-library-label">Alphabet</p>
+                      <div className="compare-stage-glyph-library-panel">
+                        {libraryGlyphs.map((glyph) => {
+                          const index = libraryGlyphs.findIndex((entry) => entry === glyph);
+                          return (
+                            <Link
+                              key={`library-${glyph}-${index}`}
+                              href={buildQuery(currentParams, { sample: "glyph", focus: activeAnchor.feature, glyph: String(index) })}
+                              scroll={false}
+                              className={`compare-stage-glyph-choice compare-stage-glyph-choice--library ${index === glyphIndex ? "is-active" : ""}`}
+                            >
+                              {glyph}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
-            </section>
-          ) : null}
-        </section>
+            </div>
+          </div>
 
-        <section className="compare-anchors" aria-labelledby="compare-anchors-title">
-          <div className="typo-section-head">
-            <h2 id="compare-anchors-title" className="typo-section-title">
-              Visual anchors
-            </h2>
-          </div>
-          <div className="compare-anchor-grid">
-            {anchors.map((anchor) => (
-              <Link
-                key={anchor.feature}
-                href={anchorHrefFor(anchor)}
-                scroll={false}
-                className={`compare-anchor ${anchor.feature === activeAnchor.feature ? "is-active" : ""}`}
-              >
-                <p className="typo-demo-label">{anchor.config.title}</p>
-                <p className="compare-anchor-directive">{anchor.config.directive}</p>
-                <p className="compare-anchor-note">{anchor.config.takeaway}</p>
-                <p className="compare-anchor-values">
-                  {leftTypeface.name}: {anchor.left} · {rightTypeface.name}: {anchor.right}
-                </p>
-              </Link>
-            ))}
-          </div>
         </section>
 
         <section className="compare-bottom-grid">
@@ -736,6 +537,7 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
           </article>
         </section>
       </article>
+      <CompareQuickHelpWidget questions={quickQuestions} />
     </main>
   );
 }

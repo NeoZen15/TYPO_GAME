@@ -1,6 +1,6 @@
 # UI Palette Reference
 
-Dernière mise à jour: 2026-03-22
+Dernière mise à jour: 2026-06-05
 Statut: working reference
 
 Ce document sert de base commune pour relire le design sans se perdre.
@@ -15,6 +15,7 @@ Il répond à 4 questions:
 
 Les sources réelles pour cette fiche sont:
 - `app/globals.css`
+- `features/modes/components/ModeSelectPage.tsx` (page `/play`, **référence couleur validée**)
 - `features/game/components/CompetitionScreen.tsx`
 - `docs/ui-consistency-contract.md`
 - `docs/front-ui-master-spec.md`
@@ -58,8 +59,10 @@ Conclusion:
 
 ### Stack UI canonique
 
-Stack UI du site:
-- `SF Pro Display, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif`
+Stack UI du site (token `--ui-sans`):
+- `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif`
+- **Inter** (SIL OFL) est **auto-hébergé** dans `public/fonts/ui/` — deux *variable fonts* : `InterVariable.woff2` (romain) + `InterVariable-Italic.woff2` (italique), chacune couvrant **toutes les graisses 100–900 + l'optical sizing (opsz 14–32)** en un seul fichier. Embarqué via deux `@font-face` → **la même police pour tous les appareils** (Apple / Windows / Android), pas de rendu système qui change d'un OS à l'autre.
+- SF Pro n'est **jamais** nommé ni embarqué (licence Apple). `system-ui` ne reste qu'en **fallback** le temps du chargement d'Inter.
 
 Règle:
 - tout le texte UI doit rester sur cette stack,
@@ -264,3 +267,62 @@ Ordre recommandé:
 3. corriger `docs/front-ui-master-spec.md`
 4. faire un passage CSS pour unifier les teintes incohérentes
 5. refaire une mini passe visuelle sur `competition` et `training`
+
+## 11) Palette validée — page `/play` (mode-select, RÉFÉRENCE)
+
+`/play` (`ModeSelectPage`) est la **référence couleur validée** du projet.
+Ce qu'elle utilise réellement (vérifié dans `app/globals.css`, classes `.mode-select-*`):
+
+### Conteneur (shell, en dark)
+- bordure + halo: **jaune de marque `#ffd213`** à faible opacité
+  - bordure: `rgba(255, 210, 19, 0.22)`
+  - halo radial: `rgba(255, 210, 19, 0.045)`
+- fond: blanc translucide très léger sur fond noir
+
+### Les 3 identités de mode (un accent par carte)
+- training → **vert `#40d38f`** (`--mode-training`)
+- competition → **orange `#ff934a`** (`--mode-competition`)
+- expert → **bleu `#58a9ff`** (`--mode-expert`)
+
+### Comment l'accent est appliqué sur chaque carte
+- bordure de carte: `color-mix(accent 28%, ligne)` → **contour coloré, basse intensité**
+- fond de carte: teinte d'accent **très faible** (5–6 %)
+- petit chip label: bordure accent 36 %, fond accent 5 %
+- halo flou décoratif: accent 8 %
+- **jamais** de remplissage plein en couleur, **jamais** de gros bouton coloré
+
+### ⚠️ Note orange / ambre
+`/play` utilise l'orange `#ff934a` (`--mode-competition`), alors que §4 documente
+l'ambre `#9b5c0e` / dark `#ffd79a` comme couleur « attention ».
+Il y a donc deux oranges/ambres concurrents → à trancher (cf §7).
+Le jaune `#ffd213` reste, lui, l'accent de marque non négociable.
+
+## 12) RÈGLE COULEUR — la couleur vit sur les contours, jamais sur le texte
+
+Règle confirmée par `/play` (surtout en dark):
+
+- **Contours / bordures / chips**: peuvent porter la couleur (accent à 24–36 %)
+- **Fonds**: teinte d'accent **très faible** seulement (3–8 %)
+- **Texte**: reste **neutre**
+  - titres → `--ink-strong` / blanc
+  - corps → `--ink-muted`
+  - en dark, même le texte **dans** un chip coloré reste blanc (`rgba(255,255,255,0.84)`),
+    seul le **contour** est coloré
+- **Jaune `#ffd213`** = accent de **marque** (conteneurs, focus, glow), pas une couleur de catégorie
+- **Vert / orange / bleu** = identités de **catégorie / mode**, en **traits fins** uniquement
+
+Conséquence directe:
+- un accent en **aplat plein** (gros CTA coloré, fond d'option colorié) est **hors-règle**
+- il faut ramener la couleur sur le **contour** + une teinte de fond minime
+- le neutre porte la structure, la couleur ne fait que **signaler**
+
+## 13) RÈGLE TEXTE
+
+- Stack UI unique (token `--ui-sans`): `"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif`
+  (Inter OFL auto-hébergé = même police partout ; seule la grande typo à deviner peut utiliser la font cible)
+- **Titres de page**: neutres (`--ink-strong` / blanc), poids ~640, tracking serré négatif (~ -0.04em)
+- **Corps / sous-titres**: `--ink-muted`, line-height ~1.4
+- **Mini-labels / méta / kickers**: UPPERCASE, `letter-spacing ~0.16em`, poids 700,
+  couleur `--ink-soft` (**neutre — jamais coloré**)
+- Le texte n'est **jamais** la surface qui porte la couleur d'accent (cf §12)
+- **Seule exception**: le feedback interactif (vert sur correct, rouge sur wrong)

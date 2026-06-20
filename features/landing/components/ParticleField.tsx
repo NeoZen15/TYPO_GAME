@@ -64,7 +64,7 @@ export default function ParticleField() {
     };
 
     const baseRgb = () =>
-      document.documentElement.dataset.theme === "light" ? "17, 17, 20" : "255, 255, 255";
+      document.documentElement.dataset.theme === "light" ? "25, 21, 16" : "244, 243, 238";
 
     const render = (now: number) => {
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;

@@ -96,10 +96,10 @@ const competitionScreenStyles = `
   :root[data-theme="dark"] .game-v1-page.game-v2-page {
     --competition-page-bg: #111114;
     --competition-shell-bg: rgba(17, 17, 20, 0.86);
-    --competition-shell-border: rgba(245, 245, 247, 0.12);
-    --competition-ink: #f5f5f7;
-    --competition-muted: rgba(245, 245, 247, 0.62);
-    --competition-subtle: rgba(245, 245, 247, 0.48);
+    --competition-shell-border: rgba(244, 243, 238, 0.12);
+    --competition-ink: #f4f3ee;
+    --competition-muted: rgba(244, 243, 238, 0.62);
+    --competition-subtle: rgba(244, 243, 238, 0.48);
     --competition-info: #b9c4ff;
     --competition-info-soft: rgba(142, 162, 255, 0.14);
     --competition-info-line: rgba(142, 162, 255, 0.34);
@@ -133,15 +133,26 @@ const competitionScreenStyles = `
   }
 
   .game-v1-shell.competition-v1-shell[data-state="complete"] {
-    width: min(98vw, 80rem);
+    position: relative;
+    width: min(96vw, 74rem);
     height: auto;
     min-height: 0;
     align-content: start;
-    padding: 0;
-    border: none;
-    background: transparent;
-    box-shadow: none;
-    overflow: visible;
+    padding: clamp(1.1rem, 2.4vw, 1.85rem);
+    border-radius: 1.4rem;
+    border: 1px solid rgba(255, 210, 19, 0.22);
+    background:
+      radial-gradient(circle at top, rgba(255, 210, 19, 0.05), transparent 30%),
+      color-mix(in srgb, var(--competition-shell-bg) 58%, transparent);
+    box-shadow: 0 0.85rem 2rem rgba(42, 26, 32, 0.05);
+    overflow: hidden;
+  }
+
+  :root[data-theme="dark"] .game-v1-shell.competition-v1-shell[data-state="complete"] {
+    background:
+      radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 28%),
+      color-mix(in srgb, var(--competition-shell-bg) 58%, transparent);
+    box-shadow: 0 0.85rem 2rem rgba(0, 0, 0, 0.24);
   }
 
   .competition-v1-top {
@@ -160,7 +171,7 @@ const competitionScreenStyles = `
     padding: 0.34rem 0.62rem;
     border-radius: 999px;
     border: 1px solid rgba(58, 38, 48, 0.16);
-    background: rgba(255, 255, 255, 0.66);
+    background: rgba(244, 243, 238, 0.66);
     box-shadow: 0 0.12rem 0.3rem rgba(42, 26, 32, 0.04);
     font-size: 0.72rem;
     line-height: 1;
@@ -236,8 +247,8 @@ const competitionScreenStyles = `
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    padding-top: 0.32rem;
+    gap: 1.5rem;
+    padding-top: 0.85rem;
   }
 
   .competition-v1-complete-hero {
@@ -254,9 +265,9 @@ const competitionScreenStyles = `
     font-size: 0.68rem;
     line-height: 1;
     font-weight: 720;
-    letter-spacing: 0.11em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--competition-info);
+    color: var(--competition-subtle);
   }
 
   .competition-v1-complete-title {
@@ -276,19 +287,8 @@ const competitionScreenStyles = `
   }
 
   .competition-v1-complete-deck-emphasis {
-    font-weight: 620;
-  }
-
-  .competition-v1-complete-deck-emphasis--score {
-    color: var(--competition-info);
-  }
-
-  .competition-v1-complete-deck-emphasis--accuracy {
-    color: var(--competition-positive);
-  }
-
-  .competition-v1-complete-deck-emphasis--review {
-    color: var(--competition-warning);
+    font-weight: 650;
+    color: var(--competition-ink);
   }
 
   .competition-v1-complete-score-rule {
@@ -316,62 +316,60 @@ const competitionScreenStyles = `
   }
 
   .competition-v1-summary-card {
+    --card-line: rgba(58, 38, 48, 0.11);
+    --card-base: rgba(244, 243, 238, 0.82);
+    --card-fill: transparent;
+    --card-glow: transparent;
     position: relative;
+    isolation: isolate;
     overflow: hidden;
     border-radius: 1.02rem;
-    border: 1px solid rgba(58, 38, 48, 0.11);
-    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid var(--card-line);
+    background: linear-gradient(180deg, var(--card-fill), transparent 58%), var(--card-base);
     padding: 0.72rem 0.8rem 0.78rem;
   }
 
+  /* Colour rides the full border + a soft corner glow (like .mode-select-card) — no hard top bar. */
   .competition-v1-summary-card::before {
     content: "";
     position: absolute;
-    inset: 0 auto auto 0;
-    width: 100%;
-    height: 0.08rem;
-    background: rgba(58, 38, 48, 0.2);
+    z-index: -1;
+    top: -34%;
+    right: -18%;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 999px;
+    background: var(--card-glow);
+    filter: blur(28px);
+    pointer-events: none;
   }
 
   .competition-v1-summary-card[data-tone="positive"] {
-    border-color: var(--competition-positive-line);
-    background: linear-gradient(180deg, var(--competition-positive-soft), rgba(255, 255, 255, 0.82) 44%);
-  }
-
-  .competition-v1-summary-card[data-tone="positive"]::before {
-    background: var(--competition-positive);
+    --card-line: var(--competition-positive-line);
+    --card-fill: var(--competition-positive-soft);
+    --card-glow: var(--competition-positive-soft);
   }
 
   .competition-v1-summary-card[data-tone="negative"] {
-    border-color: var(--competition-negative-line);
-    background: linear-gradient(180deg, var(--competition-negative-soft), rgba(255, 255, 255, 0.82) 44%);
-  }
-
-  .competition-v1-summary-card[data-tone="negative"]::before {
-    background: var(--competition-negative);
+    --card-line: var(--competition-negative-line);
+    --card-fill: var(--competition-negative-soft);
+    --card-glow: var(--competition-negative-soft);
   }
 
   .competition-v1-summary-card[data-tone="warning"] {
-    border-color: var(--competition-warning-line);
-    background: linear-gradient(180deg, var(--competition-warning-soft), rgba(255, 255, 255, 0.82) 44%);
-  }
-
-  .competition-v1-summary-card[data-tone="warning"]::before {
-    background: var(--competition-warning);
+    --card-line: var(--competition-warning-line);
+    --card-fill: var(--competition-warning-soft);
+    --card-glow: var(--competition-warning-soft);
   }
 
   .competition-v1-summary-card[data-tone="neutral"] {
-    border-color: var(--competition-info-line);
-    background: linear-gradient(180deg, var(--competition-info-soft), rgba(255, 255, 255, 0.82) 44%);
-  }
-
-  .competition-v1-summary-card[data-tone="neutral"]::before {
-    background: var(--competition-info);
+    --card-line: var(--competition-info-line);
+    --card-fill: var(--competition-info-soft);
+    --card-glow: var(--competition-info-soft);
   }
 
   :root[data-theme="dark"] .competition-v1-summary-card {
-    border-color: rgba(245, 245, 247, 0.12);
-    background: rgba(18, 18, 23, 0.74);
+    --card-base: rgba(18, 18, 23, 0.74);
   }
 
   .competition-v1-summary-label {
@@ -399,21 +397,7 @@ const competitionScreenStyles = `
     color: var(--competition-muted);
   }
 
-  .competition-v1-summary-card[data-tone="positive"] .competition-v1-summary-value {
-    color: var(--competition-positive);
-  }
-
-  .competition-v1-summary-card[data-tone="negative"] .competition-v1-summary-value {
-    color: var(--competition-negative);
-  }
-
-  .competition-v1-summary-card[data-tone="warning"] .competition-v1-summary-value {
-    color: var(--competition-warning);
-  }
-
-  .competition-v1-summary-card[data-tone="neutral"] .competition-v1-summary-value {
-    color: var(--competition-info);
-  }
+  /* Tone rides the card contour + top rule only; values stay neutral (palette §12). */
 
   .competition-v1-summary-columns {
     display: grid;
@@ -423,18 +407,55 @@ const competitionScreenStyles = `
   }
 
   .competition-v1-panel {
+    --panel-line: rgba(58, 38, 48, 0.11);
+    --panel-base: rgba(244, 243, 238, 0.78);
+    --panel-glow: transparent;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     border-radius: 1.02rem;
-    border: 1px solid rgba(58, 38, 48, 0.11);
-    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid var(--panel-line);
+    background: var(--panel-base);
     padding: 0.82rem 0.9rem;
     display: flex;
     flex-direction: column;
     min-height: 13.6rem;
   }
 
+  /* Family colour rides the border + a soft corner glow (like .mode-select-card) — no hard top bar. */
+  .competition-v1-panel::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -26%;
+    right: -12%;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 999px;
+    background: var(--panel-glow);
+    filter: blur(34px);
+    pointer-events: none;
+  }
+
+  .competition-v1-panel--speed,
+  .competition-v1-panel--timeline {
+    --panel-line: var(--competition-info-line);
+    --panel-glow: var(--competition-info-soft);
+  }
+
+  .competition-v1-panel--category,
+  .competition-v1-panel--distribution {
+    --panel-line: var(--competition-positive-line);
+    --panel-glow: var(--competition-positive-soft);
+  }
+
+  .competition-v1-panel--misses {
+    --panel-line: var(--competition-negative-line);
+    --panel-glow: var(--competition-negative-soft);
+  }
+
   :root[data-theme="dark"] .competition-v1-panel {
-    border-color: rgba(245, 245, 247, 0.12);
-    background: rgba(18, 18, 23, 0.72);
+    --panel-base: rgba(18, 18, 23, 0.72);
   }
 
   .competition-v1-panel-header {
@@ -455,19 +476,7 @@ const competitionScreenStyles = `
     color: var(--competition-ink);
   }
 
-  .competition-v1-panel--speed .competition-v1-panel-title,
-  .competition-v1-panel--timeline .competition-v1-panel-title {
-    color: var(--competition-info);
-  }
-
-  .competition-v1-panel--category .competition-v1-panel-title,
-  .competition-v1-panel--distribution .competition-v1-panel-title {
-    color: var(--competition-positive);
-  }
-
-  .competition-v1-panel--misses .competition-v1-panel-title {
-    color: var(--competition-negative);
-  }
+  /* Panel titles stay neutral; the family colour rides the top-rule contour (palette §12). */
 
   .competition-v1-panel-caption {
     margin: 0;
@@ -496,17 +505,17 @@ const competitionScreenStyles = `
     height: 0.52rem;
     border-radius: 999px;
     transform: translate(-50%, -50%);
-    border: 2px solid #ffffff;
+    border: 2px solid #f4f3ee;
     background: #111114;
   }
 
   :root[data-theme="dark"] .competition-v1-speed-track {
-    background: rgba(245, 245, 247, 0.12);
+    background: rgba(244, 243, 238, 0.12);
   }
 
   :root[data-theme="dark"] .competition-v1-speed-marker {
     border-color: #121217;
-    background: #f5f5f7;
+    background: #f4f3ee;
   }
 
   .competition-v1-speed-legend {
@@ -591,9 +600,7 @@ const competitionScreenStyles = `
     text-align: right;
   }
 
-  .competition-v1-panel--misses .competition-v1-stack-list strong {
-    color: var(--competition-negative);
-  }
+  /* Miss values stay neutral; the red signal rides the panel top-rule contour (palette §12). */
 
   .competition-v1-stack-list div,
   .competition-v1-mix-meta {
@@ -643,7 +650,7 @@ const competitionScreenStyles = `
   }
 
   :root[data-theme="dark"] .competition-v1-line-grid line {
-    stroke: rgba(245, 245, 247, 0.14);
+    stroke: rgba(244, 243, 238, 0.14);
   }
 
   .competition-v1-line-grid--vertical line {
@@ -656,7 +663,7 @@ const competitionScreenStyles = `
   }
 
   :root[data-theme="dark"] .competition-v1-line-axis-strokes line {
-    stroke: rgba(245, 245, 247, 0.76);
+    stroke: rgba(244, 243, 238, 0.76);
   }
 
   .competition-v1-line-path {
@@ -674,7 +681,7 @@ const competitionScreenStyles = `
 
   :root[data-theme="dark"] .competition-v1-line-path--pace,
   :root[data-theme="dark"] .competition-v1-line-path--score {
-    color: #f5f5f7;
+    color: #f4f3ee;
   }
 
   .competition-v1-line-point {
@@ -685,7 +692,7 @@ const competitionScreenStyles = `
   }
 
   :root[data-theme="dark"] .competition-v1-line-point {
-    color: #f5f5f7;
+    color: #f4f3ee;
   }
 
   .competition-v1-line-axis {
@@ -712,7 +719,7 @@ const competitionScreenStyles = `
     min-height: 5.2rem;
     border-radius: 1.08rem;
     border: 1px solid rgba(58, 38, 48, 0.12);
-    background: rgba(255, 255, 255, 0.86);
+    background: rgba(244, 243, 238, 0.86);
     box-shadow: 0 0.3rem 0.9rem rgba(42, 26, 32, 0.08);
     cursor: pointer;
     transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
@@ -795,7 +802,7 @@ const competitionScreenStyles = `
   }
 
   :root[data-theme="dark"] .game-v2-validate {
-    color: #f5f5f7;
+    color: #f4f3ee;
   }
 
   .game-v2-validate:disabled {
@@ -816,9 +823,51 @@ const competitionScreenStyles = `
     font-weight: 600;
   }
 
+  /* Validated button pair (matches .onboarding-btn): same geometry, primary = white pill, secondary = ghost. */
+  .competition-v1-cta,
+  .competition-v1-complete-actions .game-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9.4rem;
+    min-height: 2.95rem;
+    padding: 0.82rem 1.75rem;
+    border-radius: 999px;
+    font-family: inherit;
+    font-style: normal;
+    font-size: 0.92rem;
+    font-weight: 620;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .competition-v1-cta {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #0d1018;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 243, 238, 0.92)), #f4f3ee;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 0.2rem 0.5rem rgba(0, 0, 0, 0.16);
+  }
+
+  .competition-v1-cta:hover,
+  .competition-v1-cta:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 0.32rem 0.75rem rgba(0, 0, 0, 0.18);
+  }
+
   .competition-v1-complete-actions .game-link {
     justify-self: auto;
     margin-top: 0;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-strong);
+    color: var(--ink-strong);
+  }
+
+  .competition-v1-complete-actions .game-link:hover,
+  .competition-v1-complete-actions .game-link:focus-visible {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--ink-strong) 38%, transparent);
   }
 
   @media (max-width: 900px) {
@@ -1819,7 +1868,7 @@ export default function CompetitionScreen() {
                     </div>
 
                     <div className="competition-v1-complete-actions">
-                      <button type="button" className="game-v2-validate" onClick={() => void startSession()}>
+                      <button type="button" className="competition-v1-cta" onClick={() => void startSession()}>
                         Play again
                       </button>
                       <Link href="/play" className="game-link">

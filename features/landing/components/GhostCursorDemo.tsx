@@ -60,7 +60,7 @@ export default function GhostCursorDemo() {
       clearStates();
       const wrong = centerOf(WRONG);
       const correct = centerOf(CORRECT);
-      gsap.set(cursor, { x: root.clientWidth * 0.52, y: root.clientHeight * 0.94, autoAlpha: 0, scale: 1 });
+      gsap.set(cursor, { x: root.clientWidth * 0.52, y: root.clientHeight * 0.94, z: 90, autoAlpha: 0, scale: 1 });
 
       tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
       tl.to(cursor, { autoAlpha: 1, duration: 0.3 })
@@ -118,10 +118,43 @@ export default function GhostCursorDemo() {
     );
     io.observe(root);
 
+    // Subtle 3D glass tilt that follows the pointer (neon-glass reference,
+    // kept restrained). Whole-card rotate + a soft sheen overlay.
+    const tiltX = gsap.quickTo(root, "rotationX", { duration: 0.5, ease: "power3" });
+    const tiltY = gsap.quickTo(root, "rotationY", { duration: 0.5, ease: "power3" });
+
+    const stage = root.parentElement;
+    const onTilt = (event: PointerEvent) => {
+      const r = root.getBoundingClientRect();
+      const px = (event.clientX - r.left) / r.width - 0.5;
+      const py = (event.clientY - r.top) / r.height - 0.5;
+      tiltX(-py * 16);
+      tiltY(px * 16);
+      // Studio light follows the pointer (parallax behind the card).
+      if (stage) {
+        stage.style.setProperty("--gx", `${50 + px * 22}%`);
+        stage.style.setProperty("--gy", `${42 + py * 22}%`);
+      }
+    };
+    const onTiltLeave = () => {
+      tiltX(0);
+      tiltY(0);
+      if (stage) {
+        stage.style.setProperty("--gx", "50%");
+        stage.style.setProperty("--gy", "42%");
+      }
+    };
+
+    root.addEventListener("pointermove", onTilt);
+    root.addEventListener("pointerleave", onTiltLeave);
+
     return () => {
       io.disconnect();
       tl?.kill();
       gsap.killTweensOf(cursor);
+      gsap.killTweensOf(root);
+      root.removeEventListener("pointermove", onTilt);
+      root.removeEventListener("pointerleave", onTiltLeave);
     };
   }, []);
 

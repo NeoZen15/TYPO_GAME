@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-05-26T13:03:46.329Z",
+  "left": {
+    "version": "dev-v1",
+    "generatedAt": "2026-05-26T12:59:03.630Z",
+    "runtime": "fallback"
+  },
+  "right": {
+    "version": "dev-v2",
+    "generatedAt": "2026-05-26T13:01:02.483Z",
+    "runtime": "fallback"
+  },
+  "fontCount": 2,
+  "fonts": [
+    {
+      "fontId": "helvetica-neue",
+      "familyName": "Helvetica Neue",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": null,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    },
+    {
+      "fontId": "inter",
+      "familyName": "Inter",
+      "confidence": {
+        "left": "medium",
+        "right": "medium",
+        "changed": false
+      },
+      "audit": {
+        "leftStatus": "review",
+        "rightStatus": "review",
+        "scoreDelta": 0,
+        "confidenceChanged": false,
+        "issueCountDelta": 0
+      },
+      "metrics": {
+        "baseline": 0,
+        "xHeight": 0,
+        "capHeight": 0,
+        "ascender": 0,
+        "descender": null,
+        "advanceWidth": 0
+      },
+      "ambiguityFlags": {
+        "added": [],
+        "removed": []
+      },
+      "issues": {
+        "added": [],
+        "removed": [],
+        "changed": []
+      }
+    }
+  ]
+}

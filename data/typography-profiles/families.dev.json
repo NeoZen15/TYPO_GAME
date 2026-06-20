@@ -1,0 +1,26 @@
+[
+  {
+    "fontId": "helvetica-neue",
+    "familyName": "Helvetica Neue"
+  },
+  {
+    "fontId": "inter",
+    "familyName": "Inter"
+  },
+  {
+    "fontId": "arial",
+    "familyName": "Arial"
+  },
+  {
+    "fontId": "georgia",
+    "familyName": "Georgia"
+  },
+  {
+    "fontId": "times_new_roman",
+    "familyName": "Times New Roman"
+  },
+  {
+    "fontId": "libre_baskerville",
+    "familyName": "Libre Baskerville"
+  }
+]

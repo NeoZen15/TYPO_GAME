@@ -138,8 +138,10 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
   const heroScaleStyle = getHeroScaleStyle(`${heroHeadingLineOne} ${heroHeadingLineTwo}`, displayFamily);
   const specimenScaleStyle = getSpecimenScaleStyle(specimenWord, displayFamily);
 
+  const pageClassName = `typo-page ${typeface.slug === "inter" ? "typo-page--black" : ""}`;
+
   return (
-    <main className="typo-page">
+    <main className={pageClassName}>
       <ThemeSwitch />
       {specimenFontCss ? <style>{specimenFontCss}</style> : null}
       <article className="typo-shell">

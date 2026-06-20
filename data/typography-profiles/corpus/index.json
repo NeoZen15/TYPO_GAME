@@ -1,0 +1,158 @@
+{
+  "updatedAt": "2026-05-26T15:49:06.190Z",
+  "versions": [
+    {
+      "version": "dev-v1",
+      "generatedAt": "2026-05-26T12:59:03.630Z",
+      "runtime": "fallback",
+      "profileCount": 2,
+      "fontIds": [
+        "helvetica-neue",
+        "inter"
+      ],
+      "manifest": "dev-v1/manifest.json"
+    },
+    {
+      "version": "dev-v2",
+      "generatedAt": "2026-05-26T13:01:02.483Z",
+      "runtime": "fallback",
+      "profileCount": 2,
+      "fontIds": [
+        "helvetica-neue",
+        "inter"
+      ],
+      "manifest": "dev-v2/manifest.json"
+    },
+    {
+      "version": "dev-v3",
+      "generatedAt": "2026-05-26T13:13:31.290Z",
+      "runtime": "fallback",
+      "profileCount": 2,
+      "fontIds": [
+        "helvetica-neue",
+        "inter"
+      ],
+      "manifest": "dev-v3/manifest.json"
+    },
+    {
+      "version": "dev-v4",
+      "generatedAt": "2026-05-26T13:17:21.014Z",
+      "runtime": "fallback",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "dev-v4/manifest.json"
+    },
+    {
+      "version": "headless-v1",
+      "generatedAt": "2026-05-26T13:36:32.152Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v1/manifest.json"
+    },
+    {
+      "version": "headless-v2",
+      "generatedAt": "2026-05-26T14:43:00.159Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v2/manifest.json"
+    },
+    {
+      "version": "headless-v3",
+      "generatedAt": "2026-05-26T15:10:59.437Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v3/manifest.json"
+    },
+    {
+      "version": "headless-v4",
+      "generatedAt": "2026-05-26T15:21:41.605Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v4/manifest.json"
+    },
+    {
+      "version": "headless-v5",
+      "generatedAt": "2026-05-26T15:44:14.311Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v5/manifest.json"
+    },
+    {
+      "version": "headless-v6",
+      "generatedAt": "2026-05-26T15:45:17.939Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v6/manifest.json"
+    },
+    {
+      "version": "headless-v7",
+      "generatedAt": "2026-05-26T15:49:06.190Z",
+      "runtime": "headless",
+      "profileCount": 6,
+      "fontIds": [
+        "helvetica-neue",
+        "inter",
+        "arial",
+        "georgia",
+        "times_new_roman",
+        "libre_baskerville"
+      ],
+      "manifest": "headless-v7/manifest.json"
+    }
+  ]
+}

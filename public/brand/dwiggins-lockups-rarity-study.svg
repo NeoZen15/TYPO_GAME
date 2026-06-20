@@ -1,0 +1,780 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1358 889.6237038092862" width="1358" height="889.6237038092862"><defs>
+<linearGradient id="gold" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#f5e6b0"/><stop offset="0.34" stop-color="#d9b65a"/><stop offset="0.54" stop-color="#9c7a2e"/><stop offset="0.72" stop-color="#ecd690"/><stop offset="1" stop-color="#b8923c"/></linearGradient>
+<linearGradient id="silver" x1="0" y1="0" x2="0.55" y2="1"><stop offset="0" stop-color="#f7f8fc"/><stop offset="0.34" stop-color="#c6cad4"/><stop offset="0.54" stop-color="#878b99"/><stop offset="0.72" stop-color="#e4e7ee"/><stop offset="1" stop-color="#a3a7b5"/></linearGradient>
+<linearGradient id="holo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a7ecff"/><stop offset="0.3" stop-color="#cdb6ff"/><stop offset="0.6" stop-color="#ffc2ec"/><stop offset="1" stop-color="#c4ffd6"/></linearGradient>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000" flood-opacity="0.5"/></filter>
+</defs><rect width="1358" height="889.6237038092862" fill="#101013"/>
+<text x="40" y="32" font-family="'PP Frama'" font-weight="800" font-style="italic" font-size="20" fill="#f4f3ee">TES LOCKUPS EXACTS — recolorés par rareté (zéro redessin)</text>
+<text x="40" y="84" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.5)">LOCKUP ÉDITORIAL</text><g filter="url(#sh)"><rect x="35" y="91" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="40" y="96" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k0-1 {
+        letter-spacing: 0em;
+      }
+
+      .k0-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 16.144px;
+        font-weight: 200;
+      }
+
+      .k0-2, .k0-3, .k0-4, .k0-5 {
+        fill: #e1e1d7;
+      }
+
+      .k0-4 {
+        font-size: 47.353px;
+      }
+
+      .k0-4, .k0-5 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k0-5 {
+        font-size: 119.787px;
+      }
+
+      .k0-6 {
+        letter-spacing: -.053em;
+      }
+
+      .k0-7 {
+        letter-spacing: -.018em;
+      }
+
+      .k0-8 {
+        letter-spacing: -.02em;
+      }
+
+      .k0-9 {
+        letter-spacing: -.015em;
+      }
+
+      .k0-10 {
+        letter-spacing: -.04em;
+      }
+
+      .k0-11 {
+        letter-spacing: -.01em;
+      }
+
+      .k0-12 {
+        letter-spacing: -.008em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <text class="k0-4" transform="translate(747.56 137.281)"><tspan x="0" y="0">©</tspan></text>
+  <text class="k0-5" transform="translate(45.029 295.932)"><tspan class="k0-10" x="0" y="0">D</tspan><tspan class="k0-1" x="88.163" y="0">WIGGINS</tspan></text>
+  <text class="k0-2" transform="translate(41.675 331.599)"><tspan class="k0-12" x="0" y="0">F</tspan><tspan x="8.136" y="0">ORM RECOGNITION</tspan></text>
+  <text class="k0-2" transform="translate(565.346 331.688)"><tspan class="k0-8" x="0" y="0">S</tspan><tspan x="9.121" y="0">T</tspan><tspan class="k0-11" x="16.725" y="0">R</tspan><tspan x="25.927" y="0">U</tspan><tspan class="k0-6" x="36.694" y="0">C</tspan><tspan x="49.399" y="0">TURE </tspan><tspan class="k0-9" x="89.403" y="0">S</tspan><tspan class="k0-7" x="98.605" y="0">Y</tspan><tspan class="k0-8" x="107.048" y="0">S</tspan><tspan x="116.169" y="0">TEM</tspan></text>
+  <g>
+    <path class="k0-3" d="M61.533,178.115c-2.987,1.936-5.57,4.489-7.241,7.651-1.399,2.42-2.294,5.37-4.352,7.186-2.099,2.233-6.953,1.883-6.924-1.829.096-2.3,1.459-4.099,2.916-5.995,3.784-4.467,7.998-8.924,9.154-14.87,1.027-4.591-.417-9.209-.135-13.817.233-4.724,3.023-8.834,3.88-13.444.553-2.758.253-5.763,1.326-8.388,2.514-5.475,9.559-6.009,14.847-6.702,6.926-.768,13.894.67,20.793.842,3.367-.043,6.207-1.942,9.425-2.687,3.346-.894,7.046-1.136,9.803-3.428,3.467-2.66,5.318-7.181,9.149-9.376,4.665-2.594,8.592,2.607,9.232,6.875.474,2.483.476,5.113.727,7.603.204,2.402.581,4.792.44,7.195-.427,4.513-2.208,9.4-.076,13.802,2.625,5.173,6.876,11.105,12.029,13.864,5.114,2.574,10.957-.747,13.397-5.472,2.518-4.483,2.846-9.782,4.767-14.506,2.744-6.54,8.992-15.293,1.752-21.171-4.006-2.942-9.686-2.159-14.029-.338-2.709,1.092-5.439,2.926-8.46,2.63-1.825-.158-3.147-1.865-2.456-3.73,1.91-4.407,7.686-4.784,11.828-5.623,4.211-.646,8.432-1.511,12.362-3.209,3.024-1.222,6.026-2.778,9.254-3.227,7.85-.807,15.706,2.011,22.218,6.244,10.776,6.849,11.868-7.727,19.036-4.116,3.065,3.409-1.476,7.827-4.428,9.722-7.357,5.281-22.046.985-24.282,12.38-.79,8.564,9.795,8.171,12.622,14.098,2.598,6.252-2.237,12.3-2.955,18.417-.326,2.459.27,5.151-.146,7.556-1.002,4.502-5.534,1.932-6.169-1.44-1.711-6.334,3.416-14.693-3.234-19.324-8.344-5.326-15.198,3.406-19.796,9.51-2.857,3.578-6.403,6.654-10.767,8.239-4.192,1.566-9.389,3.131-10.951,7.809-.864,2.321-.688,5.178-1.378,7.497-.735,2.951-3.235,2.487-4.669.388-2.003-2.955-2.491-6.541-3.776-9.876-1.31-3.664-2.78-7.693-5.994-10.109-7.334-4.748-9.175,7.63-19.931,7.517-4.418.205-8.794-1.687-13.229-1.031-4.111.461-7.629,3.373-11.826,3.319-2.922.027-5.651-1.377-8.479-1.907-5.464-1.042-10.767,2.36-15.242,5.252l-.03.02ZM104.435,139.51c1.754.503,3.596.879,5.424.765,1.241-.096,2.451-.402,3.39-1.021,1.649-1.013,2.545-3.023,1.719-4.795-1.391-2.761-5.05-3.164-7.823-2.515-4.8,1.024-10.038,5.229-2.749,7.554l.039.012ZM111.678,159.191c1.68-2.72,2.448-6.381.969-9.316-.748-1.517-2.37-2.398-4.042-2.211-1.717.131-3.597,1.165-5.465,1.781-1.382.465-2.842.729-4.298.594-2.949-.245-5.53-1.994-8.19-3.098-2.859-1.226-5.84-.725-7.71,1.85-2.197,2.955-2.382,7.268-.49,10.427,1.37,2.353,3.83,3.873,6.441,4.503,4.278,1.074,8.85,1.149,13.277.65,3.844-.456,7.412-1.638,9.489-5.15l.019-.03Z"/>
+    <circle class="k0-3" cx="81.335" cy="119.059" r="5.717"/>
+    <circle class="k0-3" cx="133.353" cy="104.428" r="5.717"/>
+    <circle class="k0-3" cx="194.446" cy="101.711" r="5.717"/>
+  </g></svg><g filter="url(#sh)"><rect x="361" y="91" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="366" y="96" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k1-1 {
+        letter-spacing: 0em;
+      }
+
+      .k1-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 16.144px;
+        font-weight: 200;
+      }
+
+      .k1-2, .k1-3, .k1-4, .k1-5 {
+        fill: url(#silver);
+      }
+
+      .k1-4 {
+        font-size: 47.353px;
+      }
+
+      .k1-4, .k1-5 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k1-5 {
+        font-size: 119.787px;
+      }
+
+      .k1-6 {
+        letter-spacing: -.053em;
+      }
+
+      .k1-7 {
+        letter-spacing: -.018em;
+      }
+
+      .k1-8 {
+        letter-spacing: -.02em;
+      }
+
+      .k1-9 {
+        letter-spacing: -.015em;
+      }
+
+      .k1-10 {
+        letter-spacing: -.04em;
+      }
+
+      .k1-11 {
+        letter-spacing: -.01em;
+      }
+
+      .k1-12 {
+        letter-spacing: -.008em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <text class="k1-4" transform="translate(747.56 137.281)"><tspan x="0" y="0">©</tspan></text>
+  <text class="k1-5" transform="translate(45.029 295.932)"><tspan class="k1-10" x="0" y="0">D</tspan><tspan class="k1-1" x="88.163" y="0">WIGGINS</tspan></text>
+  <text class="k1-2" transform="translate(41.675 331.599)"><tspan class="k1-12" x="0" y="0">F</tspan><tspan x="8.136" y="0">ORM RECOGNITION</tspan></text>
+  <text class="k1-2" transform="translate(565.346 331.688)"><tspan class="k1-8" x="0" y="0">S</tspan><tspan x="9.121" y="0">T</tspan><tspan class="k1-11" x="16.725" y="0">R</tspan><tspan x="25.927" y="0">U</tspan><tspan class="k1-6" x="36.694" y="0">C</tspan><tspan x="49.399" y="0">TURE </tspan><tspan class="k1-9" x="89.403" y="0">S</tspan><tspan class="k1-7" x="98.605" y="0">Y</tspan><tspan class="k1-8" x="107.048" y="0">S</tspan><tspan x="116.169" y="0">TEM</tspan></text>
+  <g>
+    <path class="k1-3" d="M61.533,178.115c-2.987,1.936-5.57,4.489-7.241,7.651-1.399,2.42-2.294,5.37-4.352,7.186-2.099,2.233-6.953,1.883-6.924-1.829.096-2.3,1.459-4.099,2.916-5.995,3.784-4.467,7.998-8.924,9.154-14.87,1.027-4.591-.417-9.209-.135-13.817.233-4.724,3.023-8.834,3.88-13.444.553-2.758.253-5.763,1.326-8.388,2.514-5.475,9.559-6.009,14.847-6.702,6.926-.768,13.894.67,20.793.842,3.367-.043,6.207-1.942,9.425-2.687,3.346-.894,7.046-1.136,9.803-3.428,3.467-2.66,5.318-7.181,9.149-9.376,4.665-2.594,8.592,2.607,9.232,6.875.474,2.483.476,5.113.727,7.603.204,2.402.581,4.792.44,7.195-.427,4.513-2.208,9.4-.076,13.802,2.625,5.173,6.876,11.105,12.029,13.864,5.114,2.574,10.957-.747,13.397-5.472,2.518-4.483,2.846-9.782,4.767-14.506,2.744-6.54,8.992-15.293,1.752-21.171-4.006-2.942-9.686-2.159-14.029-.338-2.709,1.092-5.439,2.926-8.46,2.63-1.825-.158-3.147-1.865-2.456-3.73,1.91-4.407,7.686-4.784,11.828-5.623,4.211-.646,8.432-1.511,12.362-3.209,3.024-1.222,6.026-2.778,9.254-3.227,7.85-.807,15.706,2.011,22.218,6.244,10.776,6.849,11.868-7.727,19.036-4.116,3.065,3.409-1.476,7.827-4.428,9.722-7.357,5.281-22.046.985-24.282,12.38-.79,8.564,9.795,8.171,12.622,14.098,2.598,6.252-2.237,12.3-2.955,18.417-.326,2.459.27,5.151-.146,7.556-1.002,4.502-5.534,1.932-6.169-1.44-1.711-6.334,3.416-14.693-3.234-19.324-8.344-5.326-15.198,3.406-19.796,9.51-2.857,3.578-6.403,6.654-10.767,8.239-4.192,1.566-9.389,3.131-10.951,7.809-.864,2.321-.688,5.178-1.378,7.497-.735,2.951-3.235,2.487-4.669.388-2.003-2.955-2.491-6.541-3.776-9.876-1.31-3.664-2.78-7.693-5.994-10.109-7.334-4.748-9.175,7.63-19.931,7.517-4.418.205-8.794-1.687-13.229-1.031-4.111.461-7.629,3.373-11.826,3.319-2.922.027-5.651-1.377-8.479-1.907-5.464-1.042-10.767,2.36-15.242,5.252l-.03.02ZM104.435,139.51c1.754.503,3.596.879,5.424.765,1.241-.096,2.451-.402,3.39-1.021,1.649-1.013,2.545-3.023,1.719-4.795-1.391-2.761-5.05-3.164-7.823-2.515-4.8,1.024-10.038,5.229-2.749,7.554l.039.012ZM111.678,159.191c1.68-2.72,2.448-6.381.969-9.316-.748-1.517-2.37-2.398-4.042-2.211-1.717.131-3.597,1.165-5.465,1.781-1.382.465-2.842.729-4.298.594-2.949-.245-5.53-1.994-8.19-3.098-2.859-1.226-5.84-.725-7.71,1.85-2.197,2.955-2.382,7.268-.49,10.427,1.37,2.353,3.83,3.873,6.441,4.503,4.278,1.074,8.85,1.149,13.277.65,3.844-.456,7.412-1.638,9.489-5.15l.019-.03Z"/>
+    <circle class="k1-3" cx="81.335" cy="119.059" r="5.717"/>
+    <circle class="k1-3" cx="133.353" cy="104.428" r="5.717"/>
+    <circle class="k1-3" cx="194.446" cy="101.711" r="5.717"/>
+  </g></svg><g filter="url(#sh)"><rect x="687" y="91" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="692" y="96" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k2-1 {
+        letter-spacing: 0em;
+      }
+
+      .k2-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 16.144px;
+        font-weight: 200;
+      }
+
+      .k2-2, .k2-3, .k2-4, .k2-5 {
+        fill: url(#gold);
+      }
+
+      .k2-4 {
+        font-size: 47.353px;
+      }
+
+      .k2-4, .k2-5 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k2-5 {
+        font-size: 119.787px;
+      }
+
+      .k2-6 {
+        letter-spacing: -.053em;
+      }
+
+      .k2-7 {
+        letter-spacing: -.018em;
+      }
+
+      .k2-8 {
+        letter-spacing: -.02em;
+      }
+
+      .k2-9 {
+        letter-spacing: -.015em;
+      }
+
+      .k2-10 {
+        letter-spacing: -.04em;
+      }
+
+      .k2-11 {
+        letter-spacing: -.01em;
+      }
+
+      .k2-12 {
+        letter-spacing: -.008em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <text class="k2-4" transform="translate(747.56 137.281)"><tspan x="0" y="0">©</tspan></text>
+  <text class="k2-5" transform="translate(45.029 295.932)"><tspan class="k2-10" x="0" y="0">D</tspan><tspan class="k2-1" x="88.163" y="0">WIGGINS</tspan></text>
+  <text class="k2-2" transform="translate(41.675 331.599)"><tspan class="k2-12" x="0" y="0">F</tspan><tspan x="8.136" y="0">ORM RECOGNITION</tspan></text>
+  <text class="k2-2" transform="translate(565.346 331.688)"><tspan class="k2-8" x="0" y="0">S</tspan><tspan x="9.121" y="0">T</tspan><tspan class="k2-11" x="16.725" y="0">R</tspan><tspan x="25.927" y="0">U</tspan><tspan class="k2-6" x="36.694" y="0">C</tspan><tspan x="49.399" y="0">TURE </tspan><tspan class="k2-9" x="89.403" y="0">S</tspan><tspan class="k2-7" x="98.605" y="0">Y</tspan><tspan class="k2-8" x="107.048" y="0">S</tspan><tspan x="116.169" y="0">TEM</tspan></text>
+  <g>
+    <path class="k2-3" d="M61.533,178.115c-2.987,1.936-5.57,4.489-7.241,7.651-1.399,2.42-2.294,5.37-4.352,7.186-2.099,2.233-6.953,1.883-6.924-1.829.096-2.3,1.459-4.099,2.916-5.995,3.784-4.467,7.998-8.924,9.154-14.87,1.027-4.591-.417-9.209-.135-13.817.233-4.724,3.023-8.834,3.88-13.444.553-2.758.253-5.763,1.326-8.388,2.514-5.475,9.559-6.009,14.847-6.702,6.926-.768,13.894.67,20.793.842,3.367-.043,6.207-1.942,9.425-2.687,3.346-.894,7.046-1.136,9.803-3.428,3.467-2.66,5.318-7.181,9.149-9.376,4.665-2.594,8.592,2.607,9.232,6.875.474,2.483.476,5.113.727,7.603.204,2.402.581,4.792.44,7.195-.427,4.513-2.208,9.4-.076,13.802,2.625,5.173,6.876,11.105,12.029,13.864,5.114,2.574,10.957-.747,13.397-5.472,2.518-4.483,2.846-9.782,4.767-14.506,2.744-6.54,8.992-15.293,1.752-21.171-4.006-2.942-9.686-2.159-14.029-.338-2.709,1.092-5.439,2.926-8.46,2.63-1.825-.158-3.147-1.865-2.456-3.73,1.91-4.407,7.686-4.784,11.828-5.623,4.211-.646,8.432-1.511,12.362-3.209,3.024-1.222,6.026-2.778,9.254-3.227,7.85-.807,15.706,2.011,22.218,6.244,10.776,6.849,11.868-7.727,19.036-4.116,3.065,3.409-1.476,7.827-4.428,9.722-7.357,5.281-22.046.985-24.282,12.38-.79,8.564,9.795,8.171,12.622,14.098,2.598,6.252-2.237,12.3-2.955,18.417-.326,2.459.27,5.151-.146,7.556-1.002,4.502-5.534,1.932-6.169-1.44-1.711-6.334,3.416-14.693-3.234-19.324-8.344-5.326-15.198,3.406-19.796,9.51-2.857,3.578-6.403,6.654-10.767,8.239-4.192,1.566-9.389,3.131-10.951,7.809-.864,2.321-.688,5.178-1.378,7.497-.735,2.951-3.235,2.487-4.669.388-2.003-2.955-2.491-6.541-3.776-9.876-1.31-3.664-2.78-7.693-5.994-10.109-7.334-4.748-9.175,7.63-19.931,7.517-4.418.205-8.794-1.687-13.229-1.031-4.111.461-7.629,3.373-11.826,3.319-2.922.027-5.651-1.377-8.479-1.907-5.464-1.042-10.767,2.36-15.242,5.252l-.03.02ZM104.435,139.51c1.754.503,3.596.879,5.424.765,1.241-.096,2.451-.402,3.39-1.021,1.649-1.013,2.545-3.023,1.719-4.795-1.391-2.761-5.05-3.164-7.823-2.515-4.8,1.024-10.038,5.229-2.749,7.554l.039.012ZM111.678,159.191c1.68-2.72,2.448-6.381.969-9.316-.748-1.517-2.37-2.398-4.042-2.211-1.717.131-3.597,1.165-5.465,1.781-1.382.465-2.842.729-4.298.594-2.949-.245-5.53-1.994-8.19-3.098-2.859-1.226-5.84-.725-7.71,1.85-2.197,2.955-2.382,7.268-.49,10.427,1.37,2.353,3.83,3.873,6.441,4.503,4.278,1.074,8.85,1.149,13.277.65,3.844-.456,7.412-1.638,9.489-5.15l.019-.03Z"/>
+    <circle class="k2-3" cx="81.335" cy="119.059" r="5.717"/>
+    <circle class="k2-3" cx="133.353" cy="104.428" r="5.717"/>
+    <circle class="k2-3" cx="194.446" cy="101.711" r="5.717"/>
+  </g></svg><g filter="url(#sh)"><rect x="1013" y="91" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="1018" y="96" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k3-1 {
+        letter-spacing: 0em;
+      }
+
+      .k3-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 16.144px;
+        font-weight: 200;
+      }
+
+      .k3-2, .k3-3, .k3-4, .k3-5 {
+        fill: url(#holo);
+      }
+
+      .k3-4 {
+        font-size: 47.353px;
+      }
+
+      .k3-4, .k3-5 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k3-5 {
+        font-size: 119.787px;
+      }
+
+      .k3-6 {
+        letter-spacing: -.053em;
+      }
+
+      .k3-7 {
+        letter-spacing: -.018em;
+      }
+
+      .k3-8 {
+        letter-spacing: -.02em;
+      }
+
+      .k3-9 {
+        letter-spacing: -.015em;
+      }
+
+      .k3-10 {
+        letter-spacing: -.04em;
+      }
+
+      .k3-11 {
+        letter-spacing: -.01em;
+      }
+
+      .k3-12 {
+        letter-spacing: -.008em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <text class="k3-4" transform="translate(747.56 137.281)"><tspan x="0" y="0">©</tspan></text>
+  <text class="k3-5" transform="translate(45.029 295.932)"><tspan class="k3-10" x="0" y="0">D</tspan><tspan class="k3-1" x="88.163" y="0">WIGGINS</tspan></text>
+  <text class="k3-2" transform="translate(41.675 331.599)"><tspan class="k3-12" x="0" y="0">F</tspan><tspan x="8.136" y="0">ORM RECOGNITION</tspan></text>
+  <text class="k3-2" transform="translate(565.346 331.688)"><tspan class="k3-8" x="0" y="0">S</tspan><tspan x="9.121" y="0">T</tspan><tspan class="k3-11" x="16.725" y="0">R</tspan><tspan x="25.927" y="0">U</tspan><tspan class="k3-6" x="36.694" y="0">C</tspan><tspan x="49.399" y="0">TURE </tspan><tspan class="k3-9" x="89.403" y="0">S</tspan><tspan class="k3-7" x="98.605" y="0">Y</tspan><tspan class="k3-8" x="107.048" y="0">S</tspan><tspan x="116.169" y="0">TEM</tspan></text>
+  <g>
+    <path class="k3-3" d="M61.533,178.115c-2.987,1.936-5.57,4.489-7.241,7.651-1.399,2.42-2.294,5.37-4.352,7.186-2.099,2.233-6.953,1.883-6.924-1.829.096-2.3,1.459-4.099,2.916-5.995,3.784-4.467,7.998-8.924,9.154-14.87,1.027-4.591-.417-9.209-.135-13.817.233-4.724,3.023-8.834,3.88-13.444.553-2.758.253-5.763,1.326-8.388,2.514-5.475,9.559-6.009,14.847-6.702,6.926-.768,13.894.67,20.793.842,3.367-.043,6.207-1.942,9.425-2.687,3.346-.894,7.046-1.136,9.803-3.428,3.467-2.66,5.318-7.181,9.149-9.376,4.665-2.594,8.592,2.607,9.232,6.875.474,2.483.476,5.113.727,7.603.204,2.402.581,4.792.44,7.195-.427,4.513-2.208,9.4-.076,13.802,2.625,5.173,6.876,11.105,12.029,13.864,5.114,2.574,10.957-.747,13.397-5.472,2.518-4.483,2.846-9.782,4.767-14.506,2.744-6.54,8.992-15.293,1.752-21.171-4.006-2.942-9.686-2.159-14.029-.338-2.709,1.092-5.439,2.926-8.46,2.63-1.825-.158-3.147-1.865-2.456-3.73,1.91-4.407,7.686-4.784,11.828-5.623,4.211-.646,8.432-1.511,12.362-3.209,3.024-1.222,6.026-2.778,9.254-3.227,7.85-.807,15.706,2.011,22.218,6.244,10.776,6.849,11.868-7.727,19.036-4.116,3.065,3.409-1.476,7.827-4.428,9.722-7.357,5.281-22.046.985-24.282,12.38-.79,8.564,9.795,8.171,12.622,14.098,2.598,6.252-2.237,12.3-2.955,18.417-.326,2.459.27,5.151-.146,7.556-1.002,4.502-5.534,1.932-6.169-1.44-1.711-6.334,3.416-14.693-3.234-19.324-8.344-5.326-15.198,3.406-19.796,9.51-2.857,3.578-6.403,6.654-10.767,8.239-4.192,1.566-9.389,3.131-10.951,7.809-.864,2.321-.688,5.178-1.378,7.497-.735,2.951-3.235,2.487-4.669.388-2.003-2.955-2.491-6.541-3.776-9.876-1.31-3.664-2.78-7.693-5.994-10.109-7.334-4.748-9.175,7.63-19.931,7.517-4.418.205-8.794-1.687-13.229-1.031-4.111.461-7.629,3.373-11.826,3.319-2.922.027-5.651-1.377-8.479-1.907-5.464-1.042-10.767,2.36-15.242,5.252l-.03.02ZM104.435,139.51c1.754.503,3.596.879,5.424.765,1.241-.096,2.451-.402,3.39-1.021,1.649-1.013,2.545-3.023,1.719-4.795-1.391-2.761-5.05-3.164-7.823-2.515-4.8,1.024-10.038,5.229-2.749,7.554l.039.012ZM111.678,159.191c1.68-2.72,2.448-6.381.969-9.316-.748-1.517-2.37-2.398-4.042-2.211-1.717.131-3.597,1.165-5.465,1.781-1.382.465-2.842.729-4.298.594-2.949-.245-5.53-1.994-8.19-3.098-2.859-1.226-5.84-.725-7.71,1.85-2.197,2.955-2.382,7.268-.49,10.427,1.37,2.353,3.83,3.873,6.441,4.503,4.278,1.074,8.85,1.149,13.277.65,3.844-.456,7.412-1.638,9.489-5.15l.019-.03Z"/>
+    <circle class="k3-3" cx="81.335" cy="119.059" r="5.717"/>
+    <circle class="k3-3" cx="133.353" cy="104.428" r="5.717"/>
+    <circle class="k3-3" cx="194.446" cy="101.711" r="5.717"/>
+  </g></svg><text x="40" y="279.9059259523216" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.5)">ORBIT SYSTEM</text><g filter="url(#sh)"><rect x="35" y="286.9059259523216" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="40" y="291.9059259523216" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k4-1 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-size: 75.02px;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k4-1, .k4-2 {
+        fill: #e1e1d7;
+      }
+
+      .k4-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k4-3 {
+        letter-spacing: 0em;
+      }
+
+      .k4-4 {
+        letter-spacing: -.053em;
+      }
+
+      .k4-5 {
+        letter-spacing: -.02em;
+      }
+
+      .k4-6 {
+        letter-spacing: -.02em;
+      }
+
+      .k4-7 {
+        letter-spacing: -.015em;
+      }
+
+      .k4-8 {
+        letter-spacing: -.018em;
+      }
+
+      .k4-9 {
+        letter-spacing: -.04em;
+      }
+
+      .k4-10 {
+        fill: none;
+        opacity: .35;
+        stroke: #e1e1d7;
+        stroke-miterlimit: 10;
+      }
+
+      .k4-11 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <ellipse class="k4-10" cx="274.165" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k4-10" cx="421.292" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k4-10" cx="567.725" cy="215.668" rx="113.184" ry="70.903"/>
+  <text class="k4-1" transform="translate(213.414 246.829)"><tspan class="k4-9" x="0" y="0">D</tspan><tspan class="k4-3" x="55.214" y="0">WIGGINS</tspan></text>
+  <g>
+    <text class="k4-2" transform="translate(267.179 308.175)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k4-2" transform="translate(329.983 308.174)"><tspan class="k4-7" x="0" y="0">S</tspan><tspan class="k4-8" x="5.7" y="0">Y</tspan><tspan class="k4-5" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k4-2" transform="translate(528.76 308.175)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k4-2" transform="translate(488.023 308.513)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k4-2" transform="translate(397.344 308.175)"><tspan class="k4-6" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k4-11" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k4-4" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><g filter="url(#sh)"><rect x="361" y="286.9059259523216" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="366" y="291.9059259523216" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k5-1 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-size: 75.02px;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k5-1, .k5-2 {
+        fill: url(#silver);
+      }
+
+      .k5-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k5-3 {
+        letter-spacing: 0em;
+      }
+
+      .k5-4 {
+        letter-spacing: -.053em;
+      }
+
+      .k5-5 {
+        letter-spacing: -.02em;
+      }
+
+      .k5-6 {
+        letter-spacing: -.02em;
+      }
+
+      .k5-7 {
+        letter-spacing: -.015em;
+      }
+
+      .k5-8 {
+        letter-spacing: -.018em;
+      }
+
+      .k5-9 {
+        letter-spacing: -.04em;
+      }
+
+      .k5-10 {
+        fill: none;
+        opacity: .35;
+        stroke: url(#silver);
+        stroke-miterlimit: 10;
+      }
+
+      .k5-11 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <ellipse class="k5-10" cx="274.165" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k5-10" cx="421.292" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k5-10" cx="567.725" cy="215.668" rx="113.184" ry="70.903"/>
+  <text class="k5-1" transform="translate(213.414 246.829)"><tspan class="k5-9" x="0" y="0">D</tspan><tspan class="k5-3" x="55.214" y="0">WIGGINS</tspan></text>
+  <g>
+    <text class="k5-2" transform="translate(267.179 308.175)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k5-2" transform="translate(329.983 308.174)"><tspan class="k5-7" x="0" y="0">S</tspan><tspan class="k5-8" x="5.7" y="0">Y</tspan><tspan class="k5-5" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k5-2" transform="translate(528.76 308.175)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k5-2" transform="translate(488.023 308.513)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k5-2" transform="translate(397.344 308.175)"><tspan class="k5-6" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k5-11" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k5-4" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><g filter="url(#sh)"><rect x="687" y="286.9059259523216" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="692" y="291.9059259523216" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k6-1 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-size: 75.02px;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k6-1, .k6-2 {
+        fill: url(#gold);
+      }
+
+      .k6-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k6-3 {
+        letter-spacing: 0em;
+      }
+
+      .k6-4 {
+        letter-spacing: -.053em;
+      }
+
+      .k6-5 {
+        letter-spacing: -.02em;
+      }
+
+      .k6-6 {
+        letter-spacing: -.02em;
+      }
+
+      .k6-7 {
+        letter-spacing: -.015em;
+      }
+
+      .k6-8 {
+        letter-spacing: -.018em;
+      }
+
+      .k6-9 {
+        letter-spacing: -.04em;
+      }
+
+      .k6-10 {
+        fill: none;
+        opacity: .35;
+        stroke: url(#gold);
+        stroke-miterlimit: 10;
+      }
+
+      .k6-11 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <ellipse class="k6-10" cx="274.165" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k6-10" cx="421.292" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k6-10" cx="567.725" cy="215.668" rx="113.184" ry="70.903"/>
+  <text class="k6-1" transform="translate(213.414 246.829)"><tspan class="k6-9" x="0" y="0">D</tspan><tspan class="k6-3" x="55.214" y="0">WIGGINS</tspan></text>
+  <g>
+    <text class="k6-2" transform="translate(267.179 308.175)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k6-2" transform="translate(329.983 308.174)"><tspan class="k6-7" x="0" y="0">S</tspan><tspan class="k6-8" x="5.7" y="0">Y</tspan><tspan class="k6-5" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k6-2" transform="translate(528.76 308.175)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k6-2" transform="translate(488.023 308.513)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k6-2" transform="translate(397.344 308.175)"><tspan class="k6-6" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k6-11" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k6-4" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><g filter="url(#sh)"><rect x="1013" y="286.9059259523216" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="1018" y="291.9059259523216" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k7-1 {
+        font-family: PPFrama-BlackItalic, 'PP Frama';
+        font-size: 75.02px;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      .k7-1, .k7-2 {
+        fill: url(#holo);
+      }
+
+      .k7-2 {
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k7-3 {
+        letter-spacing: 0em;
+      }
+
+      .k7-4 {
+        letter-spacing: -.053em;
+      }
+
+      .k7-5 {
+        letter-spacing: -.02em;
+      }
+
+      .k7-6 {
+        letter-spacing: -.02em;
+      }
+
+      .k7-7 {
+        letter-spacing: -.015em;
+      }
+
+      .k7-8 {
+        letter-spacing: -.018em;
+      }
+
+      .k7-9 {
+        letter-spacing: -.04em;
+      }
+
+      .k7-10 {
+        fill: none;
+        opacity: .35;
+        stroke: url(#holo);
+        stroke-miterlimit: 10;
+      }
+
+      .k7-11 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <ellipse class="k7-10" cx="274.165" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k7-10" cx="421.292" cy="215.668" rx="113.184" ry="70.903"/>
+  <ellipse class="k7-10" cx="567.725" cy="215.668" rx="113.184" ry="70.903"/>
+  <text class="k7-1" transform="translate(213.414 246.829)"><tspan class="k7-9" x="0" y="0">D</tspan><tspan class="k7-3" x="55.214" y="0">WIGGINS</tspan></text>
+  <g>
+    <text class="k7-2" transform="translate(267.179 308.175)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k7-2" transform="translate(329.983 308.174)"><tspan class="k7-7" x="0" y="0">S</tspan><tspan class="k7-8" x="5.7" y="0">Y</tspan><tspan class="k7-5" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k7-2" transform="translate(528.76 308.175)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k7-2" transform="translate(488.023 308.513)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k7-2" transform="translate(397.344 308.175)"><tspan class="k7-6" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k7-11" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k7-4" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><text x="40" y="475.8118519046431" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.5)">DESCRIPTOR STRIP</text><g filter="url(#sh)"><rect x="35" y="482.8118519046431" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="40" y="487.8118519046431" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k8-1 {
+        fill: #e1e1d7;
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k8-2 {
+        letter-spacing: -.053em;
+      }
+
+      .k8-3 {
+        letter-spacing: -.02em;
+      }
+
+      .k8-4 {
+        letter-spacing: -.02em;
+      }
+
+      .k8-5 {
+        letter-spacing: -.015em;
+      }
+
+      .k8-6 {
+        letter-spacing: -.018em;
+      }
+
+      .k8-7 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <text class="k8-1" transform="translate(246.165 217.223)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k8-1" transform="translate(308.968 217.222)"><tspan class="k8-5" x="0" y="0">S</tspan><tspan class="k8-6" x="5.7" y="0">Y</tspan><tspan class="k8-3" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k8-1" transform="translate(507.745 217.223)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k8-1" transform="translate(467.008 217.561)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k8-1" transform="translate(376.33 217.223)"><tspan class="k8-4" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k8-7" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k8-2" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><g filter="url(#sh)"><rect x="361" y="482.8118519046431" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="366" y="487.8118519046431" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k9-1 {
+        fill: url(#silver);
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k9-2 {
+        letter-spacing: -.053em;
+      }
+
+      .k9-3 {
+        letter-spacing: -.02em;
+      }
+
+      .k9-4 {
+        letter-spacing: -.02em;
+      }
+
+      .k9-5 {
+        letter-spacing: -.015em;
+      }
+
+      .k9-6 {
+        letter-spacing: -.018em;
+      }
+
+      .k9-7 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <text class="k9-1" transform="translate(246.165 217.223)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k9-1" transform="translate(308.968 217.222)"><tspan class="k9-5" x="0" y="0">S</tspan><tspan class="k9-6" x="5.7" y="0">Y</tspan><tspan class="k9-3" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k9-1" transform="translate(507.745 217.223)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k9-1" transform="translate(467.008 217.561)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k9-1" transform="translate(376.33 217.223)"><tspan class="k9-4" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k9-7" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k9-2" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><g filter="url(#sh)"><rect x="687" y="482.8118519046431" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="692" y="487.8118519046431" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k10-1 {
+        fill: url(#gold);
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k10-2 {
+        letter-spacing: -.053em;
+      }
+
+      .k10-3 {
+        letter-spacing: -.02em;
+      }
+
+      .k10-4 {
+        letter-spacing: -.02em;
+      }
+
+      .k10-5 {
+        letter-spacing: -.015em;
+      }
+
+      .k10-6 {
+        letter-spacing: -.018em;
+      }
+
+      .k10-7 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <text class="k10-1" transform="translate(246.165 217.223)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k10-1" transform="translate(308.968 217.222)"><tspan class="k10-5" x="0" y="0">S</tspan><tspan class="k10-6" x="5.7" y="0">Y</tspan><tspan class="k10-3" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k10-1" transform="translate(507.745 217.223)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k10-1" transform="translate(467.008 217.561)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k10-1" transform="translate(376.33 217.223)"><tspan class="k10-4" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k10-7" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k10-2" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><g filter="url(#sh)"><rect x="1013" y="482.8118519046431" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="1018" y="487.8118519046431" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k11-1 {
+        fill: url(#holo);
+        font-family: PPFrama-Extralight, 'PP Frama';
+        font-size: 10px;
+        font-weight: 200;
+      }
+
+      .k11-2 {
+        letter-spacing: -.053em;
+      }
+
+      .k11-3 {
+        letter-spacing: -.02em;
+      }
+
+      .k11-4 {
+        letter-spacing: -.02em;
+      }
+
+      .k11-5 {
+        letter-spacing: -.015em;
+      }
+
+      .k11-6 {
+        letter-spacing: -.018em;
+      }
+
+      .k11-7 {
+        letter-spacing: -.01em;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <text class="k11-1" transform="translate(246.165 217.223)"><tspan x="0" y="0">METRIC</tspan></text>
+    <text class="k11-1" transform="translate(308.968 217.222)"><tspan class="k11-5" x="0" y="0">S</tspan><tspan class="k11-6" x="5.7" y="0">Y</tspan><tspan class="k11-3" x="10.93" y="0">S</tspan><tspan x="16.58" y="0">TEM</tspan></text>
+    <text class="k11-1" transform="translate(507.745 217.223)"><tspan x="0" y="0">ALIGN</tspan></text>
+    <text class="k11-1" transform="translate(467.008 217.561)"><tspan x="0" y="0">AXIS</tspan></text>
+    <text class="k11-1" transform="translate(376.33 217.223)"><tspan class="k11-4" x="0" y="0">S</tspan><tspan x="5.65" y="0">T</tspan><tspan class="k11-7" x="10.36" y="0">R</tspan><tspan x="16.06" y="0">U</tspan><tspan class="k11-2" x="22.73" y="0">C</tspan><tspan x="30.6" y="0">TURE</tspan></text>
+  </g></svg><text x="40" y="671.7177778569646" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.5)">SYMBOL PANEL</text><g filter="url(#sh)"><rect x="35" y="678.7177778569646" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="40" y="683.7177778569646" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k12-1 {
+        fill: #e1e1d7;
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <path class="k12-1" d="M239.124,285.576c-6.337,4.109-11.819,9.524-15.365,16.235-2.969,5.136-4.868,11.394-9.235,15.248-4.453,4.737-14.753,3.995-14.692-3.881.204-4.88,3.095-8.697,6.188-12.721,8.029-9.478,16.971-18.935,19.424-31.551,2.179-9.742-.884-19.539-.285-29.317.495-10.024,6.414-18.743,8.232-28.526,1.174-5.853.537-12.229,2.814-17.798,5.335-11.617,20.284-12.75,31.504-14.22,14.696-1.63,29.481,1.422,44.119,1.787,7.144-.092,13.171-4.12,19.998-5.702,7.1-1.896,14.951-2.41,20.8-7.274,7.357-5.645,11.283-15.237,19.414-19.895,9.899-5.504,18.231,5.532,19.589,14.588,1.005,5.268,1.009,10.85,1.543,16.131.432,5.097,1.234,10.167.934,15.267-.905,9.576-4.685,19.946-.162,29.286,5.571,10.977,14.591,23.563,25.524,29.417,10.851,5.461,23.249-1.585,28.426-11.61,5.342-9.513,6.039-20.757,10.115-30.78,5.821-13.877,19.08-32.449,3.718-44.922-8.5-6.243-20.552-4.582-29.767-.717-5.748,2.317-11.541,6.208-17.952,5.58-3.871-.335-6.678-3.956-5.21-7.915,4.053-9.351,16.309-10.15,25.096-11.932,8.935-1.37,17.89-3.207,26.231-6.809,6.416-2.592,12.785-5.894,19.636-6.848,16.657-1.712,33.326,4.266,47.143,13.249,22.866,14.533,25.182-16.396,40.392-8.733,6.503,7.234-3.131,16.607-9.396,20.629-15.61,11.205-46.778,2.09-51.523,26.269-1.677,18.171,20.785,17.338,26.781,29.915,5.513,13.267-4.746,26.098-6.27,39.077-.692,5.217.573,10.93-.31,16.032-2.126,9.553-11.743,4.1-13.09-3.056-3.63-13.441,7.247-31.176-6.862-41.003-17.704-11.301-32.249,7.227-42.005,20.179-6.062,7.592-13.587,14.118-22.846,17.481-8.895,3.322-19.921,6.643-23.237,16.57-1.833,4.926-1.459,10.986-2.925,15.907-1.56,6.262-6.865,5.278-9.907.823-4.25-6.27-5.285-13.878-8.012-20.956-2.78-7.774-5.899-16.324-12.717-21.451-15.562-10.075-19.468,16.191-42.29,15.95-9.374.435-18.659-3.579-28.071-2.189-8.723.978-16.188,7.157-25.094,7.043-6.199.056-11.991-2.922-17.99-4.045-11.594-2.211-22.847,5.007-32.341,11.143l-.063.043ZM330.157,203.663c3.722,1.068,7.631,1.865,11.51,1.623,2.634-.203,5.2-.853,7.193-2.166,3.498-2.149,5.4-6.414,3.648-10.175-2.952-5.859-10.716-6.713-16.6-5.336-10.185,2.173-21.298,11.096-5.833,16.028l.082.025ZM345.525,245.421c3.565-5.772,5.194-13.539,2.055-19.767-1.587-3.218-5.029-5.088-8.577-4.692-3.643.279-7.633,2.471-11.596,3.779-2.931.986-6.03,1.546-9.12,1.261-6.258-.519-11.734-4.231-17.378-6.574-6.065-2.601-12.392-1.539-16.36,3.926-4.661,6.269-5.053,15.421-1.039,22.126,2.908,4.993,8.126,8.218,13.667,9.554,9.078,2.278,18.779,2.437,28.173,1.38,8.156-.968,15.728-3.477,20.135-10.928l.04-.065Z"/>
+    <circle class="k12-1" cx="281.142" cy="160.268" r="12.13"/>
+    <circle class="k12-1" cx="391.516" cy="129.222" r="12.13"/>
+    <circle class="k12-1" cx="521.147" cy="123.458" r="12.13"/>
+  </g></svg><g filter="url(#sh)"><rect x="361" y="678.7177778569646" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="366" y="683.7177778569646" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k13-1 {
+        fill: url(#silver);
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <path class="k13-1" d="M239.124,285.576c-6.337,4.109-11.819,9.524-15.365,16.235-2.969,5.136-4.868,11.394-9.235,15.248-4.453,4.737-14.753,3.995-14.692-3.881.204-4.88,3.095-8.697,6.188-12.721,8.029-9.478,16.971-18.935,19.424-31.551,2.179-9.742-.884-19.539-.285-29.317.495-10.024,6.414-18.743,8.232-28.526,1.174-5.853.537-12.229,2.814-17.798,5.335-11.617,20.284-12.75,31.504-14.22,14.696-1.63,29.481,1.422,44.119,1.787,7.144-.092,13.171-4.12,19.998-5.702,7.1-1.896,14.951-2.41,20.8-7.274,7.357-5.645,11.283-15.237,19.414-19.895,9.899-5.504,18.231,5.532,19.589,14.588,1.005,5.268,1.009,10.85,1.543,16.131.432,5.097,1.234,10.167.934,15.267-.905,9.576-4.685,19.946-.162,29.286,5.571,10.977,14.591,23.563,25.524,29.417,10.851,5.461,23.249-1.585,28.426-11.61,5.342-9.513,6.039-20.757,10.115-30.78,5.821-13.877,19.08-32.449,3.718-44.922-8.5-6.243-20.552-4.582-29.767-.717-5.748,2.317-11.541,6.208-17.952,5.58-3.871-.335-6.678-3.956-5.21-7.915,4.053-9.351,16.309-10.15,25.096-11.932,8.935-1.37,17.89-3.207,26.231-6.809,6.416-2.592,12.785-5.894,19.636-6.848,16.657-1.712,33.326,4.266,47.143,13.249,22.866,14.533,25.182-16.396,40.392-8.733,6.503,7.234-3.131,16.607-9.396,20.629-15.61,11.205-46.778,2.09-51.523,26.269-1.677,18.171,20.785,17.338,26.781,29.915,5.513,13.267-4.746,26.098-6.27,39.077-.692,5.217.573,10.93-.31,16.032-2.126,9.553-11.743,4.1-13.09-3.056-3.63-13.441,7.247-31.176-6.862-41.003-17.704-11.301-32.249,7.227-42.005,20.179-6.062,7.592-13.587,14.118-22.846,17.481-8.895,3.322-19.921,6.643-23.237,16.57-1.833,4.926-1.459,10.986-2.925,15.907-1.56,6.262-6.865,5.278-9.907.823-4.25-6.27-5.285-13.878-8.012-20.956-2.78-7.774-5.899-16.324-12.717-21.451-15.562-10.075-19.468,16.191-42.29,15.95-9.374.435-18.659-3.579-28.071-2.189-8.723.978-16.188,7.157-25.094,7.043-6.199.056-11.991-2.922-17.99-4.045-11.594-2.211-22.847,5.007-32.341,11.143l-.063.043ZM330.157,203.663c3.722,1.068,7.631,1.865,11.51,1.623,2.634-.203,5.2-.853,7.193-2.166,3.498-2.149,5.4-6.414,3.648-10.175-2.952-5.859-10.716-6.713-16.6-5.336-10.185,2.173-21.298,11.096-5.833,16.028l.082.025ZM345.525,245.421c3.565-5.772,5.194-13.539,2.055-19.767-1.587-3.218-5.029-5.088-8.577-4.692-3.643.279-7.633,2.471-11.596,3.779-2.931.986-6.03,1.546-9.12,1.261-6.258-.519-11.734-4.231-17.378-6.574-6.065-2.601-12.392-1.539-16.36,3.926-4.661,6.269-5.053,15.421-1.039,22.126,2.908,4.993,8.126,8.218,13.667,9.554,9.078,2.278,18.779,2.437,28.173,1.38,8.156-.968,15.728-3.477,20.135-10.928l.04-.065Z"/>
+    <circle class="k13-1" cx="281.142" cy="160.268" r="12.13"/>
+    <circle class="k13-1" cx="391.516" cy="129.222" r="12.13"/>
+    <circle class="k13-1" cx="521.147" cy="123.458" r="12.13"/>
+  </g></svg><g filter="url(#sh)"><rect x="687" y="678.7177778569646" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="692" y="683.7177778569646" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k14-1 {
+        fill: url(#gold);
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <path class="k14-1" d="M239.124,285.576c-6.337,4.109-11.819,9.524-15.365,16.235-2.969,5.136-4.868,11.394-9.235,15.248-4.453,4.737-14.753,3.995-14.692-3.881.204-4.88,3.095-8.697,6.188-12.721,8.029-9.478,16.971-18.935,19.424-31.551,2.179-9.742-.884-19.539-.285-29.317.495-10.024,6.414-18.743,8.232-28.526,1.174-5.853.537-12.229,2.814-17.798,5.335-11.617,20.284-12.75,31.504-14.22,14.696-1.63,29.481,1.422,44.119,1.787,7.144-.092,13.171-4.12,19.998-5.702,7.1-1.896,14.951-2.41,20.8-7.274,7.357-5.645,11.283-15.237,19.414-19.895,9.899-5.504,18.231,5.532,19.589,14.588,1.005,5.268,1.009,10.85,1.543,16.131.432,5.097,1.234,10.167.934,15.267-.905,9.576-4.685,19.946-.162,29.286,5.571,10.977,14.591,23.563,25.524,29.417,10.851,5.461,23.249-1.585,28.426-11.61,5.342-9.513,6.039-20.757,10.115-30.78,5.821-13.877,19.08-32.449,3.718-44.922-8.5-6.243-20.552-4.582-29.767-.717-5.748,2.317-11.541,6.208-17.952,5.58-3.871-.335-6.678-3.956-5.21-7.915,4.053-9.351,16.309-10.15,25.096-11.932,8.935-1.37,17.89-3.207,26.231-6.809,6.416-2.592,12.785-5.894,19.636-6.848,16.657-1.712,33.326,4.266,47.143,13.249,22.866,14.533,25.182-16.396,40.392-8.733,6.503,7.234-3.131,16.607-9.396,20.629-15.61,11.205-46.778,2.09-51.523,26.269-1.677,18.171,20.785,17.338,26.781,29.915,5.513,13.267-4.746,26.098-6.27,39.077-.692,5.217.573,10.93-.31,16.032-2.126,9.553-11.743,4.1-13.09-3.056-3.63-13.441,7.247-31.176-6.862-41.003-17.704-11.301-32.249,7.227-42.005,20.179-6.062,7.592-13.587,14.118-22.846,17.481-8.895,3.322-19.921,6.643-23.237,16.57-1.833,4.926-1.459,10.986-2.925,15.907-1.56,6.262-6.865,5.278-9.907.823-4.25-6.27-5.285-13.878-8.012-20.956-2.78-7.774-5.899-16.324-12.717-21.451-15.562-10.075-19.468,16.191-42.29,15.95-9.374.435-18.659-3.579-28.071-2.189-8.723.978-16.188,7.157-25.094,7.043-6.199.056-11.991-2.922-17.99-4.045-11.594-2.211-22.847,5.007-32.341,11.143l-.063.043ZM330.157,203.663c3.722,1.068,7.631,1.865,11.51,1.623,2.634-.203,5.2-.853,7.193-2.166,3.498-2.149,5.4-6.414,3.648-10.175-2.952-5.859-10.716-6.713-16.6-5.336-10.185,2.173-21.298,11.096-5.833,16.028l.082.025ZM345.525,245.421c3.565-5.772,5.194-13.539,2.055-19.767-1.587-3.218-5.029-5.088-8.577-4.692-3.643.279-7.633,2.471-11.596,3.779-2.931.986-6.03,1.546-9.12,1.261-6.258-.519-11.734-4.231-17.378-6.574-6.065-2.601-12.392-1.539-16.36,3.926-4.661,6.269-5.053,15.421-1.039,22.126,2.908,4.993,8.126,8.218,13.667,9.554,9.078,2.278,18.779,2.437,28.173,1.38,8.156-.968,15.728-3.477,20.135-10.928l.04-.065Z"/>
+    <circle class="k14-1" cx="281.142" cy="160.268" r="12.13"/>
+    <circle class="k14-1" cx="391.516" cy="129.222" r="12.13"/>
+    <circle class="k14-1" cx="521.147" cy="123.458" r="12.13"/>
+  </g></svg><g filter="url(#sh)"><rect x="1013" y="678.7177778569646" width="310" height="149.90592595232155" rx="20" fill="#f4f3ee" opacity="0.14"/></g><svg x="1018" y="683.7177778569646" width="300" height="139.90592595232155" viewBox="0 0 841.89 392.618"><defs>
+    <style>
+      .k15-1 {
+        fill: url(#holo);
+      }
+    </style>
+  </defs>
+  <path d="M379.434,53.639h0c0-16.955-13.744-30.699-30.699-30.699H38.57c-16.955,0-30.699,13.744-30.699,30.699v310.666l795.448,1.44c16.955,0,30.699-23.377,30.699-40.332V115.037c0-16.955-13.744-30.699-30.699-30.699h-393.186c-16.955,0-30.699-13.744-30.699-30.699Z"/>
+  <g>
+    <path class="k15-1" d="M239.124,285.576c-6.337,4.109-11.819,9.524-15.365,16.235-2.969,5.136-4.868,11.394-9.235,15.248-4.453,4.737-14.753,3.995-14.692-3.881.204-4.88,3.095-8.697,6.188-12.721,8.029-9.478,16.971-18.935,19.424-31.551,2.179-9.742-.884-19.539-.285-29.317.495-10.024,6.414-18.743,8.232-28.526,1.174-5.853.537-12.229,2.814-17.798,5.335-11.617,20.284-12.75,31.504-14.22,14.696-1.63,29.481,1.422,44.119,1.787,7.144-.092,13.171-4.12,19.998-5.702,7.1-1.896,14.951-2.41,20.8-7.274,7.357-5.645,11.283-15.237,19.414-19.895,9.899-5.504,18.231,5.532,19.589,14.588,1.005,5.268,1.009,10.85,1.543,16.131.432,5.097,1.234,10.167.934,15.267-.905,9.576-4.685,19.946-.162,29.286,5.571,10.977,14.591,23.563,25.524,29.417,10.851,5.461,23.249-1.585,28.426-11.61,5.342-9.513,6.039-20.757,10.115-30.78,5.821-13.877,19.08-32.449,3.718-44.922-8.5-6.243-20.552-4.582-29.767-.717-5.748,2.317-11.541,6.208-17.952,5.58-3.871-.335-6.678-3.956-5.21-7.915,4.053-9.351,16.309-10.15,25.096-11.932,8.935-1.37,17.89-3.207,26.231-6.809,6.416-2.592,12.785-5.894,19.636-6.848,16.657-1.712,33.326,4.266,47.143,13.249,22.866,14.533,25.182-16.396,40.392-8.733,6.503,7.234-3.131,16.607-9.396,20.629-15.61,11.205-46.778,2.09-51.523,26.269-1.677,18.171,20.785,17.338,26.781,29.915,5.513,13.267-4.746,26.098-6.27,39.077-.692,5.217.573,10.93-.31,16.032-2.126,9.553-11.743,4.1-13.09-3.056-3.63-13.441,7.247-31.176-6.862-41.003-17.704-11.301-32.249,7.227-42.005,20.179-6.062,7.592-13.587,14.118-22.846,17.481-8.895,3.322-19.921,6.643-23.237,16.57-1.833,4.926-1.459,10.986-2.925,15.907-1.56,6.262-6.865,5.278-9.907.823-4.25-6.27-5.285-13.878-8.012-20.956-2.78-7.774-5.899-16.324-12.717-21.451-15.562-10.075-19.468,16.191-42.29,15.95-9.374.435-18.659-3.579-28.071-2.189-8.723.978-16.188,7.157-25.094,7.043-6.199.056-11.991-2.922-17.99-4.045-11.594-2.211-22.847,5.007-32.341,11.143l-.063.043ZM330.157,203.663c3.722,1.068,7.631,1.865,11.51,1.623,2.634-.203,5.2-.853,7.193-2.166,3.498-2.149,5.4-6.414,3.648-10.175-2.952-5.859-10.716-6.713-16.6-5.336-10.185,2.173-21.298,11.096-5.833,16.028l.082.025ZM345.525,245.421c3.565-5.772,5.194-13.539,2.055-19.767-1.587-3.218-5.029-5.088-8.577-4.692-3.643.279-7.633,2.471-11.596,3.779-2.931.986-6.03,1.546-9.12,1.261-6.258-.519-11.734-4.231-17.378-6.574-6.065-2.601-12.392-1.539-16.36,3.926-4.661,6.269-5.053,15.421-1.039,22.126,2.908,4.993,8.126,8.218,13.667,9.554,9.078,2.278,18.779,2.437,28.173,1.38,8.156-.968,15.728-3.477,20.135-10.928l.04-.065Z"/>
+    <circle class="k15-1" cx="281.142" cy="160.268" r="12.13"/>
+    <circle class="k15-1" cx="391.516" cy="129.222" r="12.13"/>
+    <circle class="k15-1" cx="521.147" cy="123.458" r="12.13"/>
+  </g></svg><text x="190" y="64" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.6)" text-anchor="middle">COMMON · ivoire</text><text x="516" y="64" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.6)" text-anchor="middle">EPIC · argent</text><text x="842" y="64" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.6)" text-anchor="middle">LEGENDARY · or</text><text x="1168" y="64" font-family="'PP Frama'" font-weight="200" font-size="12" letter-spacing="2" fill="rgba(244,243,238,0.6)" text-anchor="middle">MYTHIC · holo</text></svg>

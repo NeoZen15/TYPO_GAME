@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import UiDebugProbe from "@/components/dev/UiDebugProbe";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
 
 export const metadata: Metadata = {
   title: "Jeux de Typo V2",
@@ -43,7 +36,7 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
       </head>
-      <body className={`${inter.variable} bg-background font-sans antialiased`}>
+      <body className="bg-background font-sans antialiased">
         <UiDebugProbe />
         {children}
       </body>
