@@ -12,7 +12,14 @@ import ActivityBoard from "@/features/profile/components/ActivityBoard";
 import AchievementsBoard from "@/features/profile/components/AchievementsBoard";
 import PreferencesBoard from "@/features/profile/components/PreferencesBoard";
 import type { Art } from "@/lib/brand/dwiggins-badge-engine";
-import { MOCK_ARENA, MOCK_EYE, MOCK_PROFILE, type PlayerProfile } from "@/lib/profile/mock-profile";
+import {
+  MOCK_ARENA,
+  MOCK_EYE,
+  MOCK_PROFILE,
+  type ArenaProfile,
+  type EyeProfile,
+  type PlayerProfile,
+} from "@/lib/profile/mock-profile";
 
 // Path visual: the non-linear constellation (new) vs. the linear board-game
 // snake (kept in ProgressBoard.tsx). Flip this to revisit the snake in 1 line.
@@ -34,14 +41,22 @@ const NAV: ReadonlyArray<{ id: ViewId; label: string }> = [
 
 type ProfileExperienceProps = {
   profile?: PlayerProfile;
+  // Real eye constellation + arena, derived server-side. Default to the mock so
+  // the page still renders for a fresh visitor with no play history.
+  eye?: EyeProfile;
+  arena?: ArenaProfile;
   art: Art;
 };
 
-export default function ProfileExperience({ profile = MOCK_PROFILE, art }: ProfileExperienceProps) {
+export default function ProfileExperience({
+  profile = MOCK_PROFILE,
+  eye = MOCK_EYE,
+  arena = MOCK_ARENA,
+  art,
+}: ProfileExperienceProps) {
   const [view, setView] = useState<ViewId>("home");
   const [scrolled, setScrolled] = useState(false);
   // The eye layer drives level / XP / title (title is derived from lit axes).
-  const eye = MOCK_EYE;
   const xpPct = Math.round((eye.xpInLevel / eye.xpForNext) * 100);
 
   // Every view now owns its own full-bleed intro (the constellation, the stats
@@ -184,7 +199,7 @@ export default function ProfileExperience({ profile = MOCK_PROFILE, art }: Profi
           <ProfileSummary
             profile={profile}
             eye={eye}
-            arena={MOCK_ARENA}
+            arena={arena}
             art={art}
             onNavigate={setView}
           />
