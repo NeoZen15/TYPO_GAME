@@ -47,6 +47,8 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 **Cas Adobe (comment les obtenir) :** ❌ PAS via Adobe Fonts / Creative Cloud (abonnement, interdiction d'extraire/héberger, aucune licence perpétuelle). ✅ Acheter la **licence desktop perpétuelle** de la typo précise chez un **revendeur** — **Type Network** (boutique officielle Adobe Originals) ou **MyFonts/Monotype** — ou via **Adobe Font Folio** (collection perpétuelle). Avec licence desktop, les revendeurs autorisent même le « subset en PDF non-éditable pour usage commercial » → donc **rendre des images/tracés = OK**. (Et **Source Sans / Serif / Code**, polices Adobe **libres**, sont déjà dans le catalogue.)
 
+**Affiliation Adobe = OUI** (programme officiel, géré par Partnerize) : commission quand un joueur **s'abonne à Creative Cloud** (qui inclut Adobe Fonts) via ton lien — **~85 % du 1er mois**. → bouton « obtiens-la sur Adobe Fonts ». Avantage : en tant que partenaire qui leur amène des abonnés, **montrer leurs polices sert LEURS intérêts** (pub pour eux). Pour acheter UNE typo Adobe à vie → MyFonts/Monotype (aussi affilié). ⚠️ L'affiliation rapporte de l'argent mais ne « donne » pas automatiquement le droit d'afficher — ça reste l'usage « petite image, pas le fichier » ; demander des **visuels d'aperçu officiels** au programme.
+
 ⚠️ Zone grise en **UE** (la France protège davantage les dessins de caractères) → **avis juridique avant lancement commercial**. (Ceci n'est pas un avis légal.)
 
 ---
@@ -122,6 +124,9 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [ ] Officialiser le neutre chaud `#2a1a20` (vs noir pur)
   - [ ] Officialiser ou retirer le rose `#F39AB1`
   - [ ] Appliquer dans `globals.css` + mettre à jour le contrat UI
+- [x] **Nav de la page Compare alignée sur la DA validée de la home** · `Fait` (2026-06-29)
+  _La `compare-site-nav` était restée sur l'ancien skin « néon noir » (fond `#000`, glow radial + bordure dégradée, wordmark ivory, CTA clair) alors que la home (`lp-header`) est la **référence DA**. Portée sur le **pill crème** : fond `#f4f3ee`, encre `#141019`, glow/`::before`/`::after` retirés, wordmark **noir + figures** (lisibles sur crème), liens encre (actif = pill léger `rgba(20,16,25,.07)` au lieu du vert), CTA **foncé** `#141019`, ThemeSwitch déplacé du flottant **dans le pill**. Typecheck OK, vérifié à l'écran (parité home/compare)._
+  - `app/globals.css` (`.compare-site-nav*`), `app/compare/[slug]/page.tsx`
 
 ## E — Légal & marque · le chantier urgent avant mise en ligne
 
