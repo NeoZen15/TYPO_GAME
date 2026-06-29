@@ -18,7 +18,7 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **12 faits · 2 en cours · 17 à faire · 3 bloqueurs · 4 parkés / à décider** (38 sujets).
+État par sujet : **13 faits · 1 en cours · 17 à faire · 3 bloqueurs · 4 parkés / à décider** (38 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -33,11 +33,12 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 - [ ] **Arène (côté profil) : classements + historique réels** · `À faire`
   _Placeholder assumé — se réveille après le lancement (dépend d'une population de joueurs)._
   - `features/profile/components/ProfileSummary.tsx`
-- [ ] **Streak + objectif quotidien réels** · `En cours` — codés à 0 en dur aujourd'hui.
+- [x] **Streak + objectif quotidien réels** · `Fait` — déjà câblé (vérifié par lecture du code, 2026-06-29).
+  _`loadRealProfile` calcule le streak depuis l'activité (issue de `user_event_fact`), le record, et `dailyGoal = { done: sessions du jour, target: 3 }`, puis les pose sur l'EyeProfile + le profil (`profile-stats.ts` §307-342, 385-386). Le « 0 en dur » ne subsiste que dans le **mock** (fallback)._
   - `lib/profile/profile-stats.ts`
-  - [ ] Calculer le streak depuis `user_event_fact`
-  - [ ] Calculer l'objectif quotidien (done / target)
-  - [ ] Remplacer les 0 en dur dans l'EyeProfile
+  - [x] Streak calculé depuis l'activité (`user_event_fact`)
+  - [x] Objectif quotidien (done / target) calculé
+  - [x] EyeProfile + profil alimentés par ces valeurs réelles (0 en dur seulement dans le mock fallback)
 - [ ] **Économie « jetons » (coins)** · `À faire` — `coins:0` en dur, pas encore d'économie de jeu.
   - `lib/profile/mock-profile.ts`
 - [ ] **Page Règles : expliquer les règles du jeu au joueur** · `À faire`
