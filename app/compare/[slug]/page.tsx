@@ -1,11 +1,10 @@
 import type { CSSProperties } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CompareQuickHelpWidget from "@/components/typography/CompareQuickHelpWidget";
 import MeasuredGlyphSplit from "@/components/typography/MeasuredGlyphSplit";
 import MeasuredWordSplit from "@/components/typography/MeasuredWordSplit";
-import ThemeSwitch from "@/components/ui/ThemeSwitch";
+import SiteNav from "@/components/ui/SiteNav";
 import {
   buildQuery,
   getAnchorConfig,
@@ -240,50 +239,12 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
   const featureMeasureLabel = getFeatureMeasureLabel(activeAnchor.feature);
   const gameHref = comparison.ctaGameVariant ? `/play?variant=${comparison.ctaGameVariant}` : "/play";
   const dominantTypeface = emphasis === "left" ? leftTypeface : rightTypeface;
-  const primaryNavItems: Array<{ label: string; href: string; isActive?: boolean }> = [
-    { label: "Compare", href: `/compare/${comparison.slug}`, isActive: true },
-    { label: "Learn", href: "/onboarding" },
-    { label: "Play", href: "/play" },
-  ];
 
   return (
     <main className="typo-page compare-page">
-      <ThemeSwitch />
       {leftFontCss || rightFontCss ? <style>{[leftFontCss, rightFontCss].filter(Boolean).join("\n\n")}</style> : null}
       <article className="typo-shell">
-        <header className="compare-site-nav" aria-label="Primary navigation">
-          <Link href="/" className="compare-site-nav__brand" aria-label="Dwiggins home">
-            <Image
-              src="/brand/dwiggins-wordmark-full-ivory.svg"
-              alt="Dwiggins"
-              className="compare-site-nav__brand-mark compare-site-nav__brand-mark--full"
-              width={1394}
-              height={200}
-            />
-          </Link>
-
-          <nav className="compare-site-nav__links" aria-label="Site sections">
-            {primaryNavItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`compare-site-nav__link ${item.isActive ? "is-active" : ""}`}
-                aria-current={item.isActive ? "page" : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="compare-site-nav__actions">
-            <Link href="/onboarding" className="compare-site-nav__rules">
-              Rules
-            </Link>
-            <Link href={gameHref} className="compare-site-nav__cta">
-              Start playing
-            </Link>
-          </div>
-        </header>
+        <SiteNav />
 
         <nav className="typo-breadcrumbs" aria-label="Comparison navigation">
           <Link href="/" className="typo-link">

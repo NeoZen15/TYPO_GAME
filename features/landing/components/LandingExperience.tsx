@@ -152,7 +152,8 @@ export default function LandingExperience() {
 
   return (
     <div className="lp">
-      {/* Floating pill nav — mirrors the validated `compare-site-nav` DA. */}
+      {/* Floating pill nav — this is the canonical DA; the shared `SiteNav`
+          (used on /compare + /type) mirrors it. */}
       <header className={`lp-header${scrolled ? " is-scrolled" : ""}`}>
         <span className="lp-header__field" aria-hidden="true">
           R K T S Æ Q ßMTO · LKHDQV ✶@X&amp; W M nø WCT +UNZ · ÷ÐQZ YB ßOA ∗∗− MUME X·R OP

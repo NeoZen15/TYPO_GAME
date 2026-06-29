@@ -2291,7 +2291,8 @@ svg {
   grid-column: 1 / -1;
 }
 
-.compare-site-nav {
+/* Shared top nav (used by /compare + /type via the SiteNav component). */
+.site-nav {
   position: sticky;
   top: clamp(0.55rem, 1.6vw, 1rem);
   z-index: 30;
@@ -2301,66 +2302,53 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 0.46rem 0.88rem;
-  padding: 0.58rem 0.84rem;
+  padding: 0.5rem 0.7rem 0.5rem 0.95rem;
   margin-bottom: 0.32rem;
   overflow: visible;
-  border: 1px solid rgba(244, 243, 238, 0.1);
-  border-radius: 1.62rem;
-  background: #000000;
+  /* Cream floating pill — mirrors the validated landing `lp-header` DA
+     (the home is the canonical reference; this nav was still on the older
+     neon-black skin). */
+  border: 1px solid rgba(20, 16, 25, 0.08);
+  border-radius: 1.4rem;
+  background: #f4f3ee;
+  color: #141019;
   box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.05),
-    0 0.45rem 1.1rem rgba(0, 0, 0, 0.28);
+    inset 0 1px 0 rgba(244, 243, 238, 0.55),
+    0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
   backdrop-filter: none;
 }
 
-.compare-site-nav::before {
-  content: "";
-  position: absolute;
-  inset: -2.1rem -2.4rem -2.1rem;
-  z-index: -2;
-  background:
-    radial-gradient(circle at 12% 50%, color-mix(in srgb, var(--typo-warning-line) 62%, transparent), transparent 14%),
-    radial-gradient(circle at 88% 50%, color-mix(in srgb, var(--typo-info-line) 64%, transparent), transparent 16%);
-  filter: blur(28px);
-  opacity: 0.42;
-  pointer-events: none;
+/* No neon glow / gradient ring — the cream tab + lockup carry the brand now
+   (matches `lp-header`, which dropped the same neon-era effects). */
+.site-nav::before,
+.site-nav::after {
+  content: none;
 }
 
-.compare-site-nav::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  padding: 1px;
-  z-index: -1;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(244, 243, 238, 0.12), rgba(244, 243, 238, 0.02));
-  opacity: 0.56;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  pointer-events: none;
-}
-
-.compare-site-nav__brand {
+.site-nav__brand {
   display: inline-flex;
   align-items: center;
+  gap: 0.42rem;
   min-width: 0;
   padding-inline: 0.2rem 0.15rem;
 }
 
-.compare-site-nav__brand-mark {
+/* Running-figures mark sits left of the wordmark — same lockup as the home. */
+.site-nav__figures {
+  display: block;
+  width: auto;
+  height: clamp(0.92rem, 1.3vw, 1.08rem);
+  flex: none;
+}
+
+.site-nav__brand-mark {
   display: block;
   width: auto;
   height: clamp(1.02rem, 1.5vw, 1.18rem);
 }
 
-.compare-site-nav__links,
-.compare-site-nav__actions {
+.site-nav__links,
+.site-nav__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -2369,7 +2357,7 @@ svg {
   z-index: 1;
 }
 
-.compare-site-nav__links {
+.site-nav__links {
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -2377,9 +2365,9 @@ svg {
   box-shadow: none;
 }
 
-.compare-site-nav__link,
-.compare-site-nav__rules,
-.compare-site-nav__cta {
+.site-nav__link,
+.site-nav__rules,
+.site-nav__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2394,12 +2382,12 @@ svg {
     box-shadow 160ms ease;
 }
 
-.compare-site-nav__link,
-.compare-site-nav__rules {
-  padding: 0.2rem 0.42rem;
+.site-nav__link,
+.site-nav__rules {
+  padding: 0.3rem 0.5rem;
   border: 1px solid transparent;
   background: transparent;
-  color: var(--typo-muted);
+  color: rgba(20, 16, 25, 0.55);
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 700;
@@ -2407,54 +2395,72 @@ svg {
   text-transform: uppercase;
 }
 
-.compare-site-nav__link:hover,
-.compare-site-nav__link.is-active,
-.compare-site-nav__rules:hover {
-  background: transparent;
-  color: var(--typo-ink);
+.site-nav__link:hover,
+.site-nav__link.is-active,
+.site-nav__rules:hover {
+  color: rgba(20, 16, 25, 0.95);
   transform: none;
   box-shadow: none;
 }
 
-.compare-site-nav__link.is-active {
-  color: var(--typo-positive);
-  background: transparent;
+/* Dark ink + subtle pill for the current section — matches `lp-header__link`. */
+.site-nav__link.is-active {
+  color: rgba(20, 16, 25, 0.95);
+  background: rgba(20, 16, 25, 0.07);
 }
 
-.compare-site-nav__rules {
+.site-nav__rules {
   min-height: auto;
-  padding-inline: 0.42rem;
-  color: var(--typo-soft);
+  padding-inline: 0.5rem;
+  color: rgba(20, 16, 25, 0.55);
 }
 
-.compare-site-nav__rules:hover {
+.site-nav__rules:hover {
   background: transparent;
-  color: var(--typo-ink);
+  color: rgba(20, 16, 25, 0.95);
   box-shadow: none;
 }
 
-.compare-site-nav__cta {
-  padding: 0.3rem 0.76rem;
-  border: 1px solid rgba(244, 243, 238, 0.12);
-  background:
-    linear-gradient(180deg, rgba(244, 243, 238, 0.96), rgba(238, 242, 255, 0.88)),
-    #f4f5fb;
-  color: #0d1018;
+/* Dark pill on the cream tab — mirrors `lp-header__cta`. */
+.site-nav__cta {
+  padding: 0.34rem 0.8rem;
+  border: 1px solid rgba(20, 16, 25, 0.12);
+  background: #141019;
+  color: #f4f3ee;
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.92),
-    0 0.2rem 0.5rem rgba(0, 0, 0, 0.16);
+    inset 0 1px 0 rgba(244, 243, 238, 0.08),
+    0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
 }
 
-.compare-site-nav__cta:hover {
+.site-nav__cta:hover {
   transform: translateY(-1px);
+  background: #000;
   box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 1),
-    0 0.32rem 0.75rem rgba(0, 0, 0, 0.18);
+    inset 0 1px 0 rgba(244, 243, 238, 0.12),
+    0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
+}
+
+/* Theme toggle lives in the pill (not floating) and must read dark on cream. */
+.site-nav .theme-switch {
+  position: static;
+  top: auto;
+  right: auto;
+}
+
+.site-nav .theme-switch__track {
+  border-color: rgba(20, 16, 25, 0.28);
+  background: rgba(20, 16, 25, 0.1);
+  box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
+}
+
+.site-nav .theme-switch__thumb {
+  background: #141019;
+  box-shadow: 0 1px 3px rgba(20, 16, 25, 0.35);
 }
 
 .typo-breadcrumbs {
@@ -6591,23 +6597,23 @@ svg {
     width: min(22rem, calc(100vw - 1rem));
   }
 
-  .compare-site-nav {
+  .site-nav {
     border-radius: 1.35rem;
     padding: 0.78rem;
   }
 
-  .compare-site-nav__brand,
-  .compare-site-nav__links,
-  .compare-site-nav__actions {
+  .site-nav__brand,
+  .site-nav__links,
+  .site-nav__actions {
     width: 100%;
   }
 
-  .compare-site-nav__links {
+  .site-nav__links {
     order: 2;
     justify-content: flex-start;
   }
 
-  .compare-site-nav__actions {
+  .site-nav__actions {
     order: 3;
     justify-content: space-between;
   }
@@ -6936,7 +6942,7 @@ svg {
   color: var(--ink-soft);
 }
 
-/* ── Header — floating black pill, mirrors validated `compare-site-nav` ── */
+/* ── Header — floating black pill, mirrors validated `site-nav` ── */
 
 .lp-header {
   position: sticky;
