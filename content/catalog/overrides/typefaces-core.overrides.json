@@ -31534,7 +31534,8 @@
       "notes_append": [
         "expert canonical answer reviewed in first override pass"
       ],
-      "activation_status": true
+      "activation_status": true,
+      "license_type": "ofl"
     },
     {
       "typeface_slug": "ibmplexmono",
@@ -33342,7 +33343,8 @@
       "notes_append": [
         "expert canonical answer reviewed in first override pass"
       ],
-      "activation_status": true
+      "activation_status": true,
+      "license_type": "ofl"
     },
     {
       "typeface_slug": "intertight",
@@ -47070,7 +47072,8 @@
       "notes_append": [
         "expert canonical answer reviewed in first override pass"
       ],
-      "activation_status": true
+      "activation_status": true,
+      "license_type": "ofl"
     },
     {
       "typeface_slug": "montserratalternates",
@@ -64842,7 +64845,8 @@
       "notes_append": [
         "expert canonical answer reviewed in first override pass"
       ],
-      "activation_status": true
+      "activation_status": true,
+      "license_type": "ofl"
     },
     {
       "typeface_slug": "playfairdisplaysc",
@@ -74422,7 +74426,8 @@
       "notes_append": [
         "expert canonical answer reviewed in first override pass"
       ],
-      "activation_status": true
+      "activation_status": true,
+      "license_type": "ofl"
     },
     {
       "typeface_slug": "robotocondensed",
@@ -92389,6 +92394,126 @@
       "primary_category": "sans_serif",
       "notes_append": [
         "category corrected from Google METADATA.pb (2026-06-29)"
+      ],
+      "license_type": "ofl"
+    },
+    {
+      "typeface_slug": "abril_fatface",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "anton",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "bebas_neue",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "dm_sans",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "jetbrains_mono",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "lato",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "libre_baskerville",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "merriweather",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "nunito",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "open_sans",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "poppins",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "pt_serif",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "raleway",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "roboto_mono",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "source_code_pro",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "source_sans_3",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
+      ]
+    },
+    {
+      "typeface_slug": "work_sans",
+      "license_type": "ofl",
+      "notes_append": [
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     }
   ]

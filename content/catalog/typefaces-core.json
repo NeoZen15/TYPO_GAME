@@ -1,11 +1,11 @@
 {
   "meta": {
-    "built_at": "2026-06-29T16:08:45.007539+00:00",
+    "built_at": "2026-06-29T16:59:25.341464+00:00",
     "source_seed": "content/catalog/typefaces-core.seed.json",
     "source_overrides": "content/catalog/overrides/typefaces-core.overrides.json",
     "record_count": 2032,
     "override_stats": {
-      "patched": 11,
+      "patched": 28,
       "added": 2004,
       "deleted": 0
     }
@@ -274,7 +274,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -282,7 +282,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -4464,7 +4465,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -4472,7 +4473,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -8806,7 +8808,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -8814,7 +8816,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -20548,7 +20551,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -20556,7 +20559,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -31880,7 +31884,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": true,
@@ -33725,7 +33729,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": true,
@@ -35242,7 +35246,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -35250,7 +35254,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -39708,7 +39713,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -39716,7 +39721,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -40856,7 +40862,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -40864,7 +40870,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -45552,7 +45559,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -45560,7 +45567,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -47666,7 +47674,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": true,
@@ -61977,7 +61985,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -61985,7 +61993,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -62711,7 +62720,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -62719,7 +62728,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -63169,7 +63179,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -65608,7 +65618,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": true,
@@ -71359,7 +71369,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -71367,7 +71377,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -72277,7 +72288,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -72285,7 +72296,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -73519,7 +73531,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -73527,7 +73539,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -75357,7 +75370,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": true,
@@ -75402,7 +75415,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -75410,7 +75423,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -82854,7 +82868,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -82862,7 +82876,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -82898,7 +82913,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -82906,7 +82921,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
@@ -91232,7 +91248,7 @@
       "release_year": null,
       "designer": null,
       "foundry": null,
-      "license_type": "unknown",
+      "license_type": "ofl",
       "license_url": null,
       "fallback_stack": null,
       "expert_enabled": false,
@@ -91240,7 +91256,8 @@
       "qa_status": "review",
       "notes": [
         "seeded_from_original_excel_v4",
-        "license/designer/foundry metadata still requires enrichment outside the original v4 source"
+        "license/designer/foundry metadata still requires enrichment outside the original v4 source",
+        "license set to OFL (Google Fonts, verified 2026-06-29)"
       ]
     },
     {
