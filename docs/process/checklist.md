@@ -45,6 +45,8 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 3. **rendre des images de MOTS** (pas l'alphabet) → stocker les **images**, pas les polices ;
 4. afficher l'image + **lien d'affiliation** → couverture juridique (les fonderies veulent l'expo) **+ revenu** : **Monotype/MyFonts ~10 %**, **Fontspring 20 %**.
 
+**Cas Adobe (comment les obtenir) :** ❌ PAS via Adobe Fonts / Creative Cloud (abonnement, interdiction d'extraire/héberger, aucune licence perpétuelle). ✅ Acheter la **licence desktop perpétuelle** de la typo précise chez un **revendeur** — **Type Network** (boutique officielle Adobe Originals) ou **MyFonts/Monotype** — ou via **Adobe Font Folio** (collection perpétuelle). Avec licence desktop, les revendeurs autorisent même le « subset en PDF non-éditable pour usage commercial » → donc **rendre des images/tracés = OK**. (Et **Source Sans / Serif / Code**, polices Adobe **libres**, sont déjà dans le catalogue.)
+
 ⚠️ Zone grise en **UE** (la France protège davantage les dessins de caractères) → **avis juridique avant lancement commercial**. (Ceci n'est pas un avis légal.)
 
 ---
