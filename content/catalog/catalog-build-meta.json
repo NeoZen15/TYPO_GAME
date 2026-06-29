@@ -1,8 +1,8 @@
 {
-  "built_at": "2026-03-20T23:24:37.661979+00:00",
+  "built_at": "2026-06-29T15:22:29.787595+00:00",
   "status": "built",
   "sources": {
-    "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2./content/catalog",
+    "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2/content/catalog",
     "seeds": [
       "typefaces-core.seed.json",
       "font-runtime-assets.seed.json",
@@ -16,10 +16,10 @@
   },
   "counts": {
     "typefaces_total": 2032,
-    "typefaces_active": 73,
+    "typefaces_active": 1172,
     "expert_enabled_total": 5,
-    "runtime_assets_total": 78,
-    "runtime_assets_ready": 73,
+    "runtime_assets_total": 1177,
+    "runtime_assets_ready": 1172,
     "runtime_assets_system_local": 5,
     "expert_answer_keys_total": 2032,
     "expert_answer_keys_approved": 5
@@ -31,8 +31,8 @@
       "deleted": 0
     },
     "font_runtime_assets": {
-      "patched": 0,
-      "added": 50,
+      "patched": 23,
+      "added": 1149,
       "deleted": 0
     },
     "expert_answer_keys": {
