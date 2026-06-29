@@ -18,7 +18,7 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **15 faits · 0 en cours · 17 à faire · 2 bloqueurs · 6 parkés / à décider** (40 sujets).
+État par sujet : **16 faits · 0 en cours · 17 à faire · 2 bloqueurs · 6 parkés / à décider** (41 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -180,10 +180,14 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [x] **Activées en base + WOFF2 commités** (`0fd7b47`) → **pool 81 → 1172 typos jouables**
   - [x] **Durabilité faite** : overrides + rebuild synchronisés avec la base (1172 actives / 1172 assets, commit `f32a083`) → un ré-import ne reviendra plus en arrière.
   - [x] **Famille (niveau 1) corrigée via Google `METADATA.pb`** (2026-06-29, commit `250ec98`) : 11 fautes réparées — 8 monos taguées sans → `mono` (martianmono, redhatmono, victormono, fragmentmono…) + 3 sans taguées display → `sans_serif` (archivoblack, josefinsans, oswald). Base + override + build cohérents : **sans 757 · serif 358 · mono 54 · display 3**.
-- [ ] **Affiner le classement + vagues futures** · `Plus tard` (optionnel, non bloquant)
-  - [ ] Classement fin (niveau 2) : sous-catégories grossières (tout en « neo_grotesk ») + difficulté par défaut (`qa_status=review` sur 1122/1172) — à affiner par LLM/agent et/ou télémétrie.
-  - [ ] Sous-ensembler aussi les 81 anciennes polices (encore charset complet).
-  - [ ] Vague « display » à part.
+- [x] **Classement fin (niveau 2) : sous-catégories corrigées via les tags Google** · `Fait` (2026-06-29, commit `0e4dd4d`)
+  _**980 typos classées** depuis la base de tags officielle de Google (`tags/all/families.csv`, donnée curée + scores) → **546 sous-catégories corrigées** (ex. `quicksand`/`jost` → geometric, qui étaient faux). Tags Google (Sans/Geometric, Serif/Old Style Garalde, Slab…) mappés sur nos sous-catégories (humanist/geometric/neo_grotesk/grotesk/old_style/transitional/didone/slab). Base + override + build cohérents._
+  - [x] Mapper les tags structurels Google → nos sous-catégories
+  - [x] Appliquer sur les 980 taggées (base + override + build)
+  - [ ] _Restent : 192 typos sans tag Google (« à vérifier ») + la **difficulté** (encore heuristique) → télémétrie._
+- [ ] **Vagues futures (optionnel, plus tard)** · `Plus tard`
+  - [ ] Sous-ensembler les 81 anciennes polices (encore charset complet)
+  - [ ] Vague « display » à part
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
 
