@@ -18,7 +18,7 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **10 faits · 4 en cours · 17 à faire · 3 bloqueurs · 4 parkés / à décider** (38 sujets).
+État par sujet : **12 faits · 2 en cours · 17 à faire · 3 bloqueurs · 4 parkés / à décider** (38 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -53,11 +53,12 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 - [x] **Système de badges — 15 badges, raretés, moteur d'art SVG** · `Fait`
   UI + génération visuelle complètes (common → mythic).
   - `features/profile/components/AchievementsBoard.tsx`, `lib/brand/dwiggins-badge-engine.ts`, `lib/profile/badge-rules.ts`
-- [ ] **Brancher les métriques de badges sur les vraies données** · `En cours` — gain rapide, tout est dérivable de la DB.
-  - `lib/profile/profile-stats.ts`
-  - [ ] Remplacer `MOCK_BADGE_METRICS` par les métriques de `loadRealProfile`
-  - [ ] Vérifier chaque mapping (paliersLit, axesLit, streakDays, fastAnswers…)
-  - [ ] Retirer le mock une fois branché
+- [x] **Brancher les métriques de badges sur les vraies données** · `Fait` — déjà câblé (vérifié par lecture du code, 2026-06-29).
+  _Le chemin réel `loadRealProfile` (`lib/profile/profile-stats.ts` §344-388) dérive les **8 métriques** des vraies données DB (paliersLit, axesLit, roundsWon, typefacesSeen, bestSessionAccuracy, streakDays, fastAnswers, displayMastered) puis appelle `buildBadges`. `app/profile/page.tsx` appelle bien `loadRealProfile(userId)`. `MOCK_BADGE_METRICS` ne sert plus que de **fallback** zéro-historique (à garder)._
+  - `lib/profile/profile-stats.ts`, `lib/profile/badge-rules.ts`, `app/profile/page.tsx`
+  - [x] Les 8 métriques de badges dérivées des vraies données DB
+  - [x] `buildBadges` appelé sur les vraies métriques (+ page profil branchée sur `loadRealProfile`)
+  - [x] Mock conservé uniquement comme fallback zéro-historique (par design)
 
 ## C — Onboarding
 
