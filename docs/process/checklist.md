@@ -18,7 +18,7 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **13 faits · 2 en cours · 17 à faire · 2 bloqueurs · 5 parkés / à décider** (39 sujets).
+État par sujet : **15 faits · 0 en cours · 17 à faire · 2 bloqueurs · 6 parkés / à décider** (40 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -140,14 +140,14 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [ ] Vérifier les droits webfont en usage commercial
   - [ ] Acheter la licence **OU** choisir une font libre de remplacement
   - [ ] Ajouter le fichier LICENSE + attribution
-- [ ] **Régler les 23 typos actives en licence « unknown »** · `En cours` — diagnostic fait 2026-06-29 : **trou de données, PAS un risque légal**.
+- [x] **Régler les 23 typos actives en licence « unknown »** · `Fait` (2026-06-29) — trou de données, pas un risque légal. **23 passées en OFL** ; restent seulement 5 Ubuntu (licence UFL = libre, mais l'enum n'a pas « ufl »).
   _Les 23 sont **toutes des Google Fonts** (`font_source=google`) : Inter, Roboto, Montserrat, Open Sans, Lato, Poppins, Merriweather… Le champ `license_type` n'avait juste jamais été rempli sur ce lot d'origine._
   _**Vérifié contre le snapshot Google Fonts du projet** (`02_ASSETS_TYPO/google_fonts/.../fonts-main`) : les **23 sont en dossier `ofl/` → licence OFL** (SIL Open Font License, libre, usage commercial OK). Aucune en apache/ufl. Donc plus un bloqueur — juste à remplir le champ._
   - `content/catalog/overrides/typefaces-core.overrides.json`, `content/catalog/typefaces-core.json`
   - [x] Lister les 23 typos actives en licence unknown
   - [x] Retrouver la licence de chacune — **toutes OFL** (confirmé via le snapshot Google Fonts du projet)
-  - [ ] Poser `license_type='ofl'` sur les 23 (catalogue override + base)
-  - [ ] Repasser la vue QA `v_qa_unknown_license` à 0
+  - [x] **Posé `license_type='ofl'` sur les 23** (base + override + build, commit `0584549`)
+  - [x] Vue QA : reste seulement 5 Ubuntu (UFL/libre, hors enum) — tout le reste en OFL, aucun risque
 - [ ] **Remplir `license_url` / `foundry` / `release_year`** (0/73 aujourd'hui) · `À faire`
 - [ ] **Garde-fou : ne jamais servir une typo « unknown » au runtime** · `À faire`
   _La vue QA existe mais n'est pas appliquée par le moteur._
@@ -168,7 +168,7 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [ ] Documenter la décision (la spec maths fait foi)
 - [ ] **Auth réelle / comptes** · `À faire`
   _Aujourd'hui cookie anonyme auto-créé ; colonne `clerk_id` réservée mais zéro intégration._
-- [ ] **Faire grossir le pool servi : 1172 actives sur 2032 au catalogue** · `En cours` — vague non-display **faite + durable** (**81 → 1172**) ; restent 2 extras optionnels.
+- [x] **Faire grossir le pool servi : vague non-display FAITE → 1172 typos jouables (était 81)** · `Fait` (2026-06-29) — converties, allégées (35 Mo), activées, durables, familles corrigées.
   _État vérifié 2026-06-29 : 2032 au catalogue (2027 Google) mais seulement **73 game-ready** (converties + ~50 approuvées) ; les **1959 catalog-only ne sont NI converties (0 asset runtime) NI revues**. « Avoir au catalogue » ≠ jouable : il faut **convertir (TTF→WOFF2)** + **curer** (catégorie/difficulté/ce qu'elle enseigne). Goulot = la **curation**, pas le code._
   _Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
   _**Décision 2026-06-29 : activer TOUT le non-display (~1103), par lots** (display = plus tard)._
@@ -180,8 +180,10 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [x] **Activées en base + WOFF2 commités** (`0fd7b47`) → **pool 81 → 1172 typos jouables**
   - [x] **Durabilité faite** : overrides + rebuild synchronisés avec la base (1172 actives / 1172 assets, commit `f32a083`) → un ré-import ne reviendra plus en arrière.
   - [x] **Famille (niveau 1) corrigée via Google `METADATA.pb`** (2026-06-29, commit `250ec98`) : 11 fautes réparées — 8 monos taguées sans → `mono` (martianmono, redhatmono, victormono, fragmentmono…) + 3 sans taguées display → `sans_serif` (archivoblack, josefinsans, oswald). Base + override + build cohérents : **sans 757 · serif 358 · mono 54 · display 3**.
-  - [ ] **Classement fin (niveau 2) — plus tard** : sous-catégories grossières (tout en « neo_grotesk »), difficulté souvent « medium » par défaut, `qa_status=review` sur 1122/1172. À affiner par LLM/agent et/ou **télémétrie** (philosophie MVP des docs). Impact = distracteurs un peu moins fins, non bloquant.
-  - [ ] _Plus tard : sous-ensembler aussi les 81 anciennes polices (encore charset complet) ; vague « display » à part._
+- [ ] **Affiner le classement + vagues futures** · `Plus tard` (optionnel, non bloquant)
+  - [ ] Classement fin (niveau 2) : sous-catégories grossières (tout en « neo_grotesk ») + difficulté par défaut (`qa_status=review` sur 1122/1172) — à affiner par LLM/agent et/ou télémétrie.
+  - [ ] Sous-ensembler aussi les 81 anciennes polices (encore charset complet).
+  - [ ] Vague « display » à part.
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
 
