@@ -18,7 +18,7 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **13 faits · 1 en cours · 17 à faire · 3 bloqueurs · 4 parkés / à décider** (38 sujets).
+État par sujet : **13 faits · 2 en cours · 17 à faire · 2 bloqueurs · 4 parkés / à décider** (38 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -105,12 +105,13 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [ ] Vérifier les droits webfont en usage commercial
   - [ ] Acheter la licence **OU** choisir une font libre de remplacement
   - [ ] Ajouter le fichier LICENSE + attribution
-- [ ] **Régler les 23 typos actives en licence « unknown »** · `Bloqueur`
-  _23 / 73 typos actives sans licence connue = bloqueur légal._
-  - `content/catalog/typefaces-core.json`
-  - [ ] Lister les 23 typos actives en licence unknown
-  - [ ] Retrouver la licence de chacune (metadata Google Fonts / source)
-  - [ ] Remplir `license_type` (ofl / apache2 / …)
+- [ ] **Régler les 23 typos actives en licence « unknown »** · `En cours` — diagnostic fait 2026-06-29 : **trou de données, PAS un risque légal**.
+  _Les 23 sont **toutes des Google Fonts** (`font_source=google`) : Inter, Roboto, Montserrat, Open Sans, Lato, Poppins, Merriweather… Le champ `license_type` n'avait juste jamais été rempli sur ce lot d'origine._
+  _**Vérifié contre le snapshot Google Fonts du projet** (`02_ASSETS_TYPO/google_fonts/.../fonts-main`) : les **23 sont en dossier `ofl/` → licence OFL** (SIL Open Font License, libre, usage commercial OK). Aucune en apache/ufl. Donc plus un bloqueur — juste à remplir le champ._
+  - `content/catalog/overrides/typefaces-core.overrides.json`, `content/catalog/typefaces-core.json`
+  - [x] Lister les 23 typos actives en licence unknown
+  - [x] Retrouver la licence de chacune — **toutes OFL** (confirmé via le snapshot Google Fonts du projet)
+  - [ ] Poser `license_type='ofl'` sur les 23 (catalogue override + base)
   - [ ] Repasser la vue QA `v_qa_unknown_license` à 0
 - [ ] **Remplir `license_url` / `foundry` / `release_year`** (0/73 aujourd'hui) · `À faire`
 - [ ] **Garde-fou : ne jamais servir une typo « unknown » au runtime** · `À faire`
