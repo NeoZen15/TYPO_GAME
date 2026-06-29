@@ -24,16 +24,16 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
-## 🗓️ Journal — 2026-06-29 (grosse session)
+## Journal — 2026-06-29 (grosse session)
 
 - **Checklist** interactive créée (cet outil) + section transversale (légal/déploiement/SEO…).
 - **Familiarité → seed Leitner** : câblé bout-en-bout, **migrations 004 & 005 appliquées** en base, testé. Seed élargi tier N+D → skew débutant/designer réel.
 - **Audits correctifs** (la réalité ≠ ce qu'on croyait) : badges (B2) & streak/objectif (A4) étaient **déjà faits** ; **mode Expert = coquille** (placeholder, aucun jeu) ; les **23 licences « unknown » = toutes OFL** (libre, vérifié via le snapshot Google).
 - **F5 — vague typos : 81 → 1172 jouables.** Tout le non-display converti + **sous-ensemblé Latin** (35 Mo au lieu de 356), activé en base, **durable** (catalogue source synchronisé), **familles corrigées** via Google `METADATA.pb`.
-- **Recherche juridique** sur les typos commerciales/Adobe → voir ⭐ ci-dessous.
+- **Recherche juridique** sur les typos commerciales/Adobe → voir ci-dessous.
 - ~20 commits, **tous locaux** (le `push` GitHub attend tes identifiants).
 
-## ⭐ NOTE HYPER IMPORTANTE — montrer des typos commerciales / Adobe (légal + business)
+## NOTE HYPER IMPORTANTE — montrer des typos commerciales / Adobe (légal + business)
 
 **Le fichier de police = logiciel protégé.** Le **télécharger/posséder sans licence est illégal**, même sans le « servir » (procès réels, ex. Font Bureau/P22 vs NBCUniversal = 2 M$). → **On ne peut PAS** mettre des polices Adobe/payantes dans nos dossiers. (Libres OFL/Apache = OK, c'est ce qu'on a.)
 
@@ -45,11 +45,11 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 3. **rendre des images de MOTS** (pas l'alphabet) → stocker les **images**, pas les polices ;
 4. afficher l'image + **lien d'affiliation** → couverture juridique (les fonderies veulent l'expo) **+ revenu** : **Monotype/MyFonts ~10 %**, **Fontspring 20 %**.
 
-**Cas Adobe (comment les obtenir) :** ❌ PAS via Adobe Fonts / Creative Cloud (abonnement, interdiction d'extraire/héberger, aucune licence perpétuelle). ✅ Acheter la **licence desktop perpétuelle** de la typo précise chez un **revendeur** — **Type Network** (boutique officielle Adobe Originals) ou **MyFonts/Monotype** — ou via **Adobe Font Folio** (collection perpétuelle). Avec licence desktop, les revendeurs autorisent même le « subset en PDF non-éditable pour usage commercial » → donc **rendre des images/tracés = OK**. (Et **Source Sans / Serif / Code**, polices Adobe **libres**, sont déjà dans le catalogue.)
+**Cas Adobe (comment les obtenir) :** PAS via Adobe Fonts / Creative Cloud (abonnement, interdiction d'extraire/héberger, aucune licence perpétuelle). Acheter la **licence desktop perpétuelle** de la typo précise chez un **revendeur** — **Type Network** (boutique officielle Adobe Originals) ou **MyFonts/Monotype** — ou via **Adobe Font Folio** (collection perpétuelle). Avec licence desktop, les revendeurs autorisent même le « subset en PDF non-éditable pour usage commercial » → donc **rendre des images/tracés = OK**. (Et **Source Sans / Serif / Code**, polices Adobe **libres**, sont déjà dans le catalogue.)
 
-**Affiliation Adobe = OUI** (programme officiel, géré par Partnerize) : commission quand un joueur **s'abonne à Creative Cloud** (qui inclut Adobe Fonts) via ton lien — **~85 % du 1er mois**. → bouton « obtiens-la sur Adobe Fonts ». Avantage : en tant que partenaire qui leur amène des abonnés, **montrer leurs polices sert LEURS intérêts** (pub pour eux). Pour acheter UNE typo Adobe à vie → MyFonts/Monotype (aussi affilié). ⚠️ L'affiliation rapporte de l'argent mais ne « donne » pas automatiquement le droit d'afficher — ça reste l'usage « petite image, pas le fichier » ; demander des **visuels d'aperçu officiels** au programme.
+**Affiliation Adobe = OUI** (programme officiel, géré par Partnerize) : commission quand un joueur **s'abonne à Creative Cloud** (qui inclut Adobe Fonts) via ton lien — **~85 % du 1er mois**. → bouton « obtiens-la sur Adobe Fonts ». Avantage : en tant que partenaire qui leur amène des abonnés, **montrer leurs polices sert LEURS intérêts** (pub pour eux). Pour acheter UNE typo Adobe à vie → MyFonts/Monotype (aussi affilié). L'affiliation rapporte de l'argent mais ne « donne » pas automatiquement le droit d'afficher — ça reste l'usage « petite image, pas le fichier » ; demander des **visuels d'aperçu officiels** au programme.
 
-⚠️ Zone grise en **UE** (la France protège davantage les dessins de caractères) → **avis juridique avant lancement commercial**. (Ceci n'est pas un avis légal.)
+Zone grise en **UE** (la France protège davantage les dessins de caractères) → **avis juridique avant lancement commercial**. (Ceci n'est pas un avis légal.)
 
 ---
 
@@ -98,8 +98,8 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - `features/onboarding/components/OnboardingFlow.tsx`
 - [x] **Brancher familiarité → seed des boîtes Leitner dans /game** · `Fait` — câblé + migrations 004 & 005 appliquées ; skew confirmé (2026-06-29).
   _**Fait** : câblage bout-en-bout (5 fichiers, typecheck OK, repli sûr), **migration 004 appliquée en base** (colonne `onboarding_familiarity` + fonction `init_user_pool(uuid, text)` confirmées), et **testé en lecture seule**._
-  _⚠️ **Le test a révélé que le skew était inerte** : le set éligible (tier N · common · actif) ne comptait que **25 typos** < les 30 seedées → même pool pour tous._
-  _✅ **Correctif trouvé & écrit (`db/migrations/005_seed_pool_widen.sql`)** : élargir l'éligibilité à **tier N+D common** (~55 typos actives, déjà runtime-ready — aucune conversion). C'est conforme à la spec moteur (`training-engine-spec-v2-clean.md §3` : compléter avec tier D common). Prévisualisé en lecture seule : **débutant 16 easy/14 med · designer 3 easy/27 med** → vraie différence. Aucun changement de code (la fonction est juste remplacée)._
+  _**Le test a révélé que le skew était inerte** : le set éligible (tier N · common · actif) ne comptait que **25 typos** < les 30 seedées → même pool pour tous._
+  _**Correctif trouvé & écrit (`db/migrations/005_seed_pool_widen.sql`)** : élargir l'éligibilité à **tier N+D common** (~55 typos actives, déjà runtime-ready — aucune conversion). C'est conforme à la spec moteur (`training-engine-spec-v2-clean.md §3` : compléter avec tier D common). Prévisualisé en lecture seule : **débutant 16 easy/14 med · designer 3 easy/27 med** → vraie différence. Aucun changement de code (la fonction est juste remplacée)._
   - `db/migrations/005_seed_pool_widen.sql`, `features/game/components/GameScreen.tsx`, `app/api/training/session/start/route.ts`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`
   - [x] Lire la familiarité (localStorage) et l'envoyer au démarrage de session
   - [x] Câbler le training provider + repli sûr (code)
@@ -124,9 +124,12 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [ ] Officialiser le neutre chaud `#2a1a20` (vs noir pur)
   - [ ] Officialiser ou retirer le rose `#F39AB1`
   - [ ] Appliquer dans `globals.css` + mettre à jour le contrat UI
-- [x] **Nav de la page Compare alignée sur la DA validée de la home** · `Fait` (2026-06-29)
-  _La `compare-site-nav` était restée sur l'ancien skin « néon noir » (fond `#000`, glow radial + bordure dégradée, wordmark ivory, CTA clair) alors que la home (`lp-header`) est la **référence DA**. Portée sur le **pill crème** : fond `#f4f3ee`, encre `#141019`, glow/`::before`/`::after` retirés, wordmark **noir + figures** (lisibles sur crème), liens encre (actif = pill léger `rgba(20,16,25,.07)` au lieu du vert), CTA **foncé** `#141019`, ThemeSwitch déplacé du flottant **dans le pill**. Typecheck OK, vérifié à l'écran (parité home/compare)._
-  - `app/globals.css` (`.compare-site-nav*`), `app/compare/[slug]/page.tsx`
+- [x] **Nav partagée alignée sur la home (DA + outils) sur `/compare` et `/type`** · `Fait` (2026-06-29)
+  _La nav des pages typo était restée sur l'ancien skin « néon noir » (fond `#000`, glow, wordmark ivory, CTA clair) alors que la home (`lp-header`) est la **référence DA**. Refondue en **composant partagé `SiteNav`** (`components/ui/SiteNav.tsx`) → une seule source de vérité, appliquée via les templates `[slug]`, donc les **~2000 pages specimen `/type` l'héritent sans travail par-slug** (« calibré »)._
+  _**DA** = pill crème `lp-header` : fond `#f4f3ee`, encre `#141019`, glow/`::before`/`::after` retirés, wordmark **noir + figures**, CTA **foncé**, ThemeSwitch dans le pill. Classe CSS renommée `compare-site-nav` → `site-nav`._
+  _**Outils** = repris de la home verbatim : liens **How it works / Compare / Typefaces / Modes** (ancres `/#…`) + CTA **Start training** (`/onboarding`). (`/type` n'avait aucune nav avant, juste un ThemeSwitch flottant.)_
+  _Typecheck OK. Vérifié à l'écran : home (réf) intacte, `/compare`, `/type/inter` (fond noir) et `/type/helvetica-neue` rendent une nav identique. Piège rencontré : le dev server servait un CSS périmé après le renommage de classe (HMR CSS manqué) — re-déclenché par un édit trivial de `globals.css`._
+  - `components/ui/SiteNav.tsx`, `app/globals.css` (`.site-nav*`), `app/compare/[slug]/page.tsx`, `app/type/[slug]/page.tsx`
 
 ## E — Légal & marque · le chantier urgent avant mise en ligne
 
@@ -167,9 +170,9 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   _Aujourd'hui cookie anonyme auto-créé ; colonne `clerk_id` réservée mais zéro intégration._
 - [ ] **Faire grossir le pool servi : 1172 actives sur 2032 au catalogue** · `En cours` — vague non-display **faite + durable** (**81 → 1172**) ; restent 2 extras optionnels.
   _État vérifié 2026-06-29 : 2032 au catalogue (2027 Google) mais seulement **73 game-ready** (converties + ~50 approuvées) ; les **1959 catalog-only ne sont NI converties (0 asset runtime) NI revues**. « Avoir au catalogue » ≠ jouable : il faut **convertir (TTF→WOFF2)** + **curer** (catégorie/difficulté/ce qu'elle enseigne). Goulot = la **curation**, pas le code._
-  _⚠️ Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
+  _Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
   _**Décision 2026-06-29 : activer TOUT le non-display (~1103), par lots** (display = plus tard)._
-  _⚙️ **Conversion TTF→WOFF2 PROUVÉE le 2026-06-29 sur un lot test de 8 polices** (quicksand, jost, urbanist, lexend, sora, cormorant, vollkorn, newsreader) → 8/8 valides dans `public/fonts/<slug>/`. Piège réparé : le dossier d'assets a été renommé `02_TYPO_ASSETS`→`02_ASSETS_TYPO` (scripts d'origine cassés). Reste : activer (catalogue override + DB) + dérouler les lots._
+  _**Conversion TTF→WOFF2 PROUVÉE le 2026-06-29 sur un lot test de 8 polices** (quicksand, jost, urbanist, lexend, sora, cormorant, vollkorn, newsreader) → 8/8 valides dans `public/fonts/<slug>/`. Piège réparé : le dossier d'assets a été renommé `02_TYPO_ASSETS`→`02_ASSETS_TYPO` (scripts d'origine cassés). Reste : activer (catalogue override + DB) + dérouler les lots._
   - `scripts/`, `content/catalog/`
   - [x] Historique : pipeline d'ingestion + snapshot (2032) + 1ère vague de 50 en review
   - [x] Pipeline de conversion réparé + prouvé (lot test de 8, pool 73→81)
