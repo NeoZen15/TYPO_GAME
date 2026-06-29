@@ -65,14 +65,15 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - `features/onboarding/components/OnboardingFlow.tsx`, `features/onboarding/components/OnboardingWarmup.tsx`
 - [x] **Stockage du niveau de familiarité (localStorage)** · `Fait`
   - `features/onboarding/components/OnboardingFlow.tsx`
-- [ ] **Brancher familiarité → seed des boîtes Leitner dans /game** · `En cours` — code branché le 2026-06-29, reste 2 étapes.
-  _**Code fait** : `GameScreen` lit la familiarité (localStorage `jdt-onboarding-v1`) → l'envoie à `/api/training/session/start` → le provider seede le pool via `init_user_pool(uuid, familiarity)` et enregistre `users.onboarding_familiarity`. Repli sûr si la migration manque (seeding par défaut, pas de crash). Typecheck OK._
-  _⚠️ **Vérifié en base le 2026-06-29 : la migration 004 N'EST PAS appliquée** (ni la colonne `onboarding_familiarity`, ni la fonction `init_user_pool(uuid, text)`). Tant qu'elle ne l'est pas, le skew EASY/HARD ne s'active pas (repli). Application bloquée par le garde-fou « écriture base prod » → **à autoriser**._
+- [ ] **Brancher familiarité → seed des boîtes Leitner dans /game** · `En cours` — câblé + migré + testé le 2026-06-29 ; effet réel à débloquer.
+  _**Fait** : câblage bout-en-bout (5 fichiers, typecheck OK, repli sûr), **migration 004 appliquée en base** (colonne `onboarding_familiarity` + fonction `init_user_pool(uuid, text)` confirmées), et **testé en lecture seule**._
+  _⚠️ **Découverte du test : le skew est aujourd'hui INERTE.** Le set éligible au seed (tier N · common · actif) ne contient que **25 typos** (`difficulty_base` = easy/medium uniquement), or la fonction en seede 30 → tous les niveaux reçoivent les **mêmes 25 typos** (même pool, même 1ère question). Le skew débutant/designer ne deviendra réel que quand le pool éligible dépassera 30 → **dépend de la section F (grossir le pool servi)**, et éventuellement d'un renforcement de `init_user_pool` (sous-ensembles vraiment distincts + vraie échelle de difficulté)._
   - `features/game/components/GameScreen.tsx`, `app/api/training/session/start/route.ts`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`
   - [x] Lire la familiarité (localStorage) et l'envoyer au démarrage de session
   - [x] Câbler le training provider + repli sûr (code)
-  - [ ] **Appliquer la migration 004 en base** (colonne + fonction `init_user_pool(uuid, text)`) — à autoriser
-  - [ ] Tester les 4 niveaux de familiarité (de bout en bout)
+  - [x] Appliquer la migration 004 en base (colonne + fonction `init_user_pool(uuid, text)`)
+  - [x] Tester les 4 niveaux (lecture seule) — révèle l'inertie ci-dessus
+  - [ ] **Rendre le skew réellement effectif** (bloqué : 25 typos éligibles < 30 ; voir section F)
 
 ## D — Pages typo (compare + spécimen)
 
@@ -127,7 +128,7 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 - [ ] **Auth réelle / comptes** · `À faire`
   _Aujourd'hui cookie anonyme auto-créé ; colonne `clerk_id` réservée mais zéro intégration._
 - [ ] **Faire grossir le pool servi : 73 actives sur 2032 au catalogue** · `En cours`
-  _Le pipeline marche ; le goulot = conversion + review éditoriale, pas le code._
+  _Le pipeline marche ; le goulot = conversion + review éditoriale, pas le code. Grossir le pool éligible (tier N · common) débloque aussi le skew familiarité (C3, aujourd'hui inerte faute de typos)._
   - `scripts/`, `content/catalog/`
   - [x] Pipeline d'ingestion (seed → build → import)
   - [x] Snapshot Google Fonts absorbé — 2032 au catalogue
