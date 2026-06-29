@@ -35,6 +35,22 @@ const getPreferredLocale = () =>
     ? "en"
     : "fr";
 
+// Mirror of features/onboarding/components/OnboardingFlow (ONBOARDING_STORAGE_KEY).
+// The familiarity answer seeds the initial Leitner boxes on the first session.
+const ONBOARDING_STORAGE_KEY = "jdt-onboarding-v1";
+
+const getOnboardingFamiliarity = (): string | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { familiarity?: string };
+    return parsed.familiarity ?? null;
+  } catch {
+    return null;
+  }
+};
+
 export default function GameScreen() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [question, setQuestion] = useState<TrainingQuestion | null>(null);
@@ -111,7 +127,10 @@ export default function GameScreen() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ locale: getPreferredLocale() }),
+        body: JSON.stringify({
+          locale: getPreferredLocale(),
+          familiarity: getOnboardingFamiliarity(),
+        }),
       });
 
       if (!response.ok) {

@@ -1,19 +1,24 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { normalizeFamiliarity } from "@/lib/game/training/contracts";
 import { startTrainingSession } from "@/lib/game/training/provider";
 
 const GUEST_COOKIE_NAME = "jdt_guest_user_id";
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json().catch(() => ({}))) as { locale?: "fr" | "en" };
+    const body = (await request.json().catch(() => ({}))) as {
+      locale?: "fr" | "en";
+      familiarity?: string;
+    };
     const cookieStore = await cookies();
     const existingGuestUserId = cookieStore.get(GUEST_COOKIE_NAME)?.value ?? null;
 
     const result = await startTrainingSession({
       locale: body.locale === "en" ? "en" : "fr",
       guestUserId: existingGuestUserId,
+      familiarity: normalizeFamiliarity(body.familiarity),
     });
 
     const response = NextResponse.json(result.payload);

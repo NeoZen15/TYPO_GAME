@@ -18,7 +18,7 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **10 faits · 4 en cours · 15 à faire · 3 bloqueurs · 4 parkés / à décider** (36 sujets).
+État par sujet : **10 faits · 4 en cours · 17 à faire · 3 bloqueurs · 4 parkés / à décider** (38 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -40,6 +40,13 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [ ] Remplacer les 0 en dur dans l'EyeProfile
 - [ ] **Économie « jetons » (coins)** · `À faire` — `coins:0` en dur, pas encore d'économie de jeu.
   - `lib/profile/mock-profile.ts`
+- [ ] **Page Règles : expliquer les règles du jeu au joueur** · `À faire`
+  _Des règles par mode existent déjà (`/play/*/rules`) — à unifier ou faire une page Règles claire._
+- [ ] **Page Profil : expliquer comment on monte** · `À faire`
+  _Présenter les groupes + la méthode d'apprentissage, et comment on progresse._
+  - [ ] Expliquer les groupes (axes / familles de typos)
+  - [ ] Expliquer la méthode (boîtes Leitner / répétition espacée)
+  - [ ] Montrer comment on monte (maîtrise, paliers qui s'allument)
 
 ## B — Badges
 
@@ -56,14 +63,16 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 - [x] **Flow en 4 étapes** (UI jouable, mini-test inclus) · `Fait`
   - `features/onboarding/components/OnboardingFlow.tsx`, `features/onboarding/components/OnboardingWarmup.tsx`
-- [x] **Stockage du niveau de familiarité** (localStorage + DB) · `Fait` — migration 004 déployée, `init_user_pool()` prêt.
-  - `db/migrations/004_user_onboarding.sql`
-- [ ] **Brancher familiarité → seed des boîtes Leitner dans /game** · `En cours` — gain rapide, TODO déjà identifié dans le code.
+- [x] **Stockage du niveau de familiarité (localStorage)** · `Fait`
   - `features/onboarding/components/OnboardingFlow.tsx`
-  - [ ] Lire `p_familiarity` depuis la DB au démarrage de session
-  - [ ] Mapper familiarité → boîtes Leitner initiales (EASY / HARD)
-  - [ ] Câbler dans le training provider
-  - [ ] Tester les 4 niveaux de familiarité
+- [ ] **Brancher familiarité → seed des boîtes Leitner dans /game** · `En cours` — code branché le 2026-06-29, reste 2 étapes.
+  _**Code fait** : `GameScreen` lit la familiarité (localStorage `jdt-onboarding-v1`) → l'envoie à `/api/training/session/start` → le provider seede le pool via `init_user_pool(uuid, familiarity)` et enregistre `users.onboarding_familiarity`. Repli sûr si la migration manque (seeding par défaut, pas de crash). Typecheck OK._
+  _⚠️ **Vérifié en base le 2026-06-29 : la migration 004 N'EST PAS appliquée** (ni la colonne `onboarding_familiarity`, ni la fonction `init_user_pool(uuid, text)`). Tant qu'elle ne l'est pas, le skew EASY/HARD ne s'active pas (repli). Application bloquée par le garde-fou « écriture base prod » → **à autoriser**._
+  - `features/game/components/GameScreen.tsx`, `app/api/training/session/start/route.ts`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`
+  - [x] Lire la familiarité (localStorage) et l'envoyer au démarrage de session
+  - [x] Câbler le training provider + repli sûr (code)
+  - [ ] **Appliquer la migration 004 en base** (colonne + fonction `init_user_pool(uuid, text)`) — à autoriser
+  - [ ] Tester les 4 niveaux de familiarité (de bout en bout)
 
 ## D — Pages typo (compare + spécimen)
 

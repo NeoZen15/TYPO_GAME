@@ -9,6 +9,7 @@ import {
   TRAINING_TOTAL_ROUNDS,
 } from "@/lib/game/training/catalog";
 import {
+  type Familiarity,
   type Locale,
   type TrainingAnswerResponse,
   type TrainingQuestion,
@@ -198,7 +199,42 @@ const getGuestUser = async (locale: Locale, existingUserId?: string | null) => {
   return { user: insertedRows[0], created: true };
 };
 
-const ensureUserPool = async (userId: string) => {
+// Cold-start seeding. When familiarity is known we use the familiarity-aware
+// overload (migration 004) so novices skew EASY and confident/designers skew
+// HARD. If that overload is not deployed yet we fall back to base seeding so
+// training never breaks.
+const seedUserPool = async (userId: string, familiarity: Familiarity | null) => {
+  if (familiarity) {
+    try {
+      await sql`SELECT init_user_pool(${userId}::uuid, ${familiarity})`;
+      return;
+    } catch (error) {
+      console.warn(
+        "init_user_pool(familiarity) unavailable; using default seeding.",
+        error
+      );
+    }
+  }
+
+  await sql`SELECT init_user_pool(${userId}::uuid)`;
+};
+
+// Record the onboarding signal once (analytics + future re-seeding). Guarded so
+// a missing column (migration 004 not applied) does not break session start.
+const recordOnboardingFamiliarity = async (userId: string, familiarity: Familiarity) => {
+  try {
+    await sql`
+      UPDATE users
+      SET onboarding_familiarity = ${familiarity}
+      WHERE user_id = ${userId}::uuid
+        AND onboarding_familiarity IS NULL
+    `;
+  } catch (error) {
+    console.warn("Could not persist onboarding_familiarity.", error);
+  }
+};
+
+const ensureUserPool = async (userId: string, familiarity: Familiarity | null) => {
   const countRows = await queryRows<CountRow>(sql`
     SELECT COUNT(*)::text AS count
     FROM user_typeface_state
@@ -210,7 +246,7 @@ const ensureUserPool = async (userId: string) => {
     return;
   }
 
-  await sql`SELECT init_user_pool(${userId}::uuid)`;
+  await seedUserPool(userId, familiarity);
 
   const refreshedCountRows = await queryRows<CountRow>(sql`
     SELECT COUNT(*)::text AS count
@@ -283,12 +319,17 @@ const insertSessionStartEvent = async (
 export const startTrainingSession = async ({
   locale = "fr",
   guestUserId,
+  familiarity = null,
 }: {
   locale?: Locale;
   guestUserId?: string | null;
+  familiarity?: Familiarity | null;
 }): Promise<{ payload: TrainingStartResponse; guestUserId: string; guestWasCreated: boolean }> => {
   const { user, created } = await getGuestUser(locale, guestUserId);
-  await ensureUserPool(user.user_id);
+  await ensureUserPool(user.user_id, familiarity);
+  if (familiarity) {
+    await recordOnboardingFamiliarity(user.user_id, familiarity);
+  }
 
   const seed = `${Date.now()}${Math.floor(Math.random() * 1000)
     .toString()
