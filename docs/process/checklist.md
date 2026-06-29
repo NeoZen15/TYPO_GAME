@@ -145,7 +145,7 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [x] **Conversion TTF→WOFF2 validée** (lot test de 8, pipeline réparé)
   - [x] **Lot test ACTIVÉ** : 8 polices en base (pool 73→**81**) + WOFF2 commités (`e56c45d`)
   - [ ] _Durabilité : synchroniser le catalogue source (override) avec ces activations — sinon un futur ré-import brut les remettrait inactives. À intégrer à la vague complète._
-  - [ ] Dérouler les lots jusqu'à tout le non-display (~1103)
+  - [ ] **Vague complète EN COURS** : worker de conversion lancé **en arrière-plan** (2026-06-29) sur les **1102 non-display** restantes (résumable, journal + manifeste). À suivre : activation base par lots + commit des WOFF2 + sync override.
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
 
