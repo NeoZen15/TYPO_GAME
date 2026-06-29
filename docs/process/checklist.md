@@ -144,6 +144,7 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [x] **Vague non-display convertie + sous-ensemblée Latin** : 1095 converties → **1091 prêtes**, **35 Mo** au lieu de 356 (axes de graisse préservés, 0 erreur)
   - [x] **Activées en base + WOFF2 commités** (`0fd7b47`) → **pool 81 → 1172 typos jouables**
   - [x] **Durabilité faite** : overrides + rebuild synchronisés avec la base (1172 actives / 1172 assets, commit `f32a083`) → un ré-import ne reviendra plus en arrière.
+  - [ ] ⚠️ **Qualité du classement à relire (curation)** : 1122/1172 en `qa_status=review` (auto, non relu). Familles sans/serif/mono ~ok mais **erreurs réelles** (ex. `martianmono` tagué `sans` au lieu de `mono`) ; sous-catégories grossières (tout en « neo_grotesk »), difficulté souvent « medium » par défaut. → impacte distracteurs + difficulté. Pass de curation à prévoir : **catégorie fiable via `METADATA.pb` Google** + finition (LLM/agent et/ou réglage par télémétrie, cf. philosophie MVP des docs).
   - [ ] _Plus tard : sous-ensembler aussi les 81 anciennes polices (encore charset complet) ; vague « display » à part._
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
