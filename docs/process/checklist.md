@@ -18,9 +18,34 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **13 faits · 2 en cours · 17 à faire · 2 bloqueurs · 4 parkés / à décider** (38 sujets).
+État par sujet : **13 faits · 2 en cours · 17 à faire · 2 bloqueurs · 5 parkés / à décider** (39 sujets).
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## 🗓️ Journal — 2026-06-29 (grosse session)
+
+- **Checklist** interactive créée (cet outil) + section transversale (légal/déploiement/SEO…).
+- **Familiarité → seed Leitner** : câblé bout-en-bout, **migrations 004 & 005 appliquées** en base, testé. Seed élargi tier N+D → skew débutant/designer réel.
+- **Audits correctifs** (la réalité ≠ ce qu'on croyait) : badges (B2) & streak/objectif (A4) étaient **déjà faits** ; **mode Expert = coquille** (placeholder, aucun jeu) ; les **23 licences « unknown » = toutes OFL** (libre, vérifié via le snapshot Google).
+- **F5 — vague typos : 81 → 1172 jouables.** Tout le non-display converti + **sous-ensemblé Latin** (35 Mo au lieu de 356), activé en base, **durable** (catalogue source synchronisé), **familles corrigées** via Google `METADATA.pb`.
+- **Recherche juridique** sur les typos commerciales/Adobe → voir ⭐ ci-dessous.
+- ~20 commits, **tous locaux** (le `push` GitHub attend tes identifiants).
+
+## ⭐ NOTE HYPER IMPORTANTE — montrer des typos commerciales / Adobe (légal + business)
+
+**Le fichier de police = logiciel protégé.** Le **télécharger/posséder sans licence est illégal**, même sans le « servir » (procès réels, ex. Font Bureau/P22 vs NBCUniversal = 2 M$). → **On ne peut PAS** mettre des polices Adobe/payantes dans nos dossiers. (Libres OFL/Apache = OK, c'est ce qu'on a.)
+
+**Mais une licence _desktop_ autorise à rendre des IMAGES** (PNG/SVG) et à les utiliser commercialement — **sauf** montrer « la totalité des caractères ». → **mot-spécimen = OK** ; alphabet complet = interdit. Le jeu de reconnaissance (un mot → devine) rentre dans le permis ; la page `/type` (alphabet) non, pour les commerciales.
+
+**→ Stratégie « mode grandes typos commerciales » (légal + monétisation) :**
+1. liste curée d'iconiques (Helvetica, Futura, Gotham, Avenir…) ;
+2. copie **légitime** : acheter une licence desktop OU assets de preview via affiliation — **jamais** de fichier non licencié ;
+3. **rendre des images de MOTS** (pas l'alphabet) → stocker les **images**, pas les polices ;
+4. afficher l'image + **lien d'affiliation** → couverture juridique (les fonderies veulent l'expo) **+ revenu** : **Monotype/MyFonts ~10 %**, **Fontspring 20 %**.
+
+⚠️ Zone grise en **UE** (la France protège davantage les dessins de caractères) → **avis juridique avant lancement commercial**. (Ceci n'est pas un avis légal.)
 
 ---
 
