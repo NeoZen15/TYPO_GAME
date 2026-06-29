@@ -169,8 +169,9 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [ ] Choisir le modèle (affiliation / Pro / B2B)
   - [ ] Intégrer Stripe (checkout)
   - [ ] Abonnement Pro + achat de jetons
-- [ ] **Mode Expert jouable de bout en bout** · `À faire`
-  _Rules + answer keys présents, mais pas d'écran de jeu Expert dédié trouvé (à confirmer)._
+- [ ] **Mode Expert jouable de bout en bout** · `À faire` — audité 2026-06-29 : **pas commencé** (au-delà des données).
+  _Existe : les *answer keys* (`expert_answer_keys` + JSON), le flag `expert_enabled`, la page de règles `/play/expert/rules`._
+  _Manque **tout le jeu** : `app/play/expert/page.tsx` n'est qu'un `ModePlaceholderPage` (« will be implemented after Competition mode ») ; **aucun** `lib/game/expert/` provider, **aucune** route `/api/expert/*`, **aucun** `ExpertScreen`. Chantier = créer le flux « nommer la typo » (saisie libre, sans QCM), sur le modèle de Competition (`lib/game/competition/` + `CompetitionScreen.tsx`)._
 - [ ] **Pages d'erreur** (404 + écran d'erreur) · `À faire`
 - [ ] **Monitoring + analytics produit** · `À faire`
   _Pour régler les constantes avec la télémétrie (Sentry + analytics produit)._
