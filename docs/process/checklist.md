@@ -133,7 +133,7 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [ ] Documenter la décision (la spec maths fait foi)
 - [ ] **Auth réelle / comptes** · `À faire`
   _Aujourd'hui cookie anonyme auto-créé ; colonne `clerk_id` réservée mais zéro intégration._
-- [ ] **Faire grossir le pool servi : 1172 actives sur 2032 au catalogue** · `En cours` — vague non-display faite (**81 → 1172**) ; reste la durabilité (sync catalogue source).
+- [ ] **Faire grossir le pool servi : 1172 actives sur 2032 au catalogue** · `En cours` — vague non-display **faite + durable** (**81 → 1172**) ; restent 2 extras optionnels.
   _État vérifié 2026-06-29 : 2032 au catalogue (2027 Google) mais seulement **73 game-ready** (converties + ~50 approuvées) ; les **1959 catalog-only ne sont NI converties (0 asset runtime) NI revues**. « Avoir au catalogue » ≠ jouable : il faut **convertir (TTF→WOFF2)** + **curer** (catégorie/difficulté/ce qu'elle enseigne). Goulot = la **curation**, pas le code._
   _⚠️ Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
   _**Décision 2026-06-29 : activer TOUT le non-display (~1103), par lots** (display = plus tard)._
@@ -143,7 +143,7 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [x] Pipeline de conversion réparé + prouvé (lot test de 8, pool 73→81)
   - [x] **Vague non-display convertie + sous-ensemblée Latin** : 1095 converties → **1091 prêtes**, **35 Mo** au lieu de 356 (axes de graisse préservés, 0 erreur)
   - [x] **Activées en base + WOFF2 commités** (`0fd7b47`) → **pool 81 → 1172 typos jouables**
-  - [ ] **Durabilité — DERNIÈRE ÉTAPE** : synchroniser le catalogue source (overrides + rebuild) avec ces 1091 activations, sinon un futur ré-import brut du catalogue les remettrait inactives.
+  - [x] **Durabilité faite** : overrides + rebuild synchronisés avec la base (1172 actives / 1172 assets, commit `f32a083`) → un ré-import ne reviendra plus en arrière.
   - [ ] _Plus tard : sous-ensembler aussi les 81 anciennes polices (encore charset complet) ; vague « display » à part._
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
