@@ -143,7 +143,8 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - [x] Snapshot Google Fonts absorbé — 2032 au catalogue
   - [x] Première vague de 50 typos passée en review
   - [x] **Conversion TTF→WOFF2 validée** (lot test de 8, pipeline réparé)
-  - [ ] Activer le lot test (catalogue override + DB) + vérifier le rendu
+  - [x] **Lot test ACTIVÉ** : 8 polices en base (pool 73→**81**) + WOFF2 commités (`e56c45d`)
+  - [ ] _Durabilité : synchroniser le catalogue source (override) avec ces activations — sinon un futur ré-import brut les remettrait inactives. À intégrer à la vague complète._
   - [ ] Dérouler les lots jusqu'à tout le non-display (~1103)
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
