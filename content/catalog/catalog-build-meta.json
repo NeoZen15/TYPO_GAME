@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-06-29T15:22:29.787595+00:00",
+  "built_at": "2026-06-29T16:08:45.007539+00:00",
   "status": "built",
   "sources": {
     "catalog_dir": "/Users/launaymarion/Documents/JEUX_DE_TYPO/09_DEV/08_jeux-de-typo-v2/content/catalog",
@@ -26,7 +26,7 @@
   },
   "override_stats": {
     "typefaces_core": {
-      "patched": 10,
+      "patched": 11,
       "added": 2004,
       "deleted": 0
     },
