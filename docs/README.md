@@ -45,6 +45,7 @@ Pour comprendre le projet, commencer par [`overview/site-system-overview.md`](ov
 - [`profile-tabs-spec.md`](ui/profile-tabs-spec.md) — spec des onglets de la page profil.
 
 ## process/ — workflow, qualité, plans
+- [`checklist.md`](process/checklist.md) — **« Où on en est »** : avancement produit par sujet, confronté à l'état réel du code (source de vérité).
 - [`safety-workflow.md`](process/safety-workflow.md) — workflow de sauvegarde / checkpoints.
 - [`worktree-stabilization.md`](process/worktree-stabilization.md) — note de stabilisation du worktree.
 - [`test-plan.md`](process/test-plan.md) — plan de test.
