@@ -65,15 +65,17 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
   - `features/onboarding/components/OnboardingFlow.tsx`, `features/onboarding/components/OnboardingWarmup.tsx`
 - [x] **Stockage du niveau de familiarité (localStorage)** · `Fait`
   - `features/onboarding/components/OnboardingFlow.tsx`
-- [ ] **Brancher familiarité → seed des boîtes Leitner dans /game** · `En cours` — câblé + migré + testé le 2026-06-29 ; effet réel à débloquer.
+- [ ] **Brancher familiarité → seed des boîtes Leitner dans /game** · `En cours` — câblé + migré + testé ; correctif d'effet prêt (migration 005), à appliquer.
   _**Fait** : câblage bout-en-bout (5 fichiers, typecheck OK, repli sûr), **migration 004 appliquée en base** (colonne `onboarding_familiarity` + fonction `init_user_pool(uuid, text)` confirmées), et **testé en lecture seule**._
-  _⚠️ **Découverte du test : le skew est aujourd'hui INERTE.** Le set éligible au seed (tier N · common · actif) ne contient que **25 typos** (`difficulty_base` = easy/medium uniquement), or la fonction en seede 30 → tous les niveaux reçoivent les **mêmes 25 typos** (même pool, même 1ère question). Le skew débutant/designer ne deviendra réel que quand le pool éligible dépassera 30 → **dépend de la section F (grossir le pool servi)**, et éventuellement d'un renforcement de `init_user_pool` (sous-ensembles vraiment distincts + vraie échelle de difficulté)._
-  - `features/game/components/GameScreen.tsx`, `app/api/training/session/start/route.ts`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`
+  _⚠️ **Le test a révélé que le skew était inerte** : le set éligible (tier N · common · actif) ne comptait que **25 typos** < les 30 seedées → même pool pour tous._
+  _✅ **Correctif trouvé & écrit (`db/migrations/005_seed_pool_widen.sql`)** : élargir l'éligibilité à **tier N+D common** (~55 typos actives, déjà runtime-ready — aucune conversion). C'est conforme à la spec moteur (`training-engine-spec-v2-clean.md §3` : compléter avec tier D common). Prévisualisé en lecture seule : **débutant 16 easy/14 med · designer 3 easy/27 med** → vraie différence. Aucun changement de code (la fonction est juste remplacée)._
+  - `db/migrations/005_seed_pool_widen.sql`, `features/game/components/GameScreen.tsx`, `app/api/training/session/start/route.ts`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`
   - [x] Lire la familiarité (localStorage) et l'envoyer au démarrage de session
   - [x] Câbler le training provider + repli sûr (code)
   - [x] Appliquer la migration 004 en base (colonne + fonction `init_user_pool(uuid, text)`)
-  - [x] Tester les 4 niveaux (lecture seule) — révèle l'inertie ci-dessus
-  - [ ] **Rendre le skew réellement effectif** (bloqué : 25 typos éligibles < 30 ; voir section F)
+  - [x] Tester les 4 niveaux (lecture seule) — révèle l'inertie
+  - [x] Diagnostic + correctif écrit : migration 005 (seed élargi N+D common, conforme spec, prévisualisé OK)
+  - [ ] **Appliquer la migration 005 en base** puis **re-tester** (confirmer le skew réel)
 
 ## D — Pages typo (compare + spécimen)
 
