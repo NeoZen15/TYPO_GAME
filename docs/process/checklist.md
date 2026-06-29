@@ -18,7 +18,9 @@
 L'essentiel du front (profil, badges, onboarding, pages typo) et le back sont **déjà là**.
 Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo du logo PP Frama + licences des typos) avant toute mise en ligne.
 
-État par sujet : **10 faits · 4 en cours · 8 à faire · 2 bloqueurs · 2 parkés.**
+État par sujet : **10 faits · 4 en cours · 15 à faire · 3 bloqueurs · 4 parkés / à décider** (36 sujets).
+
+> Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
 ---
 
@@ -127,7 +129,41 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
 
-## G — Parkés / à décider
+## G — Transversal / mise en ligne
+
+> Sujets transversaux (pas des « pages ») souvent oubliés. Confirmés absents du code au 2026-06-29.
+
+- [ ] **Légal RGPD : confidentialité + cookies + mentions légales / CGU** · `Bloqueur`
+  _Données joueurs stockées en UE — obligatoire au même titre que les licences de typo._
+  - [ ] Politique de confidentialité (RGPD)
+  - [ ] Bandeau / consentement cookies
+  - [ ] Mentions légales + CGU (+ CGV si paiement)
+- [ ] **Déploiement prod** (domaine, env, build qui passe) · `À faire`
+  _Le build prod échouait sur le chargement des polices (`next/font` Google Fonts)._
+  - [ ] Faire passer le build prod (fonts via `next/font` ou assets locaux)
+  - [ ] Variables d'env en prod (`DATABASE_URL`…)
+  - [ ] Domaine + hébergement
+  - [ ] Vérifier le site en ligne de bout en bout
+- [ ] **SEO** (metadata, sitemap, robots, OpenGraph) · `À faire`
+  _Les pages specimen sont un aimant à trafic Google — levier d'acquisition gratuit inexploité._
+  - [ ] `generateMetadata` sur les pages (surtout `/type` et `/compare`)
+  - [ ] `sitemap.xml` + `robots.txt`
+  - [ ] Images OpenGraph (partage)
+- [ ] **Monétisation : paiement / abonnement Pro / jetons** · `À faire`
+  _Business model sur le papier, aucune caisse intégrée._
+  - [ ] Choisir le modèle (affiliation / Pro / B2B)
+  - [ ] Intégrer Stripe (checkout)
+  - [ ] Abonnement Pro + achat de jetons
+- [ ] **Mode Expert jouable de bout en bout** · `À faire`
+  _Rules + answer keys présents, mais pas d'écran de jeu Expert dédié trouvé (à confirmer)._
+- [ ] **Pages d'erreur** (404 + écran d'erreur) · `À faire`
+- [ ] **Monitoring + analytics produit** · `À faire`
+  _Pour régler les constantes avec la télémétrie (Sentry + analytics produit)._
+- [ ] **Accessibilité** (contraste, clavier, lecteurs d'écran) · `À faire`
+- [ ] **Emails / rappels de rétention** (style Duolingo) · `Plus tard`
+- [ ] **Langue FR / EN (i18n)** — à trancher · `À décider` — UI en anglais aujourd'hui.
+
+## H — Parkés / à décider
 
 - [ ] **Page Prof / espace enseignant** · `À décider`
   _N'existe pas — hors scope MVP actuel. À décider (et ça suppose l'auth réelle, section F)._
