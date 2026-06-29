@@ -134,7 +134,8 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 - [ ] **Auth réelle / comptes** · `À faire`
   _Aujourd'hui cookie anonyme auto-créé ; colonne `clerk_id` réservée mais zéro intégration._
 - [ ] **Faire grossir le pool servi : 73 actives sur 2032 au catalogue** · `En cours`
-  _Le pipeline marche ; le goulot = conversion + review éditoriale, pas le code. Grossir le pool éligible (tier N · common) débloque aussi le skew familiarité (C3, aujourd'hui inerte faute de typos)._
+  _État vérifié 2026-06-29 : 2032 au catalogue (2027 Google) mais seulement **73 game-ready** (converties + ~50 approuvées) ; les **1959 catalog-only ne sont NI converties (0 asset runtime) NI revues**. « Avoir au catalogue » ≠ jouable : il faut **convertir (TTF→WOFF2)** + **curer** (catégorie/difficulté/ce qu'elle enseigne). Goulot = la **curation**, pas le code._
+  _⚠️ Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
   - `scripts/`, `content/catalog/`
   - [x] Pipeline d'ingestion (seed → build → import)
   - [x] Snapshot Google Fonts absorbé — 2032 au catalogue
