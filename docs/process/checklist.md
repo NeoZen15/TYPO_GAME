@@ -136,13 +136,15 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 - [ ] **Faire grossir le pool servi : 73 actives sur 2032 au catalogue** · `En cours`
   _État vérifié 2026-06-29 : 2032 au catalogue (2027 Google) mais seulement **73 game-ready** (converties + ~50 approuvées) ; les **1959 catalog-only ne sont NI converties (0 asset runtime) NI revues**. « Avoir au catalogue » ≠ jouable : il faut **convertir (TTF→WOFF2)** + **curer** (catégorie/difficulté/ce qu'elle enseigne). Goulot = la **curation**, pas le code._
   _⚠️ Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
+  _**Décision 2026-06-29 : activer TOUT le non-display (~1103), par lots** (display = plus tard)._
+  _⚙️ **Conversion TTF→WOFF2 PROUVÉE le 2026-06-29 sur un lot test de 8 polices** (quicksand, jost, urbanist, lexend, sora, cormorant, vollkorn, newsreader) → 8/8 valides dans `public/fonts/<slug>/`. Piège réparé : le dossier d'assets a été renommé `02_TYPO_ASSETS`→`02_ASSETS_TYPO` (scripts d'origine cassés). Reste : activer (catalogue override + DB) + dérouler les lots._
   - `scripts/`, `content/catalog/`
   - [x] Pipeline d'ingestion (seed → build → import)
   - [x] Snapshot Google Fonts absorbé — 2032 au catalogue
   - [x] Première vague de 50 typos passée en review
-  - [ ] Convertir TTF → WOFF2 par vagues
-  - [ ] Review éditoriale des lots suivants
-  - [ ] Importer + vérifier au runtime
+  - [x] **Conversion TTF→WOFF2 validée** (lot test de 8, pipeline réparé)
+  - [ ] Activer le lot test (catalogue override + DB) + vérifier le rendu
+  - [ ] Dérouler les lots jusqu'à tout le non-display (~1103)
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
 
