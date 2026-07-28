@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "purpose": "Single source of truth for the facts three scripts have to agree on about the licences of the self-hosted fonts: the file name standardised per licence, and the directories of public/fonts that sit outside the copy perimeter.",
+    "consumers": [
+      "scripts/sync-font-licenses.mjs, which copies each licence text out of the google/fonts snapshot into public/fonts/<slug>/",
+      "scripts/quality/check-font-licenses.mjs, step 11 of npm run quality, which verifies the result from the files alone",
+      "scripts/mirror_fonts.py, which calls the sync at the end of a conversion and then asserts that every slug it just mirrored carries a licence file"
+    ],
+    "notes": [
+      "The three scripts each carried their own copy of these values, so a fourth licence or a fourth exempt directory had to be remembered in three places, in two languages. JSON is the format because Node and Python both read it without a dependency.",
+      "The legal calls themselves are deliberately NOT here, because each of them has exactly one home and must keep it. The families whose snapshot directory holds no licence file at all (mplusrounded1c, the six jsmath faces) stay in MISSING_LICENSE_FILE_SOURCES of scripts/sync-font-licenses.mjs, next to the reason each source was chosen. The six families whose sources disagree between OFL and Apache (roboto_mono, arimo, khmer, khyay, myanmarsanspro, robotocondensed) are settled by one uniform rule, ship the file Google ships with the family, which is what indexing the snapshot by licence directory already does, and the reasoning is written in the legal section of docs/process/checklist.md. The five Ubuntu faces still stored as license_type unknown are read from UFL_LEGACY_SLUGS in lib/game/license-guard.ts, so the runtime guard stays the only list of them.",
+      "Editing a value here changes the behaviour of all three consumers at once, which is the point. Adding a licence means adding an entry with its snapshotDirectory, its fileName and its verify block."
+    ]
+  },
+  "licenses": [
+    {
+      "id": "ofl",
+      "fileName": "OFL.txt",
+      "snapshotDirectory": "ofl",
+      "verify": {
+        "markers": ["OPEN FONT LICENSE", "OTHER DEALINGS IN THE FONT SOFTWARE"],
+        "minBytes": 3000,
+        "note": "Deliberately not \"VERSION 1.1\": two served families (jomolhari, uchen) are licensed under OFL 1.0, and their text is just as valid."
+      }
+    },
+    {
+      "id": "apache2",
+      "fileName": "LICENSE.txt",
+      "snapshotDirectory": "apache",
+      "verify": {
+        "markers": ["APACHE LICENSE", "END OF TERMS AND CONDITIONS"],
+        "minBytes": 9000
+      }
+    },
+    {
+      "id": "ufl",
+      "fileName": "UFL.txt",
+      "snapshotDirectory": "ufl",
+      "verify": {
+        "markers": ["UBUNTU FONT LICENCE", "OTHER DEALINGS IN THE FONT SOFTWARE"],
+        "minBytes": 3000
+      }
+    },
+    {
+      "id": "cc-by-sa",
+      "snapshotDirectory": "cc-by-sa",
+      "fileName": "LICENSE.txt",
+      "note": "No family we serve is cc-by-sa today (the perimeter is 1154 ofl, 18 apache2, 5 ufl), so the check has no validator for this text and none is invented here. The failure mode is loud, not silent: a cc-by-sa text written as LICENSE.txt would be read against the Apache markers and fail the gate. Give this entry a verify block on the day a cc-by-sa family is actually served."
+    }
+  ],
+  "snapshotSourceFileNames": ["OFL.txt", "UFL.txt", "LICENSE.txt", "LICENCE.txt"],
+  "snapshotSourceFileNamesNote": "File names to look for inside a snapshot family directory, in order. This is the source spelling, not the name we write: the snapshot ships the Ubuntu licence as UFL.txt for three families and as LICENCE.txt for two, and one stable name per licence on our side is what lets the check stay a single rule.",
+  "outOfScopeDirectories": [
+    {
+      "name": "staged",
+      "syncedFromSnapshot": false,
+      "checkedAsFamilyDirectory": false,
+      "requiresGitignoreEntry": "/public/fonts/staged/",
+      "reason": "Transient font staging workspace. It is ignored by git, so it does not exist in a fresh clone and never reaches production. The exemption is conditional, and the check enforces the condition: if the ignore rule disappears from .gitignore, the directory ships and comes back in scope like any other."
+    },
+    {
+      "name": "brand",
+      "syncedFromSnapshot": false,
+      "checkedAsFamilyDirectory": false,
+      "gateNote": "public/fonts/brand hosts PP Frama (Pangram Pangram, commercial EULA), which has no redistributable licence text: the webfont licence is still the open blocker in the legal section of docs/process/checklist.md",
+      "reason": "PP Frama, drawn and sold by Pangram Pangram. The font files declare \"Pangram Pangram EULA\" in their name table and point at pangrampangram.com/pages/eula, a commercial end user agreement that is not distributed with the files, so there is no text to copy here. Serving it to visitors without a webfont licence is the open legal blocker tracked in the legal section of docs/process/checklist.md. Reported as a note on every run."
+    },
+    {
+      "name": "ui",
+      "syncedFromSnapshot": false,
+      "checkedAsFamilyDirectory": true,
+      "reason": "Inter, taken from rsms/inter and not from the Google snapshot, so the sync has no source to copy from and leaves it alone. It carries its own OFL.txt, so it stays in scope for the check exactly like a family directory, and losing that file has to fail the gate."
+    }
+  ]
+}

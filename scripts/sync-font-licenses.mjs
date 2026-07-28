@@ -31,48 +31,81 @@ import path from "node:path";
 const PROJECT_ROOT = process.cwd();
 const DEFAULT_FONTS_ROOT = path.join(PROJECT_ROOT, "public/fonts");
 const TYPEFACES_CATALOG = "content/catalog/typefaces-core.json";
+const LICENSE_CONFIG = "scripts/font-licenses.config.json";
 
 const DEFAULT_SNAPSHOT =
   "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_ASSETS_TYPO/google_fonts/06_repo_snapshot/fonts-main";
 
+// scripts/font-licenses.config.json is the single source of truth shared with
+// scripts/quality/check-font-licenses.mjs, which verifies what this script
+// writes, and with scripts/mirror_fonts.py, which calls this script at the end of
+// a conversion. The three of them used to carry their own copy of these values.
+const licenseConfig = JSON.parse(
+  fs.readFileSync(path.join(PROJECT_ROOT, LICENSE_CONFIG), "utf8")
+);
+
 // Licence directories of the google/fonts repository, mapped to the label the
 // catalogue uses and to the file name we standardise on.
-const LICENSE_DIRS = {
-  ofl: { label: "ofl", fileName: "OFL.txt" },
-  apache: { label: "apache2", fileName: "LICENSE.txt" },
-  ufl: { label: "ufl", fileName: "UFL.txt" },
-  "cc-by-sa": { label: "cc-by-sa", fileName: "LICENSE.txt" },
-};
+const LICENSE_DIRS = Object.fromEntries(
+  licenseConfig.licenses.map((license) => [
+    license.snapshotDirectory,
+    { label: license.id, fileName: license.fileName },
+  ])
+);
 
-// Directories under public/fonts that are not a served typeface family.
-//
-// `staged` is the transient font staging workspace, ignored by git, so it does
-// not exist in a fresh clone and never reaches production.
-// `brand` holds PP Frama, a proprietary face with no licence file to copy: it is
-// the open blocker tracked in the legal section of docs/process/checklist.md.
-// `ui` holds Inter, taken from rsms/inter and not from the Google snapshot, so it
-// carries its own OFL copy already.
-const NON_FAMILY_DIRS = new Set(["staged", "brand", "ui"]);
+// Same file names, reachable by licence label, for the families below whose
+// source directory is chosen by hand.
+const LICENSE_FILE_NAME_BY_ID = new Map(
+  licenseConfig.licenses.map((license) => [license.id, license.fileName])
+);
+
+// File names to look for inside a snapshot family directory, in source spelling.
+const SNAPSHOT_SOURCE_FILE_NAMES = licenseConfig.snapshotSourceFileNames;
+
+// Directories under public/fonts that are not a served typeface family, so this
+// script has no snapshot source for them. The reason of each one is written in
+// the config, next to whether the quality check still holds it to the family
+// rule: `ui` holds Inter, taken from rsms/inter and not from the Google
+// snapshot, so nothing is copied into it, but it does carry its own OFL text and
+// the check keeps verifying it.
+const NON_FAMILY_DIRS = new Set(
+  licenseConfig.outOfScopeDirectories
+    .filter((directory) => directory.syncedFromSnapshot === false)
+    .map((directory) => directory.name)
+);
 
 // Families whose snapshot directory carries no licence file at all. Each entry
 // names the verbatim source used instead, and why that source is the right one.
+// `license` is the label the file name is resolved from, so the naming rule stays
+// in the config alone.
 const MISSING_LICENSE_FILE_SOURCES = {
   // The same family under the directory name google/fonts used before the
   // rename. Its OFL.txt opens on "Copyright 2016 The Rounded M+ Project
   // Authors.", byte for byte the copyright string embedded in the font we serve.
-  mplusrounded1c: { from: "ofl/roundedmplus1c", fileName: "OFL.txt" },
+  mplusrounded1c: { from: "ofl/roundedmplus1c", license: "ofl" },
 
   // The six jsMath faces declare APACHE2 in METADATA.pb and carry no licence
   // string in their name table. The Apache 2.0 text holds no per-family
   // copyright line and is byte identical across 38 of the 41 apache families of
   // the snapshot, so the canonical copy below is the same text they would ship.
-  jsmathcmbx10: { from: "apache/permanentmarker", fileName: "LICENSE.txt" },
-  jsmathcmex10: { from: "apache/permanentmarker", fileName: "LICENSE.txt" },
-  jsmathcmmi10: { from: "apache/permanentmarker", fileName: "LICENSE.txt" },
-  jsmathcmr10: { from: "apache/permanentmarker", fileName: "LICENSE.txt" },
-  jsmathcmsy10: { from: "apache/permanentmarker", fileName: "LICENSE.txt" },
-  jsmathcmti10: { from: "apache/permanentmarker", fileName: "LICENSE.txt" },
+  jsmathcmbx10: { from: "apache/permanentmarker", license: "apache2" },
+  jsmathcmex10: { from: "apache/permanentmarker", license: "apache2" },
+  jsmathcmmi10: { from: "apache/permanentmarker", license: "apache2" },
+  jsmathcmr10: { from: "apache/permanentmarker", license: "apache2" },
+  jsmathcmsy10: { from: "apache/permanentmarker", license: "apache2" },
+  jsmathcmti10: { from: "apache/permanentmarker", license: "apache2" },
 };
+
+// A hand picked source whose licence label is not in the config would resolve to
+// no file name at all and copy nothing, so it stops the run instead.
+for (const [slug, source] of Object.entries(MISSING_LICENSE_FILE_SOURCES)) {
+  if (!LICENSE_FILE_NAME_BY_ID.has(source.license)) {
+    console.error(
+      `${slug}: licence "${source.license}" is not declared in ${LICENSE_CONFIG}, so no file name can be resolved for it.`
+    );
+    process.exit(2);
+  }
+}
 
 const parseArgs = () => {
   const argv = process.argv.slice(2);
@@ -184,10 +217,11 @@ for (const slug of slugs) {
   }
 
   const override = MISSING_LICENSE_FILE_SOURCES[slug];
+  const overrideFileName = override
+    ? LICENSE_FILE_NAME_BY_ID.get(override.license)
+    : null;
   const sourceDir = override ? path.join(snapshot, override.from) : hit.familyDir;
-  const candidates = override
-    ? [override.fileName]
-    : ["OFL.txt", "UFL.txt", "LICENSE.txt", "LICENCE.txt"];
+  const candidates = override ? [overrideFileName] : SNAPSHOT_SOURCE_FILE_NAMES;
 
   const sourceName = candidates.find((name) => fs.existsSync(path.join(sourceDir, name)));
 
@@ -201,7 +235,7 @@ for (const slug of slugs) {
   // LICENCE.txt for two, and one stable name per licence is what lets the check
   // stay a single rule.
   const targetName = override
-    ? override.fileName
+    ? overrideFileName
     : LICENSE_DIRS[hit.licenseDir].fileName;
 
   const catalogRecord = catalogBySlug.get(slug);

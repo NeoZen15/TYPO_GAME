@@ -31,8 +31,23 @@ const GITIGNORE = ".gitignore";
 const GUARD_MODULE = "lib/game/license-guard.ts";
 const TYPEFACES_CATALOG = "content/catalog/typefaces-core.json";
 const RUNTIME_ASSETS_CATALOG = "content/catalog/font-runtime-assets.json";
+const LICENSE_CONFIG = "scripts/font-licenses.config.json";
 
 const FONT_FILE_PATTERN = /\.(woff2|woff|otf|ttf)$/i;
+
+const failures = [];
+const notes = [];
+
+const readFile = (relativePath) =>
+  fs.readFileSync(path.join(PROJECT_ROOT, relativePath), "utf8");
+
+const readJson = (relativePath) => JSON.parse(readFile(relativePath));
+
+// scripts/font-licenses.config.json is the single source of truth shared with
+// scripts/sync-font-licenses.mjs, which writes the texts, and with
+// scripts/mirror_fonts.py, which puts them down at conversion time. The three of
+// them used to carry their own copy of these values.
+const licenseConfig = readJson(LICENSE_CONFIG);
 
 // One stable file name per licence. The snapshot itself is not consistent (it
 // ships the Ubuntu licence as UFL.txt for three families and as LICENCE.txt for
@@ -45,53 +60,59 @@ const FONT_FILE_PATTERN = /\.(woff2|woff|otf|ttf)$/i;
 // `minBytes` is a floor well under the smallest real text (OFL 4267, UFL 4673,
 // Apache 11358 bytes today), enough to reject an empty or gutted file without
 // breaking on legitimate formatting differences.
-const LICENSE_FILES = {
-  "OFL.txt": {
-    licenseType: "ofl",
-    // Deliberately not "VERSION 1.1": two served families (jomolhari, uchen) are
-    // licensed under OFL 1.0, and their text is just as valid.
-    markers: ["OPEN FONT LICENSE", "OTHER DEALINGS IN THE FONT SOFTWARE"],
-    minBytes: 3000,
-  },
-  "LICENSE.txt": {
-    licenseType: "apache2",
-    markers: ["APACHE LICENSE", "END OF TERMS AND CONDITIONS"],
-    minBytes: 9000,
-  },
-  "UFL.txt": {
-    licenseType: "ufl",
-    markers: ["UBUNTU FONT LICENCE", "OTHER DEALINGS IN THE FONT SOFTWARE"],
-    minBytes: 3000,
-  },
-};
+//
+// Only the licences that carry a `verify` block in the config are enforceable
+// here: a licence declared without one is a text this check cannot read, and the
+// config says why for each case.
+const LICENSE_FILES = Object.fromEntries(
+  licenseConfig.licenses
+    .filter((license) => license.verify)
+    .map((license) => [
+      license.fileName,
+      {
+        licenseType: license.id,
+        markers: license.verify.markers,
+        minBytes: license.verify.minBytes,
+      },
+    ])
+);
 
-// Directories under public/fonts that are not a Google Fonts family. Both are
-// declared here rather than skipped quietly, because a licence exception nobody
-// can see is how the original defect got shipped in the first place.
-const NON_FAMILY_DIRS = {
-  // Transient font staging workspace. It is ignored by git, so it does not exist
-  // in a fresh clone and never reaches production. The ignore rule is verified
-  // below: if the directory stops being ignored, it comes back in scope.
-  staged: { ignoredBy: "/public/fonts/staged/" },
+// A config with no enforceable licence would make this check pass on everything,
+// which is the one failure mode a guard must never have.
+if (Object.keys(LICENSE_FILES).length === 0) {
+  console.error(
+    `${LICENSE_CONFIG}: no licence declares a verify block, so this check would accept any directory. Refusing to run.`
+  );
+  process.exit(2);
+}
 
-  // PP Frama, drawn and sold by Pangram Pangram. The font files declare
-  // "Pangram Pangram EULA" in their name table and point at
-  // pangrampangram.com/pages/eula, a commercial end user agreement that is not
-  // distributed with the files, so there is no text to copy here. Serving it to
-  // visitors without a webfont licence is the open legal blocker tracked in the
-  // legal section of docs/process/checklist.md. Reported as a note on every run.
-  brand: {
-    note: "public/fonts/brand hosts PP Frama (Pangram Pangram, commercial EULA), which has no redistributable licence text: the webfont licence is still the open blocker in the legal section of docs/process/checklist.md",
-  },
-};
+// Directories under public/fonts that are not a Google Fonts family. They are
+// declared in the config rather than skipped quietly, because a licence
+// exception nobody can see is how the original defect got shipped in the first
+// place. `ui` is in that list for the sync, which has no snapshot source for
+// Inter, but it is `checkedAsFamilyDirectory` there, so it stays in scope here
+// and losing its OFL.txt still fails the gate.
+const NON_FAMILY_DIRS = Object.fromEntries(
+  licenseConfig.outOfScopeDirectories
+    .filter((directory) => directory.checkedAsFamilyDirectory !== true)
+    .map((directory) => [
+      directory.name,
+      { ignoredBy: directory.requiresGitignoreEntry, note: directory.gateNote },
+    ])
+);
 
-const failures = [];
-const notes = [];
-
-const readFile = (relativePath) =>
-  fs.readFileSync(path.join(PROJECT_ROOT, relativePath), "utf8");
-
-const readJson = (relativePath) => JSON.parse(readFile(relativePath));
+// Being out of scope is either conditional (`requiresGitignoreEntry`, the
+// directory has to stay unshipped) or spoken out loud on every run (`gateNote`).
+// An entry with neither would read as an exemption in the config while the loop
+// below silently treated it as a family, which is a lie either way round.
+for (const [directory, exception] of Object.entries(NON_FAMILY_DIRS)) {
+  if (!exception.ignoredBy && !exception.note) {
+    console.error(
+      `${LICENSE_CONFIG}: ${directory} is declared out of the check perimeter with neither requiresGitignoreEntry nor gateNote, so the exemption would be invisible. Refusing to run.`
+    );
+    process.exit(2);
+  }
+}
 
 // Parse a `export const NAME = ["a", "b"] as const;` string array out of the
 // guard module, so this check reads the same values the engine compiles.

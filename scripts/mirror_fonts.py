@@ -55,13 +55,62 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 # two answers to the same legal question, so this script only calls it.
 _LICENSE_SYNC_SCRIPT = _REPO_ROOT / "scripts/sync-font-licenses.mjs"
 
-# One stable file name per licence, same set as the Node script writes and as
-# scripts/quality/check-font-licenses.mjs enforces.
-_LICENSE_FILE_NAMES = ("OFL.txt", "LICENSE.txt", "UFL.txt")
+# The values this script and the two Node scripts have to agree on live in one
+# JSON file, read here and there: the file name standardised per licence, and the
+# directories of public/fonts that are out of the copy perimeter. Both languages
+# read JSON without a dependency, which is why that is the format.
+_LICENSE_CONFIG_PATH = _REPO_ROOT / "scripts/font-licenses.config.json"
 
-# Destination directories that hold something other than a mirrored Google family,
-# and that the licence sync deliberately leaves alone.
-_NON_FAMILY_DIRS = frozenset({"staged", "brand", "ui"})
+
+def load_license_config(path: Path) -> dict:
+    """Read the shared licence configuration, or stop the run."""
+    try:
+        config = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        print(f"ERREUR : configuration de licence introuvable: {path}")
+        sys.exit(1)
+    except json.JSONDecodeError as exc:
+        print(f"ERREUR : configuration de licence JSON invalide: {exc}")
+        sys.exit(1)
+
+    if not config.get("licenses") or not isinstance(config.get("outOfScopeDirectories"), list):
+        print(f"ERREUR : configuration de licence incomplete: {path}")
+        sys.exit(1)
+
+    return config
+
+
+def license_file_names(config: dict) -> tuple[str, ...]:
+    """File names a licence text can land under, in declaration order.
+
+    Two licences can share a name (Apache 2.0 and CC BY-SA are both LICENSE.txt),
+    so the same name is kept once. This is the set that proves a licence arrived,
+    the same one scripts/quality/check-font-licenses.mjs enforces.
+    """
+    names: list[str] = []
+    for entry in config["licenses"]:
+        name = entry["fileName"]
+        if name not in names:
+            names.append(name)
+    return tuple(names)
+
+
+def non_family_dirs(config: dict) -> frozenset[str]:
+    """Destination directories the licence sync deliberately leaves alone.
+
+    Same reading as scripts/sync-font-licenses.mjs makes of the same field, so a
+    directory added to the config leaves the perimeter on both sides at once.
+    """
+    return frozenset(
+        entry["name"]
+        for entry in config["outOfScopeDirectories"]
+        if entry.get("syncedFromSnapshot") is False
+    )
+
+
+_LICENSE_CONFIG = load_license_config(_LICENSE_CONFIG_PATH)
+_LICENSE_FILE_NAMES = license_file_names(_LICENSE_CONFIG)
+_NON_FAMILY_DIRS = non_family_dirs(_LICENSE_CONFIG)
 
 
 def covers_basic_latin(path: Path) -> bool:
