@@ -1,7 +1,28 @@
 # UI Palette Reference
 
-Dernière mise à jour: 2026-06-05
+Dernière mise à jour: 2026-06-30
 Statut: working reference
+
+> **Décision 2026-06-30 — plus de blanc pur dans le site.** Tout `#ffffff` / `#fff` /
+> `rgba(255,255,255,a)` / le mot-clé `white` (hors propriété `white-space` et hors
+> commentaires) a été remplacé par le **beige de marque `#f4f3ee` (rgb 244, 243, 238)**.
+> Appliqué à `app/globals.css` + composants user-facing (Gate, CompetitionScreen,
+> profil, TypefaceTester). Les labs internes `/dev` ne sont volontairement pas touchés.
+> Donc partout où ce document dit encore « blanc » / `#ffffff`, lire désormais le beige
+> `#f4f3ee`. Le dark-theme « blanc » était déjà documenté comme étant ce beige (voir `.lp`).
+
+> **Décision 2026-07-07 — verts et rouges de feedback unifiés.** Les valeurs canoniques
+> sont désormais fixées, source de vérité unique dans `app/globals.css` :
+> succès / correct = **`#00c853`** (`--success-green`) ; erreur / wrong = **`#ff0000`**
+> (`--error-red`) ; neutre chaud gameplay = **`#2a1a20`** (`--ink-warm`, réutilisé par
+> `--typo-ink` en light). Les doublons arbitraires `#22c55e` (vert) et `#ef4444` (rouge),
+> portés par les règles mortes `.onboarding-micro-answer` / `.onboarding-micro-feedback`
+> (l'ancien step « micro » remplacé par `OnboardingWarmup`, plus référencé en JSX), ont été
+> **supprimés**. Sur les pages typo, `--typo-positive` pointe maintenant sur `--success-green`
+> en dark (fin de la menthe inventée `#9ef0d4`) et garde en light une seule forme assombrie
+> lisible sur beige (`#21785e`), car `#00c853` en texte échoue au contraste sur le beige.
+> À arbitrer encore (hors de cette passe) : les verts / rouges spécifiques de `competition`
+> (`#21785e`, `#b33636`) et les feedbacks dark historiques (`#4ade80`, `#f87171`).
 
 Ce document sert de base commune pour relire le design sans se perdre.
 
@@ -30,7 +51,7 @@ Important:
 ### Fond / texte globaux
 
 Mode light:
-- background: `#ffffff`
+- background: `#f4f3ee` (beige de marque — était `#ffffff`)
 - foreground: `#111114`
 - ink strong: `rgba(16, 16, 20, 0.94)`
 - ink muted: `rgba(16, 16, 20, 0.58)`
@@ -38,10 +59,10 @@ Mode light:
 
 Mode dark:
 - background: `#000000`
-- foreground: `#ffffff`
-- ink strong: `rgba(255, 255, 255, 0.96)`
-- ink muted: `rgba(255, 255, 255, 0.56)`
-- ink soft: `rgba(255, 255, 255, 0.30)`
+- foreground: `#f4f3ee` (beige de marque — était `#ffffff`)
+- ink strong: `rgba(244, 243, 238, 0.96)`
+- ink muted: `rgba(244, 243, 238, 0.56)`
+- ink soft: `rgba(244, 243, 238, 0.30)`
 
 ### Neutres de lecture utilisés dans le jeu light
 
@@ -235,12 +256,12 @@ Je te propose qu'on fixe explicitement ces 5 points:
 - option B: `#2a1a20`
 
 2. Vert canonique unique
-- garder `#00c853`
-- ou garder `#21785e`
+- TRANCHÉ (2026-07-07) : `#00c853` (`--success-green`) est le vert de succès canonique.
+  `#21785e` reste seulement comme variante light lisible sur beige des pages typo.
 
 3. Rouge canonique unique
-- garder `#ff0000`
-- ou garder `#b33636`
+- TRANCHÉ (2026-07-07) : `#ff0000` (`--error-red`) est le rouge d'erreur canonique.
+  `#b33636` reste, pour l'instant, la nuance propre au summary competition (à arbitrer).
 
 4. Bleu / ambre dans competition
 - oui, autorisés comme palette analytique

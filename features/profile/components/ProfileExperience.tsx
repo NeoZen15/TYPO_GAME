@@ -282,7 +282,7 @@ const SHELL_CSS = `
     background: var(--surface-strong);
     color: #141019;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 1px 0 rgba(244, 243, 238, 0.55),
       0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
     transition: padding 220ms ease, box-shadow 220ms ease;
   }
@@ -291,7 +291,7 @@ const SHELL_CSS = `
   .pf-top.is-scrolled {
     padding-block: 0.4rem;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      inset 0 1px 0 rgba(244, 243, 238, 0.6),
       0 0.7rem 1.9rem rgba(0, 0, 0, 0.46);
   }
 
@@ -362,7 +362,7 @@ const SHELL_CSS = `
     line-height: 1;
     text-decoration: none;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 rgba(244, 243, 238, 0.08),
       0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
     transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
   }
@@ -370,7 +370,7 @@ const SHELL_CSS = `
     transform: translateY(-1px);
     background: #000;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 1px 0 rgba(244, 243, 238, 0.12),
       0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
   }
 
@@ -379,7 +379,7 @@ const SHELL_CSS = `
   .pf-top .theme-switch__track {
     border-color: rgba(20, 16, 25, 0.28);
     background: rgba(20, 16, 25, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
   }
   .pf-top .theme-switch__thumb {
     background: #141019;

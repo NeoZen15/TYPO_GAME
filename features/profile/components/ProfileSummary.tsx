@@ -500,7 +500,7 @@ const CSS = `
     border: 1px solid color-mix(in srgb, ${ORANGE} 55%, transparent);
     background: color-mix(in srgb, ${ORANGE} 14%, transparent);
     color: color-mix(in srgb, ${ORANGE} 62%, var(--pf-cream));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    box-shadow: inset 0 1px 0 rgba(244, 243, 238,0.06);
     transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
   }
   .ps-arena__cta:hover { background: color-mix(in srgb, ${ORANGE} 22%, transparent); transform: translateY(-1px); box-shadow: 0 0.4rem 1rem color-mix(in srgb, ${ORANGE} 18%, transparent); }

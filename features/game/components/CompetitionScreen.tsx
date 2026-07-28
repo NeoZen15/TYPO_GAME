@@ -844,16 +844,16 @@ const competitionScreenStyles = `
   }
 
   .competition-v1-cta {
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(244, 243, 238, 0.12);
     color: #0d1018;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 243, 238, 0.92)), #f4f3ee;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 0.2rem 0.5rem rgba(0, 0, 0, 0.16);
+    background: linear-gradient(180deg, rgba(244, 243, 238, 0.9), rgba(244, 243, 238, 0.92)), #f4f3ee;
+    box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.92), 0 0.2rem 0.5rem rgba(0, 0, 0, 0.16);
   }
 
   .competition-v1-cta:hover,
   .competition-v1-cta:focus-visible {
     transform: translateY(-1px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 0.32rem 0.75rem rgba(0, 0, 0, 0.18);
+    box-shadow: inset 0 1px 0 rgba(244, 243, 238, 1), 0 0.32rem 0.75rem rgba(0, 0, 0, 0.18);
   }
 
   .competition-v1-complete-actions .game-link {

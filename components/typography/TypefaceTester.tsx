@@ -177,7 +177,7 @@ export default function TypefaceTester({
     ctx.font = `${weight} ${metrics.fontSize}px ${fontFamily}`;
     ctx.textBaseline = "alphabetic";
     ctx.textAlign = "left";
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#f4f3ee";
     ctx.fillText(selectedGlyph, metrics.drawX, metrics.baseline);
   }, [fontFamily, glyphLabOverlay, glyphLabSize.height, glyphLabSize.width, selectedGlyph, weight]);
 

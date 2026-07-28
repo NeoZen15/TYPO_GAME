@@ -97,7 +97,7 @@ function sampleGlyph(letter: string, family: string, n: number): GlyphSample | n
   cv.height = h;
   const ctx = cv.getContext("2d");
   if (!ctx) return null;
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = "#f4f3ee";
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   ctx.font = `${GX_FS * SC}px "${family}"`;
@@ -619,7 +619,7 @@ const CSS = `
     border-radius: 1rem;
     background: #f4f3ee;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 1px 0 rgba(244, 243, 238, 0.5),
       0 0.5rem 1.4rem rgba(0, 0, 0, 0.34);
     font-family: var(--pf-mono);
     font-size: 0.72rem; letter-spacing: 0.04em;

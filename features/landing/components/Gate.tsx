@@ -532,9 +532,9 @@ export default function Gate() {
               viewBox="0 0 305 344"
             >
               <g data-guide-group="frame">
-                <rect data-guide-draw="frame" height="341.16" stroke="#ffffff" width="304" x="0.5" y="1.72" />
-                <rect data-guide-draw="frame" height="171.91" stroke="#ffffff" width="304" x="0.5" y="1.72" />
-                <line data-guide-draw="frame" stroke="#ffffff" x1="0.5" x2="304.5" y1="173.63" y2="173.63" />
+                <rect data-guide-draw="frame" height="341.16" stroke="#f4f3ee" width="304" x="0.5" y="1.72" />
+                <rect data-guide-draw="frame" height="171.91" stroke="#f4f3ee" width="304" x="0.5" y="1.72" />
+                <line data-guide-draw="frame" stroke="#f4f3ee" x1="0.5" x2="304.5" y1="173.63" y2="173.63" />
               </g>
 
               <g data-guide-group="inner">
@@ -556,19 +556,19 @@ export default function Gate() {
                 <path
                   data-guide-draw="ellipse"
                   d="M152,1.72c34.15,0,65.05,9.64,87.4,25.19,22.35,15.56,36.1,37,36.1,60.63s-13.76,45.07-36.1,60.63c-22.35,15.56-53.24,25.19-87.4,25.19s-65.05-9.64-87.4-25.19c-22.35-15.56-36.1-37-36.1-60.63s13.76-45.07,36.1-60.63C86.95,11.36,117.85,1.72,152,1.72Z"
-                  stroke="#ffffff"
+                  stroke="#f4f3ee"
                 />
               </g>
 
               <g data-guide-group="diagonal">
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="92.48" x2="74.29" y1="1.96" y2="342.88" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="212.65" x2="74.18" y1="1.71" y2="342.91" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="92.59" x2="298.81" y1="2.32" y2="342.97" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="92.58" x2="230.95" y1="1.96" y2="342.85" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="92.47" x2="6.4" y1="1.34" y2="342.82" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="212.41" x2="6.24" y1="2.32" y2="342.88" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="212.56" x2="230.71" y1="1.75" y2="342.88" />
-                <line data-guide-draw="diagonal" stroke="#ffffff" x1="212.53" x2="298.6" y1="1.34" y2="342.76" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="92.48" x2="74.29" y1="1.96" y2="342.88" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="212.65" x2="74.18" y1="1.71" y2="342.91" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="92.59" x2="298.81" y1="2.32" y2="342.97" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="92.58" x2="230.95" y1="1.96" y2="342.85" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="92.47" x2="6.4" y1="1.34" y2="342.82" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="212.41" x2="6.24" y1="2.32" y2="342.88" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="212.56" x2="230.71" y1="1.75" y2="342.88" />
+                <line data-guide-draw="diagonal" stroke="#f4f3ee" x1="212.53" x2="298.6" y1="1.34" y2="342.76" />
               </g>
             </svg>
           </div>

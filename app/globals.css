@@ -44,10 +44,10 @@
   --ink-strong: rgba(25, 21, 16, 0.94);
   --ink-muted: rgba(25, 21, 16, 0.58);
   --ink-soft: rgba(25, 21, 16, 0.34);
-  --ink-warm: #2a1a20;
+  --ink-warm: #2a1a20; /* CANONICAL warm ink (also reused as --typo-ink on typo pages) */
   --accent-yellow: #ffd213;
-  --success-green: #00c853;
-  --error-red: #ff0000;
+  --success-green: #00c853; /* CANONICAL success/correct green, single source of truth */
+  --error-red: #ff0000; /* CANONICAL wrong/error red, single source of truth */
   --mode-training: #40d38f;
   --mode-competition: #ff934a;
   --mode-expert: #58a9ff;
@@ -562,13 +562,13 @@ svg {
 .game-v2-option.is-correct {
   border-color: var(--success-green);
   background: color-mix(in srgb, var(--success-green) 14%, var(--surface-strong));
-  color: #ffffff;
+  color: #f4f3ee;
 }
 
 .game-v2-option.is-wrong {
   border-color: var(--error-red);
   background: color-mix(in srgb, var(--error-red) 12%, var(--surface-strong));
-  color: #ffffff;
+  color: #f4f3ee;
 }
 
 .game-v2-option-label {
@@ -1761,7 +1761,7 @@ svg {
 }
 
 .onboarding-micro-metric text {
-  fill: color-mix(in srgb, var(--onboarding-accent) 82%, white 30%);
+  fill: color-mix(in srgb, var(--onboarding-accent) 82%, #f4f3ee 30%);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 22px;
   font-weight: 700;
@@ -1842,25 +1842,11 @@ svg {
   box-shadow: inset 0 0 0 1px rgba(244, 243, 238, 0.16);
 }
 
-.onboarding-micro-answer--correct,
-.onboarding-micro-answer[data-correct="true"] {
-  border-color: rgba(34, 197, 94, 0.42);
-  background: rgba(34, 197, 94, 0.08);
-}
-
-.onboarding-micro-answer--wrong,
-.onboarding-micro-answer[data-wrong="true"] {
-  border-color: rgba(239, 68, 68, 0.42);
-  background: rgba(239, 68, 68, 0.08);
-}
-
-.onboarding-micro-feedback[data-state="correct"] {
-  color: #22c55e;
-}
-
-.onboarding-micro-feedback[data-state="wrong"] {
-  color: #ef4444;
-}
+/* Removed dead micro-quiz feedback colour rules (were #22c55e green / #ef4444 red).
+   The .onboarding-micro-answer--correct/--wrong and .onboarding-micro-feedback classes
+   are no longer emitted in JSX (the old "micro" step was replaced by OnboardingWarmup),
+   so these were arbitrary duplicates. Success/error meaning now resolves to the canonical
+   --success-green (#00c853) / --error-red (#ff0000). */
 
 .onboarding-summary {
   display: grid;
@@ -2003,7 +1989,7 @@ svg {
 .block-2 {
   background: #000000;
   background-color: black;
-  color: white;
+  color: #f4f3ee;
 }
 
 .block-2 .section-title,
@@ -2218,12 +2204,15 @@ svg {
   --typo-page-bg: #f6f3ee;
   --typo-shell-bg: rgba(255, 252, 248, 0.92);
   --typo-shell-border: rgba(58, 38, 48, 0.1);
-  --typo-ink: #2a1a20;
+  --typo-ink: #2a1a20; /* canonical warm ink, see --ink-warm */
   --typo-muted: rgba(58, 38, 48, 0.58);
   --typo-soft: rgba(58, 38, 48, 0.46);
   --typo-info: #455cc7;
   --typo-info-soft: rgba(142, 162, 255, 0.13);
   --typo-info-line: rgba(72, 111, 255, 0.22);
+  /* legible-on-beige darkened form of the canonical --success-green (#00c853);
+     pure #00c853 as text fails contrast on the beige page bg, so this is the one
+     documented light-theme variant. */
   --typo-positive: #21785e;
   --typo-positive-soft: rgba(103, 214, 182, 0.13);
   --typo-positive-line: rgba(66, 186, 147, 0.24);
@@ -2249,7 +2238,8 @@ svg {
   --typo-info: #b9c4ff;
   --typo-info-soft: rgba(142, 162, 255, 0.14);
   --typo-info-line: rgba(142, 162, 255, 0.34);
-  --typo-positive: #9ef0d4;
+  /* dark bg: use the canonical --success-green directly (was the invented mint #9ef0d4) */
+  --typo-positive: var(--success-green);
   --typo-positive-soft: rgba(103, 214, 182, 0.14);
   --typo-positive-line: rgba(103, 214, 182, 0.34);
   --typo-warning: #ffd79a;
@@ -2510,22 +2500,15 @@ svg {
   grid-column: span 4;
 }
 
-.typo-chip--info {
-  border-color: var(--typo-info-line);
-  background: var(--typo-info-soft);
-  color: var(--typo-info);
-}
-
-.typo-chip--positive {
-  border-color: var(--typo-positive-line);
-  background: var(--typo-positive-soft);
-  color: var(--typo-positive);
-}
-
+/* Metadata chips read as quiet labels (landing-DA restraint), not multi-colour
+   badges. Cream/beige fill — same chrome as the nav pill, dark muted ink (beige). */
+.typo-chip--info,
+.typo-chip--positive,
 .typo-chip--warning {
-  border-color: var(--typo-warning-line);
-  background: var(--typo-warning-soft);
-  color: var(--typo-warning);
+  border-color: rgba(20, 16, 25, 0.1);
+  background: #f4f3ee;
+  box-shadow: none;
+  color: #141019;
 }
 
 .typo-hero {
@@ -3474,7 +3457,7 @@ svg {
 .typo-tester-weight-button.is-active {
   border-color: color-mix(in srgb, var(--typo-warning) 62%, transparent);
   background: var(--typo-tester-chip-active-bg);
-  color: color-mix(in srgb, var(--typo-warning) 92%, #fff);
+  color: color-mix(in srgb, var(--typo-warning) 92%, #f4f3ee);
 }
 
 .typo-tester-surface {
@@ -3587,7 +3570,7 @@ svg {
   border-radius: 0;
   border: 0;
   background: transparent;
-  color: #fff;
+  color: #f4f3ee;
 }
 
 .typo-tester-preview--mini .typo-demo-label {
@@ -3728,7 +3711,7 @@ svg {
 
 .compare-hero-kicker {
   margin: 0;
-  color: var(--typo-positive);
+  color: var(--typo-soft);
   font-size: 0.76rem;
   line-height: 1;
   font-weight: 700;
@@ -4472,7 +4455,7 @@ svg {
 .compare-stage-focus-switch > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary):hover,
 .compare-stage-focus-rail > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary):hover {
   border-color: rgba(244, 243, 238, 0.34);
-  background: #ffffff;
+  background: #f4f3ee;
   color: #000000;
 }
 
@@ -4610,12 +4593,12 @@ svg {
 }
 
 :root[data-theme="dark"] .compare-stage--emphasis-left .compare-stage-layer--left {
-  color: color-mix(in srgb, #ffffff 92%, var(--typo-info));
+  color: color-mix(in srgb, #f4f3ee 92%, var(--typo-info));
   text-shadow: 0 0 18px color-mix(in srgb, var(--typo-info) 24%, transparent);
 }
 
 :root[data-theme="dark"] .compare-stage--emphasis-right .compare-stage-layer--right {
-  color: color-mix(in srgb, #ffffff 92%, var(--typo-positive));
+  color: color-mix(in srgb, #f4f3ee 92%, var(--typo-positive));
   text-shadow: 0 0 18px color-mix(in srgb, var(--typo-positive) 24%, transparent);
 }
 
@@ -4826,7 +4809,7 @@ svg {
 .compare-stage-pane-caption {
   margin: 0;
   padding-top: 0.38rem;
-  color: color-mix(in srgb, var(--compare-stage-ink-soft) 82%, white 4%);
+  color: color-mix(in srgb, var(--compare-stage-ink-soft) 82%, #f4f3ee 4%);
   font-size: 0.74rem;
   line-height: 1;
   font-weight: 700;
@@ -5233,7 +5216,7 @@ svg {
 }
 
 .compare-stage-pane-x-height-callout {
-  stroke: color-mix(in srgb, var(--typo-info) 84%, white 10%);
+  stroke: color-mix(in srgb, var(--typo-info) 84%, #f4f3ee 10%);
   stroke-width: 1.2;
   vector-effect: non-scaling-stroke;
   stroke-linecap: round;
@@ -5445,29 +5428,29 @@ svg {
 }
 
 .metrics-validator-guide--primary {
-  stroke: color-mix(in srgb, var(--typo-info) 84%, white 8%);
+  stroke: color-mix(in srgb, var(--typo-info) 84%, #f4f3ee 8%);
 }
 
 .metrics-validator-guide--strong {
-  stroke: color-mix(in srgb, var(--compare-stage-line-strong) 92%, white 8%);
+  stroke: color-mix(in srgb, var(--compare-stage-line-strong) 92%, #f4f3ee 8%);
 }
 
 .metrics-validator-box {
   fill: color-mix(in srgb, var(--typo-info-soft) 12%, transparent);
-  stroke: color-mix(in srgb, var(--typo-info) 78%, white 10%);
+  stroke: color-mix(in srgb, var(--typo-info) 78%, #f4f3ee 10%);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
 }
 
 .metrics-validator-sample-edge {
-  stroke: color-mix(in srgb, var(--typo-positive) 78%, white 12%);
+  stroke: color-mix(in srgb, var(--typo-positive) 78%, #f4f3ee 12%);
   stroke-width: 1;
   stroke-dasharray: 4 4;
   vector-effect: non-scaling-stroke;
 }
 
 .metrics-validator-stage-label {
-  fill: color-mix(in srgb, var(--typo-muted) 86%, white 8%);
+  fill: color-mix(in srgb, var(--typo-muted) 86%, #f4f3ee 8%);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -6285,7 +6268,7 @@ svg {
   border-radius: 999px;
   background:
     radial-gradient(circle at 35% 35%, rgba(244, 243, 238, 0.9), rgba(244, 243, 238, 0.12) 42%, transparent 44%),
-    linear-gradient(135deg, color-mix(in srgb, var(--card-1) 84%, white), color-mix(in srgb, var(--card-2) 76%, white));
+    linear-gradient(135deg, color-mix(in srgb, var(--card-1) 84%, #f4f3ee), color-mix(in srgb, var(--card-2) 76%, #f4f3ee));
   box-shadow:
     0 0 0 0.2rem color-mix(in srgb, var(--card-1) 12%, transparent),
     0 0 1rem color-mix(in srgb, var(--card-2) 24%, transparent);
@@ -6298,7 +6281,7 @@ svg {
 
 .compare-help-widget__eyebrow {
   margin: 0;
-  color: color-mix(in srgb, var(--ink-muted) 86%, white 4%);
+  color: color-mix(in srgb, var(--ink-muted) 86%, #f4f3ee 4%);
   font-size: 0.54rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -7217,7 +7200,7 @@ svg {
   background: var(--foreground);
   color: var(--background);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #ffffff 22%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #f4f3ee 22%, transparent),
     0 0.2rem 0.55rem rgba(0, 0, 0, 0.16);
 }
 
@@ -7420,7 +7403,7 @@ svg {
   transform: translateZ(34px);
   transform-style: preserve-3d;
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #ffffff 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #f4f3ee 18%, transparent),
     0 4px 0 color-mix(in srgb, #000000 16%, transparent),
     0 16px 26px rgba(17, 17, 20, 0.18);
   transition:
@@ -7464,13 +7447,13 @@ svg {
 .lp-demo-opt.is-correct {
   border-color: var(--success-green);
   background: color-mix(in srgb, var(--success-green) 14%, var(--surface-strong));
-  color: #ffffff;
+  color: #f4f3ee;
 }
 
 .lp-demo-opt.is-wrong {
   border-color: var(--error-red);
   background: color-mix(in srgb, var(--error-red) 12%, var(--surface-strong));
-  color: #ffffff;
+  color: #f4f3ee;
 }
 
 .lp-demo-opt.is-correct::before,
