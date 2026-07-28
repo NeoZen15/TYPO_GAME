@@ -466,7 +466,6 @@ function stateLabel(s: CellState): string {
 
 const CREAM = "from var(--pf-cream) r g b"; // theme-adaptive soft ink (page-facing tones)
 const BEIGE = "#f4f3ee"; // solid brand beige — the FILLED board "paper" (stays light in both themes)
-const PAPER = "#0c0d11"; // page-dark (used for the dark inner rule knockout)
 const INK = "18, 18, 22"; // dark ink that sits ON the beige board (writings, rules, numbers)
 
 const boardStyles = `
