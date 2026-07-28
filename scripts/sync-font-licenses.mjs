@@ -11,8 +11,16 @@
 // no legal document can be paraphrased by accident.
 //
 // Usage:
+//   node scripts/sync-font-licenses.mjs
 //   node scripts/sync-font-licenses.mjs --snapshot <path-to-google/fonts-clone>
 //   node scripts/sync-font-licenses.mjs --snapshot <path> --dry-run
+//   node scripts/sync-font-licenses.mjs --fonts-root <path-to-a-font-tree>
+//
+// The snapshot lives outside the repository, so its location is resolved in three
+// steps: the --snapshot flag, then the GOOGLE_FONTS_SNAPSHOT environment variable,
+// then the default below, which is where the converted assets came from on the
+// machine this catalogue was built on. Any other machine sets the variable instead
+// of editing this file.
 //
 // The result is verified by `npm run check:font-licenses`, which reads only the
 // repository and therefore keeps working without the snapshot.
@@ -21,8 +29,11 @@ import fs from "node:fs";
 import path from "node:path";
 
 const PROJECT_ROOT = process.cwd();
-const FONTS_ROOT = path.join(PROJECT_ROOT, "public/fonts");
+const DEFAULT_FONTS_ROOT = path.join(PROJECT_ROOT, "public/fonts");
 const TYPEFACES_CATALOG = "content/catalog/typefaces-core.json";
+
+const DEFAULT_SNAPSHOT =
+  "/Users/launaymarion/Documents/JEUX_DE_TYPO/02_ASSETS_TYPO/google_fonts/06_repo_snapshot/fonts-main";
 
 // Licence directories of the google/fonts repository, mapped to the label the
 // catalogue uses and to the file name we standardise on.
@@ -66,23 +77,35 @@ const MISSING_LICENSE_FILE_SOURCES = {
 const parseArgs = () => {
   const argv = process.argv.slice(2);
   let snapshot = null;
+  let fontsRoot = null;
   let dryRun = false;
 
   for (let index = 0; index < argv.length; index += 1) {
     if (argv[index] === "--snapshot") {
       snapshot = argv[index + 1];
       index += 1;
+    } else if (argv[index] === "--fonts-root") {
+      fontsRoot = argv[index + 1];
+      index += 1;
     } else if (argv[index] === "--dry-run") {
       dryRun = true;
     }
   }
 
-  if (!snapshot) {
-    console.error("Usage: node scripts/sync-font-licenses.mjs --snapshot <path> [--dry-run]");
-    process.exit(2);
-  }
-
-  return { snapshot: path.resolve(snapshot), dryRun };
+  // --fonts-root exists so the licence lands in the tree the font files were just
+  // copied into, whatever that tree is. scripts/mirror_fonts.py passes its own
+  // --dest, which keeps "a served directory carries its licence" true even when
+  // the conversion writes somewhere other than public/fonts.
+  return {
+    snapshot: path.resolve(snapshot ?? process.env.GOOGLE_FONTS_SNAPSHOT ?? DEFAULT_SNAPSHOT),
+    snapshotOrigin: snapshot
+      ? "--snapshot"
+      : process.env.GOOGLE_FONTS_SNAPSHOT
+        ? "GOOGLE_FONTS_SNAPSHOT"
+        : "default path",
+    fontsRoot: path.resolve(fontsRoot ?? DEFAULT_FONTS_ROOT),
+    dryRun,
+  };
 };
 
 // public/fonts/<slug> and the snapshot family directory do not spell the same
@@ -113,10 +136,18 @@ const indexSnapshot = (snapshotRoot) => {
   return { index, collisions };
 };
 
-const { snapshot, dryRun } = parseArgs();
+const { snapshot, snapshotOrigin, fontsRoot: FONTS_ROOT, dryRun } = parseArgs();
 
 if (!fs.existsSync(snapshot)) {
-  console.error(`Snapshot not found: ${snapshot}`);
+  console.error(`Snapshot not found (${snapshotOrigin}): ${snapshot}`);
+  console.error(
+    "The google/fonts clone lives outside the repository. Point at it with --snapshot <path> or set GOOGLE_FONTS_SNAPSHOT."
+  );
+  process.exit(2);
+}
+
+if (!fs.existsSync(FONTS_ROOT)) {
+  console.error(`Font directory not found: ${FONTS_ROOT}`);
   process.exit(2);
 }
 
@@ -202,6 +233,9 @@ for (const mismatch of licenseMismatches) {
   console.log(`Note: ${mismatch}`);
 }
 
+const fontsRootLabel =
+  FONTS_ROOT === DEFAULT_FONTS_ROOT ? "public/fonts" : FONTS_ROOT;
+
 console.log(
-  `Font licences ${dryRun ? "would be synced" : "synced"}: ${written.length} written, ${unchanged.length} already up to date, ${slugs.length} family directories covered.`
+  `Font licences ${dryRun ? "would be synced" : "synced"} in ${fontsRootLabel}: ${written.length} written, ${unchanged.length} already up to date, ${slugs.length} family directories covered.`
 );

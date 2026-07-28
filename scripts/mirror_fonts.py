@@ -22,6 +22,11 @@ Then it updates each manifest font entry with:
 - runtimeFiles: list[str] of browser paths
 - runtimePath: first browser path, used as the V1 canonical asset
 
+Finally it hands every destination directory it touched to
+scripts/sync-font-licenses.mjs, so a mirrored family arrives with the licence text
+its licence requires us to redistribute. That step is not optional and not silent:
+a family whose licence cannot be found stops the run.
+
 Usage:
     python scripts/mirror_fonts.py \
       --manifest content/typefaces/font-manifest-v4.json \
@@ -35,11 +40,28 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
 # Basic Latin lowercase a-z. A runtime split must cover these to render Latin words.
 _BASIC_LATIN_LOWER = tuple(range(ord("a"), ord("z") + 1))
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+
+# The licence texts are copied verbatim by the Node script, which already carries
+# the hard calls (families whose sources disagree, families whose snapshot
+# directory ships no licence file at all). Duplicating any of that here would mean
+# two answers to the same legal question, so this script only calls it.
+_LICENSE_SYNC_SCRIPT = _REPO_ROOT / "scripts/sync-font-licenses.mjs"
+
+# One stable file name per licence, same set as the Node script writes and as
+# scripts/quality/check-font-licenses.mjs enforces.
+_LICENSE_FILE_NAMES = ("OFL.txt", "LICENSE.txt", "UFL.txt")
+
+# Destination directories that hold something other than a mirrored Google family,
+# and that the licence sync deliberately leaves alone.
+_NON_FAMILY_DIRS = frozenset({"staged", "brand", "ui"})
 
 
 def covers_basic_latin(path: Path) -> bool:
@@ -69,6 +91,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source", required=True, help="Flat source directory containing .woff2")
     parser.add_argument("--dest", required=True, help="Destination directory (ex: public/fonts)")
     parser.add_argument(
+        "--snapshot",
+        default=None,
+        help=(
+            "google/fonts clone the licence texts are copied from. Defaults to "
+            "GOOGLE_FONTS_SNAPSHOT, then to the default of sync-font-licenses.mjs."
+        ),
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Preview copies without writing anything",
@@ -94,6 +124,80 @@ def load_manifest(path: Path) -> dict:
     return payload
 
 
+def sync_licenses(dest_root: Path, snapshot: str | None, dry_run: bool) -> None:
+    """Copy the licence text of every family in *dest_root*, or stop the run.
+
+    Copying a font file into a served directory is redistributing it, and the OFL,
+    Apache 2.0 and UFL all require their notice to travel with the copy. Leaving
+    that to a later check makes the missing licence a defect to catch instead of
+    one that cannot happen, so the conversion itself is what puts the text there.
+    """
+    if not _LICENSE_SYNC_SCRIPT.exists():
+        print(f"ERREUR : script de licence introuvable: {_LICENSE_SYNC_SCRIPT}")
+        sys.exit(1)
+
+    node = shutil.which("node")
+    if node is None:
+        print(
+            "ERREUR : 'node' est introuvable dans le PATH, or la copie des licences "
+            "passe par scripts/sync-font-licenses.mjs.\n"
+            "         Installer Node, puis relancer. Rien n'est servi sans son texte de licence."
+        )
+        sys.exit(1)
+
+    command = [
+        node,
+        str(_LICENSE_SYNC_SCRIPT),
+        "--fonts-root",
+        str(dest_root),
+    ]
+    if snapshot:
+        command += ["--snapshot", snapshot]
+    if dry_run:
+        command.append("--dry-run")
+
+    # In simulation nothing was copied, so the destination can legitimately not
+    # exist yet. The Node script writes nothing with --dry-run, so previewing is
+    # safe, but it needs the tree to read: skip the preview rather than fail on a
+    # directory the real run would have created.
+    if dry_run and not dest_root.exists():
+        print(f"[DRY] licences : {' '.join(command)}")
+        print(f"[DRY] apercu saute, destination pas encore creee: {dest_root}")
+        return
+
+    print(f"\nLicences : {' '.join(command)}")
+    # The child writes straight to the terminal, so flush first or its output lands
+    # above ours and the log reads out of order.
+    sys.stdout.flush()
+    result = subprocess.run(command, cwd=_REPO_ROOT, check=False)
+
+    if result.returncode != 0:
+        print(
+            "\nERREUR : la copie des licences a echoue, les polices copiees ne sont pas "
+            "servables en l'etat (voir le detail au-dessus)."
+        )
+        sys.exit(1)
+
+
+def verify_licenses(dest_root: Path, slugs: list[str]) -> None:
+    """Assert that each freshly mirrored slug now carries a licence file."""
+    unlicensed = [
+        slug
+        for slug in slugs
+        if slug not in _NON_FAMILY_DIRS
+        and not any((dest_root / slug / name).exists() for name in _LICENSE_FILE_NAMES)
+    ]
+
+    if unlicensed:
+        print(
+            f"\nERREUR : {len(unlicensed)} police(s) copiee(s) sans texte de licence, "
+            f"attendu l'un de {', '.join(_LICENSE_FILE_NAMES)} :"
+        )
+        for slug in unlicensed:
+            print(f"    {slug}")
+        sys.exit(1)
+
+
 def main() -> None:
     args = parse_args()
     manifest_path = Path(args.manifest).expanduser().resolve()
@@ -111,6 +215,9 @@ def main() -> None:
     skipped_system_local = 0
     skipped_unmapped = 0
     missing: list[str] = []
+    # Slugs that received at least one file, in manifest order. They are the ones
+    # that now owe a licence text.
+    mirrored_slugs: list[str] = []
 
     for entry in fonts:
         slug = str(entry.get("slug", "")).strip()
@@ -158,6 +265,9 @@ def main() -> None:
             copied += 1
 
         if runtime_files:
+            if slug not in mirrored_slugs:
+                mirrored_slugs.append(slug)
+
             # HARDENING: pin runtimePath to the first split that COVERS basic Latin
             # (a-z), not sorted()[0]. For multi-split Google families the lowest-hash
             # split is often a non-Latin fragment, which would render the typeface as
@@ -188,6 +298,14 @@ def main() -> None:
             encoding="utf-8",
         )
         print(f"\nManifest mis a jour : {manifest_path}")
+
+    # Licences before the missing-source exit: a partial copy still served the
+    # families that did land, and those owe their licence text either way.
+    if mirrored_slugs:
+        sync_licenses(dest_root, args.snapshot, args.dry_run)
+        if not args.dry_run:
+            verify_licenses(dest_root, mirrored_slugs)
+            print(f"  Licences verifiees    : {len(mirrored_slugs)} police(s) mirroree(s)")
 
     if missing:
         sys.exit(1)
