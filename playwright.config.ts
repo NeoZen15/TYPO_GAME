@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "playwright/test";
 
+import { allowsDatabaseWrites } from "./tests/e2e/guard-database";
+
 // ---------------------------------------------------------------------------
 // End to end gate. The 8 home made checks of `npm run quality` verify static
 // contracts (imports, copy keys, motion order). Nothing verified that a real
@@ -17,6 +19,9 @@ const BASE_URL = `http://${HOST}:${PORT}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  // The suite writes into the database DATABASE_URL points at, so it refuses to
+  // start without an explicit opt-in. See tests/e2e/guard-database.ts.
+  globalSetup: "./tests/e2e/guard-database.ts",
   // The dev server is a single shared instance and the training journey writes
   // a guest session, so the specs run one at a time.
   workers: 1,
@@ -45,13 +50,18 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
-    command: "npm run dev",
-    url: BASE_URL,
-    reuseExistingServer: !process.env.CI,
-    // A cold Turbopack start plus the font manifest read is slow on first hit.
-    timeout: 180_000,
-    stdout: "ignore",
-    stderr: "pipe",
-  },
+  // Withheld without the opt-in: Playwright runs its plugins, the web server
+  // among them, before global setup, and a refused run has no reason to spend
+  // three minutes on a cold Turbopack start.
+  webServer: allowsDatabaseWrites()
+    ? {
+        command: "npm run dev",
+        url: BASE_URL,
+        reuseExistingServer: !process.env.CI,
+        // A cold Turbopack start plus the font manifest read is slow on first hit.
+        timeout: 180_000,
+        stdout: "ignore",
+        stderr: "pipe",
+      }
+    : undefined,
 });
