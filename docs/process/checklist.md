@@ -3,7 +3,7 @@
 > Source de vérité de l'avancement produit, confrontée à l'état réel du code.
 > Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
 >
-> **Dernière mise à jour : 2026-07-27.**
+> **Dernière mise à jour : 2026-07-28.**
 > Les cases reflètent l'état du code à cette date — à re-vérifier avant d'affirmer comme acquis.
 
 ## Comment lire
