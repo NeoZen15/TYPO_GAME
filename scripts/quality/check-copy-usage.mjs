@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -32,31 +31,48 @@ if (emptyBlocks.length > 0) {
   process.exit(1);
 }
 
-const searchTargets = ["app", "components", "features", "lib", "content", "docs"];
+// `docs` used to be searched too, which made a key cited in a markdown file count
+// as used even when no component rendered it. A key nobody renders is dead copy,
+// whether or not the documentation mentions it, so only code is searched here.
+const searchTargets = ["app", "components", "features", "lib", "content"];
+const SOURCE_EXTENSIONS = /\.(ts|tsx|mjs|mts|js|jsx)$/;
+const SKIPPED_DIRECTORIES = new Set(["node_modules", ".next", ".git", "tmp"]);
+
+// Pure Node traversal, on the model of collectFiles in check-dev-routes.mjs. The
+// previous version shelled out to `rg`, which is neither a dependency of this
+// repo nor vendored: on a machine without ripgrep the script threw instead of
+// reporting, and the whole quality gate failed for a reason unrelated to copy.
+function collectFiles(rootDir) {
+  if (!fs.existsSync(rootDir)) return [];
+
+  return fs.readdirSync(rootDir, { withFileTypes: true }).flatMap((entry) => {
+    const resolved = path.join(rootDir, entry.name);
+    if (entry.isDirectory()) {
+      if (SKIPPED_DIRECTORIES.has(entry.name)) return [];
+      return collectFiles(resolved);
+    }
+    if (!entry.isFile()) return [];
+    if (!SOURCE_EXTENSIONS.test(entry.name)) return [];
+    return [resolved];
+  });
+}
+
+// content/copy.ts declares the keys, so a reference inside it proves nothing.
+const sources = searchTargets
+  .flatMap((target) => collectFiles(path.join(repoRoot, target)))
+  .filter((filePath) => path.resolve(filePath) !== copyFile)
+  .map((filePath) => fs.readFileSync(filePath, "utf8"));
+
 const unusedKeys = [];
 
 for (const block of copyBlocks) {
   for (const key of block.keys) {
-    try {
-      execFileSync(
-        "rg",
-        [
-          "-n",
-          `${block.name}\\.${key}\\b`,
-          ...searchTargets,
-          "--glob",
-          "!content/copy.ts",
-        ],
-        {
-          stdio: "pipe",
-        }
-      );
-    } catch (error) {
-      if (typeof error === "object" && error !== null && "status" in error && error.status === 1) {
-        unusedKeys.push(`${block.name}.${key}`);
-        continue;
-      }
-      throw error;
+    // Same expression as the previous ripgrep call: `blockName.key` on a word
+    // boundary, so `errorCopy.title` is not matched by `errorCopy.titleSuffix`.
+    const usage = new RegExp(`${block.name}\\.${key}\\b`);
+
+    if (!sources.some((source) => usage.test(source))) {
+      unusedKeys.push(`${block.name}.${key}`);
     }
   }
 }
