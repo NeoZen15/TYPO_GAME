@@ -49,24 +49,10 @@ function categorize(filePath) {
     return "B";
   }
 
-  if (
-    filePath === "components/typography/AnatomyMetricsValidator.tsx" ||
-    filePath === "components/typography/FallbackCalibrationLab.tsx" ||
-    filePath === "components/typography/GlyphAuditMatrix.tsx" ||
-    filePath === "components/typography/ProjectionCanvas.tsx" ||
-    filePath === "components/typography/TypefaceProfileLab.tsx" ||
-    filePath === "components/typography/WordAuditMatrix.tsx" ||
-    filePath === "lib/typography/fallback-calibration.ts" ||
-    filePath === "lib/typography/glyph-audit-spec.ts" ||
-    filePath === "lib/typography/glyph-measurement-profile-adapter.ts" ||
-    filePath === "lib/typography/headless-runtime.ts" ||
-    filePath === "lib/typography/typeface-measurement-profile-builder.ts" ||
-    filePath === "lib/typography/typeface-profile-dev-builder.ts" ||
-    filePath === "lib/typography/word-audit-spec.ts" ||
-    filePath === "lib/typography/word-measurement-profile-adapter.ts"
-  ) {
-    return "B";
-  }
+  // The 14 typography compatibility bridges used to be listed here as category B,
+  // stabilization work rather than product review. They were deleted once every
+  // importer was found to point at the dev lab target directly, so there is no
+  // path left to classify.
 
   if (
     filePath.startsWith("app/") ||

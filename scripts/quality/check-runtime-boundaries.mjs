@@ -12,22 +12,11 @@ const EXCLUDED_PATHS = [
   "features/onboarding/",
 ];
 
-const ALLOWED_COMPATIBILITY_BRIDGES = new Set([
-  "components/typography/AnatomyMetricsValidator.tsx",
-  "components/typography/FallbackCalibrationLab.tsx",
-  "components/typography/GlyphAuditMatrix.tsx",
-  "components/typography/ProjectionCanvas.tsx",
-  "components/typography/TypefaceProfileLab.tsx",
-  "components/typography/WordAuditMatrix.tsx",
-  "lib/typography/fallback-calibration.ts",
-  "lib/typography/glyph-audit-spec.ts",
-  "lib/typography/glyph-measurement-profile-adapter.ts",
-  "lib/typography/headless-runtime.ts",
-  "lib/typography/typeface-measurement-profile-builder.ts",
-  "lib/typography/typeface-profile-dev-builder.ts",
-  "lib/typography/word-audit-spec.ts",
-  "lib/typography/word-measurement-profile-adapter.ts",
-]);
+// Empty since the 14 typography compatibility bridges were deleted: they had no
+// consumer left, every importer already pointed at the dev lab target. A file
+// listed here is allowed to import the dev lab because it exists only to re-export
+// it, so the exemption is granted one path at a time, never by prefix.
+const ALLOWED_COMPATIBILITY_BRIDGES = new Set([]);
 
 const FORBIDDEN_IMPORTS = [
   '@/components/dev/typography/',

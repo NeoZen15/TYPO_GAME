@@ -32,7 +32,7 @@ Le repo mélange trois natures de travail. Les garder explicitement séparées e
 
 **Artefacts de recherche.** `data/typography-profiles/` est un corpus versionné, pas un répertoire de brouillon. `data/typography-profiles/tmp/` est réservé aux exports locaux et doit rester non suivi par git. `backups/` est de l'archive de récupération, il ne reçoit pas de nouveaux checkpoints de routine.
 
-Les ponts de compatibilité dans `components/typography/*` et `lib/typography/*` sont temporaires et doivent rester de simples réexports fins pendant la migration.
+La migration du labo typo est terminée : les 15 ponts de compatibilité de `components/typography/*` et `lib/typography/*` n'avaient plus aucun consommateur et ont été supprimés, `check:compat-bridges` garde une liste vide pour qu'un nouveau pont reste un réexport fin et déclaré.
 
 Si un fichier n'appartient clairement ni au produit, ni au labo, ni au corpus versionné, s'arrêter et le classer avant de committer.
 
