@@ -5,11 +5,14 @@ Expérience d'apprentissage typographique interactive. Next.js 16 (App Router), 
 ## Commandes
 
 ```bash
-npm run dev        # serveur local sur 127.0.0.1:3000
+npm run dev        # serveur local sur 127.0.0.1:3000 (vide .next/dev au passage)
+npm run dev:clean  # idem mais vide tout .next, quand le cache de build est suspect
 npm run lint       # ESLint
 npm run typecheck  # tsc --noEmit
 npm run quality    # la porte complète, à passer avant de merger
 ```
+
+`dev` et `dev:3000` sont identiques, tous deux câblés sur le port 3000.
 
 `npm run quality` enchaîne 15 étapes, vérifiées dans `package.json` le 2026-07-28 : `lint`, `typecheck`, `check:artifacts`, `check:compat-bridges`, `check:dev-routes`, `check:runtime-boundaries`, `check:copy`, `check:contracts`, `check:typography-contract`, `check:license-guard`, `check:font-licenses`, `check:latin-coverage`, `check:token-secret`, `check:event-partitions`, puis `build`.
 
@@ -22,8 +25,28 @@ Checks ciblés, selon ce qu'on touche :
 - nouvelle route interne : `npm run check:dev-routes`
 - pont de compatibilité ajouté ou modifié : `npm run check:compat-bridges`
 - déplacement de modules du labo typo : `npm run check:runtime-boundaries`
-- nouvelle police ajoutée sous `public/fonts` : `npm run check:font-licenses`, et poser son texte de licence avec `node scripts/sync-font-licenses.mjs --snapshot <instantané google/fonts>`
+- nouvelle police ajoutée sous `public/fonts` : `npm run check:font-licenses`. `scripts/mirror_fonts.py` pose déjà le texte de licence en fin de conversion et échoue en nommant le slug s'il ne le trouve pas. Pour un ajout fait à la main : `node scripts/sync-font-licenses.mjs` (instantané google/fonts par défaut, sinon `GOOGLE_FONTS_SNAPSHOT` ou `--snapshot <chemin>`, `--dry-run` disponible)
 - avant un commit de stabilisation : `npm run worktree:report`
+
+Outillage du corpus de recherche, à lancer à la main : `npm run profiles:diff`, `profiles:export:dev` et `profiles:metrics:extract` (Node en `--experimental-strip-types` avec un loader d'alias maison, sur des fichiers `.mts`), et `npm run specimens:extract-data`, qui exige l'environnement Python du repo (`./.venv/bin/python`, à créer avant de s'en servir). `npm run safety:checkpoint` déclenche `scripts/safety/create_ui_checkpoint.sh` : c'est un geste délibéré, pas une routine, cohérent avec le fait que `backups/` ne reçoit pas de checkpoints réguliers.
+
+## Tests
+
+Suite end to end Playwright : `tests/e2e/landing.spec.ts`, `training`, `onboarding`, `accessibility`, plus le garde `guard-database.ts`. `testDir` est `./tests/e2e`, le rapporteur est `list` volontairement, pour ne pas écrire de `playwright-report/`.
+
+**`npm run quality` ne lance PAS les tests.** Passer la porte des 15 étapes ne dit donc rien de l'état de la suite.
+
+```bash
+JDT_E2E_ALLOW_PROD=1 npm run test:e2e                                # toute la suite
+JDT_E2E_ALLOW_PROD=1 npx playwright test tests/e2e/landing.spec.ts   # un seul fichier
+JDT_E2E_ALLOW_PROD=1 npx playwright test -g "fragment du titre"      # un seul test
+```
+
+**Pourquoi cet opt-in, et pourquoi ne pas le contourner à la légère.** La suite écrit dans la base pointée par `DATABASE_URL`, qui est aujourd'hui la production. Un passage complet ajoute 1 utilisateur invité, une trentaine de lignes `user_typeface_state`, 1 session jamais terminée et 2 lignes `user_event_fact`. Rien ne distingue ces lignes de celles d'un vrai joueur, et les clés étrangères sont en `ON DELETE RESTRICT` (`db/migrations/003_users_sessions_pool.sql`), donc les retirer impose un ordre précis : `user_event_fact`, `sessions`, `user_typeface_state`, `users`.
+
+Sans `JDT_E2E_ALLOW_PROD=1`, `guard-database.ts` refuse le lancement et `playwright.config.ts` s'abstient même de démarrer le serveur, pour ne pas compiler l'app inutilement.
+
+La voie propre est la même que pour les migrations : pointer `DATABASE_URL` sur une branche Neon jetable dans `.env.local`, puis lancer avec le même opt-in. Playwright ne lit pas `.env.local`, donc une variable absente de ton shell ne dit rien de ce que voit le serveur de dev.
 
 ## Frontières du repo
 
