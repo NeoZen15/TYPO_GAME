@@ -19,6 +19,7 @@ import {
   RUNTIME_ALLOWED_LICENSE_TYPES,
   UFL_LEGACY_SLUGS,
 } from "@/lib/game/license-guard";
+import { LATIN_UNREADY_SLUGS } from "@/lib/game/latin-coverage-guard";
 import {
   createQuestionToken,
   verifyQuestionToken,
@@ -392,6 +393,7 @@ const getPoolRows = async (userId: string) =>
         tc.license_type::text = ANY(${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[])
         OR tc.typeface_slug = ANY(${[...UFL_LEGACY_SLUGS]}::text[])
       )
+      AND tc.typeface_slug <> ALL(${[...LATIN_UNREADY_SLUGS]}::text[])
     ORDER BY uts.updated_at ASC, tc.display_name ASC
   `);
 

@@ -31,6 +31,7 @@ import {
   RUNTIME_ALLOWED_LICENSE_TYPES,
   UFL_LEGACY_SLUGS,
 } from "@/lib/game/license-guard";
+import { LATIN_UNREADY_SLUGS } from "@/lib/game/latin-coverage-guard";
 import { sql } from "@/lib/server/neon";
 
 type CompetitionPoolRow = {
@@ -145,6 +146,7 @@ const getCompetitionPoolRows = async (userId: string) =>
         tc.license_type::text = ANY(${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[])
         OR tc.typeface_slug = ANY(${[...UFL_LEGACY_SLUGS]}::text[])
       )
+      AND tc.typeface_slug <> ALL(${[...LATIN_UNREADY_SLUGS]}::text[])
       AND EXISTS (
         SELECT 1
         FROM font_runtime_assets fra
