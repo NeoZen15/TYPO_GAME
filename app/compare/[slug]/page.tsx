@@ -18,7 +18,6 @@ import {
   type CompareView,
 } from "@/lib/typography/compare-page-helpers";
 import {
-  buildCorpusPedagogyLine,
   buildCompareProfileInsight,
   pickBestCorpusGlyphSample,
   pickBestCorpusSampleMode,
@@ -76,7 +75,6 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
   );
 
   const heroTitle = comparison.heroTitle ?? `${leftTypeface.name} vs ${rightTypeface.name}`;
-  const fallbackIntro = comparison.heroIntro ?? "Regarde d'abord la différence la plus structurante.";
   const anchors = comparison.diffHighlights.map((highlight) => ({
     ...highlight,
     config: getAnchorConfig(highlight.feature),
@@ -175,26 +173,6 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
           rightProfile,
         })
       : null;
-  const corpusPedagogyLine = buildCorpusPedagogyLine({
-    insight: featureMetricInsight,
-    sampleWord: corpusSampleWord,
-    sampleGlyph: corpusSampleGlyph,
-    sampleMode: sample,
-    leftName: leftTypeface.name,
-    rightName: rightTypeface.name,
-  });
-  const heroSupportLine =
-    featureMetricInsight && featureMetricInsight.mode !== "missing"
-      ? featureMetricInsight.strongerSide === "tie"
-        ? "This one is subtle, so trust the stage more than the labels."
-        : `${featureMetricInsight.strongerSide === "left" ? leftTypeface.name : rightTypeface.name} is the clearer side to inspect first.`
-      : null;
-  const unifiedHeroNote = [
-    corpusPedagogyLine ?? `${fallbackIntro} ${activeAnchor.config.note}`,
-    heroSupportLine,
-  ]
-    .filter(Boolean)
-    .join(" ");
   const compactCorpusChip =
     featureMetricInsight && featureMetricInsight.mode !== "missing"
       ? featureMetricInsight.strongerSide === "tie"
@@ -273,12 +251,6 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
           <div className="compare-hero-copy">
             <p className="compare-hero-kicker">Guided comparison</p>
             <h1 className="compare-hero-title">{heroTitle}</h1>
-            <p className="compare-hero-directive">{activeAnchor.config.directive}</p>
-            <p className="compare-hero-note">{unifiedHeroNote}</p>
-            <p className="compare-hero-cue">
-              Best entry: <strong>{corpusSuggestedSample}</strong>
-              <span> · {stageSampleFocusLabel}</span>
-            </p>
           </div>
         </header>
 

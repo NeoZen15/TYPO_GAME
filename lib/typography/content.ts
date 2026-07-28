@@ -167,7 +167,7 @@ const getPublishedConcepts = async (): Promise<Concept[]> => {
   return entries.filter((entry) => entry.status === "published");
 };
 
-const getPublishedComparisons = async (): Promise<Comparison[]> => {
+export const getPublishedComparisons = async (): Promise<Comparison[]> => {
   try {
     const entries = await readJsonFile<Comparison[]>(rootedPath.comparisonsFile);
     return entries.filter((entry) => entry.status === "published");

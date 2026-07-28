@@ -233,6 +233,7 @@ svg {
 .mode-rules-tab:focus-visible,
 .mode-placeholder-btn:focus-visible,
 .choice-btn:focus-visible,
+.error-actions .lp-btn:focus-visible,
 .site-mascot:focus-visible {
   outline: 2px solid var(--accent-yellow);
   outline-offset: 3px;
@@ -440,6 +441,8 @@ svg {
 .mode-select-page,
 .mode-rules-page,
 .mode-placeholder-page,
+/* 404 + render errors: same terminal-screen frame as the mode placeholder. */
+.error-page,
 .onboarding-page {
   min-height: 100svh;
   padding:
@@ -611,6 +614,7 @@ svg {
 .game-v2-actions,
 .mode-rules-actions,
 .mode-placeholder-actions,
+.error-actions,
 .onboarding-actions,
 .choice-actions {
   display: flex;
@@ -792,6 +796,7 @@ svg {
 .mode-select-card__meta,
 .mode-rules-kicker,
 .mode-placeholder-kicker,
+.error-kicker,
 .competition-v1-complete-eyebrow {
   color: var(--ink-soft);
   font-size: 0.72rem;
@@ -988,7 +993,8 @@ svg {
 }
 
 .mode-rules-shell,
-.mode-placeholder-shell {
+.mode-placeholder-shell,
+.error-shell {
   width: var(--shell-width-wide);
   border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
   border-radius: 1.3rem;
@@ -1014,7 +1020,8 @@ svg {
 }
 
 .mode-rules-header,
-.mode-placeholder-shell {
+.mode-placeholder-shell,
+.error-shell {
   display: grid;
   gap: var(--ui-title-gap);
 }
@@ -1172,7 +1179,8 @@ svg {
   color: rgba(244, 243, 238, 0.84);
 }
 
-.mode-placeholder-shell {
+.mode-placeholder-shell,
+.error-shell {
   max-width: 38rem;
   justify-items: center;
   text-align: center;
