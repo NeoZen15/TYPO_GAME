@@ -77,7 +77,11 @@ const checks = [
   {
     label: "Block 2 dark theme contract",
     source: globalCss,
-    pattern: /\.block-2\s*\{[\s\S]*background-color:\s*black;[\s\S]*color:\s*white;/,
+    // L'encre du bloc sombre accepte le blanc historique et le creme de marque
+    // #f4f3ee, adopte le 2026-06-30 avec la bichromie beige de la landing. Le
+    // contrat garde son role : verifier que le bloc reste sombre a encre claire.
+    pattern:
+      /\.block-2\s*\{[\s\S]*background-color:\s*black;[\s\S]*color:\s*(?:white|#f4f3ee);/i,
   },
   {
     label: "Block 2 threshold filter contract",

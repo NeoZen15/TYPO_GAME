@@ -1,7 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ProfileBoardChapter } from "@/lib/profile/mock-profile";
+
+// Reduced-motion preference read as an external store rather than pushed into
+// state from an effect. Setting state synchronously in an effect body triggers a
+// cascading render (react-hooks/set-state-in-effect), and the naive alternative,
+// reading matchMedia in a useState initialiser, breaks server rendering and then
+// mismatches on hydration. useSyncExternalStore is the pattern React documents
+// for exactly this: getServerSnapshot answers during SSR and hydration, then the
+// client snapshot is read and the subscription keeps it live if the user flips
+// the preference mid-session.
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mql = window.matchMedia?.(REDUCED_MOTION_QUERY);
+  if (!mql) return () => {};
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+};
+
+const getReducedMotionSnapshot = () =>
+  window.matchMedia?.(REDUCED_MOTION_QUERY).matches ?? false;
+
+const getReducedMotionServerSnapshot = () => false;
 
 // ---------------------------------------------------------------------------
 // The progression board — a thick board-game track that snakes left↔right and
@@ -105,6 +127,14 @@ export default function ProgressBoard({
   const panelRef = useRef<HTMLDivElement | null>(null);
   const [m, setM] = useState<Measured | null>(null);
   const [revealed, setRevealed] = useState(false);
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
+  // Same end state as before: a reduced-motion visitor sees the board already
+  // revealed, everyone else waits for the intersection observer or its fallback.
+  const isRevealed = revealed || prefersReducedMotion;
 
   useEffect(() => {
     const path = pathRef.current;
@@ -187,13 +217,11 @@ export default function ProgressBoard({
   useEffect(() => {
     const el = panelRef.current;
     if (!el) return;
-    const reduce =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setRevealed(true);
-      return;
-    }
+    // The observer runs whatever the motion preference is, so `revealed` latches
+    // to true and can never go back. prefersReducedMotion only reveals earlier,
+    // it does not replace this. Skipping the observer under reduced motion would
+    // leave `revealed` at false, and a visitor turning the preference off
+    // mid-session would see the board un-reveal.
     let done = false;
     const reveal = () => {
       if (done) return;
@@ -220,7 +248,7 @@ export default function ProgressBoard({
   const half = (RIBBON - 16) / 2; // divider half-length, inside the inner rule
 
   return (
-    <div ref={panelRef} className={`board-panel${revealed ? " is-revealed" : ""}`}>
+    <div ref={panelRef} className={`board-panel${isRevealed ? " is-revealed" : ""}`}>
       <div className="board-wrap" style={{ aspectRatio: `${VW} / ${VH}` }}>
         <svg
           className="board-svg"

@@ -8,49 +8,67 @@ const repoRoot = process.cwd();
 const copyFile = path.join(repoRoot, "content", "copy.ts");
 const copySource = fs.readFileSync(copyFile, "utf8");
 
-const gateCopyBlockMatch = copySource.match(
-  /export const gateCopy = \{([\s\S]*?)\} as const;/
-);
+// Every `*Copy` block is inspected, not just gateCopy. CLAUDE.md states that
+// interface text is centralised here and that this check verifies declared copy
+// is actually used, so a block that escaped the scan would make that claim false
+// and let dead keys accumulate silently.
+const copyBlocks = [
+  ...copySource.matchAll(/export const (\w*Copy) = \{([\s\S]*?)\} as const;/g),
+].map(([, name, body]) => ({
+  name,
+  keys: [...body.matchAll(/^\s*([A-Za-z_$][\w$]*)\s*:/gm)].map(([, key]) => key),
+}));
 
-if (!gateCopyBlockMatch) {
-  console.error("Could not locate `gateCopy` object in content/copy.ts.");
+if (copyBlocks.length === 0) {
+  console.error("Could not locate any `*Copy` object in content/copy.ts.");
   process.exit(1);
 }
 
-const gateCopyKeys = [...gateCopyBlockMatch[1].matchAll(/^\s*([A-Za-z_$][\w$]*)\s*:/gm)].map(
-  ([, key]) => key
-);
+const emptyBlocks = copyBlocks.filter((block) => block.keys.length === 0);
 
-if (gateCopyKeys.length === 0) {
-  console.error("No keys found in `gateCopy` object.");
+if (emptyBlocks.length > 0) {
+  console.error("No keys found in these copy objects:");
+  emptyBlocks.forEach((block) => console.error(`- ${block.name}`));
   process.exit(1);
 }
 
-const searchTargets = ["app", "components", "lib", "content", "docs"];
+const searchTargets = ["app", "components", "features", "lib", "content", "docs"];
 const unusedKeys = [];
 
-for (const key of gateCopyKeys) {
-  try {
-    execFileSync(
-      "rg",
-      ["-n", `gateCopy\\.${key}\\b`, ...searchTargets, "--glob", "!content/copy.ts"],
-      {
-        stdio: "pipe",
+for (const block of copyBlocks) {
+  for (const key of block.keys) {
+    try {
+      execFileSync(
+        "rg",
+        [
+          "-n",
+          `${block.name}\\.${key}\\b`,
+          ...searchTargets,
+          "--glob",
+          "!content/copy.ts",
+        ],
+        {
+          stdio: "pipe",
+        }
+      );
+    } catch (error) {
+      if (typeof error === "object" && error !== null && "status" in error && error.status === 1) {
+        unusedKeys.push(`${block.name}.${key}`);
+        continue;
       }
-    );
-  } catch (error) {
-    if (typeof error === "object" && error !== null && "status" in error && error.status === 1) {
-      unusedKeys.push(key);
-      continue;
+      throw error;
     }
-    throw error;
   }
 }
 
 if (unusedKeys.length > 0) {
-  console.error("Unused `gateCopy` keys detected:");
+  console.error("Unused copy keys detected:");
   unusedKeys.forEach((key) => console.error(`- ${key}`));
   process.exit(1);
 }
 
-console.log(`All gateCopy keys are used (${gateCopyKeys.join(", ")}).`);
+const summary = copyBlocks
+  .map((block) => `${block.name} (${block.keys.join(", ")})`)
+  .join("; ");
+
+console.log(`All copy keys are used: ${summary}.`);

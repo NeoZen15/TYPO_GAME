@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Nested git worktrees live under .claude/worktrees/ and carry their own
+    // build output. Linting them from the parent checkout reports the same
+    // code twice and surfaces compiled Turbopack chunks as source errors.
+    // ".next/**" above is root-anchored and does not cover them.
+    ".claude/worktrees/**",
   ]),
 ]);
 
