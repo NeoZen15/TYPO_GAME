@@ -16,6 +16,7 @@
     "check:contracts": "node scripts/quality/check-motion-contracts.mjs",
     "check:typography-contract": "node scripts/quality/check-typography-contract.mjs",
     "check:license-guard": "node scripts/quality/check-license-guard.mjs",
+    "test:e2e": "playwright test",
     "worktree:report": "node scripts/quality/report-worktree-categories.mjs",
     "profiles:diff": "node --experimental-strip-types --loader ./scripts/typography/alias-loader.mjs ./scripts/typography/diff-corpus-versions.mts",
     "profiles:export:dev": "node --experimental-strip-types --loader ./scripts/typography/alias-loader.mjs ./scripts/typography/export-dev-profiles.mts",

@@ -13,6 +13,16 @@
 # testing
 /coverage
 
+# playwright (run artifacts, never committed)
+/test-results/
+/playwright-report/
+/.playwright/
+/blob-report/
+/playwright/.cache/
+
+# assistant workspace: machine-local settings and nested git worktrees
+/.claude/
+
 # next.js
 /.next/
 /out/
