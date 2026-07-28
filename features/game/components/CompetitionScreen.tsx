@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
+import { isDevRuntime } from "@/lib/dev-mode";
 import {
   COMPETITION_FEEDBACK_DELAY_MS,
   COMPETITION_FEEDBACK_PERSIST_MS,
@@ -1231,6 +1232,10 @@ export default function CompetitionScreen() {
   }, [clockNow, stats]);
 
   useEffect(() => {
+    // Automation hooks, development only. `advanceTime` moves the competition
+    // clock, so production must never install them.
+    if (!isDevRuntime()) return;
+
     window.render_game_to_text = () =>
       JSON.stringify({
         mode: "competition",

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
+import { isDevRuntime } from "@/lib/dev-mode";
 import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
 import {
   type TrainingAnswerResponse,
@@ -190,6 +191,10 @@ export default function GameScreen() {
   }, [clearAdvanceTimer, startSession]);
 
   useEffect(() => {
+    // Automation hooks, development only. They expose the whole session state
+    // and let a caller skip the answer delay, so production never installs them.
+    if (!isDevRuntime()) return;
+
     window.render_game_to_text = () =>
       JSON.stringify({
         mode: "training",

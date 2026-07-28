@@ -2,9 +2,23 @@
 
 import { useEffect } from "react";
 
+import { isDevRuntime } from "@/lib/dev-mode";
+
+// ---------------------------------------------------------------------------
+// Internal interface audit tool. `app/layout.tsx` mounts it on every page, so
+// it is the one dev component that sits in the product render tree, and it must
+// stay out of production: the guard below is what `check:dev-routes` verifies.
+//
+// The global is named `render_ui_audit_to_text`, not `render_game_to_text`. The
+// game screens own the latter and the end to end specs wait on it to know a
+// round is ready. Sharing one name made the two probes interchangeable: when
+// the layout hydrated first, the training spec read this audit payload, found no
+// `status` field, and failed on a misleading message about DATABASE_URL.
+// ---------------------------------------------------------------------------
+
 declare global {
   interface Window {
-    render_game_to_text?: () => string;
+    render_ui_audit_to_text?: () => string;
   }
 }
 
@@ -60,12 +74,15 @@ const collectNodeSnapshot = (selector: string) => {
   };
 };
 
-export default function UiDebugProbe() {
+// The effect lives in its own component so the exported one can bail out before
+// any hook runs. An early return placed above a `useEffect` would call the hook
+// conditionally, which the rules of hooks forbid.
+function UiAuditProbeEffect() {
   useEffect(() => {
-    const existing = window.render_game_to_text;
+    const existing = window.render_ui_audit_to_text;
     if (existing) return;
 
-    window.render_game_to_text = () => {
+    window.render_ui_audit_to_text = () => {
       const bodyStyle = window.getComputedStyle(document.body);
       const htmlStyle = window.getComputedStyle(document.documentElement);
       const main = document.querySelector("main");
@@ -97,10 +114,18 @@ export default function UiDebugProbe() {
     };
 
     return () => {
-      if (window.render_game_to_text === existing) return;
-      delete window.render_game_to_text;
+      if (window.render_ui_audit_to_text === existing) return;
+      delete window.render_ui_audit_to_text;
     };
   }, []);
 
   return null;
+}
+
+export default function UiDebugProbe() {
+  if (!isDevRuntime()) {
+    return null;
+  }
+
+  return <UiAuditProbeEffect />;
 }
