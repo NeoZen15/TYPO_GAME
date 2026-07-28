@@ -11,9 +11,9 @@ npm run typecheck  # tsc --noEmit
 npm run quality    # la porte complète, à passer avant de merger
 ```
 
-`npm run quality` enchaîne 14 étapes, vérifiées dans `package.json` le 2026-07-28 : `lint`, `typecheck`, `check:artifacts`, `check:compat-bridges`, `check:dev-routes`, `check:runtime-boundaries`, `check:copy`, `check:contracts`, `check:typography-contract`, `check:license-guard`, `check:latin-coverage`, `check:token-secret`, `check:event-partitions`, puis `build`.
+`npm run quality` enchaîne 15 étapes, vérifiées dans `package.json` le 2026-07-28 : `lint`, `typecheck`, `check:artifacts`, `check:compat-bridges`, `check:dev-routes`, `check:runtime-boundaries`, `check:copy`, `check:contracts`, `check:typography-contract`, `check:license-guard`, `check:font-licenses`, `check:latin-coverage`, `check:token-secret`, `check:event-partitions`, puis `build`.
 
-Les quatre derniers contrôles avant `build` gardent chacun une règle qui a déjà été enfreinte une fois : ne servir que des licences validées, ne servir que des polices qui ont l'alphabet latin, refuser de démarrer en production sans `GAME_PROVIDER_SECRET`, et signaler les partitions d'événements manquantes. `check:event-partitions` rappelle à chaque passage que les migrations écrites ne sont pas appliquées, c'est voulu.
+Les cinq derniers contrôles avant `build` gardent chacun une règle qui a déjà été enfreinte une fois : ne servir que des licences validées, livrer le texte de la licence dans chaque dossier de `public/fonts` qui héberge une police, ne servir que des polices qui ont l'alphabet latin, refuser de démarrer en production sans `GAME_PROVIDER_SECRET`, et signaler les partitions d'événements manquantes. `check:event-partitions` rappelle à chaque passage que les migrations écrites ne sont pas appliquées, c'est voulu. `check:font-licenses` rappelle de la même façon que PP Frama, la police de marque, n'a toujours pas de licence webfont.
 
 Certaines sessions lancent une seconde instance sur le port 3002 (`npx next dev --hostname 127.0.0.1 -p 3002`). Vérifier quel port tourne avant de conclure qu'une page est cassée.
 
@@ -22,6 +22,7 @@ Checks ciblés, selon ce qu'on touche :
 - nouvelle route interne : `npm run check:dev-routes`
 - pont de compatibilité ajouté ou modifié : `npm run check:compat-bridges`
 - déplacement de modules du labo typo : `npm run check:runtime-boundaries`
+- nouvelle police ajoutée sous `public/fonts` : `npm run check:font-licenses`, et poser son texte de licence avec `node scripts/sync-font-licenses.mjs --snapshot <instantané google/fonts>`
 - avant un commit de stabilisation : `npm run worktree:report`
 
 ## Frontières du repo
