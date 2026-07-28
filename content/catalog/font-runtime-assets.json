@@ -6699,16 +6699,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/ibm_plex_sans/ibm_plex_sans__24caca0aede7.woff2",
-      "runtime_path": "/fonts/ibm_plex_sans/ibm_plex_sans__24caca0aede7.woff2",
-      "file_size_bytes": 10688,
-      "sha256_hash": "5bea511e48f77a44fc2aed5f826a92f7388e92ec87e31e0cd9e7ff695f8b3265",
+      "source_path": "public/fonts/ibm_plex_sans/ibm_plex_sans__ce2c9f482b8a.woff2",
+      "runtime_path": "/fonts/ibm_plex_sans/ibm_plex_sans__ce2c9f482b8a.woff2",
+      "file_size_bytes": 17604,
+      "sha256_hash": "aedeae141b19622c5599ec884f075b9b58ec3036d069a02350da34e31d56d24b",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -7317,16 +7318,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/inter/inter__05cf802c73c1.woff2",
-      "runtime_path": "/fonts/inter/inter__05cf802c73c1.woff2",
-      "file_size_bytes": 19044,
-      "sha256_hash": "46dd4cdca58c26ae87cc6927657bf83b2e8abfc39ffd0ab176e301a8d28d22bf",
+      "source_path": "public/fonts/inter/inter__a28b7e319024.woff2",
+      "runtime_path": "/fonts/inter/inter__a28b7e319024.woff2",
+      "file_size_bytes": 48432,
+      "sha256_hash": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -7533,16 +7535,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/jetbrains_mono/jetbrains_mono__217f1f50f2d9.woff2",
-      "runtime_path": "/fonts/jetbrains_mono/jetbrains_mono__217f1f50f2d9.woff2",
-      "file_size_bytes": 7368,
-      "sha256_hash": "d5f407e28185790518c49ec8738fa89916ddc99f793010d249165d0e2c2452cc",
+      "source_path": "public/fonts/jetbrains_mono/jetbrains_mono__9e2dd53e7754.woff2",
+      "runtime_path": "/fonts/jetbrains_mono/jetbrains_mono__9e2dd53e7754.woff2",
+      "file_size_bytes": 21212,
+      "sha256_hash": "d3dcdccdaba31643defe2317942155d4af3ee03951d058adbe8bc02b13e61b0a",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -9921,16 +9924,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/merriweather/merriweather__14115d2558ab.woff2",
-      "runtime_path": "/fonts/merriweather/merriweather__14115d2558ab.woff2",
-      "file_size_bytes": 10872,
-      "sha256_hash": "53049794c25af8b4a5e2b4b9c2345c47b8f0fdc65ec6e93b18fea74eae2ce956",
+      "source_path": "public/fonts/merriweather/merriweather__8bef1850e4ab.woff2",
+      "runtime_path": "/fonts/merriweather/merriweather__8bef1850e4ab.woff2",
+      "file_size_bytes": 97608,
+      "sha256_hash": "af1be39e2ff60ede976bc3a93b9aceb3ac7103207b21a62d1971e3ea8cf95b97",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -10353,16 +10357,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/montserrat/montserrat__155bc5d4aa04.woff2",
-      "runtime_path": "/fonts/montserrat/montserrat__155bc5d4aa04.woff2",
-      "file_size_bytes": 10620,
-      "sha256_hash": "9e2672d100bc36a37073fb250abfaa7394f5151bf5dda3f4d5fc281345eb391b",
+      "source_path": "public/fonts/montserrat/montserrat__c4f4a8cd0b92.woff2",
+      "runtime_path": "/fonts/montserrat/montserrat__c4f4a8cd0b92.woff2",
+      "file_size_bytes": 35508,
+      "sha256_hash": "6438d7b8ea9c7c3992d5e2fd2afdb1ff948570a3ef0bedae76247b51632960ba",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -15255,16 +15260,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/nunito/nunito__1447c8d94c50.woff2",
-      "runtime_path": "/fonts/nunito/nunito__1447c8d94c50.woff2",
-      "file_size_bytes": 16056,
-      "sha256_hash": "b78f0f80f213f77eff3be0ae6117a7bead32a388501e4e2616d6fbc5d8f1de53",
+      "source_path": "public/fonts/nunito/nunito__b843f454c4e7.woff2",
+      "runtime_path": "/fonts/nunito/nunito__b843f454c4e7.woff2",
+      "file_size_bytes": 16368,
+      "sha256_hash": "f13006d8d98974499a90d13e567600ab3fd9f6f9a65d34ef715516025ac3837d",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -15399,16 +15405,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/open_sans/open_sans__2d271dcf6ab2.woff2",
-      "runtime_path": "/fonts/open_sans/open_sans__2d271dcf6ab2.woff2",
-      "file_size_bytes": 5812,
-      "sha256_hash": "3676a55a13c1854c171916db313ba08291c9d0322d92f0556a85ba81ddf38b8a",
+      "source_path": "public/fonts/open_sans/open_sans__93aeb3747657.woff2",
+      "runtime_path": "/fonts/open_sans/open_sans__93aeb3747657.woff2",
+      "file_size_bytes": 13452,
+      "sha256_hash": "ce39fe93a4c5179c0d53a4bdc2a378bdd713cdcfd15d812b0e26694d7f6d9867",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -15525,16 +15532,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/oswald/oswald__1da53b68b82c.woff2",
-      "runtime_path": "/fonts/oswald/oswald__1da53b68b82c.woff2",
-      "file_size_bytes": 4072,
-      "sha256_hash": "7cdf2e2e9a9f347c35065711f2a7e8a82c4bc0c0700382c91c2d52cd4d92f36a",
+      "source_path": "public/fonts/oswald/oswald__42407643b861.woff2",
+      "runtime_path": "/fonts/oswald/oswald__42407643b861.woff2",
+      "file_size_bytes": 12340,
+      "sha256_hash": "093d83e32a9a866c91943ef373c72d6121095cfca29303f9fe665748c0d28753",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -15995,16 +16003,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/playfair_display/playfair_display__8b220b42568f.woff2",
-      "runtime_path": "/fonts/playfair_display/playfair_display__8b220b42568f.woff2",
-      "file_size_bytes": 11424,
-      "sha256_hash": "d2d5be11d4e7504895877faa80cff31264ecb4711cc5507a03ec29e90153cc42",
+      "source_path": "public/fonts/playfair_display/playfair_display__ad4e7380352c.woff2",
+      "runtime_path": "/fonts/playfair_display/playfair_display__ad4e7380352c.woff2",
+      "file_size_bytes": 21880,
+      "sha256_hash": "57edb864a5b79ea8143aa35b89212f99ef63d150052bb6dbb912827e67fa61ba",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -16141,16 +16150,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/poppins/poppins__054df55a41b0.woff2",
-      "runtime_path": "/fonts/poppins/poppins__054df55a41b0.woff2",
-      "file_size_bytes": 5448,
-      "sha256_hash": "2477683a4b1200680780a759cc1b93b816410362dc5f4c74ebfeafa212bcb74d",
+      "source_path": "public/fonts/poppins/poppins__13045147df4a.woff2",
+      "runtime_path": "/fonts/poppins/poppins__13045147df4a.woff2",
+      "file_size_bytes": 7900,
+      "sha256_hash": "3dc5d0c52428fe1696264907a1054ebbaac07f8cbe45832c105f819c2ae397c0",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -16321,16 +16331,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/pt_serif/pt_serif__2282f17bdcb0.woff2",
-      "runtime_path": "/fonts/pt_serif/pt_serif__2282f17bdcb0.woff2",
-      "file_size_bytes": 8632,
-      "sha256_hash": "3a274c5ae6fd7bcbd384a080bc8cf124c9a5ba524fc8ae77f12da84b2e455bbf",
+      "source_path": "public/fonts/pt_serif/pt_serif__9c9e7a681c9f.woff2",
+      "runtime_path": "/fonts/pt_serif/pt_serif__9c9e7a681c9f.woff2",
+      "file_size_bytes": 13400,
+      "sha256_hash": "202b8aa6108ec44ba8f3d717b0c9f7f94c7f4d76f01943104eaadaf6cf3da602",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -16665,16 +16676,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/raleway/raleway__0d8584dc0d84.woff2",
-      "runtime_path": "/fonts/raleway/raleway__0d8584dc0d84.woff2",
-      "file_size_bytes": 8804,
-      "sha256_hash": "0b2912cd22c14e07326e9540ac60efa292727156a603a2e208618503ce8fd664",
+      "source_path": "public/fonts/raleway/raleway__85e4df62cb55.woff2",
+      "runtime_path": "/fonts/raleway/raleway__85e4df62cb55.woff2",
+      "file_size_bytes": 17504,
+      "sha256_hash": "656f27ce9794103a78127dcf86f423a2b62c9aadf405404972489ab7299a2a10",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -17025,16 +17037,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/roboto/roboto__04c85c9d8c8b.woff2",
-      "runtime_path": "/fonts/roboto/roboto__04c85c9d8c8b.woff2",
-      "file_size_bytes": 11844,
-      "sha256_hash": "d43148fb1dc5ec657c7ec57e8b671c1e3626d45ef306c472582a9069413451c9",
+      "source_path": "public/fonts/roboto/roboto__ae668e85f0c3.woff2",
+      "runtime_path": "/fonts/roboto/roboto__ae668e85f0c3.woff2",
+      "file_size_bytes": 15148,
+      "sha256_hash": "0b94e95b77c51260899e0381862d8bc5a48f23b973f41bf5cb89d43f8c2f4268",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -17043,16 +17056,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/roboto_mono/roboto_mono__10041036a996.woff2",
-      "runtime_path": "/fonts/roboto_mono/roboto_mono__10041036a996.woff2",
-      "file_size_bytes": 5912,
-      "sha256_hash": "e479516d3c0e2375dcb5fe6ee631cabf4a72467d078e173cfc6e6b0179bc9cca",
+      "source_path": "public/fonts/roboto_mono/roboto_mono__96c914ccf293.woff2",
+      "runtime_path": "/fonts/roboto_mono/roboto_mono__96c914ccf293.woff2",
+      "file_size_bytes": 12684,
+      "sha256_hash": "c49e5f206c0ba05fab722703bcfc6c83d517b15cb50dd56b5ce4e4d9fafa49a4",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -18521,16 +18535,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/source_code_pro/source_code_pro__00ab0f8acf6d.woff2",
-      "runtime_path": "/fonts/source_code_pro/source_code_pro__00ab0f8acf6d.woff2",
-      "file_size_bytes": 6840,
-      "sha256_hash": "198099421378c8ff75964ab5b7ad2bcd11290e76dc172c5104668271b94fca81",
+      "source_path": "public/fonts/source_code_pro/source_code_pro__5999b230bdb1.woff2",
+      "runtime_path": "/fonts/source_code_pro/source_code_pro__5999b230bdb1.woff2",
+      "file_size_bytes": 11664,
+      "sha256_hash": "609df37bbf325f6d7b0a1eef589fd0bdf700d808576b112b7f3fc810ef2a0e87",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {
@@ -18539,16 +18554,17 @@
       "font_format": "woff2",
       "weight": 400,
       "style": "normal",
-      "source_path": "public/fonts/source_sans_3/source_sans_3__06af9e23a2ea.woff2",
-      "runtime_path": "/fonts/source_sans_3/source_sans_3__06af9e23a2ea.woff2",
-      "file_size_bytes": 6260,
-      "sha256_hash": "dfaed6452fa39ab62edfff1f5a491ab8d9cf60a2c2a27a269ef0ccd42652fc1b",
+      "source_path": "public/fonts/source_sans_3/source_sans_3__a43eb2481f0d.woff2",
+      "runtime_path": "/fonts/source_sans_3/source_sans_3__a43eb2481f0d.woff2",
+      "file_size_bytes": 15684,
+      "sha256_hash": "70577c6e1610b21782d8a8412a6604c82f98f12fe4ff8c619b934a8c19022719",
       "runtime_status": "ready",
       "asset_origin": "google_fonts_snapshot_conversion",
       "verified_at_utc": "2026-06-29T15:22:29.676185+00:00",
       "notes": [
         "mass non-display wave 2026-06-29",
-        "subset to Latin charset"
+        "subset to Latin charset",
+        "runtimePath repointed to broad-Latin split (systemic-split-bug fix)"
       ]
     },
     {

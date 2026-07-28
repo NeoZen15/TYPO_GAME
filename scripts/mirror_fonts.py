@@ -38,6 +38,28 @@ import shutil
 import sys
 from pathlib import Path
 
+# Basic Latin lowercase a-z. A runtime split must cover these to render Latin words.
+_BASIC_LATIN_LOWER = tuple(range(ord("a"), ord("z") + 1))
+
+
+def covers_basic_latin(path: Path) -> bool:
+    """Return True if the woff2 at *path* has cmap entries for every a-z glyph.
+
+    Google multi-split families are content-hash named, so sorted()[0] can be a
+    NON-Latin fragment (Cyrillic/Greek/Vietnamese-only, etc.). Choosing such a
+    split as runtimePath makes the whole typeface render in the browser fallback
+    serif, which is fatal for a typeface-recognition game. We probe the cmap so
+    runtimePath can be pinned to a split that actually carries Latin letters.
+    Any read error returns False so the caller falls back to legacy behaviour.
+    """
+    try:
+        from fontTools.ttLib import TTFont
+
+        cmap = TTFont(str(path), lazy=True).getBestCmap() or {}
+        return all(cp in cmap for cp in _BASIC_LATIN_LOWER)
+    except Exception:
+        return False
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -112,6 +134,8 @@ def main() -> None:
             continue
 
         runtime_files: list[str] = []
+        # browser_path -> source file, so we can probe Latin coverage below.
+        runtime_pairs: list[tuple[str, Path]] = []
 
         for filename in sorted(woff2_files):
             src = source_root / filename
@@ -123,6 +147,7 @@ def main() -> None:
 
             browser_path = f"/fonts/{slug}/{filename}"
             runtime_files.append(browser_path)
+            runtime_pairs.append((browser_path, src))
 
             if args.dry_run:
                 print(f"[DRY] {src} -> {dst}")
@@ -133,8 +158,20 @@ def main() -> None:
             copied += 1
 
         if runtime_files:
-            entry["runtimeFiles"] = runtime_files
-            entry["runtimePath"] = runtime_files[0]
+            # HARDENING: pin runtimePath to the first split that COVERS basic Latin
+            # (a-z), not sorted()[0]. For multi-split Google families the lowest-hash
+            # split is often a non-Latin fragment, which would render the typeface as
+            # the browser fallback serif. Fall back to sorted()[0] only when no split
+            # covers Latin (genuinely non-Latin faces). We also float the chosen split
+            # to runtimeFiles[0] so the runtimePath == runtimeFiles[0] invariant holds.
+            canonical = next(
+                (bp for bp, src in runtime_pairs if covers_basic_latin(src)),
+                runtime_files[0],
+            )
+            entry["runtimeFiles"] = [canonical] + [
+                bp for bp in runtime_files if bp != canonical
+            ]
+            entry["runtimePath"] = canonical
 
     print("\nResultat :")
     print(f"  Copiees               : {copied}")

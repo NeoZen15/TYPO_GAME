@@ -3,6 +3,13 @@ export type CompetitionQuestionOption = {
   label: string;
 };
 
+export type CompetitionFontFace = {
+  family: string;
+  src: string;
+  weight: number;
+  style: string;
+};
+
 export type CompetitionQuestion = {
   id: string;
   token: string;
@@ -10,6 +17,7 @@ export type CompetitionQuestion = {
   typefaceSlug: string;
   typefaceLabel: string;
   fontFamily: string;
+  fontFace: CompetitionFontFace | null;
   options: CompetitionQuestionOption[];
 };
 

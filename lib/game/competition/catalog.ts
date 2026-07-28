@@ -1,4 +1,5 @@
 import runtimeCatalog from "@/content/catalog/font-runtime-assets.json";
+import { type CompetitionFontFace } from "@/lib/game/competition/contracts";
 import { TRAINING_WORD_POOL } from "@/lib/game/training/catalog";
 
 const LOCAL_FONT_FAMILIES: Record<string, string> = {
@@ -44,8 +45,24 @@ export const getCompetitionFontFamily = (slug: string, displayName: string) => {
   return LOCAL_FONT_FAMILIES[slug] ?? `"${displayName}", serif`;
 };
 
-export const getCompetitionFontFaceCss = () => {
-  const lines = [...runtimeBySlug.values()].flatMap((record) => [
+// Descriptor for a single runtime face, used to inject its @font-face on demand
+// (client-side, just before the face is shown) instead of shipping all faces.
+export const getCompetitionFontFace = (slug: string): CompetitionFontFace | null => {
+  const record = runtimeBySlug.get(slug);
+  if (!record) {
+    return null;
+  }
+
+  return {
+    family: `JDT__${record.typeface_slug}`,
+    src: String(record.runtime_path),
+    weight: record.weight ?? 400,
+    style: record.style ?? "normal",
+  };
+};
+
+const buildFontFaceRule = (record: RuntimeRecord) =>
+  [
     "@font-face {",
     `  font-family: "JDT__${record.typeface_slug}";`,
     `  src: url("${record.runtime_path}") format("woff2");`,
@@ -53,7 +70,17 @@ export const getCompetitionFontFaceCss = () => {
     `  font-style: ${record.style ?? "normal"};`,
     "  font-display: swap;",
     "}",
-  ]);
+  ].join("\n");
 
-  return lines.join("\n");
+// Emits @font-face rules for the given slugs, or for every runtime face when no
+// slugs are passed (backward-compatible default). The competition page no longer
+// ships the full set; faces are injected on demand from the per-question descriptor.
+export const getCompetitionFontFaceCss = (slugs?: readonly string[]) => {
+  const records = slugs
+    ? slugs
+        .map((slug) => runtimeBySlug.get(slug))
+        .filter((record): record is RuntimeRecord => record !== undefined)
+    : [...runtimeBySlug.values()];
+
+  return records.map(buildFontFaceRule).join("\n");
 };
