@@ -26,7 +26,16 @@ type InlineFeedback = {
 type ProgressState = {
   resolvedCount: number;
   totalRounds: number;
+  eyeLevel?: number;
+  facesMastered?: number;
+  poolSize?: number;
+  visibleLevel?: string;
+  levelChanged?: boolean;
 };
+
+// Level-change toast lifetime (N-24/N-25). The global visible level is NEVER
+// shown continuously in game; it surfaces only as this brief toast when it moves.
+const LEVEL_TOAST_MS = 3200;
 
 const CARD_COLORS = ["#8EA2FF", "#67D6B6", "#F5BF6A", "#F39AB1"] as const;
 
@@ -39,15 +48,19 @@ const getPreferredLocale = () =>
 // The familiarity answer seeds the initial Leitner boxes on the first session.
 const ONBOARDING_STORAGE_KEY = "jdt-onboarding-v1";
 
-const getOnboardingFamiliarity = (): string | null => {
-  if (typeof window === "undefined") return null;
+const readOnboarding = (): { familiarity: string | null; warmupCorrect: boolean | null } => {
+  if (typeof window === "undefined") return { familiarity: null, warmupCorrect: null };
   try {
     const raw = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as { familiarity?: string };
-    return parsed.familiarity ?? null;
+    if (!raw) return { familiarity: null, warmupCorrect: null };
+    const parsed = JSON.parse(raw) as { familiarity?: string; warmupCorrect?: boolean };
+    return {
+      familiarity: parsed.familiarity ?? null,
+      // Only forward a real boolean; a missing value means "no downgrade" downstream.
+      warmupCorrect: typeof parsed.warmupCorrect === "boolean" ? parsed.warmupCorrect : null,
+    };
   } catch {
-    return null;
+    return { familiarity: null, warmupCorrect: null };
   }
 };
 
@@ -66,10 +79,23 @@ export default function GameScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [inlineFeedback, setInlineFeedback] = useState<InlineFeedback>(null);
+  const [levelToast, setLevelToast] = useState<string | null>(null);
 
   const advanceTimerRef = useRef<number | null>(null);
   const attemptStartedAtRef = useRef<number>(0);
   const pendingAdvanceRef = useRef<(() => void) | null>(null);
+  const levelToastTimerRef = useRef<number | null>(null);
+
+  const showLevelToast = useCallback((level: string) => {
+    if (levelToastTimerRef.current !== null) {
+      window.clearTimeout(levelToastTimerRef.current);
+    }
+    setLevelToast(`New level ${level}`);
+    levelToastTimerRef.current = window.setTimeout(() => {
+      setLevelToast(null);
+      levelToastTimerRef.current = null;
+    }, LEVEL_TOAST_MS);
+  }, []);
 
   const clearAdvanceTimer = useCallback(() => {
     if (advanceTimerRef.current !== null) {
@@ -122,6 +148,7 @@ export default function GameScreen() {
     setIsRoundLocked(false);
 
     try {
+      const onboarding = readOnboarding();
       const response = await fetch("/api/training/session/start", {
         method: "POST",
         headers: {
@@ -129,7 +156,8 @@ export default function GameScreen() {
         },
         body: JSON.stringify({
           locale: getPreferredLocale(),
-          familiarity: getOnboardingFamiliarity(),
+          familiarity: onboarding.familiarity,
+          warmupCorrect: onboarding.warmupCorrect,
         }),
       });
 
@@ -154,6 +182,10 @@ export default function GameScreen() {
 
     return () => {
       clearAdvanceTimer();
+      if (levelToastTimerRef.current !== null) {
+        window.clearTimeout(levelToastTimerRef.current);
+        levelToastTimerRef.current = null;
+      }
     };
   }, [clearAdvanceTimer, startSession]);
 
@@ -164,6 +196,7 @@ export default function GameScreen() {
         status: isLoading ? "loading" : error ? "error" : isComplete ? "complete" : "playing",
         sessionId,
         progress,
+        levelToast,
         question: question
           ? {
               id: question.id,
@@ -224,7 +257,7 @@ export default function GameScreen() {
       delete window.render_game_to_text;
       delete window.advanceTime;
     };
-  }, [error, flushAdvance, isComplete, isLoading, progress, question, result, selectedId, sessionId, wrongAttemptIds]);
+  }, [error, flushAdvance, isComplete, isLoading, levelToast, progress, question, result, selectedId, sessionId, wrongAttemptIds]);
 
   const handleSelect = useCallback(
     async (optionId: string) => {
@@ -255,7 +288,14 @@ export default function GameScreen() {
         }
 
         const payload = (await response.json()) as TrainingAnswerResponse;
-        setProgress(payload.progress);
+        // Merge: wrong turns omit the mastery aggregate, so keep the last values
+        // instead of blanking the indicator between a miss and the next resolve.
+        setProgress((prev) => ({ ...prev, ...payload.progress }));
+        // N-24/N-25: the global visible level is never shown continuously; raise a
+        // brief toast ONLY when the level actually moved on this answer.
+        if (payload.progress.levelChanged && payload.progress.visibleLevel) {
+          showLevelToast(payload.progress.visibleLevel);
+        }
         setInlineFeedback({
           kind: payload.result,
           text: payload.feedbackText,
@@ -300,7 +340,16 @@ export default function GameScreen() {
         setIsRoundLocked(false);
       }
     },
-    [beginQuestion, isComplete, isLoading, isRoundLocked, question, queueAdvance, sessionId]
+    [
+      beginQuestion,
+      isComplete,
+      isLoading,
+      isRoundLocked,
+      question,
+      queueAdvance,
+      sessionId,
+      showLevelToast,
+    ]
   );
 
   const currentQuestion = question;
@@ -313,6 +362,12 @@ export default function GameScreen() {
         aria-label="Guess the typeface"
         aria-busy={isLoading || isRoundLocked}
       >
+        {levelToast ? (
+          <div className="game-v2-level-toast" role="status" aria-live="polite">
+            {levelToast}
+          </div>
+        ) : null}
+
         <div className="game-v2-word-wrap">
           {isLoading ? (
             <h1 className="game-v2-word">Loading session</h1>
@@ -339,6 +394,15 @@ export default function GameScreen() {
               Back to modes
             </Link>
           </div>
+        ) : null}
+
+        {!error && !isLoading && !isComplete && currentQuestion && progress.poolSize ? (
+          // Unobtrusive progression indicator. Deliberately shows the mastered
+          // count (a growing progression signal), NOT the global eye level, which
+          // spec §15 / N-24 keep OFF the game screen except on a level-change toast.
+          <p className="game-v2-progress" aria-live="polite">
+            {progress.facesMastered ?? 0} / {progress.poolSize} faces mastered
+          </p>
         ) : null}
 
         {!error && !isLoading && !isComplete && currentQuestion ? (

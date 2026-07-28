@@ -15,24 +15,40 @@ export type TrainingQuestion = {
   options: QuestionOption[];
 };
 
+// Progress carried to the client. resolvedCount/totalRounds drive the round meter;
+// the optional aggregate feeds the unobtrusive in-game progression indicator
+// (reused from profile-stats loadTrainingProgress). The aggregate is present on
+// session start and on each RESOLVED question, and omitted on a wrong (non-
+// advancing) turn where mastery has not moved.
+//
+// visibleLevel / levelChanged carry the global visible Dreyfus level (N.1..E.5,
+// spec I-08). It is the aggregated READ of mastery_level (NOT the XP-based
+// eyeLevel above, which is a separate volume system). visibleLevel is recomputed
+// after EACH answer (N-22) and levelChanged is true only when the persisted level
+// moved, so the client can raise a one-off toast (N-24 / N-25) and never a
+// continuous level display. levelChanged is present only on answer responses.
+export type TrainingProgress = {
+  resolvedCount: number;
+  totalRounds: number;
+  eyeLevel?: number;
+  facesMastered?: number;
+  poolSize?: number;
+  visibleLevel?: string;
+  levelChanged?: boolean;
+};
+
 export type TrainingStartResponse = {
   sessionId: string;
   userId: string;
   question: TrainingQuestion;
-  progress: {
-    resolvedCount: number;
-    totalRounds: number;
-  };
+  progress: TrainingProgress;
 };
 
 export type TrainingAnswerResponse = {
   result: "correct" | "wrong";
   questionResolved: boolean;
   feedbackText: string;
-  progress: {
-    resolvedCount: number;
-    totalRounds: number;
-  };
+  progress: TrainingProgress;
   nextQuestion?: TrainingQuestion;
   sessionComplete?: boolean;
 };

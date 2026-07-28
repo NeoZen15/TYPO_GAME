@@ -11,6 +11,7 @@ export async function POST(request: Request) {
     const body = (await request.json().catch(() => ({}))) as {
       locale?: "fr" | "en";
       familiarity?: string;
+      warmupCorrect?: boolean;
     };
     const cookieStore = await cookies();
     const existingGuestUserId = cookieStore.get(GUEST_COOKIE_NAME)?.value ?? null;
@@ -19,6 +20,8 @@ export async function POST(request: Request) {
       locale: body.locale === "en" ? "en" : "fr",
       guestUserId: existingGuestUserId,
       familiarity: normalizeFamiliarity(body.familiarity),
+      // Only a real boolean is a signal; anything else means "no downgrade".
+      warmupCorrect: typeof body.warmupCorrect === "boolean" ? body.warmupCorrect : null,
     });
 
     const response = NextResponse.json(result.payload);

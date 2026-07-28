@@ -390,3 +390,46 @@ export async function loadRealProfile(
 
   return { profile, eye };
 }
+
+// ---------------------------------------------------------------------------
+// Lightweight progression aggregate for the in-game indicator (training payload).
+//
+// This does NOT rebuild any computation: it reuses buildEye (which itself reuses
+// levelFromXp) so the eye level is derived EXACTLY as the profile page derives it.
+// Faces mastered / pool size / average mastery come straight from
+// user_typeface_state. Only 3 reads (vs loadRealProfile's full profile fan-out)
+// so it is cheap enough to compute on each resolved question.
+// ---------------------------------------------------------------------------
+
+export type TrainingProgressAggregate = {
+  eyeLevel: number;
+  facesMastered: number;
+  poolSize: number;
+  avgMastery: number;
+};
+
+export async function loadTrainingProgress(
+  userId: string,
+): Promise<TrainingProgressAggregate> {
+  const [perTfAnswers, states, attrs] = await Promise.all([
+    queryRows<AnswerRow>(sql`
+      SELECT typeface_slug, COUNT(*)::int AS answers, COUNT(*) FILTER (WHERE is_correct)::int AS correct
+      FROM user_event_fact WHERE user_id = ${userId}::uuid AND event_type = 'answer'
+      GROUP BY typeface_slug`),
+    queryRows<StateRow>(sql`
+      SELECT typeface_slug, mastery_level FROM user_typeface_state WHERE user_id = ${userId}::uuid`),
+    queryRows<AttrRow>(sql`
+      SELECT typeface_slug, primary_category::text AS primary_category, sub_category::text AS sub_category,
+             aperture_profile::text AS aperture_profile, contrast_profile::text AS contrast_profile
+      FROM typefaces_core`),
+  ]);
+
+  const { eye } = buildEye(perTfAnswers, states, attrs);
+  const poolSize = states.length;
+  const facesMastered = states.filter((s) => s.mastery_level >= 4).length;
+  const avgMastery = poolSize
+    ? Math.round((states.reduce((sum, s) => sum + s.mastery_level, 0) / poolSize) * 100) / 100
+    : 0;
+
+  return { eyeLevel: eye.level, facesMastered, poolSize, avgMastery };
+}

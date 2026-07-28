@@ -121,6 +121,15 @@ export default function ParticleField() {
     };
 
     const onMove = (event: PointerEvent) => {
+      // Opt-in quiet zones (e.g. the onboarding content block): suppress the
+      // pointer halo so it never glows under the text/cards. The dot-field
+      // itself keeps twinkling — only the halo fades out here. No-op on the
+      // landing, which has no [data-field-quiet] elements.
+      const target = event.target as Element | null;
+      if (target && target.closest("[data-field-quiet]")) {
+        pointerIn = false;
+        return;
+      }
       const rect = canvas.getBoundingClientRect();
       pointerTX = event.clientX - rect.left;
       pointerTY = event.clientY - rect.top;
