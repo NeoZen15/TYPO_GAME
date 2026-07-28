@@ -1,0 +1,142 @@
+RÉFLEXION — AVANT DE CHOISIR UN MODÈLE ÉCONOMIQUE
+
+Note de réflexion, pas de décision. On pose les vraies questions et les
+scénarios honnêtement, pour décider l'esprit clair. À lire avant
+business-model.txt (qui, lui, propose déjà des réponses).
+
+
+────────────────────────────────────────────────────────
+LA QUESTION QUI COMMANDE TOUT
+────────────────────────────────────────────────────────
+
+Avant « comment ça gagne de l'argent », il y a : « ça veut devenir quoi ? »
+
+Tant qu'on n'a pas répondu à ça, tout débat sur affiliation vs Pro vs B2B
+tourne à vide. Le même produit peut être un magnifique side-project OU le
+début d'une boîte — mais pas les deux à fond en même temps, parce que les
+deux demandent des choix opposés (voir plus bas).
+
+Donc on ne choisit pas un modèle. On choisit d'abord une ambition.
+Le modèle en découle presque mécaniquement.
+
+
+────────────────────────────────────────────────────────
+SCÉNARIO 1 — LE BEL OBJET QUI S'AUTOFINANCE
+────────────────────────────────────────────────────────
+
+L'idée : un produit fini, soigné, qui te fait honneur, vit longtemps,
+et paie ses propres serveurs (voire un peu plus). Pas de pression de
+croissance.
+
+   À quoi ça ressemble si ça marche :
+      • un public fidèle de passionnés de typo,
+      • le jeu gratuit comme vitrine de ton savoir-faire,
+      • un peu de revenu passif (affiliation fontes) qui couvre les coûts,
+      • éventuellement un petit Pro à prix doux pour les fans.
+
+   Ce que ça demande :
+      • peu de friction commerciale,
+      • du temps créatif, pas du temps « business »,
+      • accepter que le revenu reste modeste.
+
+   Le piège : sur-investir dans du B2B/abonnement que cette ambition ne
+   justifie pas. Ici, la simplicité est une fonctionnalité.
+
+   Modèle qui colle : Funnel gratuit + affiliation, Pro léger optionnel.
+
+
+────────────────────────────────────────────────────────
+SCÉNARIO 2 — LA VRAIE BOÎTE
+────────────────────────────────────────────────────────
+
+L'idée : tu veux que ça grossisse, que ça fasse vivre quelqu'un, que ça
+ait une trajectoire.
+
+   À quoi ça ressemble si ça marche :
+      • un revenu récurrent qui scale,
+      • probablement le B2B éducation comme moteur (peu de clients, gros
+        tickets, besoin réel et identifiable),
+      • le grand public comme funnel d'acquisition, pas comme source
+        principale.
+
+   Ce que ça demande :
+      • du temps commercial (démarcher des écoles, des agences),
+      • construire des features « pas fun » : comptes orga, facturation,
+        dashboard prof, support,
+      • penser distribution autant que produit.
+
+   Le piège : croire que le grand public typo paiera assez en direct.
+   Le créneau est trop petit pour porter une boîte par l'abonnement D2C
+   seul. Si on vise une boîte, c'est par le B2B ou pas du tout.
+
+   Modèle qui colle : B2B éducation en moteur + gratuit en funnel.
+
+
+────────────────────────────────────────────────────────
+LE RÉEL À GARDER EN TÊTE (LES DEUX SCÉNARIOS)
+────────────────────────────────────────────────────────
+
+   • La typo est un petit marché. Ce n'est pas un défaut, c'est un cadre :
+     ça oriente vers « peu de clients qui paient bien » (B2B) ou « beaucoup
+     de gratuits + revenu indirect » (affiliation), rarement vers « masse
+     d'abonnés D2C ».
+
+   • Les comparables qui ont duré (Kerntype, Typewolf...) sont gratuits et
+     monétisent ailleurs. C'est un signal, pas une fatalité — mais il faut
+     une raison claire de faire différemment.
+
+   • Le produit a déjà des atouts rares : une vraie base de données, du
+     suivi de progression, des analytics. Ça, c'est précisément ce qui
+     ouvre le B2B. À ne pas gâcher.
+
+
+────────────────────────────────────────────────────────
+CE QUI EST « SANS REGRET » (à faire quel que soit le choix)
+────────────────────────────────────────────────────────
+
+Des actions qui servent les deux scénarios, donc à zéro risque de se
+tromper :
+
+   • Garder le jeu gratuit excellent — c'est le funnel dans tous les cas.
+   • Soigner la progression et le profil joueur — c'est l'actif
+     monétisable, en Pro comme en B2B.
+   • Mettre en place le suivi (qui joue, combien, rétention) — sans data
+     d'usage, aucune décision business n'est fiable.
+   • Tester l'affiliation fontes en douceur — peu d'effort, ça mesure si
+     l'audience « clique pour acheter une typo ».
+
+On peut avancer là-dessus sans avoir tranché l'ambition. Le reste
+(paywall, facturation, dashboard prof) attend la décision.
+
+
+────────────────────────────────────────────────────────
+POUR DÉCIDER — LES QUESTIONS À SE POSER
+────────────────────────────────────────────────────────
+
+   1. Dans 2 ans, je veux que ce projet soit : un bel objet qui vit seul,
+      ou une activité qui me fait vivre / qui emploie ?
+
+   2. Suis-je prêt à faire du commercial (démarcher écoles, agences),
+      ou je veux rester côté création/produit ?
+
+   3. Combien de temps par semaine je veux y mettre, durablement ?
+
+   4. Ai-je besoin que ça rapporte (et combien), ou ça doit juste ne pas
+      coûter ?
+
+   La réponse à 1 et 2 suffit en général à choisir le scénario. Le reste
+   ajuste l'intensité.
+
+
+────────────────────────────────────────────────────────
+EN ATTENDANT
+────────────────────────────────────────────────────────
+
+La veille marché tourne. Elle va donner du concret sur : taille réelle de
+l'audience, ce que paient (ou pas) les designers, taux d'affiliation
+fontes, prix du B2B éducation. Ces chiffres ne choisiront pas l'ambition à
+ta place — mais ils diront si chaque scénario est crédible.
+
+Donc : décider l'ambition d'un côté (question de fond, personnelle),
+lire la veille de l'autre (question de faisabilité). Les deux se
+rejoignent pour figer le modèle.

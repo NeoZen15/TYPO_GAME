@@ -3,7 +3,7 @@
 > Source de vérité de l'avancement produit, confrontée à l'état réel du code.
 > Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
 >
-> **Dernière mise à jour : 2026-06-29.**
+> **Dernière mise à jour : 2026-07-27.**
 > Les cases reflètent l'état du code à cette date — à re-vérifier avant d'affirmer comme acquis.
 
 ## Comment lire
@@ -23,6 +23,21 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
 ---
+
+## Journal — 2026-07-27 (outillage, licences, mise en ligne)
+
+- **`CLAUDE.md` créé à la racine** (commit `ba44383`) : conventions du repo tirées de `docs/`, plus les règles de travail qui n'existaient que dans la mémoire locale de l'assistant, donc perdues au changement de machine.
+- **`npm run quality` est VERT pour la première fois**, exit 0 sur 11 étapes. Trois causes réglées : le worktree imbriqué `.claude/worktrees/` que ESLint lintait entièrement (**413 erreurs et 5378 avertissements tombés à 0 et 1**, l'ignore `.next/**` est ancré à la racine et ne le couvrait pas), le contrat de motion qui exigeait encore `color: white` dans `.block-2` alors que la bichromie beige a posé `#f4f3ee` (contrat élargi aux deux, le rôle « bloc sombre à encre claire » est conservé), et l'erreur `react-hooks/set-state-in-effect` de `ProgressBoard.tsx` (passé en `useSyncExternalStore` pour la préférence de mouvement réduit, aucun changement visuel, la version naïve en initialiseur `useState` cassait le SSR).
+- **Le build prod passait déjà.** La note du 29 juin sur `next/font` était périmée : zéro occurrence dans le repo, polices déjà auto-hébergées. Case corrigée en section G.
+- **Garde-fou licence au runtime** (`lib/game/license-guard.ts`) : liste blanche `ofl` / `apache2` / `ufl` posée dans les deux seules requêtes qui exposent une typo à un joueur, `getPoolRows` (training) et `getCompetitionPoolRows` (competition). Nul, vide, `unknown`, `proprietary` et tout label futur échouent en fermé. Vérifié en lecture seule contre la base : **1172 typos servables avant, 1172 après**, et 1167 sans l'exception Ubuntu, donc l'exception sauve exactement les 5 attendues. Nouveau check `check:license-guard` branché dans la chaîne `quality`.
+- **`license_url` renseigné sur 2027 des 2032 enregistrements** depuis le snapshot Google du projet (1975 OFL, 47 Apache, 5 UFL). Les 5 restants sont des polices système déjà désactivées.
+- **`foundry` et `release_year` volontairement laissés vides**, ce n'est pas un oubli. Sur les 2027, le champ `copyright` dit « The X Project Authors » pour 1296, nomme une personne pour 560, et ne porte une raison sociale que pour 146 : un remplissage automatique aurait fabriqué de la fausse donnée. Et `date_added` est la date d'ajout chez Google, pas l'année de dessin, elle daterait Libre Baskerville de 2012. Proposition à trancher : ajouter une colonne `google_fonts_date_added`, renseignable sur 2002 du catalogue.
+- **Suite de tests end to end créée** (`playwright.config.ts`, `tests/e2e/`) : 7 tests sur la landing, l'onboarding avec ses deux vraies portes, et une session training jusqu'à la réponse validée. Aucune dépendance ajoutée, le paquet `playwright` déjà présent embarque le runner. **L'instabilité du test training est diagnostiquée et corrigée.** Cause : `getByRole("radio", { name })` de Playwright fait une correspondance par **sous-chaîne** par défaut, et `pickDistractors` privilégie délibérément les distracteurs du même cluster visuel et de la même catégorie que la bonne réponse, donc des frères de superfamille. Quand la bonne réponse est préfixe d'un distracteur (« Alumni Sans » contre « Alumni Sans Inline One »), le locator résout deux radios et Playwright abandonne avant le clic. **137 des 1172 noms servables sont sous-chaîne d'un autre**, taux d'échec mesuré à 3,5 % par run, et le run fautif a été identifié nominativement en base. Corrigé en ciblant par index dans `question.options` plutôt que par libellé, donc insensible aux noms. **Réserve qui reste ouverte : la suite écrit dans la vraie base Neon à chaque run** (1 invité, 30 lignes de pool, 1 session jamais terminée, 2 lignes d'événements), sans distinction possible d'avec de vraies données de joueur.
+- **Hook de typecheck automatique** posé dans `.claude/settings.local.json`, en async avec re-réveil sur échec, sur `PostToolUse` / `Write|Edit` pour les fichiers `.ts` et `.tsx`.
+- **Lien `/compare` réparé.** La landing y pointait au CTA héros et au footer alors que seule `/compare/[slug]` existait : tous les visiteurs tombaient en 404. `app/compare/page.tsx` redirige vers la première comparaison publiée, sans slug en dur.
+- **Pages d'erreur créées** : `app/not-found.tsx`, `app/error.tsx`, `app/global-error.tsx`, coquille partagée `features/errors/`. Aucune couleur ni échelle typo inventée, uniquement des sélecteurs ajoutés dans des groupes de règles déjà validés. Textes dans `content/copy.ts`. Reste à trancher : le bouton principal suit la pilule crème de la landing, pas le dégradé jaune des écrans placeholder, les deux recettes se contredisant.
+- **Migration `010_license_type_ufl.sql` écrite mais NON APPLIQUÉE** (ajout du label `ufl` à l'enum, bascule des 5 Ubuntu, vue QA alignée sur la liste blanche). Tant qu'elle n'est pas passée, ces 5 polices tiennent grâce à l'exception par slug dans le code. **Ordre impératif :** appliquer l'étape 1, puis basculer le JSON du catalogue sur `ufl`, sinon un réimport repousserait `unknown` par dessus.
+- **Deux trouvailles.** `Gate.tsx`, 582 lignes importées par personne, et c'est pourtant lui que `check:contracts` vérifie. Et une incohérence dans le snapshot Google : `robotomono` est en dossier `ofl/` avec un `OFL.txt` SIL, mais son `METADATA.pb` déclare `APACHE2`.
 
 ## Journal — 2026-06-29 (grosse session)
 
@@ -50,6 +65,10 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 **Affiliation Adobe = OUI** (programme officiel, géré par Partnerize) : commission quand un joueur **s'abonne à Creative Cloud** (qui inclut Adobe Fonts) via ton lien — **~85 % du 1er mois**. → bouton « obtiens-la sur Adobe Fonts ». Avantage : en tant que partenaire qui leur amène des abonnés, **montrer leurs polices sert LEURS intérêts** (pub pour eux). Pour acheter UNE typo Adobe à vie → MyFonts/Monotype (aussi affilié). L'affiliation rapporte de l'argent mais ne « donne » pas automatiquement le droit d'afficher — ça reste l'usage « petite image, pas le fichier » ; demander des **visuels d'aperçu officiels** au programme.
 
 Zone grise en **UE** (la France protège davantage les dessins de caractères) → **avis juridique avant lancement commercial**. (Ceci n'est pas un avis légal.)
+
+**Démarche partenariat cadrée** (2026-07-07) : voir `docs/overview/partenariat-adobe.md` — à qui s'adresser (Partnerize/Type Network/MyFonts/Fontspring), quoi demander (affiliation + visuels officiels + droit d'affichage), argumentaire, séquencement (libre d'abord, commerciales/Adobe en phase 2 avec du trafic), et liste d'actions.
+
+**Deck de pitch Adobe** (2026-07-07) : 11 slides dans Figma (Drafts). Fichier : https://www.figma.com/design/q1K9Z782nLKcrBHzpqO1RA. DA fidèle à la landing : bichromie beige #f4f3ee + noir, jaune réduit au strict minimum (juste la bordure or authentique du plateau), titres serif Playfair, vrai wordmark Dwiggins (SVG) en tête, footer mono à la signature landing ("© 2026 DWIGGINS · JEUX DE TYPO"). Structure : Cover, le jeu, how it works, l'œil/anatomie, compare, la librairie, l'audience/funnel, la demande de partenariat, le modèle commercial, roadmap+CTA, + slide de clôture = footer crème de la landing (wordmark noir, tagline, colonnes, strip mono). Démos animées = **vrais GIF de l'animation du site** capturés via Playwright sur localhost:3002 (jeu slide 3, compare slide 5), ré-encodés propres, uploadés dans Figma (s'animent dans l'éditeur). Reste : contact réel sur la CTA, éventuelle version FR. Pipeline GIF réutilisable : `scratchpad/capture-demo.js` (Playwright) + magick + upload_assets Figma.
 
 ---
 
@@ -89,6 +108,9 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [x] Les 8 métriques de badges dérivées des vraies données DB
   - [x] `buildBadges` appelé sur les vraies métriques (+ page profil branchée sur `loadRealProfile`)
   - [x] Mock conservé uniquement comme fallback zéro-historique (par design)
+- [ ] **Revue visuelle des badges (en cours, 2026-07-06)** · page de revue partagée en artifact (rendu réel : 12 shippés + 21 candidats labo + éditorial).
+  _Piste 1 REVERTÉE : j'avais élagué le labo (mascottes die-cut, mono « W ») et diversifié les formes des 12 shippés + nettoyé le sceau. Rejeté : le user adorait des candidats supprimés, et trouvait les 12 diversifiés fades. `git checkout` sur `badge-rules.ts`, `BadgeStickerLab.tsx`, `dwiggins-badge-engine.ts`, tout est revenu à l'état committé._
+  _Direction user à appliquer : (1) NE PAS supprimer de candidats, il veut choisir lui-même ; (2) rareté par couleur PLEINE (si bleu, tout le badge bleu, pas juste le mascotte bleu sur disque noir) ; (3) référence qualité = les lockups éditoriaux (« ceux d'en bas beaucoup mieux faits »). Attendre son go sur quoi produire._
 
 ## C — Onboarding
 
@@ -109,6 +131,53 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [x] **Migration 005 appliquée en base + skew confirmé** (débutant facile-lourd vs designer moyen-lourd)
   - _Nuances honnêtes : (1) l'effet ne concerne que les **nouveaux** joueurs — les pools déjà seedés ne sont pas refaits ; (2) spread easy/medium seulement (pas de `hard` en tier N+D — raffinement futur possible en incluant tier C)._
 
+- [x] **Étape « A first look » alignée pixel-près sur la landing** · `Fait` (2026-06-30)
+  _DA : la landing est la référence sans exception. La carte de l'onboarding (warm-up) reprend désormais la carte « how it works » de la home **à l'identique** : suppression des overrides `onboarding-warmup-*` (fond near-black, padding/gap serrés, hints) → la carte hérite verbatim de `.lp-demo-board` / `.lp-demo-opt` (bordure dorée, verre crème, ombres, grille 2x2, barres d'accent, tailles de typo). Comme la page onboarding est déjà en noir, le verre crème rend comme sur la landing (pas de forçage beige)._
+  _**Colonne de gauche** : discours adapté au ton onboarding (« premier regard », pas de score, observer) en gardant **les tailles et le nombre de caractères de la landing 1:1** (titre L2 ≈ 22 car., lede ≈ 147) → wrap identique, zéro décalage. Titre « You see a word. / You learn to read it. » ; lede « No score here — just notice the letters. Look where the strokes end — the bowls, the terminals, the contrast. Wrong turns red, right turns green. »._
+  _**Carte (droite)** : à l'origine le bloc landing verbatim (prompt « Which typeface is this? », mot « Aperture », réponses Playfair Display · PT Serif · Libre Baskerville · Lora). **Contenu remplacé depuis** (2026-07-06) par un rendu adaptatif à la familiarité (`getWarmupRound`) : la carte n'affiche plus le placeholder « Aperture » / « Which typeface is this? » de la landing. Détails à l'item « Warm-up adaptatif à la familiarité » plus bas._
+  - `app/globals.css` (overrides `onboarding-warmup-*` supprimés), `features/onboarding/components/OnboardingWarmup.tsx`, `features/onboarding/components/OnboardingFlow.tsx`
+  - _Vérifié visuellement (Playwright, 1440px) : carte onboarding superposable à la section « how it works » ; typecheck + lint + check:copy OK, check:typography-contract BLOCK 0._
+
+- [x] **Onboarding non scrollable (verrou plein écran)** · `Fait` (2026-07-02)
+  _Consigne : rien ne doit scroller sur l'onboarding. `.onboarding-page` passe de `min-height: 100svh` à `height: 100svh` (+ `overflow: clip` déjà présent + `overscroll-behavior: none`) : l'élément ne peut plus dépasser la fenêtre, donc le document reste bloqué et le contenu se centre/compresse dedans. Mesuré (Playwright) : `docScrollable=false` et `scrollY=0` même après molette, à toutes les tailles testées (900 → 520px de haut) ; bouton Continue toujours visible. Vaut pour les 4 étapes._
+  - `app/globals.css` (`.onboarding-page`)
+
+- [x] **Warm-up adaptatif à la familiarité** · `Fait` (2026-07-06)
+  _Le rendu du warm-up dépend désormais du niveau déclaré. Nouveau module `features/onboarding/warmup-rounds.ts` (`getWarmupRound(familiarity)`) branché dans `OnboardingWarmup.tsx`, en remplacement de l'ancien `buildRound` qui ignorait la familiarité. Échelle par niveau, appuyée sur le vrai catalogue : Not at all = mot « Reading » en Libre Baskerville, question catégorie, réponse Serif ; A little (défaut) = « Layout » en Poppins, réponse Sans-serif ; Quite familiar = « Fashion » en Playfair Display, « Which serif style is this? », réponse Didone ; Designer = « Grotesk » en IBM Plex Sans, « Which face is this? » parmi IBM Plex Sans / Roboto / Inter / Work Sans (terminaisons coupées à plat). 4 options fixes (grille 2x2), palette d'accent conservée. typecheck OK._
+  - `features/onboarding/warmup-rounds.ts`, `features/onboarding/components/OnboardingWarmup.tsx`
+
+- [x] **Invite au clic + affordance sur les manches interactives** · `Fait` (2026-07-06)
+  _Le mode débutant (« Not at all ») était clair (ghost-cursor auto : on regarde), mais les manches jouables n'indiquaient pas qu'il faut cliquer. Ajout d'un hint « Your turn, tap the answer you think fits. » (modes non débutants) dans `OnboardingWarmup.tsx`. Côté `globals.css` : au survol la carte se soulève et sa bordure passe au jaune DWIGGINS (rgba(255,210,19,.5)), anneau de focus `--accent-yellow`. Les états correct / wrong gardent leur couleur._
+  - `features/onboarding/components/OnboardingWarmup.tsx`, `app/globals.css`
+
+- [x] **Bug de police du warm-up corrigé (mots héros en serif de secours)** · `Fait` (2026-07-06)
+  _Les mots héros s'affichaient en serif de secours faute de glyphes. Cause : `scripts/mirror_fonts.py` fixe `runtimePath = runtimeFiles[0]` (le split au plus petit hash), qui pour poppins / ibm_plex_sans / playfair_display / libre_baskerville tombait sur un fragment quasi vide (juste l'espace, ou « a, b »). Correctif : re-subset des 4 faces en Latin complet (U+0020..007E) via fontTools, nouveaux fichiers dans `public/fonts/<slug>/`, `runtimePath` mis à jour dans `content/typefaces/font-manifest-v4.json`. Couverture des glyphes de « Reading / Layout / Fashion / Grotesk » vérifiée, polices en HTTP 200._
+  _Bug latent noté : `mirror_fonts.py` recasserait ces faces à une prochaine exécution tant qu'il ne sait pas choisir le split qui couvre le Latin (raffinement futur, faible priorité)._
+  - `scripts/mirror_fonts.py`, `content/typefaces/font-manifest-v4.json`, `public/fonts/<slug>/`
+
+- [x] **Bouton onboarding en beige de marque + descendu** · `Fait` (2026-07-06)
+  _`.onboarding-btn--solid` quitte le bleu-blanc froid (inventé) pour les tokens de marque : `linear-gradient(--beige-raised, --beige)`, texte `--noir`, bordure `--line`. `.onboarding-actions` reçoit `margin-top: clamp(0.6rem, 1.8vh, 1.25rem)` pour descendre le bouton._
+  - `app/globals.css`
+
+- [x] **Migration 006 appliquée : seed cold-start 4 niveaux distincts** · `Fait` (2026-07-06)
+  _`db/migrations/006_seed_pool_four_level.sql` : `CREATE OR REPLACE` de `init_user_pool(uuid, text)`. Avant, la 005 restait binaire (Not at all = A little, Quite familiar = Designer, zéro hard) ; la 006 donne 4 seeds distincts sur 30 faces (easy / medium / hard) : Not at all 22/8/0, A little 12/18/0, Quite familiar 4/20/6, Designer 2/16/12. Le palier hard vient du tier C (uncommon, 18 faces runtime-ready), ouvert au SEED des seuls niveaux avancés (déviation assumée de la spec §7.2 ; la checklist prévoyait déjà « inclure tier C » pour le hard, voir la nuance de l'item seed plus haut). N'affecte que les nouveaux cold-starts. Vérifié en lecture seule : la fonction live est bien la version 4 niveaux._
+  - `db/migrations/006_seed_pool_four_level.sql`
+
+- [ ] **Moteur d'auto-correction : niveau vécu ≠ niveau déclaré** · `En cours` (2026-07-07)
+  _**Avancement 2026-07-07** : les étapes 1, 2, 3 et 5 sont construites et actives ; il ne reste que l'étape 4 (rééquilibrage additif du pool), dont la migration 007 est écrite mais pas encore appliquée en base. Détail complet et fichiers à l'item « Moteur d'auto-correction construit » de la section F._
+  _Le niveau déclaré n'est qu'un prior de CONTENU (quelles faces) gelé après le seed ; tout le monde démarre à maîtrise 0. Conséquence : un faux expert reste coincé sur du dur sans jamais redescendre. Plan réutilisant le modèle Leitner déjà calé, à séquencer 1+2+3 (sûr) puis 4 : (1) activer `adaptive_coef` (colonne existante, jamais écrite) ; (2) intervalles indexés sur la maîtrise (spec §4.1, non implémentée) ; (3) exploiter le résultat du warm-up d'onboarding (aujourd'hui jeté) pour ajuster la familiarité effective avant le seed ; (4) rééquilibrage ADDITIF du pool vers le facile si les ~8 à 12 premières réponses sont mauvaises (jamais retirer de face, invariant I-06) ; (5) surface de progression en jeu en réutilisant le eye level / % maîtrisé déjà calculés sur le profil._
+  _Anti-triche : la variation in-game est déjà satisfaisante (graine par session qui randomise l'ordre des faces, la position de la bonne réponse et le mot ; la réponse EST la police affichée, pas de clé cachée). Seul le warm-up d'onboarding est un script partageable (`correctIndex` fixe), enjeu faible._
+
+- [ ] **Croissance du pool (I-07 + fallback §4.5) : plus jamais de pool gelé** · `En cours` (2026-07-07)
+  _Le pool restait gelé au seed (aucune entrée), en contradiction avec I-07. Écrit `db/migrations/008_pool_growth.sql` (pas encore appliquée) : colonne `users.pending_unlock_count`, valeurs enum `pool_recovered_by_unlock` / `pool_recovered_by_cursor_jump`, fonctions `try_unlock_one_typeface` (sélection §7.2 à la lettre) et `register_mastery_unlock` (compteur + unlock atomiques). Câblage `lib/game/training/provider.ts` fail safe : déclencheur I-07 au franchissement mastery 3 vers 4 dans `submitTrainingAnswer`, fallback §4.5 `recoverPoolIfStuck` avant chaque construction de question (unlock silencieux puis saut de curseur, jamais de rupture I-01/I-02). Add only, respect strict de I-06. Typecheck et lint scoped OK. Preview lecture seule : 724 candidates pour un pool N, diversification par sub_category validée. Doc : `docs/game/pool-growth.md`._
+  - `db/migrations/008_pool_growth.sql`, `lib/game/training/provider.ts`, `docs/game/pool-growth.md`
+  - [ ] Appliquer la migration 008 en base (feu vert user requis)
+
+- [ ] **Niveau global visible N.1 à E.5 : la difficulté du pool grimpe enfin** · `En cours` (2026-07-07)
+  _`users.dreyfus_level` était une colonne morte (jamais écrite, figée à `N`), donc 008 ne débloquait que des typos tier N et `POOL_TARGET_BY_TIER` restait à 30 : le pool grandissait en nombre mais jamais en difficulté. Écrit `db/migrations/009_global_level.sql` (pas encore appliquée) : garde `ADD COLUMN IF NOT EXISTS dreyfus_sub` (no-op, 003 la définit déjà), fonction `recompute_visible_level` (agrégation des mastery_level du pool actif, recalcul par réponse N-22, régression bornée à un sous-niveau P-04, lecture seule du moteur I-08), vue de preview `v_user_visible_level`. Formule = hypothèse documentée (la spec ne donne que « Agrégation des mastery_level », ligne 708) : `p = (frac≥3 + frac≥4) / 2` mappé sur 25 crans N.1 à E.5, monotone. Câblage `lib/game/training/provider.ts` fail safe : `safeRecomputeVisibleLevel` après chaque réponse dans `submitTrainingAnswer`, baseline lecture seule au démarrage. Payload étendu (`contracts.ts` : `visibleLevel`, `levelChanged`) et toast N-24/N-25 dans `GameScreen.tsx` (pilule jaune, jamais d'affichage continu). Typecheck et lint scoped OK. Preview lecture seule : tous les users de test à N.1 (0 mastery ≥ 3), mapping validé sur tout l'intervalle. Doc : `docs/game/global-level-progression.md`._
+  - `db/migrations/009_global_level.sql`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`, `features/game/components/GameScreen.tsx`, `app/globals.css`, `docs/game/global-level-progression.md`
+  - [ ] Appliquer la migration 009 en base (feu vert user requis)
+
 ## D — Pages typo (compare + spécimen)
 
 - [x] **Pages Compare — 4 stages** : ouverture, contraste, terminaisons, hauteur d'x · `Fait` — aucun placeholder.
@@ -118,11 +187,12 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 - [x] **Page Spécimen `/type/[slug]`** (hero, testeur, anatomie, fiche) · `Fait`
   - `app/type/[slug]/page.tsx`
 - [ ] **Harmoniser la DA des pages typo avec le reste** · `À faire` — incohérences couleur déjà recensées.
+  _Palette success / error tranchée le 2026-07-07 : vert « correct » canonique `#00c853`, rouge « erreur » canonique `#ff0000`, neutre chaud `#2a1a20` officialisé. Doublons Tailwind `#22c55e` et `#ef4444` supprimés (CSS mort, vestige de l'ancienne étape « micro » remplacée par le warm-up) ; le mint inventé `#9ef0d4` repointé sur le token canonique ; `#21785e` gardé comme variante lisible sur fond beige clair ; `#40d38f`, `#67d6b6`, `#f39ab1` intacts (rôles distincts, pas « success »). Reste l'harmonisation DA plus large des pages typo. Fichiers : `app/globals.css`, `docs/ui/ui-palette-reference.md`._
   - `app/globals.css`, `docs/ui/ui-palette-reference.md`
-  - [ ] Choisir 1 vert canonique (3 familles aujourd'hui)
-  - [ ] Choisir 1 rouge canonique
-  - [ ] Officialiser le neutre chaud `#2a1a20` (vs noir pur)
-  - [ ] Officialiser ou retirer le rose `#F39AB1`
+  - [x] Choisir 1 vert canonique : `#00c853` (3 familles avant)
+  - [x] Choisir 1 rouge canonique : `#ff0000`
+  - [x] Officialiser le neutre chaud `#2a1a20` (vs noir pur)
+  - [x] Officialiser ou retirer le rose `#F39AB1` (gardé, rôle distinct)
   - [ ] Appliquer dans `globals.css` + mettre à jour le contrat UI
 - [x] **Nav partagée alignée sur la home (DA + outils) sur `/compare` et `/type`** · `Fait` (2026-06-29)
   _La nav des pages typo était restée sur l'ancien skin « néon noir » (fond `#000`, glow, wordmark ivory, CTA clair) alors que la home (`lp-header`) est la **référence DA**. Refondue en **composant partagé `SiteNav`** (`components/ui/SiteNav.tsx`) → une seule source de vérité, appliquée via les templates `[slug]`, donc les **~2000 pages specimen `/type` l'héritent sans travail par-slug** (« calibré »)._
@@ -130,6 +200,14 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   _**Outils** = repris de la home verbatim : liens **How it works / Compare / Typefaces / Modes** (ancres `/#…`) + CTA **Start training** (`/onboarding`). (`/type` n'avait aucune nav avant, juste un ThemeSwitch flottant.)_
   _Typecheck OK. Vérifié à l'écran : home (réf) intacte, `/compare`, `/type/inter` (fond noir) et `/type/helvetica-neue` rendent une nav identique. Piège rencontré : le dev server servait un CSS périmé après le renommage de classe (HMR CSS manqué) — re-déclenché par un édit trivial de `globals.css`._
   - `components/ui/SiteNav.tsx`, `app/globals.css` (`.site-nav*`), `app/compare/[slug]/page.tsx`, `app/type/[slug]/page.tsx`
+- [x] **Page Compare alignée sur le langage de la home + plus de blanc pur** · `Fait` (2026-06-30)
+  _Passage DA sur `/compare` pour matcher la home (réf) : chips métadonnées multicolores (bleu/vert/or) → **pastilles beige `#f4f3ee` à texte noir** ; eyebrow « Guided comparison » vert → gris discret ; **suppression du bloc texte sous le titre** (directive + « Corpus cue… » + « Best entry: glyph · a ») qui faisait doublon avec le « Comparison stage » juste dessous (+ code mort retiré : `unifiedHeroNote`, `corpusPedagogyLine`, `heroSupportLine`, `fallbackIntro`, import `buildCorpusPedagogyLine`)._
+  _**Sweep « plus de blanc pur » (tout le site)** : `#fff`/`#ffffff`/`rgba(255,255,255,a)`/`white` → beige de marque `#f4f3ee` (rgb 244,243,238) dans `globals.css` + composants user-facing (Gate, CompetitionScreen, profil, TypefaceTester). `white-space` et commentaires épargnés ; labs `/dev` volontairement non touchés. Doc palette mis à jour (`docs/ui/ui-palette-reference.md`)._
+  _Reste pour finir D4 : trancher 1 vert / 1 rouge canoniques + le rose `#F39AB1`. Typecheck OK._
+  - `app/globals.css`, `app/compare/[slug]/page.tsx`, `docs/ui/ui-palette-reference.md`
+- [ ] **Finir le blanc → beige sur les labs `/dev`** · `À faire` (plus tard)
+  _Le sweep blanc → beige a été fait sur tout le site user-facing (2026-06-30) ; restent les **outils internes `/dev`** encore en `rgba(255,255,255,a)` : `TypefaceProfileLab`, `FallbackCalibrationLab`, `GlyphAuditMatrix`, `WordAuditMatrix`. Non bloquant (pas vus par les joueurs) — à passer pour cohérence quand on y touchera._
+  - `components/dev/typography/*`
 
 ## E — Légal & marque · le chantier urgent avant mise en ligne
 
@@ -148,10 +226,19 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [x] Retrouver la licence de chacune — **toutes OFL** (confirmé via le snapshot Google Fonts du projet)
   - [x] **Posé `license_type='ofl'` sur les 23** (base + override + build, commit `0584549`)
   - [x] Vue QA : reste seulement 5 Ubuntu (UFL/libre, hors enum) — tout le reste en OFL, aucun risque
-- [ ] **Remplir `license_url` / `foundry` / `release_year`** (0/73 aujourd'hui) · `À faire`
-- [ ] **Garde-fou : ne jamais servir une typo « unknown » au runtime** · `À faire`
-  _La vue QA existe mais n'est pas appliquée par le moteur._
-  - `db/migrations/002_catalog_tables.sql`
+- [ ] **Remplir `license_url` / `foundry` / `release_year`** · `En cours` (2026-07-27) : `license_url` fait, `foundry` et `release_year` volontairement laissés vides, décision à trancher
+  _**`license_url` : 2027/2032 renseignés** (les 5 restants sont les polices système locales arial, courier_new, georgia, helvetica, times_new_roman, absentes du snapshot et déjà désactivées). Valeurs déduites du dossier de licence dans le snapshot du projet (`02_ASSETS_TYPO/google_fonts/06_repo_snapshot/fonts-main`) : `ofl/` 1975 vers `https://openfontlicense.org/`, `apache/` 47 vers `https://www.apache.org/licenses/LICENSE-2.0`, `ufl/` 5 vers `https://canonical.com/legal/font-licence`. Chaque URL est citée telle quelle dans les textes de licence du snapshot. Les 2027 ont au moins une source corroborante en plus du dossier : fichier de licence présent (2018) ou champ `license` du `METADATA.pb` (9 sans fichier)._
+  _**`foundry` laissé vide, choix assumé** : le seul champ disponible est `designer` du `METADATA.pb`, qui nomme une personne, pas une fonderie (« Marcelo Magalhães » n'est pas une fonderie). Le champ `copyright` n'est pas exploitable en masse : sur 2027, 1296 disent « The X Project Authors » (aucune fonderie), 560 nomment une personne, 146 seulement portent une raison sociale (Ltd, Inc, GmbH, Corp, Foundry) noyée dans du texte libre avec mails et clauses Reserved Font Name. Un remplissage automatique produirait de la donnée fausse. Reste faisable à la main sur un petit lot avéré (exemple : Indian Type Foundry, 19 polices)._
+  _**`release_year` laissé vide, choix assumé** : `date_added` est la date de mise en ligne chez Google (plage 2010-02-19 à 2026-02-25), pas l'année de dessin. La renseigner daterait Libre Baskerville de 2012 au lieu du XVIIIe siècle. Aucune source d'année de création dans le snapshot._
+  _**Proposition ouverte** : plutôt que de tordre les deux champs existants, ajouter une colonne honnête `google_fonts_date_added date` et finir de remplir `designer` (déjà rempli sur 1979/2032 ; le snapshot en fournit un pour 2002, dont 1147 des 1172 servies, et **zéro divergence** avec les valeurs déjà en place). Les 23 slugs d'origine sont les seuls à avoir un `designer` vide alors que le snapshot en donne un. Changement de schéma, donc décision du propriétaire._
+  - `content/catalog/overrides/typefaces-core.overrides.json`, `content/catalog/typefaces-core.json`
+- [x] **Garde-fou : ne jamais servir une typo « unknown » au runtime** · `Fait` (2026-07-27)
+  _Le filtre est posé dans les **deux requêtes de pool** qui décident ce qu'un joueur peut voir (bonne réponse et distracteurs sortent du même lot) : `getPoolRows` (training) et `getCompetitionPoolRows` (competition). Pas dans un composant : un garde-fou contournable ne sert à rien._
+  _**Liste blanche, pas liste noire** : seules `ofl`, `apache2`, `ufl` passent, comparées en `license_type::text`. Nul, vide, `unknown`, `proprietary` et tout label ajouté plus tard échouent en fermé. Source de vérité unique : `lib/game/license-guard.ts`._
+  _**Cas Ubuntu (5 polices, licence UFL, libre)** : l'enum `app.license_type_enum` n'a pas de valeur `ufl`, ces 5 lignes valent donc encore `unknown` et la liste blanche seule les exclurait à tort. Exception explicite par slug dans le garde-fou, documentée et supprimable. Migration `010_license_type_ufl.sql` écrite pour ajouter le label et passer les 5 en `ufl`, **non exécutée** (base en prod, feu vert propriétaire)._
+  _**Vérifié en lecture seule sur la base réelle** : pool competition avant 1172, avec garde-fou 1172 (aucune régression), sans l'exception Ubuntu 1167. `lint` et `typecheck` OK._
+  _Nouveau check maison `scripts/quality/check-license-guard.mjs` (ni build ni base) : échoue si une requête perd la clause, ou si une typo servie n'a pas une licence validée. **Pas encore branché dans `npm run quality`**, la ligne à ajouter est dans `scripts/quality/README.md`._
+  - `lib/game/license-guard.ts`, `lib/game/training/provider.ts`, `lib/game/competition/provider.ts`, `scripts/quality/check-license-guard.mjs`, `db/migrations/010_license_type_ufl.sql`
 
 ## F — Back & « implémenter toutes les typos »
 
@@ -190,6 +277,22 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [ ] Vague « display » à part
 - [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
   _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
+- [ ] **Moteur d'auto-correction construit (5 étapes, réutilise le Leitner déjà calé)** · `En cours` (2026-07-07)
+  _Étapes 1, 2, 3 et 5 actives immédiatement. Étape 1 : `adaptive_coef` (colonne existante jamais écrite) enfin écrit, il monte de 0.1 après au moins 2 erreurs de suite, descend de 0.05 après au moins 3 bonnes de suite, bornes 0.5 à 2.0. Étape 2 : intervalles indexés sur la maîtrise (fenêtres par palier L0 à L4, divisées par `adaptive_coef`, plancher aux cooldowns). Étape 3 : le résultat du warm-up d'onboarding est enfin exploité (un « Designer » ou « Quite familiar » qui rate est seedé un cran plus bas). Étape 5 : indicateur « X / Y faces maîtrisées » affiché en jeu._
+  _Étape 4 (rééquilibrage additif du pool vers le facile si précision faible, sous 40 %, sur les 8 à 12 premières réponses) : migration `007_pool_rebalance.sql` écrite + appel runtime fail-safe (no-op tant que la 007 n'est pas appliquée), respecte l'invariant I-06 (jamais retirer de face). Typecheck + lint scopé OK, rien committé, base non modifiée._
+  _Fichiers : `lib/game/training/provider.ts`, `contracts.ts`, `features/game/components/GameScreen.tsx`, `features/onboarding/components/OnboardingWarmup.tsx` + `OnboardingFlow.tsx`, `app/api/training/session/start/route.ts`, `lib/profile/profile-stats.ts`, `app/globals.css`, `db/migrations/007_pool_rebalance.sql`. Doc explicatif : `docs/game/self-correction-engine.md`._
+  - [x] Étape 1 : `adaptive_coef` activé (monte de 0.1, descend de 0.05, bornes 0.5 à 2.0)
+  - [x] Étape 2 : intervalles indexés sur la maîtrise (fenêtres L0 à L4 divisées par `adaptive_coef`, plancher cooldowns)
+  - [x] Étape 3 : résultat du warm-up d'onboarding exploité (seed abaissé si raté)
+  - [x] Étape 5 : indicateur « X / Y faces maîtrisées » en jeu
+  - [ ] Étape 4 : rééquilibrage additif (007 écrite + appel fail-safe), à activer en appliquant la migration 007 en base
+- [x] **Bug de police systémique corrigé sur tout le catalogue** · `Fait` (2026-07-07)
+  _Beaucoup de faces pointaient leur `runtimePath` sur un split woff2 sans glyphes latins, donc s'affichaient en serif de secours (grave pour un jeu de reconnaissance de typos). Training manifest : 13 faces cassées → 0. Catalogue compétition : plus aucune face latine ne tombe en secours (16 faces latines repointées sur un split couvrant le Latin, déjà présent). `scripts/mirror_fonts.py` durci pour choisir le split couvrant le Latin (fini le `sorted()[0]` qui recassait, ce qui lève le « à durcir » noté en section C sur le bug du warm-up)._
+  _Décision produit restante : 5 polices système sans woff2 (arial, helvetica, times_new_roman, georgia, courier_new) à remplacer par du libre avant lancement ; 36 faces non-latines (Tamil, Khmer, Devanagari, emoji…) qui s'afficheront toujours en secours dans un jeu de mots latins, à exclure des manches ou à montrer dans leur écriture._
+  - `scripts/mirror_fonts.py`, `content/typefaces/font-manifest-v4.json`, `content/catalog/font-runtime-assets.json`, `public/fonts/`
+- [x] **Payload compétition allégé (224 Ko → 0 up-front)** · `Fait` (2026-07-07)
+  _La page compétition injectait 1172 règles `@font-face` (~224 Ko de CSS inline) à chaque visite. Remplacé par une injection `@font-face` à la demande (une police par question, préchargée pendant le délai de feedback, idempotente, SSR-safe). Payload up-front : 224 Ko → 0._
+  - `lib/game/competition/contracts.ts`, `catalog.ts`, `provider.ts`, `features/game/components/CompetitionScreen.tsx`, `app/play/competition/page.tsx`
 
 ## G — Transversal / mise en ligne
 
@@ -201,8 +304,8 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [ ] Bandeau / consentement cookies
   - [ ] Mentions légales + CGU (+ CGV si paiement)
 - [ ] **Déploiement prod** (domaine, env, build qui passe) · `À faire`
-  _Le build prod échouait sur le chargement des polices (`next/font` Google Fonts)._
-  - [ ] Faire passer le build prod (fonts via `next/font` ou assets locaux)
+  _Note du 2026-06-29 périmée, corrigée le 2026-07-27 : le build prod **passe**. `next/font` n'est plus utilisé nulle part dans le repo (zéro occurrence), les polices sont déjà auto-hébergées via deux `@font-face` dans `app/globals.css` plus l'injection runtime de `getTrainingFontFaceCss()`. `npm run build` sort en exit 0, 26 routes générées. La migration vers les assets locaux avait donc déjà été faite sans que la checklist soit mise à jour._
+  - [x] Faire passer le build prod — **fait**, polices déjà en assets locaux (vérifié 2026-07-27)
   - [ ] Variables d'env en prod (`DATABASE_URL`…)
   - [ ] Domaine + hébergement
   - [ ] Vérifier le site en ligne de bout en bout
@@ -219,7 +322,10 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 - [ ] **Mode Expert jouable de bout en bout** · `À faire` — audité 2026-06-29 : **pas commencé** (au-delà des données).
   _Existe : les *answer keys* (`expert_answer_keys` + JSON), le flag `expert_enabled`, la page de règles `/play/expert/rules`._
   _Manque **tout le jeu** : `app/play/expert/page.tsx` n'est qu'un `ModePlaceholderPage` (« will be implemented after Competition mode ») ; **aucun** `lib/game/expert/` provider, **aucune** route `/api/expert/*`, **aucun** `ExpertScreen`. Chantier = créer le flux « nommer la typo » (saisie libre, sans QCM), sur le modèle de Competition (`lib/game/competition/` + `CompetitionScreen.tsx`)._
-- [ ] **Pages d'erreur** (404 + écran d'erreur) · `À faire`
+- [x] **`CLAUDE.md` à la racine** · `Fait` — 2026-07-27, commit `ba44383`.
+  _Le repo n'avait aucun fichier d'instructions : les conventions (frontières runtime/dev-lab, porte `npm run quality`, nommage, chemins interdits en suivi git, `#ffd213`, migrations Neon en SQL brut) n'existaient que dispersées dans `docs/`, et les règles de travail du propriétaire uniquement dans la mémoire locale de l'assistant, donc perdues au changement de machine. Écrit à partir du repo seul, rien d'inventé._
+- [x] **Pages d'erreur** (404 + écran d'erreur) · `Fait` — 2026-07-27, non commité.
+  _Le site n'avait ni 404 ni frontière d'erreur : une URL fausse ou un plantage de rendu tombait sur l'écran brut de Next. Créés : `app/not-found.tsx` (404, sorties « Back home » et « See the modes »), `app/error.tsx` (frontière d'erreur, bouton « Try again » branché sur la prop `reset` de Next, erreur loguée en console), `app/global-error.tsx` (seul filet si `app/layout.tsx` lui même casse, donc il rend son propre `html` / `body` et réimporte `globals.css`), et le shell partagé `features/errors/components/ErrorScreen.tsx`. Aucun visuel inventé : le layout réutilise les recettes validées de l'écran placeholder de mode (les groupes `.mode-placeholder-page`, `.mode-placeholder-shell`, `.mode-placeholder-kicker`, `.mode-placeholder-actions` de `app/globals.css` accueillent en plus les noms `.error-*`, zéro nouvelle déclaration CSS), titres en `.ui-page-title` / `.ui-page-subtitle`, boutons en pilules de la landing `.lp-btn--primary` / `.lp-btn--ghost` (la landing tranche l'arbitrage : pas de jaune en aplat sur un CTA, contrairement à `.mode-placeholder-btn--solid`), `ThemeSwitch` présent comme l'impose le contrat UI. Textes anglais centralisés dans `content/copy.ts` (`notFoundCopy`, `errorCopy`). Passés : lint sur les fichiers créés, `typecheck`, `check:copy`, `check:dev-routes`. Rendu jamais regardé en local, à relire en live._
 - [ ] **Monitoring + analytics produit** · `À faire`
   _Pour régler les constantes avec la télémétrie (Sentry + analytics produit)._
 - [ ] **Accessibilité** (contraste, clavier, lecteurs d'écran) · `À faire`
@@ -230,6 +336,9 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 - [ ] **Page Prof / espace enseignant** · `À décider`
   _N'existe pas — hors scope MVP actuel. À décider (et ça suppose l'auth réelle, section F)._
+- [ ] **Comptes & classes (auth + paiement) : espace enseignant** · `À faire`
+  _Spec écrite le 2026-07-09. Trois rôles (admin école, prof, élève) : c'est l'école payeuse qui achète la licence au niveau établissement (sièges dimensionnés par nombre d'élèves), pas le prof. Modèle deux couches façon Adobe (identité personnelle d'un côté, licence/sièges de l'autre), provisionnement des élèves par le prof (invitation à usage unique, l'élève choisit son mot de passe), classe = groupe permanent en autonomie, verrou ordi en contexte classe, tableau de bord prof (consultation puis diagnostic, LE différenciateur). C'est la plus grosse brique : elle introduit l'AUTH réelle (cf. F « Auth réelle / comptes ») ET le PAIEMENT (cf. G « Monétisation », fournisseur à étudier). Invariant : le compte appartient à la personne, la licence conditionne l'accès, jamais la propriété de l'identité ni de la progression._
+  - `docs/game/classes-comptes-spec.md`
 - [ ] **Grille de vérification logo typo** · `Plus tard`
   _Truc à inventer, parké volontairement._
 

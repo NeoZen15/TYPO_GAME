@@ -1,0 +1,189 @@
+VEILLE MARCHÉ — MODÈLE ÉCONOMIQUE JEUX DE TYPO
+
+Recherche multi-sources, vérifiée en contradictoire (chaque affirmation
+soumise à 3 votes, il faut 2/3 pour la tuer). 27 sources, 93 affirmations
+extraites, 25 vérifiées → 15 confirmées, 10 réfutées.
+
+Lire d'abord ce résumé, puis les détails. La section « À NE PAS UTILISER »
+en bas liste ce qui a été réfuté — important.
+
+
+════════════════════════════════════════════════════════
+RÉSUMÉ EN UN PARAGRAPHE
+════════════════════════════════════════════════════════
+
+Le marché valide une chose nettement : les jeux/outils d'apprentissage
+typo « purs » ne se monétisent quasiment jamais en direct. Method of
+Action (Kern Type, Shape Type) tourne depuis 8+ ans en pur don PayPal et
+n'est pas un business ; Type Connection est gratuit ; les apps mobiles
+« guess the font » ont une traction proche de zéro. Les acteurs typo qui
+gagnent vraiment de l'argent le font par la VENTE/curation de fontes et la
+formation payante (I Love Typography), pas par le jeu. L'affiliation
+fontes existe (Monotype jusqu'à 10 %, Creative Market 20/10/30 %) mais
+reste un revenu d'appoint (« pas grand-chose » — Typewolf). Le B2B
+éducation est structurellement crédible (per-seat = standard edtech) ; le
+seul learning gamifié de niche prouvé en abonnement est Duolingo (76 % du
+CA en abonnement).
+
+Conclusion :
+   • Affiliation       → appoint validé, mais faible.
+   • Pro D2C abonnement → plausible, NON validé pour la typo (tous les
+                          comparables directs sont restés gratuits).
+   • B2B éducation     → la plus crédible structurellement, à valider sur
+                          la demande réelle.
+
+
+════════════════════════════════════════════════════════
+1) COMPARABLES DIRECTS — la catégorie est restée GRATUITE
+════════════════════════════════════════════════════════
+
+   • Method of Action (Kern Type, Shape Type) : entièrement gratuit, dons
+     PayPal optionnels ($5/$10/$25/$50), refuse explicitement pub et
+     tracking. Projet passion, créateur (Mark MacKay) salarié ailleurs.
+     8+ ans. Ce n'est PAS un business.
+        → method.ac
+
+   • Type Connection : gratuit (jeu de pairing typo, thèse MFA MICA 2012),
+     listé comme ressource gratuite sur Adobe Education Exchange.
+
+   • Apps mobiles « guess the font » : traction quasi nulle.
+     « Guess the Font! » = 5 notes sur l'App Store ; concurrent = 3 notes.
+     Aucun jeu standalone avec volume ou revenus revendiqués.
+
+   • Qui gagne de l'argent dans la typo : I Love Typography — marketplace
+     de fontes indé (81 foundries) + academy payante (cours ~990 £,
+     workshop ~350 £, +TVA) + newsletter + blog. Le revenu vient de la
+     VENTE de fontes et de la formation, PAS du jeu.
+        → fonts.ilovetypography.com / academy.ilovetypography.com
+
+   VERDICT : aucun cas avéré de jeu/apprentissage typo monétisé en direct
+   avec succès. Signal fort — mais ces produits sont tous CONSUMER. Le B2B
+   n'est pas concerné par cette « gratuité de catégorie ».
+
+
+════════════════════════════════════════════════════════
+2) TAILLE & WILLINGNESS-TO-PAY — niche, premium plutôt que volume
+════════════════════════════════════════════════════════
+
+   • Audience étudiante réelle (US, données NASAD vérifiées) :
+     ~4 400 diplômés/an en Communication Design, 18 292 inscrits
+     (automne 2020), 180 établissements accrédités.
+        → marché de NICHE, pas de masse → logique de prix premium, pas de
+          gros volume à bas prix.
+
+   • Willingness-to-pay directe des designers/étudiants pour de
+     l'entraînement de l'œil typo : NON démontrée par les sources.
+     (Le chiffre « 2M+ graphistes dans le monde » a été réfuté.)
+
+
+════════════════════════════════════════════════════════
+3) AFFILIATION FONTES — appoint réel mais faible
+════════════════════════════════════════════════════════
+
+   • Monotype / MyFonts : jusqu'à 10 % de commission, cookie 30 jours
+     (taux réalisés souvent 4–8 %, programme reseller jusqu'à 20 %).
+        → Monotype Affiliate Program (via CJ Affiliate)
+
+   • Creative Market : 20 % nouveaux clients / 10 % récurrents / 30 % sur
+     les abonnements, cookie 30 jours.
+
+   • Seul témoignage chiffré (Typewolf, ~250 000 visiteurs/mois) :
+     l'affiliation fontes rapporte « pas grand-chose » (« not much »),
+     le site est resté un projet annexe.
+
+   VERDICT : viable comme revenu d'APPOINT, jamais comme revenu principal.
+
+
+════════════════════════════════════════════════════════
+4) B2B ÉDUCATION — la piste la plus crédible structurellement
+════════════════════════════════════════════════════════
+
+   • La licence per-seat / per-student est le modèle standard de l'edtech.
+     Ordre de grandeur : ~5–25 $/élève/an pour un outil qui améliore les
+     résultats (PowerSchool ~3 $/élève/an ; Blackboard ~13–20 £/utilisateur).
+     (confiance MEDIUM — blog corroboré par sources tierces, pas une
+     preuve dure)
+        → getmonetizely (edtech pricing)
+
+   • Figma donne son plan Education COMPLET gratuitement aux étudiants et
+     enseignants vérifiés (valeur ~144 $/an), pour capter le marché — la
+     monétisation venant du pro/B2B. Le « gratuit étudiant » est un levier
+     d'acquisition validé sur les outils créatifs.
+        → figma.com/education
+
+   • Demande réelle et BUDGÉTÉE des écoles de design pour un outil
+     d'entraînement de l'œil typo : NON démontrée. Risque = « nice to have »
+     non budgété. C'est l'inconnue principale à tester.
+
+
+════════════════════════════════════════════════════════
+5) LEARNING GAMIFIÉ DE NICHE EN ABONNEMENT
+════════════════════════════════════════════════════════
+
+   • Brilliant (STEM interactif, niche, gamifié) : tient en abonnement,
+     ~24,99 $/mois ou ~149,88 $/an (~13,49 $/mois en annuel). Comparable
+     positif le plus proche : « niche gamifiée payante » EST possible.
+
+   • Duolingo : l'abonnement domine (76 % du CA 2023), pub marginale (9 %).
+     Si monétisation directe il y a, c'est l'abonnement, pas la pub.
+     (Attention : très grande échelle, grand public — ne se projette pas
+     tel quel sur une niche.)
+
+
+════════════════════════════════════════════════════════
+REPÈRES DE PRIX (indicatifs, à confirmer)
+════════════════════════════════════════════════════════
+
+   B2B éducation     : ~5–25 $/élève/an (per-seat standard)
+   Solo Pro D2C      : ~5–15 $/mois (plausible, non validé sur la typo)
+   Cours typo premium: 350–990 £ (ILT Academy)
+   Affiliation fontes: 4–10 % (Monotype) à 20 % (Creative Market neufs)
+   Niche gamifié abo : ~13–25 $/mois (Brilliant)
+
+
+════════════════════════════════════════════════════════
+QUESTIONS OUVERTES (ce que la veille ne tranche PAS)
+════════════════════════════════════════════════════════
+
+   1. Demande réelle et solvable des écoles/bootcamps pour un outil
+      d'entraînement de l'œil typo ? Non démontrée.
+   2. Quel trafic faut-il pour que l'affiliation devienne non négligeable ?
+      Aucun taux clic→achat de fonte n'a survécu à la vérification.
+   3. Les designers/étudiants paieraient-ils un Pro pour s'entraîner,
+      alors que tous les comparables directs sont gratuits ? Non prouvé.
+   4. Taille de l'audience France/Europe spécifiquement ? Seules des
+      données US (NASAD) ont été vérifiées.
+
+
+════════════════════════════════════════════════════════
+À NE PAS UTILISER — affirmations RÉFUTÉES en vérification
+════════════════════════════════════════════════════════
+
+Ces chiffres ont circulé dans les sources mais ont été TUÉS par la
+vérification contradictoire. Ne pas s'appuyer dessus :
+
+   • Taux de conversion freemium→payant edtech (2,6 %, etc.) — réfuté.
+   • Conversion Duolingo ~8,8 % — réfuté.
+   • Effets de gamification Duolingo (+40 %/+25 %) — réfuté.
+   • Sondage Fontstand « 93,8 % préfèrent l'achat perpétuel » — réfuté.
+   • « 75 % des EdTech françaises en B2B » — réfuté.
+   • « 2M+ graphistes dans le monde » — réfuté.
+   • Prix Kahoot 9/15 $, Coursera Plus 399 $/an — réfutés.
+   • Monétisation exacte de « Guess the Font! » — réfutée.
+   • « Les guides à 39 $ > l'affiliation chez Typewolf » — réfuté.
+
+
+════════════════════════════════════════════════════════
+SOURCES PRINCIPALES
+════════════════════════════════════════════════════════
+
+   method.ac (primaire)
+   fonts.ilovetypography.com / academy.ilovetypography.com (primaire)
+   foundrysupport.monotype.com — affiliate program (primaire)
+   creativemarket.com/affiliates (primaire)
+   figma.com/education/higher-education (primaire)
+   nasad.arts-accredit.org — HEADS 2020-2021 (primaire)
+   sec.gov — Duolingo Form 10-K FY2023 (primaire)
+   getmonetizely.com — edtech pricing (blog, corroboré)
+   medium.com/@DesignerNews — AMA Typewolf 2016 (secondaire)
+   getlatka.com/companies/Brilliant (à recouper)

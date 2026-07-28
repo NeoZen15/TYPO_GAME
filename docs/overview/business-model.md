@@ -1,0 +1,80 @@
+# Modèle économique — Jeux de Typo
+
+> Document de travail. Première version posée pour cadrer la réflexion, à affiner après la veille marché.
+> Ancré sur ce qui existe déjà dans le produit (catalogue, base PostgreSQL, modes, analytics).
+
+## 1) La réalité du créneau
+
+La typographie est un créneau **étroit** : designers, étudiants en design, type designers, agences, et un cercle plus large de « curieux créatifs ».
+
+Constat important sur les comparables : **les jeux de typo connus sont tous gratuits.**
+- **Method of Action** — Kerntype, Shape Type, Type Connection : outils gratuits, pensés comme acquisition / vitrine, pas comme produit payant.
+- **Typewolf**, **I Love Typography**, **Fonts In Use** : monétisent *ailleurs* (affiliation fontes, guides premium, partenariats foundry, éditorial).
+
+Conclusion : **personne ne vit d'un jeu de reconnaissance typo vendu en direct au grand public.**
+Pour faire du chiffre, il faut soit brancher le jeu sur quelque chose de monétisable (vente de fontes, formation), soit viser le B2B (écoles, agences).
+
+## 2) Les trois pistes viables
+
+### Piste A — Funnel gratuit + affiliation fontes
+Le jeu reste gratuit, beau, addictif. On s'appuie sur le **catalogue 1000+ polices** : chaque typo reconnue devient un point d'entrée « découvrir / acheter cette police » (MyFonts, Adobe Fonts, foundries en affiliation).
+- **Logique** : le produit qui apprend à reconnaître les fontes est le meilleur endroit pour en vendre.
+- **Revenu** : direct faible, mais rend le produit gratuit *meilleur* et crée une relation avec les foundries.
+- **Friction** : quasi nulle.
+
+### Piste B — Pro / freemium (D2C)
+Modèle Duolingo appliqué à la typo.
+- **Gratuit** : training + progression (« carte du regard »).
+- **Pro (~4–6 €/mois ou ~39 €/an)** : mode competition + leaderboards, mode expert, catalogue complet, analytics riches (cadence, profil vitesse, confusions fréquentes, catégories fortes/faibles).
+- **Logique** : convertit les passionnés.
+- **Risque** : niche potentiellement trop petite pour un abonnement D2C autonome → à valider par la veille.
+
+### Piste C — B2B / éducation (le vrai moteur de chiffre)
+Écoles de design, bootcamps, agences qui onboardent des juniors.
+- **Modèle** : licence par siège, ACV élevé, peu de clients nécessaires.
+- **Logique** : la progression + le suivi par joueur (déjà en base) = exactement ce qu'un prof veut (tableau de bord de classe).
+- **C'est le chemin le plus défendable pour monétiser de l'entraînement typo spécifiquement.**
+
+## 3) Recommandation : un empilement, pas un choix unique
+
+**Free (funnel + affiliation) → Pro (D2C) → B2B éducation comme vrai moteur.**
+
+- Le **gratuit** nourrit le haut du funnel et l'affiliation.
+- Le **Pro** convertit les passionnés en revenu récurrent.
+- Le **B2B** fait le chiffre avec peu de clients.
+
+Les trois réutilisent **la même base déjà construite** : catalogue, sessions, progression, analytics competition.
+
+La priorité entre ces pistes dépend de l'**ambition** :
+- *Side-project élégant qui s'autofinance* → priorité affiliation + Pro léger.
+- *Vraie boîte à faire grossir* → priorité B2B éducation, le reste en soutien.
+
+## 4) Ce que le build supporte déjà
+
+| Brique existante | Usage business |
+|---|---|
+| Comptes / sessions / progression par typo (PostgreSQL) | Socle d'un Pro **et** d'un dashboard prof (B2B) |
+| Competition + analytics de session riches | Feature payante quasi prête |
+| Mode expert (placeholder) | Slot Pro naturel |
+| Catalogue 1000+ polices | Socle de l'affiliation fontes |
+
+## 5) Ce qui reste à construire par tier
+
+- **Affiliation** : mapping typo → fiche foundry / lien d'achat, gestion des liens d'affiliation, page « découvrir cette police ».
+- **Pro** : paywall, gestion d'abonnement (Stripe), gating des features (competition / expert / catalogue complet / analytics).
+- **B2B** : comptes organisation, gestion de classes/sièges, dashboard enseignant, facturation par licence.
+
+## 6) Hypothèses de prix (à challenger par la veille)
+
+- **Pro D2C** : 4–6 €/mois, ~39 €/an (ancrage : apps de learning gamifié, pas outils pro).
+- **B2B éducation** : à benchmarker (par siège / par classe / licence établissement).
+- **Affiliation** : commissions standard des marketplaces de fontes (à confirmer par programme).
+
+## 7) Prochaine étape
+
+Veille marché pour valider / invalider ces hypothèses :
+- comparables directs (jeux + apprentissage typo) et leur modèle réel,
+- taille et willingness-to-pay de l'audience,
+- programmes d'affiliation fontes (taux, conditions),
+- benchmarks de prix B2B éducation en design,
+- exemples d'apps de learning gamifié niche qui réussissent en abonnement.

@@ -1,0 +1,168 @@
+VEILLE MARCHÉ N°2 — MODÈLE ÉCO DES BOÎTES QUI RESSEMBLENT À JEUX DE TYPO
+
+Objectif : disséquer le modèle économique des apps d'apprentissage gamifié
+d'une compétence (au-delà de Duolingo/Brilliant). Recherche multi-sources,
+vérifiée en contradictoire. Sources surtout PRIMAIRES (RevenueCat, pages
+de prix officielles live). Snapshot juin 2026.
+
+
+════════════════════════════════════════════════════════
+RÉSUMÉ EN UN PARAGRAPHE
+════════════════════════════════════════════════════════
+
+Pour une app d'entraînement gamifié à une compétence de niche, cible
+designers/étudiants, positionnement premium : le modèle réaliste est
+l'ESSAI LIMITÉ (hard paywall, pas de gratuit à vie) + un volet B2B/
+éducation par siège. Le hard paywall convertit ~5x mieux que le freemium
+SANS perdre en rétention à 1 an, et c'est le bon choix pour la quasi-
+totalité des apps, surtout bootstrappées. Une audience PAYANTE restreinte
+suffit (logique « 1000 vrais fans » : 1000 × 100 $/an = 100 000 $/an ; un
+prix plus élevé réduit l'audience nécessaire). Fourchette de prix réelle
+des comparables : individuel ~12–26 €/mois, B2B ~11–14 $/siège/mois.
+
+
+════════════════════════════════════════════════════════
+1) « JAMAIS GRATUIT » = HARD PAYWALL → VALIDÉ
+════════════════════════════════════════════════════════
+
+   • Hard paywall (essai seulement, pas de tier gratuit permanent) :
+     ~10,7 % de conversion à J35 contre ~2,1 % en freemium → ~5x mieux.
+   • Rétention à 1 an quasi identique : 27 % vs 28 %. Le gratuit ne
+     fidélise PAS mieux, il convertit juste moins bien.
+   • LTV année 1 par payeur ~2x : 49,30 $ vs 24,24 $.
+   • Phil Carter (ex-Quizlet) : « pour la grande majorité des apps
+     d'abonnement, le hard paywall est la bonne réponse », surtout si tu
+     es « bootstrappé ou avec peu de capital ». Le freemium n'est requis
+     que pour viser une boîte à un milliard via une audience massive.
+        → RevenueCat State of Subscription Apps 2026 (115 000+ apps, 16 Md$)
+
+   ⚠️ LA NUANCE À NE PAS OUBLIER :
+   Le « 5x » est un taux de conversion sur une population AUTO-SÉLECTIONNÉE.
+   Le hard paywall :
+     - effondre le haut de funnel (beaucoup moins de monde entre),
+     - augmente les remboursements (~70 % de plus),
+     - tue le bouche-à-oreille et le classement App Store.
+   « Convertit mieux » ≠ « rapporte plus dans l'absolu ». Tu échanges la
+   PORTÉE contre la CONVERSION. Comme tu as déjà renoncé au funnel
+   gratuit, ton acquisition doit venir d'ailleurs (canal prof / B2B /
+   prospection directe). C'est cohérent, mais c'est le prix à payer.
+
+
+════════════════════════════════════════════════════════
+2) UNE PETITE AUDIENCE PREMIUM SUFFIT — « 1000 VRAIS FANS »
+════════════════════════════════════════════════════════
+
+   • Kevin Kelly : 1000 vrais fans × 100 $/an = 100 000 $/an.
+   • La relation est inverse à l'ARPU : 2000 fans à 50 $, ou 500 fans à
+     200 $. Plus ton prix est élevé, moins il te faut de monde.
+   • Donc un positionnement premium de niche EST viable — à condition
+     d'un ARPU élevé et/ou d'un canal B2B.
+   • Réserve : l'arithmétique est solide ; trouver réellement 1000 vrais
+     fans est difficile (peu d'artistes/créateurs en vivent à 100 %).
+
+
+════════════════════════════════════════════════════════
+3) FOURCHETTES DE PRIX — COMPARABLES (juin 2026)
+════════════════════════════════════════════════════════
+
+   ABONNEMENT INDIVIDUEL (B2C)
+     Lumosity (brain-training)   : 11,99–14,99 $/mois (~59,99 $/an)
+     Domestika (cours design)    : 25,99 €/mois, ou 129,50 € an 1 (-58 %)
+                                   puis 259 €/an
+     DataCamp Premium (data/code): ~25 $/mois
+     Yousician (musique/oreille) : 19,99 $/mois (1 instrument) /
+                                   29,99 $/mois (tous), ou 119,99–179,99 $/an
+     School of Motion (motion)   : 497 $/trimestre, ou 1197 $/an
+
+   B2B / ÉQUIPES / ÉCOLES (par siège)
+     Brilliant (STEM gamifié)    : dès 3 sièges, 11,33 $/siège/mois
+                                   (facturé à l'année, ~136 $/an/personne),
+                                   +10,10 $/mois par siège en plus, max 50
+     DataCamp Teams              : 14 €/user/mois (annuel), min. 2 users
+                                   (~168 $/user/an)
+     School of Motion Teams      : sur devis, dès 3 personnes (licences
+                                   réassignables, facture consolidée,
+                                   account manager, dashboard admin)
+
+   À RETENIR : les plateformes design (Domestika, School of Motion)
+   tournent en abonnement HAUT DE GAMME avec grosse remise 1re année, et
+   ont TOUTES un volet équipes/B2B.
+
+
+════════════════════════════════════════════════════════
+4) AVERTISSEMENT B2B / ÉDUCATION (très important pour les licences)
+════════════════════════════════════════════════════════
+
+   Yousician a FERMÉ son programme « Yousician for Teachers » / Edu.
+   C'était une simple SURCOUCHE de gestion enseignant posée sur des
+   abonnements individuels — pas une vraie licence par siège. Résultat :
+   abandonnée.
+
+   → LEÇON POUR JEUX DE TYPO : un volet éducation n'est pas une garantie.
+     Si tu le fais, conçois-le comme une VRAIE licence par siège (modèle
+     Brilliant / DataCamp), pas comme un tableau de bord prof bricolé
+     par-dessus des comptes solo. Sinon ça ne tient pas.
+
+   Note : les deux comparables grand public en freemium (Lumosity,
+   Chess.com — 150M membres, 100M+$/an) justifient le gratuit par leur
+   ÉCHELLE massive. Pas ton cas → le hard paywall reste cohérent pour toi.
+
+
+════════════════════════════════════════════════════════
+CE QUE ÇA SUGGÈRE POUR JEUX DE TYPO
+════════════════════════════════════════════════════════
+
+   • Modèle : ESSAI LIMITÉ (hard paywall) + B2B par siège. Validé par les
+     données pour un produit de niche premium, vraisemblablement bootstrappé.
+   • Prix solo plausible : ~12–20 €/mois ou un annuel remisé (la niche
+     design tolère le haut de gamme — cf. Domestika, School of Motion).
+   • Prix B2B plausible : ~10–15 $/siège/mois facturé à l'année (modèle
+     Brilliant), vendu en bundle « classe ».
+   • Condition de réussite : ARPU élevé (premium assumé) ET/OU canal B2B,
+     pour compenser la petite taille d'audience et la perte de portée du
+     hard paywall.
+   • Licence éducation : la construire comme une vraie licence par siège,
+     pas comme une surcouche prof.
+
+
+════════════════════════════════════════════════════════
+QUESTIONS OUVERTES (non tranchées)
+════════════════════════════════════════════════════════
+
+   • Aucun comparable DIRECT (entraînement à la reconnaissance de polices)
+     chiffré, ni en France/Europe.
+   • Taux de conversion / ARPU réels des apps de NICHE premium (vs géants).
+   • Part réelle du B2B dans le CA de ces comparables (prix par siège
+     connus, mais pas le poids du B2B).
+   • Willingness-to-pay des designers/étudiants + écoles FR/EU qui achètent
+     des licences par classe, et à quel budget/siège.
+
+
+════════════════════════════════════════════════════════
+À NE PAS UTILISER — affirmations RÉFUTÉES en vérification
+════════════════════════════════════════════════════════
+
+   • « Hard paywall = 8x revenu/install à J60 (3,09 $ vs 0,38 $) » — réfuté.
+   • « Paywall multi-étapes = +75 % de LTV » — réfuté.
+   • « Passer au freemium = -50 % de conversion » — réfuté (anecdote).
+   • « Conversion Chess.com 1–1,5 % » — réfuté.
+   • « Domestika n'a aucun essai gratuit » — réfuté.
+
+   (Le « 5x » du hard paywall reste valide via la source agrégée
+   principale ; c'est une variante de calcul secondaire qui a été tuée.)
+
+
+════════════════════════════════════════════════════════
+SOURCES PRINCIPALES
+════════════════════════════════════════════════════════
+
+   revenuecat.com — State of Subscription Apps 2026 (primaire)
+   revenuecat.com — Phil Carter / Sub Club podcast (blog)
+   brilliant.org/subscribe/group-plans (primaire)
+   datacamp.com/business/compare-plans (primaire)
+   domestika.org/en/plus (primaire)
+   schoolofmotion.com/all-access + /training-for-teams (primaire)
+   account.yousician.com/plans + support (teachers fermé) (primaire)
+   apps.apple.com — Lumosity (primaire, prix)
+   kk.org/thetechnium/1000-true-fans + a16z.com/1000-true-fans-try-100 (blog)
+   sherwood.news — Chess.com 100M+$ (secondaire, auto-déclaré)

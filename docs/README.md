@@ -4,8 +4,12 @@ Sommaire de la documentation, rangée par thème.
 Pour comprendre le projet, commencer par [`overview/site-system-overview.md`](overview/site-system-overview.md).
 
 ## overview/ — vue d'ensemble
+- [`getting-started.md`](overview/getting-started.md) — porte d'entrée simple pour comprendre le projet quand on découvre le repo.
 - [`site-system-overview.md`](overview/site-system-overview.md) — fiche de transmission rapide : ce que fait le site, structure, données, pipeline.
+- [`project-overview-longform.md`](overview/project-overview-longform.md) — version longue de transmission produit/concept/architecture.
 - [`brief.md`](overview/brief.md) — intention produit en quelques lignes.
+- [`business-model.md`](overview/business-model.md) — modèle économique : pistes (affiliation / Pro / B2B), ce que le build supporte déjà, hypothèses de prix.
+- [`Etude-Marche-B2B-SaaS-Ecoles-de-Design.pdf`](overview/Etude-Marche-B2B-SaaS-Ecoles-de-Design.pdf) : étude de marché et positionnement B2B SaaS pour écoles de design (direction de travail, non validée, en particulier les prix).
 - [`repo-organization.md`](overview/repo-organization.md) — frontières runtime / dev-lab / artefacts, règles de rangement du repo.
 - [`naming.md`](overview/naming.md) — conventions de nommage.
 
@@ -56,3 +60,4 @@ Pour comprendre le projet, commencer par [`overview/site-system-overview.md`](ov
 ## archive/ — handoffs & références historiques
 - [`context-handoff-2026-03-27-play-onboarding.md`](archive/context-handoff-2026-03-27-play-onboarding.md) — handoff de contexte.
 - [`translator-review-packet.md`](archive/translator-review-packet.md) — packet de review traduction.
+- [`overview-notes/README.md`](archive/overview-notes/README.md) — notes de réflexion et veille conservées à titre d'archive, hors des docs actives.

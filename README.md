@@ -2,6 +2,14 @@
 
 Interactive typographic learning experience built with Next.js (App Router), React, and GSAP.
 
+## Start Here
+
+- Beginner guide: [`docs/overview/getting-started.md`](docs/overview/getting-started.md)
+- System overview: [`docs/overview/site-system-overview.md`](docs/overview/site-system-overview.md)
+- Long-form project handoff: [`docs/overview/project-overview-longform.md`](docs/overview/project-overview-longform.md)
+- Repo boundary guide: [`docs/overview/repo-organization.md`](docs/overview/repo-organization.md)
+- Documentation index: [`docs/README.md`](docs/README.md)
+
 ## Development
 
 Run the local server:
