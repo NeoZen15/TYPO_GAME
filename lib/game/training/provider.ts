@@ -16,6 +16,10 @@ import {
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
 import {
+  RUNTIME_ALLOWED_LICENSE_TYPES,
+  UFL_LEGACY_SLUGS,
+} from "@/lib/game/license-guard";
+import {
   createQuestionToken,
   verifyQuestionToken,
   type TrainingQuestionTokenPayload,
@@ -261,6 +265,12 @@ const ensureUserPool = async (userId: string, familiarity: Familiarity | null) =
   }
 };
 
+// Every training round reads its material here: pickEligibleTypeface takes the
+// correct answer from this pool and pickDistractors takes the three wrong labels
+// from the same rows. Filtering the licence at this single read is what makes the
+// guard impossible to bypass, including for a slug that a pool seeding function
+// (init_user_pool, try_unlock_one_typeface, rebalance_user_pool) inserted into
+// user_typeface_state without checking. See lib/game/license-guard.ts.
 const getPoolRows = async (userId: string) =>
   queryRows<PoolRow>(sql`
     SELECT
@@ -280,6 +290,10 @@ const getPoolRows = async (userId: string) =>
     WHERE uts.user_id = ${userId}::uuid
       AND uts.in_active_pool = true
       AND tc.activation_status = true
+      AND (
+        tc.license_type::text = ANY(${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[])
+        OR tc.typeface_slug = ANY(${[...UFL_LEGACY_SLUGS]}::text[])
+      )
     ORDER BY uts.updated_at ASC, tc.display_name ASC
   `);
 

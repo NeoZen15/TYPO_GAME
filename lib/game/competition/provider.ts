@@ -26,6 +26,10 @@ import {
   type TrainingQuestionTokenPayload,
 } from "@/lib/game/training/question-token";
 import { type Locale } from "@/lib/game/training/contracts";
+import {
+  RUNTIME_ALLOWED_LICENSE_TYPES,
+  UFL_LEGACY_SLUGS,
+} from "@/lib/game/license-guard";
 import { sql } from "@/lib/server/neon";
 
 type CompetitionPoolRow = {
@@ -118,6 +122,10 @@ const getGuestUser = async (locale: Locale, existingUserId?: string | null) => {
   return { user: insertedRows[0], created: true };
 };
 
+// The competition pool is BOTH the answer set and the distractor set, so this is
+// the single place where a typeface becomes visible to a competition player. The
+// licence clause therefore belongs here and not in the screen: see
+// lib/game/license-guard.ts for why it is an allowlist compared as text.
 const getCompetitionPoolRows = async (userId: string) =>
   queryRows<CompetitionPoolRow>(sql`
     SELECT
@@ -132,6 +140,10 @@ const getCompetitionPoolRows = async (userId: string) =>
      AND uts.typeface_slug = tc.typeface_slug
     WHERE tc.activation_status = true
       AND tc.min_mode IN ('training', 'competition')
+      AND (
+        tc.license_type::text = ANY(${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[])
+        OR tc.typeface_slug = ANY(${[...UFL_LEGACY_SLUGS]}::text[])
+      )
       AND EXISTS (
         SELECT 1
         FROM font_runtime_assets fra
