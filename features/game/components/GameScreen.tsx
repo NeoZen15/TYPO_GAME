@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import { isDevRuntime } from "@/lib/dev-mode";
+import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
 import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
 import {
   type TrainingAnswerResponse,
@@ -26,7 +27,6 @@ type InlineFeedback = {
 
 type ProgressState = {
   resolvedCount: number;
-  totalRounds: number;
   eyeLevel?: number;
   facesMastered?: number;
   poolSize?: number;
@@ -68,9 +68,9 @@ const readOnboarding = (): { familiarity: string | null; warmupCorrect: boolean 
 export default function GameScreen() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [question, setQuestion] = useState<TrainingQuestion | null>(null);
+  // No total: a training session has no planned length (I-17).
   const [progress, setProgress] = useState<ProgressState>({
     resolvedCount: 0,
-    totalRounds: 8,
   });
   const [selectedId, setSelectedId] = useState("");
   const [result, setResult] = useState<"idle" | "correct" | "wrong">("idle");
@@ -107,6 +107,11 @@ export default function GameScreen() {
   }, []);
 
   const beginQuestion = useCallback((nextQuestion: TrainingQuestion) => {
+    // Declare this face before showing it. Idempotent, so calling it here covers
+    // every question (first and subsequent) even when the earlier preload below
+    // already ran. Without this the specimen renders in a fallback font and the
+    // question asks for a typeface that is not on screen.
+    ensureGameFontFace(nextQuestion.fontFace);
     setQuestion(nextQuestion);
     setSelectedId("");
     setResult("idle");
@@ -318,20 +323,17 @@ export default function GameScreen() {
 
         setResult("correct");
 
-        if (payload.sessionComplete) {
-          queueAdvance(() => {
-            setIsComplete(true);
-            setQuestion(null);
-            setSelectedId("");
-            setResult("idle");
-            setWrongAttemptIds([]);
-            setInlineFeedback(null);
-            setIsRoundLocked(false);
-          }, TRAINING_CORRECT_DELAY_MS);
-          return;
-        }
+        // A session no longer ends on its own: there is no round cap, so answering
+        // always continues. Closing a session is an explicit action, served by
+        // POST /api/training/session/end, and the affordance that triggers it is a
+        // product decision left to the owner. The completion branch below stays in
+        // place, waiting to be driven by it.
 
         if (payload.nextQuestion) {
+          // Declare the next face as soon as it arrives, not when it is shown: the
+          // feedback delay becomes a preload window, so the woff2 is usually in
+          // cache before the swap (spec §9.1, "précharger la police suivante").
+          ensureGameFontFace(payload.nextQuestion.fontFace);
           queueAdvance(() => {
             beginQuestion(payload.nextQuestion!);
           }, TRAINING_CORRECT_DELAY_MS);
