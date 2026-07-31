@@ -4,17 +4,25 @@ import crypto from "node:crypto";
 
 import {
   getTrainingDisplayWord,
-  getTypefaceFontFamily,
   TRAINING_ENGINE_VERSION,
-  TRAINING_TOTAL_ROUNDS,
 } from "@/lib/game/training/catalog";
+import {
+  getRuntimeFontFace,
+  getRuntimeFontFamily,
+  hasRuntimeFace,
+} from "@/lib/game/fonts/runtime-catalog";
 import {
   type Familiarity,
   type Locale,
   type TrainingAnswerResponse,
+  type TrainingEndResponse,
   type TrainingQuestion,
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
+import {
+  buildTrainingSessionSummary,
+  type SummaryAnswerRow,
+} from "@/lib/game/training/session-summary";
 import {
   RUNTIME_ALLOWED_LICENSE_TYPES,
   UFL_LEGACY_SLUGS,
@@ -142,9 +150,24 @@ const buildQuestion = (
   sessionSeed: string,
   pool: PoolRow[]
 ): TrainingQuestion => {
-  const correct = pickEligibleTypeface(pool, user.global_q_index, sessionSeed);
+  // FAIL CLOSED on the rendering chain. The correct answer is the face the player
+  // must recognise, so it can only be a face the screen can actually declare. A
+  // face without a runtime descriptor would render in a fallback font, and the
+  // question would ask for a typeface that is not on screen: unanswerable except
+  // by luck. Distractors keep the full pool, they are only labels.
+  //
+  // On today's data this filter removes nothing (1172 active faces, 1172 with a
+  // ready descriptor). It exists so that a future import, or a slug renamed on one
+  // side only, breaks loudly here instead of silently degrading the question.
+  const renderablePool = pool.filter((row) => hasRuntimeFace(row.typeface_slug));
+
+  const correct = pickEligibleTypeface(renderablePool, user.global_q_index, sessionSeed);
   if (!correct) {
-    throw new Error("No training typeface available in active pool.");
+    throw new Error(
+      pool.length > 0
+        ? "No renderable training typeface in active pool (faces present but none has a runtime font descriptor)."
+        : "No training typeface available in active pool."
+    );
   }
 
   const distractors = pickDistractors(pool, correct, user.global_q_index, sessionSeed);
@@ -175,7 +198,8 @@ const buildQuestion = (
     displayWord: payload.displayWord,
     typefaceSlug: correct.typeface_slug,
     typefaceLabel: correct.display_name,
-    fontFamily: getTypefaceFontFamily(correct.typeface_slug, correct.display_name),
+    fontFamily: getRuntimeFontFamily(correct.typeface_slug, correct.display_name),
+    fontFace: getRuntimeFontFace(correct.typeface_slug),
     options,
   };
 };
@@ -721,6 +745,39 @@ export const startTrainingSession = async ({
     .toString()
     .padStart(3, "0")}`;
 
+  // Spec §2.1 step 5 — abandon. Since a session no longer closes itself on a
+  // round counter, one left open stays open forever: 73 training sessions were
+  // measured in that state on 2026-07-29, every single one 'active', not one
+  // 'completed'. Any session still open when the player opens a new one is
+  // therefore closed as abandoned, right here, before the new row exists so the
+  // new one is never caught by its own sweep.
+  //
+  // NO PEDAGOGICAL CONSEQUENCE, and that is the point: mastery, intervals and the
+  // pool are written answer by answer, so the work done inside an abandoned
+  // session is already acquired and nothing here revisits it.
+  //
+  // ended_at is taken from the LAST RECORDED EVENT of that session, not from now:
+  // the player left when they stopped answering, not when we noticed. With no
+  // event at all (a session opened and never played) it falls back to started_at,
+  // giving a zero duration, which is exactly what happened. No session_end event
+  // is written either, because no end ever happened, and phase 2a is precisely
+  // about the fact table never claiming something that did not occur.
+  await sql`
+    UPDATE sessions AS s
+    SET status = 'abandoned'::app.session_status_enum,
+        ended_at = COALESCE(
+          (
+            SELECT MAX(uef.event_ts_utc)
+            FROM user_event_fact uef
+            WHERE uef.session_id = s.session_id
+          ),
+          s.started_at
+        )
+    WHERE s.user_id = ${user.user_id}::uuid
+      AND s.mode = 'training'
+      AND s.status = 'active'
+  `;
+
   const insertedSessions = await queryRows<SessionRow>(sql`
     INSERT INTO sessions (
       user_id,
@@ -774,7 +831,6 @@ export const startTrainingSession = async ({
       question,
       progress: {
         resolvedCount: session.question_count,
-        totalRounds: TRAINING_TOTAL_ROUNDS,
         ...(progressAggregate
           ? {
               eyeLevel: progressAggregate.eyeLevel,
@@ -969,9 +1025,19 @@ export const submitTrainingAnswer = async ({
       ? "wrong_first_try"
       : "wrong_retry";
 
-  const misreadShown =
-    wrongFirstTry &&
-    (currentState.session_errors === 0 || nextConsecutiveSessionErrors >= 2);
+  // misread_shown records that a Misread Type Card WAS DISPLAYED to the player.
+  // No Type Card exists in the runtime (no content/type-cards, no overlay), so the
+  // honest value is false and only false. It used to be written from the trigger
+  // rule alone, which put "a card was shown" in the fact table for cards that were
+  // never shown: the day cards ship, their effect would be measured against a
+  // history of imaginary displays.
+  //
+  // The trigger rule itself is NOT lost, it lives in the spec (§6.1: first error on
+  // this face in the session, or second consecutive error). It gets implemented
+  // together with the card, and this column starts telling the truth then.
+  // check:misread-truth fails if anything but a literal false is written here while
+  // no card content exists.
+  const misreadShown = false;
 
   await sql`
     INSERT INTO user_event_fact (
@@ -1042,31 +1108,38 @@ export const submitTrainingAnswer = async ({
       feedbackText: "Incorrect. Try again.",
       progress: {
         resolvedCount: session.question_count,
-        totalRounds: TRAINING_TOTAL_ROUNDS,
         ...levelFields,
       },
     };
   }
 
-  const resolvedCountAfter = session.question_count + 1;
-  const nextGlobalQIndex = user.global_q_index + 1;
-  const sessionComplete = resolvedCountAfter >= TRAINING_TOTAL_ROUNDS;
-
-  await sql`
+  // Both counters below increment inside the UPDATE itself and are read back
+  // via RETURNING, never computed in JS from the row a prior SELECT saw. Two
+  // active sessions for one player is a supported state (plan
+  // plan-double-demarrage-2026-07-31): a JS-computed `+ 1` written back would
+  // lose an increment whenever two answers land in parallel, because both
+  // reads would see the same starting value. `SET col = col + 1` cannot lose
+  // a concurrent increment, since there is no JS read in between.
+  const [updatedUser] = await queryRows<{ global_q_index: number }>(sql`
     UPDATE users
-    SET global_q_index = ${nextGlobalQIndex},
+    SET global_q_index = global_q_index + 1,
         last_seen_at = now()
     WHERE user_id = ${user.user_id}::uuid
-  `;
+    RETURNING global_q_index
+  `);
+  const nextGlobalQIndex = updatedUser.global_q_index;
 
-  await sql`
+  // The session stays active no matter how many questions were answered: a
+  // training session has no planned length and can only be closed by an explicit
+  // call to endTrainingSession (I-17). Answering never writes status or ended_at.
+  const [updatedSession] = await queryRows<{ question_count: number }>(sql`
     UPDATE sessions
-    SET question_count = ${resolvedCountAfter},
-        correct_count = correct_count + 1,
-        status = ${sessionComplete ? "completed" : "active"}::app.session_status_enum,
-        ended_at = ${sessionComplete ? new Date() : null}
+    SET question_count = question_count + 1,
+        correct_count = correct_count + 1
     WHERE session_id = ${sessionId}::uuid
-  `;
+    RETURNING question_count
+  `);
+  const resolvedCountAfter = updatedSession.question_count;
 
   // Stage 4 — downward rebalance. Runs before the aggregate + next question so any
   // freshly injected easy faces are reflected in poolSize and eligible to appear
@@ -1084,41 +1157,6 @@ export const submitTrainingAnswer = async ({
         poolSize: progressAggregate.poolSize,
       }
     : {};
-
-  if (sessionComplete) {
-    await sql`
-      INSERT INTO user_event_fact (
-        idempotency_key,
-        user_id,
-        session_id,
-        mode,
-        global_q_index,
-        event_type,
-        engine_version
-      ) VALUES (
-        ${`${sessionId}:session_end`},
-        ${user.user_id}::uuid,
-        ${sessionId}::uuid,
-        'training',
-        ${nextGlobalQIndex},
-        'session_end',
-        ${TRAINING_ENGINE_VERSION}
-      )
-    `;
-
-    return {
-      result: "correct",
-      questionResolved: true,
-      feedbackText: "Correct. Good eye.",
-      progress: {
-        resolvedCount: resolvedCountAfter,
-        totalRounds: TRAINING_TOTAL_ROUNDS,
-        ...progressFields,
-        ...levelFields,
-      },
-      sessionComplete: true,
-    };
-  }
 
   const pool = await getPoolRows(user.user_id);
   // Spec §4.5 — never advance into a frozen pool. When every item is still in
@@ -1141,10 +1179,148 @@ export const submitTrainingAnswer = async ({
     feedbackText: "Correct. Good eye.",
     progress: {
       resolvedCount: resolvedCountAfter,
-      totalRounds: TRAINING_TOTAL_ROUNDS,
       ...progressFields,
       ...levelFields,
     },
     nextQuestion,
   };
+};
+
+// Explicit, voluntary end of a training session (I-17).
+//
+// A session is temporary, the progression is permanent. Closing a session writes
+// the session row and the session_end event, and returns the bilan of what just
+// happened. It touches NOTHING pedagogical: no mastery, no interval, no cooldown,
+// no pool. Mastery is written answer by answer, so a session left open, abandoned
+// or closed loses nothing the player earned.
+//
+// Idempotent: calling it twice returns the same summary and reports
+// closedByThisCall false the second time. The session_end event is guarded by a
+// NOT EXISTS on (session_id, event_type) rather than by a unique key, for the
+// reason spelled out at the insert itself.
+export const endTrainingSession = async ({
+  sessionId,
+  userId,
+}: {
+  sessionId: string;
+  userId: string;
+}): Promise<TrainingEndResponse> => {
+  const sessionRows = await queryRows<{
+    session_id: string;
+    user_id: string;
+    status: string;
+    started_at: string;
+    ended_at: string | null;
+  }>(sql`
+    SELECT session_id, user_id, status::text AS status, started_at, ended_at
+    FROM sessions
+    WHERE session_id = ${sessionId}::uuid
+      AND user_id = ${userId}::uuid
+      AND mode = 'training'
+    LIMIT 1
+  `);
+
+  const session = sessionRows[0];
+  if (!session) {
+    throw new Error("Training session not found for this user.");
+  }
+
+  const wasActive = session.status === "active";
+  const endedAt = session.ended_at ? new Date(session.ended_at) : new Date();
+  const startedAt = new Date(session.started_at);
+
+  if (wasActive) {
+    // THE EVENT IS WRITTEN BEFORE THE STATUS, and the order is deliberate. These
+    // two statements are not in a transaction, because the whole engine runs on
+    // autocommit statements through the HTTP driver. So one of them can land
+    // without the other, and the question is only which half-way state is
+    // recoverable. Status first, then event, is NOT: a session already closed
+    // makes wasActive false on the retry, so the event is skipped for ever and the
+    // journal permanently loses the end of that session. Event first, then status,
+    // heals itself: the session stays active, a retry writes no duplicate thanks to
+    // the guard below, and it closes the session properly.
+    //
+    // NOT EXISTS rather than ON CONFLICT, and this one is not a preference either.
+    // user_event_fact is PARTITIONED BY RANGE (event_ts_utc), and Postgres requires
+    // a unique index on a partitioned table to carry the partition key: the only one
+    // is uq_event_id (event_id, event_ts_utc). There is no unique constraint on
+    // idempotency_key alone, so `ON CONFLICT (idempotency_key)` raises 42P10, "there
+    // is no unique or exclusion constraint matching the ON CONFLICT specification",
+    // and the close path died on it. Verified by execution on a throwaway Neon
+    // branch on 2026-07-29. This is the same shape the competition provider has
+    // been using all along (insertSessionEndEventIfMissing).
+    await sql`
+      INSERT INTO user_event_fact (
+        idempotency_key,
+        user_id,
+        session_id,
+        mode,
+        global_q_index,
+        event_type,
+        engine_version
+      )
+      SELECT
+        ${`${sessionId}:session_end`},
+        ${userId}::uuid,
+        ${sessionId}::uuid,
+        'training',
+        (SELECT global_q_index FROM users WHERE user_id = ${userId}::uuid),
+        'session_end',
+        ${TRAINING_ENGINE_VERSION}
+      WHERE NOT EXISTS (
+        SELECT 1
+        FROM user_event_fact
+        WHERE session_id = ${sessionId}::uuid
+          AND event_type = 'session_end'
+      )
+    `;
+
+    await sql`
+      UPDATE sessions
+      SET status = 'completed'::app.session_status_enum,
+          ended_at = ${endedAt}
+      WHERE session_id = ${sessionId}::uuid
+    `;
+  }
+
+  const answerRows = await queryRows<SummaryAnswerRow>(sql`
+    SELECT
+      question_id::text AS question_id,
+      typeface_slug,
+      answer_slug,
+      is_correct,
+      attempt_index,
+      response_time_ms,
+      mastery_before,
+      mastery_after
+    FROM user_event_fact
+    WHERE session_id = ${sessionId}::uuid
+      AND event_type = 'answer'
+      AND question_id IS NOT NULL
+    ORDER BY event_ts_utc ASC
+  `);
+
+  // "Discovered" means answered for the first time ever, so it is measured against
+  // this user's history OUTSIDE this session, not against the session itself.
+  const seenBeforeRows = await queryRows<{ typeface_slug: string }>(sql`
+    SELECT DISTINCT typeface_slug
+    FROM user_event_fact
+    WHERE user_id = ${userId}::uuid
+      AND event_type = 'answer'
+      AND typeface_slug IS NOT NULL
+      AND session_id <> ${sessionId}::uuid
+  `);
+
+  const progressAggregate = await safeTrainingProgress(userId);
+
+  const summary = buildTrainingSessionSummary({
+    startedAt,
+    endedAt,
+    rows: answerRows,
+    previouslySeenSlugs: seenBeforeRows.map((row) => row.typeface_slug),
+    poolSize: progressAggregate?.poolSize,
+    facesMastered: progressAggregate?.facesMastered,
+  });
+
+  return { sessionId, summary, closedByThisCall: wasActive };
 };
