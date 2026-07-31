@@ -2,6 +2,7 @@ import "server-only";
 
 import { sql } from "@/lib/server/neon";
 import { buildBadges, type BadgeMetrics } from "@/lib/profile/badge-rules";
+import { buildActivityWindow, streakFromDayKeys, longestRunFromDayKeys } from "@/lib/profile/day-keys";
 import {
   MOCK_EYE,
   MOCK_PROFILE,
@@ -87,14 +88,23 @@ type AttrRow = {
 };
 type ModeRow = { mode: ProfileMode; games: number; best_score: number; time_ms: string };
 type SessionRow = {
+  session_id: string;
   mode: ProfileMode;
   question_count: number;
   correct_count: number;
   score: number;
   started_at: string | Date;
 };
+// First-try accuracy per session, from the fact table, not from the sessions
+// table: correct_count on `sessions` is incremented on every resolved question
+// in training regardless of correctness, so it cannot carry an honest accuracy.
+type SessionAccRow = { session_id: string; first_tries: number; first_correct: number };
 type CatRow = { cat: string; seen: number; accuracy: number };
-type DayRow = { d: string | Date };
+// Calendar day already resolved to Europe/Paris by SQL, one row per event
+// (buildActivityWindow / streakFromDayKeys / longestRunFromDayKeys do the
+// counting), never a JS-side date boundary.
+type DayKeyRow = { day_key: string };
+type TodayKeyRow = { today_key: string };
 type UserRow = { created_at: string | Date };
 
 function buildEye(
@@ -182,35 +192,6 @@ function buildEye(
   return { eye, displayMastered };
 }
 
-function streakFromDays(days: number[]): number {
-  let i = days.length - 1;
-  if (i >= 0 && days[i] === 0) i -= 1; // today not played yet — don't break it
-  let streak = 0;
-  for (; i >= 0 && days[i] > 0; i -= 1) streak += 1;
-  return streak;
-}
-
-function longestRun(dayKeys: string[]): number {
-  const set = new Set(dayKeys);
-  let best = 0;
-  for (const key of set) {
-    const prev = new Date(`${key}T00:00:00Z`);
-    prev.setUTCDate(prev.getUTCDate() - 1);
-    if (set.has(prev.toISOString().slice(0, 10))) continue; // not a run start
-    let run = 0;
-    const cur = new Date(`${key}T00:00:00Z`);
-    while (set.has(cur.toISOString().slice(0, 10))) {
-      run += 1;
-      cur.setUTCDate(cur.getUTCDate() + 1);
-    }
-    best = Math.max(best, run);
-  }
-  return best;
-}
-
-const dayKey = (d: string | Date): string =>
-  (typeof d === "string" ? d : d.toISOString()).slice(0, 10);
-
 export async function loadRealProfile(
   userId: string,
 ): Promise<{ profile: PlayerProfile; eye: EyeProfile } | null> {
@@ -218,27 +199,39 @@ export async function loadRealProfile(
     modeRows,
     answerAgg,
     bestStreakRow,
-    bestAccRow,
+    sessionAccRows,
     catRows,
     masteryRow,
     recentRows,
     activityRows,
     activeDayRows,
+    todayKeyRows,
     perTfAnswers,
     states,
     attrs,
     userRows,
   ] = await Promise.all([
+    // Honest existence predicate: a session only counts for Games played, the
+    // per-mode breakdown and Time trained once it has at least one answer event,
+    // so a session created but never answered (the double-start bug) is silent.
     queryRows<ModeRow>(sql`
       SELECT mode, COUNT(*)::int AS games, COALESCE(MAX(score),0)::int AS best_score,
              COALESCE(SUM(duration_ms),0)::bigint AS time_ms
-      FROM sessions WHERE user_id = ${userId}::uuid AND status <> 'invalid'
+      FROM sessions s
+      WHERE s.user_id = ${userId}::uuid AND s.status <> 'invalid'
+        AND EXISTS (SELECT 1 FROM user_event_fact e
+                    WHERE e.session_id = s.session_id AND e.event_type = 'answer')
       GROUP BY mode`),
-    queryRows<{ answers: number; correct: number; typefaces_seen: number; fast: number }>(sql`
-      SELECT COUNT(*)::int AS answers, COUNT(*) FILTER (WHERE is_correct)::int AS correct,
+    // Global justesse KPI: first attempt only, consistent with bestSessionAccuracy
+    // just below it would otherwise be structurally lower than (all attempts
+    // include failed retries in the denominator).
+    queryRows<{ first_tries: number; first_correct: number; typefaces_seen: number; fast: number }>(sql`
+      SELECT COUNT(*)::int AS first_tries,
+             COUNT(*) FILTER (WHERE is_correct)::int AS first_correct,
              COUNT(DISTINCT typeface_slug)::int AS typefaces_seen,
              COUNT(*) FILTER (WHERE is_correct AND response_time_ms < 2000)::int AS fast
-      FROM user_event_fact WHERE user_id = ${userId}::uuid AND event_type = 'answer'`),
+      FROM user_event_fact
+      WHERE user_id = ${userId}::uuid AND event_type = 'answer' AND attempt_index = 1`),
     queryRows<{ best_streak: number }>(sql`
       WITH ordered AS (
         SELECT is_correct,
@@ -247,9 +240,16 @@ export async function loadRealProfile(
         FROM user_event_fact WHERE user_id = ${userId}::uuid AND event_type = 'answer')
       SELECT COALESCE(MAX(cnt),0)::int AS best_streak FROM (
         SELECT COUNT(*) AS cnt FROM ordered WHERE is_correct GROUP BY grp) s`),
-    queryRows<{ best_acc: number }>(sql`
-      SELECT COALESCE(MAX(ROUND(100.0*correct_count/question_count)),0)::int AS best_acc
-      FROM sessions WHERE user_id = ${userId}::uuid AND question_count > 0`),
+    // Precision, first attempts only, consistent with maybeRebalancePool. One row
+    // per session: bestSessionAccuracy is the max ratio below, recentSessions
+    // accuracy is the same ratio looked up per session_id.
+    queryRows<SessionAccRow>(sql`
+      SELECT session_id::text AS session_id,
+             COUNT(*)::int AS first_tries,
+             COUNT(*) FILTER (WHERE is_correct)::int AS first_correct
+      FROM user_event_fact
+      WHERE user_id = ${userId}::uuid AND event_type = 'answer' AND attempt_index = 1
+      GROUP BY session_id`),
     queryRows<CatRow>(sql`
       SELECT tc.primary_category::text AS cat, COUNT(*)::int AS seen,
              ROUND(100.0*COUNT(*) FILTER (WHERE e.is_correct)/COUNT(*))::int AS accuracy
@@ -261,15 +261,26 @@ export async function loadRealProfile(
         (SELECT COUNT(*) FILTER (WHERE mastery_level >= 4) FROM user_typeface_state WHERE user_id = ${userId}::uuid)::int AS mastered,
         (SELECT COUNT(*) FROM typefaces_core)::int AS catalog_total`),
     queryRows<SessionRow>(sql`
-      SELECT mode, question_count, correct_count, score, started_at
+      SELECT session_id::text AS session_id, mode, question_count, correct_count, score, started_at
       FROM sessions WHERE user_id = ${userId}::uuid AND question_count > 0
       ORDER BY started_at DESC LIMIT 5`),
-    queryRows<{ d: string | Date; n: number }>(sql`
-      SELECT started_at::date AS d, COUNT(*)::int AS n
-      FROM sessions WHERE user_id = ${userId}::uuid AND started_at >= now() - interval '30 days'
-      GROUP BY started_at::date`),
-    queryRows<DayRow>(sql`
-      SELECT DISTINCT started_at::date AS d FROM sessions WHERE user_id = ${userId}::uuid`),
+    // Activity, in text so no day boundary is computed in JS: one row per answer
+    // event, the day already resolved to Europe/Paris. buildActivityWindow does
+    // the counting.
+    queryRows<DayKeyRow>(sql`
+      SELECT to_char((event_ts_utc AT TIME ZONE 'Europe/Paris')::date, 'YYYY-MM-DD') AS day_key
+      FROM user_event_fact
+      WHERE user_id = ${userId}::uuid AND event_type = 'answer'
+        AND event_ts_utc >= now() - interval '31 days'`),
+    // All-time distinct answer days, for the streak and the all-time record: a
+    // streak or a record can outlast the 31-day activity window above.
+    queryRows<DayKeyRow>(sql`
+      SELECT DISTINCT to_char((event_ts_utc AT TIME ZONE 'Europe/Paris')::date, 'YYYY-MM-DD') AS day_key
+      FROM user_event_fact
+      WHERE user_id = ${userId}::uuid AND event_type = 'answer'`),
+    // Today's calendar day, decided by the database, not by the runtime.
+    queryRows<TodayKeyRow>(sql`
+      SELECT to_char((now() AT TIME ZONE 'Europe/Paris')::date, 'YYYY-MM-DD') AS today_key`),
     queryRows<AnswerRow>(sql`
       SELECT typeface_slug, COUNT(*)::int AS answers, COUNT(*) FILTER (WHERE is_correct)::int AS correct
       FROM user_event_fact WHERE user_id = ${userId}::uuid AND event_type = 'answer'
@@ -283,39 +294,47 @@ export async function loadRealProfile(
     queryRows<UserRow>(sql`SELECT created_at FROM users WHERE user_id = ${userId}::uuid LIMIT 1`),
   ]);
 
-  const agg = answerAgg[0] ?? { answers: 0, correct: 0, typefaces_seen: 0, fast: 0 };
+  const agg = answerAgg[0] ?? { first_tries: 0, first_correct: 0, typefaces_seen: 0, fast: 0 };
   const totals = masteryRow[0] ?? { mastered: 0, catalog_total: 2000 };
   const totalGames = modeRows.reduce((s, r) => s + r.games, 0);
 
   // No play history at all → let the UI fall back to the mock so the page never
   // reads as broken for someone who literally hasn't played.
-  if (totalGames === 0 && agg.answers === 0) return null;
+  if (totalGames === 0 && agg.first_tries === 0) return null;
 
   const modeGames = (m: ProfileMode) => modeRows.find((r) => r.mode === m)?.games ?? 0;
   const bestScore = Math.max(0, ...modeRows.map((r) => r.best_score));
   const totalTimeMs = modeRows.reduce((s, r) => s + Number(r.time_ms), 0);
 
-  // 30-day activity, oldest → newest (index 29 = today, UTC).
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
-  const activity = new Array<number>(30).fill(0);
-  for (const row of activityRows) {
-    const d = new Date(`${dayKey(row.d)}T00:00:00Z`);
-    const idx = 29 - Math.round((today.getTime() - d.getTime()) / 86_400_000);
-    if (idx >= 0 && idx < 30) activity[idx] = row.n;
-  }
-  const streak = streakFromDays(activity);
-  const streakRecord = Math.max(streak, longestRun(activeDayRows.map((r) => dayKey(r.d))));
+  // Daily progression is counted in ANSWER EVENTS, never in sessions: a page
+  // load that creates two sessions must not double the streak or the goal. Day
+  // keys are text, already resolved to Europe/Paris by SQL (see day-keys.ts).
+  const todayKey = todayKeyRows[0].today_key;
+  const playedDayKeys = activeDayRows.map((r) => r.day_key);
+  const activity = buildActivityWindow(activityRows.map((r) => r.day_key), todayKey, 30);
+  const streak = streakFromDayKeys(playedDayKeys, todayKey);
+  const streakRecord = Math.max(streak, longestRunFromDayKeys(playedDayKeys));
+
+  const sessionAccuracyBySession = new Map(
+    sessionAccRows.map((r) => [
+      r.session_id,
+      r.first_tries > 0 ? r.first_correct / r.first_tries : 0,
+    ]),
+  );
+  const bestSessionAccuracy = sessionAccRows.reduce((best, r) => {
+    if (r.first_tries <= 0) return best;
+    return Math.max(best, Math.round((100 * r.first_correct) / r.first_tries));
+  }, 0);
 
   const now = new Date();
   const recentSessions: ProfileSession[] = recentRows.map((r, i) => {
-    const acc = r.question_count > 0 ? Math.round((100 * r.correct_count) / r.question_count) : 0;
+    const acc = Math.round(100 * (sessionAccuracyBySession.get(r.session_id) ?? 0));
     const detail =
       r.mode === "competition"
         ? `${r.score} pts`
         : r.mode === "expert"
           ? `${r.correct_count} named`
-          : `${r.correct_count} / ${r.question_count} rounds`;
+          : `${r.question_count} rounds`;
     return {
       id: `s${i}`,
       mode: r.mode,
@@ -333,13 +352,14 @@ export async function loadRealProfile(
     seen: r.seen,
   }));
 
-  const overallAccuracy = agg.answers > 0 ? Math.round((100 * agg.correct) / agg.answers) : 0;
+  const overallAccuracy =
+    agg.first_tries > 0 ? Math.round((100 * agg.first_correct) / agg.first_tries) : 0;
 
   const { eye, displayMastered } = buildEye(perTfAnswers, states, attrs);
-  const todaySessions = activity[29] ?? 0;
+  const todayAnswers = activity[activity.length - 1] ?? 0;
   eye.streak = streak;
   eye.streakRecord = streakRecord;
-  eye.dailyGoal = { done: todaySessions, target: 3 };
+  eye.dailyGoal = { done: todayAnswers, target: 3 };
 
   const badgeMetrics: BadgeMetrics = {
     paliersLit: eye.axes
@@ -348,7 +368,7 @@ export async function loadRealProfile(
     axesLit: eye.axes.filter((a) => !a.roadmap && a.state === "lit").length,
     roundsWon: totalGames,
     typefacesSeen: agg.typefaces_seen,
-    bestSessionAccuracy: bestAccRow[0]?.best_acc ?? 0,
+    bestSessionAccuracy,
     streakDays: streak,
     fastAnswers: agg.fast,
     displayMastered,
@@ -383,7 +403,7 @@ export async function loadRealProfile(
     recentSessions,
     activity,
     streak,
-    dailyGoal: { done: todaySessions, target: 3 },
+    dailyGoal: { done: todayAnswers, target: 3 },
     milestones: MOCK_PROFILE.milestones,
     badges: buildBadges(badgeMetrics),
   };

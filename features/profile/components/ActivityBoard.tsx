@@ -17,11 +17,15 @@ const MODE_ACCENT: Record<string, string> = {
   expert: "#58a9ff",
 };
 
-// 0 sessions → faint; 1 → low; 2 → mid; 3+ → high. Monochrome (cream only).
-function heatLevel(v: number): 0 | 1 | 2 | 3 {
-  if (v <= 0) return 0;
-  if (v === 1) return 1;
-  if (v === 2) return 2;
+// Relative to the busiest day in the window, not an absolute count: activity
+// is now counted in answers, whose scale varies far more than the old
+// sessions-per-day count did. 0 → faint; otherwise a third of the max → low,
+// two thirds → mid, above → high. Monochrome (cream only).
+function heatLevel(v: number, max: number): 0 | 1 | 2 | 3 {
+  if (v <= 0 || max <= 0) return 0;
+  const ratio = v / max;
+  if (ratio <= 1 / 3) return 1;
+  if (ratio <= 2 / 3) return 2;
   return 3;
 }
 
@@ -59,8 +63,9 @@ export default function ActivityBoard({
 
   const act = profile.activity;
   const days = act.length;
-  const sessions = act.reduce((s, v) => s + v, 0);
+  const answers = act.reduce((s, v) => s + v, 0);
   const activeDays = act.filter((v) => v > 0).length;
+  const maxActivity = Math.max(0, ...act);
   const goal = eye.dailyGoal;
   const goalDots = Array.from({ length: Math.max(goal.target, goal.done) });
 
@@ -107,11 +112,11 @@ export default function ActivityBoard({
       <section className="ac-panel ac-sec" aria-label={`Last ${days} days`}>
         <div className="ac-panel__head">
           <h3 className="ac-panel__title">Last {days} days</h3>
-          <span className="ac-panel__meta"><em>{sessions}</em> sessions · <em>{activeDays}</em> active days</span>
+          <span className="ac-panel__meta"><em>{answers}</em> answers · <em>{activeDays}</em> active days</span>
         </div>
         <div className="ac-heat" role="img" aria-label={`${activeDays} active days out of ${days}`}>
           {act.map((v, i) => (
-            <span key={i} className={`ac-heat__cell ac-heat__cell--l${heatLevel(v)}`} style={{ transitionDelay: `${Math.min(i * 14, 420)}ms` }} title={`${v} session${v === 1 ? "" : "s"}`} />
+            <span key={i} className={`ac-heat__cell ac-heat__cell--l${heatLevel(v, maxActivity)}`} style={{ transitionDelay: `${Math.min(i * 14, 420)}ms` }} title={`${v} answer${v === 1 ? "" : "s"}`} />
           ))}
         </div>
         <div className="ac-heat__legend">
