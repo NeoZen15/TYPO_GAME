@@ -222,9 +222,9 @@ export async function loadRealProfile(
         AND EXISTS (SELECT 1 FROM user_event_fact e
                     WHERE e.session_id = s.session_id AND e.event_type = 'answer')
       GROUP BY mode`),
-    // Global justesse KPI: first attempt only, consistent with bestSessionAccuracy
-    // just below it would otherwise be structurally lower than (all attempts
-    // include failed retries in the denominator).
+    // Global accuracy KPI, counted on first attempts only, so it stays consistent
+    // with the first-attempt-only bestSessionAccuracy below instead of being
+    // pulled lower by failed retries sitting in the denominator.
     queryRows<{ first_tries: number; first_correct: number; typefaces_seen: number; fast: number }>(sql`
       SELECT COUNT(*)::int AS first_tries,
              COUNT(*) FILTER (WHERE is_correct)::int AS first_correct,
@@ -260,9 +260,15 @@ export async function loadRealProfile(
       SELECT
         (SELECT COUNT(*) FILTER (WHERE mastery_level >= 4) FROM user_typeface_state WHERE user_id = ${userId}::uuid)::int AS mastered,
         (SELECT COUNT(*) FROM typefaces_core)::int AS catalog_total`),
+    // Same honest existence predicate as modeRows above: a session with every
+    // answer wrong can carry question_count = 0 and must still show up here,
+    // exactly as it now shows up in Games played.
     queryRows<SessionRow>(sql`
       SELECT session_id::text AS session_id, mode, question_count, correct_count, score, started_at
-      FROM sessions WHERE user_id = ${userId}::uuid AND question_count > 0
+      FROM sessions s
+      WHERE s.user_id = ${userId}::uuid
+        AND EXISTS (SELECT 1 FROM user_event_fact e
+                    WHERE e.session_id = s.session_id AND e.event_type = 'answer')
       ORDER BY started_at DESC LIMIT 5`),
     // Activity, in text so no day boundary is computed in JS: one row per answer
     // event, the day already resolved to Europe/Paris. buildActivityWindow does
@@ -334,7 +340,7 @@ export async function loadRealProfile(
         ? `${r.score} pts`
         : r.mode === "expert"
           ? `${r.correct_count} named`
-          : `${r.question_count} rounds`;
+          : `${r.question_count} resolved rounds`;
     return {
       id: `s${i}`,
       mode: r.mode,
@@ -388,7 +394,7 @@ export async function loadRealProfile(
     xpForNext: eye.xpForNext,
     kpis: [
       { key: "games", label: "Games played", value: String(totalGames), helper: "across all modes" },
-      { key: "accuracy", label: "Overall accuracy", value: `${overallAccuracy}%`, helper: "all answers" },
+      { key: "accuracy", label: "Overall accuracy", value: `${overallAccuracy}%`, helper: "first attempts" },
       { key: "best-score", label: "Best score", value: String(bestScore), helper: "competition mode" },
       { key: "streak", label: "Best streak", value: String(bestStreakRow[0]?.best_streak ?? 0), helper: "correct in a row" },
       { key: "typefaces", label: "Typefaces seen", value: String(agg.typefaces_seen), helper: `of ${totals.catalog_total}` },
