@@ -23,6 +23,48 @@
 // happens. Rule 7 below is the only rule that catches that ordering, and it is
 // the one defect the review of task 4 asked for by name.
 //
+// THE LIMIT OF THE GUARANTEE, so nobody reads more into it than it says.
+// Convergence holds while the shared identifier points at an ACTIVE row or at
+// NOTHING. It does not hold when the shared identifier points at a NON-ACTIVE
+// row: two concurrent starts replaying yesterday's uuid, two tabs at once, both
+// lose the insert, both re-read a closed row, both mint their own fresh uuid,
+// and the sweep's thirty minute age floor stops them abandoning each other. Two
+// active sessions result. That is step 6 of the brief behaving as written, not a
+// defect: a closed session must never be resurrected, and the alternative would
+// be to serve one tab a session the other tab owns. The sequential form of that
+// case is measured (scenario C of tmp/prove-convergence.mjs); the concurrent
+// form is stated here rather than measured, and it is the honest boundary of
+// "one attempt equals one identifier".
+//
+// FIX ROUND 1. A review defeated the first version of this guard five times, all
+// compiling, two of them reintroducing exactly the defects the header above
+// claims to protect. Every rule marked "round 1" below closes one of them:
+//   D1  `if (candidate && candidate.status === "active")` reduced to
+//       `if (candidate)`, which resurrects a completed or abandoned session and
+//       deletes step 6 of the brief in silence. No rule required the gate.
+//   D2  the in-loop `effectiveAttemptId = crypto.randomUUID()` deleted, so the
+//       single re-entry replays the SAME identifier and is useless. The rule
+//       only required the string crypto.randomUUID() somewhere, and the
+//       initialiser already satisfied it.
+//   D3  MAX_START_REENTRIES raised to 10000. The constant sits BEFORE
+//       `export const startTrainingSession`, therefore outside the inspected
+//       slice: 10001 inserts, invisible.
+//   D5  `session.seed = seed;` inserted before getPoolRows. The loser then
+//       serves a word and a signed token derived from a seed that was never
+//       written, and the resulting fact row's display_word and seed contradict
+//       each other. Rule 10 only checked that session.seed was PRESENT, which
+//       stays true after an overwrite.
+//   D8  in the route, `normalizeAttemptId(body.attemptId)` becomes
+//       `normalizeAttemptId(undefined)`: convergence removed on the wire while
+//       the word attemptId still appears in the file.
+// The same review also found rule 7 firing through the WRONG rule on the very
+// case it was written for: with the sweep moved above the re-read, the first
+// `sql` template after the insert IS the sweep, so `reReadOpen` pointed at it,
+// `reReadOpen > sweepAt` could never hold, and rule 6 reported "no re-read by
+// session_id after the ON CONFLICT", which is false, the re-read exists and is
+// merely misplaced. reReadOpen is now computed on the template that actually
+// contains the re-read's WHERE clause, whichever position it occupies.
+//
 // WHY EVERY RULE HERE STRIPS COMMENTS AND COUNTS. This repo has shipped guards
 // that certified an empty migration file, that stayed green while the predicate
 // they protected was commented out with `--`, and that stayed green while it
@@ -135,6 +177,19 @@ if (!/attemptId/.test(route)) {
       "hardcoding null there makes every start mint a fresh identifier and removes the " +
       "convergence entirely while leaving the word attemptId in the file."
   );
+  // ROUND 1, defeat D8. The rule above is satisfied by
+  // `normalizeAttemptId(undefined)`, which validates a value that never came
+  // from anywhere: every start then mints a fresh identifier, the convergence is
+  // gone on the wire, and the word attemptId is still in the file. The argument
+  // has to come from the REQUEST BODY, literally, because that is the only place
+  // the client's identifier can enter the process.
+} else if (!/normalizeAttemptId\(body\.attemptId\)/.test(route)) {
+  failures.push(
+    `${ROUTE}: normalizeAttemptId is not called on body.attemptId. Validating a value that did ` +
+      "not come from the request body (undefined, a constant, a variable that is never assigned) " +
+      "leaves every start minting a fresh identifier: the convergence is removed on the wire " +
+      "while the word attemptId stays in the file."
+  );
 }
 if (/body\.(userId|guestUserId)/.test(route)) {
   failures.push(
@@ -160,7 +215,16 @@ if (startAt === -1) {
   failures.push(`${PROVIDER}: no longer exports startTrainingSession.`);
 } else {
   const nextExport = provider.indexOf("\nexport const ", startAt + 33);
-  const fn = provider.slice(startAt, nextExport === -1 ? provider.length : nextExport);
+  // ROUND 1, defeat D3. The slice starts at the RE-ENTRY BOUND when the bound is
+  // declared just above the function, not at the export. The bound is a module
+  // constant, so a slice that began at `export const startTrainingSession` left
+  // it outside every rule below: raising it to 10000 made 10001 inserts possible
+  // and the guard never looked. Nothing else changes, the constant declaration is
+  // the only code between the two offsets and it adds no statement, no call and
+  // no SQL that any count or position rule could be thrown off by.
+  const boundAt = provider.lastIndexOf("const MAX_START_REENTRIES", startAt);
+  const regionStart = boundAt === -1 ? startAt : boundAt;
+  const fn = provider.slice(regionStart, nextExport === -1 ? provider.length : nextExport);
 
   // -------------------------------------------------------------------------
   // Rule 5 — the convergence itself. Exactly one INSERT INTO sessions, and that
@@ -238,19 +302,34 @@ if (startAt === -1) {
   // Rule 6 — S4, the re-read, bounded to itself. Anything looked for in the
   // whole file would already be satisfied by endTrainingSession or by the sweep.
   // -------------------------------------------------------------------------
-  // The re-read is extracted as a WHOLE TAGGED TEMPLATE, the first one after the
-  // insert's closing backtick, and its SQL comments are stripped before anything
-  // is looked for inside it. Slicing a raw window out of the function instead
-  // let `-- AND mode = 'training'` keep a presence check green while the
-  // predicate no longer ran; the harness proved that too. reReadOpen is also the
-  // absolute position the ordering rule below compares against the sweep.
-  const afterInsert = insertEnd === -1 ? -1 : insertEnd;
-  const reReadOpen = afterInsert === -1 ? -1 : fn.indexOf("sql`", afterInsert);
-  const reReadClose = reReadOpen === -1 ? -1 : fn.indexOf("`", reReadOpen + 4);
-  const afterConflict =
-    reReadOpen === -1
-      ? ""
-      : stripSqlComments(fn.slice(reReadOpen, reReadClose === -1 ? fn.length : reReadClose));
+  // The re-read is extracted as a WHOLE TAGGED TEMPLATE, and its SQL comments are
+  // stripped before anything is looked for inside it. Slicing a raw window out of
+  // the function instead let `-- AND mode = 'training'` keep a presence check
+  // green while the predicate no longer ran; the harness proved that.
+  //
+  // ROUND 1. It is the template that CONTAINS the re-read's WHERE clause, not the
+  // first template after the insert. Taking the first one was a real defect, and
+  // it disabled the one rule this guard exists for: with the sweep moved above
+  // the re-read, the first template after the insert IS the sweep, so reReadOpen
+  // pointed at the sweep, `reReadOpen > sweepAt` could never hold, rule 7 stayed
+  // silent, and rule 6 reported "no re-read by session_id after the ON CONFLICT",
+  // which is false. The re-read existed; it was in the wrong place, which is a
+  // different failure with a different fix. Scanning every template and keeping
+  // the one that actually holds `WHERE session_id = ` makes reReadOpen the true
+  // position wherever it sits.
+  const sqlTemplates = [];
+  let cursor = insertEnd === -1 ? 0 : insertEnd;
+  while (cursor < fn.length) {
+    const open = fn.indexOf("sql`", cursor);
+    if (open === -1) break;
+    const close = fn.indexOf("`", open + 4);
+    const end = close === -1 ? fn.length : close;
+    sqlTemplates.push({ open, text: stripSqlComments(fn.slice(open, end)) });
+    cursor = end + 1;
+  }
+  const reReadTemplate = sqlTemplates.find((template) => template.text.includes("WHERE session_id = "));
+  const reReadOpen = reReadTemplate ? reReadTemplate.open : -1;
+  const afterConflict = reReadTemplate ? reReadTemplate.text : "";
   const reReadAt = afterConflict.indexOf("WHERE session_id = ");
   if (reReadAt === -1) {
     failures.push(
@@ -306,8 +385,18 @@ if (startAt === -1) {
     // undefined row and throws a TypeError on every losing start. Positions,
     // not presence, are the only thing that can catch this.
     // -----------------------------------------------------------------------
+    // The two branches are EXCLUSIVE, and the "before the insert" case is tested
+    // first: a sweep moved above the insert is also above the re-read, so a
+    // non-exclusive pair would report both, and the second, vaguer diagnosis
+    // would bury the precise one.
     const sweepAt = fn.indexOf("UPDATE sessions");
-    if (sweepAt !== -1 && reReadOpen > sweepAt) {
+    if (sweepAt !== -1 && sweepAt < insertAt) {
+      failures.push(
+        `${PROVIDER}: the sweep runs BEFORE the insert, so it cannot exclude the current session ` +
+          "and abandons the very row the re-read is about to rejoin. A page reload would then " +
+          "mint a second session, which is the duplicate this task removes."
+      );
+    } else if (sweepAt !== -1 && reReadOpen > sweepAt) {
       failures.push(
         `${PROVIDER}: the S4 re-read sits AFTER the inactivity sweep. The loser of ` +
           "ON CONFLICT (session_id) DO NOTHING returns zero rows, so the sweep's exclusion " +
@@ -316,18 +405,30 @@ if (startAt === -1) {
           "inserted row, insertedSessions[0], which is before the sweep."
       );
     }
-    if (sweepAt !== -1 && sweepAt < insertAt) {
-      failures.push(
-        `${PROVIDER}: the sweep runs BEFORE the insert, so it cannot exclude the current session ` +
-          "and abandons the very row the re-read is about to rejoin. A page reload would then " +
-          "mint a second session, which is the duplicate this task removes."
-      );
-    }
     if (!/insertedSessions\[0\]/.test(fn)) {
       failures.push(
         `${PROVIDER}: the inserted row is no longer taken from insertedSessions[0]. That ` +
           "expression is the anchor the re-read must replace, and the position rule above is " +
           "relative to it."
+      );
+    }
+
+    // -----------------------------------------------------------------------
+    // ROUND 1, defeat D1. THE STATUS GATE. Reading `status` is not the same as
+    // acting on it: reducing the acceptance test to `if (candidate)` compiles,
+    // keeps every other rule green, and rejoins a completed or abandoned
+    // session, which is step 6 of the brief deleted in silence. The gate is
+    // required TIED to the acceptance, `=== "active"` immediately followed by
+    // the assignment, so a comparison sitting uselessly elsewhere cannot answer
+    // for it, and `!== "completed"` (which still lets 'abandoned' through)
+    // cannot either. Written without the row variable's name so renaming that
+    // local, which changes nothing, does not turn the guard red.
+    // -----------------------------------------------------------------------
+    if (!/\.status === "active"\s*\)\s*\{\s*session\s*=/.test(fn)) {
+      failures.push(
+        `${PROVIDER}: the rejoined row is not gated on status === "active" before it becomes the ` +
+          "served session. Without that gate a replayed identifier resurrects a completed or " +
+          "abandoned session instead of minting a new one, and the re-entry of step 6 never runs."
       );
     }
   }
@@ -387,10 +488,55 @@ if (startAt === -1) {
         "to reach an active row must raise, never spin."
     );
   }
-  if (!/crypto\.randomUUID\(\)/.test(fn)) {
+  // ROUND 1, defeat D2. Counting, not presence. The server mints an identifier
+  // in TWO places, and they are not interchangeable: once in the initialiser,
+  // when the client sends none or a malformed one, and once inside the loop, so
+  // that the single re-entry contends for a DIFFERENT key. Deleting the second
+  // one leaves the first satisfying a presence check while the re-entry replays
+  // the identifier that just failed, which makes the whole retry a no-op. The
+  // assignment form is required as well as the count, because it is the one that
+  // says the fresh identifier actually replaces the old one.
+  const mintCount = countOf(fn, "crypto.randomUUID()");
+  if (mintCount !== 2) {
     failures.push(
-      `${PROVIDER}: the server never mints an identifier of its own. It has to, twice over: when ` +
-        "the client sends none or a malformed one, and when the single re-entry needs a fresh id."
+      `${PROVIDER}: startTrainingSession mints ${mintCount} identifier(s) with ` +
+        "crypto.randomUUID(), expected exactly 2: one in the initialiser, for a client that sent " +
+        "none or a malformed one, and one inside the loop, so the single re-entry contends for a " +
+        "different key. Zero means the server can never mint; one means the re-entry replays the " +
+        "identifier that just failed and is a no-op."
+    );
+  }
+  if (!/effectiveAttemptId = crypto\.randomUUID\(\)/.test(fn)) {
+    failures.push(
+      `${PROVIDER}: the re-entry does not assign a freshly minted identifier to ` +
+        "effectiveAttemptId. Re-entering the insert with the same identifier disputes the same " +
+        "primary key a second time and loses again, for nothing."
+    );
+  }
+  // ROUND 1, defeat D3. The bound's VALUE, now inside the inspected region. The
+  // constant lives just above the function, so a slice that started at the
+  // export left it unguarded: raised to 10000 it authorises 10001 inserts, one
+  // start hammering the primary key ten thousand times, with every other rule
+  // still green because the loop, the bound name and the assignment all look
+  // exactly the same.
+  const boundValue = fn.match(/MAX_START_REENTRIES\s*=\s*(\d+)/);
+  if (!boundValue) {
+    failures.push(
+      `${PROVIDER}: no numeric MAX_START_REENTRIES bound found in the region inspected around ` +
+        "startTrainingSession. The re-entry limit must be declared as a number, next to the " +
+        "function it bounds, where a rule can read its value."
+    );
+  } else if (boundValue[1] !== "1") {
+    failures.push(
+      `${PROVIDER}: MAX_START_REENTRIES is ${boundValue[1]}, expected 1. The brief bounds the ` +
+        "re-entry to a single extra attempt; any larger value turns one start into that many " +
+        "inserts against the same primary key, which is the loop this rule exists to forbid."
+    );
+  }
+  if (!/attemptsLeft = MAX_START_REENTRIES/.test(fn)) {
+    failures.push(
+      `${PROVIDER}: the loop counter is not initialised from MAX_START_REENTRIES, so the bound ` +
+        "whose value is checked above is not the bound the loop actually uses."
     );
   }
   for (const [call, why] of [
@@ -440,11 +586,34 @@ if (startAt === -1) {
         "requested identifier instead would point the journal at a session row that may not exist."
     );
   }
-  if (!/session\.seed/.test(fn)) {
+  if (!/buildQuestion\([^)]*session\.seed/.test(fn)) {
     failures.push(
       `${PROVIDER}: the question is not built from session.seed. The local seed variable is the ` +
         "one the LOSER generated and never wrote; only the returned row carries the seed the " +
         "database kept."
+    );
+  }
+  // ROUND 1, defeat D5, and the sharpest of the five: reading session.seed is
+  // not enough if something WRITES it first. `session.seed = seed;` anywhere
+  // before buildQuestion compiles, keeps every rule above green, and puts the
+  // loser back exactly where this task started: it serves a word and a signed
+  // token derived from a seed that was never written, and the fact row the answer
+  // path then records has a display_word and a seed that contradict each other.
+  // The row the database returned is READ-ONLY on this path, so any assignment
+  // into it, field by field or by spread, is refused.
+  if (/\.seed\s*=[^=]/.test(fn)) {
+    failures.push(
+      `${PROVIDER}: something ASSIGNS to a .seed field inside startTrainingSession. The seed the ` +
+        "database returned is read-only here: overwriting it with the locally generated one makes " +
+        "the loser serve a word and a signed token derived from a seed that was never written, and " +
+        "the fact row recorded by the answer path then has a display_word and a seed that " +
+        "contradict each other. Reading session.seed is not a guarantee if something writes it first."
+    );
+  }
+  if (/\{\s*\.\.\.session\b/.test(fn)) {
+    failures.push(
+      `${PROVIDER}: the session row returned by the write is rebuilt by spread. Same defect as an ` +
+        "assignment to .seed: the served seed stops being the one the database kept."
     );
   }
 }
