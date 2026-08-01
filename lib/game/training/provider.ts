@@ -842,31 +842,45 @@ export const startTrainingSession = async ({
   // session_end event is written either, because no end ever happened, and phase
   // 2a is precisely about the fact table never claiming something that did not
   // occur.
-  await sql`
-    UPDATE sessions AS s
-    SET status = 'abandoned'::app.session_status_enum,
-        ended_at = COALESCE(
-          (
-            SELECT MAX(uef.event_ts_utc)
-            FROM user_event_fact uef
-            WHERE uef.session_id = s.session_id
-          ),
-          s.started_at
-        )
-    WHERE s.user_id = ${user.user_id}::uuid
-      AND s.mode = 'training'
-      AND s.status = 'active'
-      AND s.session_id <> ${session.session_id}::uuid
-      AND s.started_at < now() - interval '30 minutes'
-      AND COALESCE(
+  //
+  // FAIL-SAFE, same shape as safeTrainingProgress, safeReadVisibleLevel and
+  // safeRecomputeVisibleLevel below: this statement runs AFTER the sessions row
+  // has already committed. If it throws, on a lock wait, a statement timeout, or
+  // a CHECK violation, insertSessionStartEvent must still run: the alternative is
+  // a 500 to the player, an orphan active session with no session_start event,
+  // and a hole in the append-only journal, which is exactly the failure mode
+  // this plan exists to close. The comment above already argues the sweep has
+  // no pedagogical consequence; that is precisely the argument for it being
+  // unable to break the request that follows it.
+  try {
+    await sql`
+      UPDATE sessions AS s
+      SET status = 'abandoned'::app.session_status_enum,
+          ended_at = COALESCE(
             (
               SELECT MAX(uef.event_ts_utc)
               FROM user_event_fact uef
               WHERE uef.session_id = s.session_id
             ),
             s.started_at
-          ) < now() - interval '30 minutes'
-  `;
+          )
+      WHERE s.user_id = ${user.user_id}::uuid
+        AND s.mode = 'training'
+        AND s.status = 'active'
+        AND s.session_id <> ${session.session_id}::uuid
+        AND s.started_at < now() - interval '30 minutes'
+        AND COALESCE(
+              (
+                SELECT MAX(uef.event_ts_utc)
+                FROM user_event_fact uef
+                WHERE uef.session_id = s.session_id
+              ),
+              s.started_at
+            ) < now() - interval '30 minutes'
+    `;
+  } catch (error) {
+    console.warn("session sweep failed; continuing without closing stale sessions.", error);
+  }
 
   await insertSessionStartEvent(
     session.session_id,
