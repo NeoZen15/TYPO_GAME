@@ -66,6 +66,55 @@ if (migration === null) {
   if (migration.includes("boolean DEFAULT")) {
     failures.push(`${MIGRATION}: introduces a default-parameter overload. The one-argument call at 008_pool_growth.sql:191 would become ambiguous, error 42725. Use a new function name.`);
   }
+
+  // Review round 2. Measured on a throwaway Neon branch (tmp/prove-pool.mjs,
+  // Test C): the advisory lock alone does not close the merge. It only makes
+  // the two init_user_pool calls take turns; the loser still wakes up and
+  // runs its OWN selection loop to completion. The two arities select
+  // DIFFERENTLY by design (tier N and D easy first, against quotas that open
+  // tier C for confident/designer players), so ON CONFLICT DO NOTHING only
+  // skips the rows both sides happen to pick, not the rest: measured at 47
+  // rows instead of 30, tier C included, even after the lock. Only an
+  // internal re-check, taken AFTER the lock and BEFORE the selection, makes
+  // the second caller a clean no-op once the first has already seeded the
+  // pool, the same shape try_unlock_if_pool_stuck already uses.
+  const PRECONDITION_NEEDLE = "SELECT 1 FROM user_typeface_state WHERE user_id = p_user_id";
+  const extractBody = (signature) => {
+    const start = migration.indexOf(`CREATE OR REPLACE FUNCTION ${signature}`);
+    if (start === -1) return null;
+    const end = migration.indexOf("\n$$;", start);
+    return migration.slice(start, end === -1 ? migration.length : end);
+  };
+
+  for (const signature of [
+    "init_user_pool(p_user_id uuid)",
+    "init_user_pool(p_user_id uuid, p_familiarity text)",
+  ]) {
+    const body = extractBody(signature);
+    if (body === null) continue; // already reported by the BODIES loop above
+    const loopAt = body.indexOf("FOR v_slug IN");
+    const preconditionAt = body.indexOf(PRECONDITION_NEEDLE);
+    if (preconditionAt === -1 || (loopAt !== -1 && preconditionAt > loopAt)) {
+      failures.push(
+        `${MIGRATION}: ${signature} has the lock but no early-return re-check before its ` +
+          "selection. A lock that only serialises lets the loser wake up and insert the rows " +
+          "of its own selection that the winner's selection did not contain: the two arities " +
+          "select differently by design (tier N and D easy first against quotas that open tier " +
+          "C), so ON CONFLICT DO NOTHING does not absorb that gap, only the rows both sides " +
+          `picked. Add "IF EXISTS (${PRECONDITION_NEEDLE}) THEN RETURN 0; END IF;" immediately ` +
+          "after the lock, before any selection."
+      );
+    }
+  }
+
+  const rebalanceBody = extractBody("rebalance_user_pool(p_user_id uuid)");
+  if (rebalanceBody !== null && rebalanceBody.includes(PRECONDITION_NEEDLE)) {
+    failures.push(
+      `${MIGRATION}: rebalance_user_pool must stay add-only. Its whole purpose is to inject ` +
+        "easier faces into a pool that is already seeded; an already-seeded early return would " +
+        "disable it entirely."
+    );
+  }
 }
 
 const provider = readOrNull(PROVIDER);

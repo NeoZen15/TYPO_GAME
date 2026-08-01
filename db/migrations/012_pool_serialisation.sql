@@ -71,27 +71,58 @@
 -- migration. Le verrou ne change que l'ORDRE des acces, jamais la logique
 -- d'ecriture.
 --
--- CE QUE LE VERROU NE FERME PAS, ET POURQUOI CE N'EST PAS LE PERIMETRE DE
--- CETTE TACHE. Mesure le 2026-08-01 (preuve tmp/prove-pool.mjs, branche
--- jetable) : deux appels concurrents aux deux arites de init_user_pool sur le
--- MEME utilisateur neuf atterrissent toujours a 47 lignes apres cette
--- migration, tier C inclus, meme en enveloppant l'appel dans le garde de
--- comptage exact de ensureUserPool (provider.ts:358-387). Raison : ce garde
--- lit le compte AVANT de prendre le verrou, donc les deux appels le voient a
--- zero et decident tous les deux de seeder ; une fois decide, le verrou ne
--- fait plus que serialiser DEUX boucles d'insertion chacune inconditionnelle,
--- il ne fait pas sauter la seconde. init_user_pool n'a, et ne recoit pas ici,
--- de reevaluation interne du type "le pool a-t-il deja assez de lignes ?" :
--- seul try_unlock_if_pool_stuck en recoit une (c'est precisement pourquoi
--- IL deduplique et EUX serialisent seulement). Fermer ce residu suppose de
--- faire porter la decision de seeder par le meme verrou que l'ecriture, ce
--- qui est le travail nomme de la tache 6 (convergence), sequencee apres
--- cette tache dans le paragraphe "Ordre d'execution" du brief precisement
--- pour cette raison. Ce que cette migration garantit reellement : plus
--- d'interblocage possible entre les cinq corps (une seule ressource de
--- verrou par utilisateur), plus d'entrelacement partiel/non deterministe
--- entre eux, et une deduplication reelle du chemin de recuperation §4.5 via
--- try_unlock_if_pool_stuck (Tests A et B, tmp/prove-pool.mjs).
+-- CORRECTIF ROUND 2 (2026-08-01) : PRECONDITION AJOUTEE AUX DEUX ARITES DE
+-- init_user_pool, MEME FORME QUE try_unlock_if_pool_stuck.
+--
+-- Mesure round 1 (preuve tmp/prove-pool.mjs, branche jetable) : le verrou
+-- seul ne fermait PAS le defaut. Deux appels concurrents aux deux arites de
+-- init_user_pool sur le MEME utilisateur neuf atterrissaient toujours a 47
+-- lignes, tier C inclus, meme en enveloppant l'appel dans le garde de
+-- comptage exact de ensureUserPool (provider.ts:358-387) : ce garde lit le
+-- compte AVANT de prendre le verrou, donc les deux appels le voient a zero et
+-- decident tous les deux de seeder ; une fois decide, un verrou qui ne fait
+-- que serialiser laisse le perdant reveille inserer les lignes de SA PROPRE
+-- selection, differente par construction de l'autre arite (tier N+D neutre
+-- contre quotas easy/medium/hard qui ouvrent le tier C). Meme lecon que celle
+-- deja tiree pour try_unlock_if_pool_stuck plus haut, appliquee cette fois a
+-- init_user_pool : serialiser n'est pas dedupliquer.
+--
+-- Correctif : chaque arite de init_user_pool recoit desormais, juste apres le
+-- verrou et avant toute selection, la meme reevaluation que
+-- try_unlock_if_pool_stuck :
+--   IF EXISTS (SELECT 1 FROM user_typeface_state WHERE user_id = p_user_id)
+--   THEN RETURN 0; END IF;
+-- Fait H5 (prouve le 2026-07-31) garantit que cette lecture, prise apres un
+-- blocage sur pg_advisory_xact_lock, voit les lignes que l'appel concurrent
+-- vient de valider pendant l'attente : le perdant sort donc proprement sans
+-- jamais lancer sa propre boucle de selection.
+--
+-- PAS SUR rebalance_user_pool. Cette fonction est ADDITIVE PAR CONCEPTION :
+-- son role est d'ajouter des faces plus faciles a un pool DEJA seede (spec,
+-- redescente). Une precondition "deja seede => sortir" y desactiverait la
+-- fonction entierement. rebalance_user_pool garde son propre garde de taille
+-- cible (v_slots <= 0 => RETURN 0), inchange, et pas la precondition
+-- ci-dessus : verifie par une regle dediee du garde qui echoue si jamais
+-- cette precondition y apparaissait.
+--
+-- VERIFICATION DE seedUserPool (lib/game/training/provider.ts:271-290).
+-- Essaie l'arite a deux arguments en premier quand la familiarite est
+-- connue, se replie sur l'arite a un argument sur N'IMPORTE QUELLE exception.
+-- Avant ce correctif, un repli qui s'executait APRES qu'un premier appel a
+-- deja reussi (scenario purement SEQUENTIEL, aucune concurrence necessaire)
+-- fusionnait quand meme jusqu'a 17 lignes en plus. Avec la precondition, ce
+-- repli devient un no-op propre : verifie (pas suppose) par le test D de
+-- tmp/prove-pool.mjs, appel sequentiel arite 2 puis arite 1 sur le meme
+-- utilisateur, le second appel insere 0 ligne.
+--
+-- PREUVE. tmp/prove-pool.mjs, branche jetable, round 2 : test C (deux appels
+-- concurrents, une arite chacune, sur un utilisateur neuf) repete cinq fois,
+-- 30 lignes exactement les cinq fois, tier C absent les cinq fois (avant ce
+-- correctif : 47 lignes les cinq fois, meme mesure, meme script). Test D
+-- (repli sequentiel arite 2 puis arite 1) : la deuxieme insertion ajoute 0
+-- ligne et laisse le pool inchange. Tests A et B (deduplication de
+-- try_unlock_if_pool_stuck et de register_mastery_unlock) inchanges et
+-- toujours au vert.
 --
 -- AUCUN CHANGEMENT DE SCHEMA. Pas de colonne, pas d'index, pas d'ALTER TABLE.
 -- Cette migration ne contient que des corps de fonctions.
@@ -115,6 +146,13 @@ DECLARE
   v_slug  text;
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended(p_user_id::text, 0));
+
+  -- Reevaluation sous verrou (fait H5) : le second appelant voit ici les
+  -- lignes que le premier vient de valider pendant qu'il attendait, et
+  -- sort avant de repeter une selection deja faite par l'autre arite.
+  IF EXISTS (SELECT 1 FROM user_typeface_state WHERE user_id = p_user_id) THEN
+    RETURN 0;
+  END IF;
 
   FOR v_slug IN
     WITH ranked AS (
@@ -168,6 +206,14 @@ DECLARE
   v_allow_hard boolean;
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended(p_user_id::text, 0));
+
+  -- Reevaluation sous verrou (fait H5), identique a l'autre arite : le
+  -- second appelant sort ici s'il a perdu la course, au lieu d'inserer les
+  -- lignes de SA propre selection, qui differe de celle de l'autre arite par
+  -- construction (quotas easy/medium/hard vs tier N+D neutre).
+  IF EXISTS (SELECT 1 FROM user_typeface_state WHERE user_id = p_user_id) THEN
+    RETURN 0;
+  END IF;
 
   -- Quotas par niveau (somme = 30). Le 'ELSE' couvre "A little" ET toute valeur
   -- inconnue : c'est le repli documente (OnboardingFlow / GameScreen retombent
