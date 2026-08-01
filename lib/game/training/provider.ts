@@ -619,12 +619,33 @@ const recoverPoolIfStuck = async (
     return { pool, globalQIndex };
   }
 
-  // Step 1 — controlled injection of a new typeface (spec §4.5).
+  // Step 1 — controlled injection of a new typeface (spec §4.5), serialised per
+  // user by migration 012. 012 is deliberately NOT applied in production yet, so
+  // this call can raise 42883 "function does not exist" for as long as it is not.
+  // In that window the OLD primitive is still the correct behaviour: falling
+  // straight to the cursor jump would remove an unlock that works today.
+  const tryUnlock = async (): Promise<string | null> => {
+    try {
+      const rows = await queryRows<{ slug: string | null }>(
+        sql`SELECT try_unlock_if_pool_stuck(${userId}::uuid) AS slug`
+      );
+      return rows[0]?.slug ?? null;
+    } catch (error) {
+      const code = (error as { code?: string })?.code;
+      if (code !== "42883") throw error;
+      console.warn(
+        "try_unlock_if_pool_stuck missing (migration 012 not applied); retrying try_unlock_one_typeface.",
+        error
+      );
+      const rows = await queryRows<{ slug: string | null }>(
+        sql`SELECT try_unlock_one_typeface(${userId}::uuid) AS slug`
+      );
+      return rows[0]?.slug ?? null;
+    }
+  };
+
   try {
-    const rows = await queryRows<{ slug: string | null }>(
-      sql`SELECT try_unlock_one_typeface(${userId}::uuid) AS slug`
-    );
-    const unlocked = rows[0]?.slug ?? null;
+    const unlocked = await tryUnlock();
     if (unlocked) {
       await logPoolEvent(
         sessionId,
@@ -641,7 +662,7 @@ const recoverPoolIfStuck = async (
       return recoverByCursorJump(userId, sessionId, globalQIndex, refreshed);
     }
   } catch (error) {
-    console.warn("try_unlock_one_typeface skipped (migration 008 not applied).", error);
+    console.warn("pool unlock skipped; falling back to cursor jump.", error);
   }
 
   // Step 2 — silent cursor jump on the least-overdue item (spec §4.5).
