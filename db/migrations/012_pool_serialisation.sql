@@ -1,7 +1,7 @@
 -- ============================================================
 -- MIGRATION 012 — serialisation du pool par utilisateur
 -- JEUX DE TYPO — Training Engine v2
--- Requiert : migrations 001..009 appliquees
+-- Requiert : migrations 001..011 appliquees
 -- PostgreSQL 13+ (Neon)
 -- ============================================================
 --
@@ -123,6 +123,64 @@
 -- ligne et laisse le pool inchange. Tests A et B (deduplication de
 -- try_unlock_if_pool_stuck et de register_mastery_unlock) inchanges et
 -- toujours au vert.
+--
+-- CORRECTIF ROUND 3 (2026-08-01) : LA PRECONDITION DE try_unlock_if_pool_stuck
+-- VOYAIT UN SURENSEMBLE DU POOL DU JOUEUR, ET LE DEBLOCAGE §4.5 MOURAIT DE
+-- FACON PERMANENTE POUR CERTAINS JOUEURS.
+--
+-- Mesure du relecteur sur une copie de production : l'utilisateur
+-- f2fca162-f6cf-4f82-91f2-f2ed1855bfb8 porte quatre lignes in_active_pool =
+-- true, next_due_after_q = 0, alors que global_q_index = 1 (arial, georgia,
+-- courier_new, times_new_roman), toutes les quatre activation_status = false
+-- et license_type = 'proprietary'. La precondition round 2 de
+-- try_unlock_if_pool_stuck ne lisait que user_typeface_state et users
+-- (in_active_pool, next_due_after_q, global_q_index) : ces quatre lignes la
+-- satisfont, donc elle repondait "une face eligible existe" alors qu'aucune
+-- des quatre n'est jamais servie au joueur. lib/game/training/provider.ts,
+-- getPoolRows, la requete qui decide reellement ce qui est SERVI, filtre en
+-- plus tc.activation_status = true, l'allowlist de licence (avec le repli
+-- UFL_LEGACY_SLUGS) et l'exclusion de couverture latine. La precondition
+-- voyait donc un SURENSEMBLE du pool du joueur.
+--
+-- POURQUOI C'EST PERMANENT ET PAS SEULEMENT FAUX UNE FOIS. Une ligne
+-- invisible n'est jamais servie, donc jamais reprogrammee : son
+-- next_due_after_q reste a sa valeur de seed (0) pour toujours, donc
+-- next_due_after_q <= global_q_index reste vrai a tout jamais. Sur un compte
+-- qui porte au moins une telle ligne, la precondition repond "eligible"
+-- a CHAQUE appel futur, et try_unlock_one_typeface n'est plus jamais atteint :
+-- le chemin §4.5 est mort pour ce joueur, pas seulement retarde. Le relecteur
+-- a mesure 36 typos activation_status = true mais neanmoins invisibles
+-- (licence non eclaircie ou hors couverture latine), donc ce n'est pas un
+-- defaut a quatre lignes : le catalogue continuera d'en produire.
+--
+-- CORRECTIF. La precondition de try_unlock_if_pool_stuck rejoint desormais
+-- typefaces_core et applique EXACTEMENT les quatre memes filtres que
+-- getPoolRows (activation_status, allowlist de licence, repli UFL,
+-- exclusion latine), les trois listes passees en parametres depuis
+-- provider.ts (les memes constantes deja importees pour getPoolRows,
+-- RUNTIME_ALLOWED_LICENSE_TYPES, UFL_LEGACY_SLUGS, LATIN_UNREADY_SLUGS), pas
+-- recopiees en dur ici : une recopie figerait un instantane qui redivergerait
+-- au premier changement de ces listes cote JS, exactement le defaut que ce
+-- correctif ferme. Nouvelle signature a quatre arguments : cette fonction n'a
+-- jamais ete appliquee sur aucune base (rounds 1 et 2 restes sur branche
+-- jetable), donc changer sa signature ne casse aucun appelant existant, a la
+-- difference de try_unlock_one_typeface plus haut. Chaque cote de la
+-- decision porte desormais un commentaire qui nomme l'autre comme son jumeau
+-- (getPoolRows et cette precondition), et scripts/quality/check-pool-serialisation.mjs
+-- porte une regle dediee qui echoue si un filtre existe d'un cote sans
+-- exister de l'autre.
+--
+-- PAS DE CHANGEMENT A try_unlock_one_typeface. Sa propre selection de
+-- candidat ne filtre deja que activation_status (migration 008), sans
+-- licence ni couverture latine : une typo qu'elle debloquerait pourrait donc
+-- rester invisible au sens de getPoolRows. Ce n'est pas traite ici. Le
+-- rappel JS existant s'en sort deja correctement sans aucun changement :
+-- recoverPoolIfStuck relit le pool via getPoolRows (visibility-filtree)
+-- apres l'unlock (provider.ts, `const refreshed = await getPoolRows(userId)`)
+-- et retombe sur le saut de curseur si la face injectee n'y apparait pas.
+-- Elargir try_unlock_one_typeface aux memes quatre filtres serait un
+-- changement supplementaire, hors du perimetre de cette tache et non demande
+-- par le relecteur, qui ne cible que la precondition.
 --
 -- AUCUN CHANGEMENT DE SCHEMA. Pas de colonne, pas d'index, pas d'ALTER TABLE.
 -- Cette migration ne contient que des corps de fonctions.
@@ -509,24 +567,53 @@ END;
 $$;
 
 -- ============================================================
--- 6. try_unlock_if_pool_stuck(p_user_id uuid) — NOUVELLE fonction, appelee
---    uniquement par recoverPoolIfStuck (spec §4.5, pool sans eligible).
---    Nom neuf, jamais une surcharge : voir la note en tete de fichier.
+-- 6. try_unlock_if_pool_stuck — NOUVELLE fonction, appelee uniquement par
+--    recoverPoolIfStuck (spec §4.5, pool sans eligible). Nom neuf, jamais
+--    une surcharge : voir la note en tete de fichier.
+--
+--    Signature a quatre arguments depuis le round 3 (2026-08-01) : les trois
+--    listes de visibilite (allowlist de licence, repli UFL, exclusion
+--    latine) sont passees par l'appelant, memes valeurs que
+--    RUNTIME_ALLOWED_LICENSE_TYPES / UFL_LEGACY_SLUGS / LATIN_UNREADY_SLUGS
+--    deja importees dans provider.ts pour getPoolRows, jamais recopiees en
+--    dur ici. Fonction jamais appliquee sur aucune base avant ce round,
+--    donc ce changement de signature ne casse aucun appelant existant.
 -- ============================================================
 
-CREATE OR REPLACE FUNCTION try_unlock_if_pool_stuck(p_user_id uuid)
+CREATE OR REPLACE FUNCTION try_unlock_if_pool_stuck(
+  p_user_id uuid,
+  p_allowed_license_types text[],
+  p_ufl_legacy_slugs text[],
+  p_latin_unready_slugs text[]
+)
 RETURNS text LANGUAGE plpgsql AS $$
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended(p_user_id::text, 0));
 
-  -- Reevaluation sous verrou. H5 garantit que cette lecture voit ce qu'un
-  -- appel concurrent vient de valider, donc le second appelant sort ici.
+  -- JUMELLE de lib/game/training/provider.ts::getPoolRows. Les deux decident
+  -- ce qui est VISIBLE au joueur : getPoolRows pour ce qui est reellement
+  -- servi, cette precondition pour si le pool parait assez bloque pour
+  -- justifier un unlock. Les quatre filtres ci-dessous doivent rester
+  -- identiques a getPoolRows, parametre pour parametre : une ligne invisible
+  -- ici mais comptee eligible est une ligne sur laquelle la precondition
+  -- s'appuiera pour toujours, puisqu'une ligne invisible n'est jamais servie,
+  -- donc jamais reprogrammee, donc son next_due_after_q ne bouge plus jamais
+  -- de sa valeur de seed (0). Tenu synchronise par
+  -- scripts/quality/check-pool-serialisation.mjs.
   IF EXISTS (
-    SELECT 1 FROM user_typeface_state uts
+    SELECT 1
+    FROM user_typeface_state uts
     JOIN users u ON u.user_id = uts.user_id
+    JOIN typefaces_core tc ON tc.typeface_slug = uts.typeface_slug
     WHERE uts.user_id = p_user_id
       AND uts.in_active_pool = true
       AND uts.next_due_after_q <= u.global_q_index
+      AND tc.activation_status = true
+      AND (
+        tc.license_type::text = ANY(p_allowed_license_types)
+        OR tc.typeface_slug = ANY(p_ufl_legacy_slugs)
+      )
+      AND tc.typeface_slug <> ALL(p_latin_unready_slugs)
   ) THEN
     RETURN NULL;
   END IF;

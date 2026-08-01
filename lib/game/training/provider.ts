@@ -392,6 +392,16 @@ const ensureUserPool = async (
 // guard impossible to bypass, including for a slug that a pool seeding function
 // (init_user_pool, try_unlock_one_typeface, rebalance_user_pool) inserted into
 // user_typeface_state without checking. See lib/game/license-guard.ts.
+//
+// TWIN of db/migrations/012_pool_serialisation.sql::try_unlock_if_pool_stuck.
+// That function's precondition decides whether the pool looks stuck enough to
+// justify an unlock, and it MUST apply the same four filters as this query
+// (activation_status, the licence allowlist, the UFL legacy fallback, the
+// latin coverage exclusion), fed the same three arrays as below. A row
+// invisible here but counted eligible there dies permanently: an invisible
+// row is never served, so never rescheduled, so its next_due_after_q never
+// moves off its seeded 0. Kept in sync by
+// scripts/quality/check-pool-serialisation.mjs.
 const getPoolRows = async (userId: string) =>
   queryRows<PoolRow>(sql`
     SELECT
@@ -626,8 +636,16 @@ const recoverPoolIfStuck = async (
   // straight to the cursor jump would remove an unlock that works today.
   const tryUnlock = async (): Promise<string | null> => {
     try {
+      // The three arrays passed here are the SAME visibility lists getPoolRows
+      // uses below, so try_unlock_if_pool_stuck's precondition (its SQL twin)
+      // can never drift from what actually gets served to the player.
       const rows = await queryRows<{ slug: string | null }>(
-        sql`SELECT try_unlock_if_pool_stuck(${userId}::uuid) AS slug`
+        sql`SELECT try_unlock_if_pool_stuck(
+          ${userId}::uuid,
+          ${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[],
+          ${[...UFL_LEGACY_SLUGS]}::text[],
+          ${[...LATIN_UNREADY_SLUGS]}::text[]
+        ) AS slug`
       );
       return rows[0]?.slug ?? null;
     } catch (error) {
