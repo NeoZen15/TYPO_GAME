@@ -639,12 +639,22 @@ const recoverPoolIfStuck = async (
       // The three arrays passed here are the SAME visibility lists getPoolRows
       // uses below, so try_unlock_if_pool_stuck's precondition (its SQL twin)
       // can never drift from what actually gets served to the player.
+      //
+      // NAMED ARGUMENTS, DELIBERATELY. The three list parameters are all
+      // text[], so positionally they are interchangeable: swapping two of them
+      // raises nothing, Postgres cannot tell, and no static check can either.
+      // The precondition would then match slugs against the licence allowlist
+      // and licences against the slug lists, drift away from getPoolRows in
+      // silence, and the §4.5 unlock would fire or not fire for the wrong
+      // reasons. With "p_name => value" the name travels with the value and an
+      // inversion cannot be written without seeing it. Required by
+      // scripts/quality/check-pool-serialisation.mjs.
       const rows = await queryRows<{ slug: string | null }>(
         sql`SELECT try_unlock_if_pool_stuck(
-          ${userId}::uuid,
-          ${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[],
-          ${[...UFL_LEGACY_SLUGS]}::text[],
-          ${[...LATIN_UNREADY_SLUGS]}::text[]
+          p_user_id => ${userId}::uuid,
+          p_allowed_license_types => ${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[],
+          p_ufl_legacy_slugs => ${[...UFL_LEGACY_SLUGS]}::text[],
+          p_latin_unready_slugs => ${[...LATIN_UNREADY_SLUGS]}::text[]
         ) AS slug`
       );
       return rows[0]?.slug ?? null;

@@ -53,8 +53,12 @@
 --   5. register_mastery_unlock(p_user_id uuid)          (dernier corps : 008)
 --
 -- NOUVELLE FONCTION, NOM NEUF, PAS DE SURCHARGE A PARAMETRE PAR DEFAUT.
--- try_unlock_if_pool_stuck(uuid) est ajoutee pour le chemin §4.5 (pool sans
--- eligible) de lib/game/training/provider.ts::recoverPoolIfStuck. Elle ne
+-- try_unlock_if_pool_stuck(uuid, text[], text[], text[]) est ajoutee pour le
+-- chemin §4.5 (pool sans eligible) de
+-- lib/game/training/provider.ts::recoverPoolIfStuck. Les trois text[] sont les
+-- listes de visibilite decrites au round 3 plus bas ; les rounds 1 et 2 de
+-- cette tache avaient une version a un seul argument, jamais appliquee nulle
+-- part (voir le paragraphe de remede juste apres). Elle ne
 -- remplace PAS try_unlock_one_typeface : cette derniere est aussi la
 -- primitive de croissance I-07, appelee par register_mastery_unlock au seuil
 -- des trois stabilisations, un moment ou le pool a presque toujours une face
@@ -65,6 +69,37 @@
 -- optionnel : CREATE OR REPLACE ne peut pas changer une signature, et cette
 -- surcharge rendrait ambigu l'appel a un seul argument de
 -- 008_pool_growth.sql:191, erreur 42725.
+--
+-- A FAIRE AVANT D'APPLIQUER CE FICHIER, SI UNE VERSION A UN SEUL ARGUMENT DE
+-- try_unlock_if_pool_stuck A DEJA ETE POSEE QUELQUE PART.
+-- CREATE OR REPLACE ne la remplacerait PAS : les deux signatures different,
+-- donc Postgres AJOUTERAIT une seconde surcharge et les deux coexisteraient.
+-- Tout appel a un seul argument continuerait alors de resoudre vers l'ancien
+-- corps, dont la precondition est justement le SURENSEMBLE corrige au round 3
+-- plus bas, celui qui tue le deblocage §4.5 de facon permanente pour les
+-- comptes portant au moins une ligne invisible. Remede, dans cet ordre :
+--   DROP FUNCTION IF EXISTS try_unlock_if_pool_stuck(uuid);
+-- puis, apres application, verifier qu'il ne reste que l'identite a quatre
+-- arguments :
+--   SELECT pg_get_function_identity_arguments(oid)
+--     FROM pg_proc
+--    WHERE proname = 'try_unlock_if_pool_stuck';
+-- La seule ligne attendue est :
+--   uuid, text[], text[], text[]
+-- Deux lignes signifient que la surcharge fantome est encore la, et le chemin
+-- §4.5 reste casse tant qu'elle y est.
+--
+-- CE DROP EST SANS RISQUE AUJOURD'HUI. Aucune base persistante n'a jamais
+-- porte cette fonction : les trois rounds de preuve de cette tache sont restes
+-- sur branche Neon jetable, et la migration 012 n'a ete appliquee sur aucune
+-- base. Le DROP ne peut donc rien detruire et ne casse aucun appelant, il
+-- existe uniquement pour l'operateur qui aurait rejoue un round anterieur a la
+-- main. Le seul appelant du produit,
+-- lib/game/training/provider.ts::recoverPoolIfStuck, appelle la version a
+-- quatre arguments en NOTATION NOMMEE (p_allowed_license_types => ...), ce qui
+-- rend une inversion des trois text[] impossible a ecrire silencieusement et
+-- garantit qu'il ne peut pas resoudre par accident vers une surcharge a un
+-- argument.
 --
 -- INVARIANT I-06. Aucun des six corps ne retire ni ne desactive une typo du
 -- pool : uniquement des INSERT ... ON CONFLICT DO NOTHING, comme avant cette

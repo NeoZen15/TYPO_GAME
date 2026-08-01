@@ -50,11 +50,33 @@
 // exploited the same shape, a `migration.includes(x)` test satisfied by
 // ANYTHING anywhere in the file, comments included, matched once instead of
 // inside the specific body it was meant to guard. Every rule below extracts
-// the exact function body first (from its own
-// `CREATE OR REPLACE FUNCTION <signature>` header to its own closing `$$;`)
-// and only ever searches inside that slice. A missing body is ALWAYS reported
-// by the loop that extracts it, never silently assumed to be someone else's
-// problem.
+// the exact function body first (from a LINE-INITIAL
+// `CREATE OR REPLACE FUNCTION <signature>` header to its own closing `$$;` or
+// `END $$;` line) and only ever searches inside that slice. A missing body is
+// ALWAYS reported by the loop that extracts it, never silently assumed to be
+// someone else's problem.
+//
+// WHAT ROUND 3 REVIEW DEFEATED, AND WHAT REPLACED IT. Four more holes, all in
+// this file, none in the SQL. (1) The lock was only tested for PRESENCE while
+// the failure message already claimed "as its own first statement": moving it
+// to just before RETURN v_count; kept the guard green and brought the 47-row
+// merge straight back, so position is now verified, comments and blank lines
+// skipped. (2) Extraction by bare indexOf sliced the wrong body when a decoy
+// comment naming another signature sat earlier in the file, and ran to end of
+// file for try_unlock_if_pool_stuck, whose terminator is `END $$;` and not a
+// line-initial `$$;`: both anchors are fixed above extractBody. (3)
+// rebalance_user_pool was tested against one precondition marker out of two,
+// so the other could be injected while the success message still claimed it
+// carried neither: both markers are now tested on both bodies. (4) The three
+// text[] arguments of try_unlock_if_pool_stuck were passed positionally, so a
+// swapped pair was invisible to Postgres and to this guard: the call site now
+// passes all four BY NAME and a rule requires it.
+//
+// This guard is a tripwire, not a proof. What actually proves the migration is
+// the execution recorded in
+// .superpowers/sdd/plan-double-demarrage-2026-07-31/task-3-report.md, on a
+// throwaway Neon branch, five concurrent attempts per scenario. The rules here
+// only keep a future edit from undoing it silently.
 //
 // This script is standalone on purpose: it guards
 // db/migrations/012_pool_serialisation.sql and the single call site in
@@ -73,18 +95,79 @@ const readOrNull = (relative) => {
   return fs.existsSync(full) ? fs.readFileSync(full, "utf8") : null;
 };
 
-// Extracts one function's own body: from its "CREATE OR REPLACE FUNCTION
-// <startNeedle>" header to the next "$$;" on its own line. startNeedle only
-// needs to be long enough to identify ONE function: init_user_pool needs its
-// full argument list (two arities, and the closing parenthesis right after
-// "uuid" is what keeps the one-argument needle from matching inside the
-// two-argument definition), every other function here has no overload, so
-// its bare name plus an opening parenthesis is unambiguous.
-const extractBody = (source, startNeedle) => {
-  const start = source.indexOf(`CREATE OR REPLACE FUNCTION ${startNeedle}`);
-  if (start === -1) return null;
-  const end = source.indexOf("\n$$;", start);
-  return end === -1 ? source.slice(start) : source.slice(start, end);
+// Extracts one function's own body: from the line that BEGINS with
+// "CREATE OR REPLACE FUNCTION <startNeedle>" down to that body's own
+// terminator line. startNeedle only needs to be long enough to identify ONE
+// function: init_user_pool needs its full argument list (two arities, and the
+// closing parenthesis right after "uuid" is what keeps the one-argument needle
+// from matching the two-argument definition), every other function here has no
+// overload, so its bare name plus an opening parenthesis is unambiguous.
+//
+// ANCHORED AT THE START OF A LINE. Round 3 review defeated the previous
+// version, which used a bare indexOf: a decoy comment naming another
+// function's signature ("-- CREATE OR REPLACE FUNCTION
+// try_unlock_one_typeface(p_user_id uuid)") placed anywhere EARLIER in the
+// file made the extractor slice a different, innocent body, and every rule
+// scoped to the real body then ran on the wrong text. The defect injected in
+// the real body was never looked at, and the guard printed success. A comment
+// line starts with "--", so requiring the header at column zero closes that
+// whole family in one stroke.
+//
+// TERMINATED ON "END $$;" AS WELL AS ON A LINE-INITIAL "$$;". Round 3 review
+// also exploited the fact that try_unlock_if_pool_stuck closes with "END $$;"
+// on a single line: the old search for "\n$$;" never matched, so the extracted
+// body ran to the END OF FILE and marker strings pasted into a comment after
+// COMMIT; satisfied rules for a body that no longer contained them. Any line
+// whose trimmed text ends with "$$;" now closes the body.
+//
+// A body that is never terminated, and a header that appears TWICE (the second
+// CREATE OR REPLACE silently wins at apply time while the guard reads the
+// first), are both reported instead of being worked around.
+const extractBody = (source, startNeedle, label) => {
+  const lines = source.split("\n");
+  const header = `CREATE OR REPLACE FUNCTION ${startNeedle}`;
+  const headerLines = [];
+  lines.forEach((line, index) => {
+    if (line.startsWith(header)) headerLines.push(index);
+  });
+  if (headerLines.length === 0) return null;
+  if (headerLines.length > 1) {
+    failures.push(
+      `${MIGRATION}: ${label} is defined ${headerLines.length} times in this file. The LAST ` +
+        "CREATE OR REPLACE is the one Postgres keeps, so a second definition silently overrides " +
+        "the first while every rule below reads the first: define each body exactly once."
+    );
+  }
+  const start = headerLines[0];
+  for (let i = start + 1; i < lines.length; i += 1) {
+    if (/\$\$\s*;$/.test(lines[i].trim())) {
+      return lines.slice(start, i + 1).join("\n");
+    }
+  }
+  failures.push(
+    `${MIGRATION}: ${label}'s body is never closed by a "$$;" or "END $$;" line. An unterminated ` +
+      "body would make every rule below read to the end of the file, where a comment placed after " +
+      "COMMIT; can satisfy any marker the body itself no longer carries."
+  );
+  return null;
+};
+
+// The lock must be the FIRST executable statement of a body, not merely
+// present in it. Round 3 review moved it to just before RETURN v_count;, after
+// the whole insert loop: two concurrent calls then both read an empty pool,
+// both decide to seed, and the merge this migration exists to prevent (47 rows
+// instead of 30) comes straight back while the guard stays green. Comments and
+// blank lines are skipped, so documenting the lock above itself stays allowed.
+const firstExecutableStatement = (body) => {
+  const lines = body.split("\n");
+  const beginAt = lines.findIndex((line) => line.trim() === "BEGIN");
+  if (beginAt === -1) return null;
+  for (let i = beginAt + 1; i < lines.length; i += 1) {
+    const trimmed = lines[i].trim();
+    if (trimmed === "" || trimmed.startsWith("--")) continue;
+    return trimmed;
+  }
+  return "";
 };
 
 const LOCK = "PERFORM pg_advisory_xact_lock(hashtextextended(p_user_id::text, 0));";
@@ -106,21 +189,60 @@ const VISIBILITY_MARKERS = [
   "tc.typeface_slug <> ALL(",
 ];
 
+// try_unlock_if_pool_stuck's four parameters, declared in the migration and
+// passed BY NAME at the single call site. Three of them are text[] in a row:
+// positionally they are interchangeable, so only the named form makes an
+// inversion impossible to write silently. Both halves are checked, the
+// declaration in the migration and the named form in provider.ts, so renaming
+// a parameter on one side alone is a failure and not a runtime 42883.
+const STUCK_PARAMETERS = [
+  "p_user_id",
+  "p_allowed_license_types",
+  "p_ufl_legacy_slugs",
+  "p_latin_unready_slugs",
+];
+
 const migration = readOrNull(MIGRATION);
+// Extracted once, inside the migration block below, and reused by the twin
+// comparison against provider.ts: extracting the same body twice would report
+// an unterminated or duplicated body twice for one defect.
+let stuckBodyForTwins = null;
 
 if (migration === null) {
   failures.push(`${MIGRATION} does not exist.`);
 } else {
   // ---------------------------------------------------------- six bodies, extracted
-  const initUuidBody = extractBody(migration, "init_user_pool(p_user_id uuid)");
+  const initUuidBody = extractBody(
+    migration,
+    "init_user_pool(p_user_id uuid)",
+    "init_user_pool(p_user_id uuid)"
+  );
   const initFamiliarityBody = extractBody(
     migration,
+    "init_user_pool(p_user_id uuid, p_familiarity text)",
     "init_user_pool(p_user_id uuid, p_familiarity text)"
   );
-  const rebalanceBody = extractBody(migration, "rebalance_user_pool(p_user_id uuid)");
-  const tryUnlockOneBody = extractBody(migration, "try_unlock_one_typeface(p_user_id uuid)");
-  const registerMasteryBody = extractBody(migration, "register_mastery_unlock(p_user_id uuid)");
-  const tryUnlockStuckBody = extractBody(migration, "try_unlock_if_pool_stuck(");
+  const rebalanceBody = extractBody(
+    migration,
+    "rebalance_user_pool(p_user_id uuid)",
+    "rebalance_user_pool(p_user_id uuid)"
+  );
+  const tryUnlockOneBody = extractBody(
+    migration,
+    "try_unlock_one_typeface(p_user_id uuid)",
+    "try_unlock_one_typeface(p_user_id uuid)"
+  );
+  const registerMasteryBody = extractBody(
+    migration,
+    "register_mastery_unlock(p_user_id uuid)",
+    "register_mastery_unlock(p_user_id uuid)"
+  );
+  const tryUnlockStuckBody = extractBody(
+    migration,
+    "try_unlock_if_pool_stuck(",
+    "try_unlock_if_pool_stuck(...)"
+  );
+  stuckBodyForTwins = tryUnlockStuckBody;
 
   const SIX = [
     ["init_user_pool(p_user_id uuid)", initUuidBody],
@@ -145,6 +267,26 @@ if (migration === null) {
           "The lock expression appearing anywhere else in the file (a header comment, another " +
           "function) serialises nothing: each of the six bodies must take it itself, as its own " +
           "first statement."
+      );
+      continue;
+    }
+    // PRESENT IS NOT ENOUGH, IT MUST BE FIRST. A lock taken after the work is
+    // done serialises nothing that matters: both concurrent callers read the
+    // pool before either takes it, both conclude it is empty, and both seed.
+    const first = firstExecutableStatement(body);
+    if (first === null) {
+      failures.push(
+        `${MIGRATION}: ${label} has no line containing exactly "BEGIN", so the position of its ` +
+          "advisory lock cannot be verified. Keep the plpgsql block opener on its own line."
+      );
+    } else if (first !== LOCK) {
+      failures.push(
+        `${MIGRATION}: ${label} takes the per-user advisory lock, but NOT as its first executable ` +
+          `statement after BEGIN. Found "${first}" there instead. A lock taken after the ` +
+          "precondition or after the insert loop serialises nothing that matters: two concurrent " +
+          "callers both read the pool before either holds the lock, both find it empty, and both " +
+          "seed, which is exactly the 47-row merge this migration exists to prevent. Comments and " +
+          "blank lines before the lock are fine, statements are not."
       );
     }
   }
@@ -184,44 +326,76 @@ if (migration === null) {
     initFamiliarityBody
   );
 
-  // rebalance_user_pool must stay add-only: it tops up an ALREADY seeded pool
-  // with easier faces by design. An already-seeded early return would
-  // disable it entirely.
-  if (rebalanceBody !== null && rebalanceBody.includes(SEEDED_PRECONDITION)) {
-    failures.push(
-      `${MIGRATION}: rebalance_user_pool must stay add-only. Its whole purpose is to inject ` +
-        "easier faces into a pool that is already seeded; an already-seeded early return would " +
-        "disable it entirely."
-    );
-  }
-
-  // try_unlock_one_typeface must carry NEITHER precondition shape. It is also
-  // the I-07 growth primitive, called by register_mastery_unlock at the
-  // three-stabilisation threshold, a moment when the pool almost always has
-  // an eligible face: either precondition there would disable growth in
-  // silence and pending_unlock_count would climb for ever. This is the rule
-  // that was missing entirely: round 2 review injected the precondition here
-  // and the guard still printed success.
-  if (tryUnlockOneBody !== null) {
-    if (tryUnlockOneBody.includes(SEEDED_PRECONDITION)) {
-      failures.push(
-        `${MIGRATION}: try_unlock_one_typeface carries the already-seeded precondition. It must ` +
-          "not: it is also the I-07 growth primitive called at the three-stabilisation threshold, " +
-          "when the pool almost always already has rows, and this precondition would disable " +
-          "growth in silence."
-      );
-    }
-    if (tryUnlockOneBody.includes(STUCK_PRECONDITION_MARKER)) {
-      failures.push(
-        `${MIGRATION}: try_unlock_one_typeface carries the stuck-pool visibility precondition. ` +
-          "That check belongs to try_unlock_if_pool_stuck only, for the same reason: it would " +
-          "disable I-07 growth in silence and pending_unlock_count would climb for ever."
-      );
+  // BOTH precondition shapes are forbidden in BOTH of these two bodies, and
+  // the success message printed at the bottom claims exactly that. Round 3
+  // review injected the STUCK precondition into rebalance_user_pool, which was
+  // only ever tested against the SEEDED one, and the guard exited 0 while
+  // still printing "rebalance_user_pool and try_unlock_one_typeface carry
+  // neither precondition". Four tests now, one per pair, so the sentence is
+  // true rather than merely reassuring.
+  //
+  // WHY EACH ONE IS A REAL DEFECT.
+  // rebalance_user_pool is ADD-ONLY BY DESIGN: it tops up an already seeded
+  // pool with easier faces on a redescente. An already-seeded early return
+  // disables it entirely; a "pool already has an eligible face" early return
+  // disables it exactly when the player is playing, which is the only moment
+  // it is ever called.
+  // try_unlock_one_typeface is the I-07 growth primitive, called by
+  // register_mastery_unlock at the three-stabilisation threshold, a moment
+  // when the pool almost always has an eligible face: either precondition
+  // there disables growth in silence and pending_unlock_count climbs for ever.
+  const FORBIDDEN_PRECONDITIONS = [
+    [
+      SEEDED_PRECONDITION,
+      "already-seeded precondition",
+      "an early return on a pool that already has rows",
+    ],
+    [
+      STUCK_PRECONDITION_MARKER,
+      "stuck-pool visibility precondition",
+      "an early return on a pool that already has an eligible face",
+    ],
+  ];
+  const WHY_FORBIDDEN = {
+    "rebalance_user_pool":
+      "rebalance_user_pool must stay add-only: its whole purpose is to inject easier faces into a " +
+      "pool that is ALREADY seeded and being played, so either early return disables it entirely.",
+    "try_unlock_one_typeface":
+      "try_unlock_one_typeface is also the I-07 growth primitive, called by register_mastery_unlock " +
+      "at the three-stabilisation threshold, when the pool almost always already has rows and an " +
+      "eligible face: either early return disables growth in silence and pending_unlock_count " +
+      "climbs for ever. Preconditions belong to init_user_pool and try_unlock_if_pool_stuck only.",
+  };
+  for (const [name, body] of [
+    ["rebalance_user_pool", rebalanceBody],
+    ["try_unlock_one_typeface", tryUnlockOneBody],
+  ]) {
+    if (body === null) continue; // reported above already
+    for (const [marker, shape, effect] of FORBIDDEN_PRECONDITIONS) {
+      if (body.includes(marker)) {
+        failures.push(
+          `${MIGRATION}: ${name} carries the ${shape} ("${marker}"), which is ${effect}. ` +
+            WHY_FORBIDDEN[name]
+        );
+      }
     }
   }
 
   // --------------------------------------------- try_unlock_if_pool_stuck: visibility precondition
   if (tryUnlockStuckBody !== null) {
+    // The call site passes these four by name. A rename here alone would turn
+    // the named call into a runtime 42883, at the exact moment the §4.5 path
+    // is needed and nowhere else, so the two sides are pinned together.
+    for (const parameter of STUCK_PARAMETERS) {
+      if (!tryUnlockStuckBody.includes(parameter)) {
+        failures.push(
+          `${MIGRATION}: try_unlock_if_pool_stuck no longer declares the parameter "${parameter}". ` +
+            `${PROVIDER} passes all four by name, so a rename on this side alone turns the call ` +
+            "into a runtime 42883 on the one path that exists to keep the game from being stuck."
+        );
+      }
+    }
+
     const preAt = tryUnlockStuckBody.indexOf(STUCK_PRECONDITION_MARKER);
     if (preAt === -1) {
       failures.push(
@@ -291,6 +465,24 @@ if (provider === null) {
     if (!body.includes("try_unlock_if_pool_stuck")) {
       failures.push(`${PROVIDER}: recoverPoolIfStuck still calls the growth primitive directly. The §4.5 stuck-pool path must go through try_unlock_if_pool_stuck.`);
     }
+    // NAMED ARGUMENTS, NOT POSITIONAL. try_unlock_if_pool_stuck takes three
+    // text[] parameters in a row, so swapping two of them at the call site is
+    // a silent defect: Postgres accepts it (same type), the guard cannot see
+    // it, and the precondition then filters slugs against the licence list and
+    // licences against the slug list. Nothing raises, the precondition just
+    // stops matching what getPoolRows serves and the §4.5 unlock drifts. The
+    // "p_name => value" form makes an inversion impossible to write without
+    // noticing, because the name travels with the value.
+    for (const parameter of STUCK_PARAMETERS) {
+      if (!body.includes(`${parameter} =>`)) {
+        failures.push(
+          `${PROVIDER}: recoverPoolIfStuck does not pass "${parameter}" to ` +
+            "try_unlock_if_pool_stuck by NAME. Its three text[] parameters are positionally " +
+            "interchangeable, so a swapped pair is invisible to Postgres and to this guard: use " +
+            `the named form, ${parameter} => ..., for all four arguments.`
+        );
+      }
+    }
     // The fallback is not optional. Migration 012 is deliberately NOT applied in
     // production, so between this commit and the migration the new function does
     // not exist and the call raises 42883. Without a retry on the old function,
@@ -323,7 +515,7 @@ if (provider === null) {
       poolRowsStart,
       poolRowsNext === -1 ? provider.length : poolRowsNext
     );
-    const stuckBody = migration === null ? null : extractBody(migration, "try_unlock_if_pool_stuck(");
+    const stuckBody = stuckBodyForTwins;
     if (stuckBody !== null) {
       for (const marker of VISIBILITY_MARKERS) {
         const inProvider = poolRowsBody.includes(marker);
@@ -347,11 +539,16 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
+// Every clause below is a clause that was actually tested above. The previous
+// version claimed "rebalance_user_pool and try_unlock_one_typeface carry
+// neither precondition" while only ever testing one of the two markers on one
+// of the two bodies, and printed the claim over an injected precondition.
 console.log(
-  "check:pool-serialisation OK : all six pool bodies exist and each take the per-user advisory " +
-    "lock inside their own body, init_user_pool's two arities and try_unlock_if_pool_stuck each " +
-    "genuinely return on an already-satisfied precondition, rebalance_user_pool and " +
-    "try_unlock_one_typeface carry neither precondition, try_unlock_if_pool_stuck's visibility " +
-    "filters match getPoolRows marker for marker, and recoverPoolIfStuck calls " +
-    "try_unlock_if_pool_stuck with a 42883 fallback onto try_unlock_one_typeface."
+  "check:pool-serialisation OK : all six pool bodies exist, each defined once, each closed by its " +
+    "own terminator, and each takes the per-user advisory lock as its FIRST executable statement " +
+    "after BEGIN, init_user_pool's two arities and try_unlock_if_pool_stuck each genuinely return " +
+    "on an already-satisfied precondition, rebalance_user_pool and try_unlock_one_typeface carry " +
+    "neither of the two precondition shapes, try_unlock_if_pool_stuck's visibility filters match " +
+    "getPoolRows marker for marker, and recoverPoolIfStuck calls try_unlock_if_pool_stuck with all " +
+    "four arguments passed BY NAME and a 42883 fallback onto try_unlock_one_typeface."
 );
