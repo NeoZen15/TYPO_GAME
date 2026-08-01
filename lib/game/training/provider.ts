@@ -520,7 +520,7 @@ const insertSessionStartEvent = async (
       ${userId}::uuid,
       ${sessionId}::uuid,
       'training',
-      ${globalQIndex},
+      ${globalQIndex}::int,
       'session_start',
       ${engineVersion}
     FROM g
@@ -1337,6 +1337,18 @@ export const endTrainingSession = async ({
   }
 
   const wasActive = session.status === "active";
+  // COSMETIC DRIFT, never persisted. This endedAt is computed from the SELECT
+  // above, before the compare-and-set UPDATE below runs. If a concurrent
+  // sweep (task 4) wins the race and closes this session as 'abandoned'
+  // first, the UPDATE affects zero rows (closedByThisCall stays false), but
+  // this endedAt is still handed to buildTrainingSessionSummary for the
+  // bilan returned to the caller. The drift between this value and the
+  // sweep's own ended_at (taken from MAX(event_ts_utc), the last real event)
+  // is bounded by the sweep's own inactivity window, 30 minutes, not
+  // unbounded, since the sweep only ever fires after that much silence.
+  // Nothing persists this value: duration_ms is a GENERATED column the
+  // database computes on its own from the real ended_at/started_at, never
+  // from this JS Date, so the drift stays purely cosmetic in the response.
   const endedAt = session.ended_at ? new Date(session.ended_at) : new Date();
   const startedAt = new Date(session.started_at);
   let closedByThisCall = false;
