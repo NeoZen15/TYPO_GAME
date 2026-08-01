@@ -794,39 +794,6 @@ export const startTrainingSession = async ({
     .toString()
     .padStart(3, "0")}`;
 
-  // Spec §2.1 step 5 — abandon. Since a session no longer closes itself on a
-  // round counter, one left open stays open forever: 73 training sessions were
-  // measured in that state on 2026-07-29, every single one 'active', not one
-  // 'completed'. Any session still open when the player opens a new one is
-  // therefore closed as abandoned, right here, before the new row exists so the
-  // new one is never caught by its own sweep.
-  //
-  // NO PEDAGOGICAL CONSEQUENCE, and that is the point: mastery, intervals and the
-  // pool are written answer by answer, so the work done inside an abandoned
-  // session is already acquired and nothing here revisits it.
-  //
-  // ended_at is taken from the LAST RECORDED EVENT of that session, not from now:
-  // the player left when they stopped answering, not when we noticed. With no
-  // event at all (a session opened and never played) it falls back to started_at,
-  // giving a zero duration, which is exactly what happened. No session_end event
-  // is written either, because no end ever happened, and phase 2a is precisely
-  // about the fact table never claiming something that did not occur.
-  await sql`
-    UPDATE sessions AS s
-    SET status = 'abandoned'::app.session_status_enum,
-        ended_at = COALESCE(
-          (
-            SELECT MAX(uef.event_ts_utc)
-            FROM user_event_fact uef
-            WHERE uef.session_id = s.session_id
-          ),
-          s.started_at
-        )
-    WHERE s.user_id = ${user.user_id}::uuid
-      AND s.mode = 'training'
-      AND s.status = 'active'
-  `;
-
   const insertedSessions = await queryRows<SessionRow>(sql`
     INSERT INTO sessions (
       user_id,
@@ -849,6 +816,58 @@ export const startTrainingSession = async ({
   `);
 
   const session = insertedSessions[0];
+
+  // Spec §2.1 step 5 — abandon. A session that no longer closes itself on a round
+  // counter stays open for ever if nothing sweeps it: 73 were measured in that
+  // state on 2026-07-29, every one 'active', not one 'completed'.
+  //
+  // THE SWEEP RUNS AFTER THE INSERT, and the current session is excluded BY ID.
+  // It used to run before, on the argument that a row that does not exist cannot
+  // be caught by its own sweep. That argument dies the moment one attempt equals
+  // one identifier: a reload sends the same id back, and a sweep with no
+  // exclusion would abandon the session we are about to join.
+  //
+  // Two more predicates, because excluding the current session is not enough.
+  // Without an age floor, two starts a few milliseconds apart abandon each
+  // other and leave ZERO active sessions. Without an inactivity window, a
+  // player answering in another tab is closed under them.
+  //
+  // NO PEDAGOGICAL CONSEQUENCE, and that is the point: mastery, intervals and the
+  // pool are written answer by answer, so the work done inside an abandoned
+  // session is already acquired and nothing here revisits it.
+  //
+  // ended_at is taken from the LAST RECORDED EVENT of that session, not from now:
+  // the player left when they stopped answering, not when we noticed. With no
+  // event at all it falls back to started_at, giving a zero duration. No
+  // session_end event is written either, because no end ever happened, and phase
+  // 2a is precisely about the fact table never claiming something that did not
+  // occur.
+  await sql`
+    UPDATE sessions AS s
+    SET status = 'abandoned'::app.session_status_enum,
+        ended_at = COALESCE(
+          (
+            SELECT MAX(uef.event_ts_utc)
+            FROM user_event_fact uef
+            WHERE uef.session_id = s.session_id
+          ),
+          s.started_at
+        )
+    WHERE s.user_id = ${user.user_id}::uuid
+      AND s.mode = 'training'
+      AND s.status = 'active'
+      AND s.session_id <> ${session.session_id}::uuid
+      AND s.started_at < now() - interval '30 minutes'
+      AND COALESCE(
+            (
+              SELECT MAX(uef.event_ts_utc)
+              FROM user_event_fact uef
+              WHERE uef.session_id = s.session_id
+            ),
+            s.started_at
+          ) < now() - interval '30 minutes'
+  `;
+
   await insertSessionStartEvent(
     session.session_id,
     user.user_id,
