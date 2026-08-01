@@ -472,6 +472,23 @@ const computeCorrectNextDue = (
   adaptiveCoef: number
 ) => globalQIndex + intervalForLevel(nextMastery, adaptiveCoef, 5);
 
+// ATOMIC WRITER (H2, proven by execution on 2026-07-31). The guard row and the
+// event are produced by a single CTE statement: WITH g AS (INSERT INTO
+// event_ingestion_guard ... ON CONFLICT DO NOTHING RETURNING 1) INSERT INTO
+// user_event_fact ... SELECT ... FROM g. Two identical concurrent calls leave
+// exactly one guard row and exactly one event: the loser's INSERT ... ON
+// CONFLICT blocks on the guard's primary key until the winner commits, then
+// finds the conflict, RETURNING nothing, so the SELECT ... FROM g on its side
+// yields zero rows and it writes no event. Never a divorce between the two.
+//
+// WHY NOT ON CONFLICT ON user_event_fact ITSELF. That table is PARTITIONED BY
+// RANGE (event_ts_utc), and Postgres requires a unique index on a partitioned
+// table to carry the partition key: the only one is uq_event_id (event_id,
+// event_ts_utc). There is no unique constraint on idempotency_key alone, so
+// `ON CONFLICT (idempotency_key)` raises 42P10. Verified on a throwaway Neon
+// branch on 2026-07-29. The uniqueness therefore lives in
+// event_ingestion_guard instead, whose primary key IS (user_id, session_id,
+// idempotency_key) (db/migrations/001_user_event_fact.sql:13-23).
 const insertSessionStartEvent = async (
   sessionId: string,
   userId: string,
@@ -479,6 +496,16 @@ const insertSessionStartEvent = async (
   engineVersion: string
 ) => {
   await sql`
+    WITH g AS (
+      INSERT INTO event_ingestion_guard (
+        idempotency_key, user_id, session_id, ingestion_status
+      )
+      VALUES (
+        ${`${sessionId}:session_start`}, ${userId}::uuid, ${sessionId}::uuid, 'accepted'
+      )
+      ON CONFLICT (user_id, session_id, idempotency_key) DO NOTHING
+      RETURNING 1
+    )
     INSERT INTO user_event_fact (
       idempotency_key,
       user_id,
@@ -487,7 +514,8 @@ const insertSessionStartEvent = async (
       global_q_index,
       event_type,
       engine_version
-    ) VALUES (
+    )
+    SELECT
       ${`${sessionId}:session_start`},
       ${userId}::uuid,
       ${sessionId}::uuid,
@@ -495,7 +523,7 @@ const insertSessionStartEvent = async (
       ${globalQIndex},
       'session_start',
       ${engineVersion}
-    )
+    FROM g
   `;
 };
 
@@ -1277,9 +1305,10 @@ export const submitTrainingAnswer = async ({
 // or closed loses nothing the player earned.
 //
 // Idempotent: calling it twice returns the same summary and reports
-// closedByThisCall false the second time. The session_end event is guarded by a
-// NOT EXISTS on (session_id, event_type) rather than by a unique key, for the
-// reason spelled out at the insert itself.
+// closedByThisCall false the second time. The session_end event is deduplicated
+// by the same event_ingestion_guard CTE as insertSessionStartEvent above (H2),
+// on the guard's primary key (user_id, session_id, idempotency_key), not by a
+// NOT EXISTS scan.
 export const endTrainingSession = async ({
   sessionId,
   userId,
@@ -1310,36 +1339,58 @@ export const endTrainingSession = async ({
   const wasActive = session.status === "active";
   const endedAt = session.ended_at ? new Date(session.ended_at) : new Date();
   const startedAt = new Date(session.started_at);
+  let closedByThisCall = false;
 
   if (wasActive) {
     // THE EVENT IS WRITTEN BEFORE THE STATUS, and the order is deliberate. These
-    // two statements are not in a transaction, because the whole engine runs on
-    // autocommit statements through the HTTP driver. So one of them can land
-    // without the other, and the question is only which half-way state is
+    // two statements are not in a single transaction, because the whole engine
+    // runs on autocommit statements through the HTTP driver. So one of them can
+    // land without the other, and the question is only which half-way state is
     // recoverable. Status first, then event, is NOT: a session already closed
     // makes wasActive false on the retry, so the event is skipped for ever and the
     // journal permanently loses the end of that session. Event first, then status,
-    // heals itself: the session stays active, a retry writes no duplicate thanks to
-    // the guard below, and it closes the session properly.
+    // heals itself: the session stays active, a retry re-runs the CTE below and
+    // finds the guard row already accepted (no duplicate, H2), and the compare
+    // and set below still gets its chance to close the session properly.
     //
-    // NOT EXISTS rather than ON CONFLICT, and this one is not a preference either.
+    // ATOMIC WRITER (H2, proven by execution on 2026-07-31), same CTE shape as
+    // insertSessionStartEvent above: WITH g AS (INSERT INTO event_ingestion_guard
+    // ... ON CONFLICT DO NOTHING RETURNING 1) INSERT INTO user_event_fact ...
+    // SELECT ... FROM g. One guard row, one event, never a divorce: the loser's
+    // INSERT ... ON CONFLICT blocks on the guard's primary key until the winner
+    // commits, then finds the conflict and RETURNING yields no row, so its
+    // SELECT ... FROM g inserts nothing into user_event_fact either.
+    //
+    // WHY NOT ON CONFLICT ON user_event_fact ITSELF. That measurement stays true:
     // user_event_fact is PARTITIONED BY RANGE (event_ts_utc), and Postgres requires
-    // a unique index on a partitioned table to carry the partition key: the only one
-    // is uq_event_id (event_id, event_ts_utc). There is no unique constraint on
+    // a unique index on a partitioned table to carry the partition key: the only
+    // one is uq_event_id (event_id, event_ts_utc). There is no unique constraint on
     // idempotency_key alone, so `ON CONFLICT (idempotency_key)` raises 42P10, "there
-    // is no unique or exclusion constraint matching the ON CONFLICT specification",
-    // and the close path died on it. Verified by execution on a throwaway Neon
-    // branch on 2026-07-29. This is the same shape the competition provider has
-    // been using all along (insertSessionEndEventIfMissing).
+    // is no unique or exclusion constraint matching the ON CONFLICT specification".
+    // Verified on a throwaway Neon branch on 2026-07-29. What is no longer true is
+    // the conclusion that used to follow from it: the conflict target DOES exist,
+    // it is simply on event_ingestion_guard, whose primary key IS (user_id,
+    // session_id, idempotency_key) (db/migrations/001_user_event_fact.sql:13-23),
+    // not on user_event_fact itself.
+    //
+    // RETENTION RULE, written here because task 8 makes it load-bearing: answer
+    // events must NEVER enter event_ingestion_guard without partitioning or a TTL,
+    // and any TTL adopted must outlive the longest client replay window. Deleting
+    // a guard row makes its event re-insertable again: the guard row IS what keeps
+    // the write idempotent, so vacuuming it silently un-deduplicates the event.
     await sql`
+      WITH g AS (
+        INSERT INTO event_ingestion_guard (
+          idempotency_key, user_id, session_id, ingestion_status
+        )
+        VALUES (
+          ${`${sessionId}:session_end`}, ${userId}::uuid, ${sessionId}::uuid, 'accepted'
+        )
+        ON CONFLICT (user_id, session_id, idempotency_key) DO NOTHING
+        RETURNING 1
+      )
       INSERT INTO user_event_fact (
-        idempotency_key,
-        user_id,
-        session_id,
-        mode,
-        global_q_index,
-        event_type,
-        engine_version
+        idempotency_key, user_id, session_id, mode, global_q_index, event_type, engine_version
       )
       SELECT
         ${`${sessionId}:session_end`},
@@ -1349,20 +1400,28 @@ export const endTrainingSession = async ({
         (SELECT global_q_index FROM users WHERE user_id = ${userId}::uuid),
         'session_end',
         ${TRAINING_ENGINE_VERSION}
-      WHERE NOT EXISTS (
-        SELECT 1
-        FROM user_event_fact
-        WHERE session_id = ${sessionId}::uuid
-          AND event_type = 'session_end'
-      )
+      FROM g
     `;
 
-    await sql`
+    // Compare and set: WHERE ... AND status = 'active'. Between the SELECT above
+    // and this UPDATE, another tab's sweep can have moved this session to
+    // 'abandoned' with an honest ended_at taken from its last event (task 4). An
+    // unconditional UPDATE would flip it back to 'completed' here and overwrite
+    // that honest timestamp with the server's own clock: exactly the fact table
+    // claiming something that did not happen. Task 4's sweep exclusion narrows
+    // this window, it does not close it, because the sweep only ever excludes the
+    // session of the call that runs it, and a second tab is a second session: its
+    // own sweep does not know about this one. Only the compare and set closes the
+    // race. RETURNING is what lets us know whether THIS call actually closed it.
+    const closedRows = await queryRows<{ session_id: string }>(sql`
       UPDATE sessions
       SET status = 'completed'::app.session_status_enum,
           ended_at = ${endedAt}
       WHERE session_id = ${sessionId}::uuid
-    `;
+        AND status = 'active'
+      RETURNING session_id
+    `);
+    closedByThisCall = closedRows.length > 0;
   }
 
   const answerRows = await queryRows<SummaryAnswerRow>(sql`
@@ -1404,5 +1463,5 @@ export const endTrainingSession = async ({
     facesMastered: progressAggregate?.facesMastered,
   });
 
-  return { sessionId, summary, closedByThisCall: wasActive };
+  return { sessionId, summary, closedByThisCall };
 };
