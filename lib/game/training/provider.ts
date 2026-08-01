@@ -17,7 +17,9 @@ import {
   type TrainingAnswerResponse,
   type TrainingEndResponse,
   type TrainingQuestion,
+  type TrainingStartInput,
   type TrainingStartResponse,
+  normalizeAttemptId,
 } from "@/lib/game/training/contracts";
 import {
   buildTrainingSessionSummary,
@@ -801,19 +803,48 @@ const safeReadVisibleLevel = async (userId: string): Promise<string | null> => {
   }
 };
 
+// ---------------------------------------------------------------------------
+// ONE ATTEMPT EQUALS ONE IDENTIFIER. The client mints a uuid per attempt, the
+// server uses it as sessions.session_id, and the primary key that already
+// exists arbitrates the race: no schema change, no advisory lock, no read
+// before the write.
+//
+// H1, proven by execution on a throwaway branch on 2026-07-31: the loser of
+// INSERT ... ON CONFLICT (session_id) DO NOTHING BLOCKS on the winner's
+// transaction (wait_event_type=Lock, wait_event=transactionid), then returns
+// zero rows, and its next read sees the committed row WITH THE WINNER'S SEED.
+// H1b: if the winner rolls back, the loser inserts and becomes the winner.
+// Self-healing both ways, which is why no retry is needed for the race itself.
+//
+// The single re-entry below is NOT for the race. It exists for the one case the
+// race cannot fix: an identifier that resolves to a row this client may not
+// play, because it is already closed (a replay of yesterday's uuid) or belongs
+// to another user or another mode. There the server mints a fresh identifier and
+// re-enters THE INSERT ONLY, once. Never the identity, never the pool.
+// ---------------------------------------------------------------------------
+const MAX_START_REENTRIES = 1;
+
 export const startTrainingSession = async ({
   locale = "fr",
   guestUserId,
   familiarity = null,
   warmupCorrect = null,
-}: {
-  locale?: Locale;
-  guestUserId?: string | null;
-  familiarity?: Familiarity | null;
-  warmupCorrect?: boolean | null;
-}): Promise<{ payload: TrainingStartResponse; guestUserId: string; guestWasCreated: boolean }> => {
+  attemptId = null,
+}: TrainingStartInput): Promise<{
+  payload: TrainingStartResponse;
+  guestUserId: string;
+  guestWasCreated: boolean;
+}> => {
+  // Step 1 — identity, from the httpOnly cookie only, resolved ONCE here and
+  // pinned for the whole call. The re-entry never comes back through this line:
+  // a second resolution could hand the second attempt a different user, and the
+  // pool seeded at step 2 would then belong to nobody.
   const { user, created } = await getGuestUser(locale, guestUserId);
+  // Step 2 — the pool, before the session row, exactly as before.
   await ensureUserPool(user.user_id, familiarity, warmupCorrect);
+  // Step 3 — the onboarding answer, unchanged and in its place. It writes the
+  // onboarding signal and has nothing to do with the convergence; it is called
+  // out here only because a literal reading of an earlier step list removed it.
   if (familiarity) {
     await recordOnboardingFamiliarity(user.user_id, familiarity);
   }
@@ -822,28 +853,101 @@ export const startTrainingSession = async ({
     .toString()
     .padStart(3, "0")}`;
 
-  const insertedSessions = await queryRows<SessionRow>(sql`
-    INSERT INTO sessions (
-      user_id,
-      mode,
-      status,
-      locale,
-      seed,
-      engine_version,
-      started_global_q_index
-    ) VALUES (
-      ${user.user_id}::uuid,
-      'training',
-      'active',
-      ${user.locale},
-      ${seed},
-      ${TRAINING_ENGINE_VERSION},
-      ${user.global_q_index}
-    )
-    RETURNING session_id, user_id, seed, question_count, status
-  `);
+  // Validated again here even though the route already normalises it: the
+  // provider is called directly by the proof scripts and by any future caller,
+  // and an unvalidated string one line from a ::uuid cast is a 22P02 waiting to
+  // become a 500 on a plain page load. An absent or malformed identifier is not
+  // an error, it is simply not usable, so the server mints its own.
+  let effectiveAttemptId = normalizeAttemptId(attemptId) ?? crypto.randomUUID();
+  let reentered = false;
+  let session: SessionRow | undefined;
+  // Whether THIS call is the one that created the session row. Derived from the
+  // insert's own RETURNING below and from nothing else: a read taken before the
+  // write, or the mere fact that a row exists afterwards, cannot tell the winner
+  // from the loser, and the loser must not re-write a journal entry the winner
+  // already wrote.
+  let wonTheInsert = false;
 
-  const session = insertedSessions[0];
+  for (let attemptsLeft = MAX_START_REENTRIES; attemptsLeft >= 0; attemptsLeft -= 1) {
+    // S3 — the insert, converging on sessions_pkey. session_id is supplied
+    // explicitly: the column has DEFAULT gen_random_uuid(), so an insert that
+    // omitted it could never collide and the ON CONFLICT clause would be
+    // unreachable syntax while every start kept writing its own row.
+    const insertedSessions = await queryRows<SessionRow>(sql`
+      INSERT INTO sessions (
+        session_id,
+        user_id,
+        mode,
+        status,
+        locale,
+        seed,
+        engine_version,
+        started_global_q_index
+      ) VALUES (
+        ${effectiveAttemptId}::uuid,
+        ${user.user_id}::uuid,
+        'training',
+        'active',
+        ${user.locale},
+        ${seed},
+        ${TRAINING_ENGINE_VERSION},
+        ${user.global_q_index}
+      )
+      ON CONFLICT (session_id) DO NOTHING
+      RETURNING session_id, user_id, seed, question_count, status
+    `);
+
+    wonTheInsert = insertedSessions.length > 0;
+
+    let candidate = insertedSessions[0];
+    if (!candidate) {
+      // S4 — the re-read, placed exactly where the code used to take the
+      // inserted row, therefore BEFORE the sweep. That position is not a
+      // preference: the loser holds zero rows until this statement fills them
+      // in, so a re-read moved below the sweep would leave the sweep's own
+      // exclusion clause reading session.session_id off an undefined row and
+      // throw a TypeError on every losing start.
+      //
+      // Scoped by user_id and mode as well as by the key, because the key alone
+      // would hand a guessed identifier to whoever asked, and would serve a
+      // competition row as a training session.
+      //
+      // THE SEED IS THE POINT OF THIS READ, not a convenience: buildQuestion
+      // reads session.seed below and the answer path writes it back into the
+      // fact, so a loser that kept the seed it generated and never wrote would
+      // serve a word and a signed token that disagree with what gets recorded.
+      const rejoinedSessions = await queryRows<SessionRow>(sql`
+        SELECT session_id, user_id, seed, question_count, status
+        FROM sessions
+        WHERE session_id = ${effectiveAttemptId}::uuid
+          AND user_id = ${user.user_id}::uuid
+          AND mode = 'training'
+        LIMIT 1
+      `);
+      candidate = rejoinedSessions[0];
+    }
+
+    if (candidate && candidate.status === "active") {
+      session = candidate;
+      break;
+    }
+
+    // Nothing to join, or a row this client may not play. Mint a fresh
+    // identifier and re-enter the insert, once, then give up with an explicit
+    // error rather than spin.
+    if (attemptsLeft > 0) {
+      effectiveAttemptId = crypto.randomUUID();
+      reentered = true;
+    }
+  }
+
+  if (!session) {
+    throw new Error(
+      reentered
+        ? "Training session start found no active session after one re-entry on a fresh identifier."
+        : "Training session start returned no session row."
+    );
+  }
 
   // Spec §2.1 step 5 — abandon. A session that no longer closes itself on a round
   // counter stays open for ever if nothing sweeps it: 73 were measured in that
@@ -910,12 +1014,23 @@ export const startTrainingSession = async ({
     console.warn("session sweep failed; continuing without closing stale sessions.", error);
   }
 
-  await insertSessionStartEvent(
-    session.session_id,
-    user.user_id,
-    user.global_q_index,
-    TRAINING_ENGINE_VERSION
-  );
+  // Only the call that actually created the session row writes its session_start.
+  // A call that rejoined an existing session is reading a row whose session_start
+  // the creator already wrote, and task 5's event_ingestion_guard CTE would turn
+  // a second write into a no-op anyway, so the useless round trip is not sent.
+  // The trade-off, stated rather than hidden: if a creator committed its session
+  // row and then failed before its event write, a later rejoin no longer heals
+  // the missing session_start. That hole is a failed request, visible in the
+  // logs, not a silent divergence, and healing it here would mean writing an
+  // event dated long after the start it claims to record.
+  if (wonTheInsert) {
+    await insertSessionStartEvent(
+      session.session_id,
+      user.user_id,
+      user.global_q_index,
+      TRAINING_ENGINE_VERSION
+    );
+  }
 
   const pool = await getPoolRows(user.user_id);
   // Spec §4.5 — never start on a frozen pool. If every item is in cooldown, a

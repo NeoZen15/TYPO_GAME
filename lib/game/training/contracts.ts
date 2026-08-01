@@ -120,3 +120,32 @@ export const normalizeFamiliarity = (value: unknown): Familiarity | null =>
   typeof value === "string" && (FAMILIARITY_VALUES as readonly string[]).includes(value)
     ? (value as Familiarity)
     : null;
+
+// One attempt equals one identifier. The client mints a uuid per attempt and the
+// server uses it as sessions.session_id, whose primary key already exists, so
+// the database arbitrates two concurrent starts and no schema changes: the loser
+// of ON CONFLICT (session_id) DO NOTHING blocks on the winner's transaction,
+// returns zero rows, and rejoins the committed row. A page reload that sends the
+// same identifier back rejoins its own session instead of opening a second one.
+//
+// The value crosses the network and lands on a `::uuid` cast, so it is validated
+// here and nowhere else. A malformed identifier is not an error: it is simply
+// not a usable identifier, and the server mints its own instead. Raising would
+// turn a hostile or stale body into a 500 on a plain page load.
+const ATTEMPT_ID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export const normalizeAttemptId = (value: unknown): string | null =>
+  typeof value === "string" && ATTEMPT_ID_PATTERN.test(value) ? value.toLowerCase() : null;
+
+// Input of the training start path. attemptId is the only field the client is
+// allowed to choose that reaches a primary key; identity still comes from the
+// httpOnly cookie, never from the body. It is optional on purpose: a client that
+// sends none is served exactly as before, with an identifier the server mints.
+export type TrainingStartInput = {
+  locale?: Locale;
+  guestUserId?: string | null;
+  familiarity?: Familiarity | null;
+  warmupCorrect?: boolean | null;
+  attemptId?: string | null;
+};
