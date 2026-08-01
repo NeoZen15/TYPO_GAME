@@ -206,6 +206,7 @@ export async function loadRealProfile(
     activityRows,
     activeDayRows,
     todayKeyRows,
+    dailyGoalRows,
     perTfAnswers,
     states,
     attrs,
@@ -287,6 +288,19 @@ export async function loadRealProfile(
     // Today's calendar day, decided by the database, not by the runtime.
     queryRows<TodayKeyRow>(sql`
       SELECT to_char((now() AT TIME ZONE 'Europe/Paris')::date, 'YYYY-MM-DD') AS today_key`),
+    // Today's goal counts CORRECT FIRST ATTEMPTS only, never every attempt: the
+    // activity heat map above counts all attempts because it measures
+    // engagement, but the goal is "good answers", so three wrong attempts on the
+    // same question must not satisfy a goal of three. Same Paris-day expression
+    // as today_key just above, compared inline within this one query so the
+    // goal and the heat map always agree on where the day starts.
+    queryRows<{ good_first_tries: number }>(sql`
+      SELECT COUNT(*)::int AS good_first_tries
+      FROM user_event_fact
+      WHERE user_id = ${userId}::uuid AND event_type = 'answer'
+        AND attempt_index = 1 AND is_correct
+        AND to_char((event_ts_utc AT TIME ZONE 'Europe/Paris')::date, 'YYYY-MM-DD')
+            = to_char((now() AT TIME ZONE 'Europe/Paris')::date, 'YYYY-MM-DD')`),
     queryRows<AnswerRow>(sql`
       SELECT typeface_slug, COUNT(*)::int AS answers, COUNT(*) FILTER (WHERE is_correct)::int AS correct
       FROM user_event_fact WHERE user_id = ${userId}::uuid AND event_type = 'answer'
@@ -320,6 +334,11 @@ export async function loadRealProfile(
   const activity = buildActivityWindow(activityRows.map((r) => r.day_key), todayKey, 30);
   const streak = streakFromDayKeys(playedDayKeys, todayKey);
   const streakRecord = Math.max(streak, longestRunFromDayKeys(playedDayKeys));
+  // The goal has its own count, correct first attempts only, on the Paris day.
+  // It must NOT come from the last cell of `activity`: that cell counts every
+  // attempt, wrong ones included, so three failed attempts on one question
+  // would otherwise satisfy a goal of three good answers.
+  const todayGoodAnswers = dailyGoalRows[0]?.good_first_tries ?? 0;
 
   const sessionAccuracyBySession = new Map(
     sessionAccRows.map((r) => [
@@ -362,10 +381,9 @@ export async function loadRealProfile(
     agg.first_tries > 0 ? Math.round((100 * agg.first_correct) / agg.first_tries) : 0;
 
   const { eye, displayMastered } = buildEye(perTfAnswers, states, attrs);
-  const todayAnswers = activity[activity.length - 1] ?? 0;
   eye.streak = streak;
   eye.streakRecord = streakRecord;
-  eye.dailyGoal = { done: todayAnswers, target: 3 };
+  eye.dailyGoal = { done: todayGoodAnswers, target: 3 };
 
   const badgeMetrics: BadgeMetrics = {
     paliersLit: eye.axes
@@ -409,7 +427,7 @@ export async function loadRealProfile(
     recentSessions,
     activity,
     streak,
-    dailyGoal: { done: todayAnswers, target: 3 },
+    dailyGoal: { done: todayGoodAnswers, target: 3 },
     milestones: MOCK_PROFILE.milestones,
     badges: buildBadges(badgeMetrics),
   };
