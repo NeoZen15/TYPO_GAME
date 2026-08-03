@@ -118,6 +118,22 @@ const takeAttemptId = ({ fresh }: { fresh: boolean }): string => {
   }
 };
 
+// Adopt the identifier the server actually settled on. The server cannot always
+// rejoin the one we sent: a session swept for inactivity, a closed one, or one
+// owned by another player makes it mint its own and answer with a new session
+// (lib/game/training/provider.ts, the bounded re-entry). Keeping ours would leave
+// this tab sending, for ever, an identifier the server can never rejoin, so every
+// single reload would open a new session. That is the reload guarantee lost
+// permanently at the first thirty minute sweep, and this is the line that keeps it.
+const adoptAttemptId = (serverSessionId: string) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.setItem(ATTEMPT_STORAGE_KEY, serverSessionId);
+  } catch {
+    // Same reasoning as above: never throw on a page load over storage.
+  }
+};
+
 // Called only after a session was really closed. Dropping the identifier any
 // earlier is the bug this closes: the next load would mint a new one and open a
 // second session on a session that is still open.
@@ -144,6 +160,11 @@ export default function GameScreen() {
   const [isRoundLocked, setIsRoundLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Closing is an optional gesture, so its failure must not take the game down.
+  // The render gates the question, the options and the progress line on `error`
+  // being null, so writing a refused close into that same state would make a 500
+  // on an optional button destroy the question in progress. This one gates nothing.
+  const [closeError, setCloseError] = useState<string | null>(null);
   const [inlineFeedback, setInlineFeedback] = useState<InlineFeedback>(null);
   const [levelToast, setLevelToast] = useState<string | null>(null);
 
@@ -223,6 +244,7 @@ export default function GameScreen() {
     clearAdvanceTimer();
     setIsLoading(true);
     setError(null);
+    setCloseError(null);
     setIsComplete(false);
     setSessionId(null);
     setQuestion(null);
@@ -256,6 +278,14 @@ export default function GameScreen() {
       }
 
       const payload = (await response.json()) as TrainingStartResponse;
+      // Reconcile, and this line is load bearing. When the server could not
+      // rejoin what we sent it answered with an identifier of its own, so the
+      // stored value now points at a session this tab can never rejoin. Adopting
+      // the server's keeps "a reload rejoins its session" true past the first
+      // inactivity sweep, instead of turning every later reload into a new session.
+      if (payload.sessionId !== attemptId) {
+        adoptAttemptId(payload.sessionId);
+      }
       setSessionId(payload.sessionId);
       setProgress(payload.progress);
       beginQuestion(payload.question);
@@ -274,7 +304,7 @@ export default function GameScreen() {
   const endSession = useCallback(async () => {
     if (!sessionId || endInFlightRef.current) return;
     endInFlightRef.current = true;
-    setError(null);
+    setCloseError(null);
 
     try {
       // Identity is NOT sent: the route reads it from the httpOnly guest cookie
@@ -301,7 +331,9 @@ export default function GameScreen() {
       dropAttemptId();
     } catch (endError) {
       console.error(endError);
-      setError("Unable to close this session.");
+      // Its own state, never the one the render gates on: a refused close leaves
+      // the question, the options and the progress line exactly where they were.
+      setCloseError("Unable to close this session. It is still open.");
     } finally {
       endInFlightRef.current = false;
     }
@@ -328,6 +360,9 @@ export default function GameScreen() {
       JSON.stringify({
         mode: "training",
         status: isLoading ? "loading" : error ? "error" : isComplete ? "complete" : "playing",
+        // Exposed so a browser proof can assert that a refused close reports
+        // itself WITHOUT changing the status above.
+        closeError,
         sessionId,
         progress,
         levelToast,
@@ -391,7 +426,7 @@ export default function GameScreen() {
       delete window.render_game_to_text;
       delete window.advanceTime;
     };
-  }, [error, flushAdvance, isComplete, isLoading, levelToast, progress, question, result, selectedId, sessionId, wrongAttemptIds]);
+  }, [closeError, error, flushAdvance, isComplete, isLoading, levelToast, progress, question, result, selectedId, sessionId, wrongAttemptIds]);
 
   const handleSelect = useCallback(
     async (optionId: string) => {
@@ -576,6 +611,13 @@ export default function GameScreen() {
               >
                 End session
               </button>
+              {/* Reported next to the gesture that failed, and gating nothing:
+                  the question above stays playable. */}
+              {closeError ? (
+                <p className="game-v2-feedback" data-state="wrong" aria-live="polite">
+                  {closeError}
+                </p>
+              ) : null}
             </div>
           </>
         ) : null}
