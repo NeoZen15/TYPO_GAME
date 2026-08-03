@@ -65,6 +65,71 @@ const readOnboarding = (): { familiarity: string | null; warmupCorrect: boolean 
   }
 };
 
+// One attempt equals one identifier. sessionStorage, deliberately, and never
+// React state: a reload has to replay the SAME identifier so the server rejoins
+// the session it already wrote instead of opening a second one, and a value held
+// in state would both die with the reload and re-run the mount effect every time
+// it changed. Scoped to the tab, so a second tab is a second attempt, which is
+// what it is.
+const ATTEMPT_STORAGE_KEY = "jdt-training-attempt-v1";
+
+// uuid VERSION 4, and the version is not a detail. The server validates this
+// value against ATTEMPT_ID_PATTERN (lib/game/training/contracts.ts), which
+// demands a version nibble in 1 to 5 and a variant nibble in 8 to b. A uuidv7,
+// or any other shape, is refused IN SILENCE: the server mints its own, the
+// response stays valid, and a reload opens a second session again with nothing
+// anywhere to say why. crypto.randomUUID emits v4, so it is pinned here.
+const mintAttemptId = (): string => {
+  if (typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  // crypto.randomUUID only exists in a secure context, so a phone hitting the
+  // dev server over a local IP would throw on the very first render. This
+  // fallback rebuilds the SAME v4 shape by hand: version nibble forced to 4,
+  // variant nibble forced into 8 to b. A well formed uuid of another version
+  // would pass every client-side test and still be refused in silence.
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+};
+
+// Read on a retry, minted and persisted on a new attempt, all of it BEFORE the
+// request leaves. Minting on the response would lose the identifier in exactly
+// the case that creates the duplicate: a reload while the first call is in
+// flight aborts the request, so no cookie is processed and nothing is stored
+// here, while the server has already finished its write.
+const takeAttemptId = ({ fresh }: { fresh: boolean }): string => {
+  if (typeof window === "undefined") return mintAttemptId();
+  try {
+    const stored = fresh ? null : window.sessionStorage.getItem(ATTEMPT_STORAGE_KEY);
+    if (stored) return stored;
+    const minted = mintAttemptId();
+    window.sessionStorage.setItem(ATTEMPT_STORAGE_KEY, minted);
+    return minted;
+  } catch {
+    // Storage blocked (private mode, or a locked-down browser): the attempt
+    // still gets an identifier, it just cannot survive a reload. A page load
+    // must never throw over this.
+    return mintAttemptId();
+  }
+};
+
+// Called only after a session was really closed. Dropping the identifier any
+// earlier is the bug this closes: the next load would mint a new one and open a
+// second session on a session that is still open.
+const dropAttemptId = () => {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.removeItem(ATTEMPT_STORAGE_KEY);
+  } catch {
+    // A storage that cannot be written cannot be stale either.
+  }
+};
+
 export default function GameScreen() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [question, setQuestion] = useState<TrainingQuestion | null>(null);
@@ -86,6 +151,11 @@ export default function GameScreen() {
   const attemptStartedAtRef = useRef<number>(0);
   const pendingAdvanceRef = useRef<(() => void) | null>(null);
   const levelToastTimerRef = useRef<number | null>(null);
+  // Re-entrance guards. A ref, not a piece of state: disabled={isLoading} only
+  // becomes true on the next render, so a fast double click, or a mount effect
+  // that runs twice, fires two requests before React has repainted anything.
+  const inFlightRef = useRef(false);
+  const endInFlightRef = useRef(false);
 
   const showLevelToast = useCallback((level: string) => {
     if (levelToastTimerRef.current !== null) {
@@ -140,7 +210,16 @@ export default function GameScreen() {
     [clearAdvanceTimer, flushAdvance]
   );
 
-  const startSession = useCallback(async () => {
+  // `fresh` decides whether this is the same attempt or a new one. A retry
+  // replays the identifier already stored, because a retry is the same attempt;
+  // only a closed session and "Play again" mint a new one. The parameter has a
+  // default so the mount effect keeps calling startSession() with no argument
+  // and the callback identity, which feeds that effect's dependency array,
+  // does not change.
+  const startSession = useCallback(async ({ fresh = false }: { fresh?: boolean } = {}) => {
+    if (inFlightRef.current) return;
+    inFlightRef.current = true;
+
     clearAdvanceTimer();
     setIsLoading(true);
     setError(null);
@@ -155,6 +234,7 @@ export default function GameScreen() {
 
     try {
       const onboarding = readOnboarding();
+      const attemptId = takeAttemptId({ fresh });
       const response = await fetch("/api/training/session/start", {
         method: "POST",
         headers: {
@@ -164,6 +244,10 @@ export default function GameScreen() {
           locale: getPreferredLocale(),
           familiarity: onboarding.familiarity,
           warmupCorrect: onboarding.warmupCorrect,
+          // The only value this client chooses that reaches a primary key. The
+          // database arbitrates two concurrent starts on it, so a reload that
+          // sends it back rejoins its own session instead of opening a second.
+          attemptId,
         }),
       });
 
@@ -180,8 +264,48 @@ export default function GameScreen() {
       setError("Unable to start the training session.");
     } finally {
       setIsLoading(false);
+      inFlightRef.current = false;
     }
   }, [beginQuestion, clearAdvanceTimer]);
+
+  // Voluntary end of a session (I-17). A training session has no round cap any
+  // more, so nothing closes it on its own: without this call the row stays
+  // active for ever, and the "Session complete" branch below stays dead code.
+  const endSession = useCallback(async () => {
+    if (!sessionId || endInFlightRef.current) return;
+    endInFlightRef.current = true;
+    setError(null);
+
+    try {
+      // Identity is NOT sent: the route reads it from the httpOnly guest cookie
+      // and refuses a body that disagrees with it.
+      const response = await fetch("/api/training/session/end", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("training_session_end_failed");
+      }
+
+      clearAdvanceTimer();
+      setIsRoundLocked(false);
+      setInlineFeedback(null);
+      setIsComplete(true);
+      // Released only now, once the session is really closed. A failed close
+      // keeps the identifier, so the next load rejoins the same session rather
+      // than opening a second one next to a session still open.
+      dropAttemptId();
+    } catch (endError) {
+      console.error(endError);
+      setError("Unable to close this session.");
+    } finally {
+      endInFlightRef.current = false;
+    }
+  }, [clearAdvanceTimer, sessionId]);
 
   useEffect(() => {
     void startSession();
@@ -324,10 +448,9 @@ export default function GameScreen() {
         setResult("correct");
 
         // A session no longer ends on its own: there is no round cap, so answering
-        // always continues. Closing a session is an explicit action, served by
-        // POST /api/training/session/end, and the affordance that triggers it is a
-        // product decision left to the owner. The completion branch below stays in
-        // place, waiting to be driven by it.
+        // always continues. Closing is an explicit act, endSession above, reached
+        // from the button under the options. Its shape and its wording belong to
+        // the owner; what matters here is that answering never closes anything.
 
         if (payload.nextQuestion) {
           // Declare the next face as soon as it arrives, not when it is shown: the
@@ -440,6 +563,20 @@ export default function GameScreen() {
             <p className="game-v2-feedback" data-state={inlineFeedback?.kind ?? "idle"} aria-live="polite">
               {inlineFeedback?.text ?? "\u00A0"}
             </p>
+
+            {/* Minimal affordance for the voluntary close, on the classes already
+                in service on this screen so it adds no CSS. Placement and wording
+                are the owner's call; the session simply has to be closable. */}
+            <div className="game-v2-actions">
+              <button
+                type="button"
+                className="game-link"
+                onClick={() => void endSession()}
+                disabled={isRoundLocked}
+              >
+                End session
+              </button>
+            </div>
           </>
         ) : null}
 
@@ -447,7 +584,13 @@ export default function GameScreen() {
           <>
             <p className="game-v2-complete-copy">New round set, new word, same mission.</p>
             <div className="game-v2-actions">
-              <button type="button" className="game-v2-validate" onClick={() => void startSession()}>
+              {/* A new attempt, so a new identifier. The retry above is the
+                  opposite case: same attempt, same identifier replayed. */}
+              <button
+                type="button"
+                className="game-v2-validate"
+                onClick={() => void startSession({ fresh: true })}
+              >
                 Play again
               </button>
               <Link href="/play" className="game-link">
