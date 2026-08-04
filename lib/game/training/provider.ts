@@ -1357,10 +1357,19 @@ export const submitTrainingAnswer = async ({
   // The session stays active no matter how many questions were answered: a
   // training session has no planned length and can only be closed by an explicit
   // call to endTrainingSession (I-17). Answering never writes status or ended_at.
+  // correct_count counts questions resolved on the FIRST attempt, not every
+  // resolved question. The wrong-answer branch above returns before this
+  // statement, so incrementing both columns by 1 made them equal for every
+  // training session that ever existed: `CHECK (correct_count <= question_count)`
+  // (migration 003) was satisfied by a tautology and the column carried no
+  // information (gap 9 defect 1). First attempts are also the convention
+  // profile-stats.ts uses everywhere it computes an accuracy, so the ratio
+  // question_count over correct_count now means the same thing on the session
+  // row as it does on the fact table: the share resolved without a retry.
   const [updatedSession] = await queryRows<{ question_count: number }>(sql`
     UPDATE sessions
     SET question_count = question_count + 1,
-        correct_count = correct_count + 1
+        correct_count = correct_count + ${correctFirstTry ? 1 : 0}::int
     WHERE session_id = ${sessionId}::uuid
     RETURNING question_count
   `);

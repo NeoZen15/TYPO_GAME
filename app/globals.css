@@ -9375,6 +9375,53 @@ svg {
   padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem);
 }
 
+/* THE DECK IS SPREAD HERE, NOT FANNED.
+   The landing overlaps its three cards with negative margins: there the deck is a
+   teaser, and the visitor only needs to feel that three modes exist. This page is
+   where the choice is actually made, so a card that covers another hides the very
+   line the reader came to compare. Overridden under .pm only: the landing keeps its
+   fan, its rules are not touched.
+   Grid rather than the landing's flex row, because the cards there carry
+   `flex: 0 0 <fixed basis>`: unstacked and unable to shrink, three of them overrun
+   the column instead of sharing it. */
+.pm .lp-modes__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+  perspective: none;
+}
+.pm .lp-mode-card {
+  flex: initial;
+  margin: 0;
+}
+/* The landing's grid sets align-items: flex-start, which in a grid context sizes each
+   card to its own text: fanned that was invisible, side by side it left the shortest
+   card 22px shorter than its neighbours. */
+.pm .lp-modes__grid {
+  align-items: stretch;
+}
+/* The card packs its rows at the top (align-content: start), so the meta row's
+   `margin-top: auto` had no free space to absorb and each figure sat wherever its
+   description ended, 23px apart across the row. A flexible last row gives the auto
+   margin something to push against, and the three figures land on one line. */
+.pm .lp-mode-card {
+  align-content: stretch;
+  grid-template-rows: auto auto auto 1fr;
+}
+/* Room taken from the head column, which holds a title, a lede and one mono note and
+   was running about 40 percent empty, so three readable cards cost nothing there. */
+.pm .lp-modes {
+  grid-template-columns: 0.72fr 1.28fr;
+}
+@media (max-width: 900px) {
+  .pm .lp-modes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pm .lp-modes__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .pm-note {
   margin: 1.4rem 0 0;
   max-width: 34ch;

@@ -107,6 +107,74 @@ if (submitStart === -1) {
         "settled on, not from user.global_q_index + 1 computed in JavaScript."
     );
   }
+
+  // ------------------------------------------ 4. correct_count carries a real ratio
+  // Gap 9 defect 1 (checklist, 2026-07-30). The wrong-answer branch returns
+  // before the sessions UPDATE, so if that UPDATE increments correct_count by a
+  // literal 1 next to question_count, the two columns are equal for every
+  // training session that ever existed, correct_count carries no information,
+  // and `CHECK (correct_count <= question_count)` from migration 003 is
+  // satisfied by a tautology. question_count counts questions RESOLVED, so the
+  // honest companion is questions resolved on the FIRST attempt: the ratio is
+  // then the share of questions the player got without a retry, it can never
+  // exceed question_count, and it matches the first-attempt convention that
+  // profile-stats.ts already uses everywhere it computes accuracy.
+  //
+  // Scored on the sessions UPDATE statement alone, with comments removed, so
+  // neither a comment nor an unrelated UPDATE elsewhere in the body can satisfy
+  // or defeat the rules below.
+  const withoutComments = submitBody
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/(^|[^:])\/\/[^\n]*/g, "$1");
+
+  const sessionUpdates = [...withoutComments.matchAll(/UPDATE\s+sessions\b/g)];
+  if (sessionUpdates.length !== 1) {
+    failures.push(
+      `${PROVIDER}: expected exactly one "UPDATE sessions" in submitTrainingAnswer, found ` +
+        `${sessionUpdates.length}. The correct_count rules below are scoped to that single ` +
+        "statement; two of them means this guard is reading the wrong one and must be " +
+        "rewritten rather than left to pass by accident."
+    );
+  } else {
+    const updateStart = sessionUpdates[0].index;
+    const closing = withoutComments.indexOf("`", updateStart);
+    const updateSlice = withoutComments.slice(
+      updateStart,
+      closing > updateStart ? closing : withoutComments.length
+    );
+
+    if (!/correct_count\s*=/.test(updateSlice)) {
+      failures.push(
+        `${PROVIDER}: the sessions UPDATE no longer writes correct_count at all. Leaving the ` +
+          "column frozen at 0 while question_count grows is not a fix: the session_ended " +
+          "payload of the engine spec carries correct_count, and a column that is always 0 " +
+          "misinforms exactly like one that is always equal to question_count."
+      );
+    } else if (/correct_count\s*=\s*correct_count\s*\+\s*1\b/.test(updateSlice)) {
+      failures.push(
+        `${PROVIDER}: the sessions UPDATE increments correct_count by a literal 1. The ` +
+          "wrong-answer branch returns before this statement, so correct_count would equal " +
+          "question_count for every session, carrying no information. Gate it on the " +
+          "first-attempt flag instead."
+      );
+    } else if (!/correct_count\s*=\s*correct_count\s*\+\s*\$\{[^}]*correctFirstTry/.test(updateSlice)) {
+      failures.push(
+        `${PROVIDER}: correct_count is written by the sessions UPDATE but not from ` +
+          "correctFirstTry. It must count questions resolved on the first attempt, so the " +
+          "increment has to be bound to that flag and nothing else."
+      );
+    }
+
+    // The flag itself, or the rule above is satisfiable by defining
+    // `const correctFirstTry = true` next to the statement.
+    if (!/const\s+correctFirstTry\s*=\s*isCorrect\s*&&\s*attemptCount\s*===\s*1\s*;/.test(withoutComments)) {
+      failures.push(
+        `${PROVIDER}: correctFirstTry is no longer defined as "isCorrect && attemptCount === 1". ` +
+          "The correct_count rule reads that name, so a flag redefined to a constant or to a " +
+          "looser predicate would put the tautology back while this guard stayed green."
+      );
+    }
+  }
 }
 
 // ----------------------------------------------------------------- report
