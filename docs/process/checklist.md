@@ -3,7 +3,7 @@
 > Source de vérité de l'avancement produit, confrontée à l'état réel du code.
 > Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
 >
-> **Dernière mise à jour : 2026-08-03.**
+> **Dernière mise à jour : 2026-08-04.**
 > Les cases reflètent l'état du code à cette date — à re-vérifier avant d'affirmer comme acquis.
 > L'artifact miroir n'a pas été régénéré depuis le 2026-07-28, il ignore donc l'audit du 29 et la correction sur les migrations 007 à 009.
 
@@ -24,6 +24,22 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 État par sujet : **17 faits · 0 en cours · 16 à faire · 2 bloqueurs · 6 parkés / à décider** (41 sujets), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## Note — 2026-08-04 — la journée du 3 août entre dans l'historique, douze chemins non suivis classés
+
+**Pourquoi cette note existe.** Une journée entière de travail ne vivait que dans la copie de travail : 39 fichiers modifiés et 12 chemins non suivis, 4780 insertions, rien de committé depuis le 3 août à 12h46. Rien de neuf là dedans, tout était déjà écrit, prouvé et consigné ; le seul défaut était l'absence de trace en git. Commit `870ca8f`, 49 fichiers, 10193 insertions.
+
+**Les douze chemins non suivis, classés contre les frontières de `CLAUDE.md` avant d'être ajoutés.** Code produit : `features/landing/hero-specimens.ts` (la constante sortie d'un module `"use client"` pour que le prérendu serveur de `/` cesse de casser), `lib/game/competition/constants.ts` (les constantes de compétition quittent `catalog.ts`, donc `CompetitionScreen` ne tire plus 801 ko de JSON dans son bundle client), `lib/modes/mode-select-stats.ts` (les deux lectures réelles derrière les cartes de la page des modes). Documentation durable : la vision produit figée, le plan double démarrage exécuté, le document d'accueil, le plan des pages d'explication, et `architecture-backend.md` avec son correctif sur `duration_ms`, colonne que Postgres calcule et refuse qu'on écrive. `docs/README.md` les indexait déjà tous les cinq. Archive de récupération : la sauvegarde des 73 sessions clôturées en production, qui porte son instruction de réversion et son checksum, dans un répertoire `backups/` déjà suivi. Contenu vérifié avant ajout, des identifiants, des horodatages et des compteurs, aucun secret.
+
+**Le couplage qui a imposé un commit unique, et qui vaut d'être connu.** Le `package.json` de la copie de travail câblait `check:font-renderable`, `check:misread-truth` et `check:session-lifecycle`, donc une porte à 18 étapes, alors que les trois scripts n'étaient pas suivis. Committer `package.json` sans eux mettait une porte rouge dans l'historique, exactement le défaut pour lequel `58fa49f` a été corrigé. Les quatre fichiers partent donc ensemble, et c'est aussi pourquoi le tout n'a pas été découpé en commits thématiques : chaque découpe laissait la porte rouge entre deux morceaux.
+
+**Ce que la porte confirme.** `npm run quality` vert sur ses 18 étapes, build inclus, 27 routes générées. `/play` est désormais dynamique puisqu'elle lit le cookie du joueur pour ses chiffres réels, `/game` reste statique, ce qui reste la donnée gênante de l'écart 8 (une route statique est préchargée à l'entrée du lien dans le viewport, en production).
+
+**Rattrapage identifié et non fait, chiffré ici pour ne pas le reperdre.** Sept gardes écrits pendant le plan double démarrage ne sont toujours pas câblés dans `npm run quality` et se lancent à la main : `check:client-attempt-contract`, `check:day-keys`, `check:event-writers`, `check:pool-serialisation`, `check:session-convergence`, `check:session-counters`, `check:session-sweep`. Mesuré : 22 fichiers `check-*.mjs` dans `scripts/quality`, 15 câblés. Le motif « `package.json` appartient à une session parallèle » qui bloquait ce rattrapage depuis la tâche 1 **n'a plus lieu d'être**, le fichier est committé.
+
+**Un défaut d'affichage toujours vivant, revérifié dans le code ce jour.** Défaut 1 de l'écart 9 : `provider.ts:1362` incrémente `correct_count` en même temps que `question_count`, et la branche mauvaise réponse retourne avant (`:1323`). Donc `correct_count` égale toujours `question_count`, la meilleure précision de séance affiche 100 pour tout joueur, et les séances récentes affichent toujours « N / N ». Les défauts 2 et 3 du même écart sont fermés par les tâches 2 et 1.
 
 ---
 

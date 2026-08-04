@@ -14,7 +14,11 @@ npm run quality    # la porte complète, à passer avant de merger
 
 `dev` et `dev:3000` sont identiques, tous deux câblés sur le port 3000.
 
-`npm run quality` enchaîne 15 étapes, vérifiées dans `package.json` le 2026-07-28 : `lint`, `typecheck`, `check:artifacts`, `check:compat-bridges`, `check:dev-routes`, `check:runtime-boundaries`, `check:copy`, `check:contracts`, `check:typography-contract`, `check:license-guard`, `check:font-licenses`, `check:latin-coverage`, `check:token-secret`, `check:event-partitions`, puis `build`.
+`npm run quality` enchaîne 18 étapes, mesurées par exécution le 2026-08-04 (sortie 0) : `lint`, `typecheck`, `check:artifacts`, `check:compat-bridges`, `check:dev-routes`, `check:runtime-boundaries`, `check:copy`, `check:contracts`, `check:typography-contract`, `check:license-guard`, `check:font-licenses`, `check:latin-coverage`, `check:font-renderable`, `check:session-lifecycle`, `check:misread-truth`, `check:token-secret`, `check:event-partitions`, puis `build`.
+
+**Sept gardes existent mais ne sont pas dans la porte**, à câbler : `check:client-attempt-contract`, `check:day-keys`, `check:event-writers`, `check:pool-serialisation`, `check:session-convergence`, `check:session-counters`, `check:session-sweep`. Ils se lancent à la main d'ici là. Mesuré le 2026-08-04 : 22 fichiers `check-*.mjs` dans `scripts/quality`, 15 câblés.
+
+**Piège de mesure, à ne pas refaire.** `npm run quality | tail` rend le code de sortie de `tail` et non celui de la porte, zsh n'ayant pas `pipefail` par défaut. Rediriger vers un fichier puis lire `$?`, sinon une porte rouge passe pour verte.
 
 Les cinq derniers contrôles avant `build` gardent chacun une règle qui a déjà été enfreinte une fois : ne servir que des licences validées, livrer le texte de la licence dans chaque dossier de `public/fonts` qui héberge une police, ne servir que des polices qui ont l'alphabet latin, refuser de démarrer en production sans `GAME_PROVIDER_SECRET`, et signaler les partitions d'événements manquantes. `check:event-partitions` rappelle à chaque passage que les migrations écrites ne sont pas appliquées, c'est voulu. `check:font-licenses` rappelle de la même façon que PP Frama, la police de marque, n'a toujours pas de licence webfont.
 
