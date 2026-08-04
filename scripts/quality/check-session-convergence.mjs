@@ -76,6 +76,31 @@
 // therefore runs on comment-stripped text, tests operators and literal
 // identifiers rather than substrings, and counts occurrences.
 //
+// WHAT THIS GUARD DELEGATES, AND TO WHOM. Stated because a guard that silently
+// leans on a neighbour is a guard whose scope nobody can know. An attacker found
+// eight further mutations that defeat THIS file and are all caught by siblings,
+// which is defence in depth working, not a hole, but only if the boundary is
+// written down. Do not add those rules here; they would drift out of step with
+// the file that owns them.
+//   - The inactivity sweep's six predicates, its position after the insert, its
+//     exclusion by identifier and its try/catch: owned by
+//     scripts/quality/check-session-sweep.mjs. This file asserts only WHERE the
+//     sweep sits relative to the insert and the re-read (assertion F below),
+//     because that ordering is the convergence's own business.
+//   - The session_start and session_end writers, their event_ingestion_guard CTE,
+//     its conflict target and the idempotency keys: owned by
+//     scripts/quality/check-event-writers.mjs. This file asserts only that the
+//     start writer is called once, with the row's own identifier, and only by the
+//     call that created the row.
+//   - init_user_pool, the per-user advisory lock and the stuck-pool path: owned by
+//     scripts/quality/check-pool-serialisation.mjs. This file asserts only that
+//     ensureUserPool is called exactly once and before the insert.
+//   - The client's minting of one identifier per attempt: owned by
+//     scripts/quality/check-client-attempt-contract.mjs.
+// All seven guards of this plan are wired into `npm run quality` since
+// 2026-08-04; this one is step 16 of 25. A red here means the convergence
+// contract; a red there means its neighbours.
+//
 // This script is standalone on purpose: it guards startTrainingSession, the
 // start route and the start contract, nothing else.
 
@@ -225,6 +250,60 @@ if (startAt === -1) {
   const boundAt = provider.lastIndexOf("const MAX_START_REENTRIES", startAt);
   const regionStart = boundAt === -1 ? startAt : boundAt;
   const fn = provider.slice(regionStart, nextExport === -1 ? provider.length : nextExport);
+
+  // -------------------------------------------------------------------------
+  // ROUND 2. THE VALUE LAYER. Everything below this point stops matching shapes
+  // and starts asserting properties, because round 1 was defeated five times by
+  // an attacker who simply moved one notch over from each hole that had been
+  // closed for one specific instance: a rule that pinned `.seed` was walked
+  // around with `.status`, a rule that pinned how a flag is DERIVED was walked
+  // around by REASSIGNING it, a rule that proved a correct gate EXISTS was
+  // walked around by appending a second, ungated one. Enumerating instances
+  // cannot win that game. Four assertions about the value now replace eleven
+  // rules about the text.
+  //
+  // fnCode is the slice with every SQL template blanked. The assignment analysis
+  // has to run on it and not on fn: the sweep's WHERE clause contains
+  // `AND s.status = 'active'`, which is a comparison in SQL and would read as a
+  // field assignment in JavaScript. Blanking the templates is what lets one
+  // assertion forbid writes to every field of the row without turning red on the
+  // SQL that legitimately compares those same fields.
+  // -------------------------------------------------------------------------
+  const fnCode = fn.replace(/sql`[^`]*`/g, "sql``");
+
+  // The two row variables are found BY STRUCTURE, never by name: the served
+  // session by its type annotation, the candidate row by the anchor expression
+  // the whole re-read is built around. A pure rename of either local, which
+  // changes no behaviour, turned round 1's guard red on four rules; probe P08
+  // now holds that line.
+  const sessionVarMatch = fnCode.match(/let\s+(\w+)\s*:\s*SessionRow\s*\|\s*undefined/);
+  const rowVarMatch = fnCode.match(/let\s+(\w+)\s*=\s*insertedSessions\[0\]/);
+  const SESSION = sessionVarMatch ? sessionVarMatch[1] : null;
+  const ROW = rowVarMatch ? rowVarMatch[1] : null;
+
+  if (!SESSION) {
+    failures.push(
+      `${PROVIDER}: no \`let <name>: SessionRow | undefined\` declaration in startTrainingSession. ` +
+        "The served session must be a single declared slot, filled once, so that every rule below " +
+        "can follow the value instead of guessing at a name."
+    );
+  }
+  if (!ROW) {
+    failures.push(
+      `${PROVIDER}: no \`let <name> = insertedSessions[0]\` in startTrainingSession. That ` +
+        "expression is the anchor of the whole re-read: it is where the winner's row is taken and " +
+        "where the loser's zero rows are detected."
+    );
+  }
+
+  // Every assignment to a bare identifier, with its right-hand side. Excludes
+  // ==, ===, => and the compound operators, which are not assignments of a new
+  // value from outside.
+  const assignmentsTo = (name) => {
+    const matches = [...fnCode.matchAll(new RegExp(`\\b${name}\\s*=(?!=|>)([^;\\n]*)`, "g"))];
+    return matches.map((match) => match[1].trim());
+  };
+  const ROW_SOURCE = /^[A-Za-z_$][\w$]*\[0\]$/;
 
   // -------------------------------------------------------------------------
   // Rule 5 — the convergence itself. Exactly one INSERT INTO sessions, and that
@@ -405,31 +484,109 @@ if (startAt === -1) {
           "inserted row, insertedSessions[0], which is before the sweep."
       );
     }
-    if (!/insertedSessions\[0\]/.test(fn)) {
-      failures.push(
-        `${PROVIDER}: the inserted row is no longer taken from insertedSessions[0]. That ` +
-          "expression is the anchor the re-read must replace, and the position rule above is " +
-          "relative to it."
-      );
-    }
+    // -----------------------------------------------------------------------
+    // ASSERTION A, one acceptance and one only. Round 1 proved that a CORRECT
+    // gate existed; it never proved that no OTHER branch accepts. Defeat E1
+    // appended an ungated `session = candidate;` after the gate and walked
+    // straight through. The property is not "a good gate is present" but "the
+    // served slot is written exactly once, from the row that passed the gate":
+    // a single exit, which is what makes the gate the only way in.
+    //
+    // This also closes defeat B2, where a fallback object made the re-read dead
+    // code and the loser fabricated its own row: the source of the served slot
+    // has to be the candidate variable, never a literal.
+    // -----------------------------------------------------------------------
+    if (SESSION && ROW) {
+      const sessionWrites = assignmentsTo(SESSION);
+      if (sessionWrites.length !== 1) {
+        failures.push(
+          `${PROVIDER}: the served session slot is written ${sessionWrites.length} time(s), ` +
+            "expected exactly 1. More than one write means a second branch can accept a row the " +
+            "status gate never approved, which is how a completed session gets resurrected while " +
+            "a correct gate sits right above, still passing its own rule. Zero means nothing is " +
+            "ever served."
+        );
+      } else if (sessionWrites[0].replace(/;$/, "").trim() !== ROW) {
+        failures.push(
+          `${PROVIDER}: the served session is assigned from \`${sessionWrites[0]}\` instead of the ` +
+            `candidate row \`${ROW}\`. Anything else, and above all an object literal, hands the ` +
+            "player a row the database never returned: a fabricated seed, a fabricated status, and " +
+            "a re-read that has become dead code."
+        );
+      }
+      if (
+        !new RegExp(`\\.status === "active"\\s*\\)\\s*\\{\\s*${SESSION}\\s*=`).test(fnCode)
+      ) {
+        failures.push(
+          `${PROVIDER}: the rejoined row is not gated on status === "active" before it becomes the ` +
+            "served session. Without that gate a replayed identifier resurrects a completed or " +
+            "abandoned session instead of minting a new one, and the re-entry of step 6 never runs."
+        );
+      }
 
-    // -----------------------------------------------------------------------
-    // ROUND 1, defeat D1. THE STATUS GATE. Reading `status` is not the same as
-    // acting on it: reducing the acceptance test to `if (candidate)` compiles,
-    // keeps every other rule green, and rejoins a completed or abandoned
-    // session, which is step 6 of the brief deleted in silence. The gate is
-    // required TIED to the acceptance, `=== "active"` immediately followed by
-    // the assignment, so a comparison sitting uselessly elsewhere cannot answer
-    // for it, and `!== "completed"` (which still lets 'abandoned' through)
-    // cannot either. Written without the row variable's name so renaming that
-    // local, which changes nothing, does not turn the guard red.
-    // -----------------------------------------------------------------------
-    if (!/\.status === "active"\s*\)\s*\{\s*session\s*=/.test(fn)) {
-      failures.push(
-        `${PROVIDER}: the rejoined row is not gated on status === "active" before it becomes the ` +
-          "served session. Without that gate a replayed identifier resurrects a completed or " +
-          "abandoned session instead of minting a new one, and the re-entry of step 6 never runs."
-      );
+      // ASSERTION B, the candidate row always comes out of a query result.
+      // Every write to it must be `<something>[0]`, the first row of a result
+      // set. That is what makes the re-read the only alternative to the insert,
+      // and it is the general form of defeat B2.
+      const rowWrites = assignmentsTo(ROW);
+      if (rowWrites.length !== 2) {
+        failures.push(
+          `${PROVIDER}: the candidate row is written ${rowWrites.length} time(s), expected exactly ` +
+            "2: once from the insert's RETURNING, once from the S4 re-read. Fewer means one of the " +
+            "two paths is gone; more means a third source of truth nobody arbitrated."
+        );
+      }
+      for (const write of rowWrites) {
+        const rhs = write.replace(/;$/, "").trim();
+        if (!ROW_SOURCE.test(rhs)) {
+          failures.push(
+            `${PROVIDER}: the candidate row is assigned from \`${rhs}\`, which is not the first row ` +
+              "of a query result. A fallback object, a default, or anything computed locally makes " +
+              "the S4 re-read dead code and lets the loser serve a row it invented, with a seed the " +
+              "database never stored."
+          );
+        }
+      }
+
+      // ASSERTION C, the row objects are READ-ONLY on this path. One assertion
+      // instead of the two instance rules round 1 shipped (`.seed =` and the
+      // spread rebuild), and it covers `.status`, `.question_count`,
+      // `.session_id` and every field this type has yet to grow. Defeat G1
+      // forced `.status` to "active" precisely because only `.seed` was named.
+      const FIELD_WRITE = new RegExp(`\\b(?:${SESSION}|${ROW})\\.(\\w+)\\s*=(?!=)`);
+      const fieldWrite = fnCode.match(FIELD_WRITE);
+      if (fieldWrite) {
+        failures.push(
+          `${PROVIDER}: something assigns to \`.${fieldWrite[1]}\` on a row the database returned. ` +
+            "Those rows are read-only here. Overwriting a field is the whole defect this task " +
+            "removes, whichever field it is: forced to 'active' it resurrects a closed session, " +
+            "and a rewritten seed makes the served word and the signed token disagree with the " +
+            "fact row the answer path records."
+        );
+      }
+      // The same property reached from the other side, keyed on the row's own
+      // columns rather than on the two locals, so mutating an array element in
+      // place (insertedSessions[0].status = ...) is caught too.
+      const columnWrite = fnCode.match(/\.(session_id|user_id|seed|question_count|status)\s*=(?!=)/);
+      if (columnWrite) {
+        failures.push(
+          `${PROVIDER}: something assigns to the row column \`.${columnWrite[1]}\`. Every value the ` +
+            "start serves must be the one the write returned; assigning into the result set is the " +
+            "same defect as assigning into the row variable, taken one step earlier."
+        );
+      }
+      if (new RegExp(`\\{\\s*\\.\\.\\.\\s*(?:${SESSION}|${ROW})\\b`).test(fnCode)) {
+        failures.push(
+          `${PROVIDER}: a row returned by the database is rebuilt by spread. Same defect as an ` +
+            "assignment into it: the served values stop being the ones the database kept."
+        );
+      }
+      if (new RegExp(`Object\\.assign\\(\\s*(?:${SESSION}|${ROW})\\b`).test(fnCode)) {
+        failures.push(
+          `${PROVIDER}: Object.assign writes into a row the database returned. Same defect as a ` +
+            "field assignment, spelled differently."
+        );
+      }
     }
   }
 
@@ -454,11 +611,26 @@ if (startAt === -1) {
   // a flag derived from "does a row exist now" is true for both. This is the
   // lesson the whole plan keeps paying for, applied to the one flag this task
   // introduces.
-  if (!/wonTheInsert\s*=\s*insertedSessions\.length > 0/.test(fn)) {
+  // ASSERTION D, round 2, defeat G2. Deriving a value correctly is worth nothing
+  // if the same value can be REASSIGNED two lines later: the attacker set
+  // `wonTheInsert = true;` immediately under its own guarded derivation and
+  // restored M38 with the derivation rule still passing. So the property is the
+  // whole life of the flag, not the one line that computes it: it is written
+  // exactly twice, once to false at its declaration and once from the insert's
+  // own RETURNING row count, and never again.
+  const flagWrites = assignmentsTo("wonTheInsert");
+  const derivations = flagWrites.filter(
+    (write) => write.replace(/;$/, "").trim() === "insertedSessions.length > 0"
+  );
+  const initialisers = flagWrites.filter((write) => write.replace(/;$/, "").trim() === "false");
+  if (derivations.length !== 1 || initialisers.length !== 1 || flagWrites.length !== 2) {
     failures.push(
-      `${PROVIDER}: the winner flag is not derived from the insert's own RETURNING row count ` +
-        "(wonTheInsert = insertedSessions.length > 0). Any flag taken from a read instead is true " +
-        "for the loser as well, because by then the row exists either way."
+      `${PROVIDER}: the winner flag is written ${flagWrites.length} time(s) ` +
+        `(${initialisers.length} initialiser(s) to false, ${derivations.length} derivation(s) from ` +
+        "insertedSessions.length > 0), expected exactly one of each and nothing else. A flag " +
+        "derived correctly and then reassigned is a flag that lies: any value taken from a read, " +
+        "or forced to true afterwards, is true for the loser as well, because by then the row " +
+        "exists either way, and the loser rewrites a journal line the winner already wrote."
     );
   }
   if (!/if \(wonTheInsert\) \{\s*await insertSessionStartEvent\(/.test(fn)) {
@@ -470,23 +642,81 @@ if (startAt === -1) {
   }
 
   // -------------------------------------------------------------------------
-  // Rule 9 — the re-entry must be bounded, and it must re-enter the INSERT
-  // ONLY. An unbounded retry on a permanently non-active id spins for ever, and
-  // re-entering the identity or the pool step would undo the pinning this task
-  // exists to create. Counting the two calls is what proves the pinning: one
-  // getGuestUser, one ensureUserPool, both before the insert.
+  // ASSERTION E, round 2, defeat C2. THE LOOP IS SIMULATED, not pattern matched.
+  // Changing the step from `-= 1` to `-= 2` left every token the round 1 rules
+  // searched for exactly where it was, and killed the re-entry outright: the
+  // first pass mints a fresh identifier, the counter jumps past the condition,
+  // the second pass never runs, and the whole mechanism is silently dead. No
+  // amount of token matching sees that. Counting the passes does.
+  //
+  // The header is parsed, the bound is resolved to its numeric value, and the
+  // loop is executed arithmetically here. The property asserted is the one the
+  // brief states: exactly TWO passes, exactly ONE mint, and the mint on the pass
+  // that is NOT the last, which together are what "one extra attempt, and the
+  // retry actually runs" means.
+  //
+  // A deliberate and disclosed constraint follows: the re-entry must be a
+  // counted `for` loop whose passes can be decided statically. That is what
+  // makes the assertion possible, so `while (true)`, `for (;;)` and any header
+  // this parser cannot read are refused BY THIS RULE rather than by a separate
+  // ban on unbounded loops. It also subsumes the bound-value rule, since a bound
+  // of 10000 simply counts 10001 passes.
   // -------------------------------------------------------------------------
-  if (!/attemptsLeft|reentered|retriedOnce/.test(fn)) {
+  const header = fnCode.match(/for \(let (\w+) = ([^;]+); ([^;]+); ([^)]+)\)/);
+  const loopFailure = (why) =>
     failures.push(
-      `${PROVIDER}: no visible bound on the re-entry. Mint-once-and-retry must be limited to a ` +
-        "single extra attempt, and it must re-enter the insert only, never the identity or the pool."
+      `${PROVIDER}: the re-entry loop ${why}. It must be a counted for loop that runs exactly two ` +
+        "passes and mints exactly one fresh identifier, on the first pass: one attempt, one extra " +
+        "attempt, then an explicit error. A loop this rule cannot count is refused on purpose, " +
+        "because a bound nobody can evaluate is not a bound."
     );
-  }
-  if (/while\s*\(\s*true\s*\)/.test(fn) || /for\s*\(\s*;\s*;/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: startTrainingSession contains an unbounded loop. A start that keeps failing ` +
-        "to reach an active row must raise, never spin."
-    );
+  if (!header) {
+    loopFailure("is not a `for (let <counter> = <bound>; <test>; <step>)` header this rule can read");
+  } else {
+    const [, counter, initExpr, condExpr, stepExpr] = header.map((part) => part.trim());
+    const literal = /^-?\d+$/.test(initExpr)
+      ? Number(initExpr)
+      : (() => {
+          const declared = fnCode.match(new RegExp(`\\b${initExpr}\\s*=\\s*(-?\\d+)`));
+          return declared ? Number(declared[1]) : null;
+        })();
+    const cond = condExpr.match(new RegExp(`^${counter}\\s*(>=|>|<=|<)\\s*(-?\\d+)$`));
+    const step =
+      stepExpr === `${counter}--`
+        ? 1
+        : (stepExpr.match(new RegExp(`^${counter}\\s*-=\\s*(\\d+)$`)) ??
+            stepExpr.match(new RegExp(`^${counter}\\s*=\\s*${counter}\\s*-\\s*(\\d+)$`)))?.[1];
+    const mint = fnCode.match(new RegExp(`if \\(${counter}\\s*(>=|>)\\s*(-?\\d+)\\)`));
+
+    if (literal === null) loopFailure(`starts from \`${initExpr}\`, which resolves to no numeric bound`);
+    else if (!cond) loopFailure(`tests \`${condExpr}\`, which this rule cannot evaluate`);
+    else if (step === undefined) loopFailure(`steps by \`${stepExpr}\`, which is not a decrement of a fixed size`);
+    else if (!mint) loopFailure("has no `if (counter > n)` branch around the fresh-identifier mint");
+    else {
+      const compare = (left, operator, right) =>
+        operator === ">=" ? left >= right : operator === ">" ? left > right : operator === "<=" ? left <= right : left < right;
+      let value = literal;
+      let passes = 0;
+      let mints = 0;
+      let mintedOnLastPass = false;
+      while (compare(value, cond[1], Number(cond[2])) && passes < 100) {
+        passes += 1;
+        const mintsHere = compare(value, mint[1], Number(mint[2]));
+        if (mintsHere) mints += 1;
+        value -= Number(step);
+        mintedOnLastPass = mintsHere;
+      }
+      if (passes !== 2 || mints !== 1 || mintedOnLastPass) {
+        loopFailure(
+          `runs ${passes >= 100 ? "100 or more" : passes} pass(es) and mints ${mints} fresh ` +
+            `identifier(s)${mintedOnLastPass ? ", the last of them on its final pass" : ""}, ` +
+            "expected 2 passes and 1 mint on the first of them. One pass means the retry never " +
+            "executes and the whole re-entry is dead code while every token still reads correctly; " +
+            "more than two means one start hammers the same primary key that many times; a mint on " +
+            "the last pass means an identifier is minted and then never used"
+        );
+      }
+    }
   }
   // ROUND 1, defeat D2. Counting, not presence. The server mints an identifier
   // in TWO places, and they are not interchangeable: once in the initialiser,
@@ -513,32 +743,12 @@ if (startAt === -1) {
         "primary key a second time and loses again, for nothing."
     );
   }
-  // ROUND 1, defeat D3. The bound's VALUE, now inside the inspected region. The
-  // constant lives just above the function, so a slice that started at the
-  // export left it unguarded: raised to 10000 it authorises 10001 inserts, one
-  // start hammering the primary key ten thousand times, with every other rule
-  // still green because the loop, the bound name and the assignment all look
-  // exactly the same.
-  const boundValue = fn.match(/MAX_START_REENTRIES\s*=\s*(\d+)/);
-  if (!boundValue) {
-    failures.push(
-      `${PROVIDER}: no numeric MAX_START_REENTRIES bound found in the region inspected around ` +
-        "startTrainingSession. The re-entry limit must be declared as a number, next to the " +
-        "function it bounds, where a rule can read its value."
-    );
-  } else if (boundValue[1] !== "1") {
-    failures.push(
-      `${PROVIDER}: MAX_START_REENTRIES is ${boundValue[1]}, expected 1. The brief bounds the ` +
-        "re-entry to a single extra attempt; any larger value turns one start into that many " +
-        "inserts against the same primary key, which is the loop this rule exists to forbid."
-    );
-  }
-  if (!/attemptsLeft = MAX_START_REENTRIES/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: the loop counter is not initialised from MAX_START_REENTRIES, so the bound ` +
-        "whose value is checked above is not the bound the loop actually uses."
-    );
-  }
+  // The three rules that stood here in round 1 are GONE, deleted rather than
+  // kept alongside: the bound's numeric value, the loop counter's initialisation
+  // from that bound, and the ban on unbounded loops. Assertion E decides all
+  // three by counting passes, and it decides them better, because it also catches
+  // the step size that no value check could see. A smaller guard that asserts the
+  // property beats a larger one that enumerates its symptoms.
   for (const [call, why] of [
     ["getGuestUser(", "identity is resolved once and pinned; a second resolution inside the retry could hand the second attempt a different user"],
     ["ensureUserPool(", "the pool is seeded once, before the session row; re-entering it on a retry re-runs init_user_pool for nothing and re-enters the serialised path task 3 built"],
@@ -574,47 +784,34 @@ if (startAt === -1) {
   // that re-entered on a fresh id, or a loser rejoining a row it did not
   // insert, would hand the client an id that is not the session it is playing.
   // -------------------------------------------------------------------------
-  if (!/sessionId:\s*session\.session_id/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: the payload's sessionId is not read off the session row. It must be the ` +
-        "effective identifier the database arbitrated, not the one the client asked for."
-    );
-  }
-  if (!/insertSessionStartEvent\(\s*session\.session_id/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: insertSessionStartEvent is not called with session.session_id. Writing the ` +
-        "requested identifier instead would point the journal at a session row that may not exist."
-    );
-  }
-  if (!/buildQuestion\([^)]*session\.seed/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: the question is not built from session.seed. The local seed variable is the ` +
-        "one the LOSER generated and never wrote; only the returned row carries the seed the " +
-        "database kept."
-    );
-  }
-  // ROUND 1, defeat D5, and the sharpest of the five: reading session.seed is
-  // not enough if something WRITES it first. `session.seed = seed;` anywhere
-  // before buildQuestion compiles, keeps every rule above green, and puts the
-  // loser back exactly where this task started: it serves a word and a signed
-  // token derived from a seed that was never written, and the fact row the answer
-  // path then records has a display_word and a seed that contradict each other.
-  // The row the database returned is READ-ONLY on this path, so any assignment
-  // into it, field by field or by spread, is refused.
-  if (/\.seed\s*=[^=]/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: something ASSIGNS to a .seed field inside startTrainingSession. The seed the ` +
-        "database returned is read-only here: overwriting it with the locally generated one makes " +
-        "the loser serve a word and a signed token derived from a seed that was never written, and " +
-        "the fact row recorded by the answer path then has a display_word and a seed that " +
-        "contradict each other. Reading session.seed is not a guarantee if something writes it first."
-    );
-  }
-  if (/\{\s*\.\.\.session\b/.test(fn)) {
-    failures.push(
-      `${PROVIDER}: the session row returned by the write is rebuilt by spread. Same defect as an ` +
-        "assignment to .seed: the served seed stops being the one the database kept."
-    );
+  // The three rules below name the SERVED SLOT through the variable discovered by
+  // structure, never through the string "session". A pure rename of that local,
+  // which changes nothing at all, turned four rules of round 1 red at once. The
+  // two rules that used to sit under these three, forbidding `.seed =` and
+  // `{ ...session }`, are DELETED: assertion C above forbids writes to every
+  // field of both rows, by variable and by column name, which is the class those
+  // two were one instance each of.
+  if (SESSION) {
+    if (!new RegExp(`sessionId:\\s*${SESSION}\\.session_id`).test(fnCode)) {
+      failures.push(
+        `${PROVIDER}: the payload's sessionId is not read off the session row. It must be the ` +
+          "effective identifier the database arbitrated, not the one the client asked for."
+      );
+    }
+    if (!new RegExp(`insertSessionStartEvent\\(\\s*${SESSION}\\.session_id`).test(fnCode)) {
+      failures.push(
+        `${PROVIDER}: insertSessionStartEvent is not called with the session row's own session_id. ` +
+          "Writing the requested identifier instead would point the journal at a session row that " +
+          "may not exist."
+      );
+    }
+    if (!new RegExp(`buildQuestion\\([^)]*${SESSION}\\.seed`).test(fnCode)) {
+      failures.push(
+        `${PROVIDER}: the question is not built from the session row's own seed. The local seed ` +
+          "variable is the one the LOSER generated and never wrote; only the returned row carries " +
+          "the seed the database kept."
+      );
+    }
   }
 }
 
