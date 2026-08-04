@@ -144,16 +144,40 @@ chemin secondaire, pour une arrivée à froid sur le site.
 
 ## Tableau de bord prof
 
-Le tableau de bord prof est LE différenciateur commercial. On vise donc le plus
-loin possible (V2, voire V3), pas seulement la consultation.
+> **CADUC depuis le 2026-07-29. Cette section contredit la vision produit figée.**
+> Source de vérité : `docs/game/vision-produit-dwiggins.md`, invariants I-15 et I-16.
+>
+> Décision du propriétaire : **le professeur n'a accès à AUCUNE donnée issue de
+> l'entraînement libre.** Ni régularité, ni temps passé, ni mastery, ni
+> confusions personnelles, ni absence d'activité, et aucun agrégat même
+> anonymisé. L'entraînement personnel appartient à l'élève, pour que la pratique
+> reste volontaire et sans surveillance.
+>
+> Le professeur travaille par **sessions assignées** : il prépare un exercice, un
+> devoir, un contrôle ou une activité ciblée (typographies, difficulté, mode,
+> nombre de questions, échéance), le publie à une classe, et ne lit que les
+> résultats de cette session là (qui a commencé, qui a terminé, réussite, erreurs
+> principales, confusions observées, compétences travaillées, temps passé sur la
+> session).
+>
+> Conséquence commerciale assumée : le différenciateur ne repose plus sur la
+> consultation de la progression individuelle, mais sur la préparation et la
+> lecture des sessions pédagogiques, plus une lecture d'établissement construite
+> sur ces mêmes sessions. L'étanchéité de l'entraînement libre devient elle même
+> un argument, cohérent avec un public d'élèves adultes.
+>
+> Les deux sous sections ci dessous sont conservées pour l'historique. Tout ce
+> qui y décrit une lecture de l'entraînement libre est annulé. La partie « gestion
+> du roster, code et QR de la classe » reste valable, et le prérequis data
+> ci dessous a été corrigé séparément.
 
-### V1 : consultation
+### V1 : consultation (périmé, voir l'encadré)
 
 Le prof voit la progression et la maîtrise de chaque élève (réutilise
 `profile-stats` : niveau visible, typos maîtrisées, axes, dernière activité).
 S'y ajoutent la gestion du roster et l'affichage du code et du QR de la classe.
 
-### V2 / V3 : diagnostic complet (ambition)
+### V2 / V3 : diagnostic complet (périmé sur le périmètre élève, voir l'encadré)
 
 Aller bien au-delà de la simple lecture, vers un vrai outil de diagnostic :
 
@@ -171,13 +195,34 @@ travailler, plus les évaluations et sessions live.
 
 ### Prérequis data à sécuriser en premier (côté diagnostic)
 
-Le diagnostic n'est calculable que si les données brutes existent. AVANT tout, le
-moteur doit loguer, dans `user_event_fact`, le DISTRACTEUR CHOISI et le TEMPS DE
-RÉPONSE. Aujourd'hui la table de faits n'écrit que `event_type`, `typeface_slug`
-et `global_q_index` (choix volontairement minimal, aucune colonne de payload) :
-sans le distracteur ni le temps, les matrices de confusion et les vitesses de
-décision ne sont tout simplement pas calculables. C'est le premier verrou à
-lever pour rendre le diagnostic possible.
+**Correction du 2026-07-29 : ce verrou est LEVÉ, la formulation ci dessous était
+fausse.** Vérifié en lecture seule : `user_event_fact` porte 24 colonnes, dont
+`answer_slug` (le distracteur choisi), `response_time_ms`, `display_word`,
+`reason_code`, `attempt_index`, `is_retry`, `mastery_before` et `mastery_after`,
+toutes remplies sur les 219 événements de réponse en base. Une matrice de
+confusion et des vitesses de décision **sont calculables aujourd'hui**, une
+requête d'exemple a produit les paires confondues (`archivoblack` prise pour
+`archivo`, `barlowcondensed` pour `barlowsemicondensed`, `crimsonpro` pour
+`ebgaramond`). Nuance importante : ces paires paraissent pédagogiquement
+plausibles parce que les distracteurs sont **choisis par proximité visuelle**,
+donc n'importe quel clic au hasard tombe sur un voisin proche. Cela valide la
+politique de distracteurs, cela ne mesure aucune confusion réelle de joueur, la
+donnée actuelle étant du trafic de test (voir écart 6 de la checklist).
+
+Ce qui manque réellement, et qui est un besoin plus étroit : **l'ensemble des
+options proposées** pour une question (le `distractors` JSONB de la spec moteur
+§3.1). On sait ce qui a été choisi, pas ce qui a été proposé et écarté. C'est
+nécessaire pour mesurer la difficulté d'une question, pas pour les matrices de
+confusion de base.
+
+_Formulation d'origine, conservée pour l'historique :_ le diagnostic n'est
+calculable que si les données brutes existent. AVANT tout, le moteur doit loguer,
+dans `user_event_fact`, le DISTRACTEUR CHOISI et le TEMPS DE RÉPONSE. Aujourd'hui
+la table de faits n'écrit que `event_type`, `typeface_slug` et `global_q_index`
+(choix volontairement minimal, aucune colonne de payload) : sans le distracteur
+ni le temps, les matrices de confusion et les vitesses de décision ne sont tout
+simplement pas calculables. C'est le premier verrou à lever pour rendre le
+diagnostic possible.
 
 ## Modèle de données (esquisse révisée)
 

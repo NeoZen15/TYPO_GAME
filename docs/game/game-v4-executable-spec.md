@@ -1,5 +1,9 @@
 # Game V4 Executable Spec (Front + Data Contract)
 
+> **HISTORIQUE sur tout ce qui concerne le front-only, depuis le 2026-07-29.** Le §3.1 (« at session start, **front** must derive `activeTypefacePool` ») et tout le §9 « Front-Only Local Contract » datent de la phase où il n'y avait pas de moteur serveur. Ils contredisent l'invariant I-10 et le principe fondateur de la vision : le backend décide, l'interface représente (`docs/game/vision-produit-dwiggins.md` §1). Le moteur serveur fait foi, le front ne dérive plus ni pool, ni sélection, ni distracteurs.
+> Deux autres points de ce document sont en conflit ouvert avec la spec moteur v2, à trancher avant d'implémenter les Type Cards : le §7.1 déclare l'overlay **bloquant** alors que la spec v2 §6.3 le déclare non bloquant, et le §4.1 garde le même mot toute la session alors que la v2 et le code changent de mot toutes les 5 questions en entraînement.
+> Voir le registre des contradictions, entrées 8, 9 et 11, dans le document de vision.
+
 Last update: 2026-03-12
 Status: implementation guide
 

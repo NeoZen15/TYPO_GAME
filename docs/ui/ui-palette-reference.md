@@ -1,7 +1,9 @@
 # UI Palette Reference
 
 Dernière mise à jour: 2026-06-30
-Statut: working reference
+Statut: inventaire descriptif, ne décide rien.
+
+> **Rang, posé le 2026-07-29.** Cette fiche **décrit** les couleurs présentes dans le code, elle ne les arbitre pas. Sa mention de `ModeSelectPage` comme « référence couleur validée » est retirée de son rôle décisionnel : la référence est la landing, et les règles qui en découlent sont consignées dans `docs/ui/ui-consistency-contract.md`. Cette fiche garde toute son utilité pour ce qu'elle fait bien, repérer les contradictions entre ce qui est écrit et ce qui est servi.
 
 > **Décision 2026-06-30 — plus de blanc pur dans le site.** Tout `#ffffff` / `#fff` /
 > `rgba(255,255,255,a)` / le mot-clé `white` (hors propriété `white-space` et hors

@@ -19,9 +19,11 @@ type GameState = {
   mode: string;
   status: "loading" | "error" | "complete" | "playing";
   sessionId: string | null;
+  // No totalRounds: a training session has no planned length any more (I-17), so
+  // the payload stopped carrying one. Keeping it here as a required field would
+  // describe a contract that no longer exists.
   progress: {
     resolvedCount: number;
-    totalRounds: number;
     facesMastered?: number;
     poolSize?: number;
   };

@@ -1,6 +1,10 @@
 import manifest from "@/content/typefaces/font-manifest-v4.json";
 
-export const TRAINING_TOTAL_ROUNDS = 8;
+// TRAINING_TOTAL_ROUNDS is gone on purpose. A training session had a cap of 8
+// resolved questions and closed itself; a session has no planned length any more
+// and is closed only by an explicit call to endTrainingSession (vision §2, I-17).
+// Any constant reintroducing a round count here would recreate the defect, which
+// is what check:session-lifecycle watches for.
 export const TRAINING_CORRECT_DELAY_MS = 2000;
 export const TRAINING_ENGINE_VERSION = "training-provider-v1";
 
@@ -64,6 +68,26 @@ export const getTypefaceFontFamily = (slug: string, displayName: string) => {
 
   return `"${displayName}", serif`;
 };
+
+/**
+ * Runtime paths for a given set of slugs, in the order asked, skipping any slug
+ * the manifest cannot serve.
+ *
+ * Exists for one reason: `@font-face` alone never tells the browser to fetch
+ * anything early. The landing hero swaps its word through seven faces at 2.4 s
+ * intervals, so without a preload the first paint shows a fallback and the
+ * visitor watches seven substitutions on the one word the page is built around.
+ * A `rel="preload"` on those faces moves the request to the start of the
+ * document instead of the moment the family is first painted.
+ *
+ * Deliberately takes an explicit slug list rather than preloading the whole
+ * manifest: preloading a face the page never paints is wasted bandwidth and
+ * earns a console warning.
+ */
+export const getTrainingFontPreloadHrefs = (slugs: readonly string[]) =>
+  slugs
+    .map((slug) => getManifestFont(slug)?.runtimePath)
+    .filter((path): path is string => typeof path === "string" && path.length > 0);
 
 export const getTrainingFontFaceCss = () => {
   const lines = manifest.fonts.flatMap((font) => {

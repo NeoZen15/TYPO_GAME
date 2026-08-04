@@ -7,9 +7,11 @@ import {
   COMPETITION_FAST_BONUS_THRESHOLD_MS,
   COMPETITION_TOTAL_DURATION_MS,
   getCompetitionDisplayWord,
-  getCompetitionFontFace,
-  getCompetitionFontFamily,
 } from "@/lib/game/competition/catalog";
+import {
+  getRuntimeFontFace,
+  getRuntimeFontFamily,
+} from "@/lib/game/fonts/runtime-catalog";
 import {
   type CompetitionAnswerResponse,
   type CompetitionSessionAnswerPoint,
@@ -475,8 +477,8 @@ const buildQuestion = (
     displayWord: payload.displayWord,
     typefaceSlug: correct.typeface_slug,
     typefaceLabel: correct.display_name,
-    fontFamily: getCompetitionFontFamily(correct.typeface_slug, correct.display_name),
-    fontFace: getCompetitionFontFace(correct.typeface_slug),
+    fontFamily: getRuntimeFontFamily(correct.typeface_slug, correct.display_name),
+    fontFace: getRuntimeFontFace(correct.typeface_slug),
     options: optionRows.map((option) => ({
       slug: option.typeface_slug,
       label: option.display_name,

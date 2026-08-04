@@ -11,6 +11,7 @@ import LetterAnatomy from "@/features/landing/components/LetterAnatomy";
 import CompareTeaser from "@/features/landing/components/CompareTeaser";
 import TypefaceRail from "@/features/landing/components/TypefaceRail";
 import MasteryClimb from "@/features/landing/components/MasteryClimb";
+import { HERO_SPECIMENS } from "@/features/landing/hero-specimens";
 
 /**
  * New main landing page — built section by section.
@@ -27,16 +28,6 @@ import MasteryClimb from "@/features/landing/components/MasteryClimb";
  */
 
 // Runtime-ready faces from the catalog (family = JDT__<slug>).
-const HERO_SPECIMENS = [
-  { slug: "montserrat", label: "Montserrat" },
-  { slug: "libre_baskerville", label: "Libre Baskerville" },
-  { slug: "poppins", label: "Poppins" },
-  { slug: "pt_serif", label: "PT Serif" },
-  { slug: "dm_sans", label: "DM Sans" },
-  { slug: "raleway", label: "Raleway" },
-  { slug: "roboto", label: "Roboto" },
-] as const;
-
 const HERO_WORD = "Character";
 
 // Header nav — anchors to the on-page sections.
@@ -325,7 +316,13 @@ export default function LandingExperience() {
           {MODES.map((m) => (
             <Link
               key={m.key}
-              href="/play"
+              // One href per mode, not a shared "/play". The three cards used to
+              // point at the mode picker, so choosing Training on the landing
+              // dropped the visitor on a screen where Competition sits at equal
+              // weight — the main mode lost its head start at the exact moment
+              // it had been chosen. `m.key` matches the route segment of
+              // app/play/{training,competition,expert}/page.tsx.
+              href={`/play/${m.key}`}
               className="lp-mode-card"
               style={{ ["--mode-accent" as string]: m.accent }}
               onPointerMove={(event) => {
@@ -412,9 +409,12 @@ export default function LandingExperience() {
               <div className="lp-footer__col">
                 <h3 className="lp-footer__col-title">Play</h3>
                 <a href="#modes" className="lp-footer__link">All modes</a>
-                <Link href="/play" className="lp-footer__link">Training</Link>
-                <Link href="/play" className="lp-footer__link">Competition</Link>
-                <Link href="/play" className="lp-footer__link">Expert</Link>
+                {/* Same fix as the mode cards above: a link named after a mode
+                    has to reach that mode, not the picker. "All modes" already
+                    covers the picker case, one line above. */}
+                <Link href="/play/training" className="lp-footer__link">Training</Link>
+                <Link href="/play/competition" className="lp-footer__link">Competition</Link>
+                <Link href="/play/expert" className="lp-footer__link">Expert</Link>
               </div>
               <div className="lp-footer__col">
                 <h3 className="lp-footer__col-title">Explore</h3>

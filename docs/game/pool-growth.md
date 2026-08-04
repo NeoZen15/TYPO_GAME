@@ -105,12 +105,20 @@ détaillés de la spec (trigger_count, from_q, to_q) ne sont pas persistés car
 `typeface_slug` et `global_q_index` sont écrits (aucune colonne ajoutée à la
 table de faits, choix volontairement minimal).
 
-## État : 008 n'est PAS encore appliquée
+## État : 008 EST appliquée (constaté le 2026-07-29)
 
-La migration est écrite mais non appliquée (consigne : pas d'apply, pas de
-mutation en base). Tant qu'elle n'est pas appliquée, le training tourne
-normalement (les appels sont fail safe). Commande d'application (à lancer
-manuellement, hors de cette session) :
+Vérifié en lecture seule le 2026-07-29 : `try_unlock_one_typeface`,
+`register_mastery_unlock` et la colonne `users.pending_unlock_count` sont
+présentes en base. La croissance du pool est donc ACTIVE, les appels du provider
+ne sont plus des no op.
+
+Ce qui reste à prouver : le déclencheur I-07 demande 3 franchissements vers
+mastery 4, et la base ne contient que 8 faces à L1, aucune au delà (audit du
+2026-07-29). La fonctionnalité est allumée mais n'a jamais tourné en conditions
+réelles.
+
+La section ci dessous décrit l'état antérieur, conservée pour l'historique. La
+commande d'application n'a plus à être lancée :
 
 ```
 node --input-type=module <<'EOF'

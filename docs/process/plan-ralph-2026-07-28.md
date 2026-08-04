@@ -27,7 +27,7 @@ Elles s'appliquent à toutes les tâches, sans exception, et sont reprises mot p
 - **Aucune décision de direction artistique.** Pas de couleur, pas d'échelle typo, pas d'espacement, pas de copie inventée. Toute question de DA se tranche en regardant la landing en local, avec le propriétaire.
 - **Aucune migration jouée sur la vraie base.** Écrire un fichier SQL numéroté dans `db/migrations` est permis. L'exécuter demande le feu vert explicite du propriétaire. Une tâche qui suppose une migration s'arrête au fichier et le dit dans son rapport.
 - **`features/onboarding/*` est gelé.** Zone de travail en cours du propriétaire. Ni déplacement, ni refacto de rangement, ni retouche d'imports.
-- **`lib/game/training/provider.ts` contient du travail non fini** (migrations 007, 008, 009 câblées en fail safe mais non appliquées). Deux tâches y touchent, chacune avec un plafond de diff explicite et vérifiable.
+- **`lib/game/training/provider.ts` contient du travail non fini** (migrations 007, 008, 009 câblées en fail safe). Deux tâches y touchent, chacune avec un plafond de diff explicite et vérifiable. _Correction du 2026-07-29 : ces trois migrations **sont appliquées** en base, constaté en lecture seule, donc les appels correspondants ne sont plus des no op. Le garde reste valable, mais la raison n'est plus « code inerte »._
 - **Aucune nouvelle dépendance npm.** Tout ce dont ces tâches ont besoin est déjà installé (`fontkit`, `playwright`, `@types/fontkit`).
 - **Pas de captures d'écran de vérification.** La preuve est une commande, un `typecheck`, un `curl`, une inspection de code, ou un test Playwright.
 - **Zéro emoji, nulle part.** Ni code, ni doc, ni message de commit.

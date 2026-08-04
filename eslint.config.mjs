@@ -17,6 +17,11 @@ const eslintConfig = defineConfig([
     // code twice and surfaces compiled Turbopack chunks as source errors.
     // ".next/**" above is root-anchored and does not cover them.
     ".claude/worktrees/**",
+    // Root scratch directory, ignored by git (.gitignore line "/tmp/"). It holds
+    // one-off probes, screenshots and throwaway scripts, not product source, so a
+    // `let` that could be a `const` in a five-minute proof script must not fail
+    // the quality gate. Same reasoning as the worktrees above.
+    "tmp/**",
   ]),
 ]);
 

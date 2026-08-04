@@ -9,10 +9,10 @@ import { isDevRuntime } from "@/lib/dev-mode";
 import {
   COMPETITION_FEEDBACK_DELAY_MS,
   COMPETITION_FEEDBACK_PERSIST_MS,
-} from "@/lib/game/competition/catalog";
+} from "@/lib/game/competition/constants";
+import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
 import {
   type CompetitionAnswerResponse,
-  type CompetitionFontFace,
   type CompetitionQuestion,
   type CompetitionSessionSummary,
   type CompetitionStartResponse,
@@ -39,39 +39,9 @@ const getPreferredLocale = () =>
     ? "en"
     : "fr";
 
-const COMPETITION_FONT_FACE_STYLE_ID = "competition-font-faces";
-// Tracks families already injected so we never emit a duplicate @font-face. The
-// backing <style> lives in document.head, so this persists across remounts.
-const injectedCompetitionFontFaces = new Set<string>();
-
-// Injects the @font-face for a single face on demand, right before it is shown,
-// instead of shipping all runtime faces up front. SSR-safe (no-op without a
-// document) and idempotent. font-display: swap keeps the fallback rendering
-// until the woff2 loads, so nothing ever renders unstyled.
-const ensureCompetitionFontFace = (fontFace: CompetitionFontFace | null | undefined) => {
-  if (!fontFace || typeof document === "undefined") {
-    return;
-  }
-  if (injectedCompetitionFontFaces.has(fontFace.family)) {
-    return;
-  }
-  injectedCompetitionFontFaces.add(fontFace.family);
-
-  let styleElement = document.getElementById(
-    COMPETITION_FONT_FACE_STYLE_ID
-  ) as HTMLStyleElement | null;
-  if (!styleElement) {
-    styleElement = document.createElement("style");
-    styleElement.id = COMPETITION_FONT_FACE_STYLE_ID;
-    document.head.appendChild(styleElement);
-  }
-
-  styleElement.appendChild(
-    document.createTextNode(
-      `@font-face{font-family:"${fontFace.family}";src:url("${fontFace.src}") format("woff2");font-weight:${fontFace.weight};font-style:${fontFace.style};font-display:swap;}`
-    )
-  );
-};
+// On-demand @font-face injection now lives in lib/game/fonts/inject-font-face,
+// shared with the training screen: one style element, one dedupe set, one
+// mechanism. A face declared here stays declared if the player switches mode.
 
 const formatRemaining = (remainingMs: number) => {
   const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
@@ -1107,7 +1077,7 @@ export default function CompetitionScreen() {
   }, [clearFeedbackTimer]);
 
   const beginQuestion = useCallback((nextQuestion: CompetitionQuestion) => {
-    ensureCompetitionFontFace(nextQuestion.fontFace);
+    ensureGameFontFace(nextQuestion.fontFace);
     setQuestion(nextQuestion);
     setSelectedId("");
     setResult("idle");
@@ -1387,7 +1357,7 @@ export default function CompetitionScreen() {
 
         // Inject the next face now so its woff2 has a head start during the
         // short feedback delay before beginQuestion renders it.
-        ensureCompetitionFontFace(payload.nextQuestion?.fontFace);
+        ensureGameFontFace(payload.nextQuestion?.fontFace);
 
         queueAdvance(() => {
           if (payload.nextQuestion) {

@@ -1,14 +1,13 @@
+import { type GameFontFace } from "@/lib/game/fonts/contracts";
+
 export type CompetitionQuestionOption = {
   slug: string;
   label: string;
 };
 
-export type CompetitionFontFace = {
-  family: string;
-  src: string;
-  weight: number;
-  style: string;
-};
+// One descriptor type for the whole game, so training and competition cannot
+// drift apart on the shape of a face. Alias kept for the existing call sites.
+export type CompetitionFontFace = GameFontFace;
 
 export type CompetitionQuestion = {
   id: string;

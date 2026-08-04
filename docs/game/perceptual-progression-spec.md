@@ -1,8 +1,12 @@
 # Perceptual Progression Spec — la carte du regard
 
+> **Statut précisé le 2026-07-29.** Ce document reste **la référence du modèle de la carte du regard** (axes, paliers, allumage), et la vision produit confirme la carte DWIGGINS comme **la représentation principale de l'élève** (`docs/game/vision-produit-dwiggins.md` §8). Il garde donc sa valeur sur ce périmètre.
+> **En revanche son alignement déclaré sur `scoring-and-selection-math.md` v3.1 ne vaut plus** : ce document là est devenu de la recherche, sans autorité. Deux conséquences précises. La mention « **XP = système** » ci dessous est caduque : l'XP est une couche d'**engagement**, jamais une preuve de compétence et jamais visible du professeur (invariant I-19). Et les renvois aux « boîtes (math §2) » décrivent un ordonnancement qui n'est pas celui du moteur : le moteur travaille en mastery 0 à 4 avec des intervalles en questions (`training-engine-spec-v2-clean.md` §4.1).
+> Ce qui reste juste et important ici : « allumé = généralisation, pas mémorisation » (§103), qui est exactement l'esprit de la méthode.
+
 Status: draft / proposal
 Last update: 2026-06-16
-Aligné avec `scoring-and-selection-math.md` v3.1 — modèle **palier→axe**, **XP = système**, **jetons**.
+~~Aligné avec `scoring-and-selection-math.md` v3.1 — modèle **palier→axe**, **XP = système**, **jetons**.~~ Alignement caduc, voir l'encadré.
 
 Vision source (joueur): `docs/game/NIVEAU.rtf`
 Docs liés:

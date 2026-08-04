@@ -98,7 +98,8 @@ Reutilisation Leitner et profil : aucun recalcul, on importe et on reutilise `bu
 
 - Fichier : `db/migrations/007_pool_rebalance.sql`.
 - Nature : additive, idempotente (`CREATE OR REPLACE`, corps a `INSERT ... ON CONFLICT DO NOTHING`, retourne 0 si le pool est deja plein), respecte I-06 (aucun retrait ni desactivation).
-- Etat : NON appliquee. Le code applicatif est fail-safe et no-op tant qu'elle n'est pas en base.
+- Etat : **APPLIQUEE**, constate le 2026-07-29 en lecture seule (`rebalance_user_pool` presente en base). Le Stage 4 est donc actif et l'appel applicatif n'est plus un no-op. La commande ci dessous n'a plus a etre lancee, elle reste pour l'historique.
+- Jamais observe en conditions reelles : le declencheur demande une fenetre de 8 a 12 premieres reponses chez un declarant avance, et la base ne compte que 10 premieres tentatives training au total (audit du 2026-07-29).
 
 Commande d'application EXACTE (a lancer par le user, non executee ici) :
 

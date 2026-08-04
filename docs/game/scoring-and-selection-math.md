@@ -1,5 +1,26 @@
 # Scoring & Selection — Math Spec (v3.1)
 
+> # DOCUMENT DE RECHERCHE — AUCUNE AUTORITÉ SUR L'IMPLÉMENTATION
+>
+> **Décision du propriétaire, 2026-07-29.** Ce document **ne spécifie plus le produit**. Il change de nature : il devient un document de recherche et d'exploration, et il est **volontairement sorti de la hiérarchie documentaire** de DWIGGINS.
+>
+> **Pourquoi, et ce n'est pas une question de version.** Ce document ne décrit pas un ancien état du moteur, il décrit **une autre philosophie pédagogique**. Le moteur de DWIGGINS repose sur la maîtrise continue, la répétition espacée, une progression sans fin et la séparation stricte entre compétence et engagement. Ce document repose sur un autre paradigme : boîtes 0 à 5, intervalles en **jours**, sessions bornées (`R_session ∈ [8,12]`), examens de promotion, progression par niveaux d'XP. Les deux ne peuvent pas coexister comme sources de vérité sans produire des ambiguïtés permanentes, et à terme deux moteurs concurrents issus de deux documents.
+>
+> **Ce que ce document reste.** Une mémoire du raisonnement qui a conduit au moteur actuel, et une réserve d'idées : modèles mathématiques, pistes, hypothèses. Ce n'est pas une archive oubliée, c'est un espace de recherche encore utile.
+>
+> **Ce que ce document n'est plus.** Une référence dans laquelle on vient piocher une formule au gré des besoins. **Aucune règle issue d'ici ne peut être implémentée directement.** Le chemin de retour est explicite et obligatoire :
+>
+> 1. réévaluer l'idée au regard de `docs/game/vision-produit-dwiggins.md` ;
+> 2. la reformuler si nécessaire ;
+> 3. l'intégrer **explicitement** dans une spécification vivante (spec moteur, ou architecture backend) ;
+> 4. alors seulement elle acquiert une valeur normative et peut être développée.
+>
+> **Avertissement au lecteur pressé.** Une formule bien écrite n'est pas une formule applicable. Si une section d'ici vous paraît directement implémentable, c'est précisément le piège que ce bandeau existe pour éviter.
+>
+> Hiérarchie de décision, dont ce document est exclu : **Vision Produit** (les principes) puis **Spec Moteur** (leur traduction en règles pédagogiques) puis **Architecture Backend** (leur implémentation technique) puis les contrats d'API, les specs d'interface et les documents d'exécution. Voir `docs/game/vision-produit-dwiggins.md` §13.
+>
+> Piège de numérotation à connaître : les invariants `I1` à `I14` **de ce document** n'ont aucun rapport avec les invariants `I-01` à `I-24` du projet. « I7 » ici désigne l'arène qui n'affecte pas les boîtes ; « I-07 » dans la spec moteur désigne l'entrée d'une nouvelle typographie au pool.
+
 Status: draft
 Last update: 2026-06-15
 Counterpart (contexte): `docs/game/perceptual-progression-spec.md`

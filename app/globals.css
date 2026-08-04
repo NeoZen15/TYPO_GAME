@@ -439,9 +439,9 @@ svg {
 
 .game-v1-page,
 .mode-select-page,
-.mode-rules-page,
-.mode-placeholder-page,
-/* 404 + render errors: same terminal-screen frame as the mode placeholder. */
+/* The /play family left this frame on 2026-07-29: those pages now scroll inside
+   the profile's token contract (.pf-page). Kept for the error screens and for the
+   onboarding, which must never scroll and is a frozen work zone. */
 .error-page,
 .onboarding-page {
   /* Fixed to the viewport (not min-height): the onboarding must NEVER scroll —
@@ -1125,14 +1125,32 @@ svg {
 }
 
 .mode-rules-content {
+  /* No fixed height on purpose. The shell declares its rows as
+     `auto auto minmax(0, 1fr) auto`, so THIS row is the one meant to absorb the
+     free vertical space. A fixed `height: min(52svh, 26rem)` cancelled that: the
+     panel stayed 26rem tall and scrolled internally even when the shell had room
+     to spare, which is why a section title was cut in half while black space sat
+     below the shell. `min-height: 0` keeps the grid child shrinkable, stretch is
+     the default alignment in a 1fr row, and the overflow only engages when the
+     rules are genuinely taller than the space available. */
   min-height: 0;
-  height: min(52svh, 26rem);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
   display: grid;
   gap: 1rem;
+  /* Grid rows here size to their content; without this the sections would stretch
+     to fill and their internal spacing would drift apart on a tall screen. */
+  align-content: start;
   padding-right: 0.2rem;
+}
+
+/* A scrollable region has to be reachable and visibly focused when it takes focus
+   (the component sets tabIndex on it), otherwise keyboard users cannot read past
+   the fold. Same focus treatment as every other interactive element on the page. */
+.mode-rules-content:focus-visible {
+  outline: 2px solid var(--accent-yellow);
+  outline-offset: 3px;
 }
 
 .mode-rules-section {
@@ -1154,6 +1172,11 @@ svg {
   padding-left: 1.2rem;
   color: var(--ink-muted);
   line-height: 1.56;
+  /* Tailwind's preflight strips list markers from every ul, so this list was
+     indented by 1.2rem with nothing occupying the indent: six statements read as
+     one block of prose. The space was already reserved, the marker just moves back
+     into it. */
+  list-style: disc;
 }
 
 .mode-rules-list li + li {
@@ -8786,3 +8809,1991 @@ svg {
 .lp-climb--armed.lp-climb--in .lp-glyph:nth-child(6) .lp-glyph__char { transition-delay: 0.42s; }
 .lp-climb--armed.lp-climb--in .lp-glyph:nth-child(7) .lp-glyph__char { transition-delay: 0.5s; }
 .lp-climb--armed.lp-climb--in .lp-glyph:nth-child(8) .lp-glyph__char { transition-delay: 0.58s; }
+
+/* ============================================================================
+   PROFILE SHELL  ("the pf frame")
+   ----------------------------------------------------------------------------
+   Relocated verbatim from features/profile/components/ProfileExperience.tsx on
+   2026-07-29, byte for byte. It used to be injected as an inline stylesheet by
+   that one component, which meant no other page could enter the system.
+
+   WHY IT MATTERS. This is not a set of values, it is a TOKEN CONTRACT. .pf-page
+   publishes --pf-bg, --pf-cream, --pf-mono and the ink steps, and every board in
+   features/profile/components consumes them without defining a single one
+   (ProfileSummary reads 60 of them, ActivityBoard 22, PreferencesBoard 19).
+   That contract is exactly why the six profile tabs read as one world.
+
+   Any page carrying .pf-page now inherits that world, and can reuse any board.
+   ========================================================================== */
+
+  .pf-page {
+    /* Theme-adaptive. LIGHT is the default: beige canvas, warm-noir ink.
+       The dark override (below) flips it to the black canvas + beige ink. */
+    --pf-bg: var(--background);
+    --pf-cream: #191510;
+    --pf-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --pf-ink: var(--ink-strong);
+    --pf-muted: var(--ink-muted);
+    --pf-soft: var(--ink-soft);
+    --pf-surface: rgba(25, 21, 16, 0.04);
+    --pf-line: var(--line);
+    --pf-line-strong: var(--line-strong);
+    --profile-mono: var(--pf-mono);
+    min-height: 100svh;
+    padding: clamp(0.7rem, 1.6vw, 1rem) clamp(1rem, 3vw, 2rem) clamp(2.4rem, 6vh, 4rem);
+    background: var(--pf-bg);
+    color: var(--pf-ink);
+  }
+
+  /* DARK theme — the brand "Dwiggins" canvas: pure black + beige #f4f3ee ink. */
+  :root[data-theme="dark"] .pf-page {
+    --pf-bg: #000000;
+    --pf-cream: #f4f3ee;
+    --pf-ink: rgba(244, 243, 238, 0.96);
+    --pf-muted: rgba(244, 243, 238, 0.62);
+    --pf-soft: rgba(244, 243, 238, 0.36);
+    --pf-surface: rgba(244, 243, 238, 0.05);
+    --pf-line: rgba(244, 243, 238, 0.12);
+    --pf-line-strong: rgba(244, 243, 238, 0.22);
+  }
+
+  /* ── Top pill header — cloned from the landing's .lp-header (cream pill,
+       dark ink, mono caps links, dark CTA, dark-on-cream theme switch). ── */
+  .pf-top {
+    position: sticky;
+    top: clamp(0.6rem, 1.6vw, 1rem);
+    z-index: 90;
+    isolation: isolate;
+    width: min(94vw, 70rem);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.46rem 1rem;
+    padding: 0.5rem 0.7rem 0.5rem 0.95rem;
+    border: 1px solid rgba(25, 21, 16, 0.10);
+    border-radius: 1.4rem;
+    background: var(--surface-strong);
+    color: #141019;
+    box-shadow:
+      inset 0 1px 0 rgba(244, 243, 238, 0.55),
+      0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
+    transition: padding 220ms ease, box-shadow 220ms ease;
+  }
+  /* In dark mode the pill stays a light "paper" chip (beige), like the landing. */
+  :root[data-theme="dark"] .pf-top { background: #f4f3ee; }
+  .pf-top.is-scrolled {
+    padding-block: 0.4rem;
+    box-shadow:
+      inset 0 1px 0 rgba(244, 243, 238, 0.6),
+      0 0.7rem 1.9rem rgba(0, 0, 0, 0.46);
+  }
+
+  .pf-top__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    min-width: 0;
+    padding-inline: 0.2rem 0.15rem;
+  }
+  .pf-top__figures {
+    display: block;
+    width: auto;
+    height: clamp(0.92rem, 1.3vw, 1.08rem);
+    flex: none;
+  }
+  .pf-top__logo {
+    display: block;
+    width: auto;
+    height: clamp(1.05rem, 1.5vw, 1.2rem);
+    flex: none;
+  }
+
+  .pf-top__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.1rem;
+  }
+  .pf-top__link {
+    appearance: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.5rem;
+    border-radius: 999px;
+    color: rgba(20, 16, 25, 0.55);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+    transition: color 160ms ease, background-color 160ms ease;
+  }
+  .pf-top__link:hover { color: rgba(20, 16, 25, 0.95); }
+  .pf-top__link.is-active {
+    color: rgba(20, 16, 25, 0.95);
+    background: rgba(20, 16, 25, 0.07);
+  }
+
+  .pf-top__actions { display: flex; align-items: center; gap: 0.55rem; }
+  .pf-top__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.34rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(20, 16, 25, 0.12);
+    background: #141019;
+    color: #f4f3ee;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow:
+      inset 0 1px 0 rgba(244, 243, 238, 0.08),
+      0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  }
+  .pf-top__cta:hover {
+    transform: translateY(-1px);
+    background: #000;
+    box-shadow:
+      inset 0 1px 0 rgba(244, 243, 238, 0.12),
+      0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
+  }
+
+  /* Theme toggle reads as a dark control on the cream pill (like the landing). */
+  .pf-top .theme-switch { position: static; top: auto; right: auto; }
+  .pf-top .theme-switch__track {
+    border-color: rgba(20, 16, 25, 0.28);
+    background: rgba(20, 16, 25, 0.1);
+    box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
+  }
+  .pf-top .theme-switch__thumb {
+    background: #141019;
+    box-shadow: 0 1px 3px rgba(20, 16, 25, 0.35);
+  }
+
+  @media (max-width: 720px) {
+    .pf-top { justify-content: center; }
+    .pf-top__nav {
+      order: 3;
+      width: 100%;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+    }
+    .pf-top__link { white-space: nowrap; }
+  }
+
+  /* ── Shell ── */
+  .pf-shell {
+    width: min(96vw, 70rem);
+    margin: clamp(1.8rem, 5vh, 3.4rem) auto 0;
+    display: grid;
+    gap: clamp(1.8rem, 4vh, 3rem);
+  }
+
+  /* ── Identity hero ── */
+  .pf-id {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.4vw, 1.6rem);
+  }
+  .pf-id__avatar {
+    display: grid;
+    place-items: center;
+    width: clamp(3.4rem, 7vw, 4.4rem);
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid var(--pf-line-strong);
+    background: var(--pf-surface);
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--pf-ink);
+  }
+  .pf-id__meta { display: grid; gap: 0.28rem; min-width: 0; }
+  .pf-id__eyebrow {
+    font-family: var(--pf-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pf-soft);
+  }
+  .pf-id__name {
+    margin: 0;
+    font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+    font-weight: 640;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    color: var(--pf-ink);
+  }
+  .pf-id__row { display: flex; align-items: center; gap: 0.7rem; margin-top: 0.12rem; }
+  .pf-id__rank {
+    font-family: var(--pf-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pf-muted);
+  }
+  .pf-id__sep { width: 0.28rem; height: 0.28rem; border-radius: 999px; background: var(--pf-soft); }
+  .pf-id__level {
+    font-family: var(--pf-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pf-muted);
+  }
+  .pf-id__xp {
+    margin-top: 0.5rem;
+    width: min(22rem, 60vw);
+    height: 0.32rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pf-cream) 10%, transparent);
+    overflow: hidden;
+  }
+  .pf-id__xp-fill { display: block; height: 100%; border-radius: 999px; background: var(--pf-cream); }
+  .pf-id__xp-text {
+    font-family: var(--pf-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--pf-soft);
+  }
+
+  /* ── Board section ── */
+  .pf-board__head { max-width: 40rem; display: grid; gap: 0.5rem; }
+  /* Wide, full-bleed board stage — breaks out of the 70rem text shell. */
+  .pf-board-stage {
+    width: min(98vw, 92rem);
+    margin: clamp(1.2rem, 3vh, 2.2rem) auto clamp(2rem, 6vh, 4rem);
+  }
+  /* Constellation journey — full-bleed (no rectangle): break out of the page's
+     horizontal padding so it runs edge-to-edge, on its own starfield. */
+  .pf-constellation-stage {
+    margin-inline: calc(-1 * clamp(1rem, 3vw, 2rem));
+    /* No shell head sits above it (constellation/stats own their intros), so
+       keep only a small gap under the sticky header. */
+    margin-top: clamp(0.5rem, 1.8vh, 1.2rem);
+  }
+  .pf-kicker {
+    font-family: var(--pf-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--pf-soft);
+  }
+  .pf-board__title {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 640;
+    letter-spacing: -0.04em;
+    line-height: 1.04;
+    color: var(--pf-ink);
+  }
+  .pf-board__sub { margin: 0; font-size: 0.98rem; line-height: 1.5; color: var(--pf-muted); }
+
+  /* ── Empty (not-yet-built) sections ── */
+  .pf-empty {
+    display: grid;
+    gap: 0.6rem;
+    place-items: center;
+    text-align: center;
+    padding: clamp(3rem, 12vh, 7rem) 1rem;
+    border: 1px dashed var(--pf-line);
+    border-radius: 1.2rem;
+  }
+  .pf-empty__text { margin: 0; color: var(--pf-muted); font-size: 0.98rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pf-top__cta { transition: none; }
+  }
+
+/* ============================================================================
+   PLAY BOARD  (/play/{training,competition,expert}/rules)
+   ----------------------------------------------------------------------------
+   Written inside the pf token contract, not beside it. The page carries .pf-page,
+   so --pf-bg / --pf-cream / --pf-mono and the ink steps are already published and
+   this block only lays out content, exactly like a profile board does.
+
+   Vocabulary mirrored from ActivityBoard (features/profile/components): the same
+   root padding, the same fixed starfield layer, the same centred intro scale, the
+   same panel (border at 10 % ink, radius 0.9rem, translucent page fill, blur), the
+   same mono caps label. `rgb(from var(--pf-cream) r g b / a)` is the literal
+   compiled form of the boards' `rgb(${CREAM} / a)`.
+
+   One thing is ours: the mode accent, on the chip only. The profile's rule, written
+   in ProfileSummary, is contour and faint wash, never an aplat.
+   ========================================================================== */
+
+.pb {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  display: grid;
+  gap: clamp(1.1rem, 3vh, 2rem);
+  padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 8vh, 6rem);
+}
+
+.pb-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pb-bg .dw-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Mode accent, from the existing global tokens. */
+.pb[data-mode="training"] { --pb-accent: var(--mode-training); }
+.pb[data-mode="competition"] { --pb-accent: var(--mode-competition); }
+.pb[data-mode="expert"] { --pb-accent: var(--mode-expert); }
+
+.pb-intro {
+  text-align: center;
+  display: grid;
+  gap: 0.45rem;
+  justify-items: center;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.pb-kicker {
+  font-family: var(--pf-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  /* Accent MIXED INTO the ink, not laid over it in transparency. This is how the
+     profile colours text: color-mix(accent 42-62%, cream), used twenty times on
+     the ranked card. Accent at low alpha on black just reads grey, which is why
+     this page looked monochrome. */
+  color: color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
+}
+
+/* The one accented element: contour and faint fill, like the ranked card. */
+.pb-chip {
+  /* The intro gap (0.45rem) is the rhythm BETWEEN heading lines; the chip is not a
+     heading line, so it needs its own separation, and it was touching the tiles. */
+  margin-top: 0.5rem;
+  font-family: var(--pf-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--pb-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--pb-accent) 7%, transparent);
+  color: color-mix(in srgb, var(--pb-accent) 80%, var(--pf-cream));
+}
+
+.pb-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 640;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: var(--pf-cream);
+}
+
+.pb-lede {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-panels {
+  display: grid;
+  gap: clamp(0.7rem, 1.6vw, 1.1rem);
+  width: min(98%, 66rem);
+  margin: 0 auto;
+}
+
+/* Exact .st-panel geometry from the stats board. */
+.pb-panel {
+  padding: clamp(1rem, 2.2vw, 1.4rem);
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  /* A plain block, like .st-panel. It used to be a grid with a 0.55rem gap WHILE
+     the title carried margin-bottom: 0.9rem, so both added up and every title sat
+     1.45rem from its content. One rule governs, and it is the title's margin. */
+}
+
+/* .st-panel__title, including the 0.9rem below it. That margin is what gives the
+   stats cards their air: my grid gap of 0.55rem was pulling the title onto its
+   content, which is most of why the panels read tight next to the reference. */
+.pb-panel__label {
+  margin: 0 0 0.9rem;
+  font-family: var(--pf-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.58);
+}
+
+/* The head is a flex row when it carries a note, so the margin has to move to it. */
+.pb-panel__head {
+  margin-bottom: 0.9rem;
+}
+
+.pb-panel__head .pb-panel__label {
+  margin-bottom: 0;
+}
+
+/* .st-panel__meta: the closing line some stats cards carry under their content. */
+.pb-panel__meta {
+  display: block;
+  max-width: 62ch;
+  margin-top: 0.8rem;
+  font-family: var(--pf-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+  font-variant-numeric: tabular-nums;
+}
+
+.pb-panel__meta em {
+  font-style: normal;
+  font-weight: 640;
+  color: var(--pf-cream);
+}
+
+.pb-list {
+  margin: 0;
+  /* Tailwind's preflight strips list markers from every ul, so the indent would
+     otherwise sit empty and a six-item list would read as one block of prose. */
+  padding-left: 1.05rem;
+  list-style: disc;
+  display: grid;
+  gap: 0.36rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-list li::marker {
+  color: rgb(from var(--pf-cream) r g b / 0.28);
+}
+
+/* Centred on the same axis as the intro and the closing note. Left aligned, the
+   buttons sat off the page centre line while everything around them was centred. */
+.pb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  /* 66rem like the panels, the tiles and every stats card: the actions used to sit
+     on a narrower column, so they never lined up with the content above them. */
+  width: min(98%, 66rem);
+  margin: 0 auto;
+}
+
+.pb-foot {
+  width: min(98%, 66rem);
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--pf-mono);
+  font-size: 0.64rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.4);
+}
+
+/* Reveal on load, not on scroll: the boards arm an IntersectionObserver, which
+   needs a client component, and this page is a server component. Same durations
+   and easing as theirs, plus a per-panel stagger set inline. */
+.pb-sec {
+  animation: pb-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--pb-stagger, 0ms);
+}
+
+@keyframes pb-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-sec { animation: none; }
+}
+
+/* /play IS THE LANDING'S MODE DECK.
+   The page reuses .lp-modes, .lp-modes__grid and .lp-mode-card verbatim, so nothing
+   here restyles a card: only the shell it sits in, and the rules row underneath.
+   What this replaced: a .pb-panel--mode recipe that set each card's word in a
+   different catalogue face (changing the page's typography) and closed with two
+   cream pills (a colour that belongs to the landing's primary button and to nothing
+   on this page). Both are gone with it. */
+
+/* ONE SCREEN, NO SCROLL. Same recipe as the onboarding and the error screens:
+   height, not min-height, so the element cannot grow past the viewport and the
+   document stays scroll locked. */
+.pf-page--fixed {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+/* The lock holds only where one screen can actually hold the content. Above the
+   breakpoint the three cards fan out on one row and always fit. Below it they stack,
+   and three stacked cards overrun a phone: keeping the lock there would not make the
+   page shorter, it would cut the last card off the bottom. Clipping is a defect, not
+   a layout, so the narrow case scrolls. */
+@media (min-width: 901px) {
+  .pf-page--fixed {
+    height: 100svh;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+/* The board the deck sits in: the starfield needs a positioned, isolated parent, and
+   the content centres in the room the header leaves. */
+.pm {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem);
+}
+
+.pm-note {
+  margin: 1.4rem 0 0;
+  max-width: 34ch;
+  font-family: var(--lp-mono);
+  font-size: 0.66rem;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+/* Under the deck, in the same column. The cards are links, so the rules links cannot
+   live inside them. */
+.pm-rules {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  margin: clamp(1rem, 2.4vw, 1.6rem) 0 0;
+}
+@media (max-width: 900px) {
+  .pm-rules {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+}
+.pm-rules__label {
+  margin-right: 0.3rem;
+  font-family: var(--lp-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+/* The chip recipe from the card, at the smaller size a secondary link deserves: the
+   accent stays on the contour, which is the rule the whole deck follows. */
+.pm-rules__pill {
+  padding: 0.24rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--mode-accent) 34%, transparent);
+  background: color-mix(in srgb, var(--mode-accent) 5%, transparent);
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-family: var(--lp-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: border-color 200ms ease, color 200ms ease, background-color 200ms ease;
+}
+.pm-rules__pill:hover {
+  border-color: color-mix(in srgb, var(--mode-accent) 62%, transparent);
+  background: color-mix(in srgb, var(--mode-accent) 10%, transparent);
+  color: var(--ink-strong);
+}
+
+/* Two classes, not one: a later `@media (min-width: 900px) .pb-panels` sets the
+   rules pages to `1fr 1.4fr`, same specificity and further down the file, so it was
+   winning. The three modes were laid out as two columns with the third card wrapping
+   to its own row, which is why one card measured 606px against 433. minmax(0, ...)
+   and not a bare 1fr, which floors each column at its min-content width and lets the
+   longest sentence decide how wide its card gets. */
+.pb-panels.pb-panels--modes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  /* Two classes here too. Raising the base rule to .pb-panels.pb-panels--modes so
+     it could beat a later `@media (min-width: 900px) .pb-panels` also made it beat
+     THIS rule, which has one class: the collapse to a single column stopped
+     happening and three 340px cards were squeezed into a 390px phone. */
+  .pb-panels.pb-panels--modes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pb-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.pb-panel__copy {
+  margin: 0;
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-panel__line {
+  display: block;
+}
+
+.pb-panel__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: 0.2rem;
+}
+
+.pb-panel__meta {
+  font-family: var(--pf-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.4);
+}
+
+.pb-panel__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* The mode accent is published by the card itself here, since a single /play page
+   shows all three at once. Same tokens, same contour-and-faint-wash rule. */
+.pb-panel[data-mode="training"] { --pb-accent: var(--mode-training); }
+.pb-panel[data-mode="competition"] { --pb-accent: var(--mode-competition); }
+.pb-panel[data-mode="expert"] { --pb-accent: var(--mode-expert); }
+
+/* Stat tiles, copied from ActivityBoard's .ac-card: the profile turns facts into
+   figures, and a rules page has real ones (choices per question, return windows,
+   round length, points). Auto-fit rather than the board's fixed 3 columns, because
+   a mode carries four figures and Expert carries none. */
+/* StatsBoard's KPI tile, not ActivityBoard's hero tile. The hero one carries three
+   big figures and is twice as padded; four informational figures belong in the
+   compact KPI recipe, which is why these read oversized before. */
+.pb-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.5rem, 1.2vw, 0.8rem);
+  width: min(98%, 66rem);
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .pb-tiles { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .pb-tiles { grid-template-columns: repeat(2, 1fr); }
+}
+
+.pb-tile {
+  display: grid;
+  gap: 0.22rem;
+  align-content: center;
+  padding: clamp(0.7rem, 1.5vw, 0.95rem);
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.pb-tile__big {
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  font-weight: 660;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--pf-cream);
+  font-variant-numeric: tabular-nums;
+}
+
+.pb-tile__label {
+  font-family: var(--pf-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.7);
+}
+
+.pb-tile__help {
+  font-family: var(--pf-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.03em;
+  color: rgb(from var(--pf-cream) r g b / 0.38);
+}
+
+/* Rows, copied from PreferencesBoard's .pr-row. A rule is a statement plus, when
+   the engine has one, a figure: that is exactly the label / help / control shape
+   of the settings rows, with the figure where the control sits. It replaces the
+   bullet lists, which turned every panel into the same block of prose. */
+/* The first thing on the page: what moves you forward, what sets you back.
+   Two columns, cause then consequence, no mechanism. It sits outside the panel
+   grid so it is always full width and always first, whatever the mode below it
+   happens to contain. */
+.pb-stakes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Same column as the tiles and the panels below. Left full width it stretched
+     each line across the whole screen, so the block read as the longest thing on
+     a page whose job is to be the fastest. */
+  width: min(98%, 66rem);
+  margin: 0 auto;
+  gap: 1.2rem 2.4rem;
+  padding: 1.5rem 1.6rem 1.6rem;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+  border-radius: 14px;
+  background: rgb(from var(--pf-cream) r g b / 0.02);
+}
+@media (max-width: 720px) {
+  .pb-stakes { grid-template-columns: minmax(0, 1fr); }
+}
+.pb-stakes__col {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  min-width: 0;
+}
+.pb-stakes__head {
+  margin: 0 0 0.2rem;
+  font-family: var(--pf-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.44);
+}
+.pb-stakes__line {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 0.6rem;
+  margin: 0;
+  max-width: 46ch;
+}
+/* The marker is the only place the accent appears here, so the eye finds the
+   forward column before it reads a single word. */
+.pb-stakes__sign {
+  align-self: center;
+  width: 0.42rem;
+  height: 1px;
+  background: rgb(from var(--pf-cream) r g b / 0.28);
+}
+.pb-stakes__sign.is-up {
+  height: 0.42rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+.pb-stakes__cause {
+  font-size: 0.88rem;
+  font-weight: 560;
+  line-height: 1.35;
+  color: rgb(from var(--pf-cream) r g b / 0.86);
+}
+.pb-stakes__effect {
+  grid-column: 2;
+  font-family: var(--pf-mono);
+  font-size: 0.62rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.44);
+}
+
+.pb-rows {
+  display: grid;
+}
+
+.pb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-top: 1px solid rgb(from var(--pf-cream) r g b / 0.08);
+}
+
+.pb-row:first-child {
+  border-top: none;
+  /* The panel head already provides the gap above, so the first row only needs to
+     match the rhythm of the ones below it rather than hug the title. */
+  padding-top: 0.35rem;
+}
+
+/* Measure. The profile borders every text block (40rem on a board head, 44 to 46ch
+   on a lede) and even truncates axis names. Mine had none, so in the wide panel a
+   help line ran the full 66rem and stopped being readable. */
+.pb-row__text {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+  max-width: 54ch;
+}
+
+/* 84 % ink, the step .st-axis__name uses for a row name on the stats board, not
+   full cream. Full cream is what the FIGURES take (.pb-row__value, .pb-hero__num,
+   .pb-tile__big), so the number stays the brightest thing in a row and fifteen
+   rows stop reading as fifteen headlines. Same palette, validated steps only. */
+.pb-row__label {
+  font-size: 0.88rem;
+  font-weight: 560;
+  line-height: 1.35;
+  color: rgb(from var(--pf-cream) r g b / 0.84);
+}
+
+.pb-row__help {
+  font-family: var(--pf-mono);
+  font-size: 0.6rem;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+}
+
+/* The figure sits where a settings row puts its control. Tabular numerals so the
+   return windows line up down the column. */
+.pb-row__value {
+  flex: none;
+  font-family: var(--pf-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--pf-cream);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dashed pill in a panel head, the profile's "NO SIGN-IN YET" device. Used for a
+   mode that does not exist yet, so the page never promises a round it cannot serve. */
+.pb-note {
+  flex: none;
+  font-family: var(--pf-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  border: 1px dashed rgb(from var(--pf-cream) r g b / 0.22);
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+}
+
+
+/* Return-window scale. The five spaced-repetition windows are exponential
+   (1-3 questions at level 0, 80-150 at level 4) and a column of numbers hides
+   that. The bar makes it visible, using StatsBoard's axis bar verbatim: 0.4rem
+   tall, fully rounded, track at 10 % ink, fill at 50 %. Widths are the real
+   window midpoints normalised on the longest one, so the shape IS the data. */
+.pb-row--scaled {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6.5rem, auto);
+  align-items: center;
+  column-gap: 1rem;
+  row-gap: 0.4rem;
+}
+
+.pb-bar {
+  grid-column: 1 / -1;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.1);
+  overflow: hidden;
+}
+
+.pb-bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.5);
+  transform-origin: left;
+  animation: pb-grow 850ms cubic-bezier(0.22, 1, 0.36, 1) both 200ms;
+}
+
+/* The longest window carries the strongest fill, the way a lit axis does. */
+.pb-row--scaled:last-child .pb-bar__fill {
+  background: rgb(from var(--pf-cream) r g b / 0.85);
+}
+
+@keyframes pb-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-bar__fill { animation: none; }
+}
+
+/* Asymmetry: the scale panel is the one thing worth reading wide. */
+/* Asymmetric like .st-cols on the stats board, not two equal halves: the narrow
+   column takes the short label-and-value panels, the wide one the reading. */
+@media (min-width: 900px) {
+  .pb-panels {
+    grid-template-columns: 1fr 1.4fr;
+    /* No align-items: .st-cols has none either, so two cards on the same row
+       stretch to the same height. That is why "YOUR EYE" and "PALIERS" end level
+       on the stats board, and why mine did not. */
+  }
+  .pb-panel--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Statements. Four full sentences in a row's label slot read as a wall of bright
+   prose: the profile's row pattern works because its labels are one or two words
+   ("Theme", "Daily goal") and the sentence lives in the mono help. Where a rule IS
+   a sentence, it takes the lede treatment instead, the same scale and ink as the
+   page intro. */
+/* Same rhythm as a row's 0.8rem padding, so two panels side by side breathe alike. */
+.pb-statements {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.pb-statement {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-statement::before {
+  content: "";
+  display: inline-block;
+  width: 0.28rem;
+  height: 0.28rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.12rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.28);
+  vertical-align: middle;
+}
+
+/* "YOUR EYE" card from the stats board, verbatim geometry: hero figure with its
+   mono unit beneath, content beside it, then a divider and a footer of two small
+   values. Only modes with a real defining figure get one (Expert has none, so it
+   has no hero rather than an invented number). */
+.pb-hero {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 2.2vw, 1.5rem);
+}
+
+.pb-hero__fig {
+  display: grid;
+  justify-items: center;
+  flex: none;
+}
+
+.pb-hero__num {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 680;
+  line-height: 1;
+  color: var(--pf-cream);
+  font-variant-numeric: tabular-nums;
+}
+
+.pb-hero__unit {
+  font-family: var(--pf-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.5);
+}
+
+.pb-hero__main {
+  flex: 1;
+  display: grid;
+  gap: 0.42rem;
+  min-width: 0;
+}
+
+.pb-hero__line {
+  max-width: 46ch;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-hero__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+.pb-hero__stat {
+  font-family: var(--pf-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.5);
+}
+
+.pb-hero__stat em {
+  font-style: normal;
+  font-weight: 640;
+  font-size: 0.92rem;
+  color: var(--pf-cream);
+}
+
+/* The tab panel is one cell of the .pb grid, so it has to carry the vertical
+   rhythm itself. Same gap as .pb: without it every section sat flush against the
+   next, which is how the mode chip ended up touching the tiles row. */
+.pb-stack {
+  display: grid;
+  gap: clamp(1.1rem, 3vh, 2rem);
+}
+
+/* Buttons the way the profile does them (.ps-eye__cta): a mono caps pill, beige as
+   INK and as a 6 % fill, never a solid beige slab. The landing fills its primary
+   with #f4f3ee, which is right on the landing and foreign here. */
+.pb-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--pf-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.28);
+  background: rgb(from var(--pf-cream) r g b / 0.06);
+  color: var(--pf-cream);
+  transition: background-color 160ms ease, transform 160ms ease, border-color 160ms ease;
+}
+
+.pb-cta:hover {
+  background: rgb(from var(--pf-cream) r g b / 0.12);
+  transform: translateY(-1px);
+}
+
+/* Emphasis the way the stats board marks a lit axis: a brighter contour, not a
+   heavier fill. */
+.pb-cta--strong {
+  border-color: rgb(from var(--pf-cream) r g b / 0.55);
+  background: rgb(from var(--pf-cream) r g b / 0.12);
+}
+
+.pb-cta--strong:hover {
+  border-color: var(--pf-cream);
+  background: rgb(from var(--pf-cream) r g b / 0.18);
+}
+
+.pb-cta:focus-visible {
+  outline: 2px solid rgb(from var(--pf-cream) r g b / 0.7);
+  outline-offset: 2px;
+}
+
+/* The mode's signature card takes the ranked-card treatment from ProfileSummary:
+   accent contour at 32 %, a 7 % radial wash from the top right. Same numbers, and
+   the same reason: the accent marks the one card that says what this mode IS. */
+.pb-panel--accent {
+  border-color: color-mix(in srgb, var(--pb-accent) 32%, transparent);
+  background:
+    radial-gradient(
+      120% 80% at 85% 0%,
+      color-mix(in srgb, var(--pb-accent) 7%, transparent),
+      transparent 60%
+    ),
+    color-mix(in srgb, var(--pf-bg) 90%, transparent);
+}
+
+.pb-panel--accent .pb-panel__label {
+  color: color-mix(in srgb, var(--pb-accent) 48%, var(--pf-cream));
+}
+
+/* The unit under the hero figure, and the small values in its foot: accent mixed,
+   the way the ranked card colours "PTS THIS SEASON" while the big rating stays
+   cream. The figure itself keeps full ink so it stays the brightest thing. */
+.pb-panel--accent .pb-hero__unit {
+  color: color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
+}
+
+.pb-panel--accent .pb-hero__stat {
+  color: color-mix(in srgb, var(--pb-accent) 42%, var(--pf-cream));
+}
+
+.pb-panel--accent .pb-hero__foot {
+  border-top-color: color-mix(in srgb, var(--pb-accent) 24%, transparent);
+}
+
+/* The dashed status pill takes the ActivityBoard session pill: border 45 %,
+   text 62 % mixed. */
+.pb-note {
+  border-color: color-mix(in srgb, var(--pb-accent) 45%, transparent);
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+/* The longest window is the data point that matters, so it carries the accent the
+   way the stats sparkline carries blue: the series colour, not a decoration. */
+.pb-row--scaled:last-child .pb-bar__fill {
+  background: color-mix(in srgb, var(--pb-accent) 70%, var(--pf-cream));
+}
+
+.pb-panel--accent .pb-tile__big,
+.pb-panel--accent .pb-hero__num {
+  color: var(--pf-cream);
+}
+
+/* THE LADDER — the one graphic on the page.
+   The audience is graphic design students: a five-line table of intervals is
+   something they will read once and forget, while the same data drawn shows the
+   whole mechanic at a glance. Nothing here is decorative, every length and every
+   colour step is a value from the engine.
+   Colour ramps with the level, mixed into the ink the way the profile does it
+   (color-mix accent into --pf-cream), so the rung you want to reach is visibly
+   the most saturated one. --pb-step carries the rung's position, 0 to 1. */
+.pb-ladder {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.pb-ladder__scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(0.5rem, 1.4vw, 1rem);
+  align-items: end;
+}
+
+@media (max-width: 760px) {
+  .pb-ladder__scale {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}
+
+.pb-step {
+  display: grid;
+  gap: 0.32rem;
+  padding-top: 0.2rem;
+  /* The rung's own colour: from a hint of accent at level 0 to nearly full accent
+     at stable. calc inside color-mix keeps one formula for the five rungs. */
+  --pb-step-ink: color-mix(
+    in srgb,
+    var(--pb-accent) calc(18% + var(--pb-step) * 64%),
+    var(--pf-cream)
+  );
+}
+
+.pb-step__level {
+  font-family: var(--pf-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.38);
+}
+
+.pb-step__name {
+  font-size: 0.82rem;
+  font-weight: 560;
+  line-height: 1.2;
+  color: var(--pb-step-ink);
+}
+
+.pb-step__bar {
+  display: block;
+  height: 0.4rem;
+  margin-top: 0.18rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.1);
+  overflow: hidden;
+}
+
+.pb-step__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--pb-step-ink);
+  transform-origin: left;
+  animation: pb-grow 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(200ms + var(--pb-step) * 300ms);
+}
+
+.pb-step__window {
+  font-family: var(--pf-mono);
+  font-size: 0.86rem;
+  font-weight: 640;
+  color: var(--pb-step-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.pb-step__unit {
+  font-family: var(--pf-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.34);
+  margin-top: -0.22rem;
+}
+
+/* The key reads as one line of three facts, each marked by the sign of its move. */
+.pb-ladder__key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+  margin: 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+  font-family: var(--pf-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.5);
+}
+
+.pb-ladder__key span::before {
+  margin-right: 0.42rem;
+  font-weight: 700;
+}
+
+.pb-ladder__up::before {
+  content: "+1";
+  color: color-mix(in srgb, var(--pb-accent) 70%, var(--pf-cream));
+}
+
+.pb-ladder__down::before {
+  content: "-1";
+  color: rgb(from var(--pf-cream) r g b / 0.7);
+}
+
+.pb-ladder__hold::before {
+  content: "4>3";
+  color: rgb(from var(--pf-cream) r g b / 0.7);
+}
+
+/* THE MOVE DIAGRAM — each rule drawn as one move on the five-rung ladder.
+   Design students will read a diagram in a second and a five-line table never.
+   The levels shown are examples: the rule applies from wherever the face sits. */
+.pb-moves {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+.pb-move {
+  display: grid;
+  gap: 0.34rem;
+  align-content: start;
+}
+
+.pb-move__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.pb-move__label {
+  font-size: 0.86rem;
+  font-weight: 560;
+  color: rgb(from var(--pf-cream) r g b / 0.84);
+}
+
+.pb-move__delta {
+  flex: none;
+  font-family: var(--pf-mono);
+  font-size: 0.72rem;
+  font-weight: 640;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+  font-variant-numeric: tabular-nums;
+}
+
+/* Five dots, one per rung. The rung it leaves is an outline, the rung it lands on
+   is filled in the accent, and a face that holds gets a ring instead of a move. */
+.pb-move__track {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.18rem 0;
+}
+
+.pb-dot {
+  width: 0.44rem;
+  height: 0.44rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.14);
+  transition: none;
+}
+
+.pb-dot.is-from {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgb(from var(--pf-cream) r g b / 0.55);
+}
+
+.pb-dot.is-to {
+  background: color-mix(in srgb, var(--pb-accent) 70%, var(--pf-cream));
+  box-shadow: none;
+  transform: scale(1.35);
+}
+
+/* Holding is not a move: the dot keeps its outline and gains a halo rather than
+   jumping, so "nothing happened" reads as clearly as "+1". */
+.pb-dot.is-hold {
+  background: transparent;
+  transform: none;
+  box-shadow:
+    inset 0 0 0 1px rgb(from var(--pf-cream) r g b / 0.55),
+    0 0 0 3px rgb(from var(--pf-cream) r g b / 0.08);
+}
+
+.pb-move__help {
+  font-family: var(--pf-mono);
+  font-size: 0.6rem;
+  line-height: 1.45;
+  max-width: 34ch;
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+}
+
+/* THE ROUND — drawn as the screen the player actually meets, rather than described.
+   A design student sees the layout in one look: one sample, four names, one right.
+   The four names stay in the interface face on purpose, because that is the rule:
+   only the centre sample is set in the target typeface. */
+.pb-round {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+.pb-round__stage {
+  display: grid;
+  place-items: center;
+  gap: 0.5rem;
+  padding: clamp(1.1rem, 3vw, 2rem) 1rem;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+  border-radius: 0.7rem;
+  background: rgb(from var(--pf-cream) r g b / 0.03);
+}
+
+.pb-round__word {
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--pf-cream);
+}
+
+/* auto-fit rather than a viewport media query: this panel can sit in the narrow
+   column or across the page, and the options have to follow the space they get,
+   not the size of the window. */
+.pb-round__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.pb-round__opt {
+  padding: 0.5rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.16);
+  background: rgb(from var(--pf-cream) r g b / 0.04);
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 560;
+  color: rgb(from var(--pf-cream) r g b / 0.72);
+}
+
+/* The right answer marked the way the ladder marks the rung you land on. */
+.pb-round__opt.is-right {
+  border-color: color-mix(in srgb, var(--pb-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--pb-accent) 10%, transparent);
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+/* Rotation strip: ten ticks, and every fifth is the one where the word changes. */
+.pb-round__rotation {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pb-tick {
+  width: 0.5rem;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.14);
+}
+
+.pb-tick.is-change {
+  width: 0.22rem;
+  height: 0.7rem;
+  background: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+.pb-round__rotlabel {
+  margin-left: 0.5rem;
+  font-family: var(--pf-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+}
+
+/* How to read the drawing. A diagram without its convention is decoration, and
+   this is the line that turns one into the other. Lede treatment, so it reads as
+   guidance and not as another rule. */
+.pb-caption {
+  margin: -0.3rem 0 1rem;
+  max-width: 62ch;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+/* The move dots carry the ladder's own colour ramp, so a reader recognises the
+   rungs from one drawing to the other instead of having to be told twice. */
+.pb-move__track .pb-dot:nth-child(1) { --pb-rung: 0.18; }
+.pb-move__track .pb-dot:nth-child(2) { --pb-rung: 0.34; }
+.pb-move__track .pb-dot:nth-child(3) { --pb-rung: 0.5; }
+.pb-move__track .pb-dot:nth-child(4) { --pb-rung: 0.66; }
+.pb-move__track .pb-dot:nth-child(5) { --pb-rung: 0.82; }
+
+.pb-dot {
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--pb-accent) calc(var(--pb-rung, 0.5) * 100%), var(--pf-cream)) 22%,
+    transparent
+  );
+}
+
+.pb-dot.is-to {
+  background: color-mix(
+    in srgb,
+    var(--pb-accent) calc(var(--pb-rung, 0.5) * 100%),
+    var(--pf-cream)
+  );
+}
+
+/* The sample is the only thing on this page set in a catalogue face, so it says
+   so. Without this line a reader has no way to know the word is the question. */
+.pb-round__hint {
+  font-family: var(--pf-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
+}
+
+/* THE DEMO ROUND — the only interactive thing on the page, and the only way this
+   block ever made sense. A picture of a screen explains nothing; playing one
+   round teaches the format, the retry rule and "only the centre is set" at once.
+   Built entirely from the vocabulary already on the page: the stage from the old
+   diagram, the option pill from .pb-round__opt, the accent from the ladder. */
+.pb-demo {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+.pb-demo__stage {
+  display: grid;
+  place-items: center;
+  padding: clamp(1.2rem, 3.4vw, 2.2rem) 1rem;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+  border-radius: 0.7rem;
+  background: rgb(from var(--pf-cream) r g b / 0.03);
+}
+
+.pb-demo__word {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--pf-cream);
+}
+
+.pb-demo__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.pb-demo__opt {
+  appearance: none;
+  cursor: pointer;
+  padding: 0.6rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.2);
+  background: rgb(from var(--pf-cream) r g b / 0.05);
+  color: rgb(from var(--pf-cream) r g b / 0.82);
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 560;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.pb-demo__opt:hover:not(:disabled) {
+  border-color: rgb(from var(--pf-cream) r g b / 0.45);
+  background: rgb(from var(--pf-cream) r g b / 0.1);
+  transform: translateY(-1px);
+}
+
+.pb-demo__opt:focus-visible {
+  outline: 2px solid rgb(from var(--pf-cream) r g b / 0.7);
+  outline-offset: 2px;
+}
+
+/* A wrong pick is spent, not punished: it dims and steps aside, which is exactly
+   what the retry rule says happens. */
+.pb-demo__opt.is-wrong {
+  cursor: default;
+  border-color: rgb(from var(--pf-cream) r g b / 0.1);
+  background: transparent;
+  color: rgb(from var(--pf-cream) r g b / 0.3);
+  text-decoration: line-through;
+}
+
+.pb-demo__opt.is-right {
+  cursor: default;
+  border-color: color-mix(in srgb, var(--pb-accent) 60%, transparent);
+  background: color-mix(in srgb, var(--pb-accent) 14%, transparent);
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+.pb-demo__say {
+  margin: 0;
+  min-height: 2.4em;
+  max-width: 62ch;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-demo__say strong {
+  font-weight: 640;
+  color: var(--pf-cream);
+}
+
+.pb-demo__reset {
+  justify-self: start;
+  appearance: none;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--pf-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.45);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pb-demo__reset:hover {
+  color: var(--pf-cream);
+}
+
+/* THE SPEED AXIS — what belongs to competition and to nothing else.
+   Training is measured in questions, competition in seconds, and the two-second
+   bonus is the whole difference. The axis runs 0 to 4s, the bonus zone is the
+   first half, and after an answer the player's own time lands on it. The 2000 ms
+   threshold is COMPETITION_FAST_BONUS_THRESHOLD_MS, not a drawing. */
+.pb-speed {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.pb-speed__track {
+  position: relative;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.08);
+  overflow: hidden;
+}
+
+.pb-speed__fast {
+  position: absolute;
+  inset: 0 50% 0 0;
+  background: color-mix(in srgb, var(--pb-accent) 22%, transparent);
+}
+
+.pb-speed__mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--pb-accent) 70%, var(--pf-cream));
+}
+
+.pb-speed__you {
+  position: absolute;
+  top: 50%;
+  width: 0.62rem;
+  height: 0.62rem;
+  margin-left: -0.31rem;
+  border-radius: 999px;
+  background: var(--pf-cream);
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 3px rgb(from var(--pf-cream) r g b / 0.14);
+}
+
+.pb-speed__legend {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  font-family: var(--pf-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.4);
+}
+
+.pb-speed__zone.is-fast {
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+.pb-speed__end {
+  margin-left: auto;
+}
+
+/* TRAINING AGAINST COMPETITION — the block that says what this mode IS.
+   The first row is the one that matters: training draws from your own 30 faces,
+   competition from all 1172, which is the only reason two scores can be compared.
+   Both bars are on the same scale, so 30 against 1172 is drawn at its real ratio
+   of about one fortieth rather than described. */
+.pb-vs {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.pb-vs__head,
+.pb-vs__row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(0, 1.2fr) minmax(0, 1.2fr);
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.pb-vs__head {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+.pb-vs__row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgb(from var(--pf-cream) r g b / 0.06);
+}
+
+.pb-vs__row:last-child {
+  border-bottom: none;
+}
+
+.pb-vs__side {
+  font-family: var(--pf-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.4);
+}
+
+.pb-vs__side.is-this {
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+.pb-vs__axis {
+  font-size: 0.82rem;
+  font-weight: 560;
+  color: rgb(from var(--pf-cream) r g b / 0.84);
+}
+
+.pb-vs__cell {
+  display: grid;
+  gap: 0.34rem;
+  min-width: 0;
+}
+
+.pb-vs__val {
+  font-family: var(--pf-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  color: rgb(from var(--pf-cream) r g b / 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The side this page is about reads brighter, so the eye lands on it first. */
+.pb-vs__cell.is-this .pb-vs__val {
+  color: color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
+}
+
+.pb-vs__bar {
+  display: block;
+  height: 0.32rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.08);
+  overflow: hidden;
+}
+
+.pb-vs__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.4);
+  transform-origin: left;
+  animation: pb-grow 850ms cubic-bezier(0.22, 1, 0.36, 1) both 200ms;
+}
+
+.pb-vs__cell.is-this .pb-vs__fill {
+  background: color-mix(in srgb, var(--pb-accent) 70%, var(--pf-cream));
+}
+
+/* The round is a resource that runs out, so the card shows it running out. One
+   pass, slow enough to read as depletion rather than as a loading bar, and it
+   stops empty because that is what happens at 2:00. */
+.pb-drain {
+  display: block;
+  height: 0.34rem;
+  margin-top: 0.2rem;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.08);
+  overflow: hidden;
+}
+
+.pb-drain__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
+  transform-origin: left;
+  animation: pb-drain 5200ms linear both 600ms;
+}
+
+@keyframes pb-drain {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-drain__fill { animation: none; transform: scaleX(1); }
+}
+
+/* Field of 39 dots, one lit on the training side: 1172 divided by 30 is 39.07, so
+   one dot in thirty-nine is the real share of the catalogue a training set covers.
+   Drawn rather than stated, because "2.5 %" means nothing and this does. */
+.pb-field {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  gap: 0.22rem;
+  max-width: 9rem;
+}
+
+.pb-field__dot {
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: rgb(from var(--pf-cream) r g b / 0.12);
+}
+
+.pb-field__dot.is-on {
+  background: rgb(from var(--pf-cream) r g b / 0.55);
+}
+
+.pb-vs__cell.is-this .pb-field__dot.is-on {
+  background: color-mix(in srgb, var(--pb-accent) 70%, var(--pf-cream));
+}
+
+/* A duration. Training runs off the edge and fades because nothing ends it;
+   competition stops dead against its own end mark. */
+.pb-span {
+  display: block;
+  position: relative;
+  height: 0.9rem;
+  max-width: 9rem;
+}
+
+.pb-span__line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 0.24rem;
+  border-radius: 999px;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    to right,
+    rgb(from var(--pf-cream) r g b / 0.45),
+    rgb(from var(--pf-cream) r g b / 0)
+  );
+}
+
+.pb-span.is-bounded .pb-span__line {
+  right: 0.5rem;
+  background: color-mix(in srgb, var(--pb-accent) 60%, var(--pf-cream));
+}
+
+.pb-span.is-bounded::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0.35rem;
+  width: 2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--pb-accent) 80%, var(--pf-cream));
+}
+
+/* The rung track from the moves diagram, reused so the two blocks speak the same
+   language: training steps one rung, competition does not move at all. */
+.pb-vs__track {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  height: 0.9rem;
+}
+
+.pb-vs__note {
+  margin: 0.8rem 0 0;
+  max-width: 62ch;
+  font-family: var(--pf-mono);
+  font-size: 0.6rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+}
+
+/* Rows inside the signature card sit below the hero figure, separated from it the
+   way the card's own foot is. */
+.pb-hero__rows {
+  margin-top: 0.9rem;
+  padding-top: 0.2rem;
+  border-top: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+/* THE NORMALISER — expert's one rule, playable before the mode is.
+   Three cells in a row: what you typed, what the engine compares, and the key on
+   file. The transform between them IS the rule, so it is shown rather than
+   described, and the match lights up in the mode accent. */
+.pb-norm {
+  display: grid;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
+}
+
+.pb-norm__label {
+  font-family: var(--pf-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.42);
+}
+
+.pb-norm__input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 0.7rem;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.18);
+  background: rgb(from var(--pf-cream) r g b / 0.04);
+  color: var(--pf-cream);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.pb-norm__input::placeholder {
+  color: rgb(from var(--pf-cream) r g b / 0.25);
+}
+
+.pb-norm__input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+.pb-norm__flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.6rem;
+}
+
+.pb-norm__cell {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgb(from var(--pf-cream) r g b / 0.08);
+  background: rgb(from var(--pf-cream) r g b / 0.02);
+  min-width: 0;
+}
+
+.pb-norm__cap {
+  font-family: var(--pf-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(from var(--pf-cream) r g b / 0.38);
+}
+
+.pb-norm__val {
+  font-size: 0.86rem;
+  color: rgb(from var(--pf-cream) r g b / 0.72);
+  overflow-wrap: anywhere;
+}
+
+.pb-norm__val.is-code {
+  font-family: var(--pf-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.pb-norm__val.is-match {
+  color: color-mix(in srgb, var(--pb-accent) 62%, var(--pf-cream));
+}
+
+.pb-norm__say {
+  margin: 0;
+  min-height: 2.4em;
+  max-width: 62ch;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
+.pb-norm__say strong {
+  font-weight: 640;
+  color: var(--pf-cream);
+}

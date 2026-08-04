@@ -110,7 +110,11 @@ Ces règles viennent du propriétaire du projet et valent pour tout le travail s
 
 **Pas de tiret comme séparateur** dans les textes rédigés. Virgules, deux-points, parenthèses ou phrases séparées à la place.
 
-**Référence direction artistique.** En cas de doute sur la DA, se référer à la landing, la page principale du site en local. C'est elle qui tranche.
+**La direction artistique appartient au propriétaire du projet, entièrement.** Règle posée le 2026-07-29. Ce qui est de son ressort exclusif : les couleurs et leurs proportions sur une page, les espacements, les tailles, les alignements, les rayons, les ombres, les animations, la typographie visuelle, la hiérarchie graphique, le rythme, l'équilibre des masses, l'identité de marque, et plus généralement toute décision esthétique. On peut signaler un problème ou proposer une piste, on ne la valide jamais et on ne l'implémente jamais sans son accord explicite.
+
+Ce qui reste ouvert sans accord préalable : penser l'interface sous un angle **fonctionnel et systémique**. Organisation, parcours, hiérarchie de l'information, incohérences UX, proposition d'un composant ou d'un comportement qui améliore le produit.
+
+**Référence en cas de doute.** Quand une décision visuelle est déjà prise et qu'il s'agit de la retrouver, la landing tranche. Les règles qu'elle porte sont consignées dans `docs/ui/ui-consistency-contract.md`, autorité documentaire unique en matière de DA.
 
 **Pas de captures d'écran de vérification.** Le propriétaire regarde le site en live. Vérifier autrement : `typecheck`, `curl`, inspection du code, ou pilotage du navigateur via le plugin `playwright`.
 

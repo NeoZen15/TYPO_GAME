@@ -98,8 +98,35 @@ CREATE TABLE IF NOT EXISTS uef_2026_12 PARTITION OF user_event_fact
 --    sa partition mensuelle.
 -- ============================================================
 
-INSERT INTO user_event_fact
-SELECT * FROM uef_moved_011;
+-- La liste de colonnes est OBLIGATOIRE ici, et son absence etait un defaut
+-- bloquant. `uef_moved_011` vient d'un DELETE ... RETURNING *, elle porte donc
+-- les 24 colonnes de user_event_fact, `is_retry` comprise. Or `is_retry` est
+-- GENERATED ALWAYS AS (...) STORED depuis 001b_event_type.sql, et PostgreSQL
+-- refuse toute valeur non DEFAULT sur une colonne generee. Un SELECT * aurait
+-- donc fait echouer l'etape 3 a l'interieur de la transaction, apres que les
+-- lignes ont ete retirees de uef_default : rollback complet, aucune perte, mais
+-- aucune partition creee non plus, et la dette continuait de grossir.
+-- `is_retry` est volontairement absente de la liste : la base la recalcule
+-- depuis attempt_index, a l'identique.
+-- Les 23 colonnes inscriptibles, dans l'ordre du catalogue, releve en base le
+-- 2026-08-01. La 24e, `is_retry`, est la colonne generee et n'apparait donc ni
+-- ici ni dans le SELECT.
+INSERT INTO user_event_fact (
+  event_id, idempotency_key, event_ts_utc, ingested_at_utc,
+  user_id, session_id, mode, global_q_index,
+  question_id, attempt_index, typeface_slug, answer_slug, is_correct,
+  response_time_ms, mastery_before, mastery_after,
+  misread_shown, reading_shown, display_word, reason_code,
+  seed, engine_version, event_type
+)
+SELECT
+  event_id, idempotency_key, event_ts_utc, ingested_at_utc,
+  user_id, session_id, mode, global_q_index,
+  question_id, attempt_index, typeface_slug, answer_slug, is_correct,
+  response_time_ms, mastery_before, mastery_after,
+  misread_shown, reading_shown, display_word, reason_code,
+  seed, engine_version, event_type
+FROM uef_moved_011;
 
 DROP TABLE uef_moved_011;
 

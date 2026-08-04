@@ -3,13 +3,17 @@
 Pour le dev (Claude) qui implémente. À lire **avec** les 3 autres docs.
 Direction **décidée le 2026-06-16** : carte-galaxie qui écrit **DWIGGINS** · **un seul écran zoomable** (le zoom = la navigation) · **HUD compact** (pas de bloc avatar).
 
+> **Point à revoir depuis le 2026-07-29.** La carte-galaxie DWIGGINS est confirmée comme **la représentation principale** de la progression de l'élève, c'est le cœur de la vision (`docs/game/vision-produit-dwiggins.md` §8). En revanche le HUD compact du §3, `TRAINED EYE · LVL 7 · 320/700 XP · streak`, fait de l'XP la mesure du regard, ce que la vision interdit : l'XP est une couche d'engagement, jamais une preuve de compétence (invariant I-19), et le mastery n'est jamais présenté comme une note (I-18). Le HUD doit être repensé pour que ce qui mesure le regard vienne des faits pédagogiques, pas du compteur de points.
+> Voir le registre des contradictions, entrée 4, dans le document de vision.
+
 ## 0. Les 4 docs (ordre de lecture)
 1. `docs/game/NIVEAU.rtf` — la **vision joueur** (le pourquoi, le ton).
 2. `docs/game/perceptual-progression-spec.md` — **modèle data + 35 paliers (§4·B) + types TS (§6.3) + migration profil**.
 3. `docs/game/scoring-and-selection-math.md` — **formules + constantes (§13) + MVP (§18)**.
 4. Ce brief — la **direction visuelle de la page Parcours**.
 
-> Règle : en cas de contradiction, **la spec maths fait foi**.
+> ~~Règle : en cas de contradiction, **la spec maths fait foi**.~~
+> **CORRIGÉ le 2026-07-29 : cette règle est renversée.** La math spec est sortie de la hiérarchie documentaire, elle est devenue un document de recherche sans autorité. En cas de contradiction, l'ordre est : **`docs/game/vision-produit-dwiggins.md`** (les principes), puis **`docs/game/training-engine-spec-v2-clean.md`** (leur traduction en règles pédagogiques), puis **`docs/game/architecture-backend.md`** (leur implémentation technique), puis les documents d'interface dont celui ci. Les renvois `math §X` de ce brief restent lisibles comme trace du raisonnement, ils ne sont plus des références applicables.
 
 ---
 

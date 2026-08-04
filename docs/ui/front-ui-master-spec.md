@@ -1,7 +1,9 @@
 # Front UI Master Spec (Landing + Onboarding + Game)
 
 Last update: 2026-03-13
-Status: canonical front reference
+Status: subordinate reference for routes, flows and per-screen timings.
+
+> **Rang, posé le 2026-07-29.** Ce document **ne décide plus la direction artistique**. Son ancien statut, « canonical front reference », datait du 13 mars et précédait tout le travail DA de juin et juillet, ce qui a laissé quatre documents revendiquer la même autorité. L'autorité DA unique est `docs/ui/ui-consistency-contract.md`, et au dessus d'elle la landing elle même, qui tranche. Ce qui reste valable ici : l'arborescence des routes, l'ordre des flux et les valeurs de timing écran par écran. Toute valeur de couleur, de graisse, de rayon ou de bouton qui contredirait le contrat de cohérence est périmée.
 
 ## 1) Purpose
 

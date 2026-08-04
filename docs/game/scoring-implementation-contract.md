@@ -1,5 +1,15 @@
 # Scoring — contrat d'implémentation
 
+> # DOCUMENT DE RECHERCHE — AUCUNE AUTORITÉ SUR L'IMPLÉMENTATION
+>
+> **Sorti de la hiérarchie documentaire le 2026-07-29, par ricochet.** Ce document est le **contrat de branchement de la math spec v3.1** : il l'annonce lui même dès son en tête (« les formules vivent dans `scoring-and-selection-math.md` », « en cas de doute, **la math-spec fait foi** ») et il y renvoie par `math §X` d'un bout à l'autre. Or la math spec est devenue un document de recherche sans valeur normative. Un contrat d'implémentation qui tire son autorité d'un document de recherche n'en a donc plus non plus.
+>
+> **Ce qui a été sauvé et vit désormais ailleurs.** La « règle d'or » du §1, stocker les faits et recalculer les dérivés, était juste : elle est **promue en principe d'architecture** dans `docs/game/vision-produit-dwiggins.md` §3 et appliquée dans `docs/game/architecture-backend.md`. Rien de valable n'est perdu en retirant l'autorité de ce document.
+>
+> **Ce qui ne doit surtout pas être repris tel quel.** Le tableau « A — Faits stockés » du §1 range `xp_total`, `streak`, `coins` et `arena` au même rang que la maîtrise, ce qui installe la seconde vérité pédagogique que la vision refuse (I-19). Et le mapping du §2 fait afficher `LVL 7` et une barre d'XP comme identité de progression, ce que I-18 interdit : la carte DWIGGINS est la représentation principale de l'élève.
+>
+> Même chemin de retour que pour la math spec : réévaluer au regard de la vision, reformuler, intégrer explicitement dans une spécification vivante, et seulement alors développer.
+
 Status: draft
 Last update: 2026-06-16
 

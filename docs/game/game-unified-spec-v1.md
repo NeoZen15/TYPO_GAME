@@ -1,5 +1,9 @@
 # Game Unified Specification (V1)
 
+> **PARTIELLEMENT CADUC depuis le 2026-07-29**, source de vérité supérieure : `docs/game/vision-produit-dwiggins.md`.
+> Trois points à ne plus suivre. Le §3 « `/game` -> `Play again` relance une session locale » suppose une partie qui se termine : une séance d'entraînement se termine désormais par une décision de l'élève suivie d'un bilan, et ne clôt aucun état pédagogique (invariant I-17). Le §4.1 « garder le même mot pour toute la session » est contredit par la spec moteur v2 et par le code, qui changent de mot toutes les 5 questions en entraînement. Le §10.5 « Reading Card : implémentée, Misread : non finalisée » est **factuellement faux** : aucune des deux n'existe dans le runtime, `content/type-cards/` est absent.
+> Voir le registre des contradictions, entrées 7, 10, 11 et 12, dans le document de vision.
+
 Last update: 2026-03-13
 Status: canonical merged spec
 
