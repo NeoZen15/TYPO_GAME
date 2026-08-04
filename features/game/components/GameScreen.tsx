@@ -125,8 +125,21 @@ const takeAttemptId = ({ fresh }: { fresh: boolean }): string => {
 // this tab sending, for ever, an identifier the server can never rejoin, so every
 // single reload would open a new session. That is the reload guarantee lost
 // permanently at the first thirty minute sweep, and this is the line that keeps it.
+// The shape checked here rather than trusted, because whatever lands in storage
+// goes back out as a primary key on the next start. The start route answers JSON
+// even on a 500, so a response that carried no session at all would hand this
+// function `undefined`, and String(undefined) is a perfectly storable "undefined"
+// that would burn a session row on every later load. Anything that is not an
+// identifier is therefore ignored rather than stored, which makes that whole
+// class harmless instead of merely detectable. Same family as
+// ATTEMPT_ID_PATTERN (lib/game/training/contracts.ts): version 1 to 5, variant
+// 8 to b, since that is what the server will accept back.
+const ATTEMPT_ID_SHAPE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 const adoptAttemptId = (serverSessionId: string) => {
   if (typeof window === "undefined") return;
+  if (!ATTEMPT_ID_SHAPE.test(serverSessionId)) return;
   try {
     window.sessionStorage.setItem(ATTEMPT_STORAGE_KEY, serverSessionId);
   } catch {

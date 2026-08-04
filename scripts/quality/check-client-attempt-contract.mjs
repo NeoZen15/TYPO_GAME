@@ -35,8 +35,11 @@
 // implementation. Every rule that can be scoped is then scoped to the function
 // that really does the work, located by brace matching rather than by name, so a
 // rename is not a false positive. The rules that cannot be scoped, because they
-// concern call sites spread across the JSX or an import, are marked WHOLE FILE
-// where they sit. The pure part of that machinery self-tests on synthetic lines
+// concern call sites spread across the JSX, an import, or a module-level
+// declaration, are marked WHOLE FILE where they sit, numbered, and there are
+// SIXTEEN of them: the count is the number of scans of the whole source, which is
+// `grep -c "WHOLE FILE ("` expanded by the ranges those markers carry. Claiming an
+// enumeration is complete without counting it is what the re-review caught here. The pure part of that machinery self-tests on synthetic lines
 // before a single rule runs.
 //
 // This script is standalone: it guards features/game/components/GameScreen.tsx,
@@ -285,24 +288,6 @@ const declarationStart = (source, blockOpen, name) => {
   return candidates.length > 0 ? Math.max(...candidates) : blockOpen;
 };
 
-// How many brace pairs enclose an index. Two statements at the same depth in one
-// function body are on the same unconditional path; a statement one level deeper
-// sits in a branch, a callback or a timer.
-const depthAt = (pairs, index) =>
-  pairs.filter((pair) => pair.open < index && index < pair.close).length;
-
-// The statement an index belongs to, bounded by the nearest statement break.
-// `if (fresh) storage.setItem(...)` comes back whole, starting with `if`, which is
-// how a persist made conditional by one added word is caught even though it adds
-// no brace and so does not change the depth.
-const statementAround = (source, index) => {
-  let start = index;
-  while (start > 0 && !";{}".includes(source[start - 1])) start -= 1;
-  let end = index;
-  while (end < source.length && source[end] !== ";") end += 1;
-  return source.slice(start, end).trim();
-};
-
 // The parenthesised argument list of the call that follows `from`.
 const parenRegionAfter = (source, from) => {
   const open = source.indexOf("(", from);
@@ -397,12 +382,128 @@ const findReentranceGuard = (source, from, to) => {
   return null;
 };
 
-// Does this body return exactly this symbol somewhere, and not merely something
-// derived from it. `return minted.slice(0, 8)` contains `return minted` as a
-// substring while sending a value that is not the one stored, which is how a
-// looser test would be fooled.
-const returnsExactly = (body, symbol) =>
-  [...body.matchAll(/return\s+([^;]*);/g)].some((match) => match[1].trim() === symbol);
+// Just enough TypeScript removed for a fragment of this file to be executed:
+// return annotations on an arrow and on a declaration, object type literals and
+// simple named types in a parameter position, casts, and annotations on simple
+// locals. Self-tested below on the five forms this file actually uses. Anything
+// it cannot handle makes the evaluation throw, which is reported as a failure
+// with its cause, never silently skipped.
+const stripTypes = (source) =>
+  source
+    .replace(/\)\s*:\s*[^={;]*=>/g, ") =>")
+    .replace(/\)\s*:\s*[A-Za-z_$][\w$<>[\].|\s]*\{/g, ") {")
+    .replace(/:\s*\{[^{}]*\}(?=\s*(?:=>|\)|,|=))/g, "")
+    .replace(/:\s*(?:string|number|boolean|Uint8Array|[A-Z][\w$]*(?:<[^<>]*>)?)(?=\s*[,)=])/g, "")
+    .replace(/\bas\s+(?:const|[A-Za-z_$][\w$<>[\].|\s]*)/g, "")
+    .replace(/:\s*(?:string|number|boolean|Uint8Array)\b(?!\s*\()/g, "");
+
+// The parameter list of the function whose body opens at blockOpen, arrow or
+// declaration, with or without a return annotation. Needed to EVALUATE what a
+// call with no argument resolves to, rather than to recognise a default's
+// spelling: `{ fresh = true }` is one word away from `{ fresh = false }` and no
+// pattern about the presence of the word `fresh` can tell them apart.
+const parameterListBefore = (source, blockOpen) => {
+  let i = blockOpen - 1;
+  const skipBack = () => {
+    while (i >= 0 && /\s/.test(source[i])) i -= 1;
+  };
+  skipBack();
+  if (source[i] === ">" && source[i - 1] === "=") {
+    i -= 2;
+    skipBack();
+  }
+  if (source[i] !== ")") {
+    const close = source.lastIndexOf(")", i);
+    if (close === -1) return null;
+    i = close;
+  }
+  let depth = 0;
+  for (let k = i; k >= 0; k -= 1) {
+    if (source[k] === ")") depth += 1;
+    else if (source[k] === "(") {
+      depth -= 1;
+      if (depth === 0) return { open: k, close: i, text: source.slice(k + 1, i) };
+    }
+  }
+  return null;
+};
+
+// Every RENDER GATE of the file: a condition one of whose branches is JSX. Found
+// by looking at what the branches START with, `(` or `<`, never at the operator or
+// at a spelling. Two earlier versions of this rule were beaten precisely there:
+// one greped `!closeError` and missed `closeError === null && ...`, the next looked
+// only at the consequent and missed `closeError === null ? null : (`. A slice
+// containing a brace or a semicolon is not a condition, it is a piece of something
+// else, and is skipped.
+const renderGates = (source, pairs) => {
+  const gates = [];
+  const firstNonSpace = (from, limit) => {
+    let i = from;
+    while (i < limit && /\s/.test(source[i])) i += 1;
+    return i < limit ? source[i] : "";
+  };
+  const colonAfter = (from, limit) => {
+    let depth = 0;
+    for (let i = from; i < limit; i += 1) {
+      const ch = source[i];
+      if ("([{".includes(ch)) depth += 1;
+      else if (")]}".includes(ch)) depth -= 1;
+      else if (ch === ":" && depth === 0) return i + 1;
+    }
+    return -1;
+  };
+  for (const match of source.matchAll(/\?|&&/g)) {
+    const at = match.index;
+    if (
+      source[at] === "?" &&
+      (source[at + 1] === "?" || source[at + 1] === "." || source[at - 1] === "?")
+    ) {
+      continue;
+    }
+    const container = pairs
+      .filter((pair) => pair.open < at && at < pair.close)
+      .sort((a, b) => b.open - a.open)[0];
+    if (!container) continue;
+    const condition = source.slice(container.open + 1, at);
+    if (condition.trim() === "" || condition.length > 400) continue;
+    if (/[;{}]/.test(condition)) continue;
+
+    const width = source[at] === "?" ? 1 : 2;
+    const branches = [firstNonSpace(at + width, container.close)];
+    if (source[at] === "?") {
+      const alternate = colonAfter(at + 1, container.close);
+      if (alternate !== -1) branches.push(firstNonSpace(alternate, container.close));
+    }
+    if (!branches.some((start) => start === "(" || start === "<")) continue;
+    gates.push({ condition, at });
+  }
+  return gates;
+};
+
+const RESERVED = new Set([
+  "null",
+  "true",
+  "false",
+  "undefined",
+  "typeof",
+  "void",
+  "return",
+  "new",
+  "in",
+  "of",
+  "Boolean",
+  "String",
+  "Number",
+]);
+
+// Identifiers a condition really depends on: property names after a dot do not
+// count, literals and operators do not count.
+const identifiersOf = (expression) =>
+  new Set(
+    [...expression.matchAll(/(\.?)([A-Za-z_$][\w$]*)/g)]
+      .filter((match) => match[1] === "" && !RESERVED.has(match[2]))
+      .map((match) => match[2])
+  );
 
 // The body of a `finally` clause, so a rule can require a release to live there
 // rather than merely somewhere in the function.
@@ -412,6 +513,40 @@ const finallyBodyOf = (source, closeOf, from, to) => {
   const brace = source.indexOf("{", at);
   if (brace === -1 || !closeOf.has(brace)) return null;
   return { open: brace, close: closeOf.get(brace) };
+};
+
+// Does a `.ok` failure branch after the fetch actually STOP, by throwing or
+// returning, and where does that branch end. Presence of a `.ok` test proves
+// nothing: a reviewer replaced the throw with a console.error and everything
+// downstream ran anyway. Shared by both request paths, because the previous
+// version guarded the optional close and left the mandatory start without a rule.
+const shortCircuitAfter = (source, closeOf, block, fetchAt) => {
+  const body = source.slice(block.open, block.close);
+  const fetchRel = fetchAt - block.open;
+  let shortCircuits = false;
+  let checkedAt = fetchRel;
+  for (const match of body.matchAll(/\bif\s*\(/g)) {
+    const condition = parenRegionAfter(body, match.index);
+    if (!condition || condition.open < fetchRel) continue;
+    if (!/!\s*[A-Za-z_$][\w$]*\.ok\b|\.ok\s*===\s*false/.test(condition.text)) continue;
+    const tail = body.slice(condition.close + 1);
+    let branch = tail.slice(0, Math.max(0, tail.indexOf(";") + 1));
+    let branchEnd = condition.close + 1 + Math.max(0, tail.indexOf(";") + 1);
+    if (/^\s*\{/.test(tail)) {
+      const brace = block.open + condition.close + 1 + tail.indexOf("{");
+      if (closeOf.has(brace)) {
+        branch = source.slice(brace, closeOf.get(brace));
+        branchEnd = closeOf.get(brace) - block.open;
+      } else {
+        branch = tail.slice(0, 200);
+      }
+    }
+    if (/\b(?:throw|return)\b/.test(branch)) {
+      shortCircuits = true;
+      checkedAt = Math.max(checkedAt, branchEnd);
+    }
+  }
+  return { shortCircuits, checkedAt };
 };
 
 // uuid v4 out of raw bytes, the exact algorithm the client's documented fallback
@@ -522,39 +657,6 @@ const selfTest = () => {
     );
   }
 
-  // Depth and statement shape, the two rules that catch a conditional or a
-  // deferred persist. Both mutations add no call and no reorder, so nothing else
-  // would see them.
-  const depthSample = "const a = () => {\n  x();\n  if (f) { y(); }\n  t(() => { z(); });\n};";
-  const depthPairs = scanBraces(depthSample);
-  expect(
-    "same path, same depth",
-    depthAt(depthPairs, depthSample.indexOf("x()")),
-    depthAt(depthPairs, depthSample.indexOf("t(("))
-  );
-  expect(
-    "a branch is deeper",
-    depthAt(depthPairs, depthSample.indexOf("y()")) > depthAt(depthPairs, depthSample.indexOf("x()")),
-    true
-  );
-  expect(
-    "a callback is deeper",
-    depthAt(depthPairs, depthSample.indexOf("z()")) > depthAt(depthPairs, depthSample.indexOf("x()")),
-    true
-  );
-  expect(
-    "statement keeps its guard word",
-    statementAround("a(); if (f) store.set(k, v); b();", "a(); if (f) store.set".length).startsWith(
-      "if"
-    ),
-    true
-  );
-  expect(
-    "unguarded statement starts with the call",
-    statementAround("a(); store.set(k, v); b();", "a(); store.set".length).startsWith("store.set"),
-    true
-  );
-
   expect("args split at top level", splitTopLevel("KEY, f(a, b), c"), ["KEY", "f(a, b)", "c"]);
   expect("shorthand entry has a null value", entriesOf("{ attemptId }"), [
     { key: "attemptId", value: null },
@@ -572,6 +674,89 @@ const selfTest = () => {
     "const f = () => {\n  if (!x || ref.current) return;\n  ref.current = true;\n};";
   const found = findReentranceGuard(guardSample, 0, guardSample.length);
   expect("re-entrance guard found behind a compound condition", found && found.refName, "ref");
+
+  // stripTypes, on the five forms this file uses. If any of these regressed, the
+  // executed layer below would report a syntax error instead of a real defect.
+  expect("arrow return annotation removed", stripTypes("const m = (): string => {"), "const m = () => {");
+  expect(
+    "object type in a parameter position removed",
+    stripTypes("const t = ({ fresh }: { fresh: boolean }): string => {"),
+    "const t = ({ fresh }) => {"
+  );
+  expect(
+    "default plus object type plus default argument removed",
+    stripTypes("async ({ fresh = false }: { fresh?: boolean } = {}) => {"),
+    "async ({ fresh = false } = {}) => {"
+  );
+  expect(
+    "simple named type in a parameter position removed",
+    stripTypes("const a = (serverSessionId: string) => {"),
+    "const a = (serverSessionId) => {"
+  );
+  expect(
+    "declaration return annotation removed",
+    stripTypes("function m(): string {"),
+    "function m() {"
+  );
+  expect(
+    "a regex literal is left alone",
+    stripTypes("const S = /^[0-9a-f]{8}-[1-5][0-9a-f]{3}$/i;"),
+    "const S = /^[0-9a-f]{8}-[1-5][0-9a-f]{3}$/i;"
+  );
+
+  // parameterListBefore, on both function shapes.
+  const arrowSample = "const f = async ({ fresh = false }: { x?: 1 } = {}) => {\n};";
+  expect(
+    "parameter list of an arrow found",
+    parameterListBefore(arrowSample, arrowSample.indexOf("=> {") + 3)?.text,
+    "{ fresh = false }: { x?: 1 } = {}"
+  );
+  const declSample = "function f({ fresh = false } = {}): string {\n}";
+  expect(
+    "parameter list of an annotated declaration found",
+    parameterListBefore(declSample, declSample.indexOf("string {") + 7)?.text,
+    "{ fresh = false } = {}"
+  );
+
+  // Gate conditions and their identifier sets: the rule that has to see a gate
+  // whatever operator it is written with.
+  const jsxSample = [
+    "return (",
+    "  <div>",
+    "    {closeError === null && !error && ready ? (",
+    "      <Question />",
+    "    ) : null}",
+    "    {closeError ? (<p>{closeError}</p>) : null}",
+    '    {list.map((x) => (<i key={x} />))}',
+    '    <p data-state={feedback?.kind ?? "idle"}>{feedback?.text ?? "x"}</p>',
+    "  </div>",
+    ");",
+  ].join("\n");
+  const jsxGates = renderGates(jsxSample, scanBraces(jsxSample)).map((gate) =>
+    gate.condition.trim()
+  );
+  expect("compound gate found whatever its operator", jsxGates.includes("closeError === null && !error && ready"), true);
+  expect(
+    "an inverted gate whose JSX is in the alternate is still a gate",
+    renderGates("<i>{a === null ? null : (<b />)}</i>", scanBraces("<i>{a === null ? null : (<b />)}</i>")).map(
+      (gate) => gate.condition.trim()
+    ),
+    ["a === null"]
+  );
+  expect("bare gate found too", jsxGates.includes("closeError"), true);
+  expect("optional chaining and nullish are not gates", jsxGates.some((c) => c.includes("??")), false);
+  expect("a map callback is not a gate", jsxGates.some((c) => c.includes("list.map")), false);
+
+  expect(
+    "identifier set ignores property names and literals",
+    [...identifiersOf("closeError === null && !error && progress.poolSize")].sort(),
+    ["closeError", "error", "progress"]
+  );
+  expect(
+    "identifier set of a bare truthiness test",
+    [...identifiersOf("closeError ")],
+    ["closeError"]
+  );
 
   expect("v4 helper builds a version 4", v4FromBytes(new Uint8Array(16))[14], "4");
   expect(
@@ -611,6 +796,8 @@ const payloadObjectAfter = (from, limit) => {
   // refactor, so the identifier is resolved to its declaration.
   const named = /^\s*([A-Za-z_$][\w$]*)\s*\)/.exec(rest);
   if (!named) return null;
+  // WHOLE FILE (1 of 16): a payload object declared under a name is looked up in
+  // the file, since the declaration can sit anywhere before the call.
   const declaration = new RegExp(
     `(?:const|let|var)\\s+${named[1]}\\s*(?::[^=;]*)?=\\s*\\{`
   ).exec(screen);
@@ -625,6 +812,8 @@ const payloadObjectAfter = (from, limit) => {
 // shipping a 404: the two halves of the rule no longer spoke of the same path.
 // Now every training path this client fetches is resolved to the route file it
 // implies, and that file has to exist.
+// WHOLE FILE (2 of 16): every fetch of this file is enumerated, so each one can be
+// resolved to the route file it implies.
 const fetchedPaths = [...screen.matchAll(/fetch\(\s*(["'`])([^"'`]+)\1/g)].map((match) => ({
   url: match[2],
   index: match.index,
@@ -737,6 +926,8 @@ if (randomValuesAt === -1) {
   }
 }
 
+// WHOLE FILE (3, 4 and 5 of 16): the three storage access scans, reading ALL
+// occurrences and not the first of each, which is what the first version did.
 const setItemSites = [...screen.matchAll(/(?:window\.)?sessionStorage\.setItem\s*\(/g)].map(
   (match) => match.index
 );
@@ -753,7 +944,8 @@ const keyOf = (at) => {
   return splitTopLevel(args.text)[0]?.trim() ?? null;
 };
 
-// WHOLE FILE, deliberately: this is a rule about every storage access in the
+// A rule over the three scans above, deliberately whole file: it is about every
+// storage access in the
 // file, so it cannot be scoped to one function. It reads ALL occurrences, where
 // the previous version read only the first one of each.
 const allKeys = [...setItemSites, ...getItemSites, ...removeItemSites].map(keyOf);
@@ -778,6 +970,8 @@ if (badKeys.length > 0) {
     `${SCREEN}: sessionStorage is accessed under more than one key (${[...new Set(namedKeys)].join(", ")}). Written under one and read under another, the reload would never find what the first load stored and every load would look like a new attempt.`
   );
 }
+// The one key, when there is exactly one, is what the executed layer reads back.
+const keyName = new Set(namedKeys).size === 1 ? namedKeys[0] : null;
 
 // The mint path is the storing function that also mints. The other writer is the
 // reconciliation, which stores what the SERVER settled on.
@@ -836,7 +1030,7 @@ if (mintBlock && mintName) {
       factory = new Function("crypto", `${asJs}\nreturn ${mintName};`);
     } catch (error) {
       failures.push(
-        `${SCREEN}: the identifier generator can no longer be executed by this guard (${error.message}). It has to stay a self-contained function with no import and no module-level dependency, because running it is the only way to prove the shape the server will accept: a refused identifier raises nothing anywhere.`
+        `${SCREEN}: [executed] the identifier generator can no longer be executed by this guard (${error.message}). It has to stay a self-contained function with no import and no module-level dependency, because running it is the only way to prove the shape the server will accept: a refused identifier raises nothing anywhere.`
       );
     }
 
@@ -854,7 +1048,7 @@ if (mintBlock && mintName) {
           mint = factory(run.scope);
         } catch (error) {
           failures.push(
-            `${SCREEN}: the identifier generator could not be built ${run.label}: ${error.message}`
+            `${SCREEN}: [executed] the identifier generator could not be built ${run.label}: ${error.message}`
           );
           continue;
         }
@@ -873,18 +1067,18 @@ if (mintBlock && mintName) {
           }
         } catch (error) {
           failures.push(
-            `${SCREEN}: the identifier generator throws ${run.label}: ${error.message}. crypto.randomUUID is undefined outside a secure context, so this is what a phone on the dev server over a local IP would hit on the first render.`
+            `${SCREEN}: [executed] the identifier generator throws ${run.label}: ${error.message}. crypto.randomUUID is undefined outside a secure context, so this is what a phone on the dev server over a local IP would hit on the first render.`
           );
           continue;
         }
         if (rejected !== null) {
           failures.push(
-            `${SCREEN}: the identifier generator emits ${JSON.stringify(rejected)} ${run.label}, which ATTEMPT_ID_PATTERN refuses. The server would drop it without a word, mint its own, and the reload would open a second session again.`
+            `${SCREEN}: [executed] the identifier generator emits ${JSON.stringify(rejected)} ${run.label}, which ATTEMPT_ID_PATTERN refuses. The server would drop it without a word, mint its own, and the reload would open a second session again.`
           );
         }
         if (repeated !== null) {
           failures.push(
-            `${SCREEN}: the identifier generator repeats itself (${repeated}) ${run.label}. Two players, or two attempts, would land on one session row.`
+            `${SCREEN}: [executed] the identifier generator repeats itself (${repeated}) ${run.label}. Two players, or two attempts, would land on one session row.`
           );
         }
       }
@@ -892,132 +1086,300 @@ if (mintBlock && mintName) {
   }
 }
 
-// WHOLE FILE: an import can only be judged against the whole module.
+// WHOLE FILE (6 of 16): an import can only be judged against the whole module.
 if (/from\s*["']uuid["']|require\(\s*["']uuid["']\s*\)/.test(screen)) {
   failures.push(
     `${SCREEN}: imports a uuid library. The generator is pinned to crypto.randomUUID because it emits version 4, the only family the server pattern accepts, and a library default may not.`
   );
 }
 
-// ------------------------------- 5. the value chain, mint to storage to payload
-// This is the section the review broke six times. It no longer asks whether calls
-// exist and appear in the right order: it follows the SYMBOL that carries the
-// identifier, from the generator's return to the request body.
-let mintSymbol = null;
-let freshParam = null;
+// ------------------------- 5. the value chain, EXECUTED against a fake storage
+// This is the section four attackers broke. Each earlier round pinned the exact
+// mutations it had been shown, and the next attacker moved one axis over: a
+// conditional persist, a persist of another value, an alias minted on the spot, a
+// default flipped in a signature, a try block removed. That loop does not
+// converge. The one layer nobody has defeated, across four attackers, is the one
+// that EXECUTES the code instead of recognising its shape. So the storage helpers
+// are extracted from this file, run against a fake sessionStorage, and asserted
+// on BEHAVIOUR. The static rules these assertions replace are deleted rather than
+// kept beside them: a smaller guard that measures behaviour beats a larger one
+// that recognises shapes.
+//
+// The constraint this pins, stated here and repeated in the failure message: the
+// storage helpers must stay executable in isolation, with no import and no
+// dependency outside their own span in this file. That is the same constraint
+// check-day-keys.mjs puts on lib/profile/day-keys.ts, and for the same reason.
+let executedTheHelpers = false;
+if (mintName && storeName && adoptName && dropName && keyName && startBlock) {
+  const spanStarts = [];
+  const spanEnds = [];
+  for (const [name, block] of [
+    [mintName, mintBlock],
+    [storeName, storeBlock],
+    [adoptName, adoptBlock],
+    [dropName, dropBlock],
+  ]) {
+    if (!name || !block) continue;
+    spanStarts.push(declarationStart(screen, block.open, name));
+    spanEnds.push(block.close + 1);
+  }
+  // WHOLE FILE (7 of 16): the key constant is declared at module level.
+  const keyDeclaration = new RegExp(`(?:const|let|var)\\s+${keyName}\\s*=`).exec(screen);
+  if (keyDeclaration) spanStarts.push(keyDeclaration.index);
 
-if (!storeBlock || !storeName) {
-  if (mintName && setItemSites.length > 0) {
+  const helpersSource = stripTypes(screen.slice(Math.min(...spanStarts), Math.max(...spanEnds)));
+  const paramList = parameterListBefore(screen, startBlock.open);
+  const storeCallRegion = screen.slice(
+    startBlock.open,
+    startEntry ? startEntry.index : startBlock.close
+  );
+  const storeCall = new RegExp(`\\b${storeName}\\s*\\(`).exec(storeCallRegion);
+  const handOver = storeCall ? parenRegionAfter(storeCallRegion, storeCall.index) : null;
+
+  // Both `window.sessionStorage` and the bare `sessionStorage` are correct code, so
+  // the stub is bound under both names. Requiring the prefix would have turned a
+  // legitimate refactor red, which it briefly did.
+  const build = (win) =>
+    new Function(
+      "window",
+      "sessionStorage",
+      "crypto",
+      `${helpersSource}\nreturn { key: ${keyName}, mint: ${mintName}, take: ${storeName}, adopt: ${adoptName}, drop: ${dropName} };`
+    )(win, win.sessionStorage, globalThis.crypto);
+
+  const fakeWindow = ({ throwing = false } = {}) => {
+    const data = new Map();
+    const bar = () => {
+      if (throwing) throw new Error("storage blocked by the browser");
+    };
+    return {
+      data,
+      win: {
+        sessionStorage: {
+          getItem: (k) => {
+            bar();
+            return data.has(k) ? data.get(k) : null;
+          },
+          // String(), exactly like the real one. This is why an undefined reaching
+          // the adopting function would store the text "undefined".
+          setItem: (k, v) => {
+            bar();
+            data.set(k, String(v));
+          },
+          removeItem: (k) => {
+            bar();
+            data.delete(k);
+          },
+        },
+      },
+    };
+  };
+
+  let api = null;
+  let resolveFresh = null;
+
+  try {
+    api = build(fakeWindow().win);
+  } catch (error) {
     failures.push(
-      `${SCREEN}: no single function both mints the identifier and persists it. Persisting anywhere else than at mint time is a persist that can be skipped, and the reload then has nothing to replay.`
+      `${SCREEN}: [executed] the storage helpers can no longer be executed by this guard (${error.message}). ${storeName}, ${adoptName} and ${dropName} must stay self-contained, with no import and no dependency outside their own span in this file, because running them is the only way to prove the property the contract needs: two plain starts replay one identifier. A rule about shapes cannot see a default flipped in a signature, or a try block removed.`
     );
   }
-} else {
-  const storeBody = screen.slice(storeBlock.open, storeBlock.close);
-  const signature = screen.slice(Math.max(0, storeBlock.open - 300), storeBlock.open);
-  const params = /\{([^}]*)\}/.exec(signature);
-  freshParam = params ? entriesOf(`{${params[1]}}`)[0]?.key ?? null : null;
 
-  if (/\bDate\.now\s*\(|\buuidv?7\b/i.test(storeBody)) {
-    failures.push(
-      `${SCREEN}: ${storeName} looks like it builds a time ordered identifier of its own. A String(Date.now()) stored here is refused in silence by the server, and the real generator staying intact next door hides it completely.`
-    );
-  }
-
-  // 5a. the read decides, and the fresh flag is what it acts on.
-  const getAt = getItemSites.find((at) => at > storeBlock.open && at < storeBlock.close);
-  if (getAt === undefined) {
-    failures.push(
-      `${SCREEN}: ${storeName} writes the identifier without reading the stored one. The write must be conditional on what is already there, or a retry overwrites the attempt it is retrying.`
-    );
-  } else {
-    const readStatement = statementAround(screen, getAt);
-    const readInto = /(?:const|let|var)\s+([A-Za-z_$][\w$]*)/.exec(readStatement);
-    if (!readInto) {
+  if (api && paramList && handOver) {
+    try {
+      // The argument a plain call resolves to, DEFAULT INCLUDED. `{ fresh = true }`
+      // is one word away from `{ fresh = false }`, and no rule about the presence
+      // of the word `fresh` can tell them apart, so it is evaluated instead.
+      resolveFresh = new Function(
+        `return ((${stripTypes(paramList.text)}) => (${handOver.text}));`
+      )();
+    } catch (error) {
       failures.push(
-        `${SCREEN}: ${storeName} does not keep what it read from sessionStorage. The stored identifier has to become the returned value, otherwise the read is decoration and every load mints a new attempt.`
+        `${SCREEN}: [executed] the argument ${startName} hands to ${storeName} could not be evaluated (${error.message}). It has to stay a plain expression of the parameter, because the guard resolves it, with the signature's own default, to prove that an argument-less start asks for a REPLAY and not for a new attempt.`
       );
-    } else {
-      const replay = new RegExp(`return\\s+${readInto[1]}\\s*;`).exec(storeBody);
-      if (!returnsExactly(storeBody, readInto[1])) {
-        failures.push(
-          `${SCREEN}: ${storeName} never returns ${readInto[1]} itself, the value it read from storage. Returning something derived from it (a slice, a rewrite) sends an identifier the storage does not hold, so the reload replays a value the server never saw.`
+    }
+  } else if (api) {
+    failures.push(
+      `${SCREEN}: [executed] could not read ${startName}'s parameter list and the argument it hands to ${storeName}. Both are needed to resolve what an argument-less start actually asks for.`
+    );
+  }
+
+  if (api && resolveFresh) {
+    executedTheHelpers = true;
+    // Every message this layer produces carries the [executed] marker, so a reader,
+    // and the mutation matrix, can tell a measurement from a pattern match.
+    const assert = (condition, message) => {
+      if (!condition) failures.push(`${SCREEN}: [executed] ${message}`);
+    };
+    let plainArg = null;
+    let freshArg = null;
+    try {
+      plainArg = resolveFresh();
+      freshArg = resolveFresh({ fresh: true });
+    } catch (error) {
+      failures.push(`${SCREEN}: [executed] resolving the fresh flag threw (${error.message}).`);
+    }
+
+    if (plainArg !== null && freshArg !== null) {
+      const shown = JSON.stringify(plainArg);
+
+      // A1. THE PROPERTY THE WHOLE PLAN EXISTS FOR. Two plain starts, which is
+      // what the mount effect and Retry session both do, must replay ONE
+      // identifier. This single assertion covers the signature's default, the
+      // read, the persist and the return at once, whatever their spelling.
+      try {
+        const { data, win } = fakeWindow();
+        const scoped = build(win);
+        const first = scoped.take(plainArg);
+        const second = scoped.take(plainArg);
+        assert(
+          first === second,
+          `two plain starts do not replay one identifier: ${startName}() resolves to ${shown} and ${storeName} returned ${first} then ${second}. Every page load would open a new session and no reload would ever rejoin its own, which is the bug this whole plan exists to close.`
         );
-      } else if (replay && storeSite !== undefined && replay.index > storeSite - storeBlock.open) {
-        failures.push(
-          `${SCREEN}: ${storeName} returns the stored identifier only after overwriting it, so the stored value is lost before it can be replayed.`
+        assert(
+          data.get(scoped.key) === first,
+          `the identifier ${storeName} returned (${first}) is not what it left in storage (${data.get(scoped.key)}), measured immediately after the call. A persist that is conditional, deferred in a timer, or of another value, loses the reload.`
+        );
+        assert(
+          typeof first === "string" && (!serverPattern || serverPattern.test(first)),
+          `${storeName} returns ${JSON.stringify(first)}, which the server pattern refuses. It would be dropped in silence and the server would mint its own.`
+        );
+      } catch (error) {
+        assert(
+          false,
+          `${storeName} threw on a plain start against a working storage: ${error.message}`
         );
       }
-    }
-    if (freshParam && !new RegExp(`\\b${freshParam}\\b`).test(readStatement)) {
-      failures.push(
-        `${SCREEN}: the read in ${storeName} does not depend on ${freshParam} (statement: ${readStatement}). Only the fresh flag may bypass the stored identifier; a read hard-wired to skip it, or to always take it, makes the flag decorative.`
-      );
-    }
-  }
 
-  // 5b. the persisted value IS the minted value, unconditionally, immediately.
-  const mintDecl = mintName
-    ? new RegExp(
-        `(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*(?::[^=;]*)?=\\s*${mintName}\\s*\\(`
-      ).exec(storeBody)
-    : null;
-  if (!mintDecl) {
-    failures.push(
-      `${SCREEN}: ${storeName} never binds the minted identifier to a name (const x = ${mintName ?? "mint"}()). The guard follows that symbol to prove the value stored is the value sent, and without it a store can persist one identifier and return another.`
-    );
-  } else {
-    mintSymbol = mintDecl[1];
-    const setArgs = storeSite === undefined ? null : parenRegionAfter(screen, storeSite);
-    const stored = setArgs ? splitTopLevel(setArgs.text)[1]?.trim() ?? null : null;
-    if (stored !== mintSymbol) {
-      failures.push(
-        `${SCREEN}: ${storeName} persists ${stored ?? "nothing recognisable"} while it minted ${mintSymbol}. The value stored must be the very symbol that was minted and returned, or the load sends one identifier and stores another, and the reload opens a second session.`
-      );
-    }
-    if (!returnsExactly(storeBody, mintSymbol)) {
-      failures.push(
-        `${SCREEN}: ${storeName} does not return ${mintSymbol} itself. Returning something derived from it, a slice or a rewrite, means the caller sends an identifier that is not the one just persisted, and the reload opens a second session.`
-      );
-    }
-    if (storeSite !== undefined) {
-      const persistStatement = statementAround(screen, storeSite);
-      if (!/^(?:void\s+)?(?:window\.)?sessionStorage\.setItem\b/.test(persistStatement)) {
-        failures.push(
-          `${SCREEN}: the persist in ${storeName} is not a plain statement (${persistStatement.slice(0, 90)}). Guarded by a condition, or deferred inside a callback or a timer, the identifier does not exist during the in-flight window, which is the only window this contract exists for.`
+      // A2. A stored identifier is replayed BYTE FOR BYTE, under the key it also
+      // writes. Kills any transform of the read, and any key drift.
+      try {
+        const seed = crypto.randomUUID();
+        const { data, win } = fakeWindow();
+        const scoped = build(win);
+        data.set(scoped.key, seed);
+        const replayed = scoped.take(plainArg);
+        assert(
+          replayed === seed,
+          `a stored identifier is not replayed as it stands: storage held ${seed} and ${storeName} returned ${replayed}. It must read the key it writes and hand back exactly what it found, or the reload sends a value the server never saw.`
+        );
+      } catch (error) {
+        assert(false, `${storeName} threw while replaying a stored identifier: ${error.message}`);
+      }
+
+      // A3. A new attempt really is new, and it is persisted.
+      try {
+        const seed = crypto.randomUUID();
+        const { data, win } = fakeWindow();
+        const scoped = build(win);
+        data.set(scoped.key, seed);
+        const minted = scoped.take(freshArg);
+        assert(
+          minted !== seed,
+          `asking for a fresh attempt replays the stored identifier instead of minting one: Play again would rejoin the session the player just closed. The argument resolved for a fresh call was ${JSON.stringify(freshArg)}.`
+        );
+        assert(
+          data.get(scoped.key) === minted,
+          `a fresh attempt is not persisted: ${storeName} returned ${minted} and storage holds ${data.get(scoped.key)}.`
+        );
+      } catch (error) {
+        assert(false, `${storeName} threw on a fresh attempt: ${error.message}`);
+      }
+
+      // A4. Uniqueness, so a constant cannot pass A1 by being equal to itself.
+      try {
+        const { win } = fakeWindow();
+        const scoped = build(win);
+        const seen = new Set();
+        let repeat = null;
+        for (let draw = 0; draw < 50 && repeat === null; draw += 1) {
+          const value = scoped.take(freshArg);
+          if (seen.has(value)) repeat = value;
+          seen.add(value);
+        }
+        assert(
+          repeat === null,
+          `${storeName} hands out the same identifier twice (${repeat}) for two fresh attempts. Two players, or two attempts, would land on one session row.`
+        );
+      } catch (error) {
+        assert(false, `${storeName} threw while minting fresh attempts: ${error.message}`);
+      }
+
+      // A5. A browser that refuses storage must degrade, never throw. Private
+      // mode, a locked webview and "block all cookies" throw on getItem, and this
+      // call sits inside the start path: an escaping throw leaves the screen on
+      // the start error for ever, against the invariant this file states.
+      try {
+        const { win } = fakeWindow({ throwing: true });
+        const scoped = build(win);
+        const value = scoped.take(plainArg);
+        assert(
+          typeof value === "string" && (!serverPattern || serverPattern.test(value)),
+          `with storage blocked, ${storeName} returned ${JSON.stringify(value)} instead of a usable identifier.`
+        );
+        scoped.adopt(crypto.randomUUID());
+        scoped.drop();
+      } catch (error) {
+        assert(
+          false,
+          `the storage helpers throw when sessionStorage is blocked (${error.message}). In private mode, in a locked webview or with all cookies blocked, that throw escapes into the start path and the screen stays on "Unable to start the training session." for ever, against the invariant this file states: a page load must never throw over storage.`
         );
       }
-      if (depthAt(pairs, storeSite) !== depthAt(pairs, storeBlock.open + mintDecl.index)) {
-        failures.push(
-          `${SCREEN}: the persist in ${storeName} sits at a different nesting level than the mint. It has to be on the same unconditional path, not inside a branch, a callback or a setTimeout.`
+
+      // A6. Adoption stores the server's value, exactly, and refuses anything that
+      // is not an identifier, so a refused start answering JSON cannot poison the
+      // key with the text "undefined".
+      try {
+        const server = crypto.randomUUID();
+        const { data, win } = fakeWindow();
+        const scoped = build(win);
+        data.set(scoped.key, crypto.randomUUID());
+        scoped.adopt(server);
+        assert(
+          data.get(scoped.key) === server,
+          `${adoptName} left ${data.get(scoped.key)} in storage when handed ${server}. It must store the server's value byte for byte, or this tab keeps replaying something the server cannot rejoin.`
         );
+        assert(data.size === 1, `${adoptName} wrote ${data.size} keys instead of one.`);
+        scoped.adopt(server);
+        assert(
+          data.get(scoped.key) === server && data.size === 1,
+          `${adoptName} is not idempotent: adopting the identifier already stored changed storage.`
+        );
+        for (const junk of [undefined, null, "undefined", server.slice(0, 8), "", 42]) {
+          scoped.adopt(junk);
+          assert(
+            data.get(scoped.key) === server,
+            `${adoptName} accepted ${JSON.stringify(String(junk))}, which is not an identifier, and storage now holds ${data.get(scoped.key)}. A refused start answers JSON with no session, so that is the value every later load would send, burning a session row each time.`
+          );
+        }
+      } catch (error) {
+        assert(false, `${adoptName} threw: ${error.message}`);
+      }
+
+      // A7. The release really empties the key it reads.
+      try {
+        const { data, win } = fakeWindow();
+        const scoped = build(win);
+        data.set(scoped.key, crypto.randomUUID());
+        scoped.drop();
+        assert(
+          !data.has(scoped.key),
+          `${dropName} left ${data.get(scoped.key)} in storage. A closed session must let its identifier go, or the next start replays an identifier whose session is already closed.`
+        );
+      } catch (error) {
+        assert(false, `${dropName} threw: ${error.message}`);
       }
     }
   }
 }
 
-// The reconciliation writer stores the server's value, so what it persists must be
-// its own parameter and never a fresh mint.
-if (adoptBlock && adoptName) {
-  const adoptBody = screen.slice(adoptBlock.open, adoptBlock.close);
-  const adoptSignature = screen.slice(Math.max(0, adoptBlock.open - 200), adoptBlock.open);
-  const adoptParams = parenRegionAfter(adoptSignature, 0);
-  const adoptParam = adoptParams
-    ? /([A-Za-z_$][\w$]*)/.exec(splitTopLevel(adoptParams.text)[0] ?? "")?.[1] ?? null
-    : null;
-  const args = adoptSite === undefined ? null : parenRegionAfter(screen, adoptSite);
-  const written = args ? splitTopLevel(args.text)[1]?.trim() ?? null : null;
-  if (adoptParam && written !== adoptParam) {
-    failures.push(
-      `${SCREEN}: ${adoptName} persists ${written ?? "nothing recognisable"} instead of its parameter ${adoptParam}. Reconciliation exists to store what the SERVER settled on; storing anything else leaves this tab replaying an identifier the server cannot rejoin.`
-    );
-  }
-  if (mintName && new RegExp(`\\b${mintName}\\s*\\(`).test(adoptBody)) {
-    failures.push(
-      `${SCREEN}: ${adoptName} mints instead of adopting. The point of that function is to keep the identifier the server chose.`
-    );
-  }
+if (!executedTheHelpers && mintName && setItemSites.length > 0) {
+  failures.push(
+    `${SCREEN}: [executed] the behaviour of the storage helpers could not be measured at all, so nothing here proves that two plain starts replay one identifier. That measurement is this guard's only defence that does not rest on recognising a shape, and it must not be allowed to disappear quietly.`
+  );
 }
+
 
 // ------------------------------------------------------------ 6. the start path
 let sentSymbol = null;
@@ -1041,19 +1403,11 @@ if (startBlock && startName && startEntry) {
     );
   } else {
     sentSymbol = sentDecl[1];
-    const handOver = parenRegionAfter(beforeFetch, sentDecl.index);
-    const freshEntry = handOver
-      ? entriesOf(handOver.text).find((entry) => entry.key === "fresh" || entry.key === freshParam)
-      : null;
-    if (!freshEntry) {
-      failures.push(
-        `${SCREEN}: the fresh flag never reaches ${storeName}. Without it, Play again silently continues the previous attempt and a retry cannot be told from a new attempt.`
-      );
-    } else if (freshEntry.value !== null && !/^[A-Za-z_$][\w$]*$/.test(freshEntry.value)) {
-      failures.push(
-        `${SCREEN}: the call to ${storeName} passes fresh as ${freshEntry.value} instead of the parameter itself. An expression there can invert or constant-fold the meaning (!fresh, fresh && false, a literal) and no static rule can tell a harmless wrapper from an inversion, so the pass-through has to be the parameter.`
-      );
-    }
+    // No rule here on HOW the fresh flag is passed. Section 5 resolves the
+    // argument for real, with the signature's default, and measures what comes
+    // back: an inversion, a constant fold and a flipped default all fail there,
+    // while a harmless wrapper passes. That is strictly better than the previous
+    // rule, which demanded the bare parameter and so refused Boolean(fresh).
   }
 
   // 6b. and it is that symbol, not another, that the payload carries.
@@ -1116,6 +1470,7 @@ if (startBlock && startName && startEntry) {
         );
       }
     }
+      // WHOLE FILE (8 of 16): the ref is declared in the component body, above.
     if (!new RegExp(`const\\s+${refName}\\s*=\\s*useRef`).test(screen)) {
       failures.push(
         `${SCREEN}: ${refName} is not a useRef. A value that lives in state is only readable on the next render, which is exactly what lets the second call through.`
@@ -1123,42 +1478,50 @@ if (startBlock && startName && startEntry) {
     }
   }
 
-  // 6d. reconciliation. The server cannot always rejoin what we sent: it then
-  // mints its own and answers with a new session. Keeping ours would leave this
-  // tab sending, for ever, an identifier the server can never rejoin, so every
-  // reload would open a new session from the first inactivity sweep onwards.
-  if (sentSymbol) {
-    const compared = new RegExp(
-      `(?:\\b${sentSymbol}\\b\\s*!==\\s*[\\w$.]*\\bsessionId\\b|[\\w$.]*\\bsessionId\\b\\s*!==\\s*\\b${sentSymbol}\\b)`
-    ).exec(afterFetch);
-    if (!compared) {
+  // 6d. reconciliation, and the short-circuit that has to precede it. When the
+  // server could not rejoin what we sent (session swept for inactivity, closed,
+  // or owned by another player) it mints its own and answers with a new session.
+  // Keeping ours would leave this tab sending, for ever, an identifier the server
+  // can never rejoin, so every later reload would open a new session.
+  //
+  // NO RULE ON THE COMPARISON. Writing the same string back to the same key is a
+  // no-op, so an unconditional adopt is exactly equivalent and simpler, and the
+  // previous version turned that legitimate simplification red while accusing it
+  // of a defect it did not have. What is required is that an adopt happens, that
+  // it is handed the server's sessionId PATH and nothing derived from it, and that
+  // it happens after the response was accepted.
+  const startCheck = shortCircuitAfter(screen, closeOf, startBlock, fetchAt);
+  if (!startCheck.shortCircuits) {
+    failures.push(
+      `${SCREEN}: a refused start is not short-circuited in ${startName}. The start route answers JSON even on a 500, so response.json() succeeds, payload.sessionId is undefined, and everything downstream runs on a payload that carries no session. This is the mandatory path, not an optional gesture: it needs the check the close already has.`
+    );
+  }
+  if (!adoptName) {
+    failures.push(
+      `${SCREEN}: nothing adopts the sessionId the server returned. Without it, a tab whose session was swept sends an identifier the server can never rejoin, and every reload from then on opens a new session, permanently.`
+    );
+  } else {
+    const adopted = new RegExp(`\\b${adoptName}\\s*\\(`).exec(afterFetch);
+    if (!adopted) {
       failures.push(
-        `${SCREEN}: ${startName} never compares the identifier it sent with the sessionId the server returned. When the server could not rejoin ours (session swept for inactivity, closed, or owned by another player) it mints its own, and a client that keeps the old value then sends an identifier the server can never rejoin: every later reload opens a new session, permanently.`
-      );
-    } else if (!adoptName) {
-      failures.push(
-        `${SCREEN}: nothing adopts the sessionId the server returned. The comparison is pointless unless the returned identifier is written to storage.`
+        `${SCREEN}: ${adoptName} is never called after the start response, so the identifier the server settled on is never stored. A tab whose session was swept then opens a new session on every reload, permanently.`
       );
     } else {
-      const adopted = new RegExp(`\\b${adoptName}\\s*\\(`).exec(afterFetch);
-      if (!adopted) {
+      const args = parenRegionAfter(afterFetch, adopted.index);
+      const handed = args ? args.text.trim() : "";
+      // Exactly a `<something>.sessionId` path. A value derived from it, or our
+      // own identifier handed back, poisons storage or does nothing, and both
+      // reopen the bug this function exists to close.
+      if (!/^[A-Za-z_$][\w$]*\.sessionId$/.test(handed)) {
         failures.push(
-          `${SCREEN}: ${adoptName} is never called after the start response, so the identifier the server settled on is never stored.`
+          `${SCREEN}: ${adoptName} is handed ${handed || "nothing"} instead of the payload's sessionId path itself. A derived value (a slice, a rewrite) is stored and refused in silence at every later start, and handing back the identifier we just sent is a no-op: both leave this tab opening a new session on every reload.`
         );
-      } else if (adopted.index < compared.index) {
+      }
+      const adoptedAt = (fetchParen ? fetchParen.close : fetchAt) + adopted.index;
+      if (adoptedAt < startBlock.open + startCheck.checkedAt) {
         failures.push(
-          `${SCREEN}: the server identifier is adopted before it is compared with the one that was sent.`
+          `${SCREEN}: the server identifier is adopted before the refused-start branch in ${startName}. On a refused start there is no session in the payload, so what would be adopted is not an identifier at all.`
         );
-      } else {
-        // And it must adopt the SERVER's value. Handing it our own identifier
-        // back is a no-op that passes every rule about calls and order.
-        const args = parenRegionAfter(afterFetch, adopted.index);
-        const handed = args ? args.text.trim() : "";
-        if (!/\bsessionId\b/.test(handed) || handed === sentSymbol) {
-          failures.push(
-            `${SCREEN}: ${adoptName} is handed ${handed || "nothing"} instead of the sessionId the server returned. Adopting our own identifier back is a no-op: this tab would keep sending a value the server cannot rejoin, and every later reload would open a new session.`
-          );
-        }
       }
     }
   }
@@ -1178,7 +1541,8 @@ if (startBlock && startName && startEntry) {
   }
 }
 
-// WHOLE FILE, and it has to be: these are call sites spread through the JSX.
+// WHOLE FILE (9 and 10 of 16), and it has to be: these are call sites spread
+// through the JSX, the twin-button rule included.
 if (startName) {
   const callSites = [...screen.matchAll(new RegExp(`\\b${startName}\\s*\\(`, "g"))].map(
     (match) => match.index
@@ -1219,7 +1583,8 @@ if (startName) {
 }
 
 // ------------------------------------------------- 7. out of every dependency
-// WHOLE FILE by nature: a dependency array can sit in any hook of the component.
+// WHOLE FILE (11, 12 and 13 of 16) by nature: a dependency array, and a useState
+// declaration, can sit anywhere in the component.
 // Anchored on the shape of a hook call, `}, [ ... ]`, NOT on any bracket pair
 // containing the substring: the loose form /\[[^\]]*attemptId[^\]]*\]/ matches a
 // destructuring and any array mentioning attemptIdRef, so it would fire on
@@ -1259,34 +1624,13 @@ if (endBlock && endEntry) {
     );
   }
 
-  // 8a. a refused close must STOP. Presence of a .ok test proves nothing: the
-  // review replaced the throw with a console.error and everything downstream ran
-  // anyway, which is word for word what this message used to claim to forbid.
-  let shortCircuits = false;
-  let checkedAt = fetchRel;
-  for (const match of endBody.matchAll(/\bif\s*\(/g)) {
-    const condition = parenRegionAfter(endBody, match.index);
-    if (!condition || condition.open < fetchRel) continue;
-    if (!/!\s*[A-Za-z_$][\w$]*\.ok\b|\.ok\s*===\s*false/.test(condition.text)) continue;
-    const tail = endBody.slice(condition.close + 1);
-    let branch = tail.slice(0, Math.max(0, tail.indexOf(";") + 1));
-    let branchEnd = condition.close + 1 + Math.max(0, tail.indexOf(";") + 1);
-    if (/^\s*\{/.test(tail)) {
-      const brace = endBlock.open + condition.close + 1 + tail.indexOf("{");
-      if (closeOf.has(brace)) {
-        branch = screen.slice(brace, closeOf.get(brace));
-        branchEnd = closeOf.get(brace) - endBlock.open;
-      } else {
-        branch = tail.slice(0, 200);
-      }
-    }
-    if (/\b(?:throw|return)\b/.test(branch)) {
-      shortCircuits = true;
-      // Everything that follows from a confirmed close has to sit AFTER this
-      // branch, not merely after the fetch.
-      checkedAt = Math.max(checkedAt, branchEnd);
-    }
-  }
+  // 8a. a refused close must STOP. Presence of a .ok test proves nothing: a
+  // reviewer replaced the throw with a console.error and everything downstream ran
+  // anyway, which is word for word what this message used to claim to forbid. Same
+  // helper as the start path now, so neither can lose the rule without the other.
+  const endCheck = shortCircuitAfter(screen, closeOf, endBlock, endAt);
+  const shortCircuits = endCheck.shortCircuits;
+  const checkedAt = endCheck.checkedAt;
   if (!shortCircuits) {
     failures.push(
       `${SCREEN}: a refused close is not short-circuited in ${endName}. The response has to be tested AND the failure has to throw or return: logging it and carrying on announces a closed session the server refused, and releases the identifier of a session that is still open.`
@@ -1306,6 +1650,7 @@ if (endBlock && endEntry) {
 
   // 8b. the identifier is released here, after the request, and only here.
   if (dropName) {
+    // WHOLE FILE (14 of 16): finding a stray release IS the point of this rule.
     const dropCalls = [...screen.matchAll(new RegExp(`\\b${dropName}\\s*\\(`, "g"))].map(
       (match) => match.index
     );
@@ -1390,13 +1735,37 @@ if (endBlock && endEntry) {
       `${SCREEN}: ${endName} writes ${shared.join(", ")}, the same error state the start path writes. The render gates the question, the options and the progress line on that state, so a 500 on an optional gesture would destroy the question in progress. Give the close its own non-blocking state.`
     );
   }
-  for (const setter of endSetters) {
-    const stateName = `${setter.slice(3, 4).toLowerCase()}${setter.slice(4)}`;
-    if (!new RegExp(`\\b${stateName}\\b`).test(screen)) continue;
-    if (new RegExp(`!\\s*${stateName}\\b`).test(screen)) {
-      failures.push(
-        `${SCREEN}: something gates on !${stateName}, the state a refused close writes. Closing is optional, so its failure must gate nothing at all.`
-      );
+  // A gate is judged by the SET of identifiers it depends on, never by an
+  // operator. The previous version greped `!closeError`, so the same gate written
+  // `closeError === null && !error && ...` walked straight through: a refused close
+  // destroyed the question view again, and silently this time, since the message
+  // paragraph lives inside the very block that gate closes.
+  const closeStates = endSetters
+    .map((setter) => `${setter.slice(3, 4).toLowerCase()}${setter.slice(4)}`)
+    .filter((stateName) => new RegExp(`\\b${stateName}\\b`).test(screen));
+  if (closeStates.length > 0) {
+    // WHOLE FILE (15 and 16 of 16): the close state is looked up in the file, and a
+    // render gate can sit in any JSX expression of it.
+    const gates = renderGates(screen, pairs);
+    for (const stateName of closeStates) {
+      const touching = gates.filter((gate) => identifiersOf(gate.condition).has(stateName));
+      for (const gate of touching) {
+        const used = identifiersOf(gate.condition);
+        if (used.size > 1) {
+          failures.push(
+            `${SCREEN}: ${stateName}, the state a refused close writes, appears in a render gate together with ${[...used].filter((name) => name !== stateName).join(", ")} (condition: ${gate.condition.trim().slice(0, 120)}). Closing is optional: its failure must gate nothing but its own message, or a 500 on that button destroys the question in progress. Which operator is used makes no difference here, this rule reads the identifiers the gate depends on.`
+          );
+        } else if (gate.condition.trim() !== stateName) {
+          failures.push(
+            `${SCREEN}: the only gate allowed to read ${stateName} is a bare truthiness test on it, and this one is ${gate.condition.trim().slice(0, 120)}. A comparison can be inverted (${stateName} === null ? theQuestion : null) and then a refused close hides the game again.`
+          );
+        }
+      }
+      if (touching.length > 1) {
+        failures.push(
+          `${SCREEN}: ${stateName} is read in ${touching.length} render gates. One, rendering its own message, is the whole budget for a state that must gate nothing.`
+        );
+      }
     }
   }
 }
@@ -1411,11 +1780,18 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "check:client-attempt-contract OK : the generator is executed and its output accepted by the " +
-    "server pattern in both branches; the minted symbol is the persisted symbol is the sent " +
-    "symbol; the persist is unconditional and immediate; the read decides and depends on fresh; " +
-    "the identifier the server settles on is adopted when it differs; re-entrance is tested then " +
-    "closed synchronously and released in a finally, on both paths; a refused close " +
-    "short-circuits, keeps the identifier and reports on its own non-blocking state; and every " +
-    "training path fetched here resolves to a route file that exists."
+  "check:client-attempt-contract OK : MEASURED BY EXECUTION, the generator emits an " +
+    "identifier the server pattern accepts, in both crypto branches, and never twice the " +
+    "same; two argument-less starts return ONE identifier and it is the one left in storage; " +
+    "a stored identifier comes back byte for byte; a fresh attempt differs and is persisted; " +
+    "blocked storage degrades instead of throwing; the adopting function stores the value " +
+    "handed to it, exactly, is idempotent, and refuses anything that is not an identifier; " +
+    "the release empties the key. CHECKED STATICALLY, the payload sends the symbol the " +
+    "storing function returned, the adopting function is handed the payload's sessionId path " +
+    "after a refused response has been short-circuited on both paths, re-entrance is tested " +
+    "then closed synchronously and released in a finally on both paths, the release of the " +
+    "identifier happens only in the close and only after its check, the identifier is in no " +
+    "dependency array and in no React state, the close writes a state the start path does " +
+    "not and that state appears in no compound render gate, and every training path fetched " +
+    "here resolves to a route file that exists."
 );
