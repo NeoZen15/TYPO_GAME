@@ -37,7 +37,7 @@
 // rename is not a false positive. The rules that cannot be scoped, because they
 // concern call sites spread across the JSX, an import, or a module-level
 // declaration, are marked WHOLE FILE where they sit, numbered, and there are
-// SIXTEEN of them: the count is the number of scans of the whole source, which is
+// EIGHTEEN of them: the count is the number of scans of the whole source, which is
 // `grep -c "WHOLE FILE ("` expanded by the ranges those markers carry. Claiming an
 // enumeration is complete without counting it is what the re-review caught here. The pure part of that machinery self-tests on synthetic lines
 // before a single rule runs.
@@ -46,7 +46,25 @@
 // plus the route files the paths in that client resolve to.
 
 import fs from "node:fs";
+import { stripTypeScriptTypes } from "node:module";
 import path from "node:path";
+
+// The type eraser is flagged experimental by Node and prints a warning on first
+// use. This guard is step 18 of the quality gate, and a gate that prints noise
+// teaches people to skim its output, so the one warning it causes is dropped and
+// nothing else is touched.
+const emitWarning = process.emit.bind(process);
+process.emit = (name, data, ...rest) => {
+  if (
+    name === "warning" &&
+    data &&
+    data.name === "ExperimentalWarning" &&
+    /stripTypeScriptTypes/.test(String(data.message))
+  ) {
+    return false;
+  }
+  return emitWarning(name, data, ...rest);
+};
 
 const ROOT = process.cwd();
 const SCREEN = "features/game/components/GameScreen.tsx";
@@ -382,20 +400,43 @@ const findReentranceGuard = (source, from, to) => {
   return null;
 };
 
-// Just enough TypeScript removed for a fragment of this file to be executed:
-// return annotations on an arrow and on a declaration, object type literals and
-// simple named types in a parameter position, casts, and annotations on simple
-// locals. Self-tested below on the five forms this file actually uses. Anything
-// it cannot handle makes the evaluation throw, which is reported as a failure
-// with its cause, never silently skipped.
-const stripTypes = (source) =>
-  source
-    .replace(/\)\s*:\s*[^={;]*=>/g, ") =>")
-    .replace(/\)\s*:\s*[A-Za-z_$][\w$<>[\].|\s]*\{/g, ") {")
-    .replace(/:\s*\{[^{}]*\}(?=\s*(?:=>|\)|,|=))/g, "")
-    .replace(/:\s*(?:string|number|boolean|Uint8Array|[A-Z][\w$]*(?:<[^<>]*>)?)(?=\s*[,)=])/g, "")
-    .replace(/\bas\s+(?:const|[A-Za-z_$][\w$<>[\].|\s]*)/g, "")
-    .replace(/:\s*(?:string|number|boolean|Uint8Array)\b(?!\s*\()/g, "");
+// TypeScript erased by TypeScript's own eraser, never by regular expressions.
+// The previous version used six substitutions, and one of them deleted a runtime
+// object PROPERTY (`{ a: { b: 1 }, c: 0 }` became `{ a, c: 0 }`) because it could
+// not tell a property from a type annotation. The extracted fragment then behaved
+// differently from the application: the guard measured one identifier where the
+// app produced two, and reported success on broken code. That was the only way
+// this architecture could fail SILENTLY, so it is closed at the root.
+const stripTypes = (source) => {
+  if (typeof stripTypeScriptTypes !== "function") {
+    throw new Error(
+      "node:module stripTypeScriptTypes is unavailable, and this guard will not erase types by hand: a regular expression that deletes a runtime object property makes the measurement lie"
+    );
+  }
+  return stripTypeScriptTypes(source, { mode: "strip" });
+};
+
+// The state setters a block writes, and the ones it writes from inside its first
+// catch. Both are needed: the failure state of the start path is the one the close
+// must never touch, and the close must be read WHOLE, since a reviewer put the
+// forbidden setter in the `!response.ok` branch, before the catch the previous
+// rule read.
+const settersOf = (source, from, to) => [
+  ...new Set(
+    [...source.slice(from, to).matchAll(/\b(set[A-Z][\w$]*)\s*\(/g)].map((match) => match[1])
+  ),
+];
+
+const catchSettersOf = (source, closeOf, block) => {
+  const region = source.slice(block.open, block.close);
+  const found = new Set();
+  for (const match of region.matchAll(/catch\s*(?:\([^)]*\))?\s*\{/g)) {
+    const brace = block.open + match.index + match[0].length - 1;
+    if (!closeOf.has(brace)) continue;
+    for (const setter of settersOf(source, brace, closeOf.get(brace))) found.add(setter);
+  }
+  return [...found];
+};
 
 // The parameter list of the function whose body opens at blockOpen, arrow or
 // declaration, with or without a return annotation. Needed to EVALUATE what a
@@ -520,15 +561,31 @@ const finallyBodyOf = (source, closeOf, from, to) => {
 // nothing: a reviewer replaced the throw with a console.error and everything
 // downstream ran anyway. Shared by both request paths, because the previous
 // version guarded the optional close and left the mandatory start without a rule.
-const shortCircuitAfter = (source, closeOf, block, fetchAt) => {
+const shortCircuitAfter = (source, closeOf, block, fetchAt, delegates = []) => {
   const body = source.slice(block.open, block.close);
   const fetchRel = fetchAt - block.open;
   let shortCircuits = false;
   let checkedAt = fetchRel;
+  // A check factored into a helper that throws is the same check, and refusing it
+  // made the guard demand duplicated code. The helper is identified by what it
+  // does, `!something.ok` plus a throw, so its name is free.
+  for (const name of delegates) {
+    const call = new RegExp(`\\b${name}\\s*\\(`).exec(body.slice(fetchRel));
+    if (!call) continue;
+    shortCircuits = true;
+    const args = parenRegionAfter(body, fetchRel + call.index);
+    checkedAt = Math.max(checkedAt, args ? args.close + 1 : fetchRel + call.index);
+  }
   for (const match of body.matchAll(/\bif\s*\(/g)) {
     const condition = parenRegionAfter(body, match.index);
     if (!condition || condition.open < fetchRel) continue;
     if (!/!\s*[A-Za-z_$][\w$]*\.ok\b|\.ok\s*===\s*false/.test(condition.text)) continue;
+    // A condition carrying a boolean literal is a condition that decides nothing:
+    // `if (!response.ok && false)` satisfied the old rule with a dead branch.
+    if (/\b(?:true|false)\b/.test(condition.text)) {
+      shortCircuits = false;
+      break;
+    }
     const tail = body.slice(condition.close + 1);
     let branch = tail.slice(0, Math.max(0, tail.indexOf(";") + 1));
     let branchEnd = condition.close + 1 + Math.max(0, tail.indexOf(";") + 1);
@@ -675,33 +732,20 @@ const selfTest = () => {
   const found = findReentranceGuard(guardSample, 0, guardSample.length);
   expect("re-entrance guard found behind a compound condition", found && found.refName, "ref");
 
-  // stripTypes, on the five forms this file uses. If any of these regressed, the
-  // executed layer below would report a syntax error instead of a real defect.
-  expect("arrow return annotation removed", stripTypes("const m = (): string => {"), "const m = () => {");
+  // The type eraser is TypeScript's own, so it is not re-tested here. What IS
+  // tested is that it leaves runtime object properties alone, the exact failure of
+  // the six regexes it replaces.
   expect(
-    "object type in a parameter position removed",
-    stripTypes("const t = ({ fresh }: { fresh: boolean }): string => {"),
-    "const t = ({ fresh }) => {"
+    "a runtime object property survives type erasure",
+    stripTypes("const p = { a: { b: 1 }, c: 0 };").includes("a: { b: 1 }"),
+    true
   );
   expect(
-    "default plus object type plus default argument removed",
-    stripTypes("async ({ fresh = false }: { fresh?: boolean } = {}) => {"),
-    "async ({ fresh = false } = {}) => {"
-  );
-  expect(
-    "simple named type in a parameter position removed",
-    stripTypes("const a = (serverSessionId: string) => {"),
-    "const a = (serverSessionId) => {"
-  );
-  expect(
-    "declaration return annotation removed",
-    stripTypes("function m(): string {"),
-    "function m() {"
-  );
-  expect(
-    "a regex literal is left alone",
-    stripTypes("const S = /^[0-9a-f]{8}-[1-5][0-9a-f]{3}$/i;"),
-    "const S = /^[0-9a-f]{8}-[1-5][0-9a-f]{3}$/i;"
+    "a parameter annotation is erased",
+    stripTypes("const t = ({ fresh }: { fresh: boolean }): string => fresh ? \"a\" : \"b\";").includes(
+      "boolean"
+    ),
+    false
   );
 
   // parameterListBefore, on both function shapes.
@@ -796,7 +840,7 @@ const payloadObjectAfter = (from, limit) => {
   // refactor, so the identifier is resolved to its declaration.
   const named = /^\s*([A-Za-z_$][\w$]*)\s*\)/.exec(rest);
   if (!named) return null;
-  // WHOLE FILE (1 of 16): a payload object declared under a name is looked up in
+  // WHOLE FILE (1 of 18): a payload object declared under a name is looked up in
   // the file, since the declaration can sit anywhere before the call.
   const declaration = new RegExp(
     `(?:const|let|var)\\s+${named[1]}\\s*(?::[^=;]*)?=\\s*\\{`
@@ -812,7 +856,7 @@ const payloadObjectAfter = (from, limit) => {
 // shipping a 404: the two halves of the rule no longer spoke of the same path.
 // Now every training path this client fetches is resolved to the route file it
 // implies, and that file has to exist.
-// WHOLE FILE (2 of 16): every fetch of this file is enumerated, so each one can be
+// WHOLE FILE (2 of 18): every fetch of this file is enumerated, so each one can be
 // resolved to the route file it implies.
 const fetchedPaths = [...screen.matchAll(/fetch\(\s*(["'`])([^"'`]+)\1/g)].map((match) => ({
   url: match[2],
@@ -828,6 +872,28 @@ for (const entry of fetchedPaths.filter((candidate) =>
       `${SCREEN}: fetches ${entry.url}, which resolves to ${routeFile}, and that file does not exist. The client would ship a 404 into history. The URL and the route file are one rule here on purpose: testing the URL by prefix and the file against a separate constant let end-v2 pass.`
     );
   }
+}
+
+// COUNT, do not take the first, and no new scan: both counts read the fetch
+// enumeration above. A decoy POST to the
+// start path, declared anywhere in this file and called from anywhere, adds a
+// session row per page load, which is literally the bug this plan is named after,
+// and every rule below would have evaluated the real function and passed. Reading
+// only the first match also aimed nine messages at a decoy declared BEFORE the
+// real one, sending the reader to fix the wrong function.
+const startPathCalls = fetchedPaths.filter(
+  (entry) => entry.url === "/api/training/session/start"
+);
+const endPathCalls = fetchedPaths.filter((entry) => entry.url === "/api/training/session/end");
+if (startPathCalls.length > 1) {
+  failures.push(
+    `${SCREEN}: ${startPathCalls.length} calls to /api/training/session/start in this file. One page load must open one session, so exactly one place may start one. A second start writes a second session row per load, and if it sends no identifier the server mints its own and the convergence hardened by tasks 3 to 6 never runs.`
+  );
+}
+if (endPathCalls.length > 1) {
+  failures.push(
+    `${SCREEN}: ${endPathCalls.length} calls to /api/training/session/end in this file. Exactly one place may close the session.`
+  );
 }
 
 const startEntry = fetchedPaths.find((entry) => entry.url === "/api/training/session/start");
@@ -926,7 +992,7 @@ if (randomValuesAt === -1) {
   }
 }
 
-// WHOLE FILE (3, 4 and 5 of 16): the three storage access scans, reading ALL
+// WHOLE FILE (3, 4 and 5 of 18): the three storage access scans, reading ALL
 // occurrences and not the first of each, which is what the first version did.
 const setItemSites = [...screen.matchAll(/(?:window\.)?sessionStorage\.setItem\s*\(/g)].map(
   (match) => match.index
@@ -990,6 +1056,18 @@ const adoptName = adoptBlock ? declaredName(screen, adoptBlock.open) : null;
 const dropBlock =
   removeItemSites.length > 0 ? enclosingFunction(screen, pairs, removeItemSites[0]) : null;
 const dropName = dropBlock ? declaredName(screen, dropBlock.open) : null;
+
+// Functions that exist to reject a bad response: `!something.ok` plus a throw.
+// A path may delegate its short-circuit to one of these instead of writing it out.
+const okDelegates = [...new Set(
+  pairs
+    .filter((pair) => {
+      const body = screen.slice(pair.open, pair.close);
+      return /!\s*[A-Za-z_$][\w$]*\.ok\b/.test(body) && /\bthrow\b/.test(body);
+    })
+    .map((pair) => declaredName(screen, pair.open))
+    .filter((name) => name)
+)];
 
 const startBlock = startEntry ? enclosingFunction(screen, pairs, startEntry.index) : null;
 const startName = startBlock ? declaredName(screen, startBlock.open) : null;
@@ -1086,31 +1164,46 @@ if (mintBlock && mintName) {
   }
 }
 
-// WHOLE FILE (6 of 16): an import can only be judged against the whole module.
+// WHOLE FILE (6 of 18): an import can only be judged against the whole module.
 if (/from\s*["']uuid["']|require\(\s*["']uuid["']\s*\)/.test(screen)) {
   failures.push(
     `${SCREEN}: imports a uuid library. The generator is pinned to crypto.randomUUID because it emits version 4, the only family the server pattern accepts, and a library default may not.`
   );
 }
 
-// ------------------------- 5. the value chain, EXECUTED against a fake storage
-// This is the section four attackers broke. Each earlier round pinned the exact
-// mutations it had been shown, and the next attacker moved one axis over: a
-// conditional persist, a persist of another value, an alias minted on the spot, a
-// default flipped in a signature, a try block removed. That loop does not
-// converge. The one layer nobody has defeated, across four attackers, is the one
-// that EXECUTES the code instead of recognising its shape. So the storage helpers
-// are extracted from this file, run against a fake sessionStorage, and asserted
-// on BEHAVIOUR. The static rules these assertions replace are deleted rather than
-// kept beside them: a smaller guard that measures behaviour beats a larger one
-// that recognises shapes.
+// ------------- 5. EXECUTED, and now the CALL PATH and not only the helpers
+// Five attackers, and the same lesson each time: a rule that recognises a shape
+// gets walked around one axis over. Round 2 answered that by measuring the
+// storage helpers instead of matching them, and the eleven rules it deleted were
+// all verified covered. But the fifth attacker moved the axis to the CALL SITE,
+// which a fragment run in isolation cannot see: a `.slice(0, 8)` on the result of
+// the helper, a re-mint after the bind, a spread that overrides the payload key,
+// a decoy call, a mount effect asking for a fresh attempt. Fifteen survivors, all
+// passing lint and tsc, four of them restoring the plan's headline bug.
 //
-// The constraint this pins, stated here and repeated in the failure message: the
-// storage helpers must stay executable in isolation, with no import and no
-// dependency outside their own span in this file. That is the same constraint
-// check-day-keys.mjs puts on lib/profile/day-keys.ts, and for the same reason.
-let executedTheHelpers = false;
-if (mintName && storeName && adoptName && dropName && keyName && startBlock) {
+// So this section stops testing the pieces and tests the machine: the storage
+// helpers AND the start and close functions are extracted together, given a fake
+// fetch and a fake sessionStorage, and driven. What is asserted is what the client
+// actually sends, and what it leaves in storage, across TWO successive module
+// loads sharing one store, which is the only way to observe a reload at all.
+//
+// Types are erased by TypeScript's own eraser (node:module stripTypeScriptTypes),
+// never by regular expressions. That closes the one silent failure mode of the
+// previous version: six regexes deleted a runtime object property, so the guard
+// measured a fragment that returned ONE identifier while the app returned TWO,
+// and reported success on broken code.
+let executedTheCallPath = false;
+
+const helpersMissing = !mintName || !storeName || !adoptName || !dropName || !keyName;
+// WHOLE FILE (7 of 18): an import statement can sit anywhere in the header.
+if (helpersMissing && /^\s*import\s/m.test(screen)) {
+  failures.push(
+    `${SCREEN}: the attempt identifier helpers are not all in this file (found mint=${mintName ?? "none"}, store=${storeName ?? "none"}, adopt=${adoptName ?? "none"}, release=${dropName ?? "none"}, key=${keyName ?? "none"}). This guard EXECUTES them, extracted from this file and run in isolation against a fake storage, because that is the only way to measure what the client really sends. Moving them into another module is legitimate code and this guard cannot follow it: either keep them here, or teach this guard the module. Nothing below denies that your code exists, it means this guard could not run it.`
+  );
+}
+
+if (!helpersMissing && startBlock && startName) {
+  // ------------------------------------------------------------ extraction
   const spanStarts = [];
   const spanEnds = [];
   for (const [name, block] of [
@@ -1123,266 +1216,561 @@ if (mintName && storeName && adoptName && dropName && keyName && startBlock) {
     spanStarts.push(declarationStart(screen, block.open, name));
     spanEnds.push(block.close + 1);
   }
-  // WHOLE FILE (7 of 16): the key constant is declared at module level.
+  // WHOLE FILE (8 of 18): the key constant is declared at module level.
   const keyDeclaration = new RegExp(`(?:const|let|var)\\s+${keyName}\\s*=`).exec(screen);
   if (keyDeclaration) spanStarts.push(keyDeclaration.index);
+  const helpersSource = screen.slice(Math.min(...spanStarts), Math.max(...spanEnds));
 
-  const helpersSource = stripTypes(screen.slice(Math.min(...spanStarts), Math.max(...spanEnds)));
-  const paramList = parameterListBefore(screen, startBlock.open);
-  const storeCallRegion = screen.slice(
-    startBlock.open,
-    startEntry ? startEntry.index : startBlock.close
-  );
-  const storeCall = new RegExp(`\\b${storeName}\\s*\\(`).exec(storeCallRegion);
-  const handOver = storeCall ? parenRegionAfter(storeCallRegion, storeCall.index) : null;
+  // Both function shapes: an arrow, which is assigned a name, and a declaration,
+  // which is emitted as it stands. Refusing the declaration made the guard red on
+  // an ordinary refactor and blamed the type eraser for it.
+  const functionTextOf = (block) => {
+    const params = parameterListBefore(screen, block.open);
+    if (!params) return null;
+    let from = params.open;
+    const before = screen.slice(Math.max(0, from - 60), from);
+    const declaration = /(?:async\s+)?function\s+[A-Za-z_$][\w$]*\s*$/.exec(before);
+    if (declaration) {
+      return { text: screen.slice(from - (before.length - declaration.index), block.close + 1), declaration: true };
+    }
+    const asyncAt = before.lastIndexOf("async");
+    if (asyncAt !== -1 && /^\s*$/.test(before.slice(asyncAt + 5))) {
+      from -= before.length - asyncAt;
+    }
+    return { text: screen.slice(from, block.close + 1), declaration: false };
+  };
 
-  // Both `window.sessionStorage` and the bare `sessionStorage` are correct code, so
-  // the stub is bound under both names. Requiring the prefix would have turned a
-  // legitimate refactor red, which it briefly did.
-  const build = (win) =>
-    new Function(
-      "window",
-      "sessionStorage",
-      "crypto",
-      `${helpersSource}\nreturn { key: ${keyName}, mint: ${mintName}, take: ${storeName}, adopt: ${adoptName}, drop: ${dropName} };`
-    )(win, win.sessionStorage, globalThis.crypto);
+  const startText = functionTextOf(startBlock);
+  const endText = endBlock ? functionTextOf(endBlock) : null;
+  const endName = endBlock ? declaredName(screen, endBlock.open) ?? "endSession" : null;
 
-  const fakeWindow = ({ throwing = false } = {}) => {
-    const data = new Map();
+  // Assembled as a script, so TypeScript's own eraser can take the types out.
+  // Helpers the extracted paths delegate to, pulled in as well: a response check
+  // factored into a helper is a legitimate refactor, and stubbing it into a no-op
+  // made the driven close look as though it ignored a refusal.
+  const extraDeclarations = [];
+  for (const name of okDelegates) {
+    const block = pairs.find(
+      (pair) =>
+        declaredName(screen, pair.open) === name &&
+        FUNCTION_HEAD.test(screen.slice(Math.max(0, pair.open - 300), pair.open)) &&
+        pair.close - pair.open < 600
+    );
+    if (!block) continue;
+    if (block.open >= Math.min(...spanStarts) && block.close <= Math.max(...spanEnds)) continue;
+    extraDeclarations.push(`${screen.slice(declarationStart(screen, block.open, name), block.close + 1)};`);
+  }
+
+  const assemble = () => {
+    const lines = [helpersSource, ...extraDeclarations];
+    lines.push(startText.declaration ? startText.text : `const ${startName} = ${startText.text};`);
+    if (endText && endName) {
+      lines.push(endText.declaration ? endText.text : `const ${endName} = ${endText.text};`);
+    }
+    lines.push(
+      `__out.api = { key: ${keyName}, mint: ${mintName}, take: ${storeName}, adopt: ${adoptName}, drop: ${dropName}, start: ${startName}${
+        endText && endName ? `, end: ${endName}` : ""
+      } };`
+    );
+    return lines.join("\n");
+  };
+
+  let script = null;
+  if (!startText) {
+    failures.push(
+      `${SCREEN}: could not read the source of ${startName} to execute it. The guard drives that function against a fake fetch, which is what measures the value the client really sends.`
+    );
+  } else {
+    try {
+      script = stripTypes(assemble());
+    } catch (error) {
+      failures.push(
+        `${SCREEN}: TypeScript could not be erased from the extracted code (${error.message}). The extracted region has to stay plain enough for node:module to strip it, because running it is what proves the value sent is the value stored.`
+      );
+    }
+  }
+
+  // ------------------------------------------------------------- the fakes
+  const fakeStorage = (data, { throwing = false } = {}) => {
     const bar = () => {
       if (throwing) throw new Error("storage blocked by the browser");
     };
     return {
-      data,
-      win: {
-        sessionStorage: {
-          getItem: (k) => {
-            bar();
-            return data.has(k) ? data.get(k) : null;
-          },
-          // String(), exactly like the real one. This is why an undefined reaching
-          // the adopting function would store the text "undefined".
-          setItem: (k, v) => {
-            bar();
-            data.set(k, String(v));
-          },
-          removeItem: (k) => {
-            bar();
-            data.delete(k);
-          },
-        },
+      getItem: (k) => {
+        bar();
+        return data.has(k) ? data.get(k) : null;
+      },
+      // String(), exactly like the real one. This is why an undefined reaching
+      // the adopting function would store the text "undefined".
+      setItem: (k, v) => {
+        bar();
+        data.set(k, String(v));
+      },
+      removeItem: (k) => {
+        bar();
+        data.delete(k);
       },
     };
   };
 
-  let api = null;
-  let resolveFresh = null;
+  // One record of every call made to a stubbed identifier, so an assertion can
+  // ask which state setter a path really wrote.
+  const makeStub = (name, log) => {
+    const stub = (...args) => {
+      log.push({ name, args });
+      return stub;
+    };
+    stub.current = false;
+    return new Proxy(stub, {
+      get(target, property) {
+        if (property in target) return target[property];
+        return stub;
+      },
+      set(target, property, value) {
+        target[property] = value;
+        return true;
+      },
+    });
+  };
 
-  try {
-    api = build(fakeWindow().win);
-  } catch (error) {
-    failures.push(
-      `${SCREEN}: [executed] the storage helpers can no longer be executed by this guard (${error.message}). ${storeName}, ${adoptName} and ${dropName} must stay self-contained, with no import and no dependency outside their own span in this file, because running them is the only way to prove the property the contract needs: two plain starts replay one identifier. A rule about shapes cannot see a default flipped in a signature, or a try block removed.`
+  // `answer` decides what the fake network replies, per url.
+  // The clock is injected, so two loads can be placed at different instants
+  // without waiting: a storage key namespaced with Date.now() is stable inside one
+  // millisecond, so two builds in the same tick would agree by luck.
+  const clockOf = (now) =>
+    new Proxy(Date, {
+      get(target, property) {
+        if (property === "now") return () => now;
+        return Reflect.get(target, property);
+      },
+    });
+
+  const instantiate = ({ data, answer, throwing = false, stubNames, now = 1_700_000_000_000 }) => {
+    const log = [];
+    const posts = [];
+    const stubs = new Map(stubNames.map((name) => [name, makeStub(name, log)]));
+    const storage = fakeStorage(data, { throwing });
+    const win = { sessionStorage: storage, localStorage: fakeStorage(new Map()) };
+    const doc = { documentElement: { lang: "fr" } };
+    const fetchStub = async (url, init) => {
+      let body = {};
+      try {
+        body = init && init.body ? JSON.parse(init.body) : {};
+      } catch {
+        body = {};
+      }
+      posts.push({ url: String(url), body });
+      return answer(String(url), body);
+    };
+    const quiet = { error: () => {}, warn: () => {}, log: () => {} };
+    const out = {};
+    const fixed = ["window", "sessionStorage", "crypto", "document", "fetch", "console", "Date"];
+    const values = [win, storage, globalThis.crypto, doc, fetchStub, quiet, clockOf(now)];
+    const factory = new Function(...fixed, ...stubs.keys(), "__out", script);
+    factory(...values, ...stubs.values(), out);
+    return { api: out.api, log, posts, data };
+  };
+
+  // The free identifiers of the extracted region are discovered by running it and
+  // reading back the ReferenceErrors, so a rename of any React state setter costs
+  // nothing here. Bounded, and any other error is reported rather than swallowed.
+  const okAnswer = (url, body) => ({
+    ok: true,
+    status: 200,
+    json: async () => ({
+      sessionId: body.attemptId ?? "00000000-0000-4000-8000-000000000000",
+      userId: "00000000-0000-4000-8000-000000000002",
+      question: { id: "q", token: "t", fontFace: null, options: [] },
+      progress: { resolvedCount: 0 },
+    }),
+  });
+
+  // The free identifiers of the extracted region, found lexically: every token
+  // that is neither declared inside the region, nor a real global, nor one of the
+  // fixed parameters. Reading them back from thrown ReferenceErrors is NOT enough,
+  // and that mistake cost a debugging round: the start function catches its own
+  // errors, so a missing `readOnboarding` never escapes, it lands in the catch and
+  // the run looks like a failed start. Membership in globalThis is the exact test
+  // for "this is a real global", so no allow-list of globals has to be maintained.
+  const freeIdentifiers = () => {
+    const declared = new Set(
+      [...script.matchAll(/(?:const|let|var|function)\s+([A-Za-z_$][\w$]*)/g)].map((m) => m[1])
     );
-  }
+    const reserved = new Set([
+      "window",
+      "sessionStorage",
+      "crypto",
+      "document",
+      "fetch",
+      "console",
+      "__out",
+      "true",
+      "false",
+      "null",
+      "undefined",
+      "this",
+      "typeof",
+      "instanceof",
+      "new",
+      "return",
+      "await",
+      "async",
+      "const",
+      "let",
+      "var",
+      "function",
+      "if",
+      "else",
+      "try",
+      "catch",
+      "finally",
+      "throw",
+      "for",
+      "while",
+      "of",
+      "in",
+      "void",
+      "delete",
+      "class",
+      "extends",
+      "case",
+      "switch",
+      "default",
+      "break",
+      "continue",
+      "do",
+      "yield",
+    ]);
+    const names = [];
+    for (const match of script.matchAll(/(\.?)([A-Za-z_$][\w$]*)\s*(:?)/g)) {
+      const [, dot, name, colon] = match;
+      if (dot === ".") continue;
+      if (colon === ":") continue;
+      if (declared.has(name) || reserved.has(name)) continue;
+      if (name in globalThis) continue;
+      if (names.includes(name)) continue;
+      names.push(name);
+    }
+    return names;
+  };
 
-  if (api && paramList && handOver) {
+  const discover = async () => {
+    const names = freeIdentifiers();
+    for (let attempt = 0; attempt < 40; attempt += 1) {
+      const data = new Map();
+      try {
+        const run = instantiate({ data, answer: okAnswer, stubNames: names });
+        await run.api.start();
+        if (run.api.end) await run.api.end();
+        // A start that reached the network is a start that found every identifier
+        // it needs. Anything less means a name is still missing, silently caught.
+        if (run.posts.length === 0) {
+          throw new Error(
+            `the extracted start function never reached the fake network, so a free identifier is still missing or the request is not made (setters observed: ${run.log
+              .map((entry) => entry.name)
+              .join(", ")})`
+          );
+        }
+        return names;
+      } catch (error) {
+        const missing = /(\w+) is not defined/.exec(error.message);
+        if (!missing || names.includes(missing[1])) throw error;
+        names.push(missing[1]);
+      }
+    }
+    throw new Error("too many undefined identifiers in the extracted region");
+  };
+
+  let stubNames = null;
+  if (script) {
     try {
-      // The argument a plain call resolves to, DEFAULT INCLUDED. `{ fresh = true }`
-      // is one word away from `{ fresh = false }`, and no rule about the presence
-      // of the word `fresh` can tell them apart, so it is evaluated instead.
-      resolveFresh = new Function(
-        `return ((${stripTypes(paramList.text)}) => (${handOver.text}));`
-      )();
+      stubNames = await discover();
     } catch (error) {
       failures.push(
-        `${SCREEN}: [executed] the argument ${startName} hands to ${storeName} could not be evaluated (${error.message}). It has to stay a plain expression of the parameter, because the guard resolves it, with the signature's own default, to prove that an argument-less start asks for a REPLAY and not for a new attempt.`
+        `${SCREEN}: the extracted client code could not be executed (${error.message}). ${startName}, the storage helpers and the closing function are run here against a fake fetch and a fake sessionStorage: that measurement is what proves the identifier the client SENDS is the identifier it STORED, which no rule about shapes can prove. They have to stay in this file and stay free of imports.`
       );
     }
-  } else if (api) {
-    failures.push(
-      `${SCREEN}: [executed] could not read ${startName}'s parameter list and the argument it hands to ${storeName}. Both are needed to resolve what an argument-less start actually asks for.`
-    );
   }
 
-  if (api && resolveFresh) {
-    executedTheHelpers = true;
-    // Every message this layer produces carries the [executed] marker, so a reader,
-    // and the mutation matrix, can tell a measurement from a pattern match.
+  if (stubNames) {
+    executedTheCallPath = true;
     const assert = (condition, message) => {
       if (!condition) failures.push(`${SCREEN}: [executed] ${message}`);
     };
-    let plainArg = null;
-    let freshArg = null;
+    const startPath = startEntry.url;
+    const endPath = endEntry ? endEntry.url : null;
+    const startsOf = (posts) => posts.filter((post) => post.url.endsWith(startPath));
+    const build = (data, options = {}) =>
+      instantiate({
+        data,
+        answer: options.answer ?? okAnswer,
+        throwing: options.throwing,
+        now: options.now,
+        stubNames,
+      });
+
+    // --------------------------------------------------- T1. the reload itself
+    // TWO module loads around ONE store, which is what a reload is. The previous
+    // version rebuilt the module for every assertion and so could never compare
+    // two loads: a storage key namespaced with Date.now() went unnoticed.
     try {
-      plainArg = resolveFresh();
-      freshArg = resolveFresh({ fresh: true });
+      const data = new Map();
+      const first = build(data, { now: 1_700_000_000_000 });
+      await first.api.start();
+      const second = build(data, { now: 1_700_000_907_000 });
+      await second.api.start();
+
+      // The storage KEY has to be the same for two loads, and that is asserted
+      // directly rather than left to the identifiers to reveal: a key namespaced
+      // with Date.now() is stable inside one millisecond, so two builds in the
+      // same tick would agree by luck and the defect would show up as a wrong
+      // diagnosis somewhere else.
+      assert(
+        first.api.key === second.api.key,
+        `two module loads compute different storage keys (${first.api.key} then ${second.api.key}). A key that is not stable across loads means no reload ever finds what the last one stored, so every load opens a new session.`
+      );
+      const firstPosts = startsOf(first.posts);
+      const secondPosts = startsOf(second.posts);
+      assert(
+        firstPosts.length === 1 && secondPosts.length === 1,
+        `a single mount issues ${firstPosts.length} then ${secondPosts.length} start requests instead of one each. One load must open one session.`
+      );
+      const sentFirst = firstPosts[0] ? firstPosts[0].body.attemptId : undefined;
+      const sentSecond = secondPosts[0] ? secondPosts[0].body.attemptId : undefined;
+      assert(
+        typeof sentFirst === "string" && (!serverPattern || serverPattern.test(sentFirst)),
+        `the first load sends ${JSON.stringify(sentFirst)} as its attemptId, which the server pattern refuses: it would be dropped in silence and the server would open a session of its own.`
+      );
+      assert(
+        sentFirst === sentSecond,
+        `two successive loads sharing one storage send DIFFERENT identifiers (${sentFirst} then ${sentSecond}). A reload must replay its own attempt: this is the property the whole plan exists to establish, and it is measured here on what the client really puts on the wire, whatever the call site does with it.`
+      );
+      assert(
+        data.get(first.api.key) === sentFirst,
+        `the identifier the client SENDS (${sentFirst}) is not the identifier it left in STORAGE (${data.get(first.api.key)}). Anything between the storage helper and the request body, a slice, a re-mint, a spread that overrides the key, breaks the reload while every rule about the helper stays satisfied.`
+      );
     } catch (error) {
-      failures.push(`${SCREEN}: [executed] resolving the fresh flag threw (${error.message}).`);
+      assert(false, `driving two successive loads threw: ${error.message}`);
     }
 
-    if (plainArg !== null && freshArg !== null) {
-      const shown = JSON.stringify(plainArg);
+    // ------------------------------------- T2. a plain call replays, fresh mints
+    try {
+      const data = new Map();
+      const run = build(data);
+      await run.api.start();
+      const replayed = startsOf(run.posts)[0]?.body.attemptId;
+      await run.api.start();
+      const again = startsOf(run.posts)[1]?.body.attemptId;
+      assert(
+        replayed === again,
+        `two argument-less starts in one load send two identifiers (${replayed} then ${again}). The mount effect and Retry session are both the same attempt.`
+      );
+      await run.api.start({ fresh: true });
+      const minted = startsOf(run.posts)[2]?.body.attemptId;
+      assert(
+        typeof minted === "string" && minted !== replayed,
+        `asking for a fresh attempt sends ${JSON.stringify(minted)}, the same identifier as before: Play again would rejoin the session the player just closed.`
+      );
+      assert(
+        data.get(run.api.key) === minted,
+        `a fresh attempt sends ${minted} but storage holds ${data.get(run.api.key)}.`
+      );
+    } catch (error) {
+      assert(false, `driving a replay and a fresh attempt threw: ${error.message}`);
+    }
 
-      // A1. THE PROPERTY THE WHOLE PLAN EXISTS FOR. Two plain starts, which is
-      // what the mount effect and Retry session both do, must replay ONE
-      // identifier. This single assertion covers the signature's default, the
-      // read, the persist and the return at once, whatever their spelling.
-      try {
-        const { data, win } = fakeWindow();
-        const scoped = build(win);
-        const first = scoped.take(plainArg);
-        const second = scoped.take(plainArg);
-        assert(
-          first === second,
-          `two plain starts do not replay one identifier: ${startName}() resolves to ${shown} and ${storeName} returned ${first} then ${second}. Every page load would open a new session and no reload would ever rejoin its own, which is the bug this whole plan exists to close.`
-        );
-        assert(
-          data.get(scoped.key) === first,
-          `the identifier ${storeName} returned (${first}) is not what it left in storage (${data.get(scoped.key)}), measured immediately after the call. A persist that is conditional, deferred in a timer, or of another value, loses the reload.`
-        );
-        assert(
-          typeof first === "string" && (!serverPattern || serverPattern.test(first)),
-          `${storeName} returns ${JSON.stringify(first)}, which the server pattern refuses. It would be dropped in silence and the server would mint its own.`
-        );
-      } catch (error) {
-        assert(
-          false,
-          `${storeName} threw on a plain start against a working storage: ${error.message}`
-        );
-      }
+    // ------------------------------------------- T3. one start per mount, raced
+    try {
+      const data = new Map();
+      const run = build(data);
+      await Promise.all([run.api.start(), run.api.start()]);
+      assert(
+        startsOf(run.posts).length === 1,
+        `two starts fired in the same tick produced ${startsOf(run.posts).length} requests. The re-entrance guard has to be closed synchronously, before the first await, or a mount effect that runs twice opens two sessions.`
+      );
+    } catch (error) {
+      assert(false, `racing two starts threw: ${error.message}`);
+    }
 
-      // A2. A stored identifier is replayed BYTE FOR BYTE, under the key it also
-      // writes. Kills any transform of the read, and any key drift.
-      try {
-        const seed = crypto.randomUUID();
-        const { data, win } = fakeWindow();
-        const scoped = build(win);
-        data.set(scoped.key, seed);
-        const replayed = scoped.take(plainArg);
-        assert(
-          replayed === seed,
-          `a stored identifier is not replayed as it stands: storage held ${seed} and ${storeName} returned ${replayed}. It must read the key it writes and hand back exactly what it found, or the reload sends a value the server never saw.`
-        );
-      } catch (error) {
-        assert(false, `${storeName} threw while replaying a stored identifier: ${error.message}`);
-      }
+    // ---------------------------------------------- T4. the divergent response
+    // The server could not rejoin ours, so it minted its own. The client has to
+    // adopt that value, or this tab replays an identifier the server can never
+    // rejoin and every later reload opens a new session.
+    try {
+      const server = crypto.randomUUID();
+      const data = new Map();
+      const first = build(data, {
+        answer: (url, body) => okAnswer(url, { ...body, attemptId: server }),
+      });
+      await first.api.start();
+      assert(
+        data.get(first.api.key) === server,
+        `after a response carrying a different sessionId (${server}), storage holds ${data.get(first.api.key)}. The identifier the server settled on has to be adopted, byte for byte.`
+      );
+      const second = build(data);
+      await second.api.start();
+      assert(
+        startsOf(second.posts)[0]?.body.attemptId === server,
+        `the load after a divergent response sends ${startsOf(second.posts)[0]?.body.attemptId} instead of the identifier the server settled on (${server}).`
+      );
+    } catch (error) {
+      assert(false, `driving a divergent response threw: ${error.message}`);
+    }
 
-      // A3. A new attempt really is new, and it is persisted.
-      try {
-        const seed = crypto.randomUUID();
-        const { data, win } = fakeWindow();
-        const scoped = build(win);
-        data.set(scoped.key, seed);
-        const minted = scoped.take(freshArg);
-        assert(
-          minted !== seed,
-          `asking for a fresh attempt replays the stored identifier instead of minting one: Play again would rejoin the session the player just closed. The argument resolved for a fresh call was ${JSON.stringify(freshArg)}.`
-        );
-        assert(
-          data.get(scoped.key) === minted,
-          `a fresh attempt is not persisted: ${storeName} returned ${minted} and storage holds ${data.get(scoped.key)}.`
-        );
-      } catch (error) {
-        assert(false, `${storeName} threw on a fresh attempt: ${error.message}`);
-      }
+    // ------------------------------------------------- T5. a refused start
+    try {
+      const seeded = crypto.randomUUID();
+      const data = new Map([[null, null]]);
+      data.clear();
+      const probe = build(data);
+      await probe.api.start();
+      const kept = data.get(probe.api.key);
+      const refused = build(data, {
+        answer: () => ({ ok: false, status: 500, json: async () => ({ error: "boom" }) }),
+      });
+      await refused.api.start();
+      assert(
+        data.get(refused.api.key) === kept,
+        `a refused start changed storage from ${kept} to ${data.get(refused.api.key)}. A refused start must keep the identifier untouched: the server may already have written its row, and a response that carries no session must never be adopted.`
+      );
+      void seeded;
+    } catch (error) {
+      assert(false, `driving a refused start threw: ${error.message}`);
+    }
 
-      // A4. Uniqueness, so a constant cannot pass A1 by being equal to itself.
+    // ------------------------------------------------ T6. the close, both ways
+    if (endPath) {
+      const startErrorSetters = startBlock ? catchSettersOf(screen, closeOf, startBlock) : [];
       try {
-        const { win } = fakeWindow();
-        const scoped = build(win);
-        const seen = new Set();
-        let repeat = null;
-        for (let draw = 0; draw < 50 && repeat === null; draw += 1) {
-          const value = scoped.take(freshArg);
-          if (seen.has(value)) repeat = value;
-          seen.add(value);
-        }
+        const data = new Map();
+        const run = build(data, {
+          answer: (url, body) =>
+            url.endsWith(endPath)
+              ? { ok: false, status: 500, json: async () => ({ error: "boom" }) }
+              : okAnswer(url, body),
+        });
+        await run.api.start();
+        const held = data.get(run.api.key);
+        // Only what the CLOSE writes counts, and only a write that carries a
+        // value: every path resets these states to null on entry, which is not a
+        // failure report.
+        const before = run.log.length;
+        await run.api.end();
+        const duringClose = run.log.slice(before);
         assert(
-          repeat === null,
-          `${storeName} hands out the same identifier twice (${repeat}) for two fresh attempts. Two players, or two attempts, would land on one session row.`
+          data.get(run.api.key) === held,
+          `a refused close released the identifier (${held} became ${data.get(run.api.key)}). The session is still open, so the next load would open a second one beside it.`
         );
-      } catch (error) {
-        assert(false, `${storeName} threw while minting fresh attempts: ${error.message}`);
-      }
-
-      // A5. A browser that refuses storage must degrade, never throw. Private
-      // mode, a locked webview and "block all cookies" throw on getItem, and this
-      // call sits inside the start path: an escaping throw leaves the screen on
-      // the start error for ever, against the invariant this file states.
-      try {
-        const { win } = fakeWindow({ throwing: true });
-        const scoped = build(win);
-        const value = scoped.take(plainArg);
-        assert(
-          typeof value === "string" && (!serverPattern || serverPattern.test(value)),
-          `with storage blocked, ${storeName} returned ${JSON.stringify(value)} instead of a usable identifier.`
-        );
-        scoped.adopt(crypto.randomUUID());
-        scoped.drop();
-      } catch (error) {
-        assert(
-          false,
-          `the storage helpers throw when sessionStorage is blocked (${error.message}). In private mode, in a locked webview or with all cookies blocked, that throw escapes into the start path and the screen stays on "Unable to start the training session." for ever, against the invariant this file states: a page load must never throw over storage.`
-        );
-      }
-
-      // A6. Adoption stores the server's value, exactly, and refuses anything that
-      // is not an identifier, so a refused start answering JSON cannot poison the
-      // key with the text "undefined".
-      try {
-        const server = crypto.randomUUID();
-        const { data, win } = fakeWindow();
-        const scoped = build(win);
-        data.set(scoped.key, crypto.randomUUID());
-        scoped.adopt(server);
-        assert(
-          data.get(scoped.key) === server,
-          `${adoptName} left ${data.get(scoped.key)} in storage when handed ${server}. It must store the server's value byte for byte, or this tab keeps replaying something the server cannot rejoin.`
-        );
-        assert(data.size === 1, `${adoptName} wrote ${data.size} keys instead of one.`);
-        scoped.adopt(server);
-        assert(
-          data.get(scoped.key) === server && data.size === 1,
-          `${adoptName} is not idempotent: adopting the identifier already stored changed storage.`
-        );
-        for (const junk of [undefined, null, "undefined", server.slice(0, 8), "", 42]) {
-          scoped.adopt(junk);
+        for (const setter of startErrorSetters) {
+          const wrote = duringClose.find(
+            (entry) => entry.name === setter && entry.args[0] !== null && entry.args[0] !== undefined
+          );
           assert(
-            data.get(scoped.key) === server,
-            `${adoptName} accepted ${JSON.stringify(String(junk))}, which is not an identifier, and storage now holds ${data.get(scoped.key)}. A refused start answers JSON with no session, so that is the value every later load would send, burning a session row each time.`
+            !wrote,
+            `a refused close wrote ${setter}(${JSON.stringify(wrote ? wrote.args[0] : "")}), the state the start path writes on failure. The render gates the question, the options and the progress line on that state, so a 500 on an optional gesture would destroy the question in progress. Wherever that call sits, in the catch or in the branch before it, the effect is the same.`
           );
         }
-      } catch (error) {
-        assert(false, `${adoptName} threw: ${error.message}`);
-      }
-
-      // A7. The release really empties the key it reads.
-      try {
-        const { data, win } = fakeWindow();
-        const scoped = build(win);
-        data.set(scoped.key, crypto.randomUUID());
-        scoped.drop();
         assert(
-          !data.has(scoped.key),
-          `${dropName} left ${data.get(scoped.key)} in storage. A closed session must let its identifier go, or the next start replays an identifier whose session is already closed.`
+          !duringClose.some((entry) => entry.name === "setIsComplete" && entry.args[0] === true),
+          `a refused close announced completion. The screen would show a closed session the server refused.`
         );
       } catch (error) {
-        assert(false, `${dropName} threw: ${error.message}`);
+        assert(false, `driving a refused close threw: ${error.message}`);
       }
+
+      try {
+        const data = new Map();
+        const run = build(data);
+        await run.api.start();
+        await run.api.end();
+        assert(
+          !data.has(run.api.key),
+          `an accepted close left ${data.get(run.api.key)} in storage. A closed session must let its identifier go, or the next start replays an identifier whose session is already closed.`
+        );
+        assert(
+          run.log.some((entry) => entry.name === "setIsComplete" && entry.args[0] === true),
+          `an accepted close never announced completion, so the "Session complete" branch and the "Play again" block stay unreachable.`
+        );
+      } catch (error) {
+        assert(false, `driving an accepted close threw: ${error.message}`);
+      }
+    }
+
+    // ------------------------------- T7. the helpers themselves, still measured
+    // Cheaper to diagnose than the end to end cases, and they cover the branches
+    // a driven start does not reach: blocked storage, and junk handed to adopt.
+    try {
+      const data = new Map();
+      const run = build(data, { throwing: true });
+      const value = await run.api.start();
+      void value;
+      const kept = data.size;
+      assert(
+        kept === 0,
+        `a blocked storage still received ${kept} writes.`
+      );
+      assert(
+        startsOf(run.posts).length === 1,
+        `with storage blocked the client issued ${startsOf(run.posts).length} start requests instead of one. Private mode, a locked webview and "block all cookies" all throw on getItem: an escaping throw leaves the screen on the start error for ever, against the invariant this file states.`
+      );
+      const sent = startsOf(run.posts)[0]?.body.attemptId;
+      assert(
+        typeof sent === "string" && (!serverPattern || serverPattern.test(sent)),
+        `with storage blocked the client sent ${JSON.stringify(sent)} instead of a usable identifier.`
+      );
+    } catch (error) {
+      assert(
+        false,
+        `the client throws when sessionStorage is blocked (${error.message}). It has to degrade instead: the identifier simply does not survive the reload, and the game stays playable.`
+      );
+    }
+
+    try {
+      const server = crypto.randomUUID();
+      const data = new Map();
+      const run = build(data);
+      run.api.adopt(server);
+      assert(
+        data.get(run.api.key) === server && data.size === 1,
+        `the adopting function left ${data.get(run.api.key)} in storage when handed ${server}, under ${data.size} keys.`
+      );
+      run.api.adopt(server);
+      assert(
+        data.get(run.api.key) === server && data.size === 1,
+        `the adopting function is not idempotent: adopting the identifier already stored changed storage.`
+      );
+      for (const junk of [undefined, null, "undefined", server.slice(0, 8), "", 42]) {
+        run.api.adopt(junk);
+        assert(
+          data.get(run.api.key) === server,
+          `the adopting function accepted ${JSON.stringify(String(junk))}, which is not an identifier, and storage now holds ${data.get(run.api.key)}. A refused start answers JSON with no session, so that is the value every later load would send, burning a session row each time.`
+        );
+      }
+      const seen = new Set();
+      let repeat = null;
+      for (let draw = 0; draw < 50 && repeat === null; draw += 1) {
+        const value = run.api.take({ fresh: true });
+        if (seen.has(value)) repeat = value;
+        seen.add(value);
+      }
+      assert(
+        repeat === null,
+        `the storage helper hands out the same identifier twice (${repeat}) for two fresh attempts. Two players, or two attempts, would land on one session row.`
+      );
+    } catch (error) {
+      assert(false, `driving the adopting function threw: ${error.message}`);
     }
   }
 }
 
-if (!executedTheHelpers && mintName && setItemSites.length > 0) {
+if (!executedTheCallPath && !helpersMissing) {
   failures.push(
-    `${SCREEN}: [executed] the behaviour of the storage helpers could not be measured at all, so nothing here proves that two plain starts replay one identifier. That measurement is this guard's only defence that does not rest on recognising a shape, and it must not be allowed to disappear quietly.`
+    `${SCREEN}: the behaviour of the client could not be measured at all, so nothing here proves that two successive loads send one identifier. That measurement is this guard's only defence that does not rest on recognising a shape, and it must not be allowed to disappear quietly.`
   );
 }
 
 
 // ------------------------------------------------------------ 6. the start path
-let sentSymbol = null;
 if (startBlock && startName && startEntry) {
   const fetchAt = startEntry.index;
   const beforeFetch = screen.slice(startBlock.open, fetchAt);
@@ -1391,44 +1779,12 @@ if (startBlock && startName && startEntry) {
   const fetchParen = parenRegionAfter(screen, fetchAt);
   const afterFetch = fetchParen ? screen.slice(fetchParen.close, startBlock.close) : "";
 
-  // 6a. the identifier comes from the storing function, before the request.
-  const sentDecl = storeName
-    ? new RegExp(
-        `(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*(?::[^=;]*)?=\\s*${storeName}\\s*\\(`
-      ).exec(beforeFetch)
-    : null;
-  if (!sentDecl) {
-    failures.push(
-      `${SCREEN}: ${startName} does not bind the identifier from ${storeName ?? "the storing function"} before the request leaves. Minting on the response loses it in exactly the case that creates the duplicate: a reload aborts the call, nothing is stored here, and the server has already written its row.`
-    );
-  } else {
-    sentSymbol = sentDecl[1];
-    // No rule here on HOW the fresh flag is passed. Section 5 resolves the
-    // argument for real, with the signature's default, and measures what comes
-    // back: an inversion, a constant fold and a flipped default all fail there,
-    // while a harmless wrapper passes. That is strictly better than the previous
-    // rule, which demanded the bare parameter and so refused Boolean(fresh).
-  }
-
-  // 6b. and it is that symbol, not another, that the payload carries.
-  const sentBody = payloadObjectAfter(fetchAt, startBlock.close);
-  if (!sentBody) {
-    failures.push(`${SCREEN}: the start request has no JSON.stringify payload this guard can read.`);
-  } else {
-    const entry = entriesOf(sentBody).find((candidate) => candidate.key === "attemptId");
-    if (!entry) {
-      failures.push(
-        `${SCREEN}: the start request payload carries no attemptId. The server then mints its own and every reload opens a new session, which is the bug this contract closes.`
-      );
-    } else if (sentSymbol) {
-      const carried = entry.value === null ? entry.key : entry.value;
-      if (carried !== sentSymbol) {
-        failures.push(
-          `${SCREEN}: the start payload sends ${carried} while the identifier obtained from ${storeName} is ${sentSymbol}. Sending anything else, an alias minted on the spot for instance, means the value stored is never the value sent and the reload opens a second session.`
-        );
-      }
-    }
-  }
+  // 6a and 6b, DELETED. "The identifier is bound from the storing function before
+  // the request" and "the payload carries that symbol" were both static, and both
+  // were walked around at the call site: a `.slice(0, 8)` on the bind, a re-mint
+  // after it, a spread that overrides the key afterwards. Section 5 now measures
+  // the value that reaches the fake network and compares it with the value left in
+  // storage, which is the property those two rules were trying to approximate.
 
   // 6c. the re-entrance guard: tested, THEN closed, both before the request, and
   // released in a finally so a failed start does not latch it for ever.
@@ -1470,7 +1826,7 @@ if (startBlock && startName && startEntry) {
         );
       }
     }
-      // WHOLE FILE (8 of 16): the ref is declared in the component body, above.
+      // WHOLE FILE (9 of 18): the ref is declared in the component body, above.
     if (!new RegExp(`const\\s+${refName}\\s*=\\s*useRef`).test(screen)) {
       failures.push(
         `${SCREEN}: ${refName} is not a useRef. A value that lives in state is only readable on the next render, which is exactly what lets the second call through.`
@@ -1490,7 +1846,7 @@ if (startBlock && startName && startEntry) {
   // of a defect it did not have. What is required is that an adopt happens, that
   // it is handed the server's sessionId PATH and nothing derived from it, and that
   // it happens after the response was accepted.
-  const startCheck = shortCircuitAfter(screen, closeOf, startBlock, fetchAt);
+  const startCheck = shortCircuitAfter(screen, closeOf, startBlock, fetchAt, okDelegates);
   if (!startCheck.shortCircuits) {
     failures.push(
       `${SCREEN}: a refused start is not short-circuited in ${startName}. The start route answers JSON even on a 500, so response.json() succeeds, payload.sessionId is undefined, and everything downstream runs on a payload that carries no session. This is the mandatory path, not an optional gesture: it needs the check the close already has.`
@@ -1509,12 +1865,25 @@ if (startBlock && startName && startEntry) {
     } else {
       const args = parenRegionAfter(afterFetch, adopted.index);
       const handed = args ? args.text.trim() : "";
-      // Exactly a `<something>.sessionId` path. A value derived from it, or our
-      // own identifier handed back, poisons storage or does nothing, and both
-      // reopen the bug this function exists to close.
-      if (!/^[A-Za-z_$][\w$]*\.sessionId$/.test(handed)) {
+      // A `<something>.sessionId` path, or a local name that IS one: destructuring
+      // the response is the most ordinary refactor in this file, and the previous
+      // version turned it red while accusing it of corrupting storage. What stays
+      // refused is a DERIVED value, a slice or a rewrite, and our own identifier
+      // handed back, because both leave this tab opening a new session per reload.
+      const aliasOf = (name) => {
+        const direct = new RegExp(
+          `(?:const|let|var)\\s+${name}\\s*(?::[^=;]*)?=\\s*([A-Za-z_$][\\w$]*)\\.sessionId\\s*;`
+        ).test(wholeStart);
+        const destructured = new RegExp(
+          `\\{[^{}]*\\bsessionId\\s*:\\s*${name}\\b[^{}]*\\}\\s*=\\s*[A-Za-z_$][\\w$]*\\s*;`
+        ).test(wholeStart);
+        return direct || destructured;
+      };
+      const isPath = /^[A-Za-z_$][\w$]*\.sessionId$/.test(handed);
+      const isAlias = /^[A-Za-z_$][\w$]*$/.test(handed) && aliasOf(handed);
+      if (!isPath && !isAlias) {
         failures.push(
-          `${SCREEN}: ${adoptName} is handed ${handed || "nothing"} instead of the payload's sessionId path itself. A derived value (a slice, a rewrite) is stored and refused in silence at every later start, and handing back the identifier we just sent is a no-op: both leave this tab opening a new session on every reload.`
+          `${SCREEN}: ${adoptName} is handed ${handed || "nothing"} instead of the sessionId the server returned, either as a path or as a local name destructured from the response. A derived value (a slice, a rewrite) is stored and refused in silence at every later start, and handing back the identifier we just sent is a no-op: both leave this tab opening a new session on every reload.`
         );
       }
       const adoptedAt = (fetchParen ? fetchParen.close : fetchAt) + adopted.index;
@@ -1541,7 +1910,7 @@ if (startBlock && startName && startEntry) {
   }
 }
 
-// WHOLE FILE (9 and 10 of 16), and it has to be: these are call sites spread
+// WHOLE FILE (10 and 11 of 18), and it has to be: these are call sites spread
 // through the JSX, the twin-button rule included.
 if (startName) {
   const callSites = [...screen.matchAll(new RegExp(`\\b${startName}\\s*\\(`, "g"))].map(
@@ -1549,6 +1918,7 @@ if (startName) {
   );
   let sawPlain = false;
   let sawFresh = false;
+  const freshSites = [];
   for (const at of callSites) {
     const args = parenRegionAfter(screen, at);
     if (!args) continue;
@@ -1558,9 +1928,11 @@ if (startName) {
     }
     const entry = entriesOf(args.text).find((candidate) => candidate.key === "fresh");
     // Any value but the literal false asks for a new attempt. An expression is
-    // legitimate here, unlike the pass-through into the storing function: this
-    // call site decides, it does not forward a decision already taken.
-    if (entry && entry.value !== "false") sawFresh = true;
+    // legitimate here: this call site decides, it does not forward a decision.
+    if (entry && entry.value !== "false") {
+      sawFresh = true;
+      freshSites.push(at);
+    }
   }
   if (!sawFresh) {
     failures.push(
@@ -1571,6 +1943,31 @@ if (startName) {
     failures.push(
       `${SCREEN}: nothing calls ${startName} without arguments any more. The mount effect and Retry session are both the same attempt and must replay its identifier.`
     );
+  }
+  // NAMING THE CALLER, not just counting flavours. "There exists a plain caller"
+  // and "there exists a fresh caller" were both satisfied while the MOUNT EFFECT
+  // asked for a fresh attempt, which makes every page load open a new session: the
+  // plan's own bug, restored by one token, with the two flags still green. Exactly
+  // one caller may ask for a new attempt, and no caller inside a hook may.
+  if (freshSites.length > 1) {
+    failures.push(
+      `${SCREEN}: ${freshSites.length} callers ask ${startName} for a fresh attempt. Only Play again opens a new attempt; a retry, and the mount, replay the identifier already stored, or a failed start is followed by a second session beside the row the server may already have written.`
+    );
+  }
+  for (const at of freshSites) {
+    const hook = pairs.find(
+      (pair) =>
+        pair.open < at &&
+        at < pair.close &&
+        /use(?:Effect|LayoutEffect|Memo)\s*\(\s*\(\s*\)\s*=>\s*$/.test(
+          screen.slice(Math.max(0, pair.open - 40), pair.open)
+        )
+    );
+    if (hook) {
+      failures.push(
+        `${SCREEN}: a hook body asks ${startName} for a fresh attempt. The mount effect is the load, and a load must REPLAY the stored identifier: asking for a new one there means no reload ever rejoins its own session, which is exactly the bug this plan closes.`
+      );
+    }
   }
   const twin = new RegExp(
     `onClick=\\{\\(\\) => void ${startName}\\(\\)\\}[\\s\\S]*onClick=\\{\\(\\) => void ${startName}\\(\\)\\}`
@@ -1583,7 +1980,7 @@ if (startName) {
 }
 
 // ------------------------------------------------- 7. out of every dependency
-// WHOLE FILE (11, 12 and 13 of 16) by nature: a dependency array, and a useState
+// WHOLE FILE (12, 13 and 14 of 18) by nature: a dependency array, and a useState
 // declaration, can sit anywhere in the component.
 // Anchored on the shape of a hook call, `}, [ ... ]`, NOT on any bracket pair
 // containing the substring: the loose form /\[[^\]]*attemptId[^\]]*\]/ matches a
@@ -1628,7 +2025,7 @@ if (endBlock && endEntry) {
   // reviewer replaced the throw with a console.error and everything downstream ran
   // anyway, which is word for word what this message used to claim to forbid. Same
   // helper as the start path now, so neither can lose the rule without the other.
-  const endCheck = shortCircuitAfter(screen, closeOf, endBlock, endAt);
+  const endCheck = shortCircuitAfter(screen, closeOf, endBlock, endAt, okDelegates);
   const shortCircuits = endCheck.shortCircuits;
   const checkedAt = endCheck.checkedAt;
   if (!shortCircuits) {
@@ -1650,7 +2047,7 @@ if (endBlock && endEntry) {
 
   // 8b. the identifier is released here, after the request, and only here.
   if (dropName) {
-    // WHOLE FILE (14 of 16): finding a stray release IS the point of this rule.
+    // WHOLE FILE (15 of 18): finding a stray release IS the point of this rule.
     const dropCalls = [...screen.matchAll(new RegExp(`\\b${dropName}\\s*\\(`, "g"))].map(
       (match) => match.index
     );
@@ -1659,10 +2056,21 @@ if (endBlock && endEntry) {
       failures.push(
         `${SCREEN}: ${endName} never releases the stored identifier. The next start would replay the identifier of a session that is already closed.`
       );
-    } else if (insideEnd[0] - endBlock.open < checkedAt) {
-      failures.push(
-        `${SCREEN}: the stored identifier is released before the refused-close branch in ${endName}. Released between the request and the check, a refused close still lets it go: the session stays open and the next load opens a second one beside it.`
-      );
+    }
+    // EVERY release inside the close, not just the first: a second one added to the
+    // `finally` runs on the refused path too, so a session that is still open loses
+    // its identifier and the next load opens a second one beside it.
+    const endFinallyBody = finallyBodyOf(screen, closeOf, endBlock.open, endBlock.close);
+    for (const at of insideEnd) {
+      if (endFinallyBody && at > endFinallyBody.open && at < endFinallyBody.close) {
+        failures.push(
+          `${SCREEN}: ${dropName} is called in the finally of ${endName}, so it runs on the refused path as well. A refused close must keep the identifier: the session is still open, and releasing it makes the next load open a second one beside it.`
+        );
+      } else if (at - endBlock.open < checkedAt) {
+        failures.push(
+          `${SCREEN}: ${dropName} is called before the refused-close branch in ${endName}. A refused close would then let the identifier go while the session stays open.`
+        );
+      }
     }
     const strays = dropCalls.filter((at) => at < endBlock.open || at > endBlock.close);
     if (strays.length > 0) {
@@ -1712,19 +2120,14 @@ if (endBlock && endEntry) {
   // gates the question, the options and the progress line on the start error
   // being null, so writing a refused close into that same state destroys the
   // question in progress. Measured in a browser by the review, not hypothetical.
-  const catchSettersIn = (from, to) => {
-    const region = screen.slice(from, to);
-    const catchAt = /catch\s*(?:\([^)]*\))?\s*\{/.exec(region);
-    if (!catchAt) return [];
-    const brace = from + catchAt.index + catchAt[0].length - 1;
-    if (!closeOf.has(brace)) return [];
-    return [
-      ...screen.slice(brace, closeOf.get(brace)).matchAll(/\b(set[A-Z][\w$]*)\s*\(/g),
-    ].map((match) => match[1]);
-  };
-  const endSetters = catchSettersIn(endBlock.open, endBlock.close);
-  const startSetters = startBlock ? catchSettersIn(startBlock.open, startBlock.close) : [];
-  if (endSetters.length === 0) {
+  // The WHOLE close is read, not only its first catch: a reviewer put the start's
+  // error setter in the `!response.ok` branch, one line before the throw, and the
+  // rule that read the catch saw nothing while a refused close destroyed the game
+  // view exactly as before. The comparison is against the start's CATCH setters,
+  // since those are the ones the render gates on.
+  const endSetters = settersOf(screen, endBlock.open, endBlock.close);
+  const startSetters = startBlock ? catchSettersOf(screen, closeOf, startBlock) : [];
+  if (catchSettersOf(screen, closeOf, endBlock).length === 0) {
     failures.push(
       `${SCREEN}: a refused close reports nothing to the player in ${endName}. A silent failure on a button leaves the session open with no sign of it.`
     );
@@ -1740,12 +2143,44 @@ if (endBlock && endEntry) {
   // `closeError === null && !error && ...` walked straight through: a refused close
   // destroyed the question view again, and silently this time, since the message
   // paragraph lives inside the very block that gate closes.
-  const closeStates = endSetters
+  // Derived from what the close writes ON FAILURE, not from every setter it calls:
+  // the position rule below is about the failure state, and `isRoundLocked` or
+  // `isComplete` are ordinary game state that the render legitimately gates on.
+  const closeStates = catchSettersOf(screen, closeOf, endBlock)
     .map((setter) => `${setter.slice(3, 4).toLowerCase()}${setter.slice(4)}`)
     .filter((stateName) => new RegExp(`\\b${stateName}\\b`).test(screen));
+  // WHOLE FILE (16 and 17 of 18). THE POSITION RULE, restored and stronger than the grep
+  // round 2 deleted. That grep caught `!closeError`; its replacement, an identifier
+  // set per render gate, was walked around three ways: the gate extracted into a
+  // named boolean that reads `!closeError`, an alias `closeError !== null` read by
+  // the gate, and the condition wrapped in an inline object literal that the gate
+  // finder skips. All three restore a refused close destroying the question view,
+  // and the third one exploits a hole this guard had DISCLOSED. So the state is
+  // pinned at the source instead: it may appear in a declaration, in a list, as a
+  // JSX child, and as its own bare gate, and nowhere else. No operator can be
+  // applied to it anywhere in this file, so no alias can carry it into a gate.
+  for (const stateName of closeStates) {
+    for (const match of screen.matchAll(new RegExp(`\\b${stateName}\\b`, "g"))) {
+      const at = match.index;
+      let before = at - 1;
+      while (before >= 0 && /\s/.test(screen[before])) before -= 1;
+      let after = at + stateName.length;
+      while (after < screen.length && /\s/.test(screen[after])) after += 1;
+      const prev = screen[before] ?? "";
+      const next = screen[after] ?? "";
+      const declaration = (prev === "[" || prev === ",") && (next === "," || next === "]");
+      const listed = (prev === "," || prev === "[" || prev === "{") && (next === "," || next === "]");
+      const jsxChild = prev === "{" && next === "}";
+      const ownGate = prev === "{" && next === "?";
+      if (declaration || listed || jsxChild || ownGate) continue;
+      failures.push(
+        `${SCREEN}: ${stateName} is read in an expression (${screen.slice(Math.max(0, at - 40), at + stateName.length + 20).trim().replace(/\s+/g, " ")}). The state a refused close writes may only be declared, listed in a dependency array, rendered as a child, or tested bare in its own gate. Any operator on it, anywhere, can carry it into a render gate through an alias and hide the question the player is answering.`
+      );
+    }
+  }
+
   if (closeStates.length > 0) {
-    // WHOLE FILE (15 and 16 of 16): the close state is looked up in the file, and a
-    // render gate can sit in any JSX expression of it.
+    // WHOLE FILE (18 of 18): a render gate can sit in any JSX expression of the file.
     const gates = renderGates(screen, pairs);
     for (const stateName of closeStates) {
       const touching = gates.filter((gate) => identifiersOf(gate.condition).has(stateName));
@@ -1780,18 +2215,25 @@ if (failures.length > 0) {
 }
 
 console.log(
-  "check:client-attempt-contract OK : MEASURED BY EXECUTION, the generator emits an " +
-    "identifier the server pattern accepts, in both crypto branches, and never twice the " +
-    "same; two argument-less starts return ONE identifier and it is the one left in storage; " +
-    "a stored identifier comes back byte for byte; a fresh attempt differs and is persisted; " +
-    "blocked storage degrades instead of throwing; the adopting function stores the value " +
-    "handed to it, exactly, is idempotent, and refuses anything that is not an identifier; " +
-    "the release empties the key. CHECKED STATICALLY, the payload sends the symbol the " +
-    "storing function returned, the adopting function is handed the payload's sessionId path " +
-    "after a refused response has been short-circuited on both paths, re-entrance is tested " +
-    "then closed synchronously and released in a finally on both paths, the release of the " +
-    "identifier happens only in the close and only after its check, the identifier is in no " +
-    "dependency array and in no React state, the close writes a state the start path does " +
-    "not and that state appears in no compound render gate, and every training path fetched " +
-    "here resolves to a route file that exists."
+  "check:client-attempt-contract OK. DRIVEN END TO END, the extracted client running against a " +
+    "fake fetch and a fake sessionStorage: two successive module loads sharing one store each " +
+    "issue one start request and send the SAME identifier, byte for byte the value left in the " +
+    "store; two argument-less starts in one load send one identifier and an explicit fresh one " +
+    "sends another; two starts in the same tick issue one request; a response carrying a " +
+    "different sessionId is adopted and replayed by the next load; a refused start leaves the " +
+    "store untouched; a refused close keeps the identifier, writes no state the start path " +
+    "writes on failure, and announces no completion, while an accepted close releases the " +
+    "identifier and announces completion; blocked storage still sends one usable identifier " +
+    "without throwing; the adopting function is exact, idempotent, and refuses a non " +
+    "identifier. MEASURED ON THE GENERATOR, its output is accepted by the server's own pattern " +
+    "in both crypto branches and never repeats. CHECKED STATICALLY, and only this: one call to " +
+    "each training path in the file, each resolving to a route file that exists; one caller " +
+    "asks for a fresh attempt and no hook body does; re-entrance is tested then closed with no " +
+    "await between, and released in a finally, on both paths; a refused response is " +
+    "short-circuited on both paths by a condition carrying no boolean literal, inline or " +
+    "delegated to a helper that throws; the identifier is released only inside the close, never " +
+    "in its finally, and only after that check; the sessionId handed to the adopting function " +
+    "is the response path or a name destructured from it; the identifier is in no dependency " +
+    "array and in no React state; and the state a refused close writes is never read under an " +
+    "operator anywhere in the file."
 );
