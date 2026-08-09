@@ -803,6 +803,100 @@ const safeReadVisibleLevel = async (userId: string): Promise<string | null> => {
   }
 };
 
+// Answer feedback wording, shared by the normal answer path and by the
+// duplicate path below so the two can never drift apart.
+const CORRECT_FEEDBACK = "Correct. Good eye.";
+const WRONG_FEEDBACK = "Incorrect. Try again.";
+
+// A duplicate answer submission, and the only honest response to one. Another
+// submission for this same question AND this same attempt index won the
+// event_ingestion_guard primary key, so THIS call wrote nothing at all: no fact,
+// no mastery, no counter, no pool move. It therefore reads, and only reads.
+//
+// It serves a coherent payload rather than an error, and it serves the next
+// question when the recorded answer resolved the question. That is not
+// politeness. The question token is not single use, so a client left sitting on
+// a question that is already answered submits again, and that later submission,
+// sent once the winner has committed, derives attempt_index 2 and gets recorded
+// as a genuine retry. Handing the next question back is what keeps a duplicate
+// from turning into a fabricated second attempt.
+//
+// The result reported is the one the DATABASE recorded, not the one this call
+// happened to carry. Two tabs can answer the same question differently and only
+// one of the two answers exists in the journal, so echoing this call's own
+// answerSlug would tell the player something the fact table denies. The read is
+// guaranteed to find that row: the loser only reaches this branch after blocking
+// on the winner's transaction until it committed (H1), so the winner's fact is
+// visible to the next statement.
+//
+// levelChanged is deliberately absent: N-24 and N-25 toast only when the level
+// moved on THIS answer, and this answer moved nothing. The level is read, never
+// recomputed, so this path cannot write through recompute_visible_level either.
+const duplicateAnswerResponse = async (
+  session: SessionRow,
+  user: UserRow,
+  questionId: string
+): Promise<TrainingAnswerResponse> => {
+  const [recorded] = await queryRows<{
+    recorded_is_correct: boolean | null;
+    resolved_count: number;
+    global_q_index: number;
+  }>(sql`
+    SELECT
+      (
+        SELECT uef.is_correct
+        FROM user_event_fact uef
+        WHERE uef.session_id = ${session.session_id}::uuid
+          AND uef.question_id = ${questionId}::uuid
+          AND uef.event_type = 'answer'
+        ORDER BY uef.attempt_index DESC
+        LIMIT 1
+      ) AS recorded_is_correct,
+      (
+        SELECT s.question_count
+        FROM sessions s
+        WHERE s.session_id = ${session.session_id}::uuid
+      ) AS resolved_count,
+      (
+        SELECT u.global_q_index
+        FROM users u
+        WHERE u.user_id = ${user.user_id}::uuid
+      ) AS global_q_index
+  `);
+
+  const resolved = recorded.recorded_is_correct === true;
+  const visibleLevel = await safeReadVisibleLevel(user.user_id);
+
+  let nextQuestion: TrainingQuestion | undefined;
+  if (resolved) {
+    try {
+      // recoverPoolIfStuck is NOT called here: recovery WRITES (a silent unlock
+      // or a cursor jump) and this path writes nothing. A frozen pool therefore
+      // means no next question rather than a failed request, and the client's
+      // next call takes the normal path, which does recover.
+      nextQuestion = buildQuestion(
+        session.session_id,
+        { ...user, global_q_index: recorded.global_q_index },
+        session.seed,
+        await getPoolRows(user.user_id)
+      );
+    } catch (error) {
+      console.warn("duplicate answer: no next question available.", error);
+    }
+  }
+
+  return {
+    result: resolved ? "correct" : "wrong",
+    questionResolved: resolved,
+    feedbackText: resolved ? CORRECT_FEEDBACK : WRONG_FEEDBACK,
+    progress: {
+      resolvedCount: recorded.resolved_count,
+      ...(visibleLevel ? { visibleLevel } : {}),
+    },
+    ...(nextQuestion ? { nextQuestion } : {}),
+  };
+};
+
 // ---------------------------------------------------------------------------
 // ONE ATTEMPT EQUALS ONE IDENTIFIER. The client mints a uuid per attempt, the
 // server uses it as sessions.session_id, and the primary key that already
@@ -1055,6 +1149,14 @@ export const startTrainingSession = async ({
       userId: user.user_id,
       question,
       progress: {
+        // session.question_count is the RIGHT value here, and it is not the
+        // stale read the answer path had to stop serving. Judged, not copied:
+        // this call never writes question_count (only an answer does), and
+        // `session` came either from the session INSERT's own RETURNING above
+        // or, for a rejoin, from a SELECT taken inside this same call with no
+        // write in between. There is no fresher value to serve and no later
+        // RETURNING to serve it from, so a round trip added here would read
+        // back exactly what is already in hand.
         resolvedCount: session.question_count,
         ...(progressAggregate
           ? {
@@ -1143,16 +1245,161 @@ export const submitTrainingAnswer = async ({
     throw new Error("Training state not found for current typeface.");
   }
 
-  const previousAttemptRows = await queryRows<CountRow>(sql`
-    SELECT COUNT(*)::text AS count
-    FROM user_event_fact
-    WHERE session_id = ${sessionId}::uuid
-      AND event_type = 'answer'
-      AND question_id = ${payload.questionId}::uuid
+  const isCorrect = answerSlug === payload.typefaceSlug;
+
+  // mastery_after and reason_code both depend on the attempt index, and the
+  // attempt index is only known INSIDE the statement below, deriving it in
+  // JavaScript being precisely the race this closes. Only two outcomes stay
+  // open, so the first-attempt value is computed here and the statement picks
+  // between it and "the level does not move" with a two-branch CASE. isCorrect
+  // needs no read at all, which is why no third branch exists.
+  //
+  // Beyond the first attempt the level never moves, and the three branches
+  // further down confirm it: correct_after_retry writes no mastery_level and
+  // wrong_retry writes nothing whatsoever.
+  const masteryAfterFirstTry = isCorrect
+    ? Math.min(4, currentState.mastery_level + 1)
+    : currentState.mastery_level === 4
+      ? 3
+      : Math.max(0, currentState.mastery_level - 1);
+
+  // misread_shown records that a Misread Type Card WAS DISPLAYED to the player.
+  // No Type Card exists in the runtime (no content/type-cards, no overlay), so the
+  // honest value is false and only false. It used to be written from the trigger
+  // rule alone, which put "a card was shown" in the fact table for cards that were
+  // never shown: the day cards ship, their effect would be measured against a
+  // history of imaginary displays.
+  //
+  // The trigger rule itself is NOT lost, it lives in the spec (§6.1: first error on
+  // this face in the session, or second consecutive error). It gets implemented
+  // together with the card, and this column starts telling the truth then.
+  // check:misread-truth fails if anything but a literal false is written here while
+  // no card content exists.
+  const misreadShown = false;
+
+  // attempt_index is derived HERE, inside the statement that inserts the fact,
+  // never by a COUNT read back into JavaScript. Two submissions for the same
+  // question in flight at the same time both read a count of 0, both build the
+  // same idempotency key, and the event_ingestion_guard primary key
+  // (user_id, session_id, idempotency_key) is what arbitrates: the loser blocks
+  // on the winner's transaction, DO NOTHING leaves `g` empty, the outer INSERT
+  // writes nothing, and RETURNING yields zero rows. Zero rows means "this
+  // submission is a duplicate", and NOTHING else runs. The SQL derivation and
+  // the ingestion guard are one correction, not two: derived alone, the count
+  // stays racy and both submissions would still build the same key; guarded
+  // alone, a JS-computed index would still be the same on both sides only by
+  // luck of timing.
+  //
+  // The derived index is also the correct semantics, not just the pure one: it
+  // only advances once the previous fact is COMMITTED, so a genuine retry sent
+  // after the first answer resolved derives 2 and never collides.
+  //
+  // REORDERING TO ASSUME, and it is the same kind already justified for
+  // session_end. The fact is now written BEFORE the mastery write, where it used
+  // to be written after. That changes none of the values recorded, mastery_before
+  // and mastery_after both being decided in JavaScript ahead of either write. It
+  // changes the failure mode: an interruption between the fact and the mastery
+  // write now leaves the fact written and the mastery one step behind, instead of
+  // leaving the mastery written twice from the same mastery_before, which is a
+  // double penalty or a double promotion for the player. The new failure mode is
+  // strictly better and it is repairable, the fact carrying mastery_after, so a
+  // recovery job can recompute; the old one destroyed information.
+  const written = await queryRows<{ attempt_index: number; resolved_count: number }>(sql`
+    WITH n AS (
+      SELECT COUNT(*)::int + 1 AS attempt_index
+      FROM user_event_fact
+      WHERE session_id = ${sessionId}::uuid
+        AND event_type = 'answer'
+        AND question_id = ${payload.questionId}::uuid
+    ),
+    g AS (
+      INSERT INTO event_ingestion_guard (
+        idempotency_key, user_id, session_id, ingestion_status
+      )
+      SELECT
+        ${sessionId}::text || ':' || ${payload.questionId}::text || ':' || n.attempt_index::text,
+        ${user.user_id}::uuid,
+        ${sessionId}::uuid,
+        'accepted'
+      FROM n
+      ON CONFLICT (user_id, session_id, idempotency_key) DO NOTHING
+      RETURNING idempotency_key
+    )
+    INSERT INTO user_event_fact (
+      idempotency_key,
+      user_id,
+      session_id,
+      mode,
+      global_q_index,
+      question_id,
+      attempt_index,
+      event_type,
+      typeface_slug,
+      answer_slug,
+      is_correct,
+      response_time_ms,
+      mastery_before,
+      mastery_after,
+      misread_shown,
+      reading_shown,
+      display_word,
+      reason_code,
+      seed,
+      engine_version
+    )
+    SELECT
+      g.idempotency_key,
+      ${user.user_id}::uuid,
+      ${sessionId}::uuid,
+      'training',
+      ${user.global_q_index}::int,
+      ${payload.questionId}::uuid,
+      n.attempt_index,
+      'answer',
+      ${payload.typefaceSlug},
+      ${answerSlug},
+      ${isCorrect}::boolean,
+      ${Math.max(0, Math.round(responseTimeMs))}::int,
+      ${currentState.mastery_level}::smallint,
+      CASE WHEN n.attempt_index = 1
+           THEN ${masteryAfterFirstTry}::smallint
+           ELSE ${currentState.mastery_level}::smallint
+      END,
+      ${misreadShown}::boolean,
+      false,
+      ${payload.displayWord},
+      CASE WHEN n.attempt_index = 1
+           THEN ${isCorrect ? "correct_first_try" : "wrong_first_try"}::app.reason_code_enum
+           ELSE ${isCorrect ? "correct_after_retry" : "wrong_retry"}::app.reason_code_enum
+      END,
+      ${session.seed}::bigint,
+      ${TRAINING_ENGINE_VERSION}
+    FROM n, g
+    RETURNING
+      attempt_index,
+      (
+        SELECT question_count
+        FROM sessions
+        WHERE session_id = ${sessionId}::uuid
+      ) AS resolved_count
   `);
 
-  const attemptCount = Number.parseInt(previousAttemptRows[0]?.count ?? "0", 10) + 1;
-  const isCorrect = answerSlug === payload.typefaceSlug;
+  // Zero rows: another submission for this same attempt won the guard. It has
+  // already moved mastery, already written the fact, already advanced the
+  // counters. Re-running any of that here would apply the same transition twice
+  // from the same mastery_before, which is a double penalty or a double
+  // promotion for the player, not a harmless duplicate row. Everything
+  // pedagogical, the three mastery branches, the mastery unlock, the two
+  // counter UPDATEs and the pool rebalance, sits below this checkpoint.
+  if (written.length === 0) {
+    return duplicateAnswerResponse(session, user, payload.questionId);
+  }
+
+  // Both values come from the statement that just wrote the fact, never from a
+  // read taken before it. resolved_count rides along in the same RETURNING, by
+  // scalar subquery on sessions, so the fresh counter costs no extra round trip.
+  const attemptCount = written[0].attempt_index;
+  const resolvedCount = written[0].resolved_count;
   const wrongFirstTry = !isCorrect && attemptCount === 1;
   const correctFirstTry = isCorrect && attemptCount === 1;
   const correctAfterRetry = isCorrect && attemptCount > 1;
@@ -1242,74 +1489,6 @@ export const submitTrainingAnswer = async ({
     `;
   }
 
-  const reasonCode = isCorrect
-    ? attemptCount === 1
-      ? "correct_first_try"
-      : "correct_after_retry"
-    : attemptCount === 1
-      ? "wrong_first_try"
-      : "wrong_retry";
-
-  // misread_shown records that a Misread Type Card WAS DISPLAYED to the player.
-  // No Type Card exists in the runtime (no content/type-cards, no overlay), so the
-  // honest value is false and only false. It used to be written from the trigger
-  // rule alone, which put "a card was shown" in the fact table for cards that were
-  // never shown: the day cards ship, their effect would be measured against a
-  // history of imaginary displays.
-  //
-  // The trigger rule itself is NOT lost, it lives in the spec (§6.1: first error on
-  // this face in the session, or second consecutive error). It gets implemented
-  // together with the card, and this column starts telling the truth then.
-  // check:misread-truth fails if anything but a literal false is written here while
-  // no card content exists.
-  const misreadShown = false;
-
-  await sql`
-    INSERT INTO user_event_fact (
-      idempotency_key,
-      user_id,
-      session_id,
-      mode,
-      global_q_index,
-      question_id,
-      attempt_index,
-      event_type,
-      typeface_slug,
-      answer_slug,
-      is_correct,
-      response_time_ms,
-      mastery_before,
-      mastery_after,
-      misread_shown,
-      reading_shown,
-      display_word,
-      reason_code,
-      seed,
-      engine_version
-    ) VALUES (
-      ${`${sessionId}:${payload.questionId}:${attemptCount}`},
-      ${user.user_id}::uuid,
-      ${sessionId}::uuid,
-      'training',
-      ${user.global_q_index},
-      ${payload.questionId}::uuid,
-      ${attemptCount},
-      'answer',
-      ${payload.typefaceSlug},
-      ${answerSlug},
-      ${isCorrect},
-      ${Math.max(0, Math.round(responseTimeMs))},
-      ${currentState.mastery_level},
-      ${nextMastery},
-      ${misreadShown},
-      false,
-      ${payload.displayWord},
-      ${reasonCode}::app.reason_code_enum,
-      ${session.seed},
-      ${TRAINING_ENGINE_VERSION}
-    )
-  `;
-
   // N-22: recompute the global visible level after EVERY answer (correct, wrong
   // first try, or retry), not only at end of session. Runs after the mastery
   // write and the I-07 unlock above, so it aggregates the fresh pool. Bounded
@@ -1330,9 +1509,16 @@ export const submitTrainingAnswer = async ({
     return {
       result: "wrong",
       questionResolved: false,
-      feedbackText: "Incorrect. Try again.",
+      feedbackText: WRONG_FEEDBACK,
       progress: {
-        resolvedCount: session.question_count,
+        // Served from the answer statement's own RETURNING, not from the
+        // sessions row read at the top of this call. A wrong answer increments
+        // nothing, so no increment is LOST by serving the earlier read, and
+        // that is exactly why the defect was easy to miss. Two active sessions
+        // being a supported state, a question resolved in another tab between
+        // that read and now makes the earlier value stale, and the client would
+        // be told a number the database has already moved past.
+        resolvedCount,
         ...levelFields,
       },
     };
@@ -1410,7 +1596,7 @@ export const submitTrainingAnswer = async ({
   return {
     result: "correct",
     questionResolved: true,
-    feedbackText: "Correct. Good eye.",
+    feedbackText: CORRECT_FEEDBACK,
     progress: {
       resolvedCount: resolvedCountAfter,
       ...progressFields,
