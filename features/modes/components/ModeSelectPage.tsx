@@ -84,7 +84,9 @@ const waitingFor = (key: ModeChoice["key"], stats: ModeSelectStats | null) => {
   }
 
   if (!stats || stats.competitionRounds === 0) {
-    return "2 points under two seconds";
+    /* Short on purpose: the meta row is one mono line inside a third of a column, and
+       the card's own description already states how the scoring works. */
+    return "No round yet";
   }
   return `Your best, ${stats.competitionBest} points`;
 };
@@ -127,9 +129,14 @@ export default function ModeSelectPage({ stats }: ModeSelectPageProps) {
         </div>
 
         <section className="lp-modes" aria-label="Game modes">
-          <div className="lp-modes__head">
-            <h1 className="lp-section__title">Pick how you want to play.</h1>
-            <p className="lp-section__lede">
+          {/* The board's intro, not the landing's section head: .lp-section__title is a
+              landing display size (up to 3.85rem) and read twice as large as every
+              other page title. .pb-intro is what /profile and the rules pages use,
+              already centred, at clamp(1.4rem, 3vw, 2rem). */}
+          <div className="lp-modes__head pb-intro">
+            <span className="pb-kicker">Your modes</span>
+            <h1 className="pb-title">Pick how you want to play.</h1>
+            <p className="pb-lede">
               Start gentle, race the clock, or go expert. Same eye, rising stakes.
             </p>
             <p className="pm-note">
@@ -139,40 +146,41 @@ export default function ModeSelectPage({ stats }: ModeSelectPageProps) {
 
           <div className="lp-modes__grid">
             {MODES.map((mode) => (
-              <Link
-                key={mode.key}
-                href={`/play/${mode.key}`}
-                className="lp-mode-card"
-                style={{ ["--mode-accent" as string]: mode.accent }}
-              >
-                <span className="lp-mode-card__chip">{mode.label}</span>
-                <h2 className="lp-mode-card__title">{mode.title}</h2>
-                <p className="lp-mode-card__desc">{mode.desc}</p>
-                <span className="lp-mode-card__meta">
-                  <span>{waitingFor(mode.key, stats)}</span>
-                  <span className="lp-mode-card__arrow" aria-hidden="true">
-                    →
-                  </span>
-                </span>
-              </Link>
+              // The actions sit UNDER the card, not inside it: inside, they were a
+              // fifth row and the card grew a third taller than the landing's. Outside,
+              // the card keeps its own size and the buttons still belong to it.
+              // The card is an article rather than a link, unlike the landing's, since
+              // a link cannot be nested in a link.
+              <div key={mode.key} className="pm-cell">
+                {/* The accent is set ON THE CARD, not on the cell: .lp-mode-card
+                    declares its own `--mode-accent: var(--mode-training)` fallback, so
+                    a value inherited from the parent is overridden the moment the card
+                    is reached and all three came out green. */}
+                <article
+                  className="lp-mode-card"
+                  style={{ ["--mode-accent" as string]: mode.accent }}
+                >
+                  <span className="lp-mode-card__chip">{mode.label}</span>
+                  <h2 className="lp-mode-card__title">{mode.title}</h2>
+                  <p className="lp-mode-card__desc">{mode.desc}</p>
+                  <span className="lp-mode-card__meta">{waitingFor(mode.key, stats)}</span>
+                </article>
+
+                <div className="pm-actions">
+                  <Link href={`/play/${mode.key}/rules`} className="lp-btn lp-btn--ghost">
+                    Rules
+                  </Link>
+                  {/* Filled, because Play is the action the page exists for. Same pair
+                      as the landing hero: primary plus ghost. */}
+                  <Link href={`/play/${mode.key}`} className="lp-btn lp-btn--primary">
+                    {/* Expert serves a placeholder, not a round: "Play" would promise
+                        a game that is not there. */}
+                    {mode.key === "expert" ? "Preview" : "Play"}
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
-
-          {/* Outside the cards, because a link cannot sit inside a link: each card
-              is already the link to its mode, the way the landing's are. */}
-          <p className="pm-rules">
-            <span className="pm-rules__label">Rules</span>
-            {MODES.map((mode) => (
-              <Link
-                key={mode.key}
-                href={`/play/${mode.key}/rules`}
-                className="pm-rules__pill"
-                style={{ ["--mode-accent" as string]: mode.accent }}
-              >
-                {mode.label}
-              </Link>
-            ))}
-          </p>
         </section>
       </div>
     </main>

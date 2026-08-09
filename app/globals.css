@@ -9351,6 +9351,11 @@ svg {
 .pf-page--fixed {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
+  /* Explicit, because an implicit grid column is sized to its widest item's
+     min-content: the header pill measured 1408px inside a 1376px content box, so the
+     whole column overflowed 32px to the right and every centred thing below it,
+     title included, sat 16px off the middle of the screen. */
+  grid-template-columns: minmax(0, 1fr);
 }
 /* The lock holds only where one screen can actually hold the content. Above the
    breakpoint the three cards fan out on one row and always fit. Below it they stack,
@@ -9372,7 +9377,11 @@ svg {
   isolation: isolate;
   display: grid;
   align-content: center;
+  justify-items: center;
   padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem);
+  /* .pb-kicker mixes the accent into the ink and reads plain grey without one. The
+     deck's own accents live per card; the head borrows training's, the core mode. */
+  --pb-accent: var(--mode-training);
 }
 
 /* THE DECK IS SPREAD HERE, NOT FANNED.
@@ -9389,34 +9398,99 @@ svg {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(0.6rem, 1.4vw, 1rem);
   perspective: none;
+  /* Held near the landing's own card size (up to 16.5rem each). 76rem gave 392px
+     cards, which read as three billboards; 58rem gave 299 and a description on four
+     lines. This lands each card close to the size it has on the landing. */
+  width: min(100%, 54rem);
+  align-items: stretch;
+}
+
+/* HEAD ABOVE THE DECK, CENTRED, not beside it. The landing pairs a left headline with
+   the fanned deck because that section is one of many on a scrolling page. Here the
+   deck IS the page, so the title reads as its heading and the cards sit under it. */
+.pm .lp-modes {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  /* THE CARDS SIT ON THE MIDDLE OF THE SCREEN. Three rows, the deck in the auto one
+     between two equal 1fr: whatever the head measures, the deck's centre lands on the
+     page's centre. Plain `align-content: center` on the whole block put the head and
+     its gap above the deck inside the centred stack, so the cards ended up more than
+     100px below the middle. The head hangs at the bottom of the first row, so the air
+     collects above the title rather than between it and the cards. */
+  height: 100%;
+  grid-template-rows: 1fr auto 1fr;
+  gap: 0;
+  /* Not the landing's min(95vw, 82rem): vw units ignore this board's own padding, so
+     the section overran its parent by 32px and everything centred inside it, title
+     and deck alike, sat 16px right of the middle of the screen. */
+  width: min(100%, 82rem);
+}
+.pm .pm-note {
+  margin-inline: auto;
+}
+
+/* One cell per mode: the card, then its two actions underneath. The cells stretch to
+   the tallest, and the card fills its own row, so the three cards stay level and the
+   three pairs of buttons sit on one line. */
+.pm-cell {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0.55rem;
+  height: 100%;
 }
 .pm .lp-mode-card {
   flex: initial;
   margin: 0;
+  height: 100%;
+  /* Type on the scale the other pages use. The landing sizes its card for a full
+     bleed teaser (1.32rem title, 0.96rem body), which read as the biggest thing on
+     the site once this deck became the page. The card's own geometry, its padding,
+     radius and 10.5rem floor, is left exactly as the landing sets it. */
 }
-/* The landing's grid sets align-items: flex-start, which in a grid context sizes each
-   card to its own text: fanned that was invisible, side by side it left the shortest
-   card 22px shorter than its neighbours. */
-.pm .lp-modes__grid {
-  align-items: stretch;
+.pm .lp-mode-card__chip {
+  padding: 0.22rem 0.6rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
 }
-/* The card packs its rows at the top (align-content: start), so the meta row's
-   `margin-top: auto` had no free space to absorb and each figure sat wherever its
-   description ended, 23px apart across the row. A flexible last row gives the auto
-   margin something to push against, and the three figures land on one line. */
-.pm .lp-mode-card {
-  align-content: stretch;
-  grid-template-rows: auto auto auto 1fr;
+.pm .lp-mode-card__title {
+  margin-top: 0.2rem;
+  font-size: 1.02rem;
+  font-weight: 600;
 }
-/* Room taken from the head column, which holds a title, a lede and one mono note and
-   was running about 40 percent empty, so three readable cards cost nothing there. */
-.pm .lp-modes {
-  grid-template-columns: 0.72fr 1.28fr;
+.pm .lp-mode-card__desc {
+  font-size: 0.84rem;
+  line-height: 1.45;
 }
+.pm .lp-mode-card__meta {
+  padding-top: 0.7rem;
+  font-size: 0.6rem;
+}
+
+/* THE BUTTONS ARE THE LANDING'S OWN, not a pill of my own making: .lp-btn with
+   --primary for the filled one and --ghost for the outline, exactly the pair the hero
+   uses. Bold sentence case on a cream fill with warm noir ink, which is what the
+   reference shows. My previous version was mono uppercase micro type, a caption
+   pretending to be a button.
+   One of the two is filled, and it is Play: the action the page exists for. Rules is
+   the detour, so it stays the ghost. */
+.pm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+/* Slightly under the landing's 0.96rem / 2.9rem: two of these sit side by side inside
+   a 277px card, where the hero has a whole viewport. */
+.pm-actions .lp-btn {
+  min-height: 2.35rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.84rem;
+  /* Bolder than the landing's 620: at this smaller size the label needs the weight to
+     read as a button rather than a link. */
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
-  .pm .lp-modes {
-    grid-template-columns: minmax(0, 1fr);
-  }
   .pm .lp-modes__grid {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -9432,51 +9506,6 @@ svg {
   color: var(--ink-soft);
 }
 
-/* Under the deck, in the same column. The cards are links, so the rules links cannot
-   live inside them. */
-.pm-rules {
-  grid-column: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.45rem;
-  margin: clamp(1rem, 2.4vw, 1.6rem) 0 0;
-}
-@media (max-width: 900px) {
-  .pm-rules {
-    grid-column: 1;
-    justify-content: flex-start;
-  }
-}
-.pm-rules__label {
-  margin-right: 0.3rem;
-  font-family: var(--lp-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-/* The chip recipe from the card, at the smaller size a secondary link deserves: the
-   accent stays on the contour, which is the rule the whole deck follows. */
-.pm-rules__pill {
-  padding: 0.24rem 0.62rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--mode-accent) 34%, transparent);
-  background: color-mix(in srgb, var(--mode-accent) 5%, transparent);
-  color: var(--ink-muted);
-  text-decoration: none;
-  font-family: var(--lp-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: border-color 200ms ease, color 200ms ease, background-color 200ms ease;
-}
-.pm-rules__pill:hover {
-  border-color: color-mix(in srgb, var(--mode-accent) 62%, transparent);
-  background: color-mix(in srgb, var(--mode-accent) 10%, transparent);
-  color: var(--ink-strong);
-}
 
 /* Two classes, not one: a later `@media (min-width: 900px) .pb-panels` sets the
    rules pages to `1fr 1.4fr`, same specificity and further down the file, so it was
