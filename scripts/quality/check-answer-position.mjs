@@ -15,17 +15,26 @@
 // measured at 100 percent. A shuffle existed and looked reassuring, but it was
 // keyed on the very quantity that had elected the winner.
 //
-// The two hashes must therefore stay salted differently. This guard imports
-// lib/game/training/question-shape.ts (Node strips the types) and exercises the
-// real selection, distractor and ordering chain, never a re-implementation: a
-// re-implementation agrees with itself, which is how this went unseen.
+// The first fix ordered the buttons by a differently salted hash, which removed
+// the defect but left the order computable in advance from the seed. The owner
+// asked for a real draw, so the order is now drawn with crypto.randomInt and
+// this guard checks the draw rather than a key.
+//
+// It imports lib/game/training/question-shape.ts (Node strips the types) and
+// exercises the real selection, distractor and ordering chain, never a
+// re-implementation: a re-implementation agrees with itself, which is how the
+// original defect went unseen.
 
 const SHAPE = "lib/game/training/question-shape.ts";
 
-// Uniform is 25 percent per position. The chain is deterministic, so this is
-// not a statistical tolerance, only room for the legitimate skew the selection
-// tiebreaks introduce (a face elected on difficulty, not on its hash).
-const FLOOR_PCT = 15;
+// Uniform is 25 percent per position, and since the order became a real draw
+// (owner's call, 2026-08-15) this IS a statistical tolerance, so it is set where
+// a fair draw cannot trip it. Over 400 questions a position lands 100 times on
+// average with a standard deviation near 8.7, so this floor sits six deviations
+// below the mean: a false red is about one run in a billion, while the defect
+// this guard exists for measured zero. A gate that cries wolf gets ignored, and
+// then it protects nothing.
+const FLOOR_PCT = 12;
 const QUESTIONS = 400;
 
 const CATEGORIES = ["serif", "sans", "slab", "display", "mono", "script"];
@@ -72,7 +81,7 @@ try {
     if (!correct) return null;
 
     const distractors = pickDistractors(pool, correct, globalQIndex, seed);
-    const ordered = orderOptionsForDisplay(correct, distractors, seed, globalQIndex);
+    const ordered = orderOptionsForDisplay(correct, distractors);
 
     return {
       position: ordered.findIndex((row) => row.typeface_slug === correct.typeface_slug),
@@ -122,32 +131,29 @@ try {
     }
   }
 
-  // The question token carries the option slugs in their display order, so the
-  // order has to be reproducible for the same question. A shuffle fixed by
-  // reaching for randomness instead of a second salt would pass the spread
-  // check above and break the token here.
+  // NOT REPRODUCIBLE, ON THE OWNER'S CALL (2026-08-15). An earlier version of
+  // this guard demanded the opposite, on the belief that the question token
+  // needed the order to be recomputable. It does not: the token CARRIES the
+  // slugs it was built with (question-token.ts, `options: string[]`) and the
+  // answer path only asks whether the submitted slug is among them
+  // (provider.ts, `payload.options.includes(answerSlug)`). Nothing anywhere
+  // rebuilds the order to compare against it.
+  //
+  // So a fixed order buys nothing and costs something real: a same question
+  // served twice, on a reload or a resumed session, would show the buttons in
+  // the same places, and anything derived from a hash is in principle
+  // predictable by whoever knows the seed. The order is drawn at random now, and
+  // this asserts it: fifty builds of ONE question must not all come out alike.
   const [, stablePool] = SCENARIOS[1];
-  const first = compose(stablePool, "seed-stability", 41);
-  const second = compose(stablePool, "seed-stability", 41);
+  const repeated = new Set(
+    Array.from({ length: 50 }, () => JSON.stringify(compose(stablePool, "seed-stability", 41)?.slugs))
+  );
 
-  if (JSON.stringify(first?.slugs) !== JSON.stringify(second?.slugs)) {
+  if (repeated.size < 2) {
     failures.push(
-      `option order is not reproducible for the same (seed, question index): ` +
-        `${JSON.stringify(first?.slugs)} then ${JSON.stringify(second?.slugs)}. ` +
-        `The question token stores the slugs in display order, so it would no longer verify.`
-    );
-  }
-
-  // Two different questions must not come out in the same order by accident of
-  // a constant key, which is what a "shuffle" that ignores the question index
-  // would produce.
-  const early = compose(stablePool, "seed-stability", 41);
-  const later = compose(stablePool, "seed-stability", 42);
-
-  if (early && later && JSON.stringify(early.slugs) === JSON.stringify(later.slugs)) {
-    failures.push(
-      `two consecutive questions came out in the identical option order, which means ` +
-        `the display order ignores the question index.`
+      `fifty builds of the same question all came out in the identical option order ` +
+        `(${[...repeated][0]}). The order is fixed by a key, so it is predictable by ` +
+        `anyone who can compute that key. The owner asked for a real draw.`
     );
   }
 } catch (error) {
@@ -169,8 +175,8 @@ if (failures.length > 0) {
 // distinguished from a guard that stopped measuring anything.
 console.log(
   "check:answer-position OK : across five pool shapes, the correct answer reaches every one " +
-    "of the four buttons, the order stays reproducible for a given question, and it changes " +
-    "from one question to the next."
+    "of the four buttons, and fifty builds of one question do not all come out alike. " +
+    "Percentages below are a real draw, so they move from run to run."
 );
 for (const { label, counts } of measured) {
   const spread = counts.map((count) => `${((count / QUESTIONS) * 100).toFixed(1)}%`.padStart(6));

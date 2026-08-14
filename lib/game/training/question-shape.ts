@@ -96,23 +96,38 @@ export const pickDistractors = <Row extends QuestionShapeRow>(
     .map((item) => item.row);
 };
 
-// SALTED APART FROM hashScore ON PURPOSE, AND IT MUST STAY THAT WAY.
-// hashScore elects the correct face as the pool MINIMUM (it is the last
-// selection tiebreak). Ordering the buttons by that same quantity therefore put
-// the winner in first place by construction, every single question. The two
-// decisions have to be independent, so the display order asks a different
-// question of the hash. `check:answer-position` fails if this drifts back.
-const displayOrderScore = (seed: string, globalQIndex: number, slug: string) =>
-  hash(`${seed}:option-order:${globalQIndex}:${slug}`);
+// A REAL DRAW, NOT A KEYED ORDER. Owner's call, 2026-08-15.
+//
+// The first version of this fix ordered the buttons by a differently salted
+// hash. That removed the defect (the correct answer no longer held the minimum
+// key by construction) and measured as uniform, but it stayed a FUNCTION of the
+// question: the same question always came out the same way, and anyone able to
+// compute the key could predict the slot. A shuffle whose output can be
+// computed in advance is not a shuffle, it is an obfuscation.
+//
+// Nothing needs the order to be reproducible. The question token carries the
+// slugs it was built with (`question-token.ts`), and the answer path only asks
+// whether the submitted slug is among them, never in which place
+// (`payload.options.includes(answerSlug)`). So the order is drawn here, once,
+// per question built.
+//
+// crypto.randomInt rather than Math.random: this decides what a player is
+// scored on, and Math.random is neither uniform by contract nor unpredictable.
+// Fisher Yates walked downwards, which is the unbiased form. Drawing an index
+// per position and hoping for no collision, or sorting on a random comparator,
+// are the two classic ways to get a skewed shuffle.
+const shuffled = <Row>(rows: Row[]): Row[] => {
+  const draw = [...rows];
+
+  for (let index = draw.length - 1; index > 0; index -= 1) {
+    const pick = crypto.randomInt(index + 1);
+    [draw[index], draw[pick]] = [draw[pick], draw[index]];
+  }
+
+  return draw;
+};
 
 export const orderOptionsForDisplay = <Row extends QuestionShapeRow>(
   correct: Row,
-  distractors: Row[],
-  seed: string,
-  globalQIndex: number
-): Row[] =>
-  [correct, ...distractors].sort(
-    (left, right) =>
-      displayOrderScore(seed, globalQIndex, left.typeface_slug) -
-      displayOrderScore(seed, globalQIndex, right.typeface_slug)
-  );
+  distractors: Row[]
+): Row[] => shuffled([correct, ...distractors]);

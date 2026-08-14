@@ -108,12 +108,7 @@ const buildQuestion = (
   }
 
   const distractors = pickDistractors(pool, correct, user.global_q_index, sessionSeed);
-  const optionRows = orderOptionsForDisplay(
-    correct,
-    distractors,
-    sessionSeed,
-    user.global_q_index
-  );
+  const optionRows = orderOptionsForDisplay(correct, distractors);
 
   const options = optionRows.map((row) => ({
     slug: row.typeface_slug,
