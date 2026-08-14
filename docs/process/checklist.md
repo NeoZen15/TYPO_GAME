@@ -3,7 +3,7 @@
 > Source de vérité de l'avancement produit, confrontée à l'état réel du code.
 > Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
 >
-> **Dernière mise à jour : 2026-08-04.**
+> **Dernière mise à jour : 2026-08-15.**
 > Les cases reflètent l'état du code à cette date — à re-vérifier avant d'affirmer comme acquis.
 > L'artifact miroir n'a pas été régénéré depuis le 2026-07-28, il ignore donc l'audit du 29 et la correction sur les migrations 007 à 009.
 
@@ -21,9 +21,23 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 **Depuis l'audit du 2026-07-29, un second chantier passe devant tout le reste du code** : la chaîne entre le moteur et l'affichage est cassée. Le moteur pédagogique envoie une typo tirée d'un catalogue de 1172, l'écran de training ne sait en charger que 23, donc le joueur doit nommer une police qu'il ne voit pas. Le moteur lui même est conforme à la spec et **ne doit pas être réécrit**. Détail et priorités en section I.
 
-État par sujet : **17 faits · 0 en cours · 16 à faire · 2 bloqueurs · 6 parkés / à décider** (41 sujets), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
+État par sujet : **17 faits · 0 en cours · 16 à faire · 3 bloqueurs · 6 parkés / à décider** (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## Note — 2026-08-15 — l'échelle de rayons du 14 août entre dans l'historique, un jour après
+
+**Pourquoi cette note existe.** La session du 14 août s'est arrêtée sans committer, et elle laissait deux choses sur le disque : l'unification des rayons décidée par le propriétaire, quatorze fichiers, et sa propre note ajoutant le troisième bloqueur. Le scénario est exactement celui des cinq jours perdus du 4 août, à ceci près qu'il a été rattrapé le lendemain. Rien n'était cassé, personne ne le savait.
+
+**Mesuré avant de committer, pas supposé.** `npm run quality` sortie 0 sur ses 25 étapes, `tsc --noEmit` sortie 0, `eslint --max-warnings 0` sortie 0, codes de sortie lus dans un fichier et jamais à travers un tube.
+
+**Commit `fa38969`, direction artistique.** Les trois rayons de coque presque identiques (`--radius-shell` 1.15rem, `--radius-card` 1.04rem, `--radius-soft` 0.94rem) deviennent un seul `--radius: 1rem`, `--radius-pill` restant pour les capsules. Les trois anciens jetons sont supprimés et non aliasés : un alias aurait laissé un composant continuer à demander une distinction que la DA ne fait plus. L'écart entre 0,94 et 1,15rem ne se voyait pas à l'écran mais se payait à chaque nouveau composant, qui devait choisir entre trois valeurs sans critère pour choisir, donc divergeait. Les valeurs en dur des panneaux du profil, de l'écran de compétition et des quatre labos typo lisent désormais le jeton.
+
+**Seize rayons en dur survivent, volontairement** : ils portent une géométrie et non une identité de surface. `50%` sur les cercles (avatar, emplacements de badge, nœuds de la constellation), `2px` sur les crans de l'échelle et des barres segmentées, `0.28rem` sur les cases du calendrier d'activité, et un `inherit`. C'est la ligne de partage : un rayon qui décrit une forme reste littéral.
+
+**Compte des bloqueurs corrigé dans le résumé.** Il annonçait encore deux bloqueurs alors que la section E en portait trois depuis la veille. Trois désormais : le symbole, PP Frama, le légal RGPD.
 
 ---
 
@@ -749,8 +763,20 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 ## E — Légal & marque · le chantier urgent avant mise en ligne
 
+- [ ] **Redessiner le symbole : l'actuel est un décalque d'une image Pinterest** · `Bloqueur` (constaté 2026-08-14)
+  _Constat de Marion, confirmé image contre image : `dwiggins-symbol-standalone-black.svg` reproduit une image trouvée sur Pinterest, mêmes contours, mêmes trois têtes détachées, mêmes proportions, un seul éclat détaché en moins. Ce n'est pas une inspiration, c'est une reproduction, et il n'y a aucun droit dessus. Source encore non identifiée : à passer dans Google Lens pour savoir si c'est une illustration (droit d'auteur seul) ou le logo d'une marque déposée (risque de confusion en plus)._
+  _**Exposition mesurée le 2026-08-14 :** aucun déploiement configuré dans le repo, donc le dessin ne vit que sur localhost, dans le fichier Figma de la charte (pages 12 et 14, où le symbole occupe la page) et dans le deck de pitch Adobe. Ce dernier est le seul endroit d'où il a pu sortir._
+  _**Périmètre du remplacement :** `symbol-standalone-black` et `-ivory`, `figures-dark` et `figures-cream` (même tracé recadré, sept appels dans le site : header, footer, modes, règles, profil), les lockups et panneaux, une dizaine de planches d'étude, le moteur de badges qui lit le symbole côté serveur (`lib/brand/brand-art.ts`), le favicon, et les pages 12, 14 et 15 de la charte qui cotent les proportions du bloc actuel._
+  _**Direction décidée par Marion le 2026-08-14 :** des humains, pas des formes abstraites. On garde l'esprit d'origine (corps pleins, mouvement, mains qui se rejoignent, un seul aplat) et on change la structure. Arrangement en ronde. Le vide central ne porte volontairement aucun message (« la ronde pour elle-même »), mais il doit être dessiné exprès et non subi._
+  - [ ] Identifier la source de l'épingle (Google Lens) — action de Marion
+  - [ ] Choisir la famille : ronde en perspective, ligne, ou grappe
+  - [ ] Passer les masses en largeur variable (le lot 1 est encore du tube d'épaisseur constante)
+  - [ ] Trancher la version réduite du favicon (rien ne survit à 16 px)
+  - [ ] Remplacer les fichiers, le moteur de badges et le favicon
+  - [ ] Refaire les pages 12, 14 et 15 de la charte
+  - `05_LOGO/test/` — premier lot de 17 propositions + `LISEZ-MOI.md`, générateur `_outil/humains.py`
 - [ ] **Régler la typo du logo (PP Frama, propriétaire)** · `Bloqueur`
-  _Servie à tous les visiteurs sans licence webfont._
+  _Servie à tous les visiteurs sans licence webfont. **Précision du 2026-08-14 :** le logo lui-même n'est pas concerné, `dwiggins-wordmark-full-black.svg` est entièrement vectorisé (8 tracés, aucun `<text>`, aucun `font-family`). Ce qui sert les `.otf` aux visiteurs, c'est `components/brand/DwigginsBadge.tsx` et ses trois `@font-face`, via les badges du profil. Deux problèmes distincts là où cette ligne n'en voyait qu'un : la fonte servie (distribution, interdite par une licence desktop) et le mot vectorisé (usage, autre question)._
   - `public/fonts/brand/PPFrama-*.otf`
   - [ ] Retrouver / contrôler la licence PP Frama actuelle
   - [ ] Vérifier les droits webfont en usage commercial
