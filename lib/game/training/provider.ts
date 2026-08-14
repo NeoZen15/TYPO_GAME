@@ -35,6 +35,11 @@ import {
   verifyQuestionToken,
   type TrainingQuestionTokenPayload,
 } from "@/lib/game/training/question-token";
+import {
+  orderOptionsForDisplay,
+  pickDistractors,
+  pickEligibleTypeface,
+} from "@/lib/game/training/question-shape";
 import { loadTrainingProgress } from "@/lib/profile/profile-stats";
 import { sql } from "@/lib/server/neon";
 
@@ -76,76 +81,6 @@ const GUEST_USER_ID_PATTERN =
 
 const queryRows = async <T>(query: Promise<unknown>) => (await query) as T[];
 
-const hashScore = (seed: string, globalQIndex: number, slug: string) => {
-  const hex = crypto
-    .createHash("sha256")
-    .update(`${seed}:${globalQIndex}:${slug}`)
-    .digest("hex")
-    .slice(0, 8);
-
-  return Number.parseInt(hex, 16);
-};
-
-// easy < medium < hard, matching app.difficulty_base_enum order. Used as a
-// selection tiebreak so injected easy faces (Stage 4 rebalance, mastery 0)
-// surface ahead of harder ties before the per-session seed hash decides.
-const DIFFICULTY_RANK: Record<string, number> = { easy: 0, medium: 1, hard: 2 };
-const difficultyRank = (value: string) => DIFFICULTY_RANK[value] ?? 1;
-
-const pickEligibleTypeface = (pool: PoolRow[], globalQIndex: number, seed: string) => {
-  const eligible = pool.filter((row) => row.next_due_after_q <= globalQIndex);
-  const source = eligible.length > 0 ? eligible : pool;
-
-  return [...source].sort((left, right) => {
-    if (left.next_due_after_q !== right.next_due_after_q) {
-      return left.next_due_after_q - right.next_due_after_q;
-    }
-    if (left.mastery_level !== right.mastery_level) {
-      return left.mastery_level - right.mastery_level;
-    }
-    if (difficultyRank(left.difficulty_base) !== difficultyRank(right.difficulty_base)) {
-      return difficultyRank(left.difficulty_base) - difficultyRank(right.difficulty_base);
-    }
-
-    return (
-      hashScore(seed, globalQIndex, left.typeface_slug) -
-      hashScore(seed, globalQIndex, right.typeface_slug)
-    );
-  })[0];
-};
-
-const pickDistractors = (
-  pool: PoolRow[],
-  correct: PoolRow,
-  globalQIndex: number,
-  seed: string
-) => {
-  const others = pool.filter((row) => row.typeface_slug !== correct.typeface_slug);
-
-  return others
-    .map((row) => {
-      let score = 1000;
-
-      if (correct.mastery_level <= 1) {
-        score -= row.primary_category === correct.primary_category ? 125 : 0;
-        score -= row.visual_cluster_id === correct.visual_cluster_id ? 250 : 0;
-      } else if (correct.mastery_level === 2) {
-        score -= row.primary_category === correct.primary_category ? 225 : 0;
-        score -= row.visual_cluster_id === correct.visual_cluster_id ? 175 : 0;
-      } else {
-        score -= row.primary_category === correct.primary_category ? 325 : 0;
-        score -= row.visual_cluster_id === correct.visual_cluster_id ? 350 : 0;
-      }
-
-      score += hashScore(seed, globalQIndex, row.typeface_slug) % 97;
-
-      return { row, score };
-    })
-    .sort((left, right) => left.score - right.score)
-    .slice(0, 3)
-    .map((item) => item.row);
-};
-
 const buildQuestion = (
   sessionId: string,
   user: UserRow,
@@ -173,10 +108,11 @@ const buildQuestion = (
   }
 
   const distractors = pickDistractors(pool, correct, user.global_q_index, sessionSeed);
-  const optionRows = [correct, ...distractors].sort(
-    (left, right) =>
-      hashScore(sessionSeed, user.global_q_index, left.typeface_slug) -
-      hashScore(sessionSeed, user.global_q_index, right.typeface_slug)
+  const optionRows = orderOptionsForDisplay(
+    correct,
+    distractors,
+    sessionSeed,
+    user.global_q_index
   );
 
   const options = optionRows.map((row) => ({
