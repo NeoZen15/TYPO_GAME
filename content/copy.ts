@@ -3,21 +3,21 @@ export const gateCopy = {
 } as const;
 
 /**
- * Training mode entrance (`app/play/training/page.tsx`).
+ * What the Training mode states about itself, rendered by the unified rules
+ * page (`ModeRulesPage`, behind the three `/play/*_/rules` doors).
  *
  * The four statements come from `docs/game/vision-produit-dwiggins.md` §2.1,
- * which requires the philosophy of the mode to be stated at its entrance rather
- * than deduced from playing. Order is the order of that section.
+ * which requires the philosophy of the mode to be stated rather than deduced
+ * from playing. Order is the order of that section.
  *
- * `progressLine` deliberately mentions no round count. Progress is written
- * answer by answer today, and the round cap is being removed (phase 1 of
- * `docs/game/architecture-backend.md`), so this line stays true either way.
+ * Was `trainingIntroCopy`, named after the static entrance at
+ * `app/play/training/page.tsx`. That entrance was retired on 2026-08-15 (D5):
+ * it restated the rules a second time, so the mode's Play button landed on a
+ * rules screen instead of the game. Eight keys went with it and are recorded in
+ * the checklist, since a few were good sentences and belong to the owner to
+ * revive inside the rules page, not to me to delete quietly.
  */
-export const trainingIntroCopy = {
-  kicker: "Training",
-  title: "You are here to train your eye",
-  subtitle:
-    "Training is a session, not a game. Read this once, then start whenever you want.",
+export const trainingModeCopy = {
   pointsTitle: "How this mode thinks",
   points: [
     "There is no score to beat and no clock to race.",
@@ -25,11 +25,6 @@ export const trainingIntroCopy = {
     "Your path is built for you alone. A typeface returns just before your eye would forget it.",
     "The goal is not to finish a session. It is a visual skill that lasts.",
   ],
-  progressLine:
-    "Your progress is saved answer by answer, so stopping costs you nothing.",
-  startLabel: "Start training",
-  rulesLabel: "Read the rules",
-  mascotComment: "No score here. Just your eye getting sharper.",
 } as const;
 
 /** 404 screen (`app/not-found.tsx`). */

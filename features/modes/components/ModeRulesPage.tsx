@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import StarField from "@/features/profile/components/StarField";
-import { trainingIntroCopy } from "@/content/copy";
+import { trainingModeCopy } from "@/content/copy";
 
 type RulesMode = "training" | "competition" | "expert";
 
@@ -325,10 +325,13 @@ const MODE_RULES: Record<RulesMode, RulesContent> = {
         ],
       },
       {
-        title: "How this mode thinks",
-        // Single source with the mode entrance: both state the same four things,
-        // forever. Duplicating them here would let the two drift apart.
-        statements: trainingIntroCopy.points,
+        // Title and statements both come from content/copy.ts. The title used to
+        // be hardcoded here while the identical sentence also sat in the copy
+        // block, which is the drift this page is supposed to end: since the
+        // static entrance was retired on 2026-08-15, this page is the only place
+        // that states what Training is, so it states it from one source.
+        title: trainingModeCopy.pointsTitle,
+        statements: trainingModeCopy.points,
         rows: [],
       },
     ],
