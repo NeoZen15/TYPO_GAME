@@ -27,6 +27,30 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-15 — cinq défauts signalés par Marion en jouant, tous vérifiés, aucun corrigé
+
+**Statut : liste de constats, à corriger plus tard.** Marion a joué et relevé cinq choses. Consigne explicite : vérifier, ne rien coder. Les cinq sont réels, aucun n'est un malentendu. Ils sont classés ici par gravité décroissante, la gravité étant mesurée par ce que le défaut abîme, pas par la taille du correctif.
+
+**D1. La bonne réponse est toujours le premier bouton, en training.** `Bloqueur de jeu`
+Mesuré, pas supposé : simulation des trois fonctions du moteur sur un pool de 1172 faces, 400 questions par scénario. La bonne réponse sort en position 1 dans **100 pour cent** des cas pour un nouveau joueur, un joueur avancé, un pool de 40 comme de 1172, et 95 pour cent avec des échéances étalées. Le mélange attendu serait 25 / 25 / 25 / 25.
+_Cause exacte, deux lignes qui se contredisent._ `pickEligibleTypeface` (`lib/game/training/provider.ts:95`) élit la bonne réponse comme le **minimum** du pool, dernier critère de départage `hashScore(seed, qIndex, slug)` croissant. Puis `buildQuestion` (`provider.ts:176`) trie les quatre boutons par **ce même `hashScore` croissant**. La gagnante détient donc le minimum par construction et se place première, toujours. Le mélange existe bien, mais il est calculé sur la grandeur même qui a servi à élire la gagnante.
+_Pourquoi c'est le plus grave des cinq._ Ce n'est pas qu'un défaut d'interface. La typo se devine sans regarder le spécimen, donc l'entraînement du regard ne s'exerce pas, les scores de toutes les sessions passées sont gonflés, et la table de faits a enregistré des bonnes réponses qui ne prouvent aucune reconnaissance. Le correctif est d'une ligne (saler différemment le hash d'affichage, par exemple `${seed}:order:${qIndex}:${slug}`), mais les données déjà écrites resteront fausses.
+
+**D2. La fin de session ne mène jamais au profil.** `À faire`
+Les deux modes finissent sur un récapitulatif local puis deux actions seulement : « Play again » et « Back to modes » vers `/play` (compétition `CompetitionScreen.tsx`, training `GameScreen.tsx:638`). Aucun des deux écrans n'importe de routeur, `CompetitionScreen` ne prend de `next/navigation` que `useSearchParams`. Il n'existe donc aucun chemin de la fin de partie vers `/profile`, alors que `/profile` est la vraie page de statistiques (résumé, stats, constellation, activité, succès). L'« ancienne page » constatée est ce récapitulatif de fin d'écran : le repo ne contient qu'une seule route de profil, il n'y a pas d'ancienne page de profil survivante.
+
+**D3. Le compteur de l'écran de training ne peut pas bouger.** `À faire`
+La ligne affiche `facesMastered / poolSize` (`GameScreen.tsx:581`). `facesMastered` ne compte que les faces de `mastery_level >= 4` (`lib/profile/profile-stats.ts:473`), or l'échelle va de 0 à 4 (`db/migrations/003_users_sessions_pool.sql:167`) et ne monte que de +1 par bonne réponse **du premier coup** sur cette face (`provider.ts:1261`), les faces étant en plus espacées par `next_due_after_q`. Il faut donc quatre bonnes réponses sur quatre réapparitions espacées d'une même face pour que le compteur avance de un. Le pool de départ est de 30 faces (`003:258`). Une première session affiche donc `0 / 30` et il est **mathématiquement impossible** de le faire bouger. Le chiffre est honnête, il ne ment pas, mais il ne récompense rien.
+_Second cas à ne pas confondre :_ si l'agrégat de progression échoue, `poolSize` est absent et la ligne **disparaît** entièrement (garde de rendu `GameScreen.tsx:577`). Un compteur absent et un compteur figé se ressemblent à l'écran.
+
+**D4. Les règles sont introuvables depuis le header.** `À faire`
+`SiteNav.tsx` porte quatre liens, How it works, Compare, Typefaces, Modes, et « Modes » pointe sur `/#modes`, une **ancre de la landing**, pas sur `/play`. Le bouton principal va sur `/onboarding`. Le header ne mène donc ni au sélecteur de modes ni à aucune des trois pages de règles. Les seules portes sont le bouton secondaire du hero (`/play`) et le pied de page. Comme ce header est partagé par toutes les sous pages, un joueur qui lit les règles d'un mode ne peut pas atteindre celles d'un autre autrement qu'en revenant en arrière.
+
+**D5. `/play/training` est le dernier survivant de l'ancienne maquette.** `À faire`
+`app/play/training/page.tsx` rend `TrainingIntro`, un écran statique qui répète un kicker, un titre, un sous titre et une liste de règles, puis propose « Commencer » vers `/game` et « Règles » vers `/play/training/rules`. Or `/play` donne déjà à chaque carte un bouton Règles vers `/play/{mode}/rules` et un bouton Jouer vers `/play/{mode}` (`ModeSelectPage.tsx:170` et `175`). Résultat, en training le bouton **Jouer mène à un second écran de règles** au lieu du jeu. L'asymétrie est nette entre les trois modes : `/play/competition` rend le jeu réel, `/play/expert` rend un placeholder assumé, `/play/training` rend une redite. Les trois routes `rules` sont bien, elles, des portes vers la page unique `ModeRulesPage`, conformes à la décision du 2026-07-30. Points d'entrée à traiter avec la page : le lien « Training » du pied de page de la landing (`LandingExperience.tsx:415`).
+
+---
+
 ## Note — 2026-08-15 — l'échelle de rayons du 14 août entre dans l'historique, un jour après
 
 **Pourquoi cette note existe.** La session du 14 août s'est arrêtée sans committer, et elle laissait deux choses sur le disque : l'unification des rayons décidée par le propriétaire, quatorze fichiers, et sa propre note ajoutant le troisième bloqueur. Le scénario est exactement celui des cinq jours perdus du 4 août, à ceci près qu'il a été rattrapé le lendemain. Rien n'était cassé, personne ne le savait.
