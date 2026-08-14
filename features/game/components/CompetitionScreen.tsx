@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { sessionEndCopy } from "@/content/copy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -1884,10 +1885,17 @@ export default function CompetitionScreen() {
 
                     <div className="competition-v1-complete-actions">
                       <button type="button" className="competition-v1-cta" onClick={() => void startSession()}>
-                        Play again
+                        {sessionEndCopy.replayLabel}
                       </button>
+                      {/* D2, 2026-08-15. Same addition as the training screen,
+                          same reasoning: the recap shown here is a summary of
+                          ONE session, the profile is where the whole history
+                          lives, and nothing led there. */}
+                      <Link href="/profile" className="game-link">
+                        {sessionEndCopy.statsLabel}
+                      </Link>
                       <Link href="/play" className="game-link">
-                        Back to modes
+                        {sessionEndCopy.modesLabel}
                       </Link>
                     </div>
                   </div>

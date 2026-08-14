@@ -18,7 +18,14 @@ const HOME_NAV_ITEMS: SiteNavItem[] = [
   { label: "How it works", href: "/#how" },
   { label: "Compare", href: "/#compare" },
   { label: "Typefaces", href: "/#typefaces" },
-  { label: "Modes", href: "/#modes" },
+  // D4, 2026-08-15. Was `/#modes`, the landing's own section anchor. On the
+  // landing that anchor is right, the section is a few screens down. Everywhere
+  // else this nav is in service (every sub-page, every /type/[slug] specimen) it
+  // meant the only entry named after the modes threw the player back to the home
+  // page, and the rules of a mode were reachable from nowhere in the header. The
+  // landing keeps the anchor through its own NAV array in LandingExperience, so
+  // this default only changes the pages where it was misleading.
+  { label: "Modes", href: "/play" },
 ];
 
 type SiteNavProps = {

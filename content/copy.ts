@@ -27,6 +27,23 @@ export const trainingModeCopy = {
   ],
 } as const;
 
+/**
+ * What both game screens offer once a session is over (`GameScreen` for
+ * training, `CompetitionScreen` for competition).
+ *
+ * `statsLabel` added on 2026-08-15 (D2). Neither screen had any route to the
+ * profile: a finished session offered replaying or going back to the mode
+ * board, so the page that actually holds the statistics was reachable only by
+ * knowing the address. The three labels are gathered here rather than left
+ * hardcoded in the two components, so the two ends of a session cannot drift
+ * apart in wording.
+ */
+export const sessionEndCopy = {
+  replayLabel: "Play again",
+  modesLabel: "Back to modes",
+  statsLabel: "See my statistics",
+} as const;
+
 /** 404 screen (`app/not-found.tsx`). */
 export const notFoundCopy = {
   kicker: "Error 404",

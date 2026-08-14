@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { sessionEndCopy } from "@/content/copy";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
@@ -646,10 +647,19 @@ export default function GameScreen() {
                 className="game-v2-validate"
                 onClick={() => void startSession({ fresh: true })}
               >
-                Play again
+                {sessionEndCopy.replayLabel}
               </button>
+              {/* D2, 2026-08-15. A finished session used to offer replaying or
+                  the mode board and nothing else, so the page holding the
+                  statistics was reachable only by knowing its address. Added on
+                  the class already in service here, which adds no CSS. Whether
+                  this should become the prominent action, or the screen should
+                  route here on its own, is the owner's call. */}
+              <Link href="/profile" className="game-link">
+                {sessionEndCopy.statsLabel}
+              </Link>
               <Link href="/play" className="game-link">
-                Back to modes
+                {sessionEndCopy.modesLabel}
               </Link>
             </div>
           </>
