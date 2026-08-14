@@ -1099,6 +1099,7 @@ export const startTrainingSession = async ({
               eyeLevel: progressAggregate.eyeLevel,
               facesMastered: progressAggregate.facesMastered,
               poolSize: progressAggregate.poolSize,
+              masteryPercent: progressAggregate.masteryPercent,
             }
           : {}),
         ...(visibleLevel ? { visibleLevel } : {}),
@@ -1511,6 +1512,7 @@ export const submitTrainingAnswer = async ({
         eyeLevel: progressAggregate.eyeLevel,
         facesMastered: progressAggregate.facesMastered,
         poolSize: progressAggregate.poolSize,
+        masteryPercent: progressAggregate.masteryPercent,
       }
     : {};
 

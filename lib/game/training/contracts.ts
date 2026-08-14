@@ -42,6 +42,10 @@ export type TrainingProgress = {
   eyeLevel?: number;
   facesMastered?: number;
   poolSize?: number;
+  // D3, 2026-08-15. What the screen actually prints now. facesMastered and
+  // poolSize stay in the payload: they are the honest count, they are simply
+  // too slow to be the thing a player watches during a session.
+  masteryPercent?: number;
   visibleLevel?: string;
   levelChanged?: boolean;
 };

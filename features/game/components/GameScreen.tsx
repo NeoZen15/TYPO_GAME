@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { sessionEndCopy } from "@/content/copy";
+import { sessionEndCopy, trainingProgressCopy } from "@/content/copy";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
@@ -10,6 +10,7 @@ import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
 import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
 import {
   type TrainingAnswerResponse,
+  type TrainingProgress,
   type TrainingQuestion,
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
@@ -26,14 +27,11 @@ type InlineFeedback = {
   text: string;
 } | null;
 
-type ProgressState = {
-  resolvedCount: number;
-  eyeLevel?: number;
-  facesMastered?: number;
-  poolSize?: number;
-  visibleLevel?: string;
-  levelChanged?: boolean;
-};
+// The server's own progress shape, not a copy of it. It WAS a copy, field for
+// field, and the copy silently went stale the moment the payload gained a
+// field: the screen could not read what the engine was already sending. One
+// declaration, in the contract both sides share.
+type ProgressState = TrainingProgress;
 
 // Level-change toast lifetime (N-24/N-25). The global visible level is NEVER
 // shown continuously in game; it surfaces only as this brief toast when it moves.
@@ -575,12 +573,19 @@ export default function GameScreen() {
           </div>
         ) : null}
 
-        {!error && !isLoading && !isComplete && currentQuestion && progress.poolSize ? (
-          // Unobtrusive progression indicator. Deliberately shows the mastered
-          // count (a growing progression signal), NOT the global eye level, which
-          // spec §15 / N-24 keep OFF the game screen except on a level-change toast.
+        {!error && !isLoading && !isComplete && currentQuestion && progress.masteryPercent !== undefined ? (
+          // Unobtrusive progression indicator. Deliberately NOT the global eye
+          // level, which spec §15 / N-24 keep OFF the game screen except on a
+          // level-change toast.
+          //
+          // D3, 2026-08-15. Was `X / Y faces mastered`, which counted only the
+          // top rung of a 0 to 4 ladder that rises by at most one per first
+          // attempt success on faces spaced apart: a first session read 0 / 30
+          // and could not move. The gauge reads the whole ladder, so a session
+          // shows. Gated on masteryPercent rather than poolSize, since it is now
+          // the value being printed.
           <p className="game-v2-progress" aria-live="polite">
-            {progress.facesMastered ?? 0} / {progress.poolSize} faces mastered
+            {progress.masteryPercent}% {trainingProgressCopy.gaugeLabel}
           </p>
         ) : null}
 

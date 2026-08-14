@@ -17,6 +17,7 @@ import {
   type ProfileSession,
 } from "@/lib/profile/mock-profile";
 import { PALIER_TAXONOMY, type TypefaceAttrs } from "@/lib/profile/palier-taxonomy";
+import { setMasteryPercent } from "@/lib/profile/mastery-gauge";
 
 // ---------------------------------------------------------------------------
 // Real, per-player profile data, derived live from the game DB.
@@ -450,6 +451,7 @@ export type TrainingProgressAggregate = {
   facesMastered: number;
   poolSize: number;
   avgMastery: number;
+  masteryPercent: number;
 };
 
 export async function loadTrainingProgress(
@@ -474,6 +476,11 @@ export async function loadTrainingProgress(
   const avgMastery = poolSize
     ? Math.round((states.reduce((sum, s) => sum + s.mastery_level, 0) / poolSize) * 100) / 100
     : 0;
+  // D3, 2026-08-15. Reads the whole ladder rather than its last rung, so the
+  // in-game indicator moves on a first attempt success instead of waiting for a
+  // face to be seen correctly four times. Maths in lib/profile/mastery-gauge.ts,
+  // pinned by check:mastery-gauge.
+  const masteryPercent = setMasteryPercent(states.map((s) => s.mastery_level));
 
-  return { eyeLevel: eye.level, facesMastered, poolSize, avgMastery };
+  return { eyeLevel: eye.level, facesMastered, poolSize, avgMastery, masteryPercent };
 }

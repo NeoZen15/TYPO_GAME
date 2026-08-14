@@ -28,6 +28,20 @@ export const trainingModeCopy = {
 } as const;
 
 /**
+ * The discreet progression indicator on the training screen (`GameScreen`).
+ *
+ * Replaced `X / Y faces mastered` on 2026-08-15 (D3, owner's choice). That line
+ * counted only faces at the top of the 0 to 4 ladder, so a first session read
+ * 0 / 30 and could not move at all. The gauge reads the whole ladder, so every
+ * first attempt success shows. Spec §15 / N-24 keeps the global eye level off
+ * this screen, and this is not that level: it is the state of the player's own
+ * set, and it ranks nobody.
+ */
+export const trainingProgressCopy = {
+  gaugeLabel: "of your set mastered",
+} as const;
+
+/**
  * What both game screens offer once a session is over (`GameScreen` for
  * training, `CompetitionScreen` for competition).
  *
