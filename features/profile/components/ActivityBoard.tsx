@@ -177,7 +177,7 @@ const CSS = `
   @media (max-width: 640px) { .ac-cards { grid-template-columns: 1fr; } }
   .ac-card {
     display: grid; gap: 0.3rem; align-content: center; padding: clamp(1.1rem, 2.4vw, 1.5rem);
-    border: 1px solid rgb(${CREAM} / 0.1); border-radius: 0.9rem;
+    border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
     background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
@@ -188,14 +188,14 @@ const CSS = `
   .ac-card__helper em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
   .ac-card--goal { gap: 0.5rem; }
   .ac-goal { display: flex; gap: 0.4rem; }
-  .ac-goal__dot { width: 0.85rem; height: 0.85rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.28); background: rgb(${CREAM} / 0.05); }
+  .ac-goal__dot { width: 0.85rem; height: 0.85rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.28); background: rgb(${CREAM} / 0.05); }
   .ac-goal__dot.is-done { background: var(--pf-cream); border-color: var(--pf-cream); }
 
   /* Panel */
   .ac-panel {
     width: min(98%, 60rem); margin: 0 auto;
     padding: clamp(1rem, 2.4vw, 1.5rem);
-    border: 1px solid rgb(${CREAM} / 0.1); border-radius: 0.9rem;
+    border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
     background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
@@ -223,7 +223,7 @@ const CSS = `
   .ac-sessions { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
   .ac-session { display: grid; grid-template-columns: 8rem 1fr auto auto; align-items: center; gap: 0.9rem; padding: 0.65rem 0; border-top: 1px solid rgb(${CREAM} / 0.08); }
   .ac-session:first-child { border-top: none; }
-  .ac-session__mode { justify-self: start; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.18rem 0.5rem; border: 1px solid rgb(${CREAM} / 0.2); border-radius: 999px; color: rgb(${CREAM} / 0.7); }
+  .ac-session__mode { justify-self: start; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.18rem 0.5rem; border: 1px solid rgb(${CREAM} / 0.2); border-radius: var(--radius-pill); color: rgb(${CREAM} / 0.7); }
   .ac-session__detail { font-size: 0.82rem; color: rgb(${CREAM} / 0.82); }
   .ac-session__acc { font-family: var(--pf-mono); font-size: 0.8rem; font-weight: 640; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
   .ac-session__when { font-family: var(--pf-mono); font-size: 0.64rem; color: rgb(${CREAM} / 0.42); text-align: right; min-width: 5rem; }

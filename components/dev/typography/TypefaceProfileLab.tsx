@@ -26,7 +26,7 @@ function ProfileCard({ profile }: { profile: TypefaceMeasurementProfile }) {
         display: "grid",
         gap: "0.9rem",
         padding: "1rem",
-        borderRadius: "24px",
+        borderRadius: "var(--radius)",
         border: "1px solid rgba(255,255,255,0.08)",
         background: "rgba(255,255,255,0.02)",
       }}
@@ -55,7 +55,7 @@ function ProfileCard({ profile }: { profile: TypefaceMeasurementProfile }) {
               border: "1px solid rgba(255,255,255,0.12)",
               background: "rgba(255,255,255,0.06)",
               color: "rgba(245,247,255,0.94)",
-              borderRadius: "999px",
+              borderRadius: "var(--radius-pill)",
               padding: "0.5rem 0.8rem",
               fontSize: "0.78rem",
               fontWeight: 600,
@@ -69,7 +69,7 @@ function ProfileCard({ profile }: { profile: TypefaceMeasurementProfile }) {
         </div>
       </div>
 
-      <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.65rem 0.75rem", borderRadius: "14px", background: "rgba(255,255,255,0.03)" }}>
+      <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.65rem 0.75rem", borderRadius: "var(--radius)", background: "rgba(255,255,255,0.03)" }}>
         {Object.entries(profile.metrics).map(([key, metric]) => {
           if (!metric) return null;
           return (
@@ -103,7 +103,7 @@ function ProfileCard({ profile }: { profile: TypefaceMeasurementProfile }) {
           margin: 0,
           overflowX: "auto",
           padding: "0.9rem",
-          borderRadius: "16px",
+          borderRadius: "var(--radius)",
           background: "rgba(0,0,0,0.22)",
           fontSize: "0.72rem",
           lineHeight: 1.45,
@@ -189,7 +189,7 @@ export default function TypefaceProfileLab() {
           gap: "1rem",
           flexWrap: "wrap",
           padding: "0.95rem 1rem",
-          borderRadius: "20px",
+          borderRadius: "var(--radius)",
           border: "1px solid rgba(255,255,255,0.08)",
           background: "rgba(255,255,255,0.02)",
         }}
@@ -206,7 +206,7 @@ export default function TypefaceProfileLab() {
             border: "1px solid rgba(255,255,255,0.12)",
             background: "rgba(255,255,255,0.06)",
             color: "rgba(245,247,255,0.94)",
-            borderRadius: "999px",
+            borderRadius: "var(--radius-pill)",
             padding: "0.58rem 0.92rem",
             fontSize: "0.78rem",
             fontWeight: 600,

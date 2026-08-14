@@ -33,7 +33,7 @@ function CalibrationCard({ report }: { report: FallbackCalibrationReport }) {
         display: "grid",
         gap: "0.95rem",
         padding: "1rem",
-        borderRadius: "24px",
+        borderRadius: "var(--radius)",
         border: "1px solid rgba(255,255,255,0.08)",
         background: "rgba(255,255,255,0.02)",
       }}
@@ -64,7 +64,7 @@ function CalibrationCard({ report }: { report: FallbackCalibrationReport }) {
               border: "1px solid rgba(255,255,255,0.12)",
               background: "rgba(255,255,255,0.06)",
               color: "rgba(245,247,255,0.94)",
-              borderRadius: "999px",
+              borderRadius: "var(--radius-pill)",
               padding: "0.5rem 0.8rem",
               fontSize: "0.78rem",
               fontWeight: 600,
@@ -79,7 +79,7 @@ function CalibrationCard({ report }: { report: FallbackCalibrationReport }) {
       </div>
 
       <div style={{ display: "grid", gap: "0.75rem", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
-        <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.75rem", borderRadius: "14px", background: "rgba(255,255,255,0.03)" }}>
+        <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.75rem", borderRadius: "var(--radius)", background: "rgba(255,255,255,0.03)" }}>
           <dt style={{ margin: 0, fontSize: "0.8rem", fontWeight: 700, opacity: 0.9 }}>Metric Delta</dt>
           {Object.entries(report.metricDelta).map(([key, value]) => (
             <div
@@ -92,7 +92,7 @@ function CalibrationCard({ report }: { report: FallbackCalibrationReport }) {
           ))}
         </dl>
 
-        <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.75rem", borderRadius: "14px", background: "rgba(255,255,255,0.03)" }}>
+        <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.75rem", borderRadius: "var(--radius)", background: "rgba(255,255,255,0.03)" }}>
           <dt style={{ margin: 0, fontSize: "0.8rem", fontWeight: 700, opacity: 0.9 }}>Suggested Preset</dt>
           {Object.entries(report.suggestedPreset).map(([key, value]) => (
             <div
@@ -116,7 +116,7 @@ function CalibrationCard({ report }: { report: FallbackCalibrationReport }) {
               display: "grid",
               gap: "0.24rem",
               padding: "0.7rem 0.75rem",
-              borderRadius: "14px",
+              borderRadius: "var(--radius)",
               background: "rgba(0,0,0,0.16)",
             }}
           >
@@ -177,7 +177,7 @@ export default function FallbackCalibrationLab() {
       <div
         style={{
           padding: "0.95rem 1rem",
-          borderRadius: "20px",
+          borderRadius: "var(--radius)",
           border: "1px solid rgba(255,255,255,0.08)",
           background: "rgba(255,255,255,0.02)",
         }}

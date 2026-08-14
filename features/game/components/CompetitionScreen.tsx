@@ -127,7 +127,7 @@ const competitionScreenStyles = `
     grid-template-rows: auto 1fr auto auto;
     gap: 0.76rem;
     padding: clamp(0.82rem, 1.8vw, 1.1rem);
-    border-radius: 1.2rem;
+    border-radius: var(--radius);
     border: 1px solid color-mix(in srgb, var(--competition-shell-border) 72%, transparent);
     background: color-mix(in srgb, var(--competition-shell-bg) 58%, transparent);
     box-shadow: 0 0.85rem 2rem rgba(42, 26, 32, 0.045);
@@ -145,7 +145,7 @@ const competitionScreenStyles = `
     min-height: 0;
     align-content: start;
     padding: clamp(1.1rem, 2.4vw, 1.85rem);
-    border-radius: 1.4rem;
+    border-radius: var(--radius);
     border: 1px solid rgba(255, 210, 19, 0.22);
     background:
       radial-gradient(circle at top, rgba(255, 210, 19, 0.05), transparent 30%),
@@ -175,7 +175,7 @@ const competitionScreenStyles = `
     width: 100%;
     text-align: center;
     padding: 0.34rem 0.62rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid rgba(58, 38, 48, 0.16);
     background: rgba(244, 243, 238, 0.66);
     box-shadow: 0 0.12rem 0.3rem rgba(42, 26, 32, 0.04);
@@ -329,7 +329,7 @@ const competitionScreenStyles = `
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border-radius: 1.02rem;
+    border-radius: var(--radius);
     border: 1px solid var(--card-line);
     background: linear-gradient(180deg, var(--card-fill), transparent 58%), var(--card-base);
     padding: 0.72rem 0.8rem 0.78rem;
@@ -344,7 +344,7 @@ const competitionScreenStyles = `
     right: -18%;
     width: 5rem;
     height: 5rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: var(--card-glow);
     filter: blur(28px);
     pointer-events: none;
@@ -419,7 +419,7 @@ const competitionScreenStyles = `
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border-radius: 1.02rem;
+    border-radius: var(--radius);
     border: 1px solid var(--panel-line);
     background: var(--panel-base);
     padding: 0.82rem 0.9rem;
@@ -437,7 +437,7 @@ const competitionScreenStyles = `
     right: -12%;
     width: 7rem;
     height: 7rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: var(--panel-glow);
     filter: blur(34px);
     pointer-events: none;
@@ -500,7 +500,7 @@ const competitionScreenStyles = `
   .competition-v1-speed-track {
     position: relative;
     height: 0.42rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: rgba(17, 17, 20, 0.08);
   }
 
@@ -509,7 +509,7 @@ const competitionScreenStyles = `
     top: 50%;
     width: 0.52rem;
     height: 0.52rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     transform: translate(-50%, -50%);
     border: 2px solid #f4f3ee;
     background: #111114;
@@ -723,7 +723,7 @@ const competitionScreenStyles = `
   .game-v2-option {
     position: relative;
     min-height: 5.2rem;
-    border-radius: 1.08rem;
+    border-radius: var(--radius);
     border: 1px solid rgba(58, 38, 48, 0.12);
     background: rgba(244, 243, 238, 0.86);
     box-shadow: 0 0.3rem 0.9rem rgba(42, 26, 32, 0.08);
@@ -738,7 +738,7 @@ const competitionScreenStyles = `
     top: 0.72rem;
     bottom: 0.72rem;
     width: 0.22rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: var(--card-color, #8ea2ff);
   }
 
@@ -820,7 +820,7 @@ const competitionScreenStyles = `
     justify-self: start;
     margin-top: 0.2rem;
     padding: 0.56rem 0.94rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
     text-decoration: none;
     color: currentColor;
@@ -838,7 +838,7 @@ const competitionScreenStyles = `
     min-width: 9.4rem;
     min-height: 2.95rem;
     padding: 0.82rem 1.75rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-family: inherit;
     font-style: normal;
     font-size: 0.92rem;

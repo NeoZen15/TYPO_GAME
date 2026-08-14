@@ -101,7 +101,7 @@ function useWordAuditProbe(
 function AuditPaneStatus({ label, probe }: { label: string; probe: AuditProbeState }) {
   if (probe.status === "loading") {
     return (
-      <div style={{ display: "grid", gap: "0.35rem", padding: "0.75rem 0.85rem", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+      <div style={{ display: "grid", gap: "0.35rem", padding: "0.75rem 0.85rem", borderRadius: "var(--radius)", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>
           <strong style={{ fontSize: "0.82rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>{label}</strong>
           <span className="metrics-validator-badge">loading</span>
@@ -112,7 +112,7 @@ function AuditPaneStatus({ label, probe }: { label: string; probe: AuditProbeSta
 
   if (probe.status === "error") {
     return (
-      <div style={{ display: "grid", gap: "0.35rem", padding: "0.75rem 0.85rem", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+      <div style={{ display: "grid", gap: "0.35rem", padding: "0.75rem 0.85rem", borderRadius: "var(--radius)", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>
           <strong style={{ fontSize: "0.82rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>{label}</strong>
           <span className="metrics-validator-badge is-fail">error</span>
@@ -127,7 +127,7 @@ function AuditPaneStatus({ label, probe }: { label: string; probe: AuditProbeSta
   const metricEntries = Object.entries(profile.metrics);
 
   return (
-    <div style={{ display: "grid", gap: "0.35rem", padding: "0.75rem 0.85rem", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
+    <div style={{ display: "grid", gap: "0.35rem", padding: "0.75rem 0.85rem", borderRadius: "var(--radius)", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.025)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", alignItems: "center" }}>
         <strong style={{ fontSize: "0.82rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>{label}</strong>
         <span className={`metrics-validator-badge ${evaluation.pass ? "is-pass" : "is-fail"}`}>{evaluation.pass ? "pass" : "check"}</span>
@@ -138,7 +138,7 @@ function AuditPaneStatus({ label, probe }: { label: string; probe: AuditProbeSta
       <p style={{ margin: 0, fontSize: "0.8rem", opacity: 0.72 }}>
         Guides: {evaluation.actualGuides.join(" + ")} · Chips: {evaluation.actualChips.join(" + ")}
       </p>
-      <div style={{ display: "grid", gap: "0.28rem", padding: "0.55rem 0.65rem", borderRadius: "12px", background: "rgba(255,255,255,0.03)" }}>
+      <div style={{ display: "grid", gap: "0.28rem", padding: "0.55rem 0.65rem", borderRadius: "var(--radius)", background: "rgba(255,255,255,0.03)" }}>
         <p style={{ margin: 0, fontSize: "0.72rem", letterSpacing: "0.08em", textTransform: "uppercase", opacity: 0.62 }}>
           WordMeasurementProfile
         </p>
@@ -194,7 +194,7 @@ function AuditPaneStatus({ label, probe }: { label: string; probe: AuditProbeSta
           </p>
         ) : null}
       </div>
-      <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.55rem 0.65rem", borderRadius: "12px", background: "rgba(255,255,255,0.03)" }}>
+      <dl style={{ margin: 0, display: "grid", gap: "0.28rem", padding: "0.55rem 0.65rem", borderRadius: "var(--radius)", background: "rgba(255,255,255,0.03)" }}>
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) auto", gap: "0.6rem", alignItems: "baseline" }}>
           <dt style={{ margin: 0, fontSize: "0.78rem", opacity: 0.72 }}>left / right gap</dt>
           <dd style={{ margin: 0, fontSize: "0.78rem", opacity: 0.88 }}>{formatSigned(evaluation.composition.leftGap)} / {formatSigned(evaluation.composition.rightGap)}</dd>
@@ -209,7 +209,7 @@ function AuditPaneStatus({ label, probe }: { label: string; probe: AuditProbeSta
         </div>
       </dl>
       {xGuideDebug ? (
-        <div style={{ display: "grid", gap: "0.35rem", padding: "0.55rem 0.65rem", borderRadius: "12px", background: "rgba(255,255,255,0.03)" }}>
+        <div style={{ display: "grid", gap: "0.35rem", padding: "0.55rem 0.65rem", borderRadius: "var(--radius)", background: "rgba(255,255,255,0.03)" }}>
           <p style={{ margin: 0, fontSize: "0.76rem", opacity: 0.72 }}>
             x-height label: {xGuideDebug.usedFallback ? "fallback" : "candidate"} · x {xGuideDebug.chosenX.toFixed(1)} · y {xGuideDebug.chosenY.toFixed(1)}
           </p>
@@ -248,7 +248,7 @@ function WordAuditCard({
   const overallPass = leftProbe.status === "ready" && rightProbe.status === "ready" && leftProbe.evaluation.pass && rightProbe.evaluation.pass;
 
   return (
-    <article style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: "24px", padding: "1rem", background: "rgba(255,255,255,0.02)", display: "grid", gap: "0.9rem" }}>
+    <article style={{ border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--radius)", padding: "1rem", background: "rgba(255,255,255,0.02)", display: "grid", gap: "0.9rem" }}>
       <div style={{ display: "grid", gap: "0.35rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.7rem", flexWrap: "wrap" }}>
           <p style={{ margin: 0, fontSize: "1.1rem", fontWeight: 700 }}>{title}</p>

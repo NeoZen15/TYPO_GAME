@@ -342,20 +342,20 @@ const CSS = `
   .ps-panel {
     width: min(98%, 60rem); margin: 0 auto; position: relative;
     padding: clamp(1.2rem, 2.6vw, 1.8rem);
-    border: 1px solid rgb(${CREAM} / 0.1); border-radius: 1rem;
+    border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
     background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
   .ps-tag {
     display: inline-flex; align-items: center; font-family: var(--pf-mono);
     font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 0.18rem 0.6rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.2);
+    padding: 0.18rem 0.6rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.2);
     color: rgb(${CREAM} / 0.6);
   }
   .ps-tag--arena { border-color: color-mix(in srgb, ${ORANGE} 45%, transparent); background: color-mix(in srgb, ${ORANGE} 8%, transparent); color: color-mix(in srgb, ${ORANGE} 55%, var(--pf-cream)); }
 
-  .ps-bar { display: block; position: relative; height: 0.4rem; border-radius: 999px; background: rgb(${CREAM} / 0.1); overflow: hidden; }
-  .ps-bar__fill { position: absolute; inset: 0 auto 0 0; height: 100%; border-radius: 999px; background: var(--pf-cream); }
+  .ps-bar { display: block; position: relative; height: 0.4rem; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.1); overflow: hidden; }
+  .ps-bar__fill { position: absolute; inset: 0 auto 0 0; height: 100%; border-radius: var(--radius-pill); background: var(--pf-cream); }
   .ps.is-armed .ps-bar__fill { transform: scaleX(0); transform-origin: left; }
   .ps.is-armed.is-in .ps-bar__fill { transform: scaleX(1); transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1) 250ms; }
 
@@ -364,14 +364,14 @@ const CSS = `
   .ps-eye__id { display: flex; align-items: center; gap: clamp(0.9rem, 2vw, 1.3rem); flex-wrap: wrap; }
   .ps-eye__avatar {
     display: grid; place-items: center; width: clamp(3.2rem, 6vw, 4rem); aspect-ratio: 1; flex: none;
-    border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.22); background: rgb(${CREAM} / 0.05);
+    border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.22); background: rgb(${CREAM} / 0.05);
     font-size: clamp(1.1rem, 2.2vw, 1.35rem); font-weight: 600; letter-spacing: 0.02em; color: var(--pf-cream);
   }
   .ps-eye__who { display: grid; gap: 0.1rem; min-width: 0; flex: 1; }
   .ps-eye__since { font-family: var(--pf-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
   .ps-eye__name { margin: 0; font-size: clamp(1.3rem, 2.8vw, 1.8rem); font-weight: 640; letter-spacing: -0.03em; line-height: 1.04; color: var(--pf-cream); }
   .ps-eye__handle { font-family: var(--pf-mono); font-size: 0.72rem; color: rgb(${CREAM} / 0.5); }
-  .ps-eye__title { display: inline-flex; align-items: center; gap: 0.4rem; align-self: flex-start; font-family: var(--pf-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pf-cream); padding: 0.32rem 0.7rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.22); background: rgb(${CREAM} / 0.04); }
+  .ps-eye__title { display: inline-flex; align-items: center; gap: 0.4rem; align-self: flex-start; font-family: var(--pf-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pf-cream); padding: 0.32rem 0.7rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.22); background: rgb(${CREAM} / 0.04); }
   .ps-eye__star { color: var(--pf-cream); }
 
   .ps-eye__lvl { display: flex; align-items: center; gap: clamp(0.9rem, 2.2vw, 1.5rem); padding-top: 0.3rem; }
@@ -389,7 +389,7 @@ const CSS = `
 
   .ps-eye__cta {
     justify-self: start; display: inline-flex; align-items: center; gap: 0.45rem;
-    padding: 0.5rem 1rem; border-radius: 999px; cursor: pointer; text-decoration: none;
+    padding: 0.5rem 1rem; border-radius: var(--radius-pill); cursor: pointer; text-decoration: none;
     font-family: var(--pf-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
     border: 1px solid rgb(${CREAM} / 0.28); background: rgb(${CREAM} / 0.06); color: var(--pf-cream);
     transition: background-color 160ms ease, transform 160ms ease;
@@ -400,7 +400,7 @@ const CSS = `
   .ps-arena {
     width: min(98%, 60rem); margin: 0 auto; position: relative;
     padding: clamp(1.2rem, 2.6vw, 1.8rem);
-    border: 1px solid color-mix(in srgb, ${ORANGE} 32%, transparent); border-radius: 1rem;
+    border: 1px solid color-mix(in srgb, ${ORANGE} 32%, transparent); border-radius: var(--radius);
     background:
       radial-gradient(120% 80% at 85% 0%, color-mix(in srgb, ${ORANGE} 7%, transparent), transparent 60%),
       color-mix(in srgb, var(--pf-bg) 88%, transparent);
@@ -434,13 +434,13 @@ const CSS = `
 
   /* Division ladder */
   .ps-ladder { display: grid; gap: 0.5rem; }
-  .ps-ladder__track { position: relative; display: flex; gap: 2px; height: 0.5rem; border-radius: 999px; overflow: visible; }
+  .ps-ladder__track { position: relative; display: flex; gap: 2px; height: 0.5rem; border-radius: var(--radius-pill); overflow: visible; }
   .ps-ladder__band { flex-basis: 0; min-width: 0; height: 100%; border-radius: 2px; }
   .ps-ladder__band--promo { background: rgb(${CREAM} / 0.62); border-radius: 999px 2px 2px 999px; }
   .ps-ladder__band--hold { background: rgb(${CREAM} / 0.16); }
   .ps-ladder__band--drop { background: color-mix(in srgb, ${ORANGE} 42%, transparent); border-radius: 2px 999px 999px 2px; }
   .ps-ladder__marker { position: absolute; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
-  .ps-ladder__pin { width: 0.7rem; height: 0.7rem; border-radius: 999px; background: var(--pf-cream); box-shadow: 0 0 0 3px var(--pf-bg), 0 0 0 4px rgb(${CREAM} / 0.5); }
+  .ps-ladder__pin { width: 0.7rem; height: 0.7rem; border-radius: var(--radius-pill); background: var(--pf-cream); box-shadow: 0 0 0 3px var(--pf-bg), 0 0 0 4px rgb(${CREAM} / 0.5); }
   .ps-ladder__you { position: absolute; top: 0.85rem; font-family: var(--pf-mono); font-size: 0.6rem; font-weight: 700; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
   .ps.is-armed .ps-ladder__marker { opacity: 0; }
   .ps.is-armed.is-in .ps-ladder__marker { opacity: 1; transition: opacity 500ms ease 400ms; }
@@ -453,7 +453,7 @@ const CSS = `
   .ps-ranks { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.3rem; position: relative; padding-top: 0.4rem; }
   .ps-ranks::before { content: ""; position: absolute; top: calc(0.4rem + 0.34rem); left: 6%; right: 6%; height: 1px; background: rgb(${CREAM} / 0.14); }
   .ps-rank { position: relative; display: grid; justify-items: center; gap: 0.35rem; flex: 1; min-width: 0; }
-  .ps-rank__node { width: 0.7rem; height: 0.7rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.28); background: var(--pf-bg); }
+  .ps-rank__node { width: 0.7rem; height: 0.7rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.28); background: var(--pf-bg); }
   .ps-rank.is-reached .ps-rank__node { background: rgb(${CREAM} / 0.5); border-color: rgb(${CREAM} / 0.5); }
   .ps-rank.is-current .ps-rank__node { width: 0.95rem; height: 0.95rem; background: var(--pf-cream); border-color: var(--pf-cream); box-shadow: 0 0 0 3px var(--pf-bg), 0 0 0 4px color-mix(in srgb, ${ORANGE} 45%, transparent); }
   .ps-rank__lbl { font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(${CREAM} / 0.4); white-space: nowrap; }
@@ -470,7 +470,7 @@ const CSS = `
   /* Playlists */
   .ps-playlists { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
   @media (max-width: 560px) { .ps-playlists { grid-template-columns: 1fr; } }
-  .ps-play { display: grid; gap: 0.3rem; padding: 0.8rem 0.9rem; border: 1px solid rgb(${CREAM} / 0.14); border-radius: 0.7rem; background: rgb(${CREAM} / 0.03); }
+  .ps-play { display: grid; gap: 0.3rem; padding: 0.8rem 0.9rem; border: 1px solid rgb(${CREAM} / 0.14); border-radius: var(--radius); background: rgb(${CREAM} / 0.03); }
   .ps-play.is-locked { opacity: 0.55; }
   .ps-play__name { font-size: 0.92rem; font-weight: 640; letter-spacing: -0.01em; color: var(--pf-cream); }
   .ps-play__blurb { font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.04em; text-transform: uppercase; color: rgb(${CREAM} / 0.5); }
@@ -479,13 +479,13 @@ const CSS = `
   .ps-play__lock { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.4); }
 
   /* "Not yet" placeholder — live standings + match history need a population */
-  .ps-arena__soon { display: grid; gap: 0.4rem; justify-items: center; text-align: center; padding: clamp(1.1rem, 2.6vw, 1.6rem); border: 1px dashed color-mix(in srgb, ${ORANGE} 28%, transparent); border-radius: 0.8rem; background: color-mix(in srgb, ${ORANGE} 4%, transparent); }
-  .ps-arena__soontag { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.16rem 0.6rem; border-radius: 999px; border: 1px dashed color-mix(in srgb, ${ORANGE} 40%, transparent); color: color-mix(in srgb, ${ORANGE} 55%, var(--pf-cream)); }
+  .ps-arena__soon { display: grid; gap: 0.4rem; justify-items: center; text-align: center; padding: clamp(1.1rem, 2.6vw, 1.6rem); border: 1px dashed color-mix(in srgb, ${ORANGE} 28%, transparent); border-radius: var(--radius); background: color-mix(in srgb, ${ORANGE} 4%, transparent); }
+  .ps-arena__soontag { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.16rem 0.6rem; border-radius: var(--radius-pill); border: 1px dashed color-mix(in srgb, ${ORANGE} 40%, transparent); color: color-mix(in srgb, ${ORANGE} 55%, var(--pf-cream)); }
   .ps-arena__soontitle { font-size: 0.95rem; font-weight: 620; letter-spacing: -0.01em; color: var(--pf-cream); }
   .ps-arena__soontext { max-width: 46ch; font-family: var(--pf-mono); font-size: 0.62rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
 
   /* Season banner */
-  .ps-season { display: flex; align-items: center; gap: clamp(0.9rem, 2.4vw, 1.4rem); padding: clamp(0.9rem, 2vw, 1.1rem); border: 1px solid color-mix(in srgb, ${ORANGE} 24%, transparent); border-radius: 0.8rem; background: color-mix(in srgb, ${ORANGE} 5%, transparent); }
+  .ps-season { display: flex; align-items: center; gap: clamp(0.9rem, 2.4vw, 1.4rem); padding: clamp(0.9rem, 2vw, 1.1rem); border: 1px solid color-mix(in srgb, ${ORANGE} 24%, transparent); border-radius: var(--radius); background: color-mix(in srgb, ${ORANGE} 5%, transparent); }
   .ps-season__reward { flex: none; display: grid; place-items: center; }
   .ps-season__crest { width: clamp(3rem, 8vw, 4rem); height: auto; filter: drop-shadow(0 5px 12px rgba(0,0,0,0.5)); }
   .ps-season__text { display: grid; gap: 0.22rem; min-width: 0; }
@@ -495,7 +495,7 @@ const CSS = `
   .ps-arena__foot { display: flex; align-items: center; gap: 0.8rem 1.2rem; flex-wrap: wrap; padding-top: 0.9rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
   .ps-arena__cta {
     display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
-    padding: 0.62rem 1.2rem; border-radius: 999px;
+    padding: 0.62rem 1.2rem; border-radius: var(--radius-pill);
     font-family: var(--pf-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
     border: 1px solid color-mix(in srgb, ${ORANGE} 55%, transparent);
     background: color-mix(in srgb, ${ORANGE} 14%, transparent);

@@ -118,7 +118,7 @@ function AuditPaneStatus({
           display: "grid",
           gap: "0.35rem",
           padding: "0.75rem 0.85rem",
-          borderRadius: "14px",
+          borderRadius: "var(--radius)",
           border: "1px solid rgba(255,255,255,0.08)",
           background: "rgba(255,255,255,0.025)",
         }}
@@ -138,7 +138,7 @@ function AuditPaneStatus({
           display: "grid",
           gap: "0.35rem",
           padding: "0.75rem 0.85rem",
-          borderRadius: "14px",
+          borderRadius: "var(--radius)",
           border: "1px solid rgba(255,255,255,0.08)",
           background: "rgba(255,255,255,0.025)",
         }}
@@ -162,7 +162,7 @@ function AuditPaneStatus({
         display: "grid",
         gap: "0.35rem",
         padding: "0.75rem 0.85rem",
-        borderRadius: "14px",
+        borderRadius: "var(--radius)",
         border: "1px solid rgba(255,255,255,0.08)",
         background: "rgba(255,255,255,0.025)",
       }}
@@ -190,7 +190,7 @@ function AuditPaneStatus({
           display: "grid",
           gap: "0.28rem",
           padding: "0.55rem 0.65rem",
-          borderRadius: "12px",
+          borderRadius: "var(--radius)",
           background: "rgba(255,255,255,0.03)",
         }}
       >
@@ -249,7 +249,7 @@ function AuditPaneStatus({
             display: "grid",
             gap: "0.28rem",
             padding: "0.55rem 0.65rem",
-            borderRadius: "12px",
+            borderRadius: "var(--radius)",
             background: "rgba(255,255,255,0.03)",
           }}
         >
@@ -298,7 +298,7 @@ function GlyphAuditCardReady({ glyph, expectation }: { glyph: string; expectatio
     <article
       style={{
         border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: "24px",
+        borderRadius: "var(--radius)",
         padding: "1rem",
         background: "rgba(255,255,255,0.02)",
         display: "grid",

@@ -431,7 +431,7 @@ const CSS = `
   @media (max-width: 540px) { .st-kpis { grid-template-columns: repeat(2, 1fr); } }
   .st-kpi {
     display: grid; gap: 0.22rem; padding: clamp(0.7rem, 1.5vw, 0.95rem);
-    border: 1px solid rgb(${CREAM} / 0.1); border-radius: 0.7rem;
+    border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
     background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
@@ -446,7 +446,7 @@ const CSS = `
   .st-panel {
     width: min(98%, 66rem); margin: 0 auto;
     padding: clamp(1rem, 2.2vw, 1.4rem);
-    border: 1px solid rgb(${CREAM} / 0.1); border-radius: 0.9rem;
+    border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
     background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
@@ -471,7 +471,7 @@ const CSS = `
   .st-eye__main .st-bar__fill { background: var(--pf-cream); } /* XP fill — cream (no yellow here) */
 
   /* Palier breakdown — segmented bar + legend */
-  .st-seg { display: flex; gap: 2px; height: 0.34rem; border-radius: 999px; overflow: hidden; margin-bottom: 0.95rem; }
+  .st-seg { display: flex; gap: 2px; height: 0.34rem; border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 0.95rem; }
   .st-seg__part { flex-basis: 0; min-width: 0; border-radius: 2px; }
   .st-seg__part--lit { background: var(--pf-cream); }
   .st-seg__part--emerging { background: rgb(${CREAM} / 0.5); }
@@ -495,12 +495,12 @@ const CSS = `
   .st-axis--lit .st-axis__letter { color: var(--pf-cream); }
   .st-axis__name { font-size: 0.82rem; color: rgb(${CREAM} / 0.84); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .st-axis--dormant .st-axis__name, .st-axis--roadmap .st-axis__name { color: rgb(${CREAM} / 0.5); }
-  .st-axis__state { font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.18); color: rgb(${CREAM} / 0.55); white-space: nowrap; }
+  .st-axis__state { font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.18); color: rgb(${CREAM} / 0.55); white-space: nowrap; }
   .st-axis--lit .st-axis__state { border-color: rgb(${CREAM} / 0.55); color: var(--pf-cream); }
   .st-axis--emerging .st-axis__state { border-color: rgb(${CREAM} / 0.36); color: rgb(${CREAM} / 0.8); }
   .st-axis--roadmap .st-axis__state { border-style: dashed; }
-  .st-axis__bar { height: 0.4rem; border-radius: 999px; background: rgb(${CREAM} / 0.1); overflow: hidden; }
-  .st-axis__fill { display: block; height: 100%; border-radius: 999px; background: rgb(${CREAM} / 0.5); }
+  .st-axis__bar { height: 0.4rem; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.1); overflow: hidden; }
+  .st-axis__fill { display: block; height: 100%; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.5); }
   .st-axis--lit .st-axis__fill { background: rgb(${CREAM} / 0.85); }
   .st-axis__frac { font-family: var(--pf-mono); font-size: 0.7rem; color: rgb(${CREAM} / 0.55); text-align: right; font-variant-numeric: tabular-nums; }
   .st-axis__frac em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
@@ -515,7 +515,7 @@ const CSS = `
   .st-arena { border-color: color-mix(in srgb, ${ORANGE} 30%, transparent); }
   .st-arena__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem 1rem; flex-wrap: wrap; }
   .st-arena__head .st-panel__title { margin: 0; }
-  .st-arena__tag { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: 999px; border: 1px solid color-mix(in srgb, ${ORANGE} 45%, transparent); background: color-mix(in srgb, ${ORANGE} 8%, transparent); color: color-mix(in srgb, ${ORANGE} 55%, var(--pf-cream)); }
+  .st-arena__tag { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, ${ORANGE} 45%, transparent); background: color-mix(in srgb, ${ORANGE} 8%, transparent); color: color-mix(in srgb, ${ORANGE} 55%, var(--pf-cream)); }
   .st-arena__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: clamp(0.8rem, 2vw, 1.4rem); align-items: center; margin-top: 1rem; }
   @media (max-width: 560px) { .st-arena__grid { grid-template-columns: 1fr 1fr; } }
   .st-arena__rank { display: grid; gap: 0.2rem; }
@@ -526,7 +526,7 @@ const CSS = `
   .st-arena__lbl { font-family: var(--pf-mono); font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.45); }
 
   /* Games by mode — the 3 validated mode colours (contour-light legend) */
-  .st-modebar { display: flex; gap: 2px; height: 0.4rem; border-radius: 999px; overflow: hidden; margin-bottom: 0.85rem; }
+  .st-modebar { display: flex; gap: 2px; height: 0.4rem; border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 0.85rem; }
   .st-modebar__part { flex-basis: 0; min-width: 0; opacity: 0.85; }
   .st-modelegend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin: 0; padding: 0; list-style: none; }
   .st-modelegend li { display: inline-flex; align-items: center; gap: 0.42rem; font-family: var(--pf-mono); font-size: 0.66rem; color: rgb(${CREAM} / 0.6); }
@@ -534,7 +534,7 @@ const CSS = `
   .st-modelegend__sw { width: 0.62rem; height: 0.62rem; border-radius: 2px; flex: none; opacity: 0.9; }
 
   /* Badges — reserved placeholder slots (not built yet) */
-  .st-soon { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: 999px; border: 1px dashed rgb(${CREAM} / 0.22); color: rgb(${CREAM} / 0.45); }
+  .st-soon { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: var(--radius-pill); border: 1px dashed rgb(${CREAM} / 0.22); color: rgb(${CREAM} / 0.45); }
   .st-badges { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.6rem; margin: 1rem 0 0.2rem; }
   @media (max-width: 560px) { .st-badges { grid-template-columns: repeat(4, 1fr); } }
   .st-badge-slot { aspect-ratio: 1; border-radius: 50%; border: 1px dashed rgb(${CREAM} / 0.18); background: rgb(${CREAM} / 0.03); }
@@ -577,12 +577,12 @@ const CSS = `
   .st-rows { display: grid; gap: 0.7rem; margin: 0; padding: 0; list-style: none; }
   .st-row { display: grid; grid-template-columns: 6.5rem 1fr auto; align-items: center; gap: 0.8rem; }
   .st-row__label { font-size: 0.82rem; color: rgb(${CREAM} / 0.84); }
-  .st-bar { position: relative; height: 0.5rem; border-radius: 999px; background: rgb(${CREAM} / 0.1); overflow: hidden; }
+  .st-bar { position: relative; height: 0.5rem; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.1); overflow: hidden; }
   .st-bar--scaled {
     background-color: rgb(${CREAM} / 0.06);
     background-image: repeating-linear-gradient(to right, rgb(${CREAM} / 0.16) 0 1px, transparent 1px 25%);
   }
-  .st-bar__fill { position: absolute; inset: 0 auto 0 0; height: 100%; border-radius: 999px; background: var(--pf-cream); }
+  .st-bar__fill { position: absolute; inset: 0 auto 0 0; height: 100%; border-radius: var(--radius-pill); background: var(--pf-cream); }
   .st.is-armed .st-bar__fill { transform: scaleX(0); transform-origin: left; }
   .st.is-armed.is-in .st-bar__fill { transform: scaleX(1); transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
   .st-row__val { text-align: right; display: grid; gap: 0.04rem; min-width: 4rem; padding-left: 1.1rem; font-variant-numeric: tabular-nums; }
@@ -596,7 +596,7 @@ const CSS = `
   .st-sessions { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
   .st-session { display: grid; grid-template-columns: 8rem 1fr auto auto; align-items: center; gap: 0.9rem; padding: 0.65rem 0; border-top: 1px solid rgb(${CREAM} / 0.08); }
   .st-session:first-child { border-top: none; }
-  .st-session__mode { justify-self: start; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.18rem 0.5rem; border: 1px solid rgb(${CREAM} / 0.2); border-radius: 999px; color: rgb(${CREAM} / 0.7); }
+  .st-session__mode { justify-self: start; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.18rem 0.5rem; border: 1px solid rgb(${CREAM} / 0.2); border-radius: var(--radius-pill); color: rgb(${CREAM} / 0.7); }
   .st-session__detail { font-size: 0.82rem; color: rgb(${CREAM} / 0.82); }
   .st-session__acc { font-family: var(--pf-mono); font-size: 0.8rem; font-weight: 640; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
   .st-session__when { font-family: var(--pf-mono); font-size: 0.64rem; color: rgb(${CREAM} / 0.42); text-align: right; min-width: 5rem; }

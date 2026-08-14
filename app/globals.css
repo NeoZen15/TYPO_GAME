@@ -60,10 +60,8 @@
   --ui-subtitle-size: clamp(0.98rem, 1.35vw, 1.12rem);
   --ui-subtitle-line: 1.42;
   --ui-title-gap: 0.72rem;
+  --radius: 1rem;
   --radius-pill: 999px;
-  --radius-shell: 1.15rem;
-  --radius-card: 1.04rem;
-  --radius-soft: 0.94rem;
   --page-gutter-x: clamp(1rem, 3vw, 2rem);
   --page-gutter-y-top: clamp(4.8rem, 10vh, 6.8rem);
   --page-gutter-y-bottom: clamp(2rem, 5vh, 3rem);
@@ -197,7 +195,7 @@ svg {
   width: 2.86rem;
   height: 1.64rem;
   padding: 0.14rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line-strong);
   background: rgba(17, 17, 20, 0.08);
   box-shadow: inset 0 0 0 1px rgba(244, 243, 238, 0.08);
@@ -211,7 +209,7 @@ svg {
 .theme-switch__thumb {
   width: 1.24rem;
   height: 1.24rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface-strong);
   box-shadow: 0 2px 8px rgba(17, 17, 20, 0.18);
   transform: translateX(0);
@@ -275,13 +273,13 @@ svg {
   height: 1.72rem;
   padding-top: 0.28rem;
   border: 1px solid currentColor;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .scroll-hint__dot {
   width: 0.18rem;
   height: 0.42rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: currentColor;
   animation: scroll-hint-dot 1.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
@@ -355,7 +353,7 @@ svg {
   max-width: 15rem;
   padding: 0.72rem 0.92rem;
   border: 1px solid var(--line);
-  border-radius: 0.98rem;
+  border-radius: var(--radius);
   background: var(--surface-strong);
   color: var(--ink-strong);
   font-size: 0.82rem;
@@ -486,7 +484,7 @@ svg {
   grid-template-rows: minmax(8.4rem, 1fr) auto auto;
   align-content: center;
   gap: clamp(0.84rem, 1.8vw, 1.28rem);
-  border-radius: 1.55rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line) 42%, transparent);
   background:
     linear-gradient(
@@ -533,7 +531,7 @@ svg {
   position: relative;
   min-height: clamp(3.9rem, 7vh, 4.5rem);
   border: 1px solid color-mix(in srgb, rgba(58, 38, 48, 0.14) 82%, transparent);
-  border-radius: 1.12rem;
+  border-radius: var(--radius);
   background:
     linear-gradient(
       180deg,
@@ -556,7 +554,7 @@ svg {
   top: 0.62rem;
   bottom: 0.62rem;
   width: 0.16rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--card-color, var(--card-1));
   box-shadow: 0 0 0.52rem color-mix(in srgb, var(--card-color, var(--card-1)) 32%, transparent);
 }
@@ -633,7 +631,7 @@ svg {
   transform: translateX(-50%);
   z-index: 60;
   padding: 0.5rem 0.95rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--accent-yellow) 60%, var(--line-strong));
   background: color-mix(in srgb, var(--accent-yellow) 24%, var(--surface-strong));
   color: var(--ink-strong);
@@ -687,7 +685,7 @@ svg {
   justify-content: center;
   min-height: 2.9rem;
   padding: 0.78rem 1.25rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line-strong);
   background: var(--surface-strong);
   color: var(--ink-strong);
@@ -737,7 +735,7 @@ svg {
   gap: 1.5rem;
   padding: clamp(1.4rem, 2.8vw, 1.9rem);
   border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
-  border-radius: 1.18rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--surface-strong) 62%, transparent);
   box-shadow: 0 16px 36px rgba(17, 17, 20, 0.045);
   backdrop-filter: blur(10px);
@@ -767,7 +765,7 @@ svg {
   grid-template-rows: 1fr auto;
   gap: 0.72rem;
   border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
-  border-radius: 1.04rem;
+  border-radius: var(--radius);
   background:
     linear-gradient(
       180deg,
@@ -795,7 +793,7 @@ svg {
   right: -14%;
   width: 6.6rem;
   height: 6.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--mode-accent) 8%, transparent);
   filter: blur(30px);
   pointer-events: none;
@@ -866,7 +864,7 @@ svg {
   min-height: 1.5rem;
   padding: 0.2rem 0.56rem 0.16rem;
   border: 1px solid color-mix(in srgb, var(--mode-accent) 36%, var(--line));
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--mode-accent) 5%, transparent);
   color: color-mix(in srgb, var(--mode-accent) 58%, var(--foreground));
   line-height: 1;
@@ -926,7 +924,7 @@ svg {
   gap: 1.5rem;
   padding: 1.5rem 1.42rem 1.42rem;
   border: 1px solid rgba(255, 210, 19, 0.22);
-  border-radius: 1.18rem;
+  border-radius: var(--radius);
   background:
     radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 40%),
     linear-gradient(
@@ -972,7 +970,7 @@ svg {
   min-height: 10.6rem;
   gap: 0.72rem;
   padding: 0.94rem 0.92rem 0.86rem;
-  border-radius: 1.04rem;
+  border-radius: var(--radius);
 }
 
 :root[data-theme="dark"] .mode-select-card::before {
@@ -1050,7 +1048,7 @@ svg {
 .error-shell {
   width: var(--shell-width-wide);
   border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
-  border-radius: 1.3rem;
+  border-radius: var(--radius);
   background: var(--surface-strong);
   padding: clamp(1.3rem, 3vw, 2rem);
   box-shadow: 0 12px 32px rgba(17, 17, 20, 0.04);
@@ -1093,7 +1091,7 @@ svg {
   margin: 0;
   padding: 0.18rem 0.62rem 0.14rem;
   border: 1px solid color-mix(in srgb, var(--mode-accent) 38%, var(--line));
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--mode-accent) 5%, transparent);
   color: color-mix(in srgb, var(--mode-accent) 58%, var(--foreground));
   line-height: 1;
@@ -1111,7 +1109,7 @@ svg {
   min-height: 2.6rem;
   padding: 0.72rem 1rem;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--ink-muted);
   font-size: 0.9rem;
@@ -1155,7 +1153,7 @@ svg {
 
 .mode-rules-section {
   border: 1px solid var(--line);
-  border-radius: 1rem;
+  border-radius: var(--radius);
   background: var(--surface-soft);
   padding: 1rem 1.05rem;
 }
@@ -1336,7 +1334,7 @@ svg {
   min-height: 1.56rem;
   padding: 0.18rem 0.62rem 0.14rem;
   border: 1px solid var(--onboarding-line-strong);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--onboarding-ink-soft);
   line-height: 1;
@@ -1346,7 +1344,7 @@ svg {
   width: 100%;
   height: 0.28rem;
   overflow: hidden;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--onboarding-line-strong) 90%, transparent);
 }
 
@@ -1544,7 +1542,7 @@ svg {
 .onboarding-hero-meter-line {
   display: block;
   width: 4rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: linear-gradient(
     90deg,
     color-mix(in srgb, var(--onboarding-accent) 40%, transparent) 0%,
@@ -1573,7 +1571,7 @@ svg {
   min-height: 1.92rem;
   padding: 0.4rem 0.68rem;
   border: 1px solid var(--onboarding-line-strong);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--onboarding-ink-soft);
   font-size: 0.8rem;
@@ -1617,7 +1615,7 @@ svg {
   display: block;
   width: 3.4rem;
   height: 0.22rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--accent-yellow);
 }
 
@@ -1627,7 +1625,7 @@ svg {
   max-width: 100%;
   padding: 0.74rem 1.1rem;
   border: 1px solid var(--onboarding-line-strong);
-  border-radius: 1.22rem;
+  border-radius: var(--radius);
   background: var(--onboarding-bg);
 }
 
@@ -1674,7 +1672,7 @@ svg {
   min-height: 5.6rem;
   padding: 0.82rem 0.82rem 0.78rem;
   border: 1px solid color-mix(in srgb, var(--onboarding-accent) 22%, var(--onboarding-line-strong));
-  border-radius: 1rem;
+  border-radius: var(--radius);
   background:
     linear-gradient(
       180deg,
@@ -1730,7 +1728,7 @@ svg {
   min-height: 0;
   gap: 0.3rem;
   padding: 0.8rem 0.9rem 0.8rem 1.25rem;
-  border-radius: 1.05rem;
+  border-radius: var(--radius);
   border-color: color-mix(in srgb, var(--onboarding-accent) 30%, var(--onboarding-line-strong));
   background: linear-gradient(
     180deg,
@@ -1755,7 +1753,7 @@ svg {
   top: 0.6rem;
   bottom: 0.6rem;
   width: 0.15rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--onboarding-accent);
   box-shadow: 0 0 0.5rem color-mix(in srgb, var(--onboarding-accent) 38%, transparent);
   transition: box-shadow 200ms ease, width 200ms ease;
@@ -1827,7 +1825,7 @@ svg {
   gap: 0.62rem;
   padding: 0.94rem 0.92rem 0.86rem;
   border: 1px solid rgba(244, 243, 238, 0.12);
-  border-radius: 1.04rem;
+  border-radius: var(--radius);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--onboarding-accent) 5%, rgba(244, 243, 238, 0.05)) 0%,
@@ -1851,7 +1849,7 @@ svg {
   right: -14%;
   width: 6.6rem;
   height: 6.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--onboarding-accent) 8%, transparent);
   filter: blur(30px);
   pointer-events: none;
@@ -1881,7 +1879,7 @@ svg {
   min-height: 1.5rem;
   padding: 0.2rem 0.56rem 0.16rem;
   border: 1px solid color-mix(in srgb, var(--onboarding-accent) 30%, var(--onboarding-line-strong));
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--onboarding-accent) 4%, transparent);
   color: var(--onboarding-ink);
   line-height: 1;
@@ -2005,7 +2003,7 @@ svg {
   text-align: center;
   gap: 0;
   padding: 0.9rem 1rem 0.9rem 1.3rem;
-  border-radius: 1.12rem;
+  border-radius: var(--radius);
   background: rgba(244, 243, 238, 0.035);
   box-shadow: inset 0 0 0 1px rgba(244, 243, 238, 0.05);
 }
@@ -2021,7 +2019,7 @@ svg {
   top: 0.6rem;
   bottom: 0.6rem;
   width: 0.16rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--micro-bar, var(--card-1));
   box-shadow: 0 0 0.5rem color-mix(in srgb, var(--micro-bar, var(--card-1)) 34%, transparent);
 }
@@ -2068,7 +2066,7 @@ svg {
   align-content: start;
   padding: 0.72rem 0.85rem 0.78rem 1.2rem;
   border: 1px solid color-mix(in srgb, var(--summary-accent, var(--card-1)) 30%, var(--onboarding-line-strong));
-  border-radius: 0.95rem;
+  border-radius: var(--radius);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--summary-accent, var(--card-1)) 9%, rgba(244, 243, 238, 0.045)) 0%,
@@ -2085,7 +2083,7 @@ svg {
   top: 0.62rem;
   bottom: 0.62rem;
   width: 0.16rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--summary-accent, var(--card-1));
   box-shadow: 0 0 0.55rem color-mix(in srgb, var(--summary-accent, var(--card-1)) 45%, transparent);
 }
@@ -2125,7 +2123,7 @@ svg {
   min-width: 8.4rem;
   min-height: 2.72rem;
   padding: 0.72rem 1.12rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 0.92rem;
   font-weight: 620;
   letter-spacing: 0;
@@ -2355,7 +2353,7 @@ svg {
   height: 4.8rem;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 1.15rem;
+  border-radius: var(--radius);
   background: rgba(244, 243, 238, 0.72);
   box-shadow: var(--shadow-card);
 }
@@ -2540,7 +2538,7 @@ svg {
      (the home is the canonical reference; this nav was still on the older
      neon-black skin). */
   border: 1px solid rgba(20, 16, 25, 0.08);
-  border-radius: 1.4rem;
+  border-radius: var(--radius);
   background: #f4f3ee;
   color: #141019;
   box-shadow:
@@ -2603,7 +2601,7 @@ svg {
   align-items: center;
   justify-content: center;
   min-height: 1.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   transition:
     background-color 160ms ease,
@@ -2838,7 +2836,7 @@ svg {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 0.86rem;
   padding: clamp(0.94rem, 1.6vw, 1.06rem);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: rgba(244, 243, 238, 0.4);
 }
@@ -3178,7 +3176,7 @@ svg {
   display: grid;
   gap: 0.35rem;
   padding: 0.94rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-warning-line) 56%, transparent);
   background: color-mix(in srgb, var(--typo-warning-soft) 64%, rgba(244, 243, 238, 0.32));
   box-shadow: 0 0.16rem 0.42rem rgba(42, 26, 32, 0.04);
@@ -3210,7 +3208,7 @@ svg {
   align-content: start;
   min-height: 100%;
   padding: 0.94rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.28));
   box-shadow: 0 0.16rem 0.42rem rgba(42, 26, 32, 0.035);
@@ -3250,7 +3248,7 @@ svg {
   gap: 0.42rem;
   padding: 0.94rem 1rem;
   border-top: 1px solid color-mix(in srgb, var(--typo-positive-line) 54%, transparent);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--typo-positive-soft) 34%, transparent);
 }
 
@@ -3295,7 +3293,7 @@ svg {
   display: grid;
   gap: 0.34rem;
   padding: 0.94rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: rgba(244, 243, 238, 0.45);
   color: var(--typo-ink);
@@ -3389,7 +3387,7 @@ svg {
   grid-template-columns: 1fr;
   align-items: start;
   padding: 0.94rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: rgba(244, 243, 238, 0.38);
 }
@@ -3404,7 +3402,7 @@ svg {
 .typo-glyph-lab {
   grid-template-columns: minmax(0, 1.28fr) minmax(24rem, 1fr);
   gap: 0;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: var(--typo-page-bg);
@@ -3418,7 +3416,7 @@ svg {
 
 .typo-tester-preview {
   padding: 0.94rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: rgba(244, 243, 238, 0.28);
 }
@@ -3455,7 +3453,7 @@ svg {
 
 .typo-tester-field--compact {
   padding: 0.72rem 0.84rem 0.78rem;
-  border-radius: calc(var(--radius-card) - 0.12rem);
+  border-radius: var(--radius);
   border: 1px solid var(--typo-tester-panel-line);
   background: color-mix(in srgb, var(--typo-tester-panel-bg) 82%, transparent);
 }
@@ -3481,7 +3479,7 @@ svg {
   display: grid;
   gap: 0;
   min-height: 100%;
-  border-radius: calc(var(--radius-card) - 0.12rem);
+  border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--typo-tester-panel-line);
   background: var(--typo-tester-panel-bg);
@@ -3521,7 +3519,7 @@ svg {
   gap: 1px;
   align-self: start;
   border: 1px solid var(--typo-tester-panel-line);
-  border-radius: 0.78rem;
+  border-radius: var(--radius);
   overflow: hidden;
   background: color-mix(in srgb, var(--typo-tester-panel-bg) 84%, transparent);
 }
@@ -3574,7 +3572,7 @@ svg {
 .typo-tester-select {
   width: 100%;
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius);
   background: rgba(244, 243, 238, 0.72);
   color: var(--typo-ink);
   font: inherit;
@@ -3628,7 +3626,7 @@ svg {
 
 .typo-tester-range::-webkit-slider-runnable-track {
   height: 0.32rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--typo-warning-line) 72%, rgba(244, 243, 238, 0.14));
 }
 
@@ -3657,7 +3655,7 @@ svg {
 
 .typo-tester-range::-moz-range-track {
   height: 0.32rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--typo-warning-line) 72%, rgba(244, 243, 238, 0.14));
 }
 
@@ -3704,7 +3702,7 @@ svg {
 .typo-tester-surface {
   min-height: 18rem;
   padding: 1.1rem 1.2rem;
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background:
     linear-gradient(to bottom, rgba(58, 38, 48, 0.04), rgba(58, 38, 48, 0.01)),
@@ -3821,7 +3819,7 @@ svg {
 .typo-tester-surface--mini {
   min-height: 8rem;
   padding: 0.84rem 0.96rem;
-  border-radius: 0.7rem;
+  border-radius: var(--radius);
   border: 1px solid var(--typo-tester-panel-line);
   background: color-mix(in srgb, var(--typo-tester-panel-bg) 78%, transparent);
 }
@@ -3899,7 +3897,7 @@ svg {
   justify-content: center;
   min-height: 2.8rem;
   padding: 0.36rem;
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius);
   border: 1px solid var(--typo-tester-panel-line);
   background: color-mix(in srgb, var(--typo-tester-panel-bg) 78%, transparent);
   color: var(--typo-tester-panel-strong);
@@ -4007,7 +4005,7 @@ svg {
 .compare-hero-side {
   align-content: end;
   padding: 1rem 1.1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-positive-line) 72%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-positive-soft) 72%, transparent), transparent),
@@ -4041,7 +4039,7 @@ svg {
   display: grid;
   gap: 0.78rem;
   padding: clamp(1rem, 1.6vw, 1.2rem);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-positive-line) 42%, var(--typo-shell-border));
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-positive-soft) 26%, transparent), transparent 28%),
@@ -4092,7 +4090,7 @@ svg {
   gap: 0.42rem;
   min-height: 1.85rem;
   padding: 0.3rem 0.72rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(244, 243, 238, 0.12));
   color: var(--typo-muted);
@@ -4177,7 +4175,7 @@ svg {
   gap: 1rem;
   padding: 1.05rem 1.1rem 1.15rem;
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 82%, transparent);
-  border-radius: 1.2rem;
+  border-radius: var(--radius);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--compare-stage-bg) 94%, transparent), color-mix(in srgb, var(--compare-stage-bg) 98%, transparent)),
     color-mix(in srgb, var(--compare-stage-line-soft) 18%, transparent);
@@ -4215,7 +4213,7 @@ svg {
   gap: 0.5rem;
   padding: 0.9rem;
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 74%, transparent);
-  border-radius: 1rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--compare-stage-bg) 94%, transparent);
 }
 
@@ -4256,7 +4254,7 @@ svg {
   gap: 0.8rem;
   padding: 1rem;
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 70%, transparent);
-  border-radius: 1rem;
+  border-radius: var(--radius);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--compare-stage-line-soft) 10%, transparent), transparent 45%),
     color-mix(in srgb, var(--compare-stage-bg) 95%, transparent);
@@ -4310,7 +4308,7 @@ svg {
   display: grid;
   gap: 0.6rem;
   padding: 0.92rem 1rem;
-  border-radius: 1rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--compare-stage-line-soft) 18%, transparent);
 }
 
@@ -4322,7 +4320,7 @@ svg {
   width: fit-content;
   min-height: 1.8rem;
   padding: 0.28rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 72%, transparent);
   color: var(--compare-stage-ink-soft);
   font-size: 0.68rem;
@@ -4354,7 +4352,7 @@ svg {
   align-items: stretch;
   min-height: clamp(31rem, 64vw, 44rem);
   overflow: hidden;
-  border-radius: calc(var(--radius-card) - 0.1rem);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--compare-stage-line-soft) 8%, transparent), transparent 20%),
@@ -4590,7 +4588,7 @@ svg {
   align-items: center;
   gap: 0.42rem;
   padding: 0.3rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 66%, transparent);
   background: color-mix(in srgb, var(--compare-stage-switch-bg) 82%, transparent);
   transform: translateX(-50%);
@@ -4616,7 +4614,7 @@ svg {
   gap: 0.28rem;
   min-width: min(100%, 24.5rem);
   padding: 0.24rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 66%, transparent);
   background: color-mix(in srgb, var(--compare-stage-switch-bg) 82%, transparent);
 }
@@ -4629,7 +4627,7 @@ svg {
   min-height: 1.86rem;
   min-width: 7.2rem;
   padding: 0.28rem 0.62rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 56%, transparent);
   color: var(--compare-stage-ink-soft);
   font-size: 0.68rem;
@@ -4754,7 +4752,7 @@ svg {
   justify-content: flex-end;
   gap: 0.24rem;
   padding: 0.22rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 66%, transparent);
   background: color-mix(in srgb, var(--compare-stage-switch-bg) 82%, transparent);
   min-height: calc(1.86rem + 0.44rem);
@@ -5033,7 +5031,7 @@ svg {
   min-width: 6.8rem;
   padding: 0.28rem 0.55rem;
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 86%, transparent);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--compare-stage-ink-soft);
   font-size: 0.68rem;
@@ -5082,7 +5080,7 @@ svg {
   justify-content: center;
   min-height: 1.8rem;
   padding: 0.28rem 0.62rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 72%, transparent);
   background: transparent;
   color: var(--compare-stage-ink-soft);
@@ -5565,7 +5563,7 @@ svg {
   gap: 1rem;
   padding: 1rem;
   border: 1px solid color-mix(in srgb, var(--typo-border) 70%, transparent);
-  border-radius: 1.5rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--surface-elevated) 92%, transparent);
 }
 
@@ -5599,7 +5597,7 @@ svg {
   display: grid;
   gap: 0.8rem;
   padding: 0.9rem;
-  border-radius: 1.2rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-border) 72%, transparent);
   background: color-mix(in srgb, var(--surface-panel) 92%, transparent);
 }
@@ -5624,7 +5622,7 @@ svg {
   justify-content: center;
   min-height: 1.8rem;
   padding: 0.2rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--typo-border) 74%, transparent);
   color: var(--typo-muted);
   font-size: 0.72rem;
@@ -5648,7 +5646,7 @@ svg {
 .metrics-validator-stage {
   position: relative;
   overflow: hidden;
-  border-radius: 1rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-border) 60%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 96%, transparent), color-mix(in srgb, var(--surface-panel) 96%, transparent));
@@ -5780,7 +5778,7 @@ svg {
   gap: 0.22rem;
   min-height: 100%;
   padding: 0.72rem 0.82rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 76%, rgba(244, 243, 238, 0.1));
   color: var(--typo-muted);
@@ -5805,7 +5803,7 @@ svg {
   display: grid;
   gap: 0.72rem;
   padding: 0.92rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(244, 243, 238, 0.06));
 }
@@ -5847,7 +5845,7 @@ svg {
   gap: 0.52rem;
   align-content: start;
   padding: 0.82rem 0.88rem;
-  border-radius: calc(var(--radius-card) - 0.14rem);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 76%, transparent);
   background: color-mix(in srgb, var(--compare-stage-bg) 92%, transparent);
 }
@@ -5910,7 +5908,7 @@ svg {
   display: grid;
   gap: 0.6rem;
   padding: 0.88rem 1rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-info-line) 52%, transparent);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--typo-info-soft) 18%, transparent), transparent 65%),
@@ -6006,7 +6004,7 @@ svg {
   display: grid;
   gap: 0.18rem;
   padding: 0.62rem 0.72rem;
-  border-radius: calc(var(--radius-card) - 0.18rem);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 66%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 82%, rgba(244, 243, 238, 0.06));
   color: var(--typo-muted);
@@ -6059,7 +6057,7 @@ svg {
   gap: 0.14rem;
   align-items: center;
   padding: 0.22rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 72%, transparent);
   background: color-mix(in srgb, var(--compare-stage-switch-bg) 78%, transparent);
 }
@@ -6098,7 +6096,7 @@ svg {
   justify-content: center;
   min-height: 2rem;
   padding: 0.34rem 0.72rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 72%, transparent);
   background: color-mix(in srgb, var(--compare-stage-switch-bg) 78%, transparent);
   color: var(--compare-stage-ink-soft);
@@ -6125,7 +6123,7 @@ svg {
   gap: 0.22rem;
   width: min(20rem, 70vw);
   padding: 0.36rem;
-  border-radius: calc(var(--radius-card) - 0.12rem);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--compare-stage-switch-line) 88%, transparent);
   background: color-mix(in srgb, var(--compare-stage-switch-bg) 98%, transparent);
   box-shadow: 0 0.25rem 0.9rem rgba(0, 0, 0, 0.1);
@@ -6230,7 +6228,7 @@ svg {
   height: 1.8rem !important;
   min-height: 1.8rem !important;
   padding: 0.28rem 0.55rem !important;
-  border-radius: 999px !important;
+  border-radius: var(--radius-pill) !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -6362,7 +6360,7 @@ svg {
   min-width: 1.86rem;
   min-height: 1.86rem;
   padding: 0.1rem 0.34rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid transparent;
   background: transparent;
   color: var(--compare-stage-ink-soft);
@@ -6408,7 +6406,7 @@ svg {
   align-content: start;
   min-height: 100%;
   padding: 0.94rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.14));
   text-decoration: none;
@@ -6473,7 +6471,7 @@ svg {
   display: grid;
   gap: 0.56rem;
   padding: 0.68rem;
-  border-radius: 1.45rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line-strong) 72%, transparent);
   background:
     radial-gradient(circle at 12% 14%, color-mix(in srgb, var(--card-1) 22%, transparent), transparent 28%),
@@ -6493,7 +6491,7 @@ svg {
   gap: 0.52rem;
   min-height: 2.6rem;
   padding: 0.32rem 0.36rem 0.32rem 0.34rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--line-strong) 78%, transparent);
   background:
     radial-gradient(circle at left center, color-mix(in srgb, var(--card-1) 18%, transparent), transparent 28%),
@@ -6506,7 +6504,7 @@ svg {
   flex: 0 0 auto;
   width: 0.74rem;
   height: 0.74rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background:
     radial-gradient(circle at 35% 35%, rgba(244, 243, 238, 0.9), rgba(244, 243, 238, 0.12) 42%, transparent 44%),
     linear-gradient(135deg, color-mix(in srgb, var(--card-1) 84%, #f4f3ee), color-mix(in srgb, var(--card-2) 76%, #f4f3ee));
@@ -6561,7 +6559,7 @@ svg {
 
 .compare-help-widget__close,
 .compare-help-widget__toggle {
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.42rem 0.66rem;
   font: inherit;
   font-size: 0.58rem;
@@ -6617,7 +6615,7 @@ svg {
   border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
   background: color-mix(in srgb, var(--surface-soft) 88%, transparent);
   color: var(--ink-muted);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.3rem 0.5rem;
   font: inherit;
   font-size: 0.56rem;
@@ -6646,7 +6644,7 @@ svg {
   display: grid;
   gap: 0.14rem;
   text-align: left;
-  border-radius: 0.84rem;
+  border-radius: var(--radius);
   padding: 0.58rem 0.66rem;
   font: inherit;
   font-size: 0.7rem;
@@ -6680,7 +6678,7 @@ svg {
   align-content: start;
   gap: 0.32rem;
   padding: 0.76rem 0.82rem;
-  border-radius: 1rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line-strong) 72%, transparent);
   background:
     radial-gradient(circle at top right, color-mix(in srgb, var(--card-3) 12%, transparent), transparent 28%),
@@ -6734,7 +6732,7 @@ svg {
   gap: 0.42rem;
   align-content: start;
   padding: 0.96rem 1rem;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
   background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.18));
 }
@@ -6822,7 +6820,7 @@ svg {
   }
 
   .site-nav {
-    border-radius: 1.35rem;
+    border-radius: var(--radius);
     padding: 0.78rem;
   }
 
@@ -7183,7 +7181,7 @@ svg {
   padding: 0.5rem 0.7rem 0.5rem 0.95rem;
   border: 1px solid rgba(20, 16, 25, 0.08);
   /* Clean rounded rectangle — all four corners equal. */
-  border-radius: 1.4rem;
+  border-radius: var(--radius);
   background: #f4f3ee;
   color: #141019;
   box-shadow:
@@ -7246,7 +7244,7 @@ svg {
   display: inline-flex;
   align-items: center;
   padding: 0.3rem 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   color: rgba(20, 16, 25, 0.55);
   font-size: 0.68rem;
   font-weight: 700;
@@ -7271,7 +7269,7 @@ svg {
   align-items: center;
   justify-content: center;
   padding: 0.34rem 0.8rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid rgba(20, 16, 25, 0.12);
   background: #141019;
   color: #f4f3ee;
@@ -7570,7 +7568,7 @@ svg {
   display: grid;
   gap: 0.9rem;
   padding: clamp(1.3rem, 3vw, 2rem);
-  border-radius: 1.3rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
   background: color-mix(in srgb, var(--surface-strong) 50%, transparent);
   box-shadow: 0 26px 60px rgba(17, 17, 20, 0.1);
@@ -7633,7 +7631,7 @@ svg {
   justify-content: center;
   min-height: 3.9rem;
   padding: 0.9rem 0.9rem 0.9rem 1.25rem;
-  border-radius: 1.05rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
   background: linear-gradient(
     180deg,
@@ -7672,7 +7670,7 @@ svg {
   top: 0.6rem;
   bottom: 0.6rem;
   width: 0.15rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--card-color, var(--card-1));
   box-shadow: 0 0 0.5rem color-mix(in srgb, var(--card-color, var(--card-1)) 36%, transparent);
   transition: opacity 200ms ease;
@@ -7972,7 +7970,7 @@ svg {
   display: grid;
   gap: clamp(0.7rem, 1.6vw, 1rem);
   padding: clamp(1rem, 2.2vw, 1.5rem);
-  border-radius: 1.3rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
   background: color-mix(in srgb, var(--surface-strong) 50%, transparent);
   box-shadow: 0 18px 44px rgba(17, 17, 20, 0.06);
@@ -8015,7 +8013,7 @@ svg {
 .lp-compare-tab {
   color: var(--ink-soft);
   padding: 0.22rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
@@ -8221,7 +8219,7 @@ svg {
   gap: 0.7rem;
   min-height: 11rem;
   padding: clamp(1.4rem, 2.5vw, 1.9rem);
-  border-radius: 1.2rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   background: color-mix(in srgb, var(--surface-strong) 45%, transparent);
   box-shadow: 0 14px 32px rgba(17, 17, 20, 0.05);
@@ -8362,7 +8360,7 @@ svg {
   align-content: start;
   min-height: 10.5rem;
   padding: clamp(1.2rem, 2.2vw, 1.55rem);
-  border-radius: 1.15rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) 7%, transparent) 0%, transparent 55%),
@@ -8380,7 +8378,7 @@ svg {
   right: -14%;
   width: 7rem;
   height: 7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--mode-accent) 10%, transparent);
   filter: blur(34px);
   pointer-events: none;
@@ -8404,7 +8402,7 @@ svg {
 .lp-mode-card__chip {
   justify-self: start;
   padding: 0.3rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--mode-accent) 38%, transparent);
   background: color-mix(in srgb, var(--mode-accent) 6%, transparent);
   color: var(--ink-strong);
@@ -8459,7 +8457,7 @@ svg {
   margin-top: clamp(3.5rem, 9vh, 7rem); /* dark gap above; the tab sits in it */
   padding: clamp(2.2rem, 4.5vw, 3.4rem) var(--page-gutter-x) clamp(1.8rem, 3vw, 2.6rem);
   background: #f4f3ee;
-  border-radius: 0 1.7rem 0 0; /* top-left is provided by the tab */
+  border-radius: 0 var(--radius) 0 0; /* top-left is provided by the tab */
   color: #141019;
 }
 
@@ -8493,7 +8491,7 @@ svg {
   place-items: center;
   width: 1.9rem;
   height: 1.9rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1.5px solid #141019;
   font-family: var(--lp-mono);
   font-size: 0.95rem;
@@ -8560,7 +8558,7 @@ svg {
   align-items: center;
   min-height: 2.7rem;
   padding: 0.7rem 1.3rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: #141019;
   color: #f4f3ee;
   font-size: 0.94rem;
@@ -8662,7 +8660,7 @@ svg {
   gap: clamp(1.5rem, 3.4vw, 2.6rem);
   width: 100%;
   padding: clamp(1.6rem, 3.4vw, 2.8rem);
-  border-radius: 1.4rem;
+  border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   background: color-mix(in srgb, var(--surface-strong) 45%, transparent);
   box-shadow: var(--shadow-card);
@@ -8706,7 +8704,7 @@ svg {
   aspect-ratio: 5 / 4;
   padding: clamp(0.6rem, 1.6vw, 1rem);
   border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
-  border-radius: 0.9rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--surface-strong) 28%, transparent);
 }
 
@@ -8873,7 +8871,7 @@ svg {
     gap: 0.46rem 1rem;
     padding: 0.5rem 0.7rem 0.5rem 0.95rem;
     border: 1px solid rgba(25, 21, 16, 0.10);
-    border-radius: 1.4rem;
+    border-radius: var(--radius);
     background: var(--surface-strong);
     color: #141019;
     box-shadow:
@@ -8925,7 +8923,7 @@ svg {
     display: inline-flex;
     align-items: center;
     padding: 0.3rem 0.5rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     color: rgba(20, 16, 25, 0.55);
     font-size: 0.68rem;
     font-weight: 700;
@@ -8946,7 +8944,7 @@ svg {
     align-items: center;
     justify-content: center;
     padding: 0.34rem 0.8rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid rgba(20, 16, 25, 0.12);
     background: #141019;
     color: #f4f3ee;
@@ -9013,7 +9011,7 @@ svg {
     width: clamp(3.4rem, 7vw, 4.4rem);
     aspect-ratio: 1;
     flex-shrink: 0;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     border: 1px solid var(--pf-line-strong);
     background: var(--pf-surface);
     font-size: clamp(1.1rem, 2.4vw, 1.4rem);
@@ -9045,7 +9043,7 @@ svg {
     text-transform: uppercase;
     color: var(--pf-muted);
   }
-  .pf-id__sep { width: 0.28rem; height: 0.28rem; border-radius: 999px; background: var(--pf-soft); }
+  .pf-id__sep { width: 0.28rem; height: 0.28rem; border-radius: var(--radius-pill); background: var(--pf-soft); }
   .pf-id__level {
     font-family: var(--pf-mono);
     font-size: 0.72rem;
@@ -9057,11 +9055,11 @@ svg {
     margin-top: 0.5rem;
     width: min(22rem, 60vw);
     height: 0.32rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: color-mix(in srgb, var(--pf-cream) 10%, transparent);
     overflow: hidden;
   }
-  .pf-id__xp-fill { display: block; height: 100%; border-radius: 999px; background: var(--pf-cream); }
+  .pf-id__xp-fill { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--pf-cream); }
   .pf-id__xp-text {
     font-family: var(--pf-mono);
     font-size: 0.66rem;
@@ -9110,7 +9108,7 @@ svg {
     text-align: center;
     padding: clamp(3rem, 12vh, 7rem) 1rem;
     border: 1px dashed var(--pf-line);
-    border-radius: 1.2rem;
+    border-radius: var(--radius);
   }
   .pf-empty__text { margin: 0; color: var(--pf-muted); font-size: 0.98rem; }
 
@@ -9195,7 +9193,7 @@ svg {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 0.18rem 0.6rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--pb-accent) 45%, transparent);
   background: color-mix(in srgb, var(--pb-accent) 7%, transparent);
   color: color-mix(in srgb, var(--pb-accent) 80%, var(--pf-cream));
@@ -9229,7 +9227,7 @@ svg {
 .pb-panel {
   padding: clamp(1rem, 2.2vw, 1.4rem);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
-  border-radius: 0.9rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
@@ -9605,7 +9603,7 @@ svg {
   align-content: center;
   padding: clamp(0.7rem, 1.5vw, 0.95rem);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
-  border-radius: 0.9rem;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
@@ -9654,7 +9652,7 @@ svg {
   gap: 1.2rem 2.4rem;
   padding: 1.5rem 1.6rem 1.6rem;
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: rgb(from var(--pf-cream) r g b / 0.02);
 }
 @media (max-width: 720px) {
@@ -9782,7 +9780,7 @@ svg {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 0.14rem 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px dashed rgb(from var(--pf-cream) r g b / 0.22);
   color: rgb(from var(--pf-cream) r g b / 0.42);
 }
@@ -9804,7 +9802,7 @@ svg {
 .pb-bar {
   grid-column: 1 / -1;
   height: 0.4rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.1);
   overflow: hidden;
 }
@@ -9812,7 +9810,7 @@ svg {
 .pb-bar__fill {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.5);
   transform-origin: left;
   animation: pb-grow 850ms cubic-bezier(0.22, 1, 0.36, 1) both 200ms;
@@ -9873,7 +9871,7 @@ svg {
   height: 0.28rem;
   margin-right: 0.5rem;
   margin-bottom: 0.12rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.28);
   vertical-align: middle;
 }
@@ -9963,7 +9961,7 @@ svg {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
   text-decoration: none;
   font-family: var(--pf-mono);
@@ -10109,7 +10107,7 @@ svg {
   display: block;
   height: 0.4rem;
   margin-top: 0.18rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.1);
   overflow: hidden;
 }
@@ -10117,7 +10115,7 @@ svg {
 .pb-step__fill {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--pb-step-ink);
   transform-origin: left;
   animation: pb-grow 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -10228,7 +10226,7 @@ svg {
 .pb-dot {
   width: 0.44rem;
   height: 0.44rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.14);
   transition: none;
 }
@@ -10280,7 +10278,7 @@ svg {
   gap: 0.5rem;
   padding: clamp(1.1rem, 3vw, 2rem) 1rem;
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
-  border-radius: 0.7rem;
+  border-radius: var(--radius);
   background: rgb(from var(--pf-cream) r g b / 0.03);
 }
 
@@ -10303,7 +10301,7 @@ svg {
 
 .pb-round__opt {
   padding: 0.5rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.16);
   background: rgb(from var(--pf-cream) r g b / 0.04);
   text-align: center;
@@ -10329,7 +10327,7 @@ svg {
 .pb-tick {
   width: 0.5rem;
   height: 0.22rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.14);
 }
 
@@ -10411,7 +10409,7 @@ svg {
   place-items: center;
   padding: clamp(1.2rem, 3.4vw, 2.2rem) 1rem;
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
-  border-radius: 0.7rem;
+  border-radius: var(--radius);
   background: rgb(from var(--pf-cream) r g b / 0.03);
 }
 
@@ -10433,7 +10431,7 @@ svg {
   appearance: none;
   cursor: pointer;
   padding: 0.6rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.2);
   background: rgb(from var(--pf-cream) r g b / 0.05);
   color: rgb(from var(--pf-cream) r g b / 0.82);
@@ -10518,7 +10516,7 @@ svg {
 .pb-speed__track {
   position: relative;
   height: 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.08);
   overflow: hidden;
 }
@@ -10543,7 +10541,7 @@ svg {
   width: 0.62rem;
   height: 0.62rem;
   margin-left: -0.31rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--pf-cream);
   transform: translateY(-50%);
   box-shadow: 0 0 0 3px rgb(from var(--pf-cream) r g b / 0.14);
@@ -10640,7 +10638,7 @@ svg {
 .pb-vs__bar {
   display: block;
   height: 0.32rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.08);
   overflow: hidden;
 }
@@ -10648,7 +10646,7 @@ svg {
 .pb-vs__fill {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.4);
   transform-origin: left;
   animation: pb-grow 850ms cubic-bezier(0.22, 1, 0.36, 1) both 200ms;
@@ -10665,7 +10663,7 @@ svg {
   display: block;
   height: 0.34rem;
   margin-top: 0.2rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.08);
   overflow: hidden;
 }
@@ -10673,7 +10671,7 @@ svg {
 .pb-drain__fill {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--pb-accent) 55%, var(--pf-cream));
   transform-origin: left;
   animation: pb-drain 5200ms linear both 600ms;
@@ -10700,7 +10698,7 @@ svg {
 
 .pb-field__dot {
   aspect-ratio: 1;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgb(from var(--pf-cream) r g b / 0.12);
 }
 
@@ -10727,7 +10725,7 @@ svg {
   left: 0;
   right: 0;
   height: 0.24rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   transform: translateY(-50%);
   background: linear-gradient(
     to right,
@@ -10801,7 +10799,7 @@ svg {
 .pb-norm__input {
   width: 100%;
   padding: 0.8rem 1rem;
-  border-radius: 0.7rem;
+  border-radius: var(--radius);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.18);
   background: rgb(from var(--pf-cream) r g b / 0.04);
   color: var(--pf-cream);
@@ -10830,7 +10828,7 @@ svg {
   display: grid;
   gap: 0.25rem;
   padding: 0.6rem 0.7rem;
-  border-radius: 0.6rem;
+  border-radius: var(--radius);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.08);
   background: rgb(from var(--pf-cream) r g b / 0.02);
   min-width: 0;

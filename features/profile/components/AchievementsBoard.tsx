@@ -148,7 +148,7 @@ const CSS = `
   .av-badge {
     display: grid; grid-template-columns: clamp(3.6rem, 9vw, 4.6rem) 1fr; gap: 0.9rem; align-items: center;
     padding: clamp(0.9rem, 2vw, 1.2rem);
-    border: 1px solid rgb(${CREAM} / 0.1); border-radius: 0.9rem;
+    border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
     background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
     -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   }
@@ -161,14 +161,14 @@ const CSS = `
   .av-badge__top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
   .av-badge__label { margin: 0; font-size: 0.92rem; font-weight: 620; letter-spacing: -0.01em; color: var(--pf-cream); }
   .av-badge.is-locked .av-badge__label { color: rgb(${CREAM} / 0.7); }
-  .av-badge__family { flex: none; font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.18); color: rgb(${CREAM} / 0.5); }
+  .av-badge__family { flex: none; font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.18); color: rgb(${CREAM} / 0.5); }
   .av-badge__hint { margin: 0; font-size: 0.74rem; line-height: 1.4; color: rgb(${CREAM} / 0.5); }
   .av-badge__state { font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.4); }
   .av-badge__state--earned { color: var(--pf-cream); display: inline-flex; align-items: center; gap: 0.3rem; }
 
   .av-badge__progress { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.1rem; }
-  .av-bar { flex: 1; position: relative; height: 0.36rem; border-radius: 999px; background: rgb(${CREAM} / 0.1); overflow: hidden; }
-  .av-bar__fill { position: absolute; inset: 0 auto 0 0; height: 100%; border-radius: 999px; background: rgb(${CREAM} / 0.7); }
+  .av-bar { flex: 1; position: relative; height: 0.36rem; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.1); overflow: hidden; }
+  .av-bar__fill { position: absolute; inset: 0 auto 0 0; height: 100%; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.7); }
   .av.is-armed .av-bar__fill { transform: scaleX(0); transform-origin: left; }
   .av.is-armed.is-in .av-bar__fill { transform: scaleX(1); transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1) 250ms; }
   .av-badge__frac { flex: none; font-family: var(--pf-mono); font-size: 0.62rem; color: rgb(${CREAM} / 0.5); font-variant-numeric: tabular-nums; }

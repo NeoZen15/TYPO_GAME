@@ -133,7 +133,7 @@ export default function BadgeStickerLab({ art }: { art: Art }) {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18 }}>
           {EDITORIAL.map((b, i) => (
             <div key={i} style={{ display: "flex", flexDirection: "column" }}>
-              <svg viewBox="0 0 841.89 392.618" style={{ width: "100%", height: "auto", display: "block", borderRadius: 14, filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.45))" }} dangerouslySetInnerHTML={{ __html: buildEditorial(b, art) }} />
+              <svg viewBox="0 0 841.89 392.618" style={{ width: "100%", height: "auto", display: "block", borderRadius: "var(--radius)", filter: "drop-shadow(0 8px 14px rgba(0,0,0,0.45))" }} dangerouslySetInnerHTML={{ __html: buildEditorial(b, art) }} />
               <p style={{ margin: "10px 0 1px", fontSize: 13, fontWeight: 650 }}>{b.name}</p>
               <p style={{ margin: 0, fontFamily: COND, fontSize: 11, fontWeight: 700, letterSpacing: 1.5, color: TIERS[b.tier].lab }}>{TIERS[b.tier].label} · {b.kind}</p>
             </div>
@@ -171,7 +171,7 @@ export default function BadgeStickerLab({ art }: { art: Art }) {
 
 function Toggle({ label, active, onClick, dark }: { label: string; active: boolean; onClick: () => void; dark: boolean }) {
   return (
-    <button onClick={onClick} style={{ appearance: "none", cursor: "pointer", fontFamily: COND, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "8px 16px", borderRadius: 999, border: active ? `1px solid ${YELLOW}` : `1px solid ${dark ? "rgba(244,243,238,0.2)" : "rgba(13,13,15,0.2)"}`, background: active ? "rgba(255,210,19,0.12)" : "transparent", color: active ? (dark ? YELLOW : "#7a6400") : dark ? "rgba(244,243,238,0.7)" : "rgba(13,13,15,0.7)" }}>
+    <button onClick={onClick} style={{ appearance: "none", cursor: "pointer", fontFamily: COND, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "8px 16px", borderRadius: "var(--radius-pill)", border: active ? `1px solid ${YELLOW}` : `1px solid ${dark ? "rgba(244,243,238,0.2)" : "rgba(13,13,15,0.2)"}`, background: active ? "rgba(255,210,19,0.12)" : "transparent", color: active ? (dark ? YELLOW : "#7a6400") : dark ? "rgba(244,243,238,0.7)" : "rgba(13,13,15,0.7)" }}>
       {label}
     </button>
   );

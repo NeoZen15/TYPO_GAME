@@ -629,7 +629,7 @@ const boardStyles = `
   .board-block-state {
     padding: 0.12rem 0.45rem;
     border: 1px solid rgb(${CREAM} / 0.2);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     font-size: 0.58rem; letter-spacing: 0.13em; text-transform: uppercase;
     color: rgb(${CREAM} / 0.55);
   }

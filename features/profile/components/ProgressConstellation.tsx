@@ -616,7 +616,7 @@ const CSS = `
     margin: 0;
     padding: 0.85rem 1.1rem;
     border: 1px solid rgba(${INK}, 0.08);
-    border-radius: 1rem;
+    border-radius: var(--radius);
     background: #f4f3ee;
     box-shadow:
       inset 0 1px 0 rgba(244, 243, 238, 0.5),
@@ -635,8 +635,8 @@ const CSS = `
   .dw-hud__sep { width: 1px; height: 0.9rem; background: rgba(${INK}, 0.2); }
   .dw-hud__dot { color: rgba(${INK}, 0.36); }
   .dw-hud__lvl { color: rgba(${INK}, 0.72); letter-spacing: 0.08em; }
-  .dw-hud__xp { width: 5rem; height: 0.3rem; border-radius: 999px; background: rgba(${INK}, 0.14); overflow: hidden; }
-  .dw-hud__xp-fill { display: block; height: 100%; background: color-mix(in srgb, ${YELLOW} 50%, transparent); border-radius: 999px; }
+  .dw-hud__xp { width: 5rem; height: 0.3rem; border-radius: var(--radius-pill); background: rgba(${INK}, 0.14); overflow: hidden; }
+  .dw-hud__xp-fill { display: block; height: 100%; background: color-mix(in srgb, ${YELLOW} 50%, transparent); border-radius: var(--radius-pill); }
   .dw-hud__xptext { font-variant-numeric: tabular-nums; color: rgba(${INK}, 0.55); }
   .dw-hud__streak { color: rgba(${INK}, 0.74); }
   .dw-hud__count em { font-style: normal; font-weight: 700; color: #141019; }
@@ -714,7 +714,7 @@ const CSS = `
     position: relative;
     display: grid; justify-items: center; gap: 0.4rem;
     appearance: none; border: none; background: transparent; cursor: pointer; padding: 0.3rem 0;
-    border-radius: 0.8rem;
+    border-radius: var(--radius);
     transition: transform 200ms ease;
   }
   .dw-letter:hover, .dw-letter.is-active { transform: translateY(-4px); }
@@ -774,7 +774,7 @@ const CSS = `
   .dw-readout { margin: 0; display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.6rem; }
   .dw-readout__state {
     font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase;
-    padding: 0.16rem 0.55rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.22); color: rgb(${CREAM} / 0.6);
+    padding: 0.16rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.22); color: rgb(${CREAM} / 0.6);
   }
   .dw-readout__state--lit { border-color: color-mix(in srgb, ${YELLOW} 42%, transparent); background: color-mix(in srgb, ${YELLOW} 5%, transparent); color: var(--pf-cream); }
   .dw-readout__state--emerging { border-color: color-mix(in srgb, ${ORANGE} 55%, transparent); background: color-mix(in srgb, ${ORANGE} 8%, transparent); color: var(--pf-cream); }
@@ -805,7 +805,7 @@ const CSS = `
   .dw-row:nth-child(even) .dw-row__viz { order: 2; }
   .dw-row__viz {
     appearance: none; border: none; background: transparent; cursor: pointer; padding: 0;
-    display: grid; place-items: center; border-radius: 0.8rem;
+    display: grid; place-items: center; border-radius: var(--radius);
   }
   .dw-row__viz .dw-gx { height: clamp(6rem, 18vh, 11rem); transition: transform 220ms ease; }
   .dw-row__viz:hover .dw-gx { transform: scale(1.05); }
@@ -814,7 +814,7 @@ const CSS = `
   .dw-row__eyebrow { display: flex; align-items: center; gap: 0.7rem; font-family: var(--pf-mono); }
   .dw-row__lvl { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(${CREAM} / 0.62); }
   .dw-row__state {
-    padding: 0.16rem 0.6rem; border: 1px solid rgb(${CREAM} / 0.22); border-radius: 999px;
+    padding: 0.16rem 0.6rem; border: 1px solid rgb(${CREAM} / 0.22); border-radius: var(--radius-pill);
     font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(${CREAM} / 0.6);
   }
   .dw-row--lit .dw-row__state { border-color: color-mix(in srgb, ${YELLOW} 42%, transparent); background: color-mix(in srgb, ${YELLOW} 5%, transparent); color: var(--pf-cream); }
@@ -881,7 +881,7 @@ const CSS = `
   .dw-zoom__eyebrow { display: flex; align-items: center; gap: 0.7rem; font-family: var(--pf-mono); }
   .dw-zoom__lvl { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(${CREAM} / 0.62); }
   .dw-zoom__state {
-    padding: 0.16rem 0.6rem; border: 1px solid rgb(${CREAM} / 0.22); border-radius: 999px;
+    padding: 0.16rem 0.6rem; border: 1px solid rgb(${CREAM} / 0.22); border-radius: var(--radius-pill);
     font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(${CREAM} / 0.6);
   }
   .dw-zoom__head--lit .dw-zoom__state { border-color: color-mix(in srgb, ${YELLOW} 42%, transparent); background: color-mix(in srgb, ${YELLOW} 5%, transparent); color: var(--pf-cream); }
@@ -904,7 +904,7 @@ const CSS = `
   .dw-plr__state {
     margin-left: auto;
     font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase;
-    padding: 0.14rem 0.5rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.18); color: rgb(${CREAM} / 0.5);
+    padding: 0.14rem 0.5rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.18); color: rgb(${CREAM} / 0.5);
   }
   .dw-plr--lit .dw-plr__state { border-color: color-mix(in srgb, ${YELLOW} 42%, transparent); background: color-mix(in srgb, ${YELLOW} 5%, transparent); color: var(--pf-cream); }
   .dw-plr--emerging .dw-plr__state { border-color: color-mix(in srgb, ${ORANGE} 52%, transparent); background: color-mix(in srgb, ${ORANGE} 7%, transparent); color: var(--pf-cream); }
@@ -916,7 +916,7 @@ const CSS = `
   /* tags (shared with the "every galaxy" rows below the map) */
   .dw-tag {
     font-family: var(--pf-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 0.24rem 0.55rem; border-radius: 999px; border: 1px solid rgb(${CREAM} / 0.14); color: rgb(${CREAM} / 0.5);
+    padding: 0.24rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.14); color: rgb(${CREAM} / 0.5);
   }
   .dw-tag--lit { border-color: rgb(${CREAM} / 0.28); color: rgb(${CREAM} / 0.9); }
   /* Keep the yellow as a light touch: only the first one or two lit paliers of
