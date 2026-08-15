@@ -89,9 +89,9 @@ const Panel = ({ panel, arena }: { panel: RecapPanel; arena?: boolean }) => {
 
 const Actions = ({ onPlayAgain }: { onPlayAgain?: () => void }) => (
   // Two actions, owner's brief: start again, or go and read the whole history.
-  // The stats tab is not addressable yet (the profile switches boards in React
-  // state, not in the URL), so this lands on the profile and the deep link
-  // comes later.
+  // It lands on the STATS board, not on the profile's front page: the button
+  // says statistics, so it owes the numbers. Made possible by the profile's
+  // views becoming addressable on 2026-08-15.
   //
   // A mode with nothing to replay keeps two actions rather than one. Expert is
   // the only such mode today, and dropping its first action left a single
@@ -107,7 +107,7 @@ const Actions = ({ onPlayAgain }: { onPlayAgain?: () => void }) => (
         {sessionEndCopy.otherModesLabel}
       </Link>
     )}
-    <Link href="/profile" className="st-action">
+    <Link href="/profile?view=stats" className="st-action">
       {sessionEndCopy.statsLabel}
     </Link>
   </div>

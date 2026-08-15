@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import ProfileExperience from "@/features/profile/components/ProfileExperience";
 import { loadBrandArt } from "@/lib/brand/brand-art";
@@ -33,7 +34,11 @@ export default async function ProfilePage() {
   return (
     <>
       {fontFaceCss ? <style dangerouslySetInnerHTML={{ __html: fontFaceCss }} /> : null}
-      <ProfileExperience art={art} profile={real?.profile} eye={real?.eye} />
+      {/* Suspense because the experience reads ?view= to open on a board, which
+          is what lets a session recap link straight to the numbers. */}
+      <Suspense fallback={null}>
+        <ProfileExperience art={art} profile={real?.profile} eye={real?.eye} />
+      </Suspense>
     </>
   );
 }

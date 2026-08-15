@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
@@ -30,6 +31,18 @@ const SHOW_IDENTITY = false;
 
 type ViewId = "home" | "profile" | "stats" | "activity" | "achievements" | "preferences";
 
+const VIEW_IDS: ReadonlyArray<ViewId> = [
+  "home",
+  "profile",
+  "stats",
+  "activity",
+  "achievements",
+  "preferences",
+];
+
+const isViewId = (value: string | null): value is ViewId =>
+  value !== null && (VIEW_IDS as readonly string[]).includes(value);
+
 const NAV: ReadonlyArray<{ id: ViewId; label: string }> = [
   { id: "home", label: "Path" },
   { id: "profile", label: "Profile" },
@@ -54,8 +67,24 @@ export default function ProfileExperience({
   arena = MOCK_ARENA,
   art,
 }: ProfileExperienceProps) {
-  const [view, setView] = useState<ViewId>("home");
+  // ADDRESSABLE VIEWS, 2026-08-15. The board was chosen in React state alone, so
+  // /profile always opened on the constellation and no link could reach a tab:
+  // the recap's "See my statistics" landed on the path, not on the numbers, and
+  // no tab could be shared or bookmarked either.
+  //
+  // Same treatment as the rules page of 2026-07-30: the parameter picks the
+  // board on arrival, and clicking a tab corrects the address with replaceState
+  // rather than a router push. Switching board is not a navigation, it must not
+  // stack history entries a back button then has to walk through.
+  const requestedView = useSearchParams().get("view");
+  const [view, setView] = useState<ViewId>(isViewId(requestedView) ? requestedView : "home");
   const [scrolled, setScrolled] = useState(false);
+
+  const showView = useCallback((next: ViewId) => {
+    setView(next);
+    if (typeof window === "undefined") return;
+    window.history.replaceState(null, "", next === "home" ? "/profile" : `/profile?view=${next}`);
+  }, []);
   // The eye layer drives level / XP / title (title is derived from lit axes).
   const xpPct = Math.round((eye.xpInLevel / eye.xpForNext) * 100);
 
@@ -110,7 +139,7 @@ export default function ProfileExperience({
               type="button"
               className={`pf-top__link${view === item.id ? " is-active" : ""}`}
               aria-current={view === item.id ? "true" : undefined}
-              onClick={() => setView(item.id)}
+              onClick={() => showView(item.id)}
             >
               {item.label}
             </button>
