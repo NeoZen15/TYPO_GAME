@@ -220,6 +220,35 @@ export const BOARD_SYSTEM_CSS = `
     .st-row { grid-template-columns: 5rem 1fr auto; }
   }
 
+  /* One-screen variant. The profile is a page you browse, so .st stacks and
+     scrolls. The end of a session is a verdict you read at a glance, and a
+     player who has to scroll to find the buttons has lost the thread. This
+     holds the whole board inside the viewport and pins the action row at the
+     bottom of it. Content that does not fit belongs on the profile, not here. */
+  .st--screen {
+    /* Centred, not stretched. On a tall screen space-between would push a
+       hundred pixels between every block and the four would stop reading as one
+       verdict. Centring keeps the group tight and still leaves the actions
+       inside the viewport, which is the whole point. */
+    min-height: 100svh; align-content: center;
+    /* .st reserves up to 6rem at the bottom so a scrolling page does not end
+       abruptly. Here nothing scrolls, so that reserve is pure overflow: on a
+       phone it alone pushed the actions under the fold. Symmetric instead. */
+    padding-bottom: clamp(1.2rem, 3vw, 2.2rem);
+  }
+  .st-kpis--four { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 900px) { .st-kpis--four { grid-template-columns: repeat(2, 1fr); } }
+  /* On a phone the two panels stack and the columns stop paying for
+     themselves, so the list gives up its last row rather than the type gives up
+     its size. Scoped to the variant: the profile's own lists keep every row. */
+  @media (max-width: 560px) {
+    .st--screen .st-sessions .st-session:nth-child(n + 3) { display: none; }
+    /* Same trade on a phone: the panel's qualifying figures wrap onto two lines
+       there and push the actions under the fold. They give way, the type does
+       not, and the profile carries them anyway. */
+    .st--screen .st-arena .st-eye__foot { display: none; }
+  }
+
   /* Action row. The one recipe this system did not have: the profile reads, it
      never asks for a decision, so nothing here needed a button until the end of
      a session did. Added HERE rather than in the recap, per this file's rule, so
