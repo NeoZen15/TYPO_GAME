@@ -113,6 +113,65 @@ for (const relative of SCREENS) {
 }
 
 // ----------------------------------------------------------------- report
+
+// ── Le fichier existe-t-il vraiment, et fait-il la taille annoncée ? ─────────
+//
+// AJOUTÉ LE 2026-08-15, après la question du propriétaire : « la typo affichée
+// est bien la typo à deviner, il n'y a pas de bug ? »
+//
+// C'est la promesse centrale du produit. Un descripteur peut être parfait et
+// pointer vers un fichier absent : le navigateur remplace alors silencieusement
+// la police par une autre, sans erreur, et le joueur doit nommer un caractère
+// qu'il n'a jamais vu. Aucune vérification ne portait sur le disque.
+//
+// La taille est comparée en plus de l'existence, parce qu'un fichier tronqué par
+// un transfert interrompu existe et ne se charge pas.
+//
+// Les entrées `system_local` sont exclues à dessein : elles n'ont pas de fichier
+// puisqu'elles s'appuient sur la police du système. Elles sont par ailleurs
+// désactivées et propriétaires en base, donc jamais tirées, ce qui est la vraie
+// raison pour laquelle ce produit ne dépend pas des polices du visiteur.
+{
+  const fichiersManquants = [];
+  const taillesDivergentes = [];
+  let verifies = 0;
+
+  for (const record of readJson(RUNTIME).records) {
+    if (record.runtime_status !== "ready") continue;
+    const chemin = path.join(process.cwd(), record.source_path);
+    if (!fs.existsSync(chemin)) {
+      fichiersManquants.push(`${record.typeface_slug} -> ${record.source_path}`);
+      continue;
+    }
+    const taille = fs.statSync(chemin).size;
+    if (taille !== record.file_size_bytes) {
+      taillesDivergentes.push(
+        `${record.typeface_slug}: ${taille} octets sur le disque, ${record.file_size_bytes} déclarés`
+      );
+      continue;
+    }
+    verifies += 1;
+  }
+
+  if (fichiersManquants.length > 0) {
+    failures.push(
+      `${fichiersManquants.length} police(s) servable(s) sans fichier sur le disque. Le navigateur ` +
+        `en substituerait une autre en silence et la question deviendrait impossible : ` +
+        `${fichiersManquants.slice(0, 5).join(", ")}`
+    );
+  }
+  if (taillesDivergentes.length > 0) {
+    failures.push(
+      `${taillesDivergentes.length} fichier(s) de police à la mauvaise taille, donc probablement ` +
+        `tronqués : ${taillesDivergentes.slice(0, 5).join(", ")}`
+    );
+  }
+  console.log(
+    `check:font-renderable : ${verifies} fichiers de police présents sur le disque, ` +
+      `à la taille déclarée.`
+  );
+}
+
 if (failures.length > 0) {
   console.error("check:font-renderable FAILED\n");
   for (const failure of failures) {
