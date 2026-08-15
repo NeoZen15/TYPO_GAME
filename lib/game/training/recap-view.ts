@@ -95,15 +95,22 @@ export const buildTrainingRecapView = (summary: TrainingSessionSummary): RecapVi
       title: "What you confused",
       // Aggregated pairs with a count, where competition lists single events
       // with a time. Three at most, same reason.
-      rows: summary.confusions.slice(0, 3).map((entry, index) => ({
-        key: `${entry.shown}-${entry.chosen ?? "none"}-${index}`,
-        chip: "",
-        detail: entry.chosen
-          ? `${labelFromSlug(entry.chosen)} instead of ${labelFromSlug(entry.shown)}`
-          : `No answer on ${labelFromSlug(entry.shown)}`,
-        value: entry.count > 1 ? `${entry.count}×` : "",
-        aside: "",
-      })),
+      rows: summary.confusions.slice(0, 3).map((entry, index) => {
+        // The label when the server resolved one, the prettified slug otherwise.
+        // The fallback only covers a summary built before labels existed, or a
+        // face the catalogue has lost, and it reads poorly on purpose: a slug
+        // without separators cannot be split back into words.
+        const shown = entry.shownLabel ?? labelFromSlug(entry.shown);
+        const chosen = entry.chosen ? (entry.chosenLabel ?? labelFromSlug(entry.chosen)) : null;
+
+        return {
+          key: `${entry.shown}-${entry.chosen ?? "none"}-${index}`,
+          chip: "",
+          detail: chosen ? `${chosen} instead of ${shown}` : `No answer on ${shown}`,
+          value: entry.count > 1 ? `${entry.count}×` : "",
+          aside: "",
+        };
+      }),
       empty: "Nothing confused twice. Your eye held.",
     },
   };

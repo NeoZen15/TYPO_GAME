@@ -1718,5 +1718,43 @@ export const endTrainingSession = async ({
     facesMastered: progressAggregate?.facesMastered,
   });
 
-  return { sessionId, summary, closedByThisCall };
+  // NAMES, NOT SLUGS, FOR WHAT THE PLAYER READS.
+  //
+  // The summary is built from user_event_fact, which stores slugs. Played for
+  // real, the recap printed "Alumnisansinlineone instead of Alumnisans": most
+  // slugs carry no separator, so no client-side prettifier can put the words
+  // back. The display name only exists in typefaces_core, so it is resolved
+  // here, once, for the handful of faces a confusion mentions.
+  //
+  // The slugs stay in the payload: they identify, the labels only display.
+  const confusedSlugs = [
+    ...new Set(
+      summary.confusions.flatMap((entry) =>
+        entry.chosen ? [entry.shown, entry.chosen] : [entry.shown]
+      )
+    ),
+  ];
+  const nameRows = confusedSlugs.length
+    ? await queryRows<{ typeface_slug: string; display_name: string }>(sql`
+        SELECT typeface_slug, display_name
+        FROM typefaces_core
+        WHERE typeface_slug = ANY(${confusedSlugs}::text[])
+      `)
+    : [];
+  const nameBySlug = new Map(nameRows.map((row) => [row.typeface_slug, row.display_name]));
+
+  return {
+    sessionId,
+    summary: {
+      ...summary,
+      confusions: summary.confusions.map((entry) => ({
+        ...entry,
+        // Falls back to the slug rather than to nothing: a face missing from
+        // the catalogue is a data problem worth seeing, not worth hiding.
+        shownLabel: nameBySlug.get(entry.shown) ?? entry.shown,
+        chosenLabel: entry.chosen ? (nameBySlug.get(entry.chosen) ?? entry.chosen) : null,
+      })),
+    },
+    closedByThisCall,
+  };
 };

@@ -92,8 +92,20 @@ export type TrainingSessionSummary = {
    * Shown face against the name picked instead, most frequent first. `chosen` is
    * null for a timeout or an invalid answer (answer_slug is nullable on
    * user_event_fact, see lib/game/training/session-summary.ts).
+   *
+   * The slugs identify, the labels display. Labels are resolved from
+   * typefaces_core when the session closes, because a slug carries no
+   * separators and no client-side prettifier can put "Alumni Sans Inline One"
+   * back together from "alumnisansinlineone". They fall back to the slug when
+   * the catalogue has no row, so a data hole stays visible.
    */
-  confusions: { shown: string; chosen: string | null; count: number }[];
+  confusions: {
+    shown: string;
+    shownLabel?: string;
+    chosen: string | null;
+    chosenLabel?: string | null;
+    count: number;
+  }[];
   medianResponseMs: number;
   fastestResponseMs: number;
   slowestResponseMs: number;
