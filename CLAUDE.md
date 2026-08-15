@@ -40,7 +40,7 @@ Outillage du corpus de recherche, à lancer à la main : `npm run profiles:diff`
 
 Suite end to end Playwright : `tests/e2e/landing.spec.ts`, `training`, `onboarding`, `accessibility`, plus le garde `guard-database.ts`. `testDir` est `./tests/e2e`, le rapporteur est `list` volontairement, pour ne pas écrire de `playwright-report/`.
 
-**`npm run quality` ne lance PAS les tests.** Passer la porte des 15 étapes ne dit donc rien de l'état de la suite.
+**`npm run quality` ne lance PAS les tests.** Passer la porte des 27 étapes ne dit donc rien de l'état de la suite, et ce n'est pas théorique : le 2026-08-15, deux specs étaient rouges depuis des jours sans que personne le voie. `landing.spec.ts` attendait encore le sélecteur de modes d'avant la refonte du 2026-08-04, et `training.spec.ts` attendait le compteur `faces mastered` remplacé le matin même. **Lancer la suite après toute modification d'écran**, la porte ne le fera pas à ta place.
 
 ```bash
 JDT_E2E_ALLOW_PROD=1 npm run test:e2e                                # toute la suite

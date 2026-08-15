@@ -80,9 +80,23 @@ export const buildTrainingRecapView = (summary: TrainingSessionSummary): RecapVi
     left: {
       title: "What moved",
       tag: "This session",
+      // THREE DISJOINT COUNTS, WHICH THE RAW FIELDS ARE NOT. A face met for the
+      // first time and answered right lands in typefacesDiscovered AND in
+      // typefacesReinforced, so a real session read "6 discovered, 4 reinforced"
+      // over six faces: three figures side by side invite a partition, and that
+      // sum does not make one. Reinforced is narrowed to faces already known,
+      // which is also the truer word: you do not reinforce a face you just met.
+      // Nothing is hidden, the totals are still whole in the payload.
       figures: [
         { value: String(summary.typefacesDiscovered.length), label: "discovered" },
-        { value: String(summary.typefacesReinforced.length), label: "reinforced" },
+        {
+          value: String(
+            summary.typefacesReinforced.filter(
+              (slug) => !summary.typefacesDiscovered.includes(slug)
+            ).length
+          ),
+          label: "reinforced",
+        },
         { value: String(summary.typefacesWeakened.length), label: "weakened" },
       ],
       foot: [

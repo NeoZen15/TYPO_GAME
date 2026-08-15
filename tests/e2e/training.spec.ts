@@ -72,7 +72,11 @@ test.describe("training round", () => {
     const options = page.getByRole("radiogroup", { name: "Typeface options" });
     await expect(options).toBeVisible();
     await expect(options.getByRole("radio")).toHaveCount(4);
-    await expect(page.getByText(/faces mastered$/)).toBeVisible();
+    // The in-game indicator is a set mastery gauge since 2026-08-15 (D3). It
+    // replaced "X / Y faces mastered", which counted only faces at the top of a
+    // 0 to 4 ladder and could not move within a session: a first session read
+    // 0 / 30 for ever. This assertion moved with it.
+    await expect(page.getByText(/of your set mastered$/)).toBeVisible();
 
     // The payload carries the answer slug, so the round can be resolved
     // deterministically instead of guessing.

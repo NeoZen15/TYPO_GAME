@@ -74,15 +74,19 @@ test.describe("landing", () => {
     await hero.getByRole("link", { name: "See the modes" }).click();
 
     await expect(page).toHaveURL(/\/play$/);
+    // The board was rebuilt on 2026-08-04 (commit 13e405f, owner's direction):
+    // the cards stopped overlapping and each one carries its own Rules and Play
+    // actions, so the single "Open X mode" link is gone and the heading changed.
+    // This spec had been red ever since, unseen, because the quality gate does
+    // not run the tests.
     await expect(
-      page.getByRole("heading", { name: "Choose your game mode" })
+      page.getByRole("heading", { name: "Pick how you want to play." })
     ).toBeVisible();
-    // Training and Competition are playable; Expert is still a placeholder, so
-    // only the presence of its card is checked, never its flow.
-    for (const label of ["Training", "Competition", "Expert"]) {
-      await expect(
-        page.getByRole("link", { name: `Open ${label} mode` })
-      ).toBeVisible();
+    // Every mode offers its rules; Training and Competition are playable and
+    // Expert still previews, so its own action is checked by href, not by word.
+    for (const mode of ["training", "competition", "expert"]) {
+      await expect(page.locator(`a[href="/play/${mode}/rules"]`)).toBeVisible();
+      await expect(page.locator(`a[href="/play/${mode}"]`)).toBeVisible();
     }
   });
 });
