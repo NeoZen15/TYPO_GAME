@@ -219,7 +219,9 @@ const competitionScreenStyles = `
     font-family: Iowan Old Style, Palatino, "Times New Roman", serif;
     font-size: clamp(4rem, 9vw, 6.4rem);
     line-height: 0.92;
-    letter-spacing: -0.05em;
+    /* Même raison qu'en training : les approches appartiennent au fondeur, pas
+       à la mise en page, et le mot est la question posée au joueur. */
+    letter-spacing: normal;
     /* Cette feuille est injectée APRÈS globals, elle écrasait donc la règle qui
        y interdit la synthèse. Même raison qu'en training : chaque police du
        catalogue n'a qu'un poids réel, demander 500 laissait le navigateur

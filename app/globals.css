@@ -520,7 +520,14 @@ svg {
   font-weight: 400;
   font-synthesis: none;
   line-height: 0.9;
-  letter-spacing: -0.055em;
+  /* AUCUN INTERLETTRAGE IMPOSÉ. Il valait -0.055em, soit un resserrement de 5,5
+     pour cent appliqué à l'objet même que le joueur doit reconnaître. Les
+     approches sont dessinées par le fondeur et font partie de l'identité d'un
+     caractère, au même titre que ses formes : les modifier change la texture du
+     mot, surtout sur les display et les condensées. `normal` rend au fichier ce
+     qui lui appartient. La hauteur de ligne reste réglée, elle ne touche ni les
+     formes ni les approches. */
+  letter-spacing: normal;
   text-wrap: balance;
 }
 
