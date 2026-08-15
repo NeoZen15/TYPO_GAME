@@ -111,7 +111,9 @@ export const buildTrainingRecapView = (summary: TrainingSessionSummary): RecapVi
           aside: "",
         };
       }),
-      empty: "Nothing confused twice. Your eye held.",
+      // Said "nothing confused twice", which promised a threshold the list does
+      // not have: a single confusion is listed too. Seen on a clean session.
+      empty: "Nothing confused this session. Your eye held.",
     },
   };
 };
