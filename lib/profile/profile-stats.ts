@@ -17,6 +17,11 @@ import {
   type ProfileSession,
 } from "@/lib/profile/mock-profile";
 import { PALIER_TAXONOMY, type TypefaceAttrs } from "@/lib/profile/palier-taxonomy";
+import {
+  RUNTIME_ALLOWED_LICENSE_TYPES,
+  UFL_LEGACY_SLUGS,
+} from "@/lib/game/license-guard";
+import { LATIN_UNREADY_SLUGS } from "@/lib/game/latin-coverage-guard";
 import { setMasteryPercent } from "@/lib/profile/mastery-gauge";
 
 // ---------------------------------------------------------------------------
@@ -258,10 +263,24 @@ export async function loadRealProfile(
       FROM user_event_fact e JOIN typefaces_core tc ON tc.typeface_slug = e.typeface_slug
       WHERE e.user_id = ${userId}::uuid AND e.event_type = 'answer'
       GROUP BY tc.primary_category`),
+    // LE DÉNOMINATEUR EST CELUI DES TYPOS QU'UN JOUEUR PEUT RENCONTRER, pas la
+    // table entière. Il valait `COUNT(*) FROM typefaces_core`, soit 2032, alors
+    // que le moteur ne tire que dans 1172 : le reste est désactivé, sous licence
+    // non validée, ou sans alphabet latin. « 0 / 2032 » était donc un objectif
+    // inatteignable par construction, la même faute que le compteur figé du
+    // matin. Le prédicat est celui de getPoolRows, avec les mêmes constantes
+    // partagées, pour qu'il n'existe pas deux définitions de « servable ».
     queryRows<{ mastered: number; catalog_total: number }>(sql`
       SELECT
         (SELECT COUNT(*) FILTER (WHERE mastery_level >= 4) FROM user_typeface_state WHERE user_id = ${userId}::uuid)::int AS mastered,
-        (SELECT COUNT(*) FROM typefaces_core)::int AS catalog_total`),
+        (SELECT COUNT(*) FROM typefaces_core tc
+          WHERE tc.activation_status = true
+            AND (
+              tc.license_type::text = ANY(${[...RUNTIME_ALLOWED_LICENSE_TYPES]}::text[])
+              OR tc.typeface_slug = ANY(${[...UFL_LEGACY_SLUGS]}::text[])
+            )
+            AND tc.typeface_slug <> ALL(${[...LATIN_UNREADY_SLUGS]}::text[])
+        )::int AS catalog_total`),
     // Same honest existence predicate as modeRows above: a session with every
     // answer wrong can carry question_count = 0 and must still show up here,
     // exactly as it now shows up in Games played.
