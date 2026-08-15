@@ -53,10 +53,12 @@ const Foot = ({ foot }: { foot: NonNullable<RecapPanel["foot"]> }) => (
 const Rows = ({ rows }: { rows: NonNullable<RecapPanel["rows"]> }) => (
   <ul className="st-sessions">
     {rows.map((row) => (
-      <li key={row.key} className="st-session">
-        {/* Cells are dropped when empty rather than rendered blank: training
-            confusions carry no category, so their chip would be an empty pill. */}
-        {row.chip ? <span className="st-session__mode">{row.chip}</span> : <span />}
+      // Cells are dropped when empty rather than rendered blank, and the row
+      // drops the column with them: training confusions carry no category, and
+      // an empty first cell still reserved its 8rem, pushing the text 166px into
+      // the panel.
+      <li key={row.key} className={`st-session${row.chip ? "" : " st-session--nochip"}`}>
+        {row.chip ? <span className="st-session__mode">{row.chip}</span> : null}
         <span className="st-session__detail">{row.detail}</span>
         {row.value ? <span className="st-session__acc">{row.value}</span> : null}
         {row.aside ? <span className="st-session__when">{row.aside}</span> : null}

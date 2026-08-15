@@ -230,6 +230,10 @@ export const BOARD_SYSTEM_CSS = `
   .st-sessions { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
   .st-session { display: grid; grid-template-columns: 8rem 1fr auto auto; align-items: center; gap: 0.9rem; padding: 0.65rem 0; border-top: 1px solid rgb(${CREAM} / 0.08); }
   .st-session:first-child { border-top: none; }
+  /* Without a leading chip the first column still reserved its 8rem and pushed
+     the text 166px into the panel. Training confusions carry no category, so
+     they use this: same row, one column less. */
+  .st-session--nochip { grid-template-columns: minmax(0, 1fr) auto auto; }
   .st-session__mode { justify-self: start; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.18rem 0.5rem; border: 1px solid rgb(${CREAM} / 0.2); border-radius: var(--radius-pill); color: rgb(${CREAM} / 0.7); }
   .st-session__detail { font-size: 0.82rem; color: rgb(${CREAM} / 0.82); }
   .st-session__acc { font-family: var(--pf-mono); font-size: 0.8rem; font-weight: 640; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
