@@ -31,6 +31,11 @@ const PAGES = [
   "/play/competition?preview=complete",
   "/game?preview=complete",
   "/play/expert?preview=complete",
+  // The profile, and one of its boards through the addressable view. Every board
+  // was an h2 under no h1 at all until 2026-08-15: the page the owner reads most
+  // was the one with no title in a screen reader outline.
+  "/profile",
+  "/profile?view=stats",
 ] as const;
 
 const INTERACTIVE_SELECTOR = [

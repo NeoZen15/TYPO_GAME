@@ -146,7 +146,7 @@ export default function ProfileSummary({
 
       <header className="ps-intro ps-sec">
         <span className="ps-kicker">Your profile</span>
-        <h2 className="ps-title">Two things, kept apart.</h2>
+        <h1 className="ps-title">Two things, kept apart.</h1>
         <p className="ps-lede">
           Your <em>eye</em> only ever sharpens. Your <em>rank</em> rises and falls every season. They
           never mix.

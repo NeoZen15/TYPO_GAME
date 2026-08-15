@@ -109,7 +109,7 @@ export default function StatsBoard({
 
       <header className="st-intro st-sec">
         <span className="st-kicker">Your training</span>
-        <h2 className="st-title">The numbers.</h2>
+        <h1 className="st-title">The numbers.</h1>
         <p className="st-lede">Where your eye stands — across every mode, face and session.</p>
       </header>
 

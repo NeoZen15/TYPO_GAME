@@ -71,7 +71,7 @@ export default function AchievementsBoard({
 
       <header className="av-intro av-sec">
         <span className="av-kicker">Your collection</span>
-        <h2 className="av-title">Stickers for a sharper eye.</h2>
+        <h1 className="av-title">Stickers for a sharper eye.</h1>
         <p className="av-lede">
           Each badge marks a real milestone — the rarer the finish, the harder it was to earn.
           <span className="av-count"> <em>{earned}</em> of {badges.length} unlocked.</span>

@@ -81,7 +81,7 @@ export default function PreferencesBoard({
 
       <header className="pr-intro pr-sec">
         <span className="pr-kicker">Your settings</span>
-        <h2 className="pr-title">Make it yours.</h2>
+        <h1 className="pr-title">Make it yours.</h1>
         <p className="pr-lede">A few knobs. The defaults are sensible — tune what you need.</p>
       </header>
 

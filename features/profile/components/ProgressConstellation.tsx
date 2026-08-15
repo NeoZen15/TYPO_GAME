@@ -377,7 +377,7 @@ export default function ProgressConstellation({ eye }: { eye: EyeProfile }) {
       {/* ── Intro ── */}
       <header className="dw-intro">
         <span className="dw-intro__kicker">Eight galaxies · easy to hard</span>
-        <h2 className="dw-intro__title">The map of seeing.</h2>
+        <h1 className="dw-intro__title">The map of seeing.</h1>
         <p className="dw-intro__lede">
           Your eight ways of seeing spell <em>DWIGGINS</em> in the sky. Each letter lights on its
           own, in your order — pick one to travel inside it.

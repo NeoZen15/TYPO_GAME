@@ -79,7 +79,7 @@ export default function ActivityBoard({
 
       <header className="ac-intro ac-sec">
         <span className="ac-kicker">Your rhythm</span>
-        <h2 className="ac-title">Show up. Keep the streak.</h2>
+        <h1 className="ac-title">Show up. Keep the streak.</h1>
         <p className="ac-lede">A little, often. The eye sharpens with regularity — not cramming.</p>
       </header>
 
