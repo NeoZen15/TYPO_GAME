@@ -509,7 +509,16 @@ svg {
   color: var(--ink-warm);
   text-align: center;
   font-size: clamp(2.8rem, 7.9vw, 5.7rem);
-  font-weight: 560;
+  /* 560 était une demande que presque aucune police du catalogue ne peut
+     honorer : chaque @font-face injectée ne déclare qu'UN poids, en général 400.
+     Le navigateur fabriquait donc la différence, et sur une police à filet comme
+     Alumni Sans Inline One ça dédoublait les lettres. Un jeu qui demande de
+     reconnaître un caractère ne peut pas montrer un caractère inventé par le
+     moteur de rendu. Le poids réel est appliqué en ligne depuis le descripteur,
+     et la synthèse est interdite ici pour qu'aucun moteur ne puisse plus
+     épaissir, pencher ni petit-capitaliser un spécimen. */
+  font-weight: 400;
+  font-synthesis: none;
   line-height: 0.9;
   letter-spacing: -0.055em;
   text-wrap: balance;

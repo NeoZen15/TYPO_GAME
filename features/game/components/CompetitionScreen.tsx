@@ -220,7 +220,13 @@ const competitionScreenStyles = `
     font-size: clamp(4rem, 9vw, 6.4rem);
     line-height: 0.92;
     letter-spacing: -0.05em;
-    font-weight: 500;
+    /* Cette feuille est injectée APRÈS globals, elle écrasait donc la règle qui
+       y interdit la synthèse. Même raison qu'en training : chaque police du
+       catalogue n'a qu'un poids réel, demander 500 laissait le navigateur
+       fabriquer la différence et dédoubler les lettres. Un jeu de
+       reconnaissance ne montre que des lettres dessinées par leur fondeur. */
+    font-weight: 400;
+    font-synthesis: none;
   }
 
   .game-v2-options {
@@ -890,7 +896,15 @@ export default function CompetitionScreen() {
           {isLoading ? (
             <h1 className="game-v2-word competition-v1-word">Loading competition</h1>
           ) : currentQuestion ? (
-            <h1 className="game-v2-word competition-v1-word" style={{ fontFamily: currentQuestion.fontFamily }}>
+            <h1
+              className="game-v2-word competition-v1-word"
+              // Même règle qu'en training : le poids du fichier, jamais un poids
+              // que le navigateur devrait fabriquer.
+              style={{
+                fontFamily: currentQuestion.fontFamily,
+                fontWeight: currentQuestion.fontFace?.weight ?? 400,
+              }}
+            >
               {currentQuestion.displayWord}
             </h1>
           ) : (

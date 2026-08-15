@@ -634,7 +634,15 @@ export default function GameScreen() {
           {isLoading ? (
             <h1 className="game-v2-word">Loading session</h1>
           ) : currentQuestion ? (
-            <h1 className="game-v2-word" style={{ fontFamily: currentQuestion.fontFamily }}>
+            <h1
+              className="game-v2-word"
+              // Le poids que le fichier déclare, pas celui que la mise en page
+              // aimerait : demander autre chose laisse le navigateur le fabriquer.
+              style={{
+                fontFamily: currentQuestion.fontFamily,
+                fontWeight: currentQuestion.fontFace?.weight ?? 400,
+              }}
+            >
               {currentQuestion.displayWord}
             </h1>
           ) : (
