@@ -1,5 +1,24 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## REPRISE — à lire en premier, écrit le 2026-08-15 au soir
+
+**Trois choses à faire toi même, avant tout le reste :**
+
+1. **Faire tourner le mot de passe Neon.** Il est apparu en clair dans une conversation le 2026-08-15, par ma faute. Console Neon, puis remettre la nouvelle valeur dans `.env.local` (fichier non suivi par git).
+2. **Pousser.** Dix commits ne sont pas sur GitHub. Aucun identifiant n'est configuré sur la machine, il faut un jeton personnel : `git push origin main` depuis le terminal.
+3. **Remplir les sept informations légales** dans `content/legal.ts` : identité et statut juridique, adresse postale, SIRET, directeur de publication, email de contact, hébergeur du site, durée de conservation. `npm run quality` les rappelle à chaque passage.
+
+**Où en est le produit.** Trois bloqueurs go live : le symbole du logo à redessiner, PP Frama sans licence webfont, et le légal (écrit, en attente des sept informations et d'une relecture juridique). Le reste du jeu tourne.
+
+**Décisions qui t'attendent, aucune n'est technique :**
+- Deux sens du mot « maîtrisé » : le jeu dit « 3% of your set mastered » sur un pool de 30, le profil dit « 0% mastered » sur tout le catalogue. Un joueur croira que c'est cassé.
+- Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil. L'usage veut un lien sur toutes les pages, or il n'y a pas de pied de page global.
+- Les confusions typo par typo sont calculées par les deux modes et affichées nulle part à l'échelle de l'historique. C'est probablement la donnée la plus utile du produit.
+
+**Pièges de la machine, à ne pas rechercher deux fois** (détail dans `CLAUDE.md`) : ne jamais lancer `npm run test:e2e` pendant qu'un serveur de dev tourne, les deux partagent `.next` et corrompent le cache Turbopack, ce qui fait pendre des routes sans aucune erreur. Et l'empreinte du fichier CSS ne change pas en dev, elle ne dit donc rien de sa fraîcheur.
+
+---
+
 > Source de vérité de l'avancement produit, confrontée à l'état réel du code.
 > Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
 >
