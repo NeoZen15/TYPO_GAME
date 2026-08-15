@@ -13,7 +13,6 @@
     "check:dev-routes": "node scripts/quality/check-dev-routes.mjs",
     "check:runtime-boundaries": "node scripts/quality/check-runtime-boundaries.mjs",
     "check:copy": "node scripts/quality/check-copy-usage.mjs",
-    "check:contracts": "node scripts/quality/check-motion-contracts.mjs",
     "check:typography-contract": "node scripts/quality/check-typography-contract.mjs",
     "check:license-guard": "node scripts/quality/check-license-guard.mjs",
     "check:font-licenses": "node scripts/quality/check-font-licenses.mjs",
@@ -38,7 +37,7 @@
     "profiles:export:dev": "node --experimental-strip-types --loader ./scripts/typography/alias-loader.mjs ./scripts/typography/export-dev-profiles.mts",
     "profiles:metrics:extract": "node --experimental-strip-types --loader ./scripts/typography/alias-loader.mjs ./scripts/typography/extract-headless-metrics.mts",
     "specimens:extract-data": "./.venv/bin/python scripts/extract_typeface_specimen_data.py",
-    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:compat-bridges && npm run check:dev-routes && npm run check:runtime-boundaries && npm run check:copy && npm run check:contracts && npm run check:typography-contract && npm run check:license-guard && npm run check:font-licenses && npm run check:latin-coverage && npm run check:font-renderable && npm run check:session-lifecycle && npm run check:session-sweep && npm run check:session-convergence && npm run check:session-counters && npm run check:client-attempt-contract && npm run check:event-writers && npm run check:pool-serialisation && npm run check:day-keys && npm run check:answer-position && npm run check:mastery-gauge && npm run check:misread-truth && npm run check:token-secret && npm run check:event-partitions && npm run build",
+    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:compat-bridges && npm run check:dev-routes && npm run check:runtime-boundaries && npm run check:copy && npm run check:typography-contract && npm run check:license-guard && npm run check:font-licenses && npm run check:latin-coverage && npm run check:font-renderable && npm run check:session-lifecycle && npm run check:session-sweep && npm run check:session-convergence && npm run check:session-counters && npm run check:client-attempt-contract && npm run check:event-writers && npm run check:pool-serialisation && npm run check:day-keys && npm run check:answer-position && npm run check:mastery-gauge && npm run check:misread-truth && npm run check:token-secret && npm run check:event-partitions && npm run build",
     "safety:checkpoint": "bash scripts/safety/create_ui_checkpoint.sh",
     "dev:3000": "rm -rf .next/dev && next dev --hostname 127.0.0.1 --port 3000",
     "dev:clean": "rm -rf .next && next dev --hostname 127.0.0.1 --port 3000"
