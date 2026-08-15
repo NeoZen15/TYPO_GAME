@@ -28,6 +28,7 @@
     "check:day-keys": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/quality/check-day-keys.mjs",
     "check:answer-position": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/quality/check-answer-position.mjs",
     "check:mastery-gauge": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/quality/check-mastery-gauge.mjs",
+    "check:legal-docs": "node scripts/quality/check-legal-docs.mjs",
     "check:recap-view": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --disable-warning=ExperimentalWarning --loader ./scripts/typography/alias-loader.mjs scripts/quality/check-recap-view.mjs",
     "check:misread-truth": "node scripts/quality/check-misread-truth.mjs",
     "check:token-secret": "node scripts/quality/check-token-secret.mjs",
@@ -38,7 +39,7 @@
     "profiles:export:dev": "node --experimental-strip-types --loader ./scripts/typography/alias-loader.mjs ./scripts/typography/export-dev-profiles.mts",
     "profiles:metrics:extract": "node --experimental-strip-types --loader ./scripts/typography/alias-loader.mjs ./scripts/typography/extract-headless-metrics.mts",
     "specimens:extract-data": "./.venv/bin/python scripts/extract_typeface_specimen_data.py",
-    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:compat-bridges && npm run check:dev-routes && npm run check:runtime-boundaries && npm run check:copy && npm run check:typography-contract && npm run check:license-guard && npm run check:font-licenses && npm run check:latin-coverage && npm run check:font-renderable && npm run check:session-lifecycle && npm run check:session-sweep && npm run check:session-convergence && npm run check:session-counters && npm run check:client-attempt-contract && npm run check:event-writers && npm run check:pool-serialisation && npm run check:day-keys && npm run check:answer-position && npm run check:mastery-gauge && npm run check:recap-view && npm run check:misread-truth && npm run check:token-secret && npm run check:event-partitions && npm run build",
+    "quality": "npm run lint && npm run typecheck && npm run check:artifacts && npm run check:compat-bridges && npm run check:dev-routes && npm run check:runtime-boundaries && npm run check:copy && npm run check:typography-contract && npm run check:license-guard && npm run check:font-licenses && npm run check:latin-coverage && npm run check:font-renderable && npm run check:session-lifecycle && npm run check:session-sweep && npm run check:session-convergence && npm run check:session-counters && npm run check:client-attempt-contract && npm run check:event-writers && npm run check:pool-serialisation && npm run check:day-keys && npm run check:answer-position && npm run check:mastery-gauge && npm run check:recap-view && npm run check:legal-docs && npm run check:misread-truth && npm run check:token-secret && npm run check:event-partitions && npm run build",
     "safety:checkpoint": "bash scripts/safety/create_ui_checkpoint.sh",
     "dev:3000": "rm -rf .next/dev && next dev --hostname 127.0.0.1 --port 3000",
     "dev:clean": "rm -rf .next && next dev --hostname 127.0.0.1 --port 3000"

@@ -427,6 +427,16 @@ export default function LandingExperience() {
                 <Link href="/onboarding" className="lp-footer__link">Onboarding</Link>
                 <Link href="/play" className="lp-footer__link">Modes</Link>
               </div>
+              {/* Le pied de page est l'endroit où la loi attend ces trois liens,
+                  et le seul endroit d'où ils sont atteignables de partout. Une
+                  politique de confidentialité que personne ne peut cliquer
+                  équivaut à ne pas en avoir. */}
+              <div className="lp-footer__col">
+                <h3 className="lp-footer__col-title">Legal</h3>
+                <Link href="/legal/confidentialite" className="lp-footer__link">Confidentialité</Link>
+                <Link href="/legal/mentions-legales" className="lp-footer__link">Mentions légales</Link>
+                <Link href="/legal/cgu" className="lp-footer__link">CGU</Link>
+              </div>
             </nav>
           </div>
 

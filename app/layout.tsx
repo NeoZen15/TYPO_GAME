@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import UiDebugProbe from "@/components/dev/UiDebugProbe";
+import StorageNotice from "@/components/ui/StorageNotice";
 
 export const metadata: Metadata = {
   title: "Jeux de Typo V2",
@@ -39,6 +40,9 @@ export default function RootLayout({
       <body className="bg-background font-sans antialiased">
         <UiDebugProbe />
         {children}
+        {/* Sur toutes les pages : un visiteur doit être informé là où il arrive,
+            pas seulement s'il passe par l'accueil. */}
+        <StorageNotice />
       </body>
     </html>
   );
