@@ -75,13 +75,13 @@ export default function LegalPage({ current, kicker, title, updated, intro, sect
           aujourd'hui la seule porte : arrivé sur l'un d'eux par un lien direct
           ou un moteur de recherche, un visiteur ne devait pas repasser par
           l'accueil pour lire les deux autres. */}
-      <nav className="st-actions st-sec" aria-label="Autres documents légaux">
+      <nav className="st-doclinks st-sec" aria-label="Autres documents légaux">
         {OTHER_DOCUMENTS.filter((document) => document.href !== current).map((document) => (
-          <Link key={document.href} href={document.href} className="st-action">
+          <Link key={document.href} href={document.href} className="st-doclink">
             {document.label}
           </Link>
         ))}
-        <Link href="/" className="st-action st-action--primary">
+        <Link href="/" className="st-doclink st-doclink--home">
           Retour à l&apos;accueil
         </Link>
       </nav>

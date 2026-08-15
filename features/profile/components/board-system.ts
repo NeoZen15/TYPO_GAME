@@ -283,6 +283,23 @@ export const BOARD_SYSTEM_CSS = `
   .st-prose section { display: grid; gap: 0.5rem; }
   .st-prose p { margin: 0; font-size: 0.9rem; line-height: 1.65; color: rgb(${CREAM} / 0.72); }
 
+  /* Liens de bas de document. Rien à voir avec la rangée d'actions ci-dessous :
+     celle ci est faite pour deux boutons décisifs à la fin d'une manche, et
+     quatre pavés de 11 rem sous un texte étaient hors d'échelle. Ici, de simples
+     liens dans la micro typographie mono du système. */
+  /* align-items: center, sinon les liens s'étirent sur la hauteur de la rangée
+     et le soulignement du survol tombe très loin sous le texte. */
+  .st-doclinks { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 1.4rem; width: min(94%, 40rem); margin: 0 auto; }
+  .st-doclink {
+    font-family: var(--pf-mono); font-size: 0.64rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgb(${CREAM} / 0.45);
+    text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 0.15rem;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .st-doclink:hover, .st-doclink:focus-visible { color: var(--pf-cream); border-bottom-color: rgb(${CREAM} / 0.4); }
+  .st-doclink:focus-visible { outline: none; }
+  .st-doclink--home { color: rgb(${CREAM} / 0.72); }
+
   /* Action row. The one recipe this system did not have: the profile reads, it
      never asks for a decision, so nothing here needed a button until the end of
      a session did. Added HERE rather than in the recap, per this file's rule, so
