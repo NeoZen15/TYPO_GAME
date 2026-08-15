@@ -91,14 +91,23 @@ const Actions = ({ onPlayAgain }: { onPlayAgain?: () => void }) => (
   // Two actions, owner's brief: start again, or go and read the whole history.
   // The stats tab is not addressable yet (the profile switches boards in React
   // state, not in the URL), so this lands on the profile and the deep link
-  // comes later. A mode with nothing to replay shows only the second.
+  // comes later.
+  //
+  // A mode with nothing to replay keeps two actions rather than one. Expert is
+  // the only such mode today, and dropping its first action left a single
+  // button and no way back to the board: a dead end. The mode board takes that
+  // slot instead, and never sits beside "Play again".
   <div className="st-actions st-sec">
     {onPlayAgain ? (
       <button type="button" className="st-action st-action--primary" onClick={onPlayAgain}>
         {sessionEndCopy.replayLabel}
       </button>
-    ) : null}
-    <Link href="/profile" className={`st-action${onPlayAgain ? "" : " st-action--primary"}`}>
+    ) : (
+      <Link href="/play" className="st-action st-action--primary">
+        {sessionEndCopy.otherModesLabel}
+      </Link>
+    )}
+    <Link href="/profile" className="st-action">
       {sessionEndCopy.statsLabel}
     </Link>
   </div>

@@ -54,10 +54,16 @@ export const trainingProgressCopy = {
  * `modesLabel` ("Back to modes") retired the same day: the owner settled the end
  * of a session on two actions, start again or go and read the whole history. The
  * mode board stays one click away through the profile.
+ *
+ * `otherModesLabel` is not that label coming back. It exists for a mode with
+ * nothing to replay, which today is only Expert: dropping its first action left
+ * a single button and no way back, a dead end. It takes the first slot there,
+ * and never appears beside "Play again".
  */
 export const sessionEndCopy = {
   replayLabel: "Play again",
   statsLabel: "See my statistics",
+  otherModesLabel: "Choose another mode",
 } as const;
 
 /** 404 screen (`app/not-found.tsx`). */
