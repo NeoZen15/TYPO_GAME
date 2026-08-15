@@ -36,6 +36,12 @@ const PAGES = [
   // was the one with no title in a screen reader outline.
   "/profile",
   "/profile?view=stats",
+  // Les trois documents légaux : pages publiques, lues par des gens qui y
+  // arrivent souvent depuis un moteur de recherche, et sur lesquelles la notice
+  // de stockage s'affiche aussi.
+  "/legal/confidentialite",
+  "/legal/mentions-legales",
+  "/legal/cgu",
 ] as const;
 
 const INTERACTIVE_SELECTOR = [

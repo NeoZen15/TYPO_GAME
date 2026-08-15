@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function LegalNoticePage() {
-  return <LegalPage {...legalNoticeCopy} />;
+  return <LegalPage current="/legal/mentions-legales" {...legalNoticeCopy} />;
 }

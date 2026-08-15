@@ -17,12 +17,22 @@ import { BOARD_SYSTEM_CSS } from "@/features/profile/components/board-system";
 // Elle défile, contrairement au récap : `st--screen` tiendrait dans l'écran, ce
 // qui n'a aucun sens pour un texte de plusieurs pages.
 
+// Les trois documents, déclarés une fois. Ajouter un document, c'est ajouter une
+// ligne ici, et les deux autres pages le lient aussitôt.
+const OTHER_DOCUMENTS = [
+  { href: "/legal/confidentialite", label: "Confidentialité" },
+  { href: "/legal/mentions-legales", label: "Mentions légales" },
+  { href: "/legal/cgu", label: "CGU" },
+] as const;
+
 type LegalSection = {
   readonly title: string;
   readonly body: string;
 };
 
 type LegalPageProps = {
+  /** Chemin de la page rendue, pour qu'elle ne se lie pas elle même. */
+  current: string;
   kicker: string;
   title: string;
   updated: string;
@@ -30,7 +40,7 @@ type LegalPageProps = {
   sections: readonly LegalSection[];
 };
 
-export default function LegalPage({ kicker, title, updated, intro, sections }: LegalPageProps) {
+export default function LegalPage({ current, kicker, title, updated, intro, sections }: LegalPageProps) {
   return (
     <main className="st pf-page">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
@@ -55,11 +65,21 @@ export default function LegalPage({ kicker, title, updated, intro, sections }: L
         </section>
       ))}
 
-      <div className="st-actions st-sec">
+      {/* Les trois documents se lient entre eux. La loi demande qu'ils soient
+          accessibles en permanence, et le pied de page de l'accueil est
+          aujourd'hui la seule porte : arrivé sur l'un d'eux par un lien direct
+          ou un moteur de recherche, un visiteur ne devait pas repasser par
+          l'accueil pour lire les deux autres. */}
+      <nav className="st-actions st-sec" aria-label="Autres documents légaux">
+        {OTHER_DOCUMENTS.filter((document) => document.href !== current).map((document) => (
+          <Link key={document.href} href={document.href} className="st-action">
+            {document.label}
+          </Link>
+        ))}
         <Link href="/" className="st-action st-action--primary">
           Retour à l&apos;accueil
         </Link>
-      </div>
+      </nav>
     </main>
   );
 }
