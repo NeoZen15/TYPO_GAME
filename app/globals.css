@@ -10935,7 +10935,11 @@ svg {
 .storage-notice__button {
   border-color: transparent;
   background: var(--ink-strong);
-  color: var(--surface-strong);
+  /* --background et non --surface-strong : ce dernier est un VOILE translucide
+     (crème à 6 pour cent en thème sombre), donc l'utiliser comme encre donnait
+     un libellé invisible sur son propre fond. --background est la vraie
+     inversion, sombre quand l'encre est claire et l'inverse. */
+  color: var(--background);
 }
 
 .storage-notice__link:focus-visible,
