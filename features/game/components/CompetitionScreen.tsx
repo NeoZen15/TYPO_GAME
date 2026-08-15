@@ -5,7 +5,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
-import CompetitionRecap from "@/features/game/components/CompetitionRecap";
+import SessionRecap from "@/features/game/components/SessionRecap";
+import {
+  buildCompetitionRecapView,
+  COMPETITION_RECAP_UNAVAILABLE,
+} from "@/lib/game/competition/recap-view";
 import { isDevRuntime } from "@/lib/dev-mode";
 import { formatClickTime } from "@/lib/game/competition/format";
 import {
@@ -844,9 +848,12 @@ export default function CompetitionScreen() {
   // hook above still runs on every render, this only swaps what is painted.
   if (isComplete) {
     return (
-      <CompetitionRecap
-        summary={summary}
-        stats={stats}
+      <SessionRecap
+        view={
+          summary
+            ? buildCompetitionRecapView(summary, stats)
+            : COMPETITION_RECAP_UNAVAILABLE
+        }
         onPlayAgain={() => void startSession()}
       />
     );

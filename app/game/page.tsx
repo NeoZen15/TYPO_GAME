@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import GameScreen from "@/features/game/components/GameScreen";
 
 // No static @font-face block here on purpose.
@@ -12,6 +13,13 @@ import GameScreen from "@/features/game/components/GameScreen";
 // lib/game/fonts/inject-font-face), which covers the whole catalogue instead of a
 // fixed subset. The other pages that show a fixed set of specimens (landing,
 // profile, onboarding) keep their own static block; they are not question screens.
+//
+// Wrapped in Suspense since the screen reads ?preview=complete, the same
+// affordance and the same boundary the competition page already had.
 export default function GamePageRoute() {
-  return <GameScreen />;
+  return (
+    <Suspense fallback={null}>
+      <GameScreen />
+    </Suspense>
+  );
 }

@@ -48,13 +48,15 @@ export const trainingProgressCopy = {
  * `statsLabel` added on 2026-08-15 (D2). Neither screen had any route to the
  * profile: a finished session offered replaying or going back to the mode
  * board, so the page that actually holds the statistics was reachable only by
- * knowing the address. The three labels are gathered here rather than left
- * hardcoded in the two components, so the two ends of a session cannot drift
- * apart in wording.
+ * knowing the address. Gathered here rather than left hardcoded in the screens,
+ * so the end of a session cannot drift in wording from one mode to the next.
+ *
+ * `modesLabel` ("Back to modes") retired the same day: the owner settled the end
+ * of a session on two actions, start again or go and read the whole history. The
+ * mode board stays one click away through the profile.
  */
 export const sessionEndCopy = {
   replayLabel: "Play again",
-  modesLabel: "Back to modes",
   statsLabel: "See my statistics",
 } as const;
 

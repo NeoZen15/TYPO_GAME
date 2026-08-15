@@ -1,19 +1,52 @@
 "use client";
 
 import Link from "next/link";
-import { sessionEndCopy, trainingProgressCopy } from "@/content/copy";
+import { trainingProgressCopy } from "@/content/copy";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useSearchParams } from "next/navigation";
+
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
+import SessionRecap from "@/features/game/components/SessionRecap";
 import { isDevRuntime } from "@/lib/dev-mode";
 import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
 import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
 import {
+  buildTrainingRecapView,
+  TRAINING_RECAP_UNAVAILABLE,
+} from "@/lib/game/training/recap-view";
+import {
   type TrainingAnswerResponse,
   type TrainingProgress,
   type TrainingQuestion,
+  type TrainingSessionSummary,
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
+
+// Synthetic figures for ?preview=complete. Deliberately plausible rather than
+// round, so the page is judged on real-looking data, and deliberately never
+// written anywhere.
+const PREVIEW_SUMMARY: TrainingSessionSummary = {
+  durationMs: 247_000,
+  questionsResolved: 18,
+  answersSubmitted: 23,
+  firstTryCorrect: 13,
+  firstTryAccuracy: 0.72,
+  retryCount: 5,
+  typefacesSeen: 18,
+  typefacesDiscovered: ["spectral", "tinos", "aleo"],
+  typefacesReinforced: ["lora", "eb-garamond", "asap", "alumni-sans"],
+  typefacesWeakened: ["playfair-display"],
+  masteryNet: 3,
+  confusions: [
+    { shown: "spectral", chosen: "tinos", count: 2 },
+    { shown: "ibm-plex-mono", chosen: "fira-code", count: 1 },
+    { shown: "playfair-display", chosen: null, count: 1 },
+  ],
+  medianResponseMs: 1_640,
+  fastestResponseMs: 720,
+  slowestResponseMs: 4_180,
+};
 
 declare global {
   interface Window {
@@ -169,6 +202,15 @@ export default function GameScreen() {
   const [result, setResult] = useState<"idle" | "correct" | "wrong">("idle");
   const [wrongAttemptIds, setWrongAttemptIds] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
+  // The end route has always returned a full TrainingSessionSummary and this
+  // screen threw the body away: it showed one sentence and two buttons while the
+  // server had already counted what moved, what was confused and how fast the
+  // answers came. Kept now, and read by the recap.
+  const [summary, setSummary] = useState<TrainingSessionSummary | null>(null);
+  // ?preview=complete paints the end of a session without playing one, the same
+  // affordance the competition screen already had. Read-only: it writes nothing,
+  // starts no session, and the figures below are visibly synthetic.
+  const previewComplete = useSearchParams().get("preview") === "complete";
   const [isRoundLocked, setIsRoundLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -333,9 +375,16 @@ export default function GameScreen() {
         throw new Error("training_session_end_failed");
       }
 
+      // Read before completing, and tolerated when absent: a session that closes
+      // without figures still closes, the recap says so rather than waiting.
+      const payload = (await response.json().catch(() => null)) as {
+        summary?: TrainingSessionSummary;
+      } | null;
+
       clearAdvanceTimer();
       setIsRoundLocked(false);
       setInlineFeedback(null);
+      setSummary(payload?.summary ?? null);
       setIsComplete(true);
       // Released only now, once the session is really closed. A failed close
       // keeps the identifier, so the next load rejoins the same session rather
@@ -531,6 +580,28 @@ export default function GameScreen() {
 
   const currentQuestion = question;
 
+  if (previewComplete) {
+    return (
+      <SessionRecap view={buildTrainingRecapView(PREVIEW_SUMMARY)} onPlayAgain={() => {}} />
+    );
+  }
+
+  // The end of a session is its own page, like competition's. Returned before
+  // the shell so the recap is not fighting the fixed-height, centred layout the
+  // playing screen needs. Every hook above still runs on every render.
+  //
+  // Training borrows nothing from competition's vocabulary here: no score, no
+  // clock, no points. Its adapter reads mastery movement, first-attempt
+  // accuracy and confusions, which is what this mode actually measures.
+  if (isComplete) {
+    return (
+      <SessionRecap
+        view={summary ? buildTrainingRecapView(summary) : TRAINING_RECAP_UNAVAILABLE}
+        onPlayAgain={() => void startSession({ fresh: true })}
+      />
+    );
+  }
+
   return (
     <main className="game-v1-page game-v2-page">
       <ThemeSwitch />
@@ -546,10 +617,10 @@ export default function GameScreen() {
         ) : null}
 
         <div className="game-v2-word-wrap">
+          {/* No complete branch here any more: a finished session returns the
+              recap above, before this shell is ever reached. */}
           {isLoading ? (
             <h1 className="game-v2-word">Loading session</h1>
-          ) : isComplete ? (
-            <h1 className="game-v2-word">Session complete</h1>
           ) : currentQuestion ? (
             <h1 className="game-v2-word" style={{ fontFamily: currentQuestion.fontFamily }}>
               {currentQuestion.displayWord}
@@ -641,34 +712,10 @@ export default function GameScreen() {
           </>
         ) : null}
 
-        {!error && !isLoading && isComplete ? (
-          <>
-            <p className="game-v2-complete-copy">New round set, new word, same mission.</p>
-            <div className="game-v2-actions">
-              {/* A new attempt, so a new identifier. The retry above is the
-                  opposite case: same attempt, same identifier replayed. */}
-              <button
-                type="button"
-                className="game-v2-validate"
-                onClick={() => void startSession({ fresh: true })}
-              >
-                {sessionEndCopy.replayLabel}
-              </button>
-              {/* D2, 2026-08-15. A finished session used to offer replaying or
-                  the mode board and nothing else, so the page holding the
-                  statistics was reachable only by knowing its address. Added on
-                  the class already in service here, which adds no CSS. Whether
-                  this should become the prominent action, or the screen should
-                  route here on its own, is the owner's call. */}
-              <Link href="/profile" className="game-link">
-                {sessionEndCopy.statsLabel}
-              </Link>
-              <Link href="/play" className="game-link">
-                {sessionEndCopy.modesLabel}
-              </Link>
-            </div>
-          </>
-        ) : null}
+        {/* The end of a session lives in SessionRecap, returned above. Keeping a
+            second copy here is what made two callers ask for a fresh attempt,
+            which check:client-attempt-contract refuses: only Play again may open
+            a new attempt. */}
       </section>
     </main>
   );
