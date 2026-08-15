@@ -274,6 +274,15 @@ export const BOARD_SYSTEM_CSS = `
     .st--screen .st-arena .st-eye__foot { display: none; }
   }
 
+  /* Colonne de texte. Le système n'avait que des panneaux, ce qui convient à des
+     chiffres et pas du tout à un document qu'on lit en entier : onze panneaux
+     encadrés faisaient onze boîtes là où il fallait un seul bloc. Une colonne
+     centrée, sans bordure ni fond, à la largeur de lecture confortable.
+     Décision du propriétaire, 2026-08-15. */
+  .st-prose { width: min(94%, 40rem); margin: 0 auto; display: grid; gap: clamp(1.3rem, 3vh, 2rem); }
+  .st-prose section { display: grid; gap: 0.5rem; }
+  .st-prose p { margin: 0; font-size: 0.9rem; line-height: 1.65; color: rgb(${CREAM} / 0.72); }
+
   /* Action row. The one recipe this system did not have: the profile reads, it
      never asks for a decision, so nothing here needed a button until the end of
      a session did. Added HERE rather than in the recap, per this file's rule, so

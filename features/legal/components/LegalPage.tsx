@@ -58,12 +58,17 @@ export default function LegalPage({ current, kicker, title, updated, intro, sect
         <span className="st-panel__meta">{updated}</span>
       </header>
 
-      {sections.map((section) => (
-        <section className="st-panel st-sec" key={section.title} aria-label={section.title}>
-          <h2 className="st-panel__title">{section.title}</h2>
-          <p className="st-lede">{section.body}</p>
-        </section>
-      ))}
+      {/* Un seul bloc de texte, centré, sans panneaux. Décision du propriétaire :
+          onze cadres pour onze paragraphes faisaient onze boîtes là où il faut
+          un document qui se lit d'un trait. */}
+      <div className="st-prose st-sec">
+        {sections.map((section) => (
+          <section key={section.title} aria-label={section.title}>
+            <h2 className="st-panel__title">{section.title}</h2>
+            <p>{section.body}</p>
+          </section>
+        ))}
+      </div>
 
       {/* Les trois documents se lient entre eux. La loi demande qu'ils soient
           accessibles en permanence, et le pied de page de l'accueil est
