@@ -20,7 +20,18 @@ import { expect, test, type Page } from "playwright/test";
 // excluded for that reason, and /compare is out of scope by owner decision.
 // ---------------------------------------------------------------------------
 
-const PAGES = ["/", "/onboarding", "/play", "/type/inter"] as const;
+const PAGES = [
+  "/",
+  "/onboarding",
+  "/play",
+  "/type/inter",
+  // The three end-of-session pages, through the preview each mode exposes, so
+  // the contract covers them without playing a round. They were built on
+  // 2026-08-15 and had no h1 at all until this list caught it.
+  "/play/competition?preview=complete",
+  "/game?preview=complete",
+  "/play/expert?preview=complete",
+] as const;
 
 const INTERACTIVE_SELECTOR = [
   "a[href]",

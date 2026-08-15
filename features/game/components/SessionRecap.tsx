@@ -74,11 +74,11 @@ const Panel = ({ panel, arena }: { panel: RecapPanel; arena?: boolean }) => {
     <div className={`st-panel${arena ? " st-arena" : ""}`}>
       {panel.tag ? (
         <div className="st-arena__head">
-          <h3 className="st-panel__title">{panel.title}</h3>
+          <h2 className="st-panel__title">{panel.title}</h2>
           <span className="st-arena__tag">{panel.tag}</span>
         </div>
       ) : (
-        <h3 className="st-panel__title">{panel.title}</h3>
+        <h2 className="st-panel__title">{panel.title}</h2>
       )}
 
       {panel.figures?.length ? <Figures figures={panel.figures} /> : null}
@@ -169,7 +169,11 @@ export default function SessionRecap({
 
       <header className="st-intro st-sec">
         <span className="st-kicker">{view.kicker}</span>
-        <h2 className="st-title">{view.title}</h2>
+        {/* h1, not h2. On the profile the same board is a tab under the page's
+            own title, here the recap IS the page, and the accessibility contract
+            asks every page for exactly one h1. The styling rides on the class,
+            so the element changes and nothing moves. */}
+        <h1 className="st-title">{view.title}</h1>
         <p className="st-lede">{view.lede}</p>
       </header>
 
