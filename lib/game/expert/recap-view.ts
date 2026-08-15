@@ -1,3 +1,4 @@
+import { MODE_ACCENT } from "@/features/profile/components/board-system";
 import type { RecapView } from "@/lib/game/recap-view";
 
 // Expert's end of session, before Expert exists.
@@ -13,6 +14,7 @@ import type { RecapView } from "@/lib/game/recap-view";
 // judge the third page against the other two without being shown fiction.
 
 export const EXPERT_RECAP_PREVIEW: RecapView = {
+  accent: MODE_ACCENT.expert,
   kicker: "Expert · session over",
   title: "Nothing to report yet.",
   lede:

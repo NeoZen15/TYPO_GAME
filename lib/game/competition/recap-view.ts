@@ -4,6 +4,7 @@ import {
   formatMetric,
   formatRate,
 } from "@/lib/game/competition/format";
+import { MODE_ACCENT } from "@/features/profile/components/board-system";
 import type { RecapView } from "@/lib/game/recap-view";
 import type { CompetitionSessionSummary, CompetitionStats } from "@/lib/game/competition/contracts";
 
@@ -28,6 +29,7 @@ import type { CompetitionSessionSummary, CompetitionStats } from "@/lib/game/com
  * page then says so rather than rendering empty panels.
  */
 export const COMPETITION_RECAP_UNAVAILABLE: RecapView = {
+  accent: MODE_ACCENT.competition,
   kicker: "Competition · session over",
   title: "Time is up.",
   lede:
@@ -46,6 +48,7 @@ export const buildCompetitionRecapView = (
   const time = (value: number | null) => (value === null ? "—" : formatClickTime(value));
 
   return {
+    accent: MODE_ACCENT.competition,
     kicker: "Competition · session over",
     title: "Time is up.",
     lede: `${correct} of ${answered} correct. Two points for a fast answer, one for a correct one, none for a miss.`,

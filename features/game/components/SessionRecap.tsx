@@ -139,7 +139,14 @@ export default function SessionRecap({
   }, []);
 
   return (
-    <div ref={rootRef} className="st st--screen pf-page">
+    // The mode's colour travels as a custom property rather than a class, so the
+    // accent panel reads it wherever it sits and the system keeps one rule for
+    // all three modes instead of one per mode.
+    <div
+      ref={rootRef}
+      className="st st--screen pf-page"
+      style={{ ["--st-accent" as string]: view.accent }}
+    >
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
 
       {/* Fixed top right by its own rule in globals, so it costs no layout. */}

@@ -1,3 +1,4 @@
+import { MODE_ACCENT } from "@/features/profile/components/board-system";
 import { labelFromSlug, type RecapView } from "@/lib/game/recap-view";
 import type { TrainingSessionSummary } from "@/lib/game/training/contracts";
 
@@ -23,6 +24,7 @@ import type { TrainingSessionSummary } from "@/lib/game/training/contracts";
  * rather than waiting on nothing.
  */
 export const TRAINING_RECAP_UNAVAILABLE: RecapView = {
+  accent: MODE_ACCENT.training,
   kicker: "Training · session closed",
   title: "Session closed.",
   lede:
@@ -40,6 +42,7 @@ export const buildTrainingRecapView = (summary: TrainingSessionSummary): RecapVi
   const accuracy = Math.round(summary.firstTryAccuracy * 100);
 
   return {
+    accent: MODE_ACCENT.training,
     kicker: "Training · session closed",
     // No clock ran out here: the session ends when the player stops. The title
     // reports what the session did to the eye, which is the mode's whole point.

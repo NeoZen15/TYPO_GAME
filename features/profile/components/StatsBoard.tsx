@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import StarField from "@/features/profile/components/StarField";
-import { BLUE, BOARD_SYSTEM_CSS } from "@/features/profile/components/board-system";
+import {
+  BLUE,
+  BOARD_SYSTEM_CSS,
+  MODE_ACCENT,
+} from "@/features/profile/components/board-system";
 import { MOCK_ARENA, type EyeProfile, type PlayerProfile } from "@/lib/profile/mock-profile";
 
 // ---------------------------------------------------------------------------
@@ -13,13 +17,8 @@ import { MOCK_ARENA, type EyeProfile, type PlayerProfile } from "@/lib/profile/m
 // ---------------------------------------------------------------------------
 
 // The recipes this board is built from now live in board-system.ts, so the
-// competition recap (and the training one next) can use THE SAME classes rather
-// than lookalikes. Lifted byte for byte, so nothing here moved.
-const MODE_ACCENT: Record<string, string> = {
-  training: "#40d38f", // green
-  competition: "#ff934a", // orange
-  expert: "#58a9ff", // blue
-};
+// recaps can use THE SAME classes rather than lookalikes, and the mode palette
+// went with them: the recaps wear it too, and it is declared once.
 const WORD = "DWIGGINS"; // axis order = the word
 
 // 8-point radar geometry (octagon), 0 at top, clockwise.

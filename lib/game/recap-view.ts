@@ -49,6 +49,13 @@ export type RecapPanel = {
 };
 
 export type RecapView = {
+  /**
+   * The mode's colour, from MODE_ACCENT. It drives `--st-accent`, which the
+   * accent panel uses for its contour and its tag. Green for training, orange
+   * for competition, blue for expert, the validated /play palette. Contour and
+   * faint wash only, never a flat fill: that is the system's rule for it.
+   */
+  accent: string;
   kicker: string;
   title: string;
   lede: string;

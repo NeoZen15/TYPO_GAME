@@ -21,6 +21,18 @@ export const CREAM = "from var(--pf-cream) r g b";
 export const ORANGE = "#ff934a"; // competition → the arena
 export const BLUE = "#58a9ff"; // the 3rd accent → activity over time
 
+/**
+ * One colour per mode, the validated /play palette. It lived in StatsBoard,
+ * which paints the modes bar and the session chips with it. The recaps need the
+ * same three, and this file's rule is that a value of this system is declared
+ * once, so it moved here.
+ */
+export const MODE_ACCENT: Record<string, string> = {
+  training: "#40d38f", // green
+  competition: "#ff934a", // orange
+  expert: "#58a9ff", // blue
+};
+
 export const BOARD_SYSTEM_CSS = `
   .st {
     position: relative; isolation: isolate; width: 100%;
@@ -125,10 +137,19 @@ export const BOARD_SYSTEM_CSS = `
   }
 
   /* The arena — competition layer, orange accent (contour + faint, never aplat) */
-  .st-arena { border-color: color-mix(in srgb, ${ORANGE} 30%, transparent); }
+  /* The accent panel. It was hardwired to orange because the profile's only use
+     of it is the competition arena. A recap wears its own mode's colour, so the
+     hue becomes a variable that FALLS BACK to exactly what was there: the
+     profile sets nothing and renders the same, a recap sets --st-accent on its
+     root and the panel inherits it. The fallback lives in the usage, not as a
+     declaration on .st-arena, since declaring it here would beat the inherited
+     value and every mode would come out orange.
+     Ratios unchanged (30% contour, 45% tag border, 8% wash, 55% ink), which is
+     the system's rule for this palette: contour and faint fill, never an aplat. */
+  .st-arena { border-color: color-mix(in srgb, var(--st-accent, ${ORANGE}) 30%, transparent); }
   .st-arena__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem 1rem; flex-wrap: wrap; }
   .st-arena__head .st-panel__title { margin: 0; }
-  .st-arena__tag { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, ${ORANGE} 45%, transparent); background: color-mix(in srgb, ${ORANGE} 8%, transparent); color: color-mix(in srgb, ${ORANGE} 55%, var(--pf-cream)); }
+  .st-arena__tag { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.16rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, var(--st-accent, ${ORANGE}) 45%, transparent); background: color-mix(in srgb, var(--st-accent, ${ORANGE}) 8%, transparent); color: color-mix(in srgb, var(--st-accent, ${ORANGE}) 55%, var(--pf-cream)); }
   .st-arena__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: clamp(0.8rem, 2vw, 1.4rem); align-items: center; margin-top: 1rem; }
   @media (max-width: 560px) { .st-arena__grid { grid-template-columns: 1fr 1fr; } }
   .st-arena__rank { display: grid; gap: 0.2rem; }
