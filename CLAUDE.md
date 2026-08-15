@@ -26,6 +26,17 @@ Les cinq derniers contrôles avant `build` gardent chacun une règle qui a déj�
 
 Certaines sessions lancent une seconde instance sur le port 3002 (`npx next dev --hostname 127.0.0.1 -p 3002`). Vérifier quel port tourne avant de conclure qu'une page est cassée.
 
+**PIÈGE MAJEUR, rencontré trois fois le 2026-08-15 : deux serveurs de dev qui partagent `.next` corrompent le cache Turbopack.** `npm run test:e2e` démarre **son propre serveur sur le port 3000** (`playwright.config.ts`, bloc `webServer`), qui écrit dans le **même** `.next` que l'instance du 3002. Le journal se remplit alors de `Persisting failed: Another write batch or compaction is already active`, puis un thread panique :
+
+```
+Failed to restore task data (corrupted database or bug)
+Unable to open static sorted file 00000020.sst : No such file or directory
+```
+
+**Symptôme trompeur** : certaines routes ne répondent plus du tout, sans erreur, sans journal, pendant que les autres répondent en 30 ms. On croit à un défaut du code, on cherche dans la base, dans les verrous, dans son propre diff. Ce jour là ça a coûté trois diagnostics : `/profile`, `/legal/cgu`, puis `POST /api/training/answer` qui restait en attente indéfiniment.
+
+**Règle** : ne pas lancer la suite pendant qu'un serveur de dev tourne, ou accepter de tout arrêter et de faire `rm -rf .next` (le dossier entier, pas seulement `.next/dev`) avant de relancer. Et devant une route qui pend sans erreur, **lire le journal du serveur avant de soupçonner le code**.
+
 Checks ciblés, selon ce qu'on touche :
 
 - nouvelle route interne : `npm run check:dev-routes`
