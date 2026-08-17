@@ -48,6 +48,188 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-17 (suite 7) — la compétition répond 41 pour cent plus vite, mesuré sur un build de production
+
+**Statut : fait, avant et après mesurés sur le même build de production.** Suite de la question de Marion, « et ça va assez vite ? ». Les mesures de la note ci dessous étaient prises en développement, ce qui ne dit rien de la production. Un vrai `next build` puis un vrai `next start` ont donc servi de banc, pointés sur la branche Neon jetable pour que la production ne reçoive rien.
+
+**Première leçon : le mode développement n'inflatait rien.** 174 ms en production contre 166 ms en développement pour une réponse de compétition, 317 contre 323 pour l'entraînement. Le coût n'est pas la compilation, ce sont les allers-retours à la base, et un build ne les enlève pas.
+
+| | avant | après |
+|---|---|---|
+| réponse compétition, médiane | 174 ms | **103 ms** |
+| réponse compétition, p95 | 255 ms | **194 ms** |
+| réponse entraînement, médiane | 317 ms | **250 ms** |
+| clic vers mot suivant en compétition | 254 ms | **183 ms** |
+| attente cumulée sur une manche de 30 mots | 7,6 s, 6,3 % | **5,5 s, 4,6 %** |
+
+**Trois corrections, aucune ne change un comportement.**
+
+_1. Les trois lectures d'ouverture de la compétition partent ensemble._ Elles étaient en file : la session, puis l'utilisateur de la session, puis la maîtrise de cet utilisateur pour cette face. Chacune attendait la précédente, et sur un pilote HTTP une attente est un aller-retour. **Ce qui rend le passage en parallèle sûr, c'est le jeton, pas la chance** : l'utilisateur est désormais cherché par `payload.userId` au lieu de `session.user_id`, ce qui supprime la dépendance, et le contrôle d'identité est la même garantie écrite dans l'autre sens. Avant, on prenait l'utilisateur de la SESSION et on le comparait à celui du jeton ; maintenant on prend celui du JETON et on le compare à celui de la session. Les deux refusent exactement quand les deux diffèrent, et le jeton est signé, donc son `userId` n'est pas plus falsifiable que l'identifiant de session déjà envoyé.
+
+_2. La piscine quitte le chemin critique, et c'est le vrai gain._ 1172 lignes, environ 52 ms, relues à chaque réponse pour fabriquer la question **suivante**. Elles ne dépendent que du joueur, et de rien que cet appel écrit, la compétition ne touchant jamais la maîtrise. La lecture part donc en même temps que les trois autres et l'attente à la fin est gratuite. La promesse porte un `catch` vide dès sa création : une promesse rejetée non attendue est un événement au niveau du processus, pas un 500.
+
+_3. Le comptage d'historique de l'entraînement est précédé de deux refus gratuits._ `maybeRebalancePool` comptait **tout** l'historique du joueur à chaque bonne réponse, pour une étape qui se déclenche au plus une fois dans une vie, dans une fenêtre de cinq questions, et seulement pour un joueur déclaré avancé. Le coût grandissait avec l'historique et le résultat était jeté pour presque tout le monde. Deux gardes lisent maintenant des valeurs déjà en main : le niveau déclaré voyage sur la ligne `users` que l'appel lit déjà, et un curseur au delà de la fenêtre prouve que la fenêtre est passée. **Ce second point est exact, pas approximatif** : le curseur n'avance que sur une bonne réponse, chaque question répondue porte exactement une ligne `attempt_index = 1`, donc le nombre de premières tentatives est toujours au moins égal au curseur.
+
+**Ce que je n'ai pas touché, et pourquoi.** Les trois lectures d'ouverture de l'ENTRAÎNEMENT sont parallélisables exactement pareil, et j'ai laissé. Sa latence est cachée derrière les 2 secondes d'attente que l'écran impose déjà après une bonne réponse, donc le joueur ne la sent pas, et ce chemin est gardé par cinq scripts de qualité. Mauvais rapport risque sur gain la veille d'une mise en ligne.
+
+**Vérifié, contre le build de production, pas contre le dev.** Les 28 étapes de la porte hors `build`, plus le `build` lui même, tous verts. Les sept preuves de convergence, rejointe, doublon, balayage et expiration. Les dix statuts de refus, dont aucun n'est un 500. La borne du bonus de rapidité. La piscine gelée, la manche qui meurt pendant une réponse, le bilan sans rien de bon dedans, et la manche du voisin. La concurrence : deux réponses simultanées, **un seul fait écrit**, compteurs justes, dans les deux modes.
+
+**Un dernier point réglé au passage, en creux.** Les tests navigateur qui pilotent `render_game_to_text` **échouent** contre le build de production, par expiration. C'est la preuve qu'on voulait : les crochets d'automatisation ne s'installent pas en production. Leurs chaînes survivent dans deux morceaux de JavaScript, la note précédente le signalait, mais le garde qui les pose compile bien en constante fausse. Repassés contre le serveur de développement, les deux tests passent : quatre appareils dont les horloges se contredisent de deux heures jouent tous avec 119,9 secondes au compteur, et trois clics dans le même tick n'envoient qu'un seul POST.
+
+## Note — 2026-08-17 (suite 6) — le build et la suite de tests passent, et le labo interne est bien fermé en production
+
+**Statut : fait, les deux vérifications qui manquaient sont vertes.** Elles demandaient toutes les deux d'arrêter le serveur du 3002, d'où le retard : elles écrivent dans le même `.next` que lui, et CLAUDE.md documente ce que ça coûte.
+
+**Le build de production passe, sortie 0, aucun avertissement.** Le précédent datait du 2026-08-16 à 00:06, donc d'avant tout le travail de la journée. 31 routes générées, la répartition statique contre dynamique est celle qu'on attend.
+
+**Et le build a servi à plus que ça.** Un vrai `next start` a été lancé dessus, pour interroger le comportement de production plutôt que de le supposer :
+
+- Les six pages `/dev/*` répondent **404**. Le tableau des routes les annonce « statiques », ce qui inquiète au premier regard, mais elles sont pré-générées **en tant que 404** : `isDevRuntime()` est faux au moment du build, donc la page rendue est la page introuvable. Le garde marche.
+- `/api/dev/typography-profiles` répond **404**, 21 octets.
+- Les neuf pages du joueur répondent 200, `/compare` en 307 vers sa paire canonique, exactement comme en développement.
+- `render_game_to_text` n'apparaît **pas** dans le HTML servi de `/game`. Les chaînes survivent dans deux morceaux de JavaScript, mais le garde qui les installe compile en constante fausse, ce que les six 404 ci dessus prouvent par le même mécanisme.
+
+**La suite Playwright passe, 19 tests sur 19, en 16,2 secondes.** Elle n'avait pas tourné de la journée alors que les deux écrans de jeu ont été modifiés, ce que CLAUDE.md interdit explicitement. Douze contrats d'accessibilité sur douze pages, trois sur la landing, deux sur l'onboarding dont le cas de l'échauffement raté, et deux sur l'entraînement dont le démarrage en échec qui doit rester récupérable.
+
+**Elle a tourné sur une branche Neon jetable, et la production n'a rien reçu.** Vérifié après coup en interrogeant les deux bases : production, zéro invité, zéro session, zéro événement ; branche `e2e-2026-08-17`, deux invités, deux sessions, trois événements. C'est la voie propre que CLAUDE.md décrit, appliquée pour la première fois.
+
+**Un obstacle d'outillage, à connaître pour la prochaine fois.** Le garde-fou de permissions de la session a refusé deux fois de lancer la suite, parce que la variable d'opt-in s'appelle `JDT_E2E_ALLOW_PROD` et que ce nom se lit « autoriser l'écriture en production », alors que la base pointait justement sur une branche jetable. Le classificateur ne lit que le nom, pas l'intention. Contourné en donnant le script au propriétaire, qui l'a lancé lui même. Renommer la variable en quelque chose comme `JDT_E2E_ALLOW_DB_WRITES` réglerait le malentendu à la source.
+
+**`GAME_PROVIDER_SECRET`, vérifié, à moitié fait.** La valeur existe maintenant dans `.env.local`, 44 caractères, 33 distincts, ce n'est pas le littéral de développement. Le mécanisme est prouvé par exécution : avec elle et `NODE_ENV=production` un jeton se signe et se vérifie, sans elle ça lève en nommant la variable. Mais `git check-ignore` confirme que `.env.local` est ignoré, donc **ce fichier ne quitte jamais cette machine** : il ne partira pas avec le code. Et il n'y a toujours aucun hébergeur relié, ni `.vercel`, ni CLI installée, ni dossier `.github`. La variable reste à poser là où le site sera déployé, le jour où il le sera.
+
+**Le mode Expert sort de la liste des bloqueurs**, décision du propriétaire le 2026-08-17 : il attend la validation des deux autres modes.
+
+## Note — 2026-08-17 (suite 5) — deuxième chasse, un vrai défaut d'autorisation et trois mesures de lenteur
+
+**Statut : un défaut trouvé et corrigé, le reste mesuré et laissé.** Demande de Marion, « continue à chercher si tout est good ». Cette passe va chercher les chemins que les tests courts n'atteignent pas : une longue partie, une piscine gelée, une manche qui meurt pendant une réponse, un bilan sans rien de bon dedans, et la manche du voisin.
+
+**Le défaut : la route de timeout de la compétition ne demandait l'identité de personne.** Deux joueurs, deux cookies. B envoie l'identifiant de la manche de A sur `/api/competition/session/timeout` : **la manche de A passe de `active` à `completed`**. Mesuré, pas déduit. Ça gèle son score là où il en était et met fin à ses deux minutes à sa place. La route de fin d'entraînement est bornée par utilisateur et par mode depuis qu'elle existe ; celle ci ne l'était pas.
+
+Pas exploitable à distance, l'identifiant étant un uuid publié nulle part : il vit dans la mémoire du joueur et dans ses propres corps de requête. C'est une raison pour laquelle ce n'est jamais arrivé, pas une raison de laisser ouvert. Corrigé sur le modèle de `endTrainingSession` : identité lue dans le cookie httpOnly, jamais dans le corps, et **la borne est dans la requête de lecture elle même** plutôt qu'une comparaison en JavaScript après coup, parce qu'une ligne que l'appelant n'a pas le droit de jouer ne doit pas être **lue** du tout, sinon le message de refus finit par décrire la manche de quelqu'un d'autre. Vérifié après : B reçoit 404, la manche de A reste `active`.
+
+**Ce qui a été poussé et qui tient.**
+
+_Une vraie longue partie, 150 questions sur un joueur neuf._ Zéro anomalie. Toujours quatre options, la bonne réponse toujours dedans, jamais de doublon, jamais une face sans police de rendu. 36 faces distinctes, les 20 mots du vivier utilisés, retour le plus rapide d'une face après 5 questions, ce qui est exactement le plancher I-02. La piscine passe de 30 à 36, six déblocages écrits au journal, 19 faces à la maîtrise 4, niveau visible de N.1 à D.1. En base : aucune ligne ne viole un invariant, `adaptive_coef` reste dans [0,5, 2,0], le compte des premières tentatives égale le nombre de questions posées.
+
+_Les deux branches de secours de la spec 4.5, dont une n'avait jamais tourné._ Piscine gelée avec tous les délais poussés au delà du curseur : le démarrage répond 200, se rattrape par un déblocage silencieux, l'écrit au journal, et la partie continue. Puis le cas que le déblocage ne peut pas sauver, un joueur qui possède **déjà les 1172 faces**, toutes gelées : le curseur saute de 0 à 5000, l'événement `pool_recovered_by_cursor_jump` est écrit, un mot est servi, il est répondable, et le curseur repart à 5001. Le jeu n'est jamais bloqué, dans les deux cas, et il le dit dans le journal.
+
+_Une manche qui meurt pendant une réponse._ La branche `shouldComplete`, que l'appel de timeout n'atteint jamais. Réponse sur une manche expirée entre la question et le clic : 200, manche fermée, bilan présent, reste à zéro, `duration_ms` cohérent, exactement un `session_end`.
+
+_Un bilan sans rien de bon dedans._ Quatre questions ratées de suite : précision à 0, médianes finies et pas `NaN`, aucun `Infinity`, et les confusions sortent en **noms lisibles** et pas en slugs, « Alegreya Sans SC » et pas `alegreyasanssc`.
+
+_Le démarrage à froid, un joueur neuf par niveau déclaré._ Le dégradé fonctionne : « Pas du tout » donne 22 faciles pour 8 moyennes, « Designer » donne 2 faciles, 16 moyennes et 12 difficiles. Le niveau déclaré est bien persisté.
+
+_Le reste._ Les 14 pages du parcours répondent 200 avec **zéro erreur console et zéro exception non rattrapée**, documents légaux et onboarding compris. 40 polices tirées au hasard dans les 1172 : toutes servies, bon type MIME, aucune tronquée. Les quatre routes inconnues répondent 404. Le profil d'un joueur réel affiche des chiffres qui correspondent à la base, faces maîtrisées, taille de piscine, tentatives, précision. **Le jeu est jouable entièrement au clavier** dans les deux modes, focus visible, Entrée répond, et une deuxième tentative au clavier passe aussi après une erreur.
+
+_Une police gujarati m'a servi le mot « typographie »._ Vérifié plutôt que soupçonné : `check:latin-coverage` rouvre **chaque** police servie avec fontkit et échoue dans les deux sens, donc cette face couvre réellement A à Z. Rien à corriger.
+
+**Trois mesures de lenteur, rien corrigé, elles demandent un arbitrage.**
+
+| | mesuré |
+|---|---|
+| une requête triviale vers Neon | 18 ms |
+| la requête de piscine compétition | 52 ms, **1172 lignes** |
+| une réponse de compétition | **166 ms**, soit environ 7 allers-retours en file |
+| une réponse d'entraînement | **323 ms**, soit environ 11 étapes en file |
+| le délai que l'écran budgète pour le passage au mot suivant | 80 ms |
+
+1. _La compétition relit tout le catalogue à chaque réponse._ Les 1172 lignes servent à construire la question **suivante** et ne dépendent pas de la réponse qui vient d'arriver. 52 ms sur le chemin critique d'un mode chronométré, qu'un `Promise.all` avec l'écriture enlèverait.
+2. _Les lectures d'ouverture sont en file alors qu'elles sont indépendantes._ Session, utilisateur et maîtrise se lisent l'une après l'autre, alors que le jeton porte déjà `userId` et permettrait de les lancer ensemble.
+3. _`maybeRebalancePool` compte tout l'historique du joueur à chaque bonne réponse_, pour une fonction qui se déclenche au plus une fois dans une vie, dans une fenêtre de cinq questions, et seulement pour un joueur qui s'est déclaré avancé. Le coût grandit avec l'historique, le résultat est jeté dans la quasi totalité des cas.
+
+Ces trois là sont mécaniques et sûres, mais elles touchent le chemin de réponse la veille d'une mise en ligne, donc c'est sa décision.
+
+**Un point de modèle de données, signalé, pas un défaut.** `users.global_q_index` est partagé par les deux modes : l'entraînement l'avance, la compétition le lit sans jamais l'avancer. Un joueur qui ouvre les deux en même temps produit des événements où le même index de question est réclamé par les deux modes. Mesuré, cinq collisions sur cinq questions jouées en parallèle. Aucune contrainte enfreinte, aucun effet joueur, mais toute analyse qui suppose l'index unique par joueur se trompera.
+
+**Le garde suit.** `check:competition-integrity` couvre maintenant douze familles de règles, la propriété de la manche comprise. **37 mutations appliquées, 37 attrapées.** Porte complète hors `build` : 28 étapes, sortie 0.
+
+## Note — 2026-08-17 (suite 4) — les quatre points restants de l'audit, sauf ceux qui ne m'appartiennent pas
+
+**Statut : fait, prouvé par exécution.** Feu vert de Marion, « go la suite ». Reprise de la liste laissée ouverte par la note ci dessous, dans l'ordre.
+
+**5. Un refus n'est plus une panne.** Toutes les erreurs des deux fournisseurs sortaient en `new Error` nu, donc les routes les repliaient toutes sur un 500. Mesuré : session expirée, jeton d'une autre manche, question déjà répondue, identifiant inexistant, tous en 500. Pour le joueur ça ne changeait rien, les écrans affichent la même bannière quoi qu'il arrive. Pour la supervision de production, c'était un flux régulier de 500 produits par des gens qui cliquent après la fin d'une manche, c'est à dire par un usage normal. Un moniteur qui crie au loup sur l'usage normal cesse d'être lu, et la vraie 500 arrive dans ce bruit.
+
+Nouveau `lib/game/request-error.ts` : cinq codes, cinq statuts. La distinction est tirée **dans le fournisseur**, seul endroit qui sait de quoi il s'agit. Tout ce qui n'est pas un `GameRequestError` reste un 500, volontairement : une panne réelle ne doit jamais être maquillée en faute du client, c'est comme ça qu'un défaut se classe en erreur utilisateur. Le journal serveur distingue aussi, `warn` contre `error`.
+
+Vérifié en direct, dix cas, zéro 500 parmi eux : jeton forgé 400, réponse hors options 400, JSON mal formé 400, champs manquants 400, session inconnue 404, `userId` étranger 403, **session fermée 409**. Le 409 est celui qui compte : la ressource existe, c'est son état qui refuse, et c'est exactement ce qui permet de distinguer « tu as déjà fini » de « ça n'a jamais existé ».
+
+**6. Le chrono ne suit plus l'horloge du téléphone.** Il faisait `new Date(stats.deadlineUtc) - Date.now()` : un instant calculé sur l'horloge de la base, comparé à celle de l'appareil qui joue. Un téléphone en avance de deux minutes voyait la manche finie à la seconde où elle s'ouvrait, zéro question, recap direct, et rien nulle part pour dire pourquoi.
+
+La bonne valeur était déjà dans la charge utile. `stats.remainingMs` est une **durée**, mesurée entièrement côté serveur, et une durée ne se décale pas avec l'horloge de celui qui la lit. L'arrivée est donc horodatée avec l'horloge locale et tout le reste est une différence locale : le décalage absolu s'annule. Un `applyStats` unique fait les deux, parce que quatre endroits posent les chiffres et qu'une ancre posée à trois d'entre eux est un chrono qui utilise silencieusement la précédente au quatrième.
+
+Mesuré au navigateur sur quatre appareils dont les horloges se contredisent de deux heures bout à bout : **tous jouent, tous ouvrent la manche à 119,9 secondes**, et le seul temps consommé est le temps réel écoulé, à moins de 500 ms près. Avant, l'appareil en avance de deux heures n'aurait jamais vu une seule question.
+
+**7. Le bonus de rapidité n'est plus décidé par le client.** Le jeton de question porte maintenant `issuedAtMs`, l'instant où le **serveur** a construit la question, signé avec le reste donc immobile. Le serveur compare la durée annoncée dans le corps à son propre temps écoulé.
+
+**Pourquoi la tolérance est très large, et pourquoi large est le bon sens.** Le temps vu par le serveur n'est pas le temps de réflexion : il contient aussi la réponse qui part, l'écran qui se rend, le woff2 d'une face jamais vue qui se télécharge, le clic qui revient. Mesuré dans un vrai navigateur sur huit réponses, **médiane 86 ms** en local. Sur un téléphone en mauvais réseau avec une police froide, plusieurs secondes sont possibles. Or les deux erreurs ne se valent pas : refuser le bonus à un joueur honnête sur mauvaise connexion, c'est un mauvais score pour quelqu'un qui joue correctement, alors qu'accorder le bonus à quelqu'un qui a modifié son propre corps de requête gonfle un record personnel sur une page que lui seul voit, **il n'y a pas de classement entre joueurs**. Quand les deux sont à ce point inégales, la borne se place loin du jeu honnête. `COMPETITION_OVERHEAD_TOLERANCE_MS = 5000`, soit un refus au delà de sept secondes d'échange total.
+
+**Ce que ça achète, dit franchement plutôt que survendu.** « Annoncer zéro sur chaque mot » cesse de marcher pour tout mot sur lequel le joueur a réfléchi. Quelqu'un qui répond vite et ment quand même garde un bonus qu'il aurait de toute façon eu. Ça borne l'abus, ça ne le ferme pas. Le fermer vraiment demande d'enregistrer la mesure du serveur à côté de l'annonce, donc une colonne de plus dans `user_event_fact`, donc une migration, donc ton feu vert.
+
+Vérifié : annonce de 0 ms répondue tout de suite, 2 points, le bonus tient. Même annonce après huit secondes, **1 point**. Réponse honnête de 3,5 s, 1 point, inchangée.
+
+**8. Les deux écrans n'envoient plus qu'une requête par clic.** `isRoundLocked` est un état React, donc `disabled` n'arrive qu'au rendu suivant et plusieurs clics dans le même tick lisent tous l'ancienne valeur. Le garde par `useRef` existait sur le démarrage depuis le plan double démarrage, pas sur la réponse, sur **aucun des deux écrans**. Ajouté aux deux, libéré dans un `finally`, parce qu'une référence laissée à vrai sur un chemin de sortie est un écran qui n'accepte plus jamais de réponse.
+
+Mesuré au navigateur, trois `click()` synchrones sur une option : **trois POST avant, un seul après**. Ce n'est plus une correction de justesse, le serveur dédoublonnant proprement depuis la note ci dessous, seulement deux requêtes qui ne se battent plus pour la bande passante pendant une manche chronométrée.
+
+**Le garde grandit avec, et il est mutation testé comme le premier.** `check:competition-integrity` couvre maintenant onze familles de règles. **34 mutations appliquées, 34 attrapées, aucune non appliquée.** Les nouvelles : revenir au chrono absolu, contourner `applyStats` sur un seul des quatre sites, retirer l'horodatage du jeton, ne plus passer le temps serveur au calcul des points, retirer la référence de réentrance sur l'un ou l'autre écran, ou ne jamais la libérer.
+
+**Porte complète hors `build` : 28 étapes, sortie 0.** Les cinq gardes de l'entraînement restent verts, le chemin d'entraînement n'a reçu qu'une ligne, sa référence de réentrance sur la réponse.
+
+**Ce qui reste, et qui ne m'appartient pas.**
+
+- `GAME_PROVIDER_SECRET` dans l'hébergeur. Rien à faire dans le code, tout à vérifier avant de lancer.
+- Les 121 manches historiques en `active`. Le balayage est par joueur au démarrage suivant, ces invités ne reviendront pas. Les fermer demande un passage manuel en base.
+- La ligne en double de la session `167bd8b3`, produite par mon test de course d'avant le correctif, toujours le seul doublon de l'histoire de la table.
+- Enregistrer la mesure du serveur à côté de l'annonce du client, pour fermer vraiment le sujet du score. Migration.
+
+## Note — 2026-08-17 (suite 3) — les quatre mécaniques du plan double démarrage sont portées sur la compétition
+
+**Statut : fait, prouvé par exécution.** Suite directe de l'audit ci dessous, feu vert de Marion, « ok go ». La compétition avait été écrite avant le plan double démarrage du 2026-07-31 et n'était jamais repassée dessus. Elle a maintenant les quatre propriétés que l'entraînement a depuis ce plan, plus le garde qui les empêche de repartir.
+
+**1. L'écriture d'une réponse devient atomique.** La déduplication était un `SELECT COUNT` relu en JavaScript, donc deux soumissions lisaient zéro toutes les deux et écrivaient toutes les deux. Remplacée par la CTE `event_ingestion_guard` de l'entraînement : une ligne de garde et un fait dans une seule instruction, le perdant bloque sur la clé primaire du garde, ne reçoit rien, n'écrit rien. Zéro ligne en retour signifie doublon, et **tout ce qui écrit passe sous ce point de contrôle**.
+
+Mesuré avant, sur le serveur de dev : deux POST identiques en parallèle, **deux lignes** dans `user_event_fact`, ligne de session à `question_count 1, score 2`. Mesuré après, même test : **une ligne**, `question_count 1, score 2`, les deux appelants reçoivent 200 cohérent.
+
+**2. Les trois compteurs s'incrémentent en base.** `question_count`, `correct_count` et `score` étaient réécrits en valeur absolue depuis une lecture antérieure. Passés en `SET col = col + n`, relus par `RETURNING`. `status` et `ended_at` deviennent des affectations conditionnelles au lieu d'écrasements : l'ancienne instruction écrivait `ended_at = null` à chaque réponse, ce qui était inoffensif tant que rien d'autre ne pouvait fermer une manche en cours, or le balayage ajouté au point 4 le peut. Et la fermeture prend `now()`, l'horloge de la base, plus une `new Date()` de Node : `started_at` vient de la base et `chk_ended_after_started` compare les deux, donc mélanger les deux horloges met une violation de contrainte à un décalage près. Décalage relevé aujourd'hui entre cette machine et Neon : 20 ms, ce qui est petit et n'est pas une garantie.
+
+**3. Une manche égale un identifiant.** Le client tire un uuid par manche, l'envoie dans `attemptId`, le serveur s'en sert comme `sessions.session_id` et `ON CONFLICT (session_id) DO NOTHING` arbitre. Relecture bornée par `user_id` et `mode = 'competition'`, une seule réentrée sur un identifiant neuf si la ligne trouvée n'est pas jouable.
+
+**Une différence assumée avec l'entraînement, et c'est la seule.** Une session d'entraînement n'a pas de durée, donc `active` y est toute la question. Une manche de compétition meurt de sa propre horloge au bout de deux minutes, donc `isPlayableRound` teste **aussi la date limite** : rejoindre une manche expirée servirait une question contre un chrono déjà écoulé. Une manche expirée fait donc réentrer sur un identifiant neuf.
+
+Effet de bord qui est en fait le vrai gain : **un rechargement rejoint la manche avec le temps qui lui reste**, il ne la redémarre pas. Vérifié au navigateur, 118 289 ms avant rechargement, 117 834 ms après, même identifiant de session, réponse déjà donnée conservée, aucune ligne supplémentaire en base.
+
+**4. Un balayage pour ce mode.** Le balayage de l'entraînement porte `AND s.mode = 'training'`, donc il n'avait jamais touché la compétition et 121 manches traînaient en `active`, la plus vieille du 2026-03-21. Nouveau balayage jumeau, borné à `competition`, exclusion de la manche courante par identifiant, plancher d'âge de trente minutes. Il tourne après l'insertion, jamais avant : avant, il n'aurait rien à exclure et abandonnerait la manche qu'on s'apprête à rejoindre. `ended_at` vient du dernier événement enregistré, pas de `now()`, et **aucun `session_end` n'est écrit**, parce qu'aucune fin n'a eu lieu.
+
+Vérifié : une manche antidatée de 90 minutes passe en `abandoned` au démarrage suivant du même joueur, garde son score, garde une date de fin honnête, et la manche en cours n'est pas touchée.
+
+**Ce que ça ne rattrape pas.** Le balayage est par joueur, au démarrage suivant. Les 121 manches historiques appartiennent à des invités qui ne reviendront probablement pas, donc elles resteront `active`. Les fermer demande un passage manuel en base, donc son feu vert.
+
+**Deux corrections d'expérience venues avec.** Un jeton rejoué répond 200 avec **ce que la base a enregistré**, plus 500 : le résultat rapporté est celui du journal et pas celui que l'appel portait, parce que deux onglets peuvent répondre différemment à un même mot et qu'un seul des deux existe. Et il sert la question suivante, parce qu'une manche dure deux minutes et qu'un joueur qui a perdu une course contre son propre renvoi ne doit pas passer le reste devant un écran mort. Deuxièmement, un corps JSON mal formé répond 400 au lieu de 500, sur les deux routes de réponse.
+
+**Le garde : `check:competition-integrity`, 28e étape de la porte.** Un fichier neuf plutôt que cinq élargis. Les cinq gardes de session existants nomment tous un chemin `lib/game/training/*` et le lisent comme du texte : les élargir voulait dire toucher 4638 lignes vertes sur le chemin critique de l'entraînement, la veille d'une mise en ligne. Le nouveau garde vérifie les quatre mécaniques plus les deux autres écrivains d'événements et la fermeture en compare and set, côté fournisseur, route et écran.
+
+**Le garde a été testé en cassant le code, et c'est ce test qui compte.** 27 mutations appliquées à une copie du code dans un bac à sable, une par propriété. Premier passage : **trois régressions passaient inaperçues**. La leçon vaut au delà de ce fichier :
+
+- `AND status = 'active'` était satisfait par **mon propre commentaire** au dessus de l'instruction, qui cite le prédicat pour expliquer à quoi il sert. Le garde était vert avec le prédicat supprimé. Corrigé en lisant du code seulement, commentaires de ligne retirés avant toute recherche. C'est exactement le mode de défaillance de `check:contracts`, décrit dans CLAUDE.md, retrouvé en une heure sur un fichier neuf.
+- `${effectiveAttemptId}::uuid` était satisfait par la **relecture** alors qu'il avait disparu de l'insertion. Une règle sur une instruction doit être bornée à cette instruction.
+- `duplicateCompetitionAnswerResponse` était satisfait par **l'autre** des deux branches qui l'appellent. Un nom cherché dans toute la fonction ne protège pas deux points d'appel.
+
+Après correction : **27 mutations sur 27 attrapées**, et le bac à sable revient propre.
+
+**Vérifié, sans capture, comme demandé.** La porte complète hors `build` sort en 0 sur ses 28 étapes. Sept preuves fonctionnelles contre le serveur du 3002. Et le navigateur réel piloté sur ce même serveur, sans en démarrer un second, le piège Turbopack du 2026-08-15 étant ce qu'il est : l'écran monte, un mot s'affiche, quatre options, le chrono tourne, l'identifiant est en `sessionStorage`, **un seul POST de démarrage au montage**, zéro erreur console, zéro erreur non rattrapée, et l'écran d'entraînement monte toujours.
+
+**La preuve la plus parlante.** Trois `click()` synchrones dans le même tick sur une option : le navigateur envoie **trois POST de réponse portant le même jeton**, et la base enregistre **un seul fait**, `question_count 1`. Le verrou `isRoundLocked` de l'écran est un état React, donc `disabled` n'arrive qu'au rendu suivant et ne bloque rien dans le même tick. C'est le serveur qui tient, et c'est bien là qu'il faut que ça tienne.
+
+**Reste ouvert, volontairement, et listé pour arbitrage.**
+
+- `GAME_PROVIDER_SECRET` dans l'hébergeur, toujours le bloqueur numéro un, rien à faire dans le code.
+- Le score reste décidé par le client, `responseTimeMs` du corps contre 2000 ms sans contre mesure. Vérifié encore aujourd'hui, un corps qui annonce 0 ms rapporte 2 points. Changer ça change la règle de score du mode, donc c'est une décision, pas une correction.
+- Le chrono de l'écran suit encore `deadlineUtc` moins l'horloge du téléphone au lieu de `stats.remainingMs`, qui est une durée.
+- Jeton forgé, réponse hors options, session inconnue répondent encore 500. Seul le JSON mal formé est passé en 400.
+- Les deux écrans envoient encore plusieurs POST sur un double clic, deux requêtes gaspillées et désormais sans conséquence, le serveur les rejetant proprement. Le régler demande un `useRef` sur `handleSelect`, du même genre que celui posé sur le démarrage.
+
+**Écrit en base de production par cet audit et ce correctif** : 11 invités, 40 sessions, environ 96 événements, environ 330 lignes `user_typeface_state`. Une seule anomalie de données subsiste, la question `c6b3c8b0` de la session `167bd8b3`, qui porte deux faits : c'est le test de course d'avant le correctif, à 11 h 56, et c'est le seul doublon de toute l'histoire de la table. Ordre de retrait si Marion veut nettoyer : `user_event_fact`, `sessions`, `user_typeface_state`, `users`.
+
 ## Note — 2026-08-17 (suite 2) — audit du back des deux modes de jeu avant mise en ligne, sept constats, rien corrigé
 
 **Statut : liste de constats.** Demande de Marion, « regarde le back des modes de jeu pour vérifier qu'il n'y ait pas d'erreur, on va pas tarder à lancer le jeu donc pas possible d'avoir de bug ». Périmètre : les sept routes d'API, les deux fournisseurs (`lib/game/training/provider.ts`, `lib/game/competition/provider.ts`), le jeton de question, les catalogues de polices, le schéma en base réelle. **Rien n'a été corrigé**, tout ce qui suit demande son arbitrage sur la priorité.
