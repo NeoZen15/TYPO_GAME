@@ -267,8 +267,10 @@ export default function StatsBoard({
 
         <div className="st-panel" aria-label="Precision by axis">
           {/* Precision broken down by the 8 ways of seeing — NOT random
-              categories (profile-tabs-spec §3). Per axis: mean recent accuracy
-              a(P) over its exposed (mastered > 0) non-roadmap paliers. */}
+              categories (profile-tabs-spec §3). Per axis: mean accuracy a(P)
+              over its exposed (mastered > 0) non-roadmap paliers. `a` counts
+              every answer ever recorded on those typefaces, there is no recent
+              window in it. */}
           <h3 className="st-panel__title">Precision by axis</h3>
           <ul className="st-rows">
             {eye.axes.map((a) => {

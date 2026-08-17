@@ -542,7 +542,13 @@ export default function ProgressConstellation({ eye }: { eye: EyeProfile }) {
                       {p.roadmap
                         ? "Mechanic coming soon"
                         : p.mastered > 0 || p.a > 0
-                          ? `${Math.round(p.a * 100)}% recent accuracy · ${p.mastered} typefaces mastered`
+                          // "recent accuracy" was false: buildEye sums EVERY
+                          // answer ever recorded on the typefaces of this step
+                          // (profile-stats.ts, totAnswers / totCorrect), there is
+                          // no recency window anywhere in that maths. A word that
+                          // promises a window the code does not have makes a
+                          // player read a lifetime figure as this week's form.
+                          ? `${Math.round(p.a * 100)}% accuracy · ${p.mastered} typefaces mastered`
                           : "Not started yet"}
                     </span>
                   </li>

@@ -247,7 +247,7 @@ export const MOCK_PROFILE: PlayerProfile = {
 //     Eye layer from the volatile Arena rank — kept in `ArenaProfile`, separate).
 //
 // Lighting thresholds (provisional — tuned later from telemetry, never here):
-//   • palier `lit`  ⟺ recent accuracy a ≥ 0.80 GENERALISED over ≥ 5 DISTINCT
+//   • palier `lit`  ⟺ accuracy a ≥ 0.80 GENERALISED over ≥ 5 DISTINCT
 //     typefaces — proof the concept transfers, NOT memorising 5 specific faces.
 //     (The per-typeface Leitner boxes only drive spaced-repetition planning.)
 //   • axis  `lit`   ⟺ ≥ 70% of its non-roadmap paliers are `lit`
@@ -277,7 +277,12 @@ export type PerceptualPalier = {
   id: string; // ex. "3.1"
   label: string; // player-facing game name, ex. "OPEN OR CLOSED"
   state: AxisState;
-  a: number; // recent accuracy 0..1
+  // Accuracy 0..1 over EVERY answer recorded on this step's typefaces, not a
+  // recent window: buildEye sums totAnswers / totCorrect with no time bound
+  // (lib/profile/profile-stats.ts). The word "recent" lived here and got copied
+  // into a player-facing label on the map, where it promised a window the maths
+  // does not have. Say what it is, so the next label cannot inherit the lie.
+  a: number;
   mastered: number; // typos in Leitner box ≥ 4
   needsRefresh?: boolean; // display-only, never turns off `lit`
   roadmap?: boolean; // mechanic not built yet (axes 7-8)
