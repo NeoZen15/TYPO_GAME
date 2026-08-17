@@ -80,7 +80,16 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
   const relatedTypefaceIds = [...new Set(comparisons.flatMap((comparison) => [comparison.leftId, comparison.rightId]))];
   const relatedTypefaces = await getTypefacesByIds(relatedTypefaceIds);
   const typefaceNameById = new Map(relatedTypefaces.map((entry) => [entry.id, entry.name]));
-  const typefaceSlugById = new Map(relatedTypefaces.map((entry) => [entry.id, entry.slug]));
+  // Un lien vers une page de spécimen n'est proposé que si cette page existe.
+  // Depuis que `/type/[slug]` répond 404 sans police servie, la carte « nearby »
+  // et les lignes de comparaison de la page d'Inter pointaient droit sur
+  // Helvetica Neue, donc sur une page introuvable. La carte de comparaison, elle,
+  // teste déjà la présence du slug avant de faire un lien : filtrer la table
+  // suffit, le texte reste, seul le lien disparaît.
+  const hasSpecimenPage = (candidateSlug: string) => Boolean(getSpecimenFontFaceCss(candidateSlug));
+  const typefaceSlugById = new Map(
+    relatedTypefaces.filter((entry) => hasSpecimenPage(entry.slug)).map((entry) => [entry.id, entry.slug])
+  );
   const manifestTypeface = getManifestTypefaceBySlug(typeface.slug);
   const specimenRuntimeRecord = getSpecimenRecordBySlug(typeface.slug);
   const previewFamily = getSpecimenPreviewFamily(typeface.slug);
@@ -91,14 +100,25 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
       ? 'var(--font-inter), Inter, "Helvetica Neue", Arial, sans-serif'
       : `"${typeface.name}", "Helvetica Neue", Arial, sans-serif`;
   const specimenStyle = { fontFamily: displayFamily };
-  // LA PAGE DIT-ELLE LA VÉRITÉ SUR CE QU'ELLE MONTRE ? Sans fichier de police
-  // servi, le spécimen n'est pas cette typo : c'est celle du système du visiteur
-  // s'il l'a, sinon Arial, et rien ne l'avertissait. Même faute que celle
-  // corrigée dans le jeu le 2026-08-15 (« ne jamais montrer une lettre inventée
-  // par le navigateur »), restée ici. Vrai pour toutes les typos commerciales du
-  // catalogue, qui sont nommables et décrivables mais dont les fichiers ne
-  // peuvent pas être servis.
-  const specimenIsReal = Boolean(specimenFontCss);
+
+  // PAS DE PAGE DE SPÉCIMEN SANS LA POLICE. Consigne de Marion le 2026-08-17,
+  // « supprimer Helvetica, on taffe sur Inter, on le refera après ».
+  //
+  // Le constat qui l'a déclenchée : sans fichier servi, le spécimen n'est pas
+  // cette typo. C'est celle du système du visiteur s'il l'a, sinon Arial, et rien
+  // ne l'avertissait. Sur un Mac la page d'Helvetica paraît juste, sur un PC ou
+  // un téléphone Android elle montre les lettres d'Arial sous le nom d'Helvetica.
+  // Même faute que celle corrigée dans le jeu le 2026-08-15, « ne jamais montrer
+  // une lettre inventée par le navigateur », restée debout ici.
+  //
+  // J'avais d'abord ajouté une mention sous le spécimen. Son arbitrage est plus
+  // net : une page de spécimen qui ne peut pas montrer sa police n'a pas à
+  // exister, on la refera quand la question de la licence sera tranchée.
+  // Aucun contenu n'est supprimé, les textes de `content/` restent intacts :
+  // retirer cette condition republie la page telle quelle.
+  if (!getSpecimenFontFaceCss(typeface.slug)) {
+    notFound();
+  }
   const historyUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(typeface.name)}`;
   const primaryComparison = comparisons[0] ?? null;
   const demoParagraph =
@@ -114,7 +134,9 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
   // Consigne : « trouve un moment de supprimer ça et juste mettre serif ou
   // sans-serif ».
   const visibleComparisons = comparisons.slice(0, 3);
-  const relatedTypefacesExcludingCurrent = relatedTypefaces.filter((entry) => entry.id !== typeface.id).slice(0, 4);
+  const relatedTypefacesExcludingCurrent = relatedTypefaces
+    .filter((entry) => entry.id !== typeface.id && hasSpecimenPage(entry.slug))
+    .slice(0, 4);
   const glyphSets = typeface.specimen.glyphSets ?? [];
   const technicalRows = [
     { label: "Status", value: typeface.status },
@@ -184,17 +206,6 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
             <h2 id="type-specimen-title" className="typo-section-title">
               Visual control
             </h2>
-            {/* Sans fichier servi, ce qui suit n'est pas cette typo, et le dire
-                est le minimum : sur un poste qui ne l'a pas installée, ce sont
-                les lettres d'Arial sous son nom. Le texte reste, la mesure et la
-                description gardent leur valeur, la démonstration visuelle non. */}
-            {specimenIsReal ? null : (
-              <p className="typo-muted">
-                Not served here: this specimen falls back to the copy installed on your device, or to
-                another face if you do not have it. {typeface.name} is a licensed typeface, so its files
-                cannot be published on this page.
-              </p>
-            )}
           </div>
           <div className="typo-specimen-layout" style={specimenScaleStyle}>
             <div className="typo-specimen-stage">

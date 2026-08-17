@@ -111,6 +111,20 @@ Le calcul refait pour un mot : un mot porte des hampes **et** des jambages, donc
 
 ---
 
+## D6 — L'accueil propose seize pages de spécimen, quinze n'existent pas
+
+**Trouvé le 2026-08-17** en vérifiant qu'aucun lien ne pointe vers les pages retirées. **Antérieur à ce chantier, mesuré et non supposé.**
+
+Le rail de l'accueil compose **seize liens** `/type/<slug>` depuis le catalogue d'exécution : montserrat, poppins, roboto, ibm_plex_sans, raleway, dm_sans, pt_serif, libre_baskerville et les autres. Or `/type/[slug]` sert une **fiche de contenu**, et `content/typography/typefaces/` n'en contient que **trois** : `inter`, `helvetica-neue`, `frutiger`. Toutes les autres tombaient déjà en 404 avant aujourd'hui. Depuis le retrait des deux typos sous licence, il n'en reste qu'une qui répond, `/type/inter`.
+
+**Pourquoi ça compte plus qu'un lien mort ordinaire.** C'est la famille de pages que le plan de génération de masse veut produire par milliers, et c'est la page d'accueil qui les annonce. Quinze liens morts sur la page la plus vue, c'est aussi le pire signal possible pour l'indexation, le jour où le chantier SEO sera dégelé.
+
+**Deux sorties, et le choix appartient à Marion.** Soit le rail ne lie que les typos qui ont une fiche, et il perd quinze liens tout de suite. Soit la fiche devient facultative et la page se construit à partir du catalogue d'exécution quand la fiche manque, ce qui est précisément le gabarit du chantier de masse. La seconde est la vraie réponse, elle demande un vrai travail.
+
+**État : `à décider`.** Rien n'a été touché sur l'accueil aujourd'hui.
+
+---
+
 ## Méthode de travail arrêtée le 2026-08-17
 
 **Comment Marion regarde.** Une **petite fenêtre Chrome ouverte en direct** à la largeur d'un téléphone sur la page en cours, et rien d'autre. Ses mots : « la page Google Chrome ouverte en direct, on sait très bien, pour que je puisse faire mes corrections, pas besoin de faire une page d'export, je le vois très bien quand tu ouvres une petite page Google Chrome ». Donc pas de galerie de captures, pas d'artifact de rendu. La commande :

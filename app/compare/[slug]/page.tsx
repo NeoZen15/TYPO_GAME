@@ -444,9 +444,16 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
               Passe a une autre paire, ouvre le specimen dominant ou entraine exactement cette distinction dans le jeu.
             </p>
             <div className="typo-actions">
-              <Link href={`/type/${dominantTypeface.slug}`} className="typo-link-pill">
-                Open {dominantTypeface.name} specimen
-              </Link>
+              {/* Le lien ne s'affiche que si la page de spécimen existe encore.
+                  Depuis le 2026-08-17 `/type/[slug]` répond 404 pour une typo dont
+                  le fichier n'est pas servi, donc proposer « ouvre le spécimen
+                  d'Helvetica Neue » ici enverrait sur une page introuvable. Le
+                  test est le même des deux côtés, la présence du @font-face. */}
+              {getSpecimenFontFaceCss(dominantTypeface.slug) ? (
+                <Link href={`/type/${dominantTypeface.slug}`} className="typo-link-pill">
+                  Open {dominantTypeface.name} specimen
+                </Link>
+              ) : null}
               <Link href={gameHref} className="typo-link-pill">
                 Train this distinction in the game
               </Link>
