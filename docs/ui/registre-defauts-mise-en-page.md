@@ -74,6 +74,27 @@ Relevé avant correction, gouttière gauche puis droite : 12 / -8 à 320, 12 / -
 
 ---
 
+## D4 — Trop de commandes sur un téléphone, et un centrage qui ne se recopie pas
+
+**Signalé le 2026-08-17.** « Ça fait pas mal de boutons, je trouve, trop, peut enlever des modes en version mobile non, pour le moment ? » et « l'alphabet il vole, c'est relou, c'est nul ».
+
+**Décision de Marion, appliquée.** Sur téléphone, deux groupes de commandes partent : la bascule vers la vue **mesure**, et le **tiroir des glyphes** avec ses cinq raccourcis et l'alphabet des 26 lettres. Il reste la lettre dans son cadre, l'inverseur avec les deux noms, et le choix entre le mot et la lettre. Mesuré : **trois boutons dans la scène** au lieu de neuf, page de 1699 px à **1262**.
+
+Deux raisons de fond derrière ce choix, au delà du nombre.
+
+- L'alphabet était le plus gros bloc de la page, et sur une page **guidée** la lettre à regarder est déjà désignée par la consigne « Look at a ». Un tiroir de 26 boutons pour choisir autre chose contredit le guidage.
+- La vue mesure **rend un autre composant**, sans `.compare-stage-overlay`, donc la mise en page téléphone décrite en D2 et D3 ne s'y applique pas. Masquer sa bascule évite d'y envoyer quelqu'un depuis un téléphone. Une adresse partagée qui porte `view=measure` continue de s'afficher, avec son cadre d'origine : **relevé à 1226 px de haut, à reprendre le jour où ce mode sera voulu sur téléphone.**
+
+**La règle à retenir, sur le centrage optique.** Le déplacement calculé en D3 pour une lettre seule **ne se recopie pas** sur un mot, et le vérifier a évité une deuxième erreur. Mesuré en mode mot : l'encre sortait **43 px trop bas** et 16 éléments passaient hors écran, parce que la règle d'origine pousse le mot vers le bas de 28,8 px et le compose à 133 px, soit « access » sur 400 px de large dans un cadre de 337.
+
+Le calcul refait pour un mot : un mot porte des hampes **et** des jambages, donc le centre de son encre tombe à `(hampe - jambage) / 2`, soit 0,255 em, contre 0,345 em pour le centre de la boîte. L'écart vaut **0,09 em**, contre 0,11 pour une minuscule sans hampe. Après : encre centrée à **1 px près**, 47 px d'air au dessus et 45 en dessous, zéro élément hors écran, à 390 comme à 320.
+
+**Et une leçon de dimensionnement** : un mot ne tient pas dans un cadre par décret. `access` fait six lettres et passe à 70 px, `aperture` en fait huit et sortirait à 320 px de large. La taille suit donc la largeur de la fenêtre sous les petits écrans et plafonne au delà, `min(4.4rem, 17vw)`. Aucune règle CSS ne sait ajuster une taille au nombre de caractères : il faut soit un plafond fluide, soit une mesure côté serveur.
+
+**État : `réparé ici`**, avec la vue mesure laissée en attente et notée ci dessus.
+
+---
+
 ## Méthode de travail arrêtée le 2026-08-17
 
 **Comment Marion regarde.** Une **petite fenêtre Chrome ouverte en direct** à la largeur d'un téléphone sur la page en cours, et rien d'autre. Ses mots : « la page Google Chrome ouverte en direct, on sait très bien, pour que je puisse faire mes corrections, pas besoin de faire une page d'export, je le vois très bien quand tu ouvres une petite page Google Chrome ». Donc pas de galerie de captures, pas d'artifact de rendu. La commande :

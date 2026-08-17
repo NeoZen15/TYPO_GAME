@@ -7065,7 +7065,11 @@ svg {
      viseur du spécimen, pas un panneau de contrôle. Aucun déplacement dans le
      DOM, le cadre change simplement de porteur : la scène rend sa bordure, son
      fond et son rayon, la vue les reprend, aux mêmes valeurs. */
-  .compare-page .compare-stage {
+  /* Le cadre ne quitte la scène QUE dans la vue superposée : la vue mesure rend
+     un autre composant, sans `.compare-stage-overlay`, donc là il n'y aurait plus
+     de cadre du tout. Elle garde donc le sien. C'est aussi pourquoi la bascule
+     vers la mesure disparaît sur téléphone, voir plus bas. */
+  .compare-page .compare-stage--overlay {
     border: 0;
     background: none;
     border-radius: 0;
@@ -7186,6 +7190,26 @@ svg {
     transform: translateY(-0.11em);
   }
 
+  /* MÊME CALCUL POUR LE MODE MOT, demandé le même jour, et il fallait le refaire
+     et non le recopier : mesuré, le mot sortait 43 px trop bas ET débordait, avec
+     16 éléments hors écran, parce que sa règle d'origine le pousse vers le BAS de
+     28,8 px et le compose à 133 px, soit « access » sur 400 px de large dans un
+     cadre de 337.
+     La taille descend à 4,4 rem, 70 px, ce qui fait tenir un mot de huit lettres
+     dans 320 px de cadre. Et le déplacement optique n'est pas le même que pour
+     une lettre seule : un mot porte des hampes ET des jambages, donc le centre de
+     son encre tombe à (hampe - jambage) / 2, soit 0,255 em, contre 0,345 em pour
+     le centre de la boîte. L'écart est de 0,09 em. */
+  .compare-page .compare-stage--sample-word .compare-stage-layer {
+    /* `access`, six lettres, tient à 70 px dans un cadre de 267 px à 320 de large,
+       mais `aperture` en fait huit et sortirait. La taille suit donc la largeur
+       sur les petits écrans, et plafonne à 4,4 rem au delà. */
+    font-size: min(4.4rem, 17vw);
+    line-height: 1;
+    min-height: 7rem;
+    transform: translateY(-0.09em);
+  }
+
   /* LES DEUX RÉSERVES DE PLACE, à retirer sinon elles laissent un trou.
      Mesuré après le passage en colonne : 277 px de vide entre la lettre et les
      commandes. Deux coupables, tous deux dimensionnés pour un empilement où les
@@ -7249,16 +7273,28 @@ svg {
     pointer-events: auto;
   }
 
-  /* Les deux bascules de mode partaient en haut de la scène, dans le cadre du
-     spécimen, ce qui est exactement là où on ne veut rien : « overlay et mesure
-     en haut trop bizarre ». La scène étant une grille sur téléphone, un `order`
-     suffit pour les faire descendre avec les autres commandes, sous la lettre. */
-  .compare-page .compare-stage-overlay {
-    order: 1;
+  /* MOINS DE COMMANDES SUR TÉLÉPHONE, décision de Marion : « ça fait pas mal de
+     boutons, je trouve, trop, peut enlever des modes en version mobile non, pour
+     le moment ». Deux groupes partent, et ce sont les deux qui servent le moins
+     un premier regard sur un téléphone.
+     1. La bascule vers la vue MESURE. C'est l'outil d'analyse, il vit sur un
+     écran large, et il rend un autre composant qui n'accepte pas la mise en page
+     téléphone décrite ici. Une adresse partagée qui porte `view=measure`
+     s'affiche toujours, elle garde simplement son cadre d'origine.
+     2. Le tiroir des glyphes, ses cinq raccourcis ET l'alphabet des 26 lettres.
+     « L'alphabet il vole, c'est relou » : il était le plus gros bloc de la page,
+     et sur une page guidée la lettre à regarder est déjà désignée par « Look at
+     a ». Les règles qui le mettaient en forme restent en dessous, prêtes s'il
+     revient, elles ne s'appliquent à rien tant que le tiroir est masqué.
+     Reste donc : la lettre dans son cadre, l'inverseur avec les deux noms, et le
+     choix entre le mot et la lettre. */
+  .compare-page .compare-stage-control-cluster,
+  .compare-page .compare-stage-bottom-drawer {
+    display: none;
   }
 
-  .compare-page .compare-stage-control-cluster {
-    order: 2;
+  .compare-page .compare-stage-overlay {
+    order: 1;
   }
 
   /* FLIP FOCUS occupait toute la largeur en crème, donc il se lisait comme le
