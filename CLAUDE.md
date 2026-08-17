@@ -94,6 +94,8 @@ Structure de dossiers à ne pas bouger :
 
 Le texte de l'interface est centralisé dans `content/copy.ts`. `check:copy` vérifie que la copie déclarée y est bien utilisée, donc ne pas écrire de chaîne en dur dans un composant.
 
+**Deux pièges de ce garde, rencontrés deux fois.** Il cherche **littéralement** `nomDuBloc.clé` dans le code, donc importer la copie sous un alias (`import { xCopy as copy }`) le fait échouer alors que la clé est bien rendue, et il collecte les clés à **toute profondeur**, donc un bloc à clés imbriquées exige de voir `xCopy.title` écrit tel quel, ce qu'un composant qui itère sur des sections ne produit jamais. Écrire la copie **à plat** et importer **sans alias**. C'est ce second piège qui a empêché de centraliser le texte des pages de règles, resté en dur dans `ModeRulesPage.tsx` par arbitrage assumé.
+
 Jaune de marque : `--accent-yellow: #ffd213`, défini dans `app/globals.css`.
 
 Jamais suivis par git : `.DS_Store`, `Thumbs.db`, `backups/checkpoints/`, `data/typography-profiles/tmp/`. `check:artifacts` échoue si l'un d'eux est tracké.
