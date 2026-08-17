@@ -154,6 +154,20 @@ Résultat mesuré : **2506 px devenus 1447**, le champ ne défile plus (282 de c
 
 ---
 
+## D8 — Réparer n'est pas la même question que garder
+
+**Le même jour, après avoir vu le tester réparé** : « ça marche, mais je pense que en mode mobile ça sert à rien ». Retiré sur téléphone.
+
+**Pourquoi cette entrée existe alors que le travail de D7 vient d'être fait.** Les deux questions sont distinctes et il faut les poser dans cet ordre : est ce que ça fonctionne, puis est ce que ça mérite sa place. D7 a rendu le tester utilisable, ce qui a permis de juger la seconde question sur pièce plutôt que sur une ruine. Un outil qui demande de composer un texte, de traîner deux curseurs et de comparer des graisses n'est pas une tâche de téléphone, et même réparé il pesait encore 1447 px.
+
+**Le travail de D7 n'est pas perdu et ne doit pas être supprimé.** Les règles téléphone du tester restent dans la feuille, inertes tant que la section est masquée, avec la note qui le dit. Elles portent des mesures qui ont coûté cher, et elles reprennent effet le jour où il voudra un tester sur mobile. Le composant reste monté sans rien coûter : son observateur de taille mesure zéro sur un élément masqué, donc la mesure de glyphe et le dessin du canevas s'arrêtent d'eux mêmes sur leur garde de dimension.
+
+**Bilan de la journée sur cette page**, mesuré à 390 px : de **6873 px à 3921 px**, de 8,1 écrans à 4,6, sans qu'aucune information de lecteur soit perdue. Ce qui est parti : trois pastilles de métriques internes, deux pages de spécimen qui ne pouvaient pas montrer leur police, et un outil de bureau.
+
+**État : `réparé ici`.** Le bureau à 1440 garde son tester, 1423 px, page inchangée.
+
+---
+
 ## Méthode de travail arrêtée le 2026-08-17
 
 **Comment Marion regarde.** Une **petite fenêtre Chrome ouverte en direct** à la largeur d'un téléphone sur la page en cours, et rien d'autre. Ses mots : « la page Google Chrome ouverte en direct, on sait très bien, pour que je puisse faire mes corrections, pas besoin de faire une page d'export, je le vois très bien quand tu ouvres une petite page Google Chrome ». Donc pas de galerie de captures, pas d'artifact de rendu. La commande :

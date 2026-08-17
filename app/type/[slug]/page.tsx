@@ -289,7 +289,10 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
           </div>
         </section>
 
-        <section className="typo-section" aria-labelledby="type-tester-title">
+        {/* `--tester` sert uniquement à pouvoir retirer cette section sur
+            téléphone, décision de Marion le 2026-08-17 : « ça marche, mais je
+            pense que en mode mobile ça sert à rien ». Voir D7 et D8 du registre. */}
+        <section className="typo-section typo-section--tester" aria-labelledby="type-tester-title">
           <div className="typo-section-head">
             <h2 id="type-tester-title" className="typo-section-title">
               Live tester

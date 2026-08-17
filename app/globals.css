@@ -7362,6 +7362,21 @@ svg {
     border-left: 0;
   }
 
+  /* LE LIVE TESTER NE S'AFFICHE PLUS SUR TÉLÉPHONE. Décision de Marion, le même
+     jour, après l'avoir vu réparé : « ça marche, mais je pense que en mode mobile
+     ça sert à rien ». Un outil qui demande de composer un texte, de traîner deux
+     curseurs et de comparer des graisses n'est pas une tâche de téléphone, et il
+     pesait encore 1447 px après réparation.
+     Le composant reste monté mais ne coûte rien : son observateur de taille
+     mesure zéro sur un élément masqué, donc la mesure de glyphe et le dessin du
+     canevas s'arrêtent d'eux mêmes sur leur garde de dimension.
+     Les règles téléphone du tester restent juste en dessous, inertes tant que la
+     section est masquée. Elles portent des mesures qui ont coûté cher à établir,
+     et elles reprennent effet le jour où il voudra le tester sur mobile. */
+  .typo-section--tester {
+    display: none;
+  }
+
   /* LIVE TESTER SUR TÉLÉPHONE, refait le 2026-08-17 sur constat de Marion,
      « complètement cassée ». Mesuré avant : la section faisait **2506 px**, soit
      trois écrans, dont 1056 pour le seul panneau de glyphes, et 806 pour sa
