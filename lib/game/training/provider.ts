@@ -40,6 +40,7 @@ import {
   pickDistractors,
   pickEligibleTypeface,
 } from "@/lib/game/training/question-shape";
+import { GameRequestError } from "@/lib/game/request-error";
 import { loadTrainingProgress } from "@/lib/profile/profile-stats";
 import { sql } from "@/lib/server/neon";
 
@@ -62,6 +63,10 @@ type UserRow = {
   user_id: string;
   locale: Locale;
   global_q_index: number;
+  // Read along with the rest of the row rather than by its own query. It is what
+  // lets the answer path decide, for free, whether the stage 4 rebalance can
+  // possibly apply to this player. See maybeRebalancePool.
+  onboarding_familiarity?: string | null;
 };
 
 type SessionRow = {
@@ -247,15 +252,36 @@ const EARLY_WINDOW_MIN = 8;
 const EARLY_WINDOW_MAX = 12;
 const LOW_ACCURACY_THRESHOLD = 0.4;
 
-const maybeRebalancePool = async (userId: string) => {
+// TWO FREE REFUSALS BEFORE THE EXPENSIVE ONE, and they are what makes this
+// affordable. The query below counts the player's ENTIRE answer history, and it
+// ran on every correct answer, for a stage that can fire at most once in a
+// player's life, inside a five question window, and only for someone who
+// declared themselves advanced. The cost grew with the history and the result
+// was thrown away for almost everybody.
+//
+// Both gates read values the answer path already holds, so they cost nothing:
+//
+//   1. The declared level now travels on the users row the caller already read,
+//      instead of being fetched by the scalar subquery below.
+//   2. global_q_index past the window means the window is past. Sound, not
+//      approximate: the cursor only advances on a correct answer, every answered
+//      question carries exactly one attempt_index = 1 row, so the number of
+//      graded first tries is always at least the cursor. A cursor beyond
+//      EARLY_WINDOW_MAX therefore proves the count is too.
+const maybeRebalancePool = async (user: UserRow) => {
+  const declaredAdvanced =
+    user.onboarding_familiarity === "Quite familiar" ||
+    user.onboarding_familiarity === "Designer";
+  if (!declaredAdvanced) return;
+  if (user.global_q_index > EARLY_WINDOW_MAX) return;
+
+  const userId = user.user_id;
   try {
     const rows = await queryRows<{
-      familiarity: string | null;
       answers: number;
       correct: number;
     }>(sql`
       SELECT
-        (SELECT onboarding_familiarity FROM users WHERE user_id = ${userId}::uuid) AS familiarity,
         COUNT(*)::int AS answers,
         COUNT(*) FILTER (WHERE is_correct)::int AS correct
       FROM user_event_fact
@@ -266,10 +292,6 @@ const maybeRebalancePool = async (userId: string) => {
 
     const row = rows[0];
     if (!row) return;
-
-    const declaredAdvanced =
-      row.familiarity === "Quite familiar" || row.familiarity === "Designer";
-    if (!declaredAdvanced) return;
 
     const answers = Number(row.answers) || 0;
     // Only act once, inside the early window (first ~8..12 graded first tries).
@@ -1118,11 +1140,17 @@ export const submitTrainingAnswer = async ({
 }): Promise<TrainingAnswerResponse> => {
   const payload = verifyQuestionToken(questionToken);
   if (!payload || payload.sessionId !== sessionId) {
-    throw new Error("Invalid training question token.");
+    throw new GameRequestError(
+      "invalid_question_token",
+      "Invalid training question token."
+    );
   }
 
   if (!payload.options.includes(answerSlug)) {
-    throw new Error("Invalid training answer option.");
+    throw new GameRequestError(
+      "invalid_answer_option",
+      "Answer slug is not one of the four options this token carries."
+    );
   }
 
   const sessionRows = await queryRows<SessionRow>(sql`
@@ -1134,11 +1162,14 @@ export const submitTrainingAnswer = async ({
 
   const session = sessionRows[0];
   if (!session || session.status !== "active") {
-    throw new Error("Training session is not active.");
+    throw new GameRequestError(
+      "session_not_active",
+      "Training session is missing or already closed."
+    );
   }
 
   const userRows = await queryRows<UserRow>(sql`
-    SELECT user_id, locale, global_q_index
+    SELECT user_id, locale, global_q_index, onboarding_familiarity
     FROM users
     WHERE user_id = ${session.user_id}::uuid
     LIMIT 1
@@ -1146,7 +1177,10 @@ export const submitTrainingAnswer = async ({
 
   const user = userRows[0];
   if (!user || payload.userId !== user.user_id) {
-    throw new Error("Training user not found for session.");
+    throw new GameRequestError(
+      "identity_mismatch",
+      "The signed token names a different player than the session does."
+    );
   }
 
   const stateRows = await queryRows<PoolRow>(sql`
@@ -1496,7 +1530,7 @@ export const submitTrainingAnswer = async ({
   // Stage 4 — downward rebalance. Runs before the aggregate + next question so any
   // freshly injected easy faces are reflected in poolSize and eligible to appear
   // next. No-op (fail-safe) until migration 007 is applied.
-  await maybeRebalancePool(user.user_id);
+  await maybeRebalancePool(user);
 
   // Stage 5 — progression aggregate for the in-game indicator. Computed after the
   // mastery write so faces mastered / eye level are fresh. Reuses profile-stats
@@ -1576,7 +1610,10 @@ export const endTrainingSession = async ({
 
   const session = sessionRows[0];
   if (!session) {
-    throw new Error("Training session not found for this user.");
+    throw new GameRequestError(
+      "session_not_found",
+      "Training session not found for this user."
+    );
   }
 
   const wasActive = session.status === "active";
