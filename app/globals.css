@@ -2532,6 +2532,31 @@ svg {
   box-shadow: none;
 }
 
+/* DÉFAUT 1 DU REGISTRE (docs/ui/registre-defauts-mise-en-page.md), signalé par
+   Marion le 2026-08-17 : « à droite il n'y a aucun espace pour respirer, on a
+   l'impression que la page est coupée ».
+   Cause mesurée : `.typo-shell` se déclare en `min(99vw, 90rem)`, donc en
+   fraction de la FENÊTRE, alors qu'elle vit dans un `main` qui porte déjà
+   `padding: clamp(0.72rem, 2vw, 1.4rem)`. La coquille est donc plus large que la
+   place qu'on lui laisse : elle garde la gouttière de gauche et dépasse à droite
+   de 7 à 10 px selon la largeur, et `body { overflow-x: hidden }` transforme ce
+   dépassement en bord droit rogné au lieu d'un défilement visible. D'où la
+   sensation exacte de page coupée, avec de l'air d'un seul côté.
+   Réparé en rendant la coquille solidaire de son parent : elle prend la place
+   offerte, jamais un pourcentage de la fenêtre.
+   Portée limitée à la page comparaison sur consigne (« pour le moment juste
+   cette page »). `/type/[slug]` porte le même défaut et l'attend. */
+.compare-page .typo-shell {
+  width: auto;
+  max-width: 90rem;
+  justify-self: stretch;
+  /* Sans cette ligne, la coquille s'aligne à gauche dès qu'elle touche son
+     plafond de 90 rem : mesuré à 1920, 22 px de gouttière à gauche contre 458 à
+     droite. `stretch` plus une largeur maximale demande une marge automatique
+     pour rester centrée. */
+  margin-inline: auto;
+}
+
 .typo-shell > * {
   grid-column: 1 / -1;
 }
@@ -7008,6 +7033,109 @@ svg {
   .compare-stage-bottom-drawer {
     min-width: 0;
     max-width: 100%;
+  }
+
+  /* DÉFAUT 2 DU REGISTRE : sur téléphone les commandes se posaient SUR le
+     spécimen, la lettre passant derrière les deux noms, FLIP FOCUS, WORD, LETTER
+     et la rangée de glyphes. Mesuré : la scène réserve 147 px en bas pour un
+     groupe de commandes qui en fait 362, et la lettre déborde de 143 px dans
+     cette réserve. Un empilement pensé pour un écran large où la scène a
+     600 px de haut.
+     Sur un téléphone, la scène devient une COLONNE : ce qu'on regarde, puis ce
+     qu'on touche. Les trois groupes quittent le positionnement absolu et
+     rentrent dans le flux, donc plus aucune réserve à calculer et plus rien qui
+     puisse se superposer. Le bureau n'est pas touché, tout est sous ce media. */
+  .compare-page .compare-stage {
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+    min-height: 0;
+    padding-bottom: 0.6rem;
+  }
+
+  .compare-page .compare-stage-view {
+    display: grid;
+    grid-template-rows: auto auto;
+    row-gap: 0.4rem;
+    padding-bottom: 0;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .compare-page .compare-stage-control-cluster,
+  .compare-page .compare-stage-controls-zone,
+  .compare-page .compare-stage-focus-switch {
+    position: static;
+    inset: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    justify-self: center;
+    justify-items: center;
+  }
+
+  /* Le sélecteur Word / Letter était collé au bas de la scène en absolu ; dans le
+     flux il se pose sous le rail, à la même largeur que lui. */
+  .compare-page .compare-stage-focus-switch {
+    display: flex;
+    justify-content: center;
+    margin-inline: auto;
+    width: auto;
+  }
+
+  /* La lettre n'a plus besoin de fuir les commandes : elle prend la place du
+     haut, entière, et garde sa taille de spécimen. */
+  .compare-page .compare-stage-layer {
+    min-height: 11rem;
+  }
+
+  /* LES DEUX RÉSERVES DE PLACE, à retirer sinon elles laissent un trou.
+     Mesuré après le passage en colonne : 277 px de vide entre la lettre et les
+     commandes. Deux coupables, tous deux dimensionnés pour un empilement où les
+     commandes flottaient au dessus du spécimen.
+     1. `.compare-stage-view` gardait `padding-bottom: 9,2rem`, soit 147 px, posé
+     par une règle de deux classes située PLUS BAS dans la feuille : à
+     spécificité égale, la dernière gagne, donc il faut monter d'un cran.
+     2. `.compare-stage-overlay` réservait 48 px en haut et 122 px en bas, plus
+     `min-height: 100%` qui l'étirait sur toute la rangée. */
+  .compare-page .compare-stage-view,
+  .compare-page .compare-stage--sample-glyph .compare-stage-view,
+  .compare-page .compare-stage--measure .compare-stage-view,
+  .compare-page .compare-stage--measure.compare-stage--sample-glyph .compare-stage-view {
+    padding-bottom: 0;
+  }
+
+  .compare-page .compare-stage-overlay,
+  .compare-page .compare-stage--sample-glyph.compare-stage--overlay .compare-stage-overlay {
+    padding: 0.5rem 0.4rem;
+    min-height: 0;
+  }
+
+  /* L'alphabet en six colonnes fixes faisait cinq rangées, donc un bloc de
+     commandes de 362 px pour un spécimen de 190 : ce qu'on manipule pesait deux
+     fois ce qu'on regarde. En laissant les colonnes s'ajuster à la largeur, les
+     26 lettres tiennent en trois rangées et la cellule ne descend jamais sous
+     2,1 rem, soit 34 px, donc au dessus du minimum tactile de 24 px. */
+  /* Le panneau ne fait que 133 px de large parce que la bibliothèque est un
+     enfant de flex dimensionné sur son contenu : des colonnes ajustables y ont
+     produit DIX rangées au lieu de trois, mesuré. Elle prend donc toute la
+     largeur de la rangée avant qu'on parle de colonnes. */
+  .compare-page .compare-stage-glyph-library {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  /* Et sa largeur venait de `min(16rem, 34vw)`, posé par une règle de trois
+     classes, soit 132,6 px à 390 : mesuré au pixel, c'est bien 34vw. Quatre
+     classes pour reprendre la main, et l'alphabet occupe enfin la rangée. */
+  .compare-page .compare-stage-glyph-library-panel,
+  .compare-page .compare-stage--sample-glyph.compare-stage--overlay .compare-stage-glyph-library-panel,
+  .compare-page .compare-stage--sample-glyph.compare-stage--measure .compare-stage-glyph-library-panel {
+    width: 100%;
+    left: auto;
+    top: auto;
+    margin-top: 0.42rem;
+    transform: none;
+    grid-template-columns: repeat(auto-fit, minmax(2.1rem, 1fr));
   }
 
   .typo-chip,
