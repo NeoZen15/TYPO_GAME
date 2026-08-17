@@ -2515,7 +2515,23 @@ svg {
 }
 
 .typo-shell {
-  width: min(99vw, 90rem);
+  /* DÉFAUT 1 DU REGISTRE (docs/ui/registre-defauts-mise-en-page.md), réparé sur
+     `/compare` le 2026-08-17 puis remonté ici le même jour, la page typo portant
+     le même défaut au pixel. `min(99vw, 90rem)` mesurait la FENÊTRE, alors que
+     cette coquille vit dans un `main` qui porte déjà `clamp(0.72rem, 2vw, 1.4rem)`
+     de padding : elle gardait donc la gouttière de gauche et dépassait à droite de
+     7 à 10 px, que `body { overflow-x: hidden }` transformait en bord droit rogné
+     plutôt qu'en défilement visible. D'où « à droite il n'y a aucun espace pour
+     respirer, on a l'impression que la page est coupée ».
+     Elle est maintenant solidaire de son parent : elle prend la place offerte,
+     jamais une fraction de la fenêtre. `margin-inline: auto` la garde centrée
+     quand elle touche son plafond, sinon `stretch` l'aligne à gauche.
+     Déclaré ICI et nulle part ailleurs : les deux seules pages qui portent cette
+     classe sont `/type/[slug]` et `/compare/[slug]`. */
+  width: auto;
+  max-width: 90rem;
+  justify-self: stretch;
+  margin-inline: auto;
   min-height: auto;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -2532,30 +2548,9 @@ svg {
   box-shadow: none;
 }
 
-/* DÉFAUT 1 DU REGISTRE (docs/ui/registre-defauts-mise-en-page.md), signalé par
-   Marion le 2026-08-17 : « à droite il n'y a aucun espace pour respirer, on a
-   l'impression que la page est coupée ».
-   Cause mesurée : `.typo-shell` se déclare en `min(99vw, 90rem)`, donc en
-   fraction de la FENÊTRE, alors qu'elle vit dans un `main` qui porte déjà
-   `padding: clamp(0.72rem, 2vw, 1.4rem)`. La coquille est donc plus large que la
-   place qu'on lui laisse : elle garde la gouttière de gauche et dépasse à droite
-   de 7 à 10 px selon la largeur, et `body { overflow-x: hidden }` transforme ce
-   dépassement en bord droit rogné au lieu d'un défilement visible. D'où la
-   sensation exacte de page coupée, avec de l'air d'un seul côté.
-   Réparé en rendant la coquille solidaire de son parent : elle prend la place
-   offerte, jamais un pourcentage de la fenêtre.
-   Portée limitée à la page comparaison sur consigne (« pour le moment juste
-   cette page »). `/type/[slug]` porte le même défaut et l'attend. */
-.compare-page .typo-shell {
-  width: auto;
-  max-width: 90rem;
-  justify-self: stretch;
-  /* Sans cette ligne, la coquille s'aligne à gauche dès qu'elle touche son
-     plafond de 90 rem : mesuré à 1920, 22 px de gouttière à gauche contre 458 à
-     droite. `stretch` plus une largeur maximale demande une marge automatique
-     pour rester centrée. */
-  margin-inline: auto;
-}
+/* La surcharge `.compare-page .typo-shell` qui vivait ici est partie dans la
+   règle `.typo-shell` elle même, le 2026-08-17 : la page typo portait le même
+   défaut, et cette feuille interdit de déclarer deux fois la même valeur. */
 
 .typo-shell > * {
   grid-column: 1 / -1;

@@ -91,6 +91,14 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
       ? 'var(--font-inter), Inter, "Helvetica Neue", Arial, sans-serif'
       : `"${typeface.name}", "Helvetica Neue", Arial, sans-serif`;
   const specimenStyle = { fontFamily: displayFamily };
+  // LA PAGE DIT-ELLE LA VÉRITÉ SUR CE QU'ELLE MONTRE ? Sans fichier de police
+  // servi, le spécimen n'est pas cette typo : c'est celle du système du visiteur
+  // s'il l'a, sinon Arial, et rien ne l'avertissait. Même faute que celle
+  // corrigée dans le jeu le 2026-08-15 (« ne jamais montrer une lettre inventée
+  // par le navigateur »), restée ici. Vrai pour toutes les typos commerciales du
+  // catalogue, qui sont nommables et décrivables mais dont les fichiers ne
+  // peuvent pas être servis.
+  const specimenIsReal = Boolean(specimenFontCss);
   const historyUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(typeface.name)}`;
   const primaryComparison = comparisons[0] ?? null;
   const demoParagraph =
@@ -99,11 +107,12 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
     (feature) => `${formatFeatureLabel(feature)}: ${typeface.features[feature] ?? "n/a"}`
   );
   const weightedSamples = [300, 400, 500, 700, 900];
-  const quickFacts = [
-    { label: "Category", value: typeface.category },
-    { label: "Comparaisons", value: String(comparisons.length) },
-    { label: "Concepts", value: String(concepts.length) },
-  ];
+  // `quickFacts` et ses trois pastilles sont partis le 2026-08-17, même décision
+  // que sur la page comparaison : « Comparaisons · 1 » et « Concepts · 1 »
+  // comptaient notre propre contenu, ce qui ne dit rien à un lecteur, et
+  // « Category · sans-serif » répétait en pastille ce que le héros dit déjà.
+  // Consigne : « trouve un moment de supprimer ça et juste mettre serif ou
+  // sans-serif ».
   const visibleComparisons = comparisons.slice(0, 3);
   const relatedTypefacesExcludingCurrent = relatedTypefaces.filter((entry) => entry.id !== typeface.id).slice(0, 4);
   const glyphSets = typeface.specimen.glyphSets ?? [];
@@ -157,22 +166,12 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
           <span>{typeface.name}</span>
         </nav>
 
-        <div className="typo-top">
-          {quickFacts.map((fact, index) => (
-            <p
-              key={fact.label}
-              className={`typo-chip ${index === 0 ? "typo-chip--info" : index === 1 ? "typo-chip--positive" : "typo-chip--warning"}`}
-            >
-              {fact.label} · {fact.value}
-            </p>
-          ))}
-        </div>
-
         <header className="typo-hero typo-hero--immersive">
           <div className="typo-hero-stage" style={heroScaleStyle}>
-            <p className="typo-hero-stage-meta">
-              Category · {typeface.category}
-            </p>
+            {/* La catégorie, seule et sans son étiquette : sur une page qui ne
+                parle que de cette typo, « Category · » ne dit rien de plus que
+                « sans-serif ». */}
+            <p className="typo-hero-stage-meta">{typeface.category}</p>
             <h1 className="typo-hero-stage-title" aria-label={`${typeface.name} typeface family`}>
               <span className="typo-hero-stage-line typo-hero-stage-line--xl">{heroHeadingLineOne}</span>
               <span className="typo-hero-stage-line typo-hero-stage-line--xl">{heroHeadingLineTwo}</span>
@@ -185,6 +184,17 @@ export default async function TypefacePage({ params }: TypefacePageProps) {
             <h2 id="type-specimen-title" className="typo-section-title">
               Visual control
             </h2>
+            {/* Sans fichier servi, ce qui suit n'est pas cette typo, et le dire
+                est le minimum : sur un poste qui ne l'a pas installée, ce sont
+                les lettres d'Arial sous son nom. Le texte reste, la mesure et la
+                description gardent leur valeur, la démonstration visuelle non. */}
+            {specimenIsReal ? null : (
+              <p className="typo-muted">
+                Not served here: this specimen falls back to the copy installed on your device, or to
+                another face if you do not have it. {typeface.name} is a licensed typeface, so its files
+                cannot be published on this page.
+              </p>
+            )}
           </div>
           <div className="typo-specimen-layout" style={specimenScaleStyle}>
             <div className="typo-specimen-stage">

@@ -95,6 +95,22 @@ Le calcul refait pour un mot : un mot porte des hampes **et** des jambages, donc
 
 ---
 
+## D5 — Un spécimen qui n'est pas la typo qu'il annonce
+
+**Trouvé le 2026-08-17** en ouvrant `/type/helvetica-neue` sur la demande de Marion, « la page Helvetica y'a des vieilles erreurs là, genre corrigées depuis longtemps ». Il avait raison sur la famille de la faute, et elle est plus grave qu'une mise en page.
+
+**Constat mesuré.** Aucun `@font-face` n'est servi pour Helvetica Neue ni pour Frutiger : ce sont des polices sous licence, dont les fichiers ne peuvent pas être publiés, ce que le projet a tranché le 2026-07-28. La page composait donc son spécimen avec la pile `"Helvetica Neue", "Helvetica Neue", Arial, sans-serif`, c'est à dire **la copie installée sur la machine du visiteur**, ou Arial pour quelqu'un qui ne l'a pas, **sans un mot pour le dire**. Sur un Mac la page paraît juste, sur un PC ou un téléphone Android elle montre les lettres d'Arial sous le nom d'Helvetica.
+
+**C'est exactement la faute corrigée dans le jeu le 2026-08-15**, « ne jamais montrer une lettre inventée par le navigateur », restée sur les pages de spécimen. Et c'est aussi la faute que la mémoire du projet énonce pour le jeu : sur le mot affiché, toute propriété typographique doit venir du fichier de police.
+
+**Réparé.** La page sait si son fichier est servi (`specimenIsReal`, tiré de `getSpecimenFontFaceCss`). Quand il ne l'est pas, elle le dit sous le titre « Visual control » : le spécimen retombe sur la copie de l'appareil, et la typo est sous licence. Le texte, les mesures et la description gardent leur valeur, la démonstration visuelle non. Vérifié : notice absente sur `/type/inter`, qui sert bien sa police, présente sur `helvetica-neue` et `frutiger`.
+
+**La règle à retenir.** Toute surface qui montre une lettre doit savoir si cette lettre vient d'un fichier qu'on sert. Sinon elle le dit. Un catalogue de 1172 faces servables et quelques faces commerciales décrites en texte n'a le droit d'exister que si la page ne confond jamais les deux.
+
+**État : `réparé ici`, à généraliser.** Les pages de comparaison montrent les mêmes faces commerciales dans la scène et ne portent aucune notice. C'est le prochain endroit, d'autant que le chantier de génération de masse prévoit des milliers de pages sur ce gabarit.
+
+---
+
 ## Méthode de travail arrêtée le 2026-08-17
 
 **Comment Marion regarde.** Une **petite fenêtre Chrome ouverte en direct** à la largeur d'un téléphone sur la page en cours, et rien d'autre. Ses mots : « la page Google Chrome ouverte en direct, on sait très bien, pour que je puisse faire mes corrections, pas besoin de faire une page d'export, je le vois très bien quand tu ouvres une petite page Google Chrome ». Donc pas de galerie de captures, pas d'artifact de rendu. La commande :
