@@ -18,7 +18,6 @@ import {
   type CompareView,
 } from "@/lib/typography/compare-page-helpers";
 import {
-  buildCompareProfileInsight,
   pickBestCorpusGlyphSample,
   pickBestCorpusSampleMode,
   pickBestCorpusWordSample,
@@ -164,21 +163,11 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
   const rightFontCss = getSpecimenFontFaceCss(rightTypeface.slug);
   const defaultStageGlyph = activeAnchor.config.sampleGlyphs[activeAnchor.config.defaultGlyphIndex] ?? "";
   const stageSampleLabel = getSampleLabel(activeAnchor.config.defaultSample, defaultStageGlyph);
-  const featureMetricInsight =
-    corpusVersion && leftProfile && rightProfile
-      ? buildCompareProfileInsight({
-          feature: activeAnchor.feature,
-          sampleWord: corpusSampleWord,
-          leftProfile,
-          rightProfile,
-        })
-      : null;
-  const compactCorpusChip =
-    featureMetricInsight && featureMetricInsight.mode !== "missing"
-      ? featureMetricInsight.strongerSide === "tie"
-        ? `Corpus read · ${featureMetricInsight.signal === "low" ? "subtle" : "balanced"}`
-        : `${featureMetricInsight.strongerSide === "left" ? leftTypeface.name : rightTypeface.name} leads`
-      : null;
+  // `featureMetricInsight` and the `compactCorpusChip` it fed lived here, and the
+  // fourth data pill was their ONLY reader: removing the pill made both dead. Cut
+  // rather than left dangling, since the gate runs eslint with --max-warnings 0.
+  // `buildCompareProfileInsight` stays exported and tested; the day a sentence in
+  // the stage wants this reading, it is one call away.
   const stageSampleFocusLabel =
     corpusSuggestedSample === "word"
       ? corpusSampleWord
@@ -236,17 +225,17 @@ export default async function ComparisonPage({ params, searchParams }: Compariso
           <span>{heroTitle}</span>
         </nav>
 
-        <div className="typo-top">
-          <p className="typo-chip typo-chip--info">Category · {leftTypeface.category}</p>
-          <p className="typo-chip typo-chip--positive">Comparaison · {comparison.score}</p>
-          <p className="typo-chip typo-chip--warning">Concepts · {concepts.length}</p>
-          {compactCorpusChip ? (
-            <p className="typo-chip typo-chip--positive">
-              {compactCorpusChip}
-            </p>
-          ) : null}
-        </div>
-
+        {/* THE FOUR DATA PILLS ARE GONE, owner's call of 2026-08-17: too much
+            data worn like a race car, and the pills themselves were the biggest
+            objects on a phone, four bars of 386 by 33px in caps before the title.
+            What they carried, and why none of it is a loss:
+            "Comparaison · 0.82", a similarity score on no stated scale, so it
+            ranked nothing a reader could use. "Concepts · 1", a count of our own
+            content. "Corpus read · subtle", our internal vocabulary. And
+            "Category · sans-serif", which read the LEFT face only, on a page
+            whose whole subject is two faces.
+            The rule kept for the rest of the page: measurements and instructions
+            stay, internal metrics go. */}
         <header className="compare-hero">
           <div className="compare-hero-copy">
             <p className="compare-hero-kicker">Guided comparison</p>

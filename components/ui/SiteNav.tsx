@@ -47,6 +47,37 @@ export default function SiteNav({
 }: SiteNavProps) {
   return (
     <header className="site-nav" aria-label="Primary navigation">
+      {/* PHONE MENU, 2026-08-17, on the owner's call: a discreet burger on the
+          left rather than a bar that stacks. Measured before: on a phone this
+          nav gave up and became four full width rows, 146px tall, 21 per cent
+          of a 700px screen before the first word of content.
+
+          A <details> and not a React state, deliberately. This nav ships on
+          every /type/[slug] specimen, so a menu that needs no JavaScript keeps
+          those pages static. The trade is that it does not close on an outside
+          click, only on the toggle itself, on Escape being unsupported here, or
+          on following a link. Small enough to accept for a panel that never
+          covers the page. */}
+      <details className="site-nav__menu">
+        <summary className="site-nav__menu-button" aria-label="Open the menu">
+          <svg viewBox="0 0 16 12" width="16" height="12" aria-hidden="true" focusable="false">
+            <path d="M1 1.5h14M1 6h14M1 10.5h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+          </svg>
+        </summary>
+        <nav className="site-nav__menu-panel" aria-label="Site sections">
+          {items.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`site-nav__link ${item.isActive ? "is-active" : ""}`}
+              aria-current={item.isActive ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      </details>
+
       <Link href="/" className="site-nav__brand" aria-label="Dwiggins home">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

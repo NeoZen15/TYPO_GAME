@@ -2690,6 +2690,77 @@ svg {
     0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
 }
 
+/* ── Phone menu (2026-08-17) ─────────────────────────────────────────────
+   Hidden above the breakpoint: the inline links are the desktop menu. Every
+   value below is borrowed from the bar it hangs under, so the panel is the
+   same cream pill seen from closer: the hairline of `.site-nav`, its radius,
+   its cream, its shadow, and the links keep `.site-nav__link` untouched. */
+.site-nav__menu {
+  display: none;
+  position: relative;
+  flex: none;
+}
+
+.site-nav__menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 2.2rem, so the target clears the 24px WCAG 2.2 minimum without making the
+     bar taller than the 1.7rem pills it sits beside. */
+  /* 1.9rem, so the button matches the 1.7rem pills beside it instead of driving
+     the bar's height, and still clears the 24px WCAG 2.2 minimum at 30.4px. */
+  min-width: 1.9rem;
+  min-height: 1.9rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: rgba(20, 16, 25, 0.55);
+  cursor: pointer;
+  list-style: none;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.site-nav__menu-button::-webkit-details-marker {
+  display: none;
+}
+
+.site-nav__menu-button:hover,
+.site-nav__menu[open] .site-nav__menu-button {
+  background: rgba(20, 16, 25, 0.07);
+  color: rgba(20, 16, 25, 0.95);
+}
+
+.site-nav__menu-button:focus-visible {
+  outline: 2px solid rgba(20, 16, 25, 0.45);
+  outline-offset: 2px;
+}
+
+.site-nav__menu-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 2;
+  display: grid;
+  gap: 0.12rem;
+  /* Never the whole screen: the owner asked for a menu that opens discreetly. */
+  width: min(13rem, 62vw);
+  padding: 0.4rem;
+  border: 1px solid rgba(20, 16, 25, 0.08);
+  border-radius: var(--radius);
+  background: #f4f3ee;
+  box-shadow:
+    inset 0 1px 0 rgba(244, 243, 238, 0.55),
+    0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
+}
+
+/* A stacked menu reads from the left edge; the bar's links are centred pills. */
+.site-nav__menu-panel .site-nav__link {
+  justify-content: flex-start;
+  min-height: 2.1rem;
+  padding-inline: 0.55rem;
+}
+
 /* Theme toggle lives in the pill (not floating) and must read dark on cream. */
 .site-nav .theme-switch {
   position: static;
@@ -6837,23 +6908,106 @@ svg {
 
   .site-nav {
     border-radius: var(--radius);
-    padding: 0.78rem;
+    /* 0.78rem was sized for the stacked bar of three full width rows. With the
+       burger the bar is one line again, so it takes the padding of its desktop
+       self and stops being the tallest thing on the screen: 62px down to 44. */
+    padding: 0.4rem 0.55rem;
   }
 
-  .site-nav__brand,
-  .site-nav__links,
-  .site-nav__actions {
-    width: 100%;
-  }
-
+  /* One row, not four. Until 2026-08-17 the three groups each took a full row
+     (brand, links, actions), which is what made this bar 146px tall on a phone.
+     The links move into the burger, so the bar keeps the brand and the two
+     actions on a single line. */
   .site-nav__links {
-    order: 2;
-    justify-content: flex-start;
+    display: none;
+  }
+
+  .site-nav__menu {
+    display: block;
+    order: 0;
+  }
+
+  .site-nav__brand {
+    order: 1;
+    min-width: 0;
   }
 
   .site-nav__actions {
-    order: 3;
-    justify-content: space-between;
+    order: 2;
+    margin-left: auto;
+  }
+
+  /* THE FOCUS RAIL WAS CUT ON BOTH SIDES, reported on a capture 2026-08-17.
+     Cause measured, not guessed: `.compare-stage-focus-name` carries
+     `min-width: 7.2rem` AND `white-space: nowrap`, so two names plus the flip
+     button demand about 355px before gaps. The rail is an inline-grid centred in
+     its parent, so on a 350px phone the excess splits left and right: the right
+     hand name ran off the screen and the left one lost its edge.
+     Two names on one row, the button on its own row under them. The pill becomes
+     a block, because a two row pill is not a pill. */
+  .compare-stage-focus-rail {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-width: 0;
+    width: 100%;
+    border-radius: var(--radius);
+  }
+
+  .compare-stage-focus-rail > .compare-stage-focus-name:first-of-type {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .compare-stage-focus-rail > .compare-stage-focus-name:last-of-type {
+    grid-area: 1 / 2 / 2 / 3;
+  }
+
+  .compare-stage-focus-rail > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary) {
+    grid-area: 2 / 1 / 3 / 3;
+  }
+
+  /* A name may now use two lines rather than push the page: a typeface name that
+     truncates is worse than a typeface name that wraps. */
+  .compare-stage-focus-name {
+    min-width: 0;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  /* AND THIS IS WHY THE PAGE WAS CUT ON BOTH SIDES. The bar is a grid of two
+     `auto` columns with `justify-content: center`: an auto column never shrinks
+     below its content, and a centred grid that outgrows its container spills
+     HALF of the excess on each side. So the right hand name left the screen and
+     the left hand one lost its edge at the same time, which is exactly what the
+     owner photographed. One column on a phone, and nothing can spill. */
+  .compare-stage-bottom-bar {
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+    justify-items: center;
+  }
+
+  /* AND HERE IS WHO SET THE WIDTH OF THE WHOLE GROUP. Measured, ancestor by
+     ancestor: the controls zone is correctly sized at 314px, but its grid track
+     measured 402px, so everything inside it, the bar and the rail included, was
+     built at 402 and then clipped by `.compare-stage` (overflow: hidden). The
+     402 came from `.compare-stage-glyph-tools`, kept at `flex-wrap: nowrap` by
+     two rules of three classes each, so the picker and the whole alphabet strip
+     had to sit on one line. A `flex-wrap: wrap` for phones existed further down
+     the sheet but carried a single class, so it lost.
+     Same specificity, later in the sheet: these win, and nothing in the group can
+     demand more than the screen. */
+  .compare-stage--sample-glyph.compare-stage--overlay .compare-stage-glyph-tools,
+  .compare-stage--sample-glyph.compare-stage--measure .compare-stage-glyph-tools {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .compare-stage-glyph-tools,
+  .compare-stage-glyph-library,
+  .compare-stage-glyph-picker,
+  .compare-stage-bottom-drawer {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .typo-chip,

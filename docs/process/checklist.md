@@ -48,6 +48,61 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-17 (suite) — trois corrections demandées par Marion sur l'audit ci dessous
+
+Consigne, mot pour mot : « pour la page compare, il faut enlever des données, on est sur la NASCAR », « est ce qu'on peut pas plutôt créer un menu burger à gauche dès qu'on arrive sur mobile, c'est beaucoup plus intuitif, mais pas un menu burger qui prend toute la place, juste qui s'ouvre discrètement », « les informations dans les ronds c'est beaucoup trop gros, soit on les réduit soit on les enlève », « déjà affiche la page et fais deux, trois corrections ».
+
+**1. Menu burger à gauche sur mobile, en remplacement de la barre qui s'empilait.** `components/ui/SiteNav.tsx` porte un `<details>` en premier enfant, donc le bouton est à gauche, et les quatre liens déménagent dedans sous 768 px. Les trois règles qui donnaient une rangée pleine largeur à la marque, aux liens et aux actions sont retirées : la barre tient sur une ligne.
+
+Mesuré avant et après, sur `/compare/[slug]` et `/type/[slug]` :
+
+| Largeur | Avant | Après |
+|---|---|---|
+| 390 px | 146 px de haut, 4 rangées, 17 % de l'écran | **62 px**, une ligne, 7 % |
+| 320 px | 146 px | **99 px**, deux lignes |
+| 768 px | 115 px | **62 px** |
+| 1024 et 1440 px | 48 px, liens en ligne | **inchangé**, burger absent |
+
+Le panneau ouvert mesure 208 par 155 px à 390, ancré à gauche sous le bouton, **10 % de la surface de l'écran**, entièrement dans la fenêtre, quatre liens de 34 px de haut. « Discrètement » est donc tenu et vérifié, pas déclaré.
+
+**Un `<details>` et pas un état React, à ne pas « moderniser » plus tard sans lire ceci.** Cette nav est servie sur les 2000 pages de spécimen : un menu qui ne demande aucun JavaScript les laisse statiques. Le prix assumé est qu'il ne se referme pas au clic à l'extérieur, seulement sur le bouton ou en suivant un lien. Le bouton fait 35 par 35 px, donc au dessus du minimum de 24 px de WCAG 2.2, sans monter la hauteur de la barre.
+
+**Reste à 320 px** : burger, marque, « Start training » et le sélecteur de thème ne tiennent pas sur une ligne de 296 px utiles, donc deux rangées. Le régler demande de raccourcir le libellé du bouton ou de sortir le thème de la barre, deux décisions qui appartiennent à Marion.
+
+**2. Les quatre pastilles de données de compare sont supprimées.** C'était l'effet NASCAR nommé par Marion, et ce sont aussi les plus gros objets de la page sur téléphone : quatre barres de 386 par 33 px en capitales, avant le titre. Ce qu'elles portaient : « Comparaison · 0,82 », un score de similarité sans échelle affichée donc sans lecture possible ; « Concepts · 1 », un compte de notre propre contenu ; « Corpus read · subtle », notre vocabulaire interne ; et « Category · sans-serif », qui ne lisait que la typo de **gauche** sur une page dont le sujet est deux typos. Aucune information de lecteur n'est perdue.
+
+Règle retenue pour la suite de la page, à appliquer aux prochaines coupes : **les mesures et les consignes restent, les métriques internes partent.** Les trois pastilles de consigne de la scène (« Observe first », « Start with », « Look at ») sont donc gardées.
+
+Effet mesuré à 390 px : `.typo-chip` passe de 4 à **0**, et la page raccourcit de **1699 à 1447 px**, soit 252 px de moins à faire défiler. Deux valeurs devenues mortes avec la pastille, `compactCorpusChip` et `featureMetricInsight`, sont retirées avec elle, plus l'import de `buildCompareProfileInsight` : la porte lance eslint en `--max-warnings 0`, donc une valeur que personne ne lit fait échouer le build. La fonction reste exportée et utilisée par `compare-explanation.ts`.
+
+**Non touché, exprès.** Les trois pastilles de `/type/[slug]` restent en place, Marion parlait de compare. Le décalage de 7 à 10 px de la coquille (R7 ci dessous) reste entier, il attend son arbitrage sur les pixels. Et la refonte de la scène de comparaison en format téléphone (rail à trois colonnes, alphabet en cellules de 17 px) reste à faire, c'est le chantier qu'il a annoncé.
+
+**3. « La nav est beaucoup trop grosse », dit en la voyant.** Elle gardait le `padding: 0,78rem` taillé pour la version à trois rangées, et mon bouton de burger était plus haut que les pastilles voisines. Padding ramené à celui de la barre de bureau et bouton descendu de 2,2 à 1,9 rem, soit 30,4 px, toujours au dessus du minimum de 24 px. Mesuré : **62 px puis 45 px** à 390, 430 et 768. À 320 et 350 il reste deux rangées, 82 px.
+
+**4. « Énorme erreur d'affichage » sur capture, et « toute la page est coupée à gauche ». Trois causes en cascade, toutes mesurées, aucune devinée.**
+
+_Cause A, le rail de focus._ `.compare-stage-focus-name` porte `min-width: 7,2rem` **et** `white-space: nowrap`, donc deux noms plus le bouton exigent environ 355 px avant les gouttières. Le rail est un `inline-grid` centré : quand il dépasse, l'excès **se partage à gauche et à droite**, ce qui explique les deux symptômes d'un coup, « INTER » hors écran à droite et le bord perdu à gauche. Sur téléphone : deux noms sur une rangée, le bouton sur la sienne dessous, largeurs libres, noms sur deux lignes plutôt qu'un nom tronqué, et le rayon passe de pilule à bloc puisqu'une pilule sur deux rangées n'est plus une pilule.
+
+_Cause B, la barre du bas._ `.compare-stage-bottom-bar` est une grille de deux colonnes `auto` en `justify-content: center`. Une colonne `auto` ne descend jamais sous son contenu, et une grille centrée qui dépasse son conteneur déborde symétriquement. Une seule colonne sur téléphone.
+
+_Cause C, celle qui imposait la largeur à tout le groupe._ La zone de contrôles est correctement dimensionnée à 314 px, mais **sa piste de grille mesurait 402 px**, donc la barre et le rail étaient construits à 402 puis rognés par `.compare-stage`, qui est en `overflow: hidden`. Le 402 venait de `.compare-stage-glyph-tools`, maintenu en `flex-wrap: nowrap` par deux règles de trois classes, donc le sélecteur de glyphes et tout l'alphabet devaient tenir sur une ligne. Un `flex-wrap: wrap` pour téléphone existait plus bas dans la feuille mais ne portait qu'une classe, donc il perdait. Corrigé à spécificité égale et plus loin dans la feuille.
+
+Mesuré après, sur `/compare/[slug]`, largeurs 320, 350, 390, 430, 768 et 1440 :
+
+| | Avant | Après |
+|---|---|---|
+| éléments hors écran | **45** à 320, 35 à 390 | **10**, et ce sont les 10 mêmes de 7 à 8 px du décalage de coquille R7 |
+| barre du bas à 390 | 402 px de large, débordait de 60 | **314 px, dans l'écran** |
+| cellules de l'alphabet | **17 px**, dont 4 hors écran | **32 px, zéro hors écran** |
+| page à 390 | 1699 px | **1430 px** |
+| bureau 1440 | rail 386, zone 544 | **inchangé, au pixel** |
+
+**Réponse à sa question, « ça ne bouge qu'en mobile ? »** Pour la nav et ces trois correctifs de mise en page, oui, tout est dans `@media (max-width: 768px)` et le bureau est identique au pixel. **Sauf les quatre pastilles de données, qui disparaissent à toutes les largeurs**, puisque la consigne était d'enlever la donnée, pas de la cacher sur téléphone.
+
+**Piège de mesure du jour, coûteux.** Le serveur du 3002 a servi la feuille avec **une révision de retard pendant environ une minute** : mes règles étaient dans le fichier, absentes du navigateur, et j'ai d'abord conclu à une règle inopérante. Deux enseignements. `curl` sur le chunk CSS ne dit pas la vérité en développement, Turbopack pousse les mises à jour par HMR au navigateur sans que le fichier servi change. Et la seule preuve fiable est le **CSSOM du navigateur**, `document.styleSheets` parcouru à la recherche de la règle, plus la valeur calculée sur l'élément. Une sonde jetable (`--jdt-css-probe`) a tranché en dix secondes, elle a été retirée aussitôt.
+
+**Vérifié** : `typecheck`, `lint` complet en `--max-warnings 0`, `check:copy`, `check:typography-contract`, `check:dev-routes`, `check:artifacts`, `check:misread-truth`, tous en sortie 0. Les deux routes répondent 200, le burger apparaît sur les deux familles de pages, le panneau est bien masqué à l'état fermé et s'ouvre au clic. Zéro nouvelle valeur de DA inventée : le panneau reprend le filet, le rayon, le crème et l'ombre de `.site-nav`, et ses liens gardent la recette `.site-nav__link` telle quelle.
+
 ## Note — 2026-08-17 — audit responsive de tout le site, mesuré au navigateur, rien corrigé
 
 **Statut : liste de constats.** Question de Marion, « le site est responsive ? », puis deux intuitions de sa part, la nav qui ne se lit pas en entier et la page comparaison illisible en mobile. Les deux se vérifient. Vingt et une routes passées au navigateur à huit largeurs, de 320 à 1920 px, avec relevé du débordement horizontal, des éléments coupés par un parent, des grilles restées en plusieurs colonnes, des tailles de texte rendues et des cibles tactiles. **Rien n'a été corrigé** : tout ce qui suit se règle par des largeurs, des seuils et des tailles, donc lui appartient.
