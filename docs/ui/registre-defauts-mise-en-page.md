@@ -125,6 +125,35 @@ Le rail de l'accueil compose **seize liens** `/type/<slug>` depuis le catalogue 
 
 ---
 
+## D7 — Le Live tester, trois écrans pour un outil dont on ne lisait rien
+
+**Signalé le 2026-08-17**, « Live tester complètement cassée, tu peux l'analyser et refaire ? ». Mesuré au navigateur avant de toucher quoi que ce soit, à 390 px.
+
+| Ce qui n'allait pas | Mesure |
+|---|---|
+| la section entière | **2506 px**, trois écrans |
+| le champ d'essai | 51 px de corps dans 299 px de large, soit **onze caractères par ligne**, et **923 px de contenu pour 280 visibles**, donc le texte défilait à l'intérieur du champ |
+| les cinq mesures du champ | trois rangées, **149 px** |
+| le panneau de glyphes | **1056 px**, dont **806** pour sa matrice de 42 boutons de 90 px en cinq colonnes |
+| les quatre chaînes d'exemple | environ 250 px, qui répètent la section « Visual control » du haut de page |
+
+**La cause commune.** Aucun de ces blocs n'est faux : ils sont dimensionnés pour l'écran large où ils ont été dessinés, et rétrécis sans être repensés. Une matrice de 42 cellules de 90 px est excellente à 595 px de large, elle devient un mur à 333.
+
+**Ce qui a été fait, et ce qui ne l'a pas été.** La taille d'ouverture du champ suit la largeur, 28 px sur téléphone, **sans rien brider** : le curseur va toujours de 24 à 144. La hauteur du champ tient le texte d'exemple en entier. Les trois mesures qui comptent le texte tapé disparaissent sur petit écran, celles qui disent l'état des réglages restent. La matrice devient **une rangée qui défile latéralement**, cellules de 46 px, les 42 glyphes tous atteignables. Les chaînes d'exemple partent, la vraie police est déjà montrée plus haut et plus grand.
+
+Résultat mesuré : **2506 px devenus 1447**, le champ ne défile plus (282 de contenu pour 282 visibles), zéro élément hors écran, le canevas dessine toujours. Le bureau à 1440 est inchangé, vérifié bloc par bloc : cinq mesures en une rangée, barre à quatre colonnes, matrice à huit colonnes, corps à 51 px.
+
+**Deux leçons pour la suite.**
+
+1. **Une valeur d'ouverture n'est pas une valeur de bureau.** Un outil dont l'état initial est écrit en dur suppose une largeur. Ici c'était 51 px, et sur téléphone cela suffisait à rendre l'outil inutilisable sans qu'aucune règle CSS soit fausse.
+2. **La porte refuse un `setState` synchrone dans un effet**, à raison, cela déclenche un rendu en cascade. Poser la valeur dans une image d'animation, ou dans un écouteur, satisfait la règle sans contourner l'intention.
+
+**Reste ouvert** : la plus petite cible tactile du tester mesure **18 px**, ce sont les curseurs. Le minimum WCAG est 24. C'est une taille, donc une décision de Marion.
+
+**État : `réparé ici`.**
+
+---
+
 ## Méthode de travail arrêtée le 2026-08-17
 
 **Comment Marion regarde.** Une **petite fenêtre Chrome ouverte en direct** à la largeur d'un téléphone sur la page en cours, et rien d'autre. Ses mots : « la page Google Chrome ouverte en direct, on sait très bien, pour que je puisse faire mes corrections, pas besoin de faire une page d'export, je le vois très bien quand tu ouvres une petite page Google Chrome ». Donc pas de galerie de captures, pas d'artifact de rendu. La commande :

@@ -23,6 +23,11 @@ type TypefaceTesterProps = {
   initialText: string;
 };
 
+// Taille d'ouverture du champ d'essai. 51 px sur un écran large, 28 sur un
+// téléphone, où 51 ne laissait passer que onze caractères par ligne.
+const DEFAULT_FONT_SIZE = 51;
+const PHONE_FONT_SIZE = 28;
+
 const QUICK_FONT_SIZES = [32, 48, 64] as const;
 const QUICK_LINE_HEIGHTS = [1, 1.2, 1.4] as const;
 const ALIGNMENT_OPTIONS = [
@@ -54,7 +59,7 @@ export default function TypefaceTester({
   const weightOptions = useMemo(() => (availableWeights.length > 0 ? availableWeights : [400]), [availableWeights]);
 
   const [text, setText] = useState(initialText);
-  const [fontSize, setFontSize] = useState(51);
+  const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
   const [lineHeight, setLineHeight] = useState(1.34);
   const [alignment, setAlignment] = useState<"left" | "center" | "right">("left");
   const [weight, setWeight] = useState(
@@ -98,6 +103,32 @@ export default function TypefaceTester({
     "--editor-text-inset": "1rem",
     "--editor-panel-min-height": `${Math.max(fontSize * lineHeight * 3.5 + 24, 184)}px`,
   } as React.CSSProperties;
+
+  // TAILLE DE DÉPART SELON LA LARGEUR, 2026-08-17. Le tester s'ouvrait à 51 px
+  // partout : mesuré sur un téléphone, cela donne onze caractères par ligne dans
+  // un champ de 299 px, et le texte d'essai défile à l'intérieur du champ,
+  // 923 px de contenu pour 280 px visibles. On ne lit donc rien de ce qu'on est
+  // venu regarder.
+  // Rien n'est bridé : le curseur va toujours de 24 à 144, seule la valeur
+  // d'ouverture change, et elle ne change que si personne n'a encore touché au
+  // réglage, d'où le test sur la valeur par défaut.
+  // Posé dans une image d'animation et non dans le corps de l'effet : la porte
+  // qualité refuse un `setState` synchrone dans un effet, à raison, cela déclenche
+  // un second rendu en cascade. Et appliqué après le montage, donc sans désaccord
+  // possible entre le rendu serveur et le client.
+  useEffect(() => {
+    const narrow = window.matchMedia("(max-width: 768px)");
+    const apply = () => {
+      setFontSize((current) => (narrow.matches && current === DEFAULT_FONT_SIZE ? PHONE_FONT_SIZE : current));
+    };
+    const frame = requestAnimationFrame(apply);
+    narrow.addEventListener("change", apply);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      narrow.removeEventListener("change", apply);
+    };
+  }, []);
 
   useEffect(() => {
     const wrap = glyphCanvasWrapRef.current;
@@ -196,16 +227,21 @@ export default function TypefaceTester({
                   typography directly in the field.
                 </p>
               </div>
+              {/* Cinq mesures tenaient sur trois rangées de 149 px sur un
+                  téléphone. Les trois premières comptent le texte qu'on vient de
+                  taper, on les garde sur grand écran et on les cache sur petit :
+                  Size et Leading, elles, disent l'état des deux réglages qu'on est
+                  en train de manipuler. */}
               <dl className="typo-tester-editor-stats" aria-label="Text sample metrics">
-                <div className="typo-tester-editor-stat">
+                <div className="typo-tester-editor-stat typo-tester-editor-stat--secondary">
                   <dt>Chars</dt>
                   <dd>{textCharacterCount}</dd>
                 </div>
-                <div className="typo-tester-editor-stat">
+                <div className="typo-tester-editor-stat typo-tester-editor-stat--secondary">
                   <dt>Lines</dt>
                   <dd>{textLineCount}</dd>
                 </div>
-                <div className="typo-tester-editor-stat">
+                <div className="typo-tester-editor-stat typo-tester-editor-stat--secondary">
                   <dt>Words</dt>
                   <dd>{wordCount}</dd>
                 </div>

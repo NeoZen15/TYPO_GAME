@@ -7362,6 +7362,49 @@ svg {
     border-left: 0;
   }
 
+  /* LIVE TESTER SUR TÉLÉPHONE, refait le 2026-08-17 sur constat de Marion,
+     « complètement cassée ». Mesuré avant : la section faisait **2506 px**, soit
+     trois écrans, dont 1056 pour le seul panneau de glyphes, et 806 pour sa
+     matrice de 42 boutons de 90 px de haut en cinq colonnes.
+     La matrice devient une rangée qui défile latéralement, avec des cellules de
+     46 px, donc au dessus du minimum tactile de 24 px : les 42 glyphes restent
+     tous atteignables, sur 46 px de haut au lieu de 806. */
+  .typo-glyph-grid--matrix {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .typo-glyph-grid--matrix .typo-glyph-button--matrix {
+    flex: 0 0 2.9rem;
+    min-height: 2.9rem;
+    scroll-snap-align: start;
+  }
+
+  /* Les quatre chaînes d'exemple (majuscules, minuscules, chiffres, ponctuation)
+     répètent ce que la section « Visual control » montre déjà en haut de page, dans
+     la vraie police et en plus grand. Elles pesaient 250 px ici. */
+  .typo-glyph-groups {
+    display: none;
+  }
+
+  .typo-tester-editor-stat--secondary {
+    display: none;
+  }
+
+  /* Le champ d'essai gardait une hauteur calculée pour 3,5 lignes, donc le texte
+     défilait encore à l'intérieur : 259 px de contenu pour 194 visibles, mesuré.
+     À 28 px et 21 caractères par ligne, le texte d'exemple en occupe sept, d'où
+     17 rem. Personne ne devrait avoir à faire défiler un champ pour lire le texte
+     qu'il vient de composer. */
+  .typo-tester-editor-body,
+  .typo-tester-textarea--editor {
+    min-height: 17rem;
+  }
+
   .typo-tester-editor-body {
     padding-top: 2.5rem;
   }
