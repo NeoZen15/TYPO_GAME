@@ -56,6 +56,24 @@ Relevé avant correction, gouttière gauche puis droite : 12 / -8 à 320, 12 / -
 
 ---
 
+## D3 — Une commande déplacée hérite d'une place qu'elle ne mérite pas
+
+**Signalé le 2026-08-17**, sur la scène passée en colonne (D2), trois remarques d'un coup : « overlay et mesure en haut, trop bizarre », « le flip au milieu comme ça ? », « alphabet tout en bas ? ».
+
+**Cause commune, et c'est la leçon.** Sortir un élément du positionnement absolu ne suffit pas : il retombe dans le flux **avec la place et le poids que le flux lui donne**, pas ceux qu'il avait. Trois exemples dans la même scène.
+
+1. Les bascules OVERLAY et MEASURE étaient ancrées en haut à droite, hors du regard. Rendues statiques, elles sont devenues **la première chose dans le cadre du spécimen**, donc l'endroit exact où il ne faut rien mettre. Réparé par un `order`, la grille de la scène les fait descendre sous la lettre, avec les autres commandes.
+2. FLIP FOCUS, en absolu, était un petit inverseur. Dans une grille à deux colonnes il a pris **toute la largeur en crème**, donc il se lisait comme le bouton principal de la page. Réparé en lui rendant sa largeur naturelle, 110 px, centré.
+3. Le panneau d'alphabet a **pris ses 230 px de place sans s'afficher** : les mêmes règles à trois classes le gardaient à `opacity: 0`, puisque sur un téléphone le survol qui le révélait n'existe pas. D'où un grand vide avec une étiquette seule. Réparé en reprenant `opacity` et `pointer-events` en même temps que la largeur, et en posant l'étiquette au dessus du panneau au lieu de à côté, ce qui fait passer les 26 lettres de sept rangées à six.
+
+**La règle à retenir.** Quand on fait passer un élément de `absolute` à `static`, reprendre **toutes** ses propriétés de flottant dans le même geste : position, décalages, transformation, largeur, **opacité** et `pointer-events`. Une seule oubliée et l'élément occupe sans montrer, ou montre au mauvais endroit.
+
+**État : `réparé ici`.** À relire avec cette règle dès qu'un autre écran passera en colonne sur téléphone.
+
+**Ce qui reste ouvert sur cette scène, et c'est une décision de présentation qui appartient à Marion.** Les commandes pèsent 406 px contre 190 px pour le spécimen, parce que l'alphabet reste déplié. Deux sorties : replier l'alphabet derrière son étiquette, ce qui demande de rendre l'étiquette cliquable dans le composant plutôt que survolable, ou retirer la rangée des cinq glyphes suggérés sur téléphone puisque l'alphabet complet est juste dessous et les contient.
+
+---
+
 ## Méthode de travail arrêtée le 2026-08-17
 
 **Comment Marion regarde.** Une **petite fenêtre Chrome ouverte en direct** à la largeur d'un téléphone sur la page en cours, et rien d'autre. Ses mots : « la page Google Chrome ouverte en direct, on sait très bien, pour que je puisse faire mes corrections, pas besoin de faire une page d'export, je le vois très bien quand tu ouvres une petite page Google Chrome ». Donc pas de galerie de captures, pas d'artifact de rendu. La commande :

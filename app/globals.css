@@ -6977,16 +6977,19 @@ svg {
     border-radius: var(--radius);
   }
 
+  /* FLIP FOCUS passe AU DESSUS des deux noms, demande de Marion : on lit d'abord
+     l'action, puis sur quoi elle porte, et le bouton n'a plus l'air d'être la
+     conclusion de la page. */
+  .compare-stage-focus-rail > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary) {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+
   .compare-stage-focus-rail > .compare-stage-focus-name:first-of-type {
-    grid-area: 1 / 1 / 2 / 2;
+    grid-area: 2 / 1 / 3 / 2;
   }
 
   .compare-stage-focus-rail > .compare-stage-focus-name:last-of-type {
-    grid-area: 1 / 2 / 2 / 3;
-  }
-
-  .compare-stage-focus-rail > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary) {
-    grid-area: 2 / 1 / 3 / 3;
+    grid-area: 2 / 2 / 3 / 3;
   }
 
   /* A name may now use two lines rather than push the page: a typeface name that
@@ -7045,20 +7048,82 @@ svg {
      qu'on touche. Les trois groupes quittent le positionnement absolu et
      rentrent dans le flux, donc plus aucune réserve à calculer et plus rien qui
      puisse se superposer. Le bureau n'est pas touché, tout est sous ce media. */
+  /* RYTHME VERTICAL. Première version à 6 et 8 px entre les groupes : « trop
+     collé, on ne respire pas », et c'était juste, cinq groupes empilés à 8 px se
+     lisent comme un seul bloc. Les gouttières passent à 1,2 rem entre le
+     spécimen et les commandes, 0,85 rem entre les groupes de commandes, et le
+     spécimen reçoit de l'air autour de lui. */
   .compare-page .compare-stage {
     grid-template-rows: auto auto;
-    row-gap: 0.5rem;
+    row-gap: 1.2rem;
     min-height: 0;
-    padding-bottom: 0.6rem;
+    padding-bottom: 1.15rem;
+  }
+
+  /* LE CADRE NOIR NE GARDE QUE LA LETTRE, les commandes passent dessous, sur la
+     page. Idée de Marion, et elle est juste : sur téléphone le cadre est le
+     viseur du spécimen, pas un panneau de contrôle. Aucun déplacement dans le
+     DOM, le cadre change simplement de porteur : la scène rend sa bordure, son
+     fond et son rayon, la vue les reprend, aux mêmes valeurs. */
+  .compare-page .compare-stage {
+    border: 0;
+    background: none;
+    border-radius: 0;
+    overflow: visible;
   }
 
   .compare-page .compare-stage-view {
     display: grid;
     grid-template-rows: auto auto;
-    row-gap: 0.4rem;
+    row-gap: 1rem;
     padding-bottom: 0;
     min-height: 0;
     overflow: visible;
+  }
+
+  /* Le cadre atterrit sur l'enveloppe de la LETTRE, pas sur la vue : les
+     bascules OVERLAY et MEASURE sont des enfants de la vue, donc un cadre posé
+     là les aurait gardées dedans, alors que la consigne est « juste laisser la
+     lettre ». Elles tombent maintenant sous le cadre, avec les autres
+     commandes. */
+  .compare-page .compare-stage-overlay,
+  .compare-page .compare-stage--sample-glyph.compare-stage--overlay .compare-stage-overlay {
+    padding: 1.4rem 0.6rem 1.9rem;
+    min-height: 0;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--compare-stage-line-soft) 8%, transparent), transparent 20%),
+      var(--compare-stage-bg);
+  }
+
+  /* Les filets décoratifs sont posés sur la scène et sur la vue avec `inset: 0`.
+     Le cadre ayant reculé jusqu'à la lettre, ils couraient désormais DERRIÈRE les
+     boutons, hors du viseur. Retirés sur téléphone : la texture peut revenir
+     dans le cadre si Marion la veut, mais pas sous les commandes. */
+  .compare-page .compare-stage::before,
+  .compare-page .compare-stage::after {
+    content: none;
+  }
+
+  .compare-page .compare-stage-guides {
+    display: none;
+  }
+
+  .compare-page .compare-stage-controls-zone {
+    row-gap: 0.85rem;
+  }
+
+  .compare-page .compare-stage-bottom-bar,
+  .compare-page .compare-stage-bottom-drawer {
+    row-gap: 0.85rem;
+  }
+
+  /* Et la bibliothèque prenait 270 px des 335 disponibles, parce que la rangée
+     d'outils se dimensionne sur son contenu : les 26 lettres tenaient en six
+     rangées au lieu de quatre. */
+  .compare-page .compare-stage-glyph-tools {
+    width: 100%;
   }
 
   .compare-page .compare-stage-control-cluster,
@@ -7086,6 +7151,39 @@ svg {
      haut, entière, et garde sa taille de spécimen. */
   .compare-page .compare-stage-layer {
     min-height: 11rem;
+  }
+
+  /* « Centre la lettre dans le truc noir, et un peu plus grand, juste un peu. »
+     Le cadre était déjà centré, c'est l'ENCRE qui ne l'était pas : un « a » posé
+     dans une ligne à interlignage normal laisse au dessus de lui toute la place
+     d'une hampe qu'il n'a pas, donc il paraît bas. L'interlignage descend à 0,82,
+     la boîte épouse la lettre, et le centrage optique tombe juste.
+     Taille portée de 13,8 à 15,2 rem, soit 221 à 243 px. Limité au mode glyphe :
+     un mot entier à cette taille ne tiendrait pas. */
+  .compare-page .compare-stage--sample-glyph .compare-stage-layer {
+    font-size: 15.2rem;
+    /* 0,82 centrait encore la BOÎTE et pas l'ENCRE : la ligne réservait au dessus
+       du « a » la place d'une hampe qu'il n'a pas, donc la lettre tombait bas
+       dans le cadre. À 0,62 la boîte épouse à peu près la hauteur d'x, et le
+       centrage du flex tombe alors sur l'encre elle même.
+       Les lettres à jambage comme le « g » descendent sous cette boîte : le cadre
+       leur garde 1,9 rem en bas pour ne pas les couper. */
+    line-height: 0.62;
+    min-height: 12rem;
+    /* Et l'interlignage ne suffit pas : mesuré, l'encre reste 21 px sous le
+       centre quelle que soit la valeur, parce que la boîte et l'encre se
+       décalent ensemble. Il faut un déplacement optique.
+       Le calcul, pas un tâtonnement : le centre de la boîte tombe à
+       (hampe - jambage) / 2 sous le sommet du dessin, soit 0,345 em pour ces
+       fontes, alors que le centre de l'encre d'une minuscule sans hampe tombe à
+       la moitié de la hauteur d'x, soit 0,265 em. L'écart, 0,08 em, est ce
+       déplacement. Il vaut pour a, c, e, s ; un « g » remonte un peu, son
+       jambage étant compté dans son encre, et le cadre lui garde sa place. */
+    /* 0,08 em a ramené l'écart de 21 px à 8. Les 8 restants viennent du cadre
+       lui même, dont le bas est plus généreux pour laisser passer les jambages :
+       0,11 em égalise l'air, mesuré à 39 px au dessus de l'encre et 40 en
+       dessous. */
+    transform: translateY(-0.11em);
   }
 
   /* LES DEUX RÉSERVES DE PLACE, à retirer sinon elles laissent un trou.
@@ -7122,6 +7220,13 @@ svg {
   .compare-page .compare-stage-glyph-library {
     flex: 1 1 100%;
     width: 100%;
+    /* L'étiquette « Alphabet » était posée EN LIGNE avant le panneau, qui ne
+       gardait donc que 222 px des 335 disponibles et retombait à quatre lettres
+       par rangée, sept rangées. L'étiquette passe au dessus, le panneau prend
+       toute la largeur, et les 26 lettres tiennent en quatre rangées. */
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3rem;
   }
 
   /* Et sa largeur venait de `min(16rem, 34vw)`, posé par une règle de trois
@@ -7136,6 +7241,33 @@ svg {
     margin-top: 0.42rem;
     transform: none;
     grid-template-columns: repeat(auto-fit, minmax(2.1rem, 1fr));
+    /* Le grand vide en bas de la scène, signalé sur capture : le panneau était
+       passé dans le flux, donc il PRENAIT ses 230 px de place, mais les mêmes
+       règles à trois classes le gardaient à `opacity: 0`, un survol n'existant
+       pas sur un téléphone. Il occupait sans montrer. */
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Les deux bascules de mode partaient en haut de la scène, dans le cadre du
+     spécimen, ce qui est exactement là où on ne veut rien : « overlay et mesure
+     en haut trop bizarre ». La scène étant une grille sur téléphone, un `order`
+     suffit pour les faire descendre avec les autres commandes, sous la lettre. */
+  .compare-page .compare-stage-overlay {
+    order: 1;
+  }
+
+  .compare-page .compare-stage-control-cluster {
+    order: 2;
+  }
+
+  /* FLIP FOCUS occupait toute la largeur en crème, donc il se lisait comme le
+     bouton principal de la page alors que c'est un inverseur. Il reprend sa
+     largeur naturelle, centré sous les deux noms. */
+  .compare-page .compare-stage-focus-rail > .compare-stage-focus-toggle:not(.compare-stage-focus-toggle--secondary) {
+    justify-self: center;
+    width: auto;
+    padding-inline: 1.1rem;
   }
 
   .typo-chip,
