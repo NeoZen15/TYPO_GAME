@@ -49,6 +49,99 @@ const getPreferredLocale = () =>
 // shared with the training screen: one style element, one dedupe set, one
 // mechanism. A face declared here stays declared if the player switches mode.
 
+// ---------------------------------------------------------------------------
+// ONE ROUND EQUALS ONE IDENTIFIER, the client half of the convergence the
+// competition provider gained on 2026-08-17. Without it the server-side
+// ON CONFLICT (session_id) is unreachable: two calls that each let the server
+// mint an identifier can never collide, and two rounds open. Measured before:
+// two starts fired together returned two session ids.
+//
+// WHY THESE FOUR HELPERS ARE COPIED HERE AND NOT IMPORTED. They already exist,
+// character for character, in GameScreen.tsx, and
+// scripts/quality/check-client-attempt-contract.mjs guards them by READING THAT
+// FILE AS TEXT. Extracting them into a shared module would leave that guard
+// looking at a file where its patterns no longer appear, so it would fail on the
+// training path this change does not touch. The duplication is deliberate and
+// costed: sharing them means moving the guard first, which is its own change.
+//
+// sessionStorage, and never React state: a reload has to replay the SAME
+// identifier so the server rejoins the round it already wrote instead of opening
+// a second one, and a value held in state would die with the reload. Scoped to
+// the tab, so a second tab is a second round, which is what it is.
+const ATTEMPT_STORAGE_KEY = "jdt-competition-attempt-v1";
+
+// uuid VERSION 4, and the version is not a detail. The server validates this
+// against ATTEMPT_ID_PATTERN (lib/game/training/contracts.ts), which demands a
+// version nibble in 1 to 5 and a variant nibble in 8 to b. Any other shape is
+// refused IN SILENCE: the server mints its own, the response stays valid, and a
+// reload opens a second round again with nothing anywhere to say why.
+const mintAttemptId = (): string => {
+  if (typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  // crypto.randomUUID only exists in a secure context, so a phone hitting the
+  // dev server over a local IP would throw on the very first render. This
+  // rebuilds the same v4 shape by hand.
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+};
+
+// Read on a reload or a retry, minted and persisted on a new round, all of it
+// BEFORE the request leaves. Minting on the response would lose the identifier in
+// exactly the case that creates the duplicate: a reload while the first call is
+// in flight aborts the request, so nothing is stored here while the server has
+// already finished its write.
+const takeAttemptId = ({ fresh }: { fresh: boolean }): string => {
+  if (typeof window === "undefined") return mintAttemptId();
+  try {
+    const stored = fresh ? null : window.sessionStorage.getItem(ATTEMPT_STORAGE_KEY);
+    if (stored) return stored;
+    const minted = mintAttemptId();
+    window.sessionStorage.setItem(ATTEMPT_STORAGE_KEY, minted);
+    return minted;
+  } catch {
+    // Storage blocked (private mode, or a locked-down browser): the round still
+    // gets an identifier, it just cannot survive a reload. A page load must never
+    // throw over this.
+    return mintAttemptId();
+  }
+};
+
+const ATTEMPT_ID_SHAPE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+// Adopt the identifier the server actually settled on. It cannot always rejoin
+// the one we sent: a round already finished, already swept, or owned by another
+// player makes it mint its own. Keeping ours would leave this tab sending, for
+// ever, an identifier the server can never rejoin. The shape is checked rather
+// than trusted, because whatever lands in storage goes back out as a primary key.
+const adoptAttemptId = (serverSessionId: string) => {
+  if (typeof window === "undefined") return;
+  if (!ATTEMPT_ID_SHAPE.test(serverSessionId)) return;
+  try {
+    window.sessionStorage.setItem(ATTEMPT_STORAGE_KEY, serverSessionId);
+  } catch {
+    // Same reasoning as above: never throw on a page load over storage.
+  }
+};
+
+// Called only once a round is really over. Dropping it earlier is the bug this
+// closes: the next load would mint a new identifier and open a second round
+// beside one still running.
+const dropAttemptId = () => {
+  if (typeof window === "undefined") return;
+  try {
+    window.sessionStorage.removeItem(ATTEMPT_STORAGE_KEY);
+  } catch {
+    // Never throw over storage.
+  }
+};
+
 const formatRemaining = (remainingMs: number) => {
   const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
   const minutes = Math.floor(totalSeconds / 60);
@@ -504,8 +597,41 @@ export default function CompetitionScreen() {
   const clockOffsetRef = useRef(0);
   const attemptStartedAtRef = useRef<number>(Date.now());
   const timeoutTriggeredRef = useRef(false);
+  const inFlightRef = useRef(false);
+  const answerInFlightRef = useRef(false);
 
   const getNowMs = useCallback(() => Date.now() + clockOffsetRef.current, []);
+
+  // THE ROUND IS A DURATION, NOT A DATE, and that is the whole of this fix.
+  //
+  // The countdown used to be `new Date(stats.deadlineUtc) - Date.now()`: an
+  // instant computed on the DATABASE clock, compared against the clock of
+  // whatever device is playing. A phone two minutes fast saw the round already
+  // over at the second it opened, zero questions, straight to the recap, and
+  // nothing anywhere to say why. Not exotic on a public launch, only rare.
+  //
+  // The payload already carried the honest value. stats.remainingMs is how much
+  // of the round is left, measured entirely server-side, and a duration cannot be
+  // skewed by the reader's clock. So the arrival is stamped with the LOCAL clock
+  // and everything after is a local difference: the absolute offset cancels, and
+  // only the local rate of time matters, which is the one thing every clock
+  // agrees on. deadlineUtc stays in the contract, it is simply no longer what the
+  // screen counts down against.
+  const remainingAnchorRef = useRef<{ atMs: number; remainingMs: number } | null>(null);
+
+  // Every setStats goes through here. Four call sites set stats (start, answer,
+  // timeout, preview) and an anchor stamped at three of them is a countdown that
+  // silently keeps using a stale one at the fourth.
+  const applyStats = useCallback(
+    (next: CompetitionStats | null) => {
+      setStats(next);
+      remainingAnchorRef.current = next
+        ? { atMs: getNowMs(), remainingMs: next.remainingMs }
+        : null;
+      setClockNow(getNowMs());
+    },
+    [getNowMs]
+  );
 
   const clearAdvanceTimer = useCallback(() => {
     if (advanceTimerRef.current !== null) {
@@ -557,7 +683,19 @@ export default function CompetitionScreen() {
     [clearAdvanceTimer, flushAdvance]
   );
 
-  const startSession = useCallback(async () => {
+  // `fresh` decides whether this is the same round or a new one. A reload and the
+  // error retry replay the identifier already stored, because they are the same
+  // round; only "Play again" mints a new one. The parameter has a default so the
+  // mount effect keeps calling startSession() with no argument and the callback
+  // identity, which feeds that effect's dependency array, does not change.
+  const startSession = useCallback(async ({ fresh = false }: { fresh?: boolean } = {}) => {
+    // A ref, not a piece of state: disabled={isLoading} only becomes true on the
+    // next render, so a fast double click, or a mount effect that runs twice,
+    // fires two requests before React has repainted anything. The training screen
+    // has had this guard since the double start plan; this one never got it.
+    if (inFlightRef.current) return;
+    inFlightRef.current = true;
+
     clearAdvanceTimer();
     timeoutTriggeredRef.current = false;
     clockOffsetRef.current = 0;
@@ -567,7 +705,7 @@ export default function CompetitionScreen() {
     setIsComplete(false);
     setSessionId(null);
     setQuestion(null);
-    setStats(null);
+    applyStats(null);
     setSummary(null);
     setSelectedId("");
     setResult("idle");
@@ -575,12 +713,20 @@ export default function CompetitionScreen() {
     setIsRoundLocked(false);
 
     try {
+      const attemptId = takeAttemptId({ fresh });
       const response = await fetch("/api/competition/session/start", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ locale: getPreferredLocale() }),
+        body: JSON.stringify({
+          locale: getPreferredLocale(),
+          // The only value this client chooses that reaches a primary key. The
+          // database arbitrates two concurrent starts on it, so a reload rejoins
+          // the round already running, with the time it has left, instead of
+          // opening a second one and buying itself a fresh two minutes.
+          attemptId,
+        }),
       });
 
       if (!response.ok) {
@@ -588,24 +734,30 @@ export default function CompetitionScreen() {
       }
 
       const payload = (await response.json()) as CompetitionStartResponse;
+      // Reconcile. When the server could not rejoin what we sent, because the
+      // round was finished, expired or swept, it answered with an identifier of
+      // its own, and keeping ours would make every later reload open a new round.
+      if (payload.sessionId !== attemptId) {
+        adoptAttemptId(payload.sessionId);
+      }
       setSessionId(payload.sessionId);
-      setStats(payload.stats);
+      applyStats(payload.stats);
       beginQuestion(payload.question);
-      setClockNow(getNowMs());
     } catch (sessionError) {
       console.error(sessionError);
       setError("Unable to start the competition session.");
     } finally {
       setIsLoading(false);
+      inFlightRef.current = false;
     }
-  }, [beginQuestion, clearAdvanceTimer, getNowMs]);
+  }, [applyStats, beginQuestion, clearAdvanceTimer]);
 
   useEffect(() => {
     if (isCompletePreview) {
       const totalDurationMs = 120_000;
       setSessionId("competition-preview-complete");
       setQuestion(null);
-      setStats({
+      applyStats({
         answeredCount: 20,
         correctCount: 13,
         score: 12,
@@ -634,7 +786,7 @@ export default function CompetitionScreen() {
       clearAdvanceTimer();
       clearFeedbackTimer();
     };
-  }, [clearAdvanceTimer, clearFeedbackTimer, isCompletePreview, startSession]);
+  }, [applyStats, clearAdvanceTimer, clearFeedbackTimer, isCompletePreview, startSession]);
 
   useEffect(() => {
     if (!sessionId || !stats || isComplete) {
@@ -650,9 +802,23 @@ export default function CompetitionScreen() {
     };
   }, [getNowMs, isComplete, sessionId, stats]);
 
+  // Released only once the round is really over, whichever of the three paths
+  // ended it: the timeout call, an answer that ran out the clock, or a timeout
+  // response served in place of an answer. Dropping it any earlier is the bug
+  // this closes, the next load would mint a new identifier and open a second
+  // round beside one still running. Dropping it here rather than at each of the
+  // three sites means a fourth ending, added later, cannot forget to.
+  useEffect(() => {
+    if (isCompletePreview || !isComplete) return;
+    dropAttemptId();
+  }, [isComplete, isCompletePreview]);
+
   const remainingMs = useMemo(() => {
-    if (!stats) return 0;
-    return Math.max(0, new Date(stats.deadlineUtc).getTime() - clockNow);
+    const anchor = remainingAnchorRef.current;
+    if (!stats || !anchor) return 0;
+    // Local difference only. clockNow and anchor.atMs come from the same clock,
+    // so whatever that clock is set to cancels out.
+    return Math.max(0, anchor.remainingMs - (clockNow - anchor.atMs));
   }, [clockNow, stats]);
 
   useEffect(() => {
@@ -730,7 +896,7 @@ export default function CompetitionScreen() {
         }
 
         const payload = (await response.json()) as CompetitionTimeoutResponse;
-        setStats(payload.stats);
+        applyStats(payload.stats);
         setSummary(payload.summary);
         setQuestion(null);
         setSelectedId("");
@@ -742,13 +908,23 @@ export default function CompetitionScreen() {
         setError("Unable to close the competition session.");
       }
     })();
-  }, [error, isComplete, isLoading, isRoundLocked, remainingMs, sessionId, stats]);
+  }, [applyStats, error, isComplete, isLoading, isRoundLocked, remainingMs, sessionId, stats]);
 
   const handleSelect = useCallback(
     async (optionId: string) => {
       if (!sessionId || !question || isComplete || isLoading || isRoundLocked) {
         return;
       }
+
+      // Re-entrance, on a ref rather than on isRoundLocked. That state IS set
+      // first, but React only applies it, and `disabled`, on the next render, so
+      // several clicks inside one tick all read the old value and all fire.
+      // Measured in a real browser on 2026-08-17: three synchronous click() on
+      // one option sent THREE answer POST carrying the same token. The server
+      // dedupes them correctly now, so this is no longer a correctness fix, only
+      // two wasted requests competing for bandwidth in a timed round.
+      if (answerInFlightRef.current) return;
+      answerInFlightRef.current = true;
 
       setSelectedId(optionId);
       setError(null);
@@ -775,7 +951,7 @@ export default function CompetitionScreen() {
         }
 
         const payload = (await response.json()) as CompetitionAnswerResponse | CompetitionTimeoutResponse;
-        setStats(payload.stats);
+        applyStats(payload.stats);
 
         if (!("result" in payload)) {
           setSummary(payload.summary);
@@ -830,9 +1006,15 @@ export default function CompetitionScreen() {
         console.error(submitError);
         setError("Unable to submit this answer.");
         setIsRoundLocked(false);
+      } finally {
+        // Released whichever way the call left, including the early returns of
+        // the two completion branches above. A ref left true on one path is a
+        // screen that never accepts another answer.
+        answerInFlightRef.current = false;
       }
     },
     [
+      applyStats,
       beginQuestion,
       clearFeedbackTimer,
       getNowMs,
@@ -862,7 +1044,7 @@ export default function CompetitionScreen() {
             ? buildCompetitionRecapView(summary, stats)
             : COMPETITION_RECAP_UNAVAILABLE
         }
-        onPlayAgain={() => void startSession()}
+        onPlayAgain={() => void startSession({ fresh: true })}
       />
     );
   }
