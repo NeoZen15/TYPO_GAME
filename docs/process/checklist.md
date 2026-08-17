@@ -48,6 +48,64 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-17 — audit responsive de tout le site, mesuré au navigateur, rien corrigé
+
+**Statut : liste de constats.** Question de Marion, « le site est responsive ? », puis deux intuitions de sa part, la nav qui ne se lit pas en entier et la page comparaison illisible en mobile. Les deux se vérifient. Vingt et une routes passées au navigateur à huit largeurs, de 320 à 1920 px, avec relevé du débordement horizontal, des éléments coupés par un parent, des grilles restées en plusieurs colonnes, des tailles de texte rendues et des cibles tactiles. **Rien n'a été corrigé** : tout ce qui suit se règle par des largeurs, des seuils et des tailles, donc lui appartient.
+
+**Piège de mesure, à ne pas refaire.** Ma première sonde intersectait la zone visible avec le **bas de la fenêtre**, donc chaque lien de pied de page situé sous le pli ressortait « coupé de 5 400 px ». Faux : une page qui défile n'est pas une page qui coupe. La zone de découpe se calcule sur les **ancêtres qui ne laissent pas sortir leur contenu**, jamais sur la hauteur de la fenêtre. Le pied de page de l'accueil et les liens des documents légaux sont sains.
+
+### R1. La page comparaison garde sa géométrie de bureau sur un téléphone
+
+Le verdict de Marion est confirmé, avec les chiffres. À 390 px, sur `/compare/helvetica-neue-vs-inter` :
+
+| Ce qui casse | Mesure |
+|---|---|
+| `compare-stage-focus-rail` reste à **trois colonnes** | 129 \| 110 \| 129 px, donc deux spécimens et une colonne centrale dans 386 px |
+| le nom de la typo est dans une boîte de 129 px | « Helvetica Neue » passe à deux lignes, 30 px de haut |
+| `compare-stage-glyph-library-panel` reste à **six colonnes** | cellules de **17 px** de large, illisibles et intappables |
+| `compare-stage-glyph-picker` reste en `nowrap` | 5 items de 30 px |
+| les choix de la bibliothèque débordent leur conteneur | **72 px** hors cadre |
+| la barre de nav mange l'écran avant la comparaison | **146 px**, soit 17 % de la hauteur |
+| texte sous 12 px | **31 éléments**, la plupart à 10,9 px |
+
+La page fait deux écrans de haut sur téléphone, dont 754 px pour la scène seule. À 1440 la même scène fait 859 px et respire. Rien n'est cassé au sens technique, aucun débordement de document, aucun défilement latéral : c'est une mise en page de bureau rétrécie, ce qui est exactement le pire cas parce qu'aucun garde ne le signalera jamais.
+
+**Défaut annexe trouvé dans la même page** : `compare-stage-bottom-bar` déclare une grille de deux colonnes dont la seconde mesure **0 px à toutes les largeurs**, 1440 comprise. Une colonne vide qui n'est pas un choix.
+
+### R2. Le profil perd deux onglets sur six sous 430 px
+
+`nav.pf-top__nav` porte six onglets. Mesuré : **Achievements coupé de 51 px et Preferences de 163 px à 390 px**, de 117 et 229 px à 320 px, de 14 et 126 px à 430 px. Sain à partir de 768. La pilule cache 164 px de contenu à 390, en `overflow-x: auto`, donc les deux onglets sont **atteignables par un glissement latéral, mais rien ne le dit** : ni dégradé, ni flèche, ni ombre de bord. Sur un téléphone, le profil montre quatre onglets et laisse croire qu'il n'en a que quatre.
+
+### R3. Sur téléphone, l'accueil n'a plus aucune navigation
+
+`nav.lp-header__nav` passe en `display: none` sous le seuil, et **aucun bouton de menu n'existe nulle part** dans la page (recherche sur `aria-label` et classes, zéro résultat). À 390 px l'en-tête ne contient plus que le logo, « Start training » et le sélecteur de thème. Les quatre liens (How it works, Compare, Typefaces, Modes) disparaissent sans remplacement. Ils ne survivent que dans le pied de page, tout en bas. Ce n'est pas une nav qui se lit mal, c'est une nav qui n'est pas là.
+
+### R4. Sur les pages typo, la nav est complète mais énorme
+
+`header.site-nav` garde ses sept items à toutes les largeurs, et passe donc **à quatre rangées et 146 px de haut à 390 et à 320 px**, 115 px à 768, 48 px à 1440. Sur un écran de 700 px c'est **21 % de la page** consommés par la nav avant le premier mot du contenu.
+
+### R5. Les cibles tactiles sont trop petites partout
+
+Le plus petit item interactif mesure **16 à 19 px de haut** sur les trois barres, à toutes les largeurs. WCAG 2.2 demande 24 px au minimum et le confort tactile est à 44. Ça alimente l'item Accessibilité de la section G, qui est toujours `À faire`.
+
+### R6. Le corps de texte des nav ne change jamais de taille
+
+Les liens des trois barres sont rendus à **10,9 px sur tous les écrans**, téléphone compris. Aucun palier responsive sur la micro typographie.
+
+### R7. La coquille des pages typo est plus large que la place qu'elle a
+
+`.typo-shell` déclare `width: min(99vw, 90rem)` (`app/globals.css:2518`) alors qu'elle vit dans un `main` qui porte déjà de 0,72 à 1,4 rem de padding. Résultat mesuré, sur `/type/[slug]` comme sur `/compare/[slug]` : la coquille dépasse de **7 px à 390, 7 px à 768, 10 px à 1024, 8 px à 1440**, et retombe à zéro à 1920 seulement parce que le plafond de 90 rem prend le relais. `body { overflow-x: hidden }` masque le symptôme, donc **on ne peut pas tirer la page de côté, c'est le bord droit du panneau qui est rogné**, en silence. La cause est arithmétique : `99vw` se mesure sur la fenêtre, le padding du parent se soustrait en plus.
+
+Deux sorties, et le choix des pixels est à Marion. `min(100%, 90rem)` rend la coquille solidaire de son parent, elle perd alors 31 px à 1024 et la gouttière passe de 10 à 20 px. Ou garder la largeur actuelle et retirer le padding du `main` sur cette famille de pages, ce qui conserve l'aspect au pixel près.
+
+### R8. Ce qui est sain, mesuré et non supposé
+
+Zéro débordement horizontal et aucun élément coupé, à 320, 390, 430, 768, 1024, 1280, 1440 et 1920 px : l'accueil, `/play`, les trois pages de règles, `/play/expert`, les six boards du profil, l'onboarding, les trois documents légaux, la 404. Le récapitulatif de compétition garde ses 7 px de débordement vertical à 390, déjà consignés le 2026-08-15. `/play` défile sur téléphone, c'est la décision du 2026-08-03 : le verrou d'un seul écran ne vaut qu'au dessus de 901 px.
+
+### R9. Défaut trouvé en cherchant comment mesurer l'écran de jeu sans écrire en base
+
+`/game?preview=complete` **écrit quand même une session en base**. `CompetitionScreen` garde son effet de montage derrière `isCompletePreview` et ne démarre rien, alors que `GameScreen` appelle `startSession()` sans condition et ne lit `previewComplete` qu'au rendu. Donc l'aperçu du training crée un utilisateur invité et une session à chaque ouverture. C'est aussi pourquoi **l'écran de jeu n'est pas dans cet audit** : le mesurer aurait écrit dans la production.
+
 ## Note — 2026-08-17 — la carte du regard explique enfin ce qui l'allume
 
 **Pourquoi ce chantier plutôt qu'un autre.** Reprise sur la section REPRISE ci dessus. Les trois tâches qu'elle donne au propriétaire lui appartiennent (mot de passe Neon, poussée, informations légales), et ses trois décisions ouvertes ne sont pas techniques. Restait, dans les items purement code, le dernier des trois blocs de `docs/ui/pages-explication-plan.md` : le bloc explicatif du profil. Les deux autres, l'entrée du mode et la page de règles, sont sortis le 2026-07-29. Le SEO, qui paraissait le candidat évident dans la section G, est **gelé volontairement** par une décision du 2026-07-28, donc écarté.
