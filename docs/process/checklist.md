@@ -15,6 +15,8 @@
 - Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil. L'usage veut un lien sur toutes les pages, or il n'y a pas de pied de page global.
 - Les confusions typo par typo sont calculées par les deux modes et affichées nulle part à l'échelle de l'historique. C'est probablement la donnée la plus utile du produit.
 
+**Ce qui a bougé depuis, le 2026-08-17.** La carte du regard explique enfin ce qui l'allume : le bloc `ProgressExplainer` sort sous la constellation, dernier des trois blocs du plan `docs/ui/pages-explication-plan.md`, note au journal du jour. Les trois tâches ci dessus et les trois décisions ci dessous restent entières, elles n'appartiennent qu'à toi. Et **la porte complète reste à lancer serveur de dev arrêté** (`npm run quality` finit par un `build` qui partage `.next`), avec la suite end to end.
+
 **Pièges de la machine, à ne pas rechercher deux fois** (détail dans `CLAUDE.md`) : ne jamais lancer `npm run test:e2e` pendant qu'un serveur de dev tourne, les deux partagent `.next` et corrompent le cache Turbopack, ce qui fait pendre des routes sans aucune erreur. Et l'empreinte du fichier CSS ne change pas en dev, elle ne dit donc rien de sa fraîcheur.
 
 ---
@@ -22,7 +24,7 @@
 > Source de vérité de l'avancement produit, confrontée à l'état réel du code.
 > Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
 >
-> **Dernière mise à jour : 2026-08-15.**
+> **Dernière mise à jour : 2026-08-17.**
 > Les cases reflètent l'état du code à cette date — à re-vérifier avant d'affirmer comme acquis.
 > L'artifact miroir n'a pas été régénéré depuis le 2026-07-28, il ignore donc l'audit du 29 et la correction sur les migrations 007 à 009.
 
@@ -40,11 +42,33 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 **Depuis l'audit du 2026-07-29, un second chantier passe devant tout le reste du code** : la chaîne entre le moteur et l'affichage est cassée. Le moteur pédagogique envoie une typo tirée d'un catalogue de 1172, l'écran de training ne sait en charger que 23, donc le joueur doit nommer une police qu'il ne voit pas. Le moteur lui même est conforme à la spec et **ne doit pas être réécrit**. Détail et priorités en section I.
 
-État par sujet : **17 faits · 0 en cours · 16 à faire · 3 bloqueurs · 6 parkés / à décider** (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
+État par sujet : **18 faits · 0 en cours · 15 à faire · 3 bloqueurs · 6 parkés / à décider** (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
 ---
+
+## Note — 2026-08-17 — la carte du regard explique enfin ce qui l'allume
+
+**Pourquoi ce chantier plutôt qu'un autre.** Reprise sur la section REPRISE ci dessus. Les trois tâches qu'elle donne au propriétaire lui appartiennent (mot de passe Neon, poussée, informations légales), et ses trois décisions ouvertes ne sont pas techniques. Restait, dans les items purement code, le dernier des trois blocs de `docs/ui/pages-explication-plan.md` : le bloc explicatif du profil. Les deux autres, l'entrée du mode et la page de règles, sont sortis le 2026-07-29. Le SEO, qui paraissait le candidat évident dans la section G, est **gelé volontairement** par une décision du 2026-07-28, donc écarté.
+
+**Le défaut réparé.** La constellation est branchée sur le vrai `EyeProfile` depuis juin : un joueur y lit huit galaxies, leurs paliers et trois états, et **rien sur la page ne disait ce qu'est une galaxie, ce qu'est un palier, ni ce qui en allume un**. La carte est la représentation principale de l'élève (vision §8) ; une carte illisible est de la décoration.
+
+**Ce qui a été fait.** `features/profile/components/ProgressExplainer.tsx`, inséré après la constellation dans l'onglet Path de `ProfileExperience.tsx`, trois volets qui sont les trois sous items de la checklist : les galaxies et leurs paliers, pourquoi une typo revient, ce qui allume un palier. Copie dans `content/copy.ts` (`progressionExplainerCopy`), neuf clés, zéro chaîne en dur.
+
+**Les chiffres du texte sont lus dans le code, pas cités de mémoire.** Un palier s'allume à `PALIER_ACCURACY_BAR` 0,80 de justesse **et** `PALIER_MASTERED_BAR` 5 typos stabilisées, une galaxie à `AXIS_LIT_THRESHOLD` 0,70 de ses paliers vivants (`lib/profile/profile-stats.ts:50` à `:75`), et le plus large intervalle du planificateur est la fenêtre 80 à 150 questions de la boîte haute (`INTERVAL_WINDOW`, `lib/game/training/provider.ts:371`). Le texte dit donc « cinq typos », « quatre réponses sur cinq », « plus des deux tiers des paliers » et « au delà de cent questions », toutes vérifiables ligne par ligne.
+
+**Un mot évité exprès.** Le panneau de zoom existant écrit « % recent accuracy », alors que la valeur calculée est la justesse sur **toutes** les réponses enregistrées sur les typos du palier, jamais une fenêtre récente. Le nouveau texte ne reprend pas ce « recent ». L'étiquette fautive du zoom n'est pas corrigée ici, c'est du texte d'interface existant et ça se décide à part.
+
+**Deux interdits de la vision respectés.** Aucun barème de maîtrise n'est imprimé (I-18 interdit la maîtrise brute affichée comme note) et le niveau Dreyfus n'est jamais nommé (I-20, variable de commande interne). Le bloc explique les règles de la carte, la constellation au dessus porte l'état du joueur.
+
+**Zéro DA inventée.** Il compose le système de boards partagé classe pour classe : `st` pour le board, `st-intro` pour la tête, `st-prose` pour un texte qui se lit d'un trait (décision du propriétaire du 2026-08-15, un document est une colonne centrée et non des panneaux encadrés), `st-panel__title` pour les intertitres. Aucune taille, couleur, graisse ni rayon en propre, donc il suivra toute évolution de `board-system.ts`.
+
+**Un piège du garde de copie, retrouvé et contourné.** `check:copy` a d'abord refusé le commit : il cherche littéralement `progressionExplainerCopy.<clé>` dans le code, or le composant importait la copie sous l'alias `copy`. Alias retiré. C'est la même mécanique qui avait empêché de centraliser le texte des règles, avec une différence utile à noter : ici la copie est **plate**, aucune clé imbriquée, donc le garde est satisfait sans qu'on ait à toucher au garde.
+
+**Vérifié, sans capture.** `typecheck` sortie 0, `check:copy` sortie 0 en nommant les neuf clés, eslint sortie 0 sur les trois fichiers. Page servie en direct sur le 3002, HTTP 200 : les trois intertitres présents dans le HTML, le bloc bien **après** la constellation dans le document. Mesuré au navigateur : colonne de texte de **640 px centrée, 414 px de marge à gauche comme à droite**, exactement la mesure relevée sur les pages légales, texte à 14,4 px et interligne 23,76 px, intertitres en mono, titre à 32 px. Aucun débordement horizontal à 1468 px comme à 390 px, où la colonne tombe à 306 px. Les deux thèmes tiennent, l'encre bascule de `#f4f3ee` sur noir à `#191510` sur beige sans qu'une couleur soit déclarée ici.
+
+**La porte complète n'a pas été lancée, et c'est délibéré.** `npm run quality` finit par `build`, qui écrit dans le même `.next` que l'instance de dev du 3002 qui tournait pendant la session. C'est exactement le mécanisme qui a corrompu le cache Turbopack trois fois le 2026-08-15 et fait pendre des routes sans erreur. Les trois contrôles concernés par ce diff ont été lancés séparément. **À faire au prochain passage, serveur de dev arrêté : `npm run quality` et la suite end to end.**
 
 ## Note — 2026-08-15 — cinq défauts signalés par Marion en jouant, tous vérifiés, aucun corrigé
 
@@ -797,13 +821,14 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   _Note « à unifier » périmée : les trois routes `/play/{mode}/rules` rendent déjà le même composant, avec trois onglets, et les cartes de `/play` pointent dessus. Le problème restant était de contenu, pas de structure._
   _**Le contenu actuel dit des choses fausses sur le moteur**, vérifiées ligne par ligne : le mot de session n'est pas fixe (`getTrainingDisplayWord` en change tous les 5 index de question), « Level 1 = seen but recently missed » est faux (tout le monde démarre à L0, L1 vient d'une bonne réponse ou d'une redescente), « a wrong answer reduces the level » est incomplet (seule la première tentative pénalise, I-14), et l'onglet Expert décrit en 12 puces un mode qui n'existe pas (`app/play/expert/page.tsx` est un placeholder). Deux arbitrages retenus : l'échelle chiffrée de mastery est remplacée par sa traduction qualitative (I-18 interdit le mastery affiché comme note), et les pages décrivent le plafond de 8 manches d'aujourd'hui au lieu de la séance illimitée de la vision, l'écart 3 n'étant pas implémentable avant validation du plan backend._
   - Plan : `docs/ui/pages-explication-plan.md`
-- [ ] **Page Profil : expliquer comment on monte** · `Plan écrit` (2026-07-29)
+- [x] **Page Profil : expliquer comment on monte** · `Fait` (2026-08-17)
   _Présenter les groupes + la méthode d'apprentissage, et comment on progresse._
   _Plan écrit dans le même document que la page Règles : un bloc statique `ProgressExplainer` sous la constellation, dans l'onglet Path. Il explique **la carte** et non un niveau, la carte DWIGGINS étant la représentation principale de l'élève (vision §8) et le niveau Dreyfus une variable de commande interne (I-20). Rien de branché, aucune lecture de l'`EyeProfile`._
+  _**Fait le 2026-08-17**, dernier des trois blocs du plan à sortir, détail au journal du jour. `features/profile/components/ProgressExplainer.tsx`, trois volets, inséré après la constellation dans l'onglet Path. Zéro déclaration de style, zéro donnée lue, chiffres pris dans le code qui calcule la carte et non de mémoire._
   - Plan : `docs/ui/pages-explication-plan.md`
-  - [ ] Expliquer les groupes (axes / familles de typos)
-  - [ ] Expliquer la méthode (boîtes Leitner / répétition espacée)
-  - [ ] Montrer comment on monte (maîtrise, paliers qui s'allument)
+  - [x] Expliquer les groupes (axes / familles de typos)
+  - [x] Expliquer la méthode (boîtes Leitner / répétition espacée)
+  - [x] Montrer comment on monte (maîtrise, paliers qui s'allument)
 - [x] **Entrée du mode Entraînement : expliquer la philosophie** · `Fait` (2026-07-29)
   _`app/play/training/page.tsx` rend `features/modes/components/TrainingIntro.tsx` au lieu de rediriger : kicker, titre, les quatre énoncés de §2.1, et deux sorties (« Start training » vers `/game`, « Read the rules » vers `/play/training/rules`). Copie dans `content/copy.ts` (`trainingIntroCopy`), zéro chaîne en dur. **Zéro CSS ajouté** : le shell et les actions réutilisent les groupes `.mode-placeholder-*` de ses pages sœurs, la liste réutilise `.mode-rules-section` et `.mode-rules-list`, qui sont des sélecteurs globaux. Rien de branché, aucun appel au moteur._
   _Un choix à connaître : `progressLine` ne cite aucun nombre de manches. C'est vrai aujourd'hui (le mastery s'écrit réponse par réponse) et ça restera vrai après la phase 1 qui supprime `TRAINING_TOTAL_ROUNDS`, donc rien à rebasculer._

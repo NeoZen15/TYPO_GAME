@@ -5,7 +5,7 @@
 > **Deux faits ont changé depuis sa rédaction, le 2026-07-29 en fin de journée.** 1. Le plan d'architecture backend n'est plus « en cours de réflexion » : il est écrit (`docs/game/architecture-backend.md`) et validé dans sa logique générale, et les phases 0, 0 bis, 1 et 2a sont autorisées. 2. Par conséquent, **l'écart 3 est en cours de levée** : le plafond de 8 manches disparaît au profit d'une séance sans limite, arrêtée par l'élève et close par un bilan. La ligne `sessionShapeLine`, que ce plan a eu la bonne idée d'isoler pour cette raison exacte, devra donc basculer vers le comportement cible. Coordonner les deux chantiers pour ne pas décrire un plafond qui n'existera plus.
 
 Date : 2026-07-29.
-Statut : plan écrit, rien implémenté.
+Statut : **plan entièrement réalisé.** Les blocs 1 (entrée du mode) et 2 (page de règles) sont sortis le 2026-07-29, le bloc 3 (explicatif du profil) le 2026-08-17, en `features/profile/components/ProgressExplainer.tsx`. Détail de chaque passage au journal de `docs/process/checklist.md`. Une réserve tient toujours sur le bloc 1 : l'entrée statique du mode Entraînement a été retirée le 2026-08-15, elle redisait les règles une seconde fois et le bouton Jouer tombait sur un écran de règles au lieu du jeu.
 Portée : front uniquement. **Aucune de ces pages n'est branchée à quoi que ce soit.** Contenu statique, zéro appel au moteur, zéro lecture en base, zéro nouvelle colonne.
 
 ## Pourquoi ce chantier maintenant

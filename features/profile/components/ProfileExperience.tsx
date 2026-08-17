@@ -7,6 +7,7 @@ import Link from "next/link";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import ProgressBoard from "@/features/profile/components/ProgressBoard";
 import ProgressConstellation from "@/features/profile/components/ProgressConstellation";
+import ProgressExplainer from "@/features/profile/components/ProgressExplainer";
 import StatsBoard from "@/features/profile/components/StatsBoard";
 import ProfileSummary from "@/features/profile/components/ProfileSummary";
 import ActivityBoard from "@/features/profile/components/ActivityBoard";
@@ -202,9 +203,15 @@ export default function ProfileExperience({
       {/* ── Path stage ── */}
       {view === "home" &&
         (USE_CONSTELLATION ? (
-          <div className="pf-constellation-stage">
-            <ProgressConstellation eye={eye} />
-          </div>
+          <>
+            <div className="pf-constellation-stage">
+              <ProgressConstellation eye={eye} />
+            </div>
+            {/* The map explains itself, at the end of the scroll: you meet the
+                eight galaxies first, then read what makes one light up. Reads no
+                data, so it never contradicts the constellation above it. */}
+            <ProgressExplainer />
+          </>
         ) : (
           // Legacy linear board-game snake — kept on purpose as a fallback.
           <div className="pf-board-stage">

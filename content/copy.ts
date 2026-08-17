@@ -66,6 +66,42 @@ export const sessionEndCopy = {
   otherModesLabel: "Choose another mode",
 } as const;
 
+/**
+ * What the Path tab says about its own map (`ProgressExplainer`, under the
+ * constellation).
+ *
+ * Every figure here was read out of the code that computes the map, not
+ * remembered: a step lights at `PALIER_ACCURACY_BAR` 0.80 and
+ * `PALIER_MASTERED_BAR` 5 typefaces, a galaxy at `AXIS_LIT_THRESHOLD` 0.70 of
+ * its live steps (`lib/profile/profile-stats.ts`), and the widest interval of
+ * the scheduler is the 80 to 150 question window of the top box
+ * (`INTERVAL_WINDOW` in `lib/game/training/provider.ts`).
+ *
+ * Two things are deliberately absent. The mastery ladder is never printed as a
+ * number (I-18 forbids the raw mastery as a displayed grade), and the Dreyfus
+ * level is never named (I-20 makes it an internal command variable). The block
+ * explains the map, which vision §8 makes the main representation of the
+ * learner.
+ *
+ * Flat keys on purpose: `check:copy` collects keys at any depth, so a nested
+ * `sections` array would demand `progressionExplainerCopy.title` to appear in a
+ * component and fail the gate, which is exactly what happened to the rules page.
+ */
+export const progressionExplainerCopy = {
+  kicker: "Reading your map",
+  title: "How the map lights up.",
+  lede: "Eight galaxies, one for each way of seeing. Here is what they are made of, and what turns one on.",
+  groupsTitle: "The eight galaxies",
+  groupsBody:
+    "Each galaxy is one way of reading a letterform, and they are laid out from the easiest to see to the hardest. Inside a galaxy, steps cut that way of seeing into things you can point at: the shape of a counter, the cut of a terminal, how far a stroke swells. The numbering is an order of difficulty, not a route. Yours light in the order your eye is ready for, and the ones still dark stay on the map so you can see what is left. A few are marked coming soon: the way of seeing is real, the exercise that trains it is not built yet.",
+  methodTitle: "Why a typeface comes back",
+  methodBody:
+    "Nothing here is won by looking once. Name a typeface right and it moves away, further each time it returns. Miss it and it comes back sooner, while the shape that caught you out is still fresh. Only your first answer on a typeface counts, so a second guess costs you nothing and buys you nothing.",
+  climbTitle: "What lights a step",
+  climbBody:
+    "A step lights when five of its typefaces have settled, which takes several meetings each, and when four of your answers out of five on that step are right. A galaxy lights when more than two thirds of its steps are lit. This is why a step cannot be taken in one sitting: every correct sighting pushes that typeface further out, and the widest gap runs past a hundred questions. The map moves on the days you come back.",
+} as const;
+
 /** 404 screen (`app/not-found.tsx`). */
 export const notFoundCopy = {
   kicker: "Error 404",
