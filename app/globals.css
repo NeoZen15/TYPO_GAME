@@ -285,11 +285,21 @@ svg {
 }
 
 .game-v1-shell.game-v2-shell {
-  width: min(95vw, 60rem);
+  /* MÊME ÉCART À GAUCHE ET À DROITE QUE LA BARRE DU HAUT. La coquille valait
+     `min(95vw, 60rem)`, donc 960 px sur un écran de 1280 : ses bords tombaient à
+     160 et 1120 alors que la barre du haut, qui suit la gouttière de page, tombe
+     à 32 et 1248. Deux alignements pour un même écran.
+     `100%` la met dans la boîte de contenu de la page, qui porte déjà
+     `--page-gutter-x` : tout l'écran partage désormais les deux mêmes bords, le
+     relevé, le spécimen et les réponses. */
+  width: 100%;
   min-height: min(80svh, 43rem);
+  /* Plus de rembourrage latéral : il ajoutait 19 px de son côté, donc les réponses
+     tombaient à 35 px du bord quand les pastilles du haut tombaient à 16. La
+     gouttière de page suffit, et elle est la même pour tout le monde. */
   padding:
     clamp(1.15rem, 2.4vw, 1.7rem)
-    clamp(1.2rem, 2.8vw, 1.9rem)
+    0
     clamp(1.45rem, 3.6vw, 2rem);
   display: grid;
   grid-template-rows: minmax(8.4rem, 1fr) auto auto;
@@ -518,6 +528,11 @@ svg {
 
 .game-v2-hud__side--end {
   justify-content: flex-end;
+  /* Le sélecteur de thème est fixé dans ce coin, à 0,9 / 1,4rem du bord et large
+     de 46 px : le temps passait dessous. On lui réserve sa place, sur cette zone
+     seulement et pas sur la barre entière, sinon la pastille du mode quitterait
+     le centre exact de l'écran. */
+  padding-right: 3.4rem;
 }
 
 /* Les trois relevés portent la même pastille que le mode, dans le même vert :
