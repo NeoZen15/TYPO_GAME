@@ -14,6 +14,12 @@
  * revive inside the rules page, not to me to delete quietly.
  */
 export const trainingModeCopy = {
+  // Le relevé de séance du 2026-08-19, en haut de l'écran de jeu : la pastille du
+  // mode, puis les deux totaux. Le temps n'a pas d'étiquette, une durée se lit
+  // sans qu'on la nomme.
+  badge: "Training",
+  rightLabel: "right",
+  wrongLabel: "missed",
   pointsTitle: "How this mode thinks",
   points: [
     "There is no score to beat and no clock to race.",

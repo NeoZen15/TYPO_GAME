@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { trainingProgressCopy } from "@/content/copy";
+import { trainingModeCopy, trainingProgressCopy } from "@/content/copy";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useSearchParams } from "next/navigation";
@@ -77,6 +77,16 @@ type InlineFeedback = {
 // field: the screen could not read what the engine was already sending. One
 // declaration, in the contract both sides share.
 type ProgressState = TrainingProgress;
+
+// Temps de séance, au format m:ss, et h:mm:ss au delà de l'heure. Une durée qui
+// monte, jamais un compte à rebours : ce mode n'a pas de limite (I-17).
+const formatElapsed = (ms: number) => {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const seconds = String(total % 60).padStart(2, "0");
+  const minutes = Math.floor(total / 60) % 60;
+  const hours = Math.floor(total / 3600);
+  return hours > 0 ? `${hours}:${String(minutes).padStart(2, "0")}:${seconds}` : `${minutes}:${seconds}`;
+};
 
 // Level-change toast lifetime (N-24/N-25). The global visible level is NEVER
 // shown continuously in game; it surfaces only as this brief toast when it moves.
@@ -212,6 +222,25 @@ export default function GameScreen() {
   });
   const [selectedId, setSelectedId] = useState("");
   const [result, setResult] = useState<"idle" | "correct" | "wrong">("idle");
+  // RELEVÉ DE SÉANCE, demandé par Marion le 2026-08-19 : le mode, le temps depuis
+  // qu'on joue, les bonnes et les fausses.
+  //
+  // Compté ICI et pas demandé au serveur : la charge utile d'une réponse ne porte
+  // pas ces deux totaux, seul le bilan de fin les calcule. L'écran compte donc ce
+  // qu'il voit, et il compte comme le serveur comptera, c'est à dire **les
+  // premières tentatives seulement** : une question ratée puis retrouvée reste une
+  // fausse, sans quoi le relevé de l'écran et le bilan de fin diraient deux
+  // choses différentes de la même séance (I-14).
+  const [firstTryCorrect, setFirstTryCorrect] = useState(0);
+  const [firstTryWrong, setFirstTryWrong] = useState(0);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const elapsedMsRef = useRef(0);
+  // « Personne n'a encore répondu à CETTE question ». Une référence et non l'état
+  // `wrongAttemptIds` : lire cet état dans la fonction de réponse l'obligerait à
+  // entrer dans ses dépendances, donc à recréer la fonction à chaque essai raté,
+  // et la porte le refuse à juste titre. La référence dit la même chose sans
+  // recréer quoi que ce soit.
+  const firstAttemptRef = useRef(true);
   const [wrongAttemptIds, setWrongAttemptIds] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
   // The end route has always returned a full TrainingSessionSummary and this
@@ -274,6 +303,7 @@ export default function GameScreen() {
     setSelectedId("");
     setResult("idle");
     setWrongAttemptIds([]);
+    firstAttemptRef.current = true;
     setInlineFeedback(null);
     setIsRoundLocked(false);
     attemptStartedAtRef.current = performance.now();
@@ -318,6 +348,7 @@ export default function GameScreen() {
     setSelectedId("");
     setResult("idle");
     setWrongAttemptIds([]);
+    firstAttemptRef.current = true;
     setInlineFeedback(null);
     setIsRoundLocked(false);
 
@@ -412,6 +443,25 @@ export default function GameScreen() {
       endInFlightRef.current = false;
     }
   }, [clearAdvanceTimer, sessionId]);
+
+  // L'HORLOGE DE SÉANCE. Elle démarre à la PREMIÈRE question affichée et non au
+  // montage : l'attente du serveur, la police qui charge et un démarrage en échec
+  // ne sont pas du temps de jeu. Elle s'arrête à la fin de la séance et reprend
+  // où elle en était, d'où la référence qui garde le cumul entre deux armements.
+  useEffect(() => {
+    if (!question || isComplete) return;
+
+    const startedAt = performance.now() - elapsedMsRef.current;
+    const timer = window.setInterval(() => setElapsedMs(performance.now() - startedAt), 1000);
+
+    return () => {
+      window.clearInterval(timer);
+      elapsedMsRef.current = performance.now() - startedAt;
+    };
+    // `elapsedMs` reste hors des dépendances : le relire relancerait l'intervalle
+    // à chaque seconde. La reprise passe par `elapsedMsRef`.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Boolean(question), isComplete]);
 
   useEffect(() => {
     void startSession();
@@ -555,6 +605,11 @@ export default function GameScreen() {
 
         if (payload.result === "wrong") {
           setResult("wrong");
+          // Première tentative sur cette question, donc c'est elle qui compte.
+          if (firstAttemptRef.current) {
+            setFirstTryWrong((count) => count + 1);
+            firstAttemptRef.current = false;
+          }
           setWrongAttemptIds((current) =>
             current.includes(optionId) ? current : [...current, optionId]
           );
@@ -564,6 +619,11 @@ export default function GameScreen() {
         }
 
         setResult("correct");
+        // Juste du premier coup, et pas rattrapé après un essai : c'est la règle
+        // du moteur, seule la première tentative pénalise ou crédite (I-14).
+        if (firstAttemptRef.current) {
+          setFirstTryCorrect((count) => count + 1);
+        }
 
         // A session no longer ends on its own: there is no round cap, so answering
         // always continues. Closing is an explicit act, endSession above, reached
@@ -642,6 +702,28 @@ export default function GameScreen() {
             {levelToast}
           </div>
         ) : null}
+
+        {/* RELEVÉ DE SÉANCE, en haut de la coquille. Demande de Marion du
+            2026-08-19 : la pastille du mode, le temps depuis qu'on joue, les
+            bonnes et les fausses. Entraînement seulement pour le moment, sur sa
+            consigne.
+            Une réserve à porter : la page de règles de ce mode annonce « pas de
+            score à battre, pas de chrono ». Un temps qui monte et un compteur
+            bon/faux vont contre cette phrase, il faudra la reprendre. D'où le
+            parti pris de présentation : un relevé discret en micro typographie,
+            jamais un tableau de score. */}
+        <div className="game-v2-hud">
+          <span className="game-v2-hud__mode">{trainingModeCopy.badge}</span>
+          <span className="game-v2-hud__stat" aria-label="Time played">
+            {formatElapsed(elapsedMs)}
+          </span>
+          <span className="game-v2-hud__stat game-v2-hud__stat--right" aria-label="Right on first try">
+            <em>{firstTryCorrect}</em> {trainingModeCopy.rightLabel}
+          </span>
+          <span className="game-v2-hud__stat game-v2-hud__stat--wrong" aria-label="Missed on first try">
+            <em>{firstTryWrong}</em> {trainingModeCopy.wrongLabel}
+          </span>
+        </div>
 
         <div className="game-v2-word-wrap">
           {/* No complete branch here any more: a finished session returns the
