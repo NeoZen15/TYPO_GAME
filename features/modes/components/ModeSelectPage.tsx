@@ -102,8 +102,8 @@ export default function ModeSelectPage({ stats }: ModeSelectPageProps) {
             src="/brand/dwiggins-figures-dark.svg"
             alt=""
             aria-hidden="true"
-            width={182}
-            height={122}
+            width={673}
+            height={487}
           />
           <Image
             src="/brand/dwiggins-wordmark-full-black.svg"

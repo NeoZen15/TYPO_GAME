@@ -17,6 +17,8 @@ function brandArt(file: string): string {
     .replace(/<svg[^>]*>/, "")
     .replace(/<\/svg>/, "")
     .replace(/<defs>[\s\S]*?<\/defs>/, "")
+    // le moteur colore lui-meme son contenu : un fill code en dur dans l asset gagnerait sur le sien
+    .replace(/\sfill="[^"]*"/g, "")
     .trim();
 }
 

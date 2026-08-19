@@ -8,7 +8,7 @@
 2. **Pousser.** Dix commits ne sont pas sur GitHub. Aucun identifiant n'est configuré sur la machine, il faut un jeton personnel : `git push origin main` depuis le terminal.
 3. **Remplir les sept informations légales** dans `content/legal.ts` : identité et statut juridique, adresse postale, SIRET, directeur de publication, email de contact, hébergeur du site, durée de conservation. `npm run quality` les rappelle à chaque passage.
 
-**Où en est le produit.** Trois bloqueurs go live : le symbole du logo à redessiner, PP Frama sans licence webfont, et le légal (écrit, en attente des sept informations et d'une relecture juridique). Le reste du jeu tourne.
+**Où en est le produit.** Deux bloqueurs go live : PP Frama sans licence webfont, et le légal (écrit, en attente des sept informations et d'une relecture juridique). Le reste du jeu tourne.
 
 **Décisions qui t'attendent, aucune n'est technique :**
 - Deux sens du mot « maîtrisé » : le jeu dit « 3% of your set mastered » sur un pool de 30, le profil dit « 0% mastered » sur tout le catalogue. Un joueur croira que c'est cassé.
@@ -42,7 +42,7 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 **Depuis l'audit du 2026-07-29, un second chantier passe devant tout le reste du code** : la chaîne entre le moteur et l'affichage est cassée. Le moteur pédagogique envoie une typo tirée d'un catalogue de 1172, l'écran de training ne sait en charger que 23, donc le joueur doit nommer une police qu'il ne voit pas. Le moteur lui même est conforme à la spec et **ne doit pas être réécrit**. Détail et priorités en section I.
 
-État par sujet : **18 faits · 0 en cours · 15 à faire · 3 bloqueurs · 6 parkés / à décider** (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
+État par sujet : **19 faits · 0 en cours · 15 à faire · 2 bloqueurs · 6 parkés / à décider** (le 2026-08-19, le symbole du logo est redessiné et remplacé partout, il sort des bloqueurs) (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
 
@@ -81,6 +81,33 @@ Le troisième a été réglé en rendant la promesse vraie plutôt qu'en l'affai
 - **Les clusters visuels ne sont pas réparés**, et c'est le pire défaut du rangement, puisque ce sont eux qui fabriquent les mauvaises réponses donc la difficulté. `structural_signature_json` ne peut pas servir de signal : **41 signatures distinctes pour 1172 polices**, et trois monospaces différentes portent la même au champ près, donc elle est preset elle aussi. Un gain intermédiaire existe et vaut d'être mesuré d'abord : regrouper par signature donnerait 41 clusters au lieu de 11, par script. Le réparer vraiment demande soit de faire tourner `extract_typeface_specimen_data.py` sur les 1172 fichiers, soit de l'œil humain.
 - **`primary_category` compte 3 `display` sur 1172**, ce qui est manifestement faux. À mesurer avant de corriger.
 - **Le volet Adobe a son propre plan à écrire**, et ce chantier lui prépare l'étagère : Helvetica, Futura PT, Univers Next et Trajan entreront en `common` par nature. Faits établis le 2026-08-19 : les 60 noms cherchés sont **tous** dans la bibliothèque Adobe, le kit `ozq5yfs` existe et s'appelle DWIGGINS mais son domaine vaut `"f"` par erreur, et **aucun fichier de police Adobe n'est téléchargeable**, donc `extract_typeface_specimen_data.py` et `mirror_fonts.py` ne tourneront jamais dessus. Détail dans `docs/typography/adobe-fonts-candidates.md`.
+
+## Note — 2026-08-19 (suite 3) — le symbole est remplacé partout, du dessin de Marion jusqu'aux badges
+
+Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`). Une seule masse continue, trois contreformes fermées, aucune pièce détachée. Le décalque Pinterest sort du projet, le troisième bloqueur go live tombe.
+
+**Le tracé.** Deux fragments parasites flottaient trente points au dessus des têtes et définissaient à eux seuls le haut du cadre de sélection : tout calage pris sur ce cadre aurait été faux. Retirés, le dessin lui même n'est pas touché. Master dans `05_LOGO/test/MARION-danse-2-nettoye.svg`, cadre utile 673 x 487 points.
+
+**Le rapport passe de 1,77 à 1,382.** Au passage, le 1,49 qui traînait dans les fichiers était le rapport de la boîte rembourrée de l'export, pas celui du dessin, qui valait 1,77. Toute cote reprise sur ce 1,49 était donc déjà fausse avant ce remplacement.
+
+**Huit fichiers regénérés** dans `05_LOGO/dwiggins-source/EXPORT`, puis copiés dans `public/brand` : `symbol-standalone-black` et `-ivory`, `figures-dark` et `figures-cream`, plus les quatre assets composés qui contenaient le symbole, `symbol-panel-black`, les deux `lockup-editorial-panel` et `panel-ivory`. Dans les composés, le symbole est remplacé à hauteur et centre identiques, et la classe CSS qui portait la couleur est reportée sur le nouveau tracé, sans quoi il rendait noir sur noir. Les anciens sont dans `EXPORT/OLD/`.
+
+**Trois corrections de code, sinon le remplacement était silencieusement faux.**
+
+1. `lib/brand/dwiggins-badge-engine.ts` : `CROP.symbol` valait `228 88 408 230`, la boîte de l'ancien dessin. Devenu `84.4 82 673 486.9`. Sans ça les vingt six badges qui portent le symbole affichaient un morceau du milieu du nouveau.
+2. `lib/brand/brand-art.ts` laissait passer le `fill` de l'asset, qui gagne sur la couleur demandée par le moteur : les badges auraient rendu le symbole en ivoire quelle que soit leur couleur. Le chargeur retire maintenant les `fill`.
+3. Six composants portaient `width={182} height={122}` en dur, les dimensions de l'ancienne boîte. Le rapport déclaré ne collait plus au dessin, donc le symbole flottait dans un cadre trop large. Passés à `673 x 487`.
+
+`npm run typecheck` vert, `check:artifacts` vert, `/dev/badges` répond en 200 et sort la nouvelle fenêtre de recadrage sur ses vingt six badges, tracé et couleur vérifiés au rendu.
+
+**La charte Figma est à jour** (`3kfcrtrbWHYs4Evsfi26mq`), pages 11, 13, 14, 15 et 16. Les huit exemplaires du symbole sont remplacés, aucune frame supprimée. Recalculé : la zone de sécurité et son bloc recentré (le bloc perd 51 points de large, l'écart au mot réglé par Marion est conservé tel quel), les quatre cotes de la page 15 (13.8X, 3.6X, 50.3X et 67.7X, contre 17.7X, 3.6X, 50.3X et 71.5X), le rapport de la page 14, les trois tailles réelles de la page 16 (19,3, 57,4 et 62,7 px, contre 25,8, 76,8 et 84 px, ces trois anciennes valeurs mesurant la boîte rembourrée et non le dessin) et le facteur d'échelle, 3,25 au lieu de 3,26.
+
+**Page 14, le bloc des trois têtes est réécrit.** Il annonçait « même rayon pour les trois, et détachées du corps ». Le nouveau dessin n'a aucune tête détachée. Le bloc devient « UNE SEULE MASSE », et le schéma des trois ronds égaux est masqué, pas supprimé.
+
+**Deux choses restent ouvertes.**
+
+1. **La page 12, « Ce que raconte le symbole », n'est pas touchée.** Elle affirme trois bonshommes et bâtit tout son argument sur ce nombre, jusqu'au titre « POURQUOI TROIS ». Je ne sais pas combien de figures le nouveau dessin contient, la silhouette est trop nouée pour compter sans risque, et le sens de la marque n'est pas à moi. Un mot de Marion débloque trois textes.
+2. **Rien ne survit sous 48 px.** Mesuré sur le nouveau tracé : lisible à 64 px, tenable à 32, une tache à 16. Or la page 16 déclare un symbole d'en tête de 19,3 px de large. Le favicon comme cette taille d'en tête demandent une version réduite du dessin, ou une taille d'en tête plus grande. `app/favicon.ico` n'est donc pas régénéré.
 
 ## Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours
 
@@ -1371,17 +1398,18 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 ## E — Légal & marque · le chantier urgent avant mise en ligne
 
-- [ ] **Redessiner le symbole : l'actuel est un décalque d'une image Pinterest** · `Bloqueur` (constaté 2026-08-14)
+- [x] **Redessiner le symbole : l'actuel est un décalque d'une image Pinterest** · `Fait` (constaté 2026-08-14, remplacé 2026-08-19)
+  _**Remplacé le 2026-08-19.** Marion a redessiné le symbole au pinceau dans Illustrator. Une seule masse continue, aucune pièce détachée. Rapport 1,382 au lieu de 1,77. Huit fichiers regénérés, trois corrections de code, cinq pages de charte recalculées. Détail dans la note du 2026-08-19 (suite 3). Restent le favicon et la page 12 de la charte._
   _Constat de Marion, confirmé image contre image : `dwiggins-symbol-standalone-black.svg` reproduit une image trouvée sur Pinterest, mêmes contours, mêmes trois têtes détachées, mêmes proportions, un seul éclat détaché en moins. Ce n'est pas une inspiration, c'est une reproduction, et il n'y a aucun droit dessus. Source encore non identifiée : à passer dans Google Lens pour savoir si c'est une illustration (droit d'auteur seul) ou le logo d'une marque déposée (risque de confusion en plus)._
   _**Exposition mesurée le 2026-08-14 :** aucun déploiement configuré dans le repo, donc le dessin ne vit que sur localhost, dans le fichier Figma de la charte (pages 12 et 14, où le symbole occupe la page) et dans le deck de pitch Adobe. Ce dernier est le seul endroit d'où il a pu sortir._
   _**Périmètre du remplacement :** `symbol-standalone-black` et `-ivory`, `figures-dark` et `figures-cream` (même tracé recadré, sept appels dans le site : header, footer, modes, règles, profil), les lockups et panneaux, une dizaine de planches d'étude, le moteur de badges qui lit le symbole côté serveur (`lib/brand/brand-art.ts`), le favicon, et les pages 12, 14 et 15 de la charte qui cotent les proportions du bloc actuel._
   _**Direction décidée par Marion le 2026-08-14 :** des humains, pas des formes abstraites. On garde l'esprit d'origine (corps pleins, mouvement, mains qui se rejoignent, un seul aplat) et on change la structure. Arrangement en ronde. Le vide central ne porte volontairement aucun message (« la ronde pour elle-même »), mais il doit être dessiné exprès et non subi._
   - [ ] Identifier la source de l'épingle (Google Lens) — action de Marion
-  - [ ] Choisir la famille : ronde en perspective, ligne, ou grappe
-  - [ ] Passer les masses en largeur variable (le lot 1 est encore du tube d'épaisseur constante)
+  - [x] Choisir la famille : ronde en perspective, ligne, ou grappe — tranché par le dessin au pinceau du 2026-08-19
+  - [x] Passer les masses en largeur variable (le lot 1 est encore du tube d'épaisseur constante) — le tracé au pinceau est en masses pleines
   - [ ] Trancher la version réduite du favicon (rien ne survit à 16 px)
-  - [ ] Remplacer les fichiers, le moteur de badges et le favicon
-  - [ ] Refaire les pages 12, 14 et 15 de la charte
+  - [x] Remplacer les fichiers et le moteur de badges (2026-08-19) — huit assets, `CROP.symbol`, le chargeur `brand-art`, six `width`/`height` en dur. **Le favicon reste à faire**, il demande la version réduite ci dessous
+  - [x] Refaire les pages de la charte (2026-08-19) — pages 11, 13, 14, 15 et 16 remplacées et recotées. **La page 12 attend une seule information de Marion**, le nombre de figures du nouveau dessin, dont dépendent trois de ses textes
   - `05_LOGO/test/` — premier lot de 17 propositions + `LISEZ-MOI.md`, générateur `_outil/humains.py`
 - [ ] **Régler la typo du logo (PP Frama, propriétaire)** · `Bloqueur`
   _Servie à tous les visiteurs sans licence webfont. **Précision du 2026-08-14 :** le logo lui-même n'est pas concerné, `dwiggins-wordmark-full-black.svg` est entièrement vectorisé (8 tracés, aucun `<text>`, aucun `font-family`). Ce qui sert les `.otf` aux visiteurs, c'est `components/brand/DwigginsBadge.tsx` et ses trois `@font-face`, via les badges du profil. Deux problèmes distincts là où cette ligne n'en voyait qu'un : la fonte servie (distribution, interdite par une licence desktop) et le mot vectorisé (usage, autre question)._

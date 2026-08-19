@@ -89,7 +89,7 @@ export function buildEditorial(b: Editorial, art: Art): string {
 }
 
 type PlaceKey = "symbol" | "dwig" | "full";
-const CROP: Record<PlaceKey, string> = { symbol: "228 88 408 230", dwig: "120 0 645 200", full: "44 44 760 124" };
+const CROP: Record<PlaceKey, string> = { symbol: "84.4 82 673 486.9", dwig: "120 0 645 200", full: "44 44 760 124" };
 const GLYPH_VB: Record<string, string> = { D: "113 14 176 172", W: "296 14 227 172", I: "493 14 93 172", G: "577 14 173 172" };
 
 export const TIERS: Record<
