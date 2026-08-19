@@ -5,7 +5,13 @@ import manifest from "@/content/typefaces/font-manifest-v4.json";
 // and is closed only by an explicit call to endTrainingSession (vision §2, I-17).
 // Any constant reintroducing a round count here would recreate the defect, which
 // is what check:session-lifecycle watches for.
-export const TRAINING_CORRECT_DELAY_MS = 2000;
+// Enchaînement instantané, demandé par Marion le 2026-08-19 : « le joueur peut
+// répondre hyper vite et avoir la suite hyper vite, pas de seconde ».
+// Valait 2000, ce qui laissait voir la bonne réponse mais faisait attendre à
+// chaque question. Ce que ces deux secondes assuraient aussi, le préchargement de
+// la police suivante, est repris par `whenGameFontReady`, qui enchaîne dès que la
+// face est utilisable au lieu d'attendre une durée fixe.
+export const TRAINING_CORRECT_DELAY_MS = 0;
 export const TRAINING_ENGINE_VERSION = "training-provider-v1";
 
 export const TRAINING_WORD_POOL = [

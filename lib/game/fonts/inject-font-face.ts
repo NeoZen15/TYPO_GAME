@@ -52,3 +52,38 @@ export const ensureGameFontFace = (fontFace: GameFontFace | null | undefined) =>
   // family recorded as declared when it was not.
   injected.add(fontFace.family);
 };
+
+/**
+ * Résout quand la face est réellement utilisable, ou au bout du délai de garde.
+ *
+ * POURQUOI ELLE EXISTE. La pause de deux secondes après une bonne réponse servait
+ * aussi de fenêtre de préchargement : la police suivante avait le temps d'arriver
+ * avant que le mot change. Marion a demandé l'enchaînement instantané le
+ * 2026-08-19, et sans cette attente le mot suivant s'afficherait dans la police de
+ * repli le temps que le woff2 arrive, à cause de `font-display: swap`. Le joueur
+ * jugerait alors des lettres qui ne sont pas celles de la typo demandée, ce que ce
+ * jeu ne peut pas se permettre.
+ *
+ * Le plus souvent la police est déjà déclarée et en cache, la promesse se règle
+ * en quelques millisecondes et l'enchaînement reste instantané. Le délai de garde
+ * évite qu'un réseau lent fige la partie : passé ce délai on avance, et `swap`
+ * remplacera le repli dès l'arrivée du fichier.
+ */
+export const GAME_FONT_READY_TIMEOUT_MS = 900;
+
+export const whenGameFontReady = async (fontFace: GameFontFace | null | undefined) => {
+  if (!fontFace || typeof document === "undefined" || !("fonts" in document)) {
+    return;
+  }
+
+  const ready = document.fonts
+    .load(`${fontFace.weight} 1em "${fontFace.family}"`)
+    .then(() => undefined)
+    .catch(() => undefined);
+
+  const guard = new Promise<void>((resolve) => {
+    window.setTimeout(resolve, GAME_FONT_READY_TIMEOUT_MS);
+  });
+
+  await Promise.race([ready, guard]);
+};

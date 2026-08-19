@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import SessionRecap from "@/features/game/components/SessionRecap";
 import { isDevRuntime } from "@/lib/dev-mode";
-import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
+import { ensureGameFontFace, whenGameFontReady } from "@/lib/game/fonts/inject-font-face";
 import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
 import {
   buildTrainingRecapView,
@@ -631,13 +631,21 @@ export default function GameScreen() {
         // the owner; what matters here is that answering never closes anything.
 
         if (payload.nextQuestion) {
-          // Declare the next face as soon as it arrives, not when it is shown: the
-          // feedback delay becomes a preload window, so the woff2 is usually in
-          // cache before the swap (spec §9.1, "précharger la police suivante").
+          // Declare the next face as soon as it arrives, not when it is shown.
           ensureGameFontFace(payload.nextQuestion.fontFace);
-          queueAdvance(() => {
-            beginQuestion(payload.nextQuestion!);
-          }, TRAINING_CORRECT_DELAY_MS);
+          const upcoming = payload.nextQuestion;
+          // ENCHAÎNEMENT INSTANTANÉ, 2026-08-19. Le délai fixe de deux secondes est
+          // tombé à zéro sur demande du propriétaire. Il servait aussi de fenêtre
+          // de préchargement : on attend donc que la face soit utilisable, ce qui
+          // prend quelques millisecondes quand elle est en cache, plutôt qu'une
+          // durée arbitraire. Sans cette attente le mot suivant s'afficherait dans
+          // la police de repli, et le joueur jugerait des lettres qui ne sont pas
+          // celles de la typo demandée.
+          void whenGameFontReady(upcoming.fontFace).then(() => {
+            queueAdvance(() => {
+              beginQuestion(upcoming);
+            }, TRAINING_CORRECT_DELAY_MS);
+          });
           return;
         }
 
