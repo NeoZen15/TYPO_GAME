@@ -53,9 +53,11 @@ if (!Array.isArray(payload.families) || payload.families.length === 0) {
   }
   const attendu = payload.families.length;
   const rangsTries = [...rangs].sort((x, y) => x - y);
-  if (rangsTries[0] !== 1 || rangsTries[attendu - 1] !== attendu) {
+  const minRang = rangsTries[0];
+  const maxRang = rangsTries[rangsTries.length - 1];
+  if (minRang !== 1 || maxRang !== attendu || rangsTries.length !== attendu) {
     failures.push(
-      `${SNAPSHOT}: rank va de ${rangsTries[0]} a ${rangsTries[attendu - 1]} pour ${attendu} familles. ` +
+      `${SNAPSHOT}: rank va de ${minRang} a ${maxRang} pour ${attendu} familles (${rangsTries.length} valeurs distinctes). ` +
         "Il doit etre dense, de 1 a N, sinon un seuil ne selectionne pas le nombre de polices qu'il annonce."
     );
   }
