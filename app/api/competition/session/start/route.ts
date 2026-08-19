@@ -2,18 +2,28 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { startCompetitionSession } from "@/lib/game/competition/provider";
+import { normalizeAttemptId } from "@/lib/game/training/contracts";
 
 const GUEST_COOKIE_NAME = "jdt_guest_user_id";
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json().catch(() => ({}))) as { locale?: "fr" | "en" };
+    const body = (await request.json().catch(() => ({}))) as {
+      locale?: "fr" | "en";
+      attemptId?: string;
+    };
     const cookieStore = await cookies();
     const existingGuestUserId = cookieStore.get(GUEST_COOKIE_NAME)?.value ?? null;
 
     const result = await startCompetitionSession({
       locale: body.locale === "en" ? "en" : "fr",
       guestUserId: existingGuestUserId,
+      // One round equals one identifier. This is the ONLY value the client is
+      // allowed to choose that reaches a primary key, and it is validated as a
+      // uuid before it gets there: a malformed one becomes null and the server
+      // mints its own, so a stale or hostile body can never answer 500. The
+      // identity above stays out of the body, it comes from the httpOnly cookie.
+      attemptId: normalizeAttemptId(body.attemptId),
     });
 
     const response = NextResponse.json(result.payload);

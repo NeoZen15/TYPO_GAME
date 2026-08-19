@@ -8,6 +8,22 @@ export type TrainingQuestionTokenPayload = {
   typefaceSlug: string;
   displayWord: string;
   options: string[];
+  // When the SERVER built this question, in epoch milliseconds of the server's
+  // own clock. Signed with the rest, so a client cannot move it.
+  //
+  // It exists for competition scoring, which is the only place a duration decides
+  // anything: the fast bonus reads responseTimeMs out of the request body, and a
+  // body that claims nought earns two points on every word. Measured on
+  // 2026-08-17 against the running server. With this stamp the server can compare
+  // the claim against its own elapsed time and refuse a bonus the round trip
+  // makes impossible.
+  //
+  // OPTIONAL, and it has to stay optional. Tokens minted before this field
+  // existed are in flight the moment the change deploys, and their signature
+  // covers a payload without it: reading it as required would turn every one of
+  // them into a crash instead of an answer. Absent means "no server measurement
+  // available", which is exactly the old behaviour.
+  issuedAtMs?: number;
 };
 
 // Signing secret, fail closed in production.

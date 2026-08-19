@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { isGameRequestError } from "@/lib/game/request-error";
 import { endTrainingSession } from "@/lib/game/training/provider";
 import { getCurrentUserId } from "@/lib/server/current-user";
 
@@ -45,6 +46,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json(result);
   } catch (error) {
+    // Closing a session that does not exist, or one belonging to somebody else,
+    // is a fact about the request. It answered 500 until 2026-08-17, which read
+    // as a server fault for a caller sending an identifier it should not have.
+    if (isGameRequestError(error)) {
+      console.warn(`training/session/end refused: ${error.code}`, error.message);
+      return NextResponse.json({ error: error.code }, { status: error.status });
+    }
+
     console.error("training/session/end failed", error);
     return NextResponse.json({ error: "training_end_failed" }, { status: 500 });
   }

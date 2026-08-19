@@ -242,6 +242,7 @@ export default function GameScreen() {
   // becomes true on the next render, so a fast double click, or a mount effect
   // that runs twice, fires two requests before React has repainted anything.
   const inFlightRef = useRef(false);
+  const answerInFlightRef = useRef(false);
   const endInFlightRef = useRef(false);
 
   const showLevelToast = useCallback((level: string) => {
@@ -507,6 +508,15 @@ export default function GameScreen() {
         return;
       }
 
+      // Re-entrance, on a ref rather than on isRoundLocked, and the reasoning is
+      // the one already written above startSession: state and `disabled` only
+      // land on the next render, so several clicks inside one tick all read the
+      // old value and all fire. The guard was on the start path and not on this
+      // one. Harmless here, the answer writer being idempotent since the double
+      // start plan, but two wasted requests all the same.
+      if (answerInFlightRef.current) return;
+      answerInFlightRef.current = true;
+
       setSelectedId(optionId);
       setError(null);
       setIsRoundLocked(true);
@@ -576,6 +586,11 @@ export default function GameScreen() {
         console.error(submitError);
         setError("Unable to submit this answer.");
         setIsRoundLocked(false);
+      } finally {
+        // Released whichever way the call left, the wrong-answer early return
+        // included. A ref left true on one path is a screen that never accepts
+        // another answer.
+        answerInFlightRef.current = false;
       }
     },
     [
