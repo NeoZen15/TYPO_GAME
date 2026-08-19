@@ -44,7 +44,6 @@ const AUDIT_SELECTORS = [
   ".block-1-hero",
   ".choice-panel",
   ".block-4-reel",
-  ".site-mascot",
 ];
 
 const collectNodeSnapshot = (selector: string) => {
