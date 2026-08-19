@@ -48,6 +48,32 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-19 — nettoyage avant mise en ligne, 40 Mo sortis du déploiement et cinq modules morts
+
+**Statut : fait, porte `npm run quality` verte de bout en bout, code de sortie 0.** Demande de Marion avant le lancement : ranger et nettoyer. Branche `chore/nettoyage-pre-lancement-2026-08-19`, six commits, rien poussé (le push demande le jeton, cette machine n'a pas d'identifiants).
+
+**Ce que l'audit a d'abord établi : le code n'était pas le problème.** 30 517 lignes sur `app`, `components`, `features`, `lib`. Zéro TODO, zéro `any`, zéro `@ts-ignore`, cinq dépendances d'exécution, dix eslint-disable. Il n'y avait rien à simplifier qui vaille le risque. Le poids, en revanche, était réel.
+
+**40 Mo d'assets retirés du déploiement.** Quatre dossiers de `public/fonts` servaient des typos que le catalogue marque `activation_status: false`, donc qu'aucun joueur ne peut tirer : `notocoloremojicompattest` à 35,5 Mo, `notocoloremoji` à 5,4 Mo, `arefruqaaink` et `reemkufiink`. Absents de `font-manifest-v4.json` comme de `font-runtime-assets.json`, donc rien ne perdait un fichier qu'il lisait. `public/` part en entier chez Vercel, sans tri : c'est le seul dossier où le poids mort coûte vraiment. Avec les six SVG de démarrage Next jamais référencés, `public` tombe de 111 à 63 Mo.
+
+**Cinq modules que rien n'importait.** `ScrollMascot` (858 lignes) et `ScrollHint` étaient la mascotte fixe de coin, remplacée par les mascottes d'onboarding et de page de mode qui sont toujours branchées. `compare-assistant-composer` avait perdu son dernier appelant, et sa disparition a orphelinné les trois modules dont il était le seul consommateur : `compare-assistant-playbooks`, `compare-assistant-contracts`, `compare-trap-library`. L'assistant de comparaison n'a jamais été relié à une page, les quatre partent ensemble.
+
+**Le CSS de la mascotte reste dans `globals.css`, volontairement.** Les règles `.site-mascot__*` sont groupées avec des sélecteurs vivants (`.onboarding-mascot-svg`, `.inline-mascot-comment`, `.onboarding-mascot-eye`). Retirer la moitié morte de chaque groupe demandait une vingtaine d'éditions chirurgicales dans un fichier de 11 473 lignes, à quelques jours du lancement, pour gagner deux kilo-octets. Du CSS orphelin n'a aucun coût d'exécution : aucun élément ne le déclenche. Le commit qui supprime les composants est isolé, donc un seul `git revert` ramène la mascotte entière si elle doit revenir.
+
+**Deux faux positifs attrapés par vos garde-fous, et c'est l'enseignement de la journée.** Mon balayage de fichiers morts a d'abord déclaré `ErrorScreen` inutilisé : son glob `app/**/*.tsx` ne voyait pas les fichiers à la racine de `app/`, et `error.tsx`, `global-error.tsx`, `not-found.tsx` l'importent tous les trois. Le typecheck l'a dit avant le build. Puis `headless-runtime` a été déclaré mort alors que deux scripts `.mts` en dépendent, extension absente de mon filtre : ce sont eux qui portent `profiles:export:dev` et `profiles:metrics:extract`. Les deux ont été restaurés. Aucun détecteur de code mort maison n'est fiable seul, seul le typecheck tranche.
+
+**`check:copy` a fait exactement son travail.** Supprimer `ScrollHint` a rendu `gateCopy.scrollLabel` orpheline, le seul contenu du bloc, donc l'export part avec. Le typecheck attrape les imports cassés, jamais les données devenues inutiles ; ce garde-fou est ce qui empêche la traînée de s'accumuler.
+
+**1,6 Go de résidus locaux, hors git.** `tmp/clang-module-cache` pesait 223 Mo de cache de compilation, `tmp` passe de 250 à 27 Mo. Un worktree d'agent abandonné, `agent-ac3e36645b74c6354`, occupait 623 Mo avec zéro commit absent de HEAD et aucune modification en attente, supprimé avec sa branche. `public/fonts/staged` (7,4 Mo) est un espace de transit déjà ignoré par git.
+
+**Trois choses laissées exprès, elles ne m'appartiennent pas.**
+
+- Le worktree `da-compare-spec-beige` (702 Mo) porte **deux commits absents de HEAD**, tous deux de la DA : le chrome de marque (nav et pied crème) sur les pages comparaison et spécimen, et les blocs d'intro « À quoi sert cette page ». Décision de Marion : intégrer ou jeter. Tant que ce n'est pas tranché, ne pas supprimer ce dossier, c'est le seul endroit où ce travail existe.
+- `tmp/pdfs` contient une `maquette.pdf` du 12 mars (5,7 Mo) et des captures d'onboarding v1. `tmp/` est ignoré par git, donc ces originaux ne sont sauvegardés nulle part. À sortir de `tmp/` avant qu'un ménage les emporte.
+- `content/catalog/candidates` pèse 12 Mo de snapshots intermédiaires suivis par git (`google-fonts-snapshot`, `google-fonts-snapshot-all`, audits de promotion). Ce sont des traces de pipeline, pas du contenu servi. À sortir du dépôt un jour, mais `check:artifacts` les accepte aujourd'hui et le lancement n'en dépend pas.
+
+---
+
 ## Note — 2026-08-17 (suite 7) — la compétition répond 41 pour cent plus vite, mesuré sur un build de production
 
 **Statut : fait, avant et après mesurés sur le même build de production.** Suite de la question de Marion, « et ça va assez vite ? ». Les mesures de la note ci dessous étaient prises en développement, ce qui ne dit rien de la production. Un vrai `next build` puis un vrai `next start` ont donc servi de banc, pointés sur la branche Neon jetable pour que la production ne reçoive rien.
