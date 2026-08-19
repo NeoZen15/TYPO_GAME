@@ -195,18 +195,44 @@ try {
       );
     }
 
-    // Et la notoriete ne doit pas ecraser le delai : une rare due depuis longtemps
-    // passe avant une common pas encore due, sinon le calendrier de revision ne
-    // veut plus rien dire et l'invariant I-02 tombe.
-    const melange = [
-      { ...dues[0], next_due_after_q: 0 },
-      { ...dues[1], next_due_after_q: 50 },
+    // Et la notoriete ne doit pas ecraser le delai : une police tres en retard
+    // passe avant une police moins en retard, meme si elle est rare, sinon le
+    // calendrier de revision ne veut plus rien dire et l'invariant I-02 tombe.
+    //
+    // Les deux polices ci dessous doivent rester eligibles, c'est a dire que
+    // leur next_due_after_q reste sous globalQIndex. Sinon le filtre
+    // d'eligibilite de pickEligibleTypeface (pool.filter((row) =>
+    // row.next_due_after_q <= globalQIndex)) ecarte la moins urgente avant meme
+    // que le comparateur ne s'execute : source ne contient plus qu'un element,
+    // le tri n'est jamais appele sur deux polices, et le test mesure alors ce
+    // filtre d'eligibilite (qui preexiste, que cette tache ne touche pas) au
+    // lieu de mesurer l'ordre du comparateur, qui est le point que cette tache
+    // designe comme le plus sensible.
+    const enRetard = [
+      {
+        typeface_slug: "rare-en-retard",
+        mastery_level: 0,
+        next_due_after_q: 10,
+        primary_category: "sans_serif",
+        visual_cluster_id: "cluster_neo_grotesk_A",
+        difficulty_base: "medium",
+        rarity_tag: "rare",
+      },
+      {
+        typeface_slug: "connue-moins-en-retard",
+        mastery_level: 0,
+        next_due_after_q: 90,
+        primary_category: "sans_serif",
+        visual_cluster_id: "cluster_neo_grotesk_A",
+        difficulty_base: "medium",
+        rarity_tag: "common",
+      },
     ];
-    const parDelai = pickEligibleTypeface(melange, 10, "graine-de-test");
-    if (parDelai?.typeface_slug !== "obscure") {
+    const parDelai = pickEligibleTypeface(enRetard, 100, "graine-de-test");
+    if (parDelai?.typeface_slug !== "rare-en-retard") {
       failures.push(
-        "question-shape: le delai passe avant la notoriete. Une police due doit etre servie " +
-          `meme si elle est rare. pickEligibleTypeface a rendu "${parDelai?.typeface_slug}".`
+        "question-shape: le delai passe avant la notoriete. Une police tres en retard doit " +
+          `etre servie meme si elle est rare. pickEligibleTypeface a rendu "${parDelai?.typeface_slug}".`
       );
     }
   }
