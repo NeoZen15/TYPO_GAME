@@ -48,6 +48,40 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-19 (suite 2) — la notoriété devient l'axe de progression, et Adobe trouve son étagère
+
+**Statut : code livré et porte verte, deux migrations écrites et NON appliquées.** Demande de Marion : les typographies les plus connues doivent être proposées les premières parce qu'elles sont les plus simples, et les moins connues arriver quand le joueur progresse ou passe en expert. Point de départ du chantier Adobe, qu'elle veut mener ensuite.
+
+**Le défaut mesuré avant de toucher à quoi que ce soit.** `rarity_tag` existait depuis la migration 003 et valait `common` sur **1148 des 1172 polices actives**, `uncommon` sur 24, `rare` sur aucune. La colonne était là et ne disait rien, si bien que le constructeur de questions servait une police que personne ne peut nommer aussi souvent qu'une célèbre. Le reste du rangement n'allait pas mieux : `foundry` et `release_year` vides sur les 1172, `qa_status` à `review` sur 1122, et surtout **11 clusters visuels dont un de 442, un de 321 et un de 266**, soit 1029 polices dans trois paquets.
+
+**Pourquoi le pipeline n'a pas été refait, comme Marion l'a demandé.** Le classement des 1172 vient d'une chaîne existante : `sync_google_fonts_api.py` interroge Google, `generate_editorial_review_template.py` produit un template de revue **humaine** à dix colonnes, `apply_editorial_review_presets.py` l'applique, puis `build_reviewed_promotion.py` et `stage_catalog_promotion.py` font entrer les lignes. Les dix colonnes soumises à revue sont exactement celles qui sont mal remplies, et pour cause : personne ne remplit 1172 lignes à la main, la revue est passée par presets, et tout a atterri dans trois ensembles. Ce n'est pas un bug, c'est un travail éditorial qui n'a pas été fait au détail.
+
+**La trouvaille qui a débloqué le chantier.** `sync_google_fonts_api.py` accepte déjà `--sort popularity`, jamais utilisé, le défaut étant `alpha`. Et il existe un endpoint **public et sans clé**, `fonts.google.com/metadata/fonts`, qui rend **1942 familles** avec `popularity`, `trending`, `classifications`, `stroke`, `designers` et `dateAdded`. La notoriété devient donc mesurable par script, sans revue humaine et sans clé d'API à demander.
+
+**Quatre tâches livrées**, par sous-agents, avec une relecture après chacune. Un collecteur `scripts/sync_google_fonts_metadata.py`, jumeau sans clé de celui de Google, dont l'en-tête documente le piège de la séquence anti détournement `)]}'` que `json.loads` refuse sans rien expliquer. Un traducteur `scripts/build_rarity_from_popularity.py` qui produit deux migrations et n'écrit jamais en base. Le câblage dans `pickEligibleTypeface`, où la notoriété classe **après** le délai de révision et la maîtrise, jamais avant. Et les designers.
+
+**Trois nombres à retenir.** 1090 polices classées sur 1172, dont **864 changent réellement de palier**. La répartition passerait de 1148 `common` et 24 `uncommon` à **243 `common`, 357 `uncommon`, 490 `rare`**. Et 23 designers comblés sur les 48 manquants, Google ne connaissant pas les 25 autres, ce que la note dit plutôt que de l'inventer.
+
+**Les 82 polices sans rang sont nommées et normales** : `adobeblank`, les héritages coréens `batang`, `dotum`, `gungsuh`, les alphas de polices variables `amstelvaralpha` et `decovaralpha`, et des faces absentes de Google Fonts.
+
+**Un piège de correspondance qui aurait coûté cher.** Les slugs du catalogue gardent parfois un tiret bas, `open_sans`, `playfair_display`, `bebas_neue`, `dm_sans`, `ibm_plex_sans`. Comparer un slug brut à un nom Google normalisé laissait ces polices **sans rang**, et ce sont les plus connues du catalogue : **Open Sans est première du classement mondial**. En normalisant les deux côtés, 1077 appariements deviennent 1090, et les 13 gagnées sont toutes dans le haut du panier. Le même défaut aurait fait rater leurs designers.
+
+**Trois défauts trouvés par les relectures, tous dans le plan et aucun dans le code livré.** Ils se ressemblent, et c'est ce qui les rend instructifs : aucun n'aurait cassé le jeu tout de suite, tous les trois auraient menti plus tard.
+
+- Un garde vérifiait le champ `rank` alors que son contrôle négatif abîmait `popularity`. Il était donc **vert sans jamais prouver qu'il pouvait échouer**, exactement le mode de défaillance de `check:contracts`.
+- Un test de tri comparait une police en retard à une police pas encore due. Or la seconde est écartée par le filtre d'éligibilité **avant** le comparateur, donc le tri n'était jamais appelé sur deux éléments : le test validait le filtre, pas l'ordre. Le relecteur l'a prouvé en recopiant le tri hors du dépôt avec la notoriété jugée en premier, et les tests passaient quand même.
+- L'en-tête de la migration promettait de « rejouer l'ancienne valeur, que le rapport de génération liste ». Le script ne listait rien. La promesse de retour arrière n'existait pas, et elle aurait été lue au moment précis de décider d'appliquer.
+
+Le troisième a été réglé en rendant la promesse vraie plutôt qu'en l'affaiblissant : un fichier `013_rarity_from_popularity.rollback.sql` de 1090 ordres inverses, dont les 1090 valeurs ont été confrontées au catalogue, 1090 sur 1090 conformes.
+
+**Vérifié.** La porte passe **30 étapes hors build** contre 28 la veille, `check:google-metadata-sync` et `check:rarity-coverage` câblés dans la chaîne. Les deux nouveaux gardes ont été cassés à la main pour constater qu'ils rougissent, l'un de cinq façons différentes par son relecteur. Le test de tri a été prouvé capable d'échouer en déplaçant la notoriété devant le délai. **La base n'a rien reçu**, elle porte toujours 1148 `common` et 24 `uncommon`.
+
+**Ce qui reste ouvert, et c'est le plus important pour la suite.**
+
+- **Les clusters visuels ne sont pas réparés**, et c'est le pire défaut du rangement, puisque ce sont eux qui fabriquent les mauvaises réponses donc la difficulté. `structural_signature_json` ne peut pas servir de signal : **41 signatures distinctes pour 1172 polices**, et trois monospaces différentes portent la même au champ près, donc elle est preset elle aussi. Un gain intermédiaire existe et vaut d'être mesuré d'abord : regrouper par signature donnerait 41 clusters au lieu de 11, par script. Le réparer vraiment demande soit de faire tourner `extract_typeface_specimen_data.py` sur les 1172 fichiers, soit de l'œil humain.
+- **`primary_category` compte 3 `display` sur 1172**, ce qui est manifestement faux. À mesurer avant de corriger.
+- **Le volet Adobe a son propre plan à écrire**, et ce chantier lui prépare l'étagère : Helvetica, Futura PT, Univers Next et Trajan entreront en `common` par nature. Faits établis le 2026-08-19 : les 60 noms cherchés sont **tous** dans la bibliothèque Adobe, le kit `ozq5yfs` existe et s'appelle DWIGGINS mais son domaine vaut `"f"` par erreur, et **aucun fichier de police Adobe n'est téléchargeable**, donc `extract_typeface_specimen_data.py` et `mirror_fonts.py` ne tourneront jamais dessus. Détail dans `docs/typography/adobe-fonts-candidates.md`.
+
 ## Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours
 
 **Statut : fait, porte qualité verte, mais l'horloge n'est pas mesurée.** Question de Marion : « le code peut pas être optimisé, sans rien casser ? ». Réponse mesurée sur le code, pas devinée.
