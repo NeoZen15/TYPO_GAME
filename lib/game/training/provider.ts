@@ -1153,12 +1153,55 @@ export const submitTrainingAnswer = async ({
     );
   }
 
-  const sessionRows = await queryRows<SessionRow>(sql`
-    SELECT session_id, user_id, seed, question_count, status
-    FROM sessions
-    WHERE session_id = ${sessionId}::uuid
-    LIMIT 1
-  `);
+  // The three reads this answer needs are independent. The signed token already
+  // names the session, the player and the typeface, so none of them waits on a
+  // value another query returns; only the WHERE on the player moved from
+  // session.user_id to the identifier the token carries, which the check below
+  // then confronts with the session's own. The Neon HTTP driver sends one
+  // request per query, so awaiting them one after another paid three network
+  // round trips for one round trip of work.
+  //
+  // The guards keep their order and their codes: the session is judged before
+  // the identity, so a closed session still answers session_not_active and
+  // never identity_mismatch. A rejected request now costs two reads it used to
+  // skip, and both are reads about the player the signed token names, so a
+  // caller can only ever make the server read its own rows.
+  const [sessionRows, userRows, stateRows] = await Promise.all([
+    queryRows<SessionRow>(sql`
+      SELECT session_id, user_id, seed, question_count, status
+      FROM sessions
+      WHERE session_id = ${sessionId}::uuid
+      LIMIT 1
+    `),
+    queryRows<UserRow>(sql`
+      SELECT user_id, locale, global_q_index, onboarding_familiarity
+      FROM users
+      WHERE user_id = ${payload.userId}::uuid
+      LIMIT 1
+    `),
+    queryRows<PoolRow>(sql`
+      SELECT
+        uts.state_id,
+        uts.typeface_slug,
+        uts.mastery_level,
+        uts.next_due_after_q,
+        uts.session_errors,
+        uts.consecutive_session_errors,
+        uts.consecutive_correct,
+        uts.adaptive_coef,
+        tc.primary_category::text AS primary_category,
+        tc.visual_cluster_id,
+        tc.difficulty_base::text AS difficulty_base,
+        tc.display_name
+      FROM user_typeface_state uts
+      JOIN typefaces_core tc
+        ON tc.typeface_slug = uts.typeface_slug
+      WHERE uts.user_id = ${payload.userId}::uuid
+        AND uts.typeface_slug = ${payload.typefaceSlug}
+        AND uts.in_active_pool = true
+      LIMIT 1
+    `),
+  ]);
 
   const session = sessionRows[0];
   if (!session || session.status !== "active") {
@@ -1168,50 +1211,18 @@ export const submitTrainingAnswer = async ({
     );
   }
 
-  const userRows = await queryRows<UserRow>(sql`
-    SELECT user_id, locale, global_q_index, onboarding_familiarity
-    FROM users
-    WHERE user_id = ${session.user_id}::uuid
-    LIMIT 1
-  `);
-
   const user = userRows[0];
-  if (!user || payload.userId !== user.user_id) {
+  if (!user || session.user_id !== user.user_id) {
     throw new GameRequestError(
       "identity_mismatch",
       "The signed token names a different player than the session does."
     );
   }
 
-  const stateRows = await queryRows<PoolRow>(sql`
-    SELECT
-      uts.state_id,
-      uts.typeface_slug,
-      uts.mastery_level,
-      uts.next_due_after_q,
-      uts.session_errors,
-      uts.consecutive_session_errors,
-      uts.consecutive_correct,
-      uts.adaptive_coef,
-      tc.primary_category::text AS primary_category,
-      tc.visual_cluster_id,
-      tc.difficulty_base::text AS difficulty_base,
-      tc.display_name
-    FROM user_typeface_state uts
-    JOIN typefaces_core tc
-      ON tc.typeface_slug = uts.typeface_slug
-    WHERE uts.user_id = ${user.user_id}::uuid
-      AND uts.typeface_slug = ${payload.typefaceSlug}
-      AND uts.in_active_pool = true
-    LIMIT 1
-  `);
-
   const currentState = stateRows[0];
   if (!currentState) {
     throw new Error("Training state not found for current typeface.");
-  }
-
-  const isCorrect = answerSlug === payload.typefaceSlug;
+  }  const isCorrect = answerSlug === payload.typefaceSlug;
 
   // mastery_after and reason_code both depend on the attempt index, and the
   // attempt index is only known INSIDE the statement below, deriving it in
@@ -1535,7 +1546,15 @@ export const submitTrainingAnswer = async ({
   // Stage 5 — progression aggregate for the in-game indicator. Computed after the
   // mastery write so faces mastered / eye level are fresh. Reuses profile-stats
   // (no parallel computation). Absent on wrong turns (handled above).
-  const progressAggregate = await safeTrainingProgress(user.user_id);
+  // Both are reads, both come after every write of this answer, and neither
+  // reads what the other returns, so they travel together. The comment above
+  // asks for the aggregate to be computed after the mastery write, and it still
+  // is: what changed is that the pool no longer waits for the aggregate to come
+  // back before leaving.
+  const [progressAggregate, pool] = await Promise.all([
+    safeTrainingProgress(user.user_id),
+    getPoolRows(user.user_id),
+  ]);
   const progressFields = progressAggregate
     ? {
         eyeLevel: progressAggregate.eyeLevel,
@@ -1544,8 +1563,6 @@ export const submitTrainingAnswer = async ({
         masteryPercent: progressAggregate.masteryPercent,
       }
     : {};
-
-  const pool = await getPoolRows(user.user_id);
   // Spec §4.5 — never advance into a frozen pool. When every item is still in
   // cooldown, a silent unlock (or cursor jump) restores a valid next question.
   const recovery = await recoverPoolIfStuck(
