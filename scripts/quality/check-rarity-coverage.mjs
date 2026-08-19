@@ -66,3 +66,27 @@ console.log(
   `check:rarity-coverage OK : ${total} polices classees, ` +
     `${comptes.common} common, ${comptes.uncommon} uncommon, ${comptes.rare} rare.`
 );
+
+// La migration des designers, quand elle existe, ne doit toucher que ce champ.
+const MIGRATION_DESIGNERS = "db/migrations/014_designers_from_metadata.sql";
+const cheminDesigners = path.join(ROOT, MIGRATION_DESIGNERS);
+if (fs.existsSync(cheminDesigners)) {
+  const sqlDesigners = fs.readFileSync(cheminDesigners, "utf8");
+  const updates = [...sqlDesigners.matchAll(/SET designer = /g)].length;
+  if (updates === 0) {
+    failures.push(`${MIGRATION_DESIGNERS}: aucun UPDATE de designer.`);
+  }
+  if (/rarity_tag|DELETE|DROP|TRUNCATE|ALTER TABLE/i.test(sqlDesigners)) {
+    failures.push(
+      `${MIGRATION_DESIGNERS}: touche autre chose que designer. Une migration par colonne, ` +
+        "sinon le proprietaire ne peut pas accepter l'une en refusant l'autre."
+    );
+  }
+  console.log(`  et ${updates} designer(s) dans ${MIGRATION_DESIGNERS}.`);
+}
+
+if (failures.length > 0) {
+  console.error("check:rarity-coverage FAILED\n");
+  for (const f of failures) console.error(`  - ${f}\n`);
+  process.exit(1);
+}

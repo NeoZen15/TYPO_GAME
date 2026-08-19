@@ -40,6 +40,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--snapshot", default="content/catalog/google-metadata-sync/metadata-snapshot.json")
     parser.add_argument("--catalog", default="content/catalog/typefaces-core.json")
     parser.add_argument("--output", default="db/migrations/013_rarity_from_popularity.sql")
+    parser.add_argument(
+        "--designers-output",
+        default="db/migrations/014_designers_from_metadata.sql",
+        help="Migration des designers manquants. Ecrite en plus de celle de rarity_tag.",
+    )
     return parser.parse_args()
 
 
@@ -174,6 +179,50 @@ BEGIN;
     print(f"  {comptes_rollback['sans_rarity_tag']} sans rarity_tag (sautees)")
     if non_apparies[:10]:
         print(f"  exemples sans rang : {', '.join(non_apparies[:10])}")
+
+    # Les designers, depuis le meme appel reseau. On ne remplit QUE les vides :
+    # ecraser un designer deja saisi effacerait un travail humain par une donnee
+    # automatique, et l'instantane de Google n'est pas plus fiable qu'une saisie.
+    designers_par_slug: dict[str, str] = {}
+    for famille in snapshot["families"]:
+        slug = slugifie(famille["family"])
+        noms = [n for n in famille.get("designers", []) if n]
+        if slug in par_slug and noms and not (par_slug[slug].get("designer") or "").strip():
+            designers_par_slug[slug] = ", ".join(noms)
+
+    lignes_designers = [
+        "UPDATE typefaces_core SET designer = '{}', updated_at_utc = now() "
+        "WHERE typeface_slug = '{}' AND (designer IS NULL OR designer = '');".format(
+            echapper_sql(nom), slug
+        )
+        for slug, nom in sorted(designers_par_slug.items())
+    ]
+
+    entete_designers = f"""-- ============================================================
+-- MIGRATION 014 -- designers manquants, depuis les metadonnees Google Fonts
+-- Genere par scripts/build_rarity_from_popularity.py le {datetime.now(timezone.utc).date()}
+-- NON APPLIQUEE. Elle demande le feu vert explicite du proprietaire.
+-- ============================================================
+--
+-- {len(lignes_designers)} polices actives n'avaient pas de designer.
+--
+-- LA CLAUSE WHERE EST DOUBLEE, exprès. Le script ne selectionne que les vides, et
+-- le SQL le revérifie : entre la generation du fichier et son application,
+-- quelqu'un peut avoir saisi un nom a la main, et une donnee automatique ne doit
+-- pas ecraser un travail humain.
+--
+-- foundry et release_year restent vides et ne sont pas traites ici. L'instantane
+-- ne les contient pas, et dateAdded est la date d'entree chez Google, pas
+-- l'annee de creation de la typographie. Les confondre serait inventer une histoire.
+
+BEGIN;
+
+"""
+    Path(args.designers_output).write_text(
+        entete_designers + "\n".join(lignes_designers) + "\n\nCOMMIT;\n", encoding="utf-8"
+    )
+    print(f"{len(lignes_designers)} designers ecrits dans {args.designers_output}")
+
     return 0
 
 
