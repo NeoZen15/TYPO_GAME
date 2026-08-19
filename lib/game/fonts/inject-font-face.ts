@@ -23,8 +23,18 @@ const injected = new Set<string>();
 
 /**
  * Declares one face, once. SSR-safe (no-op without a document) and idempotent.
- * `font-display: swap` keeps a fallback visible until the woff2 lands, so the
- * word never renders invisible.
+ *
+ * `font-display: block` et non `swap`, décidé le 2026-08-19 avec le propriétaire :
+ * « il faut trouver un moyen pour que le mot ne risque pas de s'afficher dans une
+ * police de repli, sinon le joueur juge des lettres qui ne sont pas les bonnes ».
+ * Avec `swap` le navigateur dessine aussitôt le mot dans une police de
+ * remplacement, donc il montre de fausses lettres. Avec `block` il ne dessine
+ * RIEN tant que le fichier n'est pas là. Un blanc est récupérable, un faux
+ * spécimen ne l'est pas : le joueur aurait jugé, et sa réponse serait entrée en
+ * base comme une vraie.
+ * Le blanc reste théorique côté écran : le mot n'est monté que lorsque la face est
+ * confirmée prête, voir `whenGameFontReady` et l'état `specimenReady` de
+ * GameScreen. `block` est la ceinture, l'attente est la bretelle.
  */
 export const ensureGameFontFace = (fontFace: GameFontFace | null | undefined) => {
   if (!fontFace || typeof document === "undefined") {
@@ -43,7 +53,7 @@ export const ensureGameFontFace = (fontFace: GameFontFace | null | undefined) =>
 
   styleElement.appendChild(
     document.createTextNode(
-      `@font-face{font-family:"${fontFace.family}";src:url("${fontFace.src}") format("woff2");font-weight:${fontFace.weight};font-style:${fontFace.style};font-display:swap;}`
+      `@font-face{font-family:"${fontFace.family}";src:url("${fontFace.src}") format("woff2");font-weight:${fontFace.weight};font-style:${fontFace.style};font-display:block;}`
     )
   );
 
@@ -69,21 +79,31 @@ export const ensureGameFontFace = (fontFace: GameFontFace | null | undefined) =>
  * évite qu'un réseau lent fige la partie : passé ce délai on avance, et `swap`
  * remplacera le repli dès l'arrivée du fichier.
  */
-export const GAME_FONT_READY_TIMEOUT_MS = 900;
-
 export const whenGameFontReady = async (fontFace: GameFontFace | null | undefined) => {
   if (!fontFace || typeof document === "undefined" || !("fonts" in document)) {
     return;
   }
 
-  const ready = document.fonts
+  // Aucun délai de garde. Il y en avait un de 900 ms, qui laissait passer le mot
+  // au delà : c'était rouvrir la porte qu'on venait de fermer, puisque passé ce
+  // délai le navigateur aurait dessiné autre chose. On attend la police, un point
+  // c'est tout, et l'écran affiche pendant ce temps un état d'attente en
+  // typographie d'interface, jamais le spécimen.
+  await document.fonts
     .load(`${fontFace.weight} 1em "${fontFace.family}"`)
     .then(() => undefined)
     .catch(() => undefined);
+};
 
-  const guard = new Promise<void>((resolve) => {
-    window.setTimeout(resolve, GAME_FONT_READY_TIMEOUT_MS);
-  });
+/** Vrai si la face est déjà utilisable, sans attendre. */
+export const isGameFontReady = (fontFace: GameFontFace | null | undefined) => {
+  if (!fontFace || typeof document === "undefined" || !("fonts" in document)) {
+    return true;
+  }
 
-  await Promise.race([ready, guard]);
+  try {
+    return document.fonts.check(`${fontFace.weight} 1em "${fontFace.family}"`);
+  } catch {
+    return false;
+  }
 };

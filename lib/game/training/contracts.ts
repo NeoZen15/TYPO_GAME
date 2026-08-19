@@ -20,6 +20,23 @@ export type TrainingQuestion = {
   typefaceLabel: string;
   fontFamily: string;
   fontFace: GameFontFace | null;
+  // LES FACES SUIVANTES, POUR QUE L'ENCHAÎNEMENT N'ATTENDE JAMAIS.
+  //
+  // Le client ne découvrait la police d'après qu'en recevant la réponse à la
+  // question courante : le téléchargement commençait donc à l'instant précis où il
+  // fallait l'afficher. Avec `font-display: block` cela produit un blanc, avec
+  // `swap` cela produirait de fausses lettres, et dans les deux cas une attente.
+  //
+  // Le moteur, lui, sait déjà quelles faces arrivent : le tirage est déterministe
+  // et le pool porte les échéances. Il en annonce trois, le navigateur les charge
+  // pendant que le joueur regarde la question en cours, et l'enchaînement se fait
+  // sur des fichiers déjà en cache.
+  //
+  // Ce sont des CANDIDATES, pas une promesse : répondre déplace l'échéance de la
+  // face répondue, donc l'ordre réel peut différer. Se tromper ne coûte qu'un
+  // téléchargement inutile de quelques kilo-octets, ne rien précharger coûte une
+  // attente à chaque question.
+  upcomingFaces?: GameFontFace[];
   options: QuestionOption[];
 };
 

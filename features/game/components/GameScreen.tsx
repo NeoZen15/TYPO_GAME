@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import SessionRecap from "@/features/game/components/SessionRecap";
 import { isDevRuntime } from "@/lib/dev-mode";
-import { ensureGameFontFace, whenGameFontReady } from "@/lib/game/fonts/inject-font-face";
+import { ensureGameFontFace, isGameFontReady, whenGameFontReady } from "@/lib/game/fonts/inject-font-face";
 import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
 import {
   buildTrainingRecapView,
@@ -241,6 +241,13 @@ export default function GameScreen() {
   // et la porte le refuse à juste titre. La référence dit la même chose sans
   // recréer quoi que ce soit.
   const firstAttemptRef = useRef(true);
+  // LE SPÉCIMEN N'EST MONTÉ QUE SI SA POLICE EST LÀ. Sans cela le navigateur
+  // dessinerait le mot avec autre chose, et le joueur jugerait des lettres qui ne
+  // sont pas celles de la typo demandée, ce qui fausse à la fois sa réponse et la
+  // ligne écrite en base. `font-display: block` empêche déjà le dessin de
+  // substitution ; cet état évite en plus le trou visuel, en affichant une
+  // attente en typographie d'interface tant que la face n'est pas confirmée.
+  const [specimenReady, setSpecimenReady] = useState(true);
   const [wrongAttemptIds, setWrongAttemptIds] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
   // The end route has always returned a full TrainingSessionSummary and this
@@ -299,6 +306,18 @@ export default function GameScreen() {
     // already ran. Without this the specimen renders in a fallback font and the
     // question asks for a typeface that is not on screen.
     ensureGameFontFace(nextQuestion.fontFace);
+    setSpecimenReady(isGameFontReady(nextQuestion.fontFace));
+    // TROIS POLICES D'AVANCE, idée du propriétaire le 2026-08-19 : « on peut
+    // charger toujours trois polices en avance ». Le moteur annonce les faces les
+    // plus proches de leur échéance, on les déclare et on lance leur chargement
+    // pendant que le joueur regarde la question en cours. À la réponse suivante le
+    // fichier est déjà en cache, donc l'enchaînement n'attend plus rien et le
+    // spécimen ne passe jamais par un état d'attente.
+    // Sans await : c'est un préchargement, il ne doit rien retarder à l'écran.
+    for (const face of nextQuestion.upcomingFaces ?? []) {
+      ensureGameFontFace(face);
+      void whenGameFontReady(face);
+    }
     setQuestion(nextQuestion);
     setSelectedId("");
     setResult("idle");
@@ -462,6 +481,22 @@ export default function GameScreen() {
     // à chaque seconde. La reprise passe par `elapsedMsRef`.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Boolean(question), isComplete]);
+
+  // Lève l'attente dès que la face de la question courante est utilisable. Le cas
+  // normal est que `specimenReady` soit déjà vrai au montage de la question, la
+  // police ayant été déclarée à l'arrivée de la réponse précédente.
+  useEffect(() => {
+    if (!question || specimenReady) return;
+
+    let cancelled = false;
+    void whenGameFontReady(question.fontFace).then(() => {
+      if (!cancelled) setSpecimenReady(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [question, specimenReady]);
 
   useEffect(() => {
     void startSession();
@@ -755,6 +790,11 @@ export default function GameScreen() {
               « Training unavailable » par son rôle et son niveau. */}
           {isLoading ? (
             <h1 className="game-v2-status">Loading session</h1>
+          ) : currentQuestion && !specimenReady ? (
+            /* La police de CETTE question n'est pas encore utilisable. On ne
+               montre pas le mot : un spécimen approximatif est pire qu'un mot
+               absent, puisque le joueur répondrait sur de fausses lettres. */
+            <h1 className="game-v2-status">Loading the typeface</h1>
           ) : currentQuestion ? (
             <h1
               className="game-v2-word"
@@ -819,7 +859,7 @@ export default function GameScreen() {
                     role="radio"
                     aria-checked={selected}
                     onClick={() => void handleSelect(option.slug)}
-                    disabled={isRoundLocked}
+                    disabled={isRoundLocked || !specimenReady}
                   >
                     <span className="game-v2-option-label">{option.label}</span>
                   </button>

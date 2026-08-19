@@ -87,6 +87,11 @@ const GUEST_USER_ID_PATTERN =
 
 const queryRows = async <T>(query: Promise<unknown>) => (await query) as T[];
 
+// Combien de faces on annonce d'avance. Trois couvre l'enchaînement sans charger
+// le réseau : au delà, on téléchargerait surtout des polices que le moteur ne
+// servira pas, l'ordre réel dépendant des réponses.
+const UPCOMING_FACE_COUNT = 3;
+
 const buildQuestion = (
   sessionId: string,
   user: UserRow,
@@ -131,6 +136,17 @@ const buildQuestion = (
     options: options.map((option) => option.slug),
   };
 
+  // Les trois faces les plus proches de leur échéance après celle ci : ce sont
+  // celles que le moteur servira le plus probablement ensuite. Le client les
+  // précharge pendant que le joueur regarde la question en cours, donc
+  // l'enchaînement ne télécharge plus rien. Voir `upcomingFaces` dans le contrat.
+  const upcomingFaces = renderablePool
+    .filter((row) => row.typeface_slug !== correct.typeface_slug)
+    .sort((left, right) => left.next_due_after_q - right.next_due_after_q)
+    .slice(0, UPCOMING_FACE_COUNT)
+    .map((row) => getRuntimeFontFace(row.typeface_slug))
+    .filter((face): face is NonNullable<typeof face> => Boolean(face));
+
   return {
     id: payload.questionId,
     token: createQuestionToken(payload),
@@ -139,6 +155,7 @@ const buildQuestion = (
     typefaceLabel: correct.display_name,
     fontFamily: getRuntimeFontFamily(correct.typeface_slug, correct.display_name),
     fontFace: getRuntimeFontFace(correct.typeface_slug),
+    upcomingFaces,
     options,
   };
 };
