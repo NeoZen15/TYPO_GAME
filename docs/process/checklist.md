@@ -1659,3 +1659,15 @@ Trois corrections en chaîne, chacune trouvée en mesurant la précédente. La g
 Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, hauteurs égales, les trois chiffres alignés sur une même ligne de base. Le libellé compétition du premier venu est raccourci en « No round yet », il passait à deux lignes dans une carte de 189px et la description de la carte dit déjà comment on marque.
 
 **Rappel de mesure, encore.** Le serveur de dev a servi une feuille en retard d'une révision : `pm-note` présent, `.pm .lp-modes__grid` absent, alors que le fichier sur disque le contenait. Un `touch` n'a pas suffi, il a fallu vingt secondes de plus. Toujours vérifier la règle dans la feuille servie (`curl` sur le chunk CSS) avant de conclure qu'une surcharge ne marche pas.
+
+### 2026-08-19, MODES du menu de la landing mène à la page des modes
+
+**Fait.** Dans `features/landing/components/LandingExperience.tsx`, l'entrée « Modes » du menu d'en tête pointait sur l'ancre `#modes`, qui descendait jusqu'au deck « Three ways to play » sans quitter la page. Elle pointe maintenant sur `/play`, la page de choix des modes, celle qui liste les trois cartes avec leur chiffre vivant et un bouton Rules par mode. Demande du propriétaire, constatée sur capture.
+
+**Pourquoi ça n'allait pas.** Le même mot ne promettait pas la même chose selon l'écran. Sur toutes les sous pages (`/type/[slug]`, `/compare/[slug]`) le `SiteNav` partagé envoyait déjà MODES sur `/play`. Sur la landing seule, il restait une ancre, et les trois cartes du deck envoient chacune directement dans son mode (`/play/training` et ses voisines). Résultat, depuis la landing la page de choix n'était atteignable que par le bouton « See the modes » du hero et par « Modes » du pied de page.
+
+**Comment.** `NAV` passe d'un `as const` homogène à un type `NavItem` avec un `href` optionnel. `href` posé veut dire que l'entrée quitte la landing, l'`id` reste dans les deux cas puisque c'est ce que le scroll-spy observe pour allumer l'entrée quand sa section est en vue. Le rendu choisit un `Link` de Next quand `href` est là, un `<a href="#id">` sinon, pour que la page de choix soit préchargée et s'ouvre sans rechargement complet.
+
+**Vérifié.** `tsc --noEmit` passe. Sur le serveur de dev, l'en tête de `/` sert bien `<a class="lp-header__link" href="/play">Modes</a>`, les trois autres entrées gardent leurs ancres. `/play` répond 200 et rend ses six liens attendus, Rules et Play pour Training et Competition, Rules et Preview pour Expert.
+
+**Pas touché, à décider.** Le pied de page de la landing garde « All modes » sur `#modes` alors que son commentaire dit qu'il couvre le cas du picker. Et dans la nav, le survol et l'état actif partagent le même style (`.site-nav__link:hover` et `.site-nav__link.is-active`, `app/globals.css:2468`), donc on ne distingue pas visuellement « où je suis » de « ce que je vais cliquer ». Les deux attendent l'avis du propriétaire.

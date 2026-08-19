@@ -30,13 +30,22 @@ import { HERO_SPECIMENS } from "@/features/landing/hero-specimens";
 // Runtime-ready faces from the catalog (family = JDT__<slug>).
 const HERO_WORD = "Character";
 
-// Header nav — anchors to the on-page sections.
-const NAV = [
+// Header nav — anchors to the on-page sections, except where a real page says it
+// better. `href` set means the entry leaves the landing; `id` stays in both cases,
+// it is what the scroll-spy watches to light the entry when its section is in view.
+type NavItem = { id: string; label: string; href?: string };
+
+const NAV: readonly NavItem[] = [
   { id: "how", label: "How it works" },
   { id: "compare", label: "Compare" },
   { id: "typefaces", label: "Typefaces" },
-  { id: "modes", label: "Modes" },
-] as const;
+  // 2026-08-19, owner's call. Was the `#modes` anchor, which only scrolled to the
+  // "Three ways to play" deck, and that deck sends straight into a mode. The one
+  // screen that lists the three modes together, with the figure waiting in each
+  // and a Rules button per mode, is /play, and it already exists. Same
+  // destination as the header of every sub-page now: one word, one page.
+  { id: "modes", label: "Modes", href: "/play" },
+];
 
 // The 3 game modes — accent stays on the contour only (validated /play).
 const MODES = [
@@ -171,16 +180,22 @@ export default function LandingExperience() {
           />
         </Link>
         <nav className="lp-header__nav" aria-label="Sections">
-          {NAV.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={`lp-header__link${activeSection === item.id ? " is-active" : ""}`}
-              aria-current={activeSection === item.id ? "true" : undefined}
-            >
-              {item.label}
-            </a>
-          ))}
+          {NAV.map((item) => {
+            const className = `lp-header__link${activeSection === item.id ? " is-active" : ""}`;
+            const current = activeSection === item.id ? "true" : undefined;
+
+            // A Link and not an `<a href="/play">`: the picker is then prefetched
+            // and opens without a full reload, like every other route of the site.
+            return item.href ? (
+              <Link key={item.id} href={item.href} className={className} aria-current={current}>
+                {item.label}
+              </Link>
+            ) : (
+              <a key={item.id} href={`#${item.id}`} className={className} aria-current={current}>
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
         <div className="lp-header__actions">
           <Link href="/onboarding" className="lp-header__cta">
