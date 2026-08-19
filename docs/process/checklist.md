@@ -82,7 +82,7 @@ Le troisième a été réglé en rendant la promesse vraie plutôt qu'en l'affai
 - **`primary_category` compte 3 `display` sur 1172**, ce qui est manifestement faux. À mesurer avant de corriger.
 - **Le volet Adobe a son propre plan à écrire**, et ce chantier lui prépare l'étagère : Helvetica, Futura PT, Univers Next et Trajan entreront en `common` par nature. Faits établis le 2026-08-19 : les 60 noms cherchés sont **tous** dans la bibliothèque Adobe, le kit `ozq5yfs` existe et s'appelle DWIGGINS mais son domaine vaut `"f"` par erreur, et **aucun fichier de police Adobe n'est téléchargeable**, donc `extract_typeface_specimen_data.py` et `mirror_fonts.py` ne tourneront jamais dessus. Détail dans `docs/typography/adobe-fonts-candidates.md`.
 
-## Note — 2026-08-19 (suite 4) — le chapitre typographie de la charte passe de deux pages à six
+## Note — 2026-08-19 (suite 4) — le chapitre typographie de la charte passe de deux pages à dix
 
 Quatre pages produites dans le Figma de la charte, toutes mesurées sur `app/globals.css`, aucune valeur inventée. Le document passe de 33 à 37 pages, numérotation vérifiée : aucun trou, aucun doublon, chaque folio est d'accord avec le nom de sa frame.
 
@@ -96,7 +96,16 @@ Quatre pages produites dans le Figma de la charte, toutes mesurées sur `app/glo
 
 **Les quatre pages finissent sur « CE QUI RESTE À DÉCIDER » et non sur une décision.** L'échelle, le nombre de graisses et le pas d'approche sont des choix de direction artistique, ils n'appartiennent pas à ce que je peux trancher. Les pages posent le constat mesuré et nomment la décision à prendre.
 
-**Reste à produire dans la charte :** les sections « Les écrans » et « Annexes techniques », qui n'ont aujourd'hui qu'un intercalaire portant la mention « Section à produire ». Les sommaires de réserve R4 à R6 en décrivent le contenu prévu.
+**Quatre pages de plus, après lecture des manuels de marque que Marion a téléchargés** (Discord, Coca-Cola, Spotify, Georgia Aquarium, Wayfarers, tous rangés dans `05_LOGO/REFERENCES_BRANDBOOK`, analyse dans `REFERENCES_MODERNES.md`). Sa consigne : le fond de ces manuels est le modèle, leur mise en page non, et on étale sur plus de pages.
+
+- **28 · Le caractère.** Spécimen plein cadre, `AaBb 0123` en ivoire sur noir, coupé des deux côtés. Repris de la page 32 de Coca, où la page ne fait que montrer.
+- **35 · La longueur de ligne.** Trois largeurs à l'échelle réelle, 26, 62 et 74 caractères, le même texte dans les trois. Mesuré : trente-deux largeurs déclarées, dix-huit valeurs, de 11 à 74 caractères. Le `ch` est calculé dans le fichier, pas estimé.
+- **36 · Si la police n'arrive pas.** La pile de secours en neuf noms, et l'écart mesuré à la police près avec `fontTools` : la même phrase fait 719 px en Inter et 674 px en Helvetica comme en Arial, 6,4 % de moins. Figma et `fontTools` sont d'accord à 0,8 px.
+- **37 · Ce qu'on ne fait pas au texte.** Cinq interdits montrés et argumentés : une autre famille, l'ivoire sur le jaune (1,10 contre 1), une couleur dans une phrase, l'approche sur du texte courant, des capitales sans approche.
+
+Le document passe à **41 pages**, séquence 1 à 41 vérifiée, aucun trou, aucun doublon. Le sommaire de l'intercalaire typographie liste les dix pages du chapitre, la couverture est à jour.
+
+**Reste à produire dans la charte :** les sections « Les écrans » et « Annexes techniques », qui n'ont aujourd'hui qu'un intercalaire portant la mention « Section à produire ». Les sommaires de réserve R4 à R6 en décrivent le contenu prévu. Plus quatre ajouts identifiés dans les manuels de référence, listés en fin de `REFERENCES_MODERNES.md` : la spécification écrite sous chaque niveau de la page 30 (bloquée par l'échelle non décidée), le troisième fond sur cette même page (sur le jaune, le texte est noir : 12,67 contre 1, quand l'ivoire donne 1,10), les combinaisons de texte, et le placement du logo selon le format dans la section 02.
 
 ## Note — 2026-08-19 (suite 3) — le symbole est remplacé partout, du dessin de Marion jusqu'aux badges
 
