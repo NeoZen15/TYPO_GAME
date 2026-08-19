@@ -1,11 +1,3 @@
-export const gateCopy = {
-  scrollLabel: "Scroll",
-} as const;
-
-/**
- * What the Training mode states about itself, rendered by the unified rules
- * page (`ModeRulesPage`, behind the three `/play/*_/rules` doors).
- *
  * The four statements come from `docs/game/vision-produit-dwiggins.md` §2.1,
  * which requires the philosophy of the mode to be stated rather than deduced
  * from playing. Order is the order of that section.

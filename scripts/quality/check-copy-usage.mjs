@@ -7,7 +7,7 @@ const repoRoot = process.cwd();
 const copyFile = path.join(repoRoot, "content", "copy.ts");
 const copySource = fs.readFileSync(copyFile, "utf8");
 
-// Every `*Copy` block is inspected, not just gateCopy. CLAUDE.md states that
+// Every `*Copy` block is inspected, not just the first one. CLAUDE.md states that
 // interface text is centralised here and that this check verifies declared copy
 // is actually used, so a block that escaped the scan would make that claim false
 // and let dead keys accumulate silently.
