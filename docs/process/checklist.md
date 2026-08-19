@@ -104,10 +104,9 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Page 14, le bloc des trois têtes est réécrit.** Il annonçait « même rayon pour les trois, et détachées du corps ». Le nouveau dessin n'a aucune tête détachée. Le bloc devient « UNE SEULE MASSE », et le schéma des trois ronds égaux est masqué, pas supprimé.
 
-**Deux choses restent ouvertes.**
+**La page 12 est passée à cinq.** Elle affirmait trois bonshommes et bâtissait tout son argument sur ce nombre. La silhouette est trop nouée pour que je compte sans risque, Marion a tranché : cinq. Donc « Cinq bonshommes qui courent main dans la main », « ON PEUT Y LIRE CINQ LETTRES », et le titre « POURQUOI TROIS » devient « POURQUOI PLUSIEURS », ce qui laisse son argument intact mot pour mot (« il en faut au moins trois pour qu'un rythme existe »). La page 14 nomme le compte elle aussi.
 
-1. **La page 12, « Ce que raconte le symbole », n'est pas touchée.** Elle affirme trois bonshommes et bâtit tout son argument sur ce nombre, jusqu'au titre « POURQUOI TROIS ». Je ne sais pas combien de figures le nouveau dessin contient, la silhouette est trop nouée pour compter sans risque, et le sens de la marque n'est pas à moi. Un mot de Marion débloque trois textes.
-2. **Rien ne survit sous 48 px.** Mesuré sur le nouveau tracé : lisible à 64 px, tenable à 32, une tache à 16. Or la page 16 déclare un symbole d'en tête de 19,3 px de large. Le favicon comme cette taille d'en tête demandent une version réduite du dessin, ou une taille d'en tête plus grande. `app/favicon.ico` n'est donc pas régénéré.
+**Une seule chose reste ouverte : rien ne survit sous 48 px.** Mesuré sur le nouveau tracé : lisible à 64 px, tenable à 32, une tache à 16. Or la page 16 déclare un symbole d'en tête de 19,3 px de large. Le favicon comme cette taille d'en tête demandent une version réduite du dessin, ou une taille d'en tête plus grande. `app/favicon.ico` n'est donc pas régénéré.
 
 ## Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours
 
@@ -1409,7 +1408,7 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [x] Passer les masses en largeur variable (le lot 1 est encore du tube d'épaisseur constante) — le tracé au pinceau est en masses pleines
   - [ ] Trancher la version réduite du favicon (rien ne survit à 16 px)
   - [x] Remplacer les fichiers et le moteur de badges (2026-08-19) — huit assets, `CROP.symbol`, le chargeur `brand-art`, six `width`/`height` en dur. **Le favicon reste à faire**, il demande la version réduite ci dessous
-  - [x] Refaire les pages de la charte (2026-08-19) — pages 11, 13, 14, 15 et 16 remplacées et recotées. **La page 12 attend une seule information de Marion**, le nombre de figures du nouveau dessin, dont dépendent trois de ses textes
+  - [x] Refaire les pages de la charte (2026-08-19) — pages 11, 13, 14, 15 et 16 remplacées et recotées. La page 12 est faite aussi : Marion a confirmé **cinq figures**, donc « Cinq bonshommes qui courent main dans la main », « ON PEUT Y LIRE CINQ LETTRES », et « POURQUOI TROIS » devient « POURQUOI PLUSIEURS », son argument du rythme restant mot pour mot
   - `05_LOGO/test/` — premier lot de 17 propositions + `LISEZ-MOI.md`, générateur `_outil/humains.py`
 - [ ] **Régler la typo du logo (PP Frama, propriétaire)** · `Bloqueur`
   _Servie à tous les visiteurs sans licence webfont. **Précision du 2026-08-14 :** le logo lui-même n'est pas concerné, `dwiggins-wordmark-full-black.svg` est entièrement vectorisé (8 tracés, aucun `<text>`, aucun `font-family`). Ce qui sert les `.otf` aux visiteurs, c'est `components/brand/DwigginsBadge.tsx` et ses trois `@font-face`, via les badges du profil. Deux problèmes distincts là où cette ligne n'en voyait qu'un : la fonte servie (distribution, interdite par une licence desktop) et le mot vectorisé (usage, autre question)._
