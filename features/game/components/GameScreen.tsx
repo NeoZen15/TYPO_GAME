@@ -712,24 +712,41 @@ export default function GameScreen() {
             bon/faux vont contre cette phrase, il faudra la reprendre. D'où le
             parti pris de présentation : un relevé discret en micro typographie,
             jamais un tableau de score. */}
+        {/* Trois zones sur une seule ligne, dans l'ordre demandé : les deux
+            compteurs à gauche, la pastille du mode au centre exact, le temps à
+            droite. L'ordre du DOM suit l'ordre visuel, pour qu'un lecteur d'écran
+            lise la barre comme elle se voit. */}
         <div className="game-v2-hud">
+          <span className="game-v2-hud__side game-v2-hud__side--start">
+            <span className="game-v2-hud__stat game-v2-hud__stat--right" aria-label="Right on first try">
+              <em>{firstTryCorrect}</em> {trainingModeCopy.rightLabel}
+            </span>
+            <span className="game-v2-hud__stat game-v2-hud__stat--wrong" aria-label="Missed on first try">
+              <em>{firstTryWrong}</em> {trainingModeCopy.wrongLabel}
+            </span>
+          </span>
+
           <span className="game-v2-hud__mode">{trainingModeCopy.badge}</span>
-          <span className="game-v2-hud__stat" aria-label="Time played">
-            {formatElapsed(elapsedMs)}
-          </span>
-          <span className="game-v2-hud__stat game-v2-hud__stat--right" aria-label="Right on first try">
-            <em>{firstTryCorrect}</em> {trainingModeCopy.rightLabel}
-          </span>
-          <span className="game-v2-hud__stat game-v2-hud__stat--wrong" aria-label="Missed on first try">
-            <em>{firstTryWrong}</em> {trainingModeCopy.wrongLabel}
+
+          <span className="game-v2-hud__side game-v2-hud__side--end">
+            <span className="game-v2-hud__stat" aria-label="Time played">
+              {formatElapsed(elapsedMs)}
+            </span>
           </span>
         </div>
 
         <div className="game-v2-word-wrap">
           {/* No complete branch here any more: a finished session returns the
               recap above, before this shell is ever reached. */}
+          {/* NI L'ATTENTE NI L'ÉCHEC NE SONT DES SPÉCIMENS. Les deux portaient
+              `game-v2-word`, donc la taille, la couleur et l'emplacement réservés
+              au mot à reconnaître : un message d'interface empruntait la
+              typographie de la question, ce que la règle de cette classe interdit
+              précisément. Ils prennent leur propre classe, dans la typographie
+              d'étiquette du site. Le `h1` reste, un test d'accessibilité vise
+              « Training unavailable » par son rôle et son niveau. */}
           {isLoading ? (
-            <h1 className="game-v2-word">Loading session</h1>
+            <h1 className="game-v2-status">Loading session</h1>
           ) : currentQuestion ? (
             <h1
               className="game-v2-word"
@@ -743,7 +760,7 @@ export default function GameScreen() {
               {currentQuestion.displayWord}
             </h1>
           ) : (
-            <h1 className="game-v2-word">Training unavailable</h1>
+            <h1 className="game-v2-status game-v2-status--down">Training unavailable</h1>
           )}
         </div>
 
