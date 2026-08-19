@@ -9,13 +9,39 @@
 // proprietaire et un garde ne doit pas dependre d'une connexion reseau. Ce qu'il
 // verifie, c'est que la migration produite couvre les trois paliers et une part
 // serieuse du catalogue.
+//
+// SECOND DEFAUT QU'IL PROTEGE, ajoute le 2026-08-19. Le script generateur
+// normalise les noms Google ("Open Sans" -> "opensans") pour apparier les
+// familles, mais le catalogue garde parfois un slug avec tiret bas
+// ("open_sans"). Un bug d'appariement avait fait ecrire 13 des 23 ordres de la
+// migration 014 vers des cles normalisees qui n'existent nulle part dans le
+// catalogue (abrilfatface, opensans, playfairdisplay...), et ce garde ne s'en
+// apercevait pas : rien ici ne verifiait que les slugs vises existent vraiment.
+// Applique en l'etat, la migration aurait rempli 10 designers sur 23 sans
+// erreur ni avertissement. D'ou le controle plus bas, qui croise CHAQUE slug
+// vise par 013 et par 014 avec la liste reelle du catalogue.
 
 import fs from "node:fs";
 import path from "node:path";
 
 const ROOT = process.cwd();
 const MIGRATION = "db/migrations/013_rarity_from_popularity.sql";
+const CATALOGUE = "content/catalog/typefaces-core.json";
 const failures = [];
+
+function slugsInconnus(sql, slugsConnus) {
+  const vises = new Set();
+  for (const m of sql.matchAll(/typeface_slug\s*=\s*'([^']+)'/g)) {
+    vises.add(m[1]);
+  }
+  return [...vises].filter((slug) => !slugsConnus.has(slug)).sort();
+}
+
+function chargerSlugsConnus() {
+  const cheminCatalogue = path.join(ROOT, CATALOGUE);
+  const catalogue = JSON.parse(fs.readFileSync(cheminCatalogue, "utf8"));
+  return new Set(catalogue.records.map((r) => r.typeface_slug));
+}
 
 const chemin = path.join(ROOT, MIGRATION);
 if (!fs.existsSync(chemin)) {
@@ -56,6 +82,16 @@ if (/DELETE|DROP|TRUNCATE|ALTER TABLE/i.test(sql)) {
   );
 }
 
+const slugsConnus = chargerSlugsConnus();
+const inconnus013 = slugsInconnus(sql, slugsConnus);
+if (inconnus013.length > 0) {
+  failures.push(
+    `${MIGRATION}: ${inconnus013.length} slug(s) absent(s) du catalogue (${CATALOGUE}) : ` +
+      `${inconnus013.join(", ")}. Une cle qui n'existe pas ne met a jour aucune ligne, ` +
+      "sans erreur ni avertissement."
+  );
+}
+
 if (failures.length > 0) {
   console.error("check:rarity-coverage FAILED\n");
   for (const f of failures) console.error(`  - ${f}\n`);
@@ -80,6 +116,14 @@ if (fs.existsSync(cheminDesigners)) {
     failures.push(
       `${MIGRATION_DESIGNERS}: touche autre chose que designer. Une migration par colonne, ` +
         "sinon le proprietaire ne peut pas accepter l'une en refusant l'autre."
+    );
+  }
+  const inconnusDesigners = slugsInconnus(sqlDesigners, slugsConnus);
+  if (inconnusDesigners.length > 0) {
+    failures.push(
+      `${MIGRATION_DESIGNERS}: ${inconnusDesigners.length} slug(s) absent(s) du catalogue ` +
+        `(${CATALOGUE}) : ${inconnusDesigners.join(", ")}. Une cle qui n'existe pas ne met a ` +
+        "jour aucune ligne, sans erreur ni avertissement."
     );
   }
   console.log(`  et ${updates} designer(s) dans ${MIGRATION_DESIGNERS}.`);

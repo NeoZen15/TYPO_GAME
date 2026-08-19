@@ -142,6 +142,33 @@ def main() -> int:
 -- {len(updates)} polices classees : {comptes['common']} common, {comptes['uncommon']} uncommon, {comptes['rare']} rare.
 -- {len(non_apparies)} polices du catalogue n'ont pas de rang et gardent leur valeur actuelle.
 --
+-- CE QUE CETTE MIGRATION FAIT AU DELA DE CHANGER DES VALEURS. rarity_tag n'est
+-- pas une colonne inerte : c'est un predicat dur dans quatre fonctions SQL de
+-- db/migrations/012_pool_serialisation.sql (lignes 261, 340, 441 et 532 a 534).
+-- init_user_pool ne seme que du common, et try_unlock_one_typeface ouvre le
+-- catalogue par niveau Dreyfus : un joueur N ne voit que common, un joueur D
+-- voit common et uncommon. Appliquer cette migration ne pose donc pas un critere
+-- de tri, ca ferme une porte. Mesures faites avant application :
+--   - catalogue atteignable d'un joueur N : de 746 a 213
+--   - catalogue atteignable d'un joueur D : de 1154 a 665
+--   - catalogue atteignable d'un joueur C, A ou E : 1172, inchange
+--   - polices eligibles au pool de depart : de 1148 a 311, les quotas restent
+--     tous remplissables
+--   - injection easy plus common de l'etape 4 (rebalance_user_pool) : de 296 a 74
+-- Rien ne casse et les quotas continuent d'etre servis : ce sont des reservoirs
+-- qui retrecissent, pas des reservoirs qui se vident. Mais un joueur N ou D voit
+-- reellement moins de polices apres cette migration qu'avant, et c'est le
+-- proprietaire qui doit en decider en connaissance de cause.
+--
+-- PIEGE DE REIMPORT, meme piege documente par db/migrations/010_license_type_ufl.sql.
+-- scripts/import_catalog_json.py fait ON CONFLICT (typeface_slug) DO UPDATE SET
+-- rarity_tag = EXCLUDED.rarity_tag, et content/catalog/typefaces-core.json porte
+-- encore 'common' sur 1148 des 1172 lignes actives. Un reimport du catalogue
+-- APRES cette migration ECRASE en silence le classement qu'elle vient de poser,
+-- sans erreur, sans avertissement. Tant que le JSON n'a pas ete regenere avec les
+-- valeurs issues du rang Google, ne pas relancer l'import du catalogue une fois
+-- 013 appliquee.
+--
 -- REVERSIBLE. Aucune colonne n'est ajoutee ni supprimee, seules des valeurs
 -- changent. Pour revenir en arriere, une migration de retour arriere est generee
 -- a cote de celle-ci : db/migrations/013_rarity_from_popularity.rollback.sql.
@@ -161,9 +188,20 @@ BEGIN;
 -- ============================================================
 --
 -- Ce fichier contient les UPDATE inverses de la migration 013. Il remet chaque
--- police a la valeur qu'elle portait avant l'application de la migration.
+-- police a la valeur qu'elle porte AUJOURD'HUI dans content/catalog/typefaces-core.json,
+-- celle relue par le script au moment de sa generation. Cette valeur concorde
+-- avec la base tant que personne n'a modifie rarity_tag directement en base
+-- depuis le dernier import du catalogue : ce fichier ne relit jamais Postgres,
+-- donc si une telle edition existe, ce rollback l'ecrase au lieu de la restaurer.
 -- {len(rollbacks)} ordres valides pour {len(updates)} polices classees.
 -- {comptes_rollback['sans_rarity_tag']} polices n'avaient pas de rarity_tag et ne sont pas listees ici.
+--
+-- PIEGE DE REIMPORT, meme piege documente par db/migrations/010_license_type_ufl.sql.
+-- scripts/import_catalog_json.py fait ON CONFLICT (typeface_slug) DO UPDATE SET
+-- rarity_tag = EXCLUDED.rarity_tag. Appliquer ce rollback puis relancer un import
+-- du catalogue ne change rien de plus (le JSON et la base concordent deja a ce
+-- moment la), mais l'inverse est faux : appliquer 013 puis un import AVANT ce
+-- rollback ecraserait le classement sans que ce fichier ait pu servir.
 
 BEGIN;
 
@@ -183,12 +221,21 @@ BEGIN;
     # Les designers, depuis le meme appel reseau. On ne remplit QUE les vides :
     # ecraser un designer deja saisi effacerait un travail humain par une donnee
     # automatique, et l'instantane de Google n'est pas plus fiable qu'une saisie.
+    #
+    # designers_par_slug est indexe par le slug REEL du catalogue, jamais par la
+    # cle normalisee `slug`. Meme piege que rang_par_slug plus haut : le slug reel
+    # se relit dans par_slug pour ne jamais ecrire une cle inventee dans le WHERE.
+    # Sans cette relecture, 13 des 23 ordres visaient une cle qui n'existe pas
+    # (abrilfatface, bebasneue, dmsans, opensans, playfairdisplay... la ou le
+    # catalogue porte abril_fatface, bebas_neue, dm_sans, open_sans,
+    # playfair_display) et l'UPDATE ne touchait aucune ligne, sans erreur.
     designers_par_slug: dict[str, str] = {}
     for famille in snapshot["families"]:
         slug = slugifie(famille["family"])
         noms = [n for n in famille.get("designers", []) if n]
         if slug in par_slug and noms and not (par_slug[slug].get("designer") or "").strip():
-            designers_par_slug[slug] = ", ".join(noms)
+            slug_reel = echapper_sql(par_slug[slug]["typeface_slug"])
+            designers_par_slug[slug_reel] = ", ".join(noms)
 
     lignes_designers = [
         "UPDATE typefaces_core SET designer = '{}', updated_at_utc = now() "
@@ -214,6 +261,14 @@ BEGIN;
 -- foundry et release_year restent vides et ne sont pas traites ici. L'instantane
 -- ne les contient pas, et dateAdded est la date d'entree chez Google, pas
 -- l'annee de creation de la typographie. Les confondre serait inventer une histoire.
+--
+-- PIEGE DE REIMPORT, meme piege documente par db/migrations/010_license_type_ufl.sql.
+-- scripts/import_catalog_json.py fait ON CONFLICT (typeface_slug) DO UPDATE SET
+-- designer = EXCLUDED.designer, et content/catalog/typefaces-core.json garde ces
+-- 23 slugs a vide. Un reimport du catalogue APRES cette migration REVIDE en
+-- silence les designers qu'elle vient de remplir, sans erreur, sans avertissement.
+-- Tant que le JSON n'a pas ete regenere avec ces noms, ne pas relancer l'import
+-- du catalogue une fois 014 appliquee.
 
 BEGIN;
 

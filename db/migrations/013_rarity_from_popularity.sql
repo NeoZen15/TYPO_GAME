@@ -16,6 +16,33 @@
 -- 1090 polices classees : 243 common, 357 uncommon, 490 rare.
 -- 82 polices du catalogue n'ont pas de rang et gardent leur valeur actuelle.
 --
+-- CE QUE CETTE MIGRATION FAIT AU DELA DE CHANGER DES VALEURS. rarity_tag n'est
+-- pas une colonne inerte : c'est un predicat dur dans quatre fonctions SQL de
+-- db/migrations/012_pool_serialisation.sql (lignes 261, 340, 441 et 532 a 534).
+-- init_user_pool ne seme que du common, et try_unlock_one_typeface ouvre le
+-- catalogue par niveau Dreyfus : un joueur N ne voit que common, un joueur D
+-- voit common et uncommon. Appliquer cette migration ne pose donc pas un critere
+-- de tri, ca ferme une porte. Mesures faites avant application :
+--   - catalogue atteignable d'un joueur N : de 746 a 213
+--   - catalogue atteignable d'un joueur D : de 1154 a 665
+--   - catalogue atteignable d'un joueur C, A ou E : 1172, inchange
+--   - polices eligibles au pool de depart : de 1148 a 311, les quotas restent
+--     tous remplissables
+--   - injection easy plus common de l'etape 4 (rebalance_user_pool) : de 296 a 74
+-- Rien ne casse et les quotas continuent d'etre servis : ce sont des reservoirs
+-- qui retrecissent, pas des reservoirs qui se vident. Mais un joueur N ou D voit
+-- reellement moins de polices apres cette migration qu'avant, et c'est le
+-- proprietaire qui doit en decider en connaissance de cause.
+--
+-- PIEGE DE REIMPORT, meme piege documente par db/migrations/010_license_type_ufl.sql.
+-- scripts/import_catalog_json.py fait ON CONFLICT (typeface_slug) DO UPDATE SET
+-- rarity_tag = EXCLUDED.rarity_tag, et content/catalog/typefaces-core.json porte
+-- encore 'common' sur 1148 des 1172 lignes actives. Un reimport du catalogue
+-- APRES cette migration ECRASE en silence le classement qu'elle vient de poser,
+-- sans erreur, sans avertissement. Tant que le JSON n'a pas ete regenere avec les
+-- valeurs issues du rang Google, ne pas relancer l'import du catalogue une fois
+-- 013 appliquee.
+--
 -- REVERSIBLE. Aucune colonne n'est ajoutee ni supprimee, seules des valeurs
 -- changent. Pour revenir en arriere, une migration de retour arriere est generee
 -- a cote de celle-ci : db/migrations/013_rarity_from_popularity.rollback.sql.

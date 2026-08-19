@@ -18,9 +18,12 @@ export type QuestionShapeRow = {
   primary_category: string;
   visual_cluster_id: string;
   difficulty_base: string;
-  // Notoriete, depuis typefaces_core.rarity_tag (migration 013). Optionnel parce
-  // que la migration peut ne pas etre appliquee : absent vaut common, donc le tri
-  // est neutre et le code marche avant comme apres.
+  // Notoriete, depuis typefaces_core.rarity_tag (migration 013). La colonne est
+  // NOT NULL en base (db/migrations/002_catalog_tables.sql), donc une ligne reelle
+  // porte toujours une valeur, migration 013 appliquee ou non. Optionnel ici pour
+  // les appelants synthetiques, les tests notamment, qui construisent une ligne
+  // sans passer par la base et peuvent l'omettre : absent vaut common, donc le tri
+  // reste neutre pour eux.
   rarity_tag?: string;
 };
 

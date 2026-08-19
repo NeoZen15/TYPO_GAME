@@ -5,9 +5,20 @@
 -- ============================================================
 --
 -- Ce fichier contient les UPDATE inverses de la migration 013. Il remet chaque
--- police a la valeur qu'elle portait avant l'application de la migration.
+-- police a la valeur qu'elle porte AUJOURD'HUI dans content/catalog/typefaces-core.json,
+-- celle relue par le script au moment de sa generation. Cette valeur concorde
+-- avec la base tant que personne n'a modifie rarity_tag directement en base
+-- depuis le dernier import du catalogue : ce fichier ne relit jamais Postgres,
+-- donc si une telle edition existe, ce rollback l'ecrase au lieu de la restaurer.
 -- 1090 ordres valides pour 1090 polices classees.
 -- 0 polices n'avaient pas de rarity_tag et ne sont pas listees ici.
+--
+-- PIEGE DE REIMPORT, meme piege documente par db/migrations/010_license_type_ufl.sql.
+-- scripts/import_catalog_json.py fait ON CONFLICT (typeface_slug) DO UPDATE SET
+-- rarity_tag = EXCLUDED.rarity_tag. Appliquer ce rollback puis relancer un import
+-- du catalogue ne change rien de plus (le JSON et la base concordent deja a ce
+-- moment la), mais l'inverse est faux : appliquer 013 puis un import AVANT ce
+-- rollback ecraserait le classement sans que ce fichier ait pu servir.
 
 BEGIN;
 

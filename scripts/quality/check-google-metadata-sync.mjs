@@ -70,5 +70,6 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `check:google-metadata-sync OK : ${payload.families.length} familles, popularity numerique et unique sur toutes.`
+  `check:google-metadata-sync OK : ${payload.families.length} familles, popularity numerique sur toutes, ` +
+    "rank unique et dense de 1 a N."
 );
