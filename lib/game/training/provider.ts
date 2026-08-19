@@ -1508,14 +1508,6 @@ export const submitTrainingAnswer = async ({
   // lose an increment whenever two answers land in parallel, because both
   // reads would see the same starting value. `SET col = col + 1` cannot lose
   // a concurrent increment, since there is no JS read in between.
-  const [updatedUser] = await queryRows<{ global_q_index: number }>(sql`
-    UPDATE users
-    SET global_q_index = global_q_index + 1,
-        last_seen_at = now()
-    WHERE user_id = ${user.user_id}::uuid
-    RETURNING global_q_index
-  `);
-  const nextGlobalQIndex = updatedUser.global_q_index;
 
   // The session stays active no matter how many questions were answered: a
   // training session has no planned length and can only be closed by an explicit
@@ -1529,13 +1521,31 @@ export const submitTrainingAnswer = async ({
   // profile-stats.ts uses everywhere it computes an accuracy, so the ratio
   // question_count over correct_count now means the same thing on the session
   // row as it does on the fact table: the share resolved without a retry.
-  const [updatedSession] = await queryRows<{ question_count: number }>(sql`
-    UPDATE sessions
-    SET question_count = question_count + 1,
-        correct_count = correct_count + ${correctFirstTry ? 1 : 0}::int
-    WHERE session_id = ${sessionId}::uuid
-    RETURNING question_count
-  `);
+  //
+  // The player's cursor and the session's counters are two rows in two tables,
+  // and neither statement reads what the other returns, so they leave together.
+  // Neither was atomic with the other before this change either: the HTTP driver
+  // sends one autocommit statement per call, so a failure between the two always
+  // could leave the cursor advanced with the question uncounted. What changes is
+  // which of the two halves can be the one that landed, not whether a half can
+  // land alone.
+  const [[updatedUser], [updatedSession]] = await Promise.all([
+    queryRows<{ global_q_index: number }>(sql`
+      UPDATE users
+      SET global_q_index = global_q_index + 1,
+          last_seen_at = now()
+      WHERE user_id = ${user.user_id}::uuid
+      RETURNING global_q_index
+    `),
+    queryRows<{ question_count: number }>(sql`
+      UPDATE sessions
+      SET question_count = question_count + 1,
+          correct_count = correct_count + ${correctFirstTry ? 1 : 0}::int
+      WHERE session_id = ${sessionId}::uuid
+      RETURNING question_count
+    `),
+  ]);
+  const nextGlobalQIndex = updatedUser.global_q_index;
   const resolvedCountAfter = updatedSession.question_count;
 
   // Stage 4 — downward rebalance. Runs before the aggregate + next question so any
