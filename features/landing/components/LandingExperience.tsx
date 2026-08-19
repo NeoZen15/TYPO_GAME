@@ -423,7 +423,12 @@ export default function LandingExperience() {
             <nav className="lp-footer__cols" aria-label="Footer">
               <div className="lp-footer__col">
                 <h3 className="lp-footer__col-title">Play</h3>
-                <a href="#modes" className="lp-footer__link">All modes</a>
+                {/* 2026-08-19. Was the `#modes` anchor, which only scrolled back up
+                    into the landing's own deck. The comment below already said this
+                    line covered the picker, so it now goes where it says: /play, the
+                    one screen that holds the three modes together. Same destination
+                    as MODES in the header since the same day. */}
+                <Link href="/play" className="lp-footer__link">All modes</Link>
                 {/* Same fix as the mode cards above: a link named after a mode
                     has to reach that mode, not the picker. "All modes" already
                     covers the picker case, one line above. */}
