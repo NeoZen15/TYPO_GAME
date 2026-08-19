@@ -56,6 +56,11 @@ def palier(rang: int) -> str:
     return "rare"
 
 
+def echapper_sql(valeur: str) -> str:
+    """Échappe les apostrophes pour le SQL en doublant."""
+    return valeur.replace("'", "''")
+
+
 def main() -> int:
     args = parse_args()
     snapshot = json.loads(Path(args.snapshot).read_text(encoding="utf-8"))
@@ -90,18 +95,32 @@ def main() -> int:
     non_apparies = sorted(set(par_slug) - set(rang_par_slug))
 
     updates = []
+    rollbacks = []
     comptes = {"common": 0, "uncommon": 0, "rare": 0}
+    comptes_rollback = {"avec_ancienne_valeur": 0, "sans_rarity_tag": 0}
     for slug, rang in sorted(rang_par_slug.items(), key=lambda kv: kv[1]):
         valeur = palier(rang)
         comptes[valeur] += 1
         slug_reel = par_slug[slug]["typeface_slug"]
+        slug_sql = echapper_sql(slug_reel)
         updates.append(
             f"UPDATE typefaces_core SET rarity_tag = '{valeur}'::app.rarity_tag_enum, "
-            f"updated_at_utc = now() WHERE typeface_slug = '{slug_reel}';"
+            f"updated_at_utc = now() WHERE typeface_slug = '{slug_sql}';"
         )
 
+        # Rollback : relit la valeur actuelle et génère l'UPDATE inverse
+        valeur_actuelle = par_slug[slug].get("rarity_tag")
+        if valeur_actuelle is not None:
+            comptes_rollback["avec_ancienne_valeur"] += 1
+            rollbacks.append(
+                f"UPDATE typefaces_core SET rarity_tag = '{valeur_actuelle}'::app.rarity_tag_enum, "
+                f"updated_at_utc = now() WHERE typeface_slug = '{slug_sql}';"
+            )
+        else:
+            comptes_rollback["sans_rarity_tag"] += 1
+
     entete = f"""-- ============================================================
--- MIGRATION 013 -- rarity_tag depuis le rang de popularite de Google Fonts
+-- MIGRATION 013 : rarity_tag depuis le rang de popularite de Google Fonts
 -- Genere par scripts/build_rarity_from_popularity.py le {datetime.now(timezone.utc).date()}
 -- NON APPLIQUEE. Elle demande le feu vert explicite du proprietaire.
 -- ============================================================
@@ -119,8 +138,8 @@ def main() -> int:
 -- {len(non_apparies)} polices du catalogue n'ont pas de rang et gardent leur valeur actuelle.
 --
 -- REVERSIBLE. Aucune colonne n'est ajoutee ni supprimee, seules des valeurs
--- changent. Pour revenir en arriere il suffit de rejouer l'ancienne valeur, que
--- le rapport de generation liste.
+-- changent. Pour revenir en arriere, une migration de retour arriere est generee
+-- a cote de celle-ci : db/migrations/013_rarity_from_popularity.rollback.sql.
 
 BEGIN;
 
@@ -128,9 +147,31 @@ BEGIN;
     corps = "\n".join(updates)
     Path(args.output).write_text(entete + corps + "\n\nCOMMIT;\n", encoding="utf-8")
 
+    # Génère le fichier de rollback
+    rollback_path = args.output.replace(".sql", ".rollback.sql")
+    entete_rollback = f"""-- ============================================================
+-- ROLLBACK 013 : annule la migration rarity_tag
+-- Genere par scripts/build_rarity_from_popularity.py le {datetime.now(timezone.utc).date()}
+-- NON APPLIQUEE. Elle demande le feu vert explicite du proprietaire.
+-- ============================================================
+--
+-- Ce fichier contient les UPDATE inverses de la migration 013. Il remet chaque
+-- police a la valeur qu'elle portait avant l'application de la migration.
+-- {len(rollbacks)} ordres valides pour {len(updates)} polices classees.
+-- {comptes_rollback['sans_rarity_tag']} polices n'avaient pas de rarity_tag et ne sont pas listees ici.
+
+BEGIN;
+
+"""
+    corps_rollback = "\n".join(rollbacks)
+    Path(rollback_path).write_text(entete_rollback + corps_rollback + "\n\nCOMMIT;\n", encoding="utf-8")
+
     print(f"{len(updates)} UPDATE ecrits dans {args.output}")
     print(f"  common {comptes['common']}, uncommon {comptes['uncommon']}, rare {comptes['rare']}")
     print(f"  {len(non_apparies)} slugs du catalogue sans rang Google")
+    print(f"{len(rollbacks)} UPDATE ecrits dans {rollback_path}")
+    print(f"  {comptes_rollback['avec_ancienne_valeur']} avec ancienne valeur")
+    print(f"  {comptes_rollback['sans_rarity_tag']} sans rarity_tag (sautees)")
     if non_apparies[:10]:
         print(f"  exemples sans rang : {', '.join(non_apparies[:10])}")
     return 0

@@ -1,5 +1,5 @@
 -- ============================================================
--- MIGRATION 013 -- rarity_tag depuis le rang de popularite de Google Fonts
+-- MIGRATION 013 : rarity_tag depuis le rang de popularite de Google Fonts
 -- Genere par scripts/build_rarity_from_popularity.py le 2026-08-19
 -- NON APPLIQUEE. Elle demande le feu vert explicite du proprietaire.
 -- ============================================================
@@ -17,8 +17,8 @@
 -- 82 polices du catalogue n'ont pas de rang et gardent leur valeur actuelle.
 --
 -- REVERSIBLE. Aucune colonne n'est ajoutee ni supprimee, seules des valeurs
--- changent. Pour revenir en arriere il suffit de rejouer l'ancienne valeur, que
--- le rapport de generation liste.
+-- changent. Pour revenir en arriere, une migration de retour arriere est generee
+-- a cote de celle-ci : db/migrations/013_rarity_from_popularity.rollback.sql.
 
 BEGIN;
 
