@@ -48,6 +48,36 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours
+
+**Statut : fait, porte qualité verte, mais l'horloge n'est pas mesurée.** Question de Marion : « le code peut pas être optimisé, sans rien casser ? ». Réponse mesurée sur le code, pas devinée.
+
+**Ce qui a été cherché en premier, et n'a rien donné.** GSAP (220 Ko) n'est importé que par la landing et l'onboarding, Next découpe par route, donc aucune page ne le paie sans l'utiliser. Le bundle client fait 1,8 Mo de JS sur 37 chunks et 256 Ko de CSS, avant compression : c'est ordinaire pour une application de cette taille. Rien à gagner là qui vaille un risque.
+
+**Le vrai coût était exactement là où la note du 17 le disait.** `submitTrainingAnswer` enchaînait **15 allers-retours strictement séquentiels** vers Neon. Le driver est celui en HTTP (`neon()` de `@neondatabase/serverless`), donc chaque `await` est une requête HTTP à part entière : la latence s'additionne. À une vingtaine de millisecondes l'aller-retour, ce sont les 317 ms relevées le 17, contre 174 pour la compétition.
+
+**La compétition répondait déjà de la bonne façon, l'entraînement n'avait jamais reçu le motif.** `submitCompetitionAnswer` groupe ses trois lectures d'entrée en `Promise.all` et lance même sa lecture de pool dès le haut de l'appel, avec ce commentaire : une lecture qui dépend du joueur et de rien que l'appel écrit n'a pas sa place sur le chemin critique après l'écriture. Rien n'a donc été inventé ici, le motif a été porté.
+
+**Trois lectures d'entrée en un aller-retour.** Session, joueur et état de la typo ne dépendaient d'aucune valeur renvoyée par une autre requête : le jeton signé nomme déjà les trois. Seul le `WHERE` sur le joueur change, de `session.user_id` vers l'identifiant que porte le jeton, que le contrôle d'identité confronte ensuite à celui de la session. C'est le même invariant lu par l'autre bout. Les codes d'erreur et leur ordre sont intacts : une session fermée répond toujours `session_not_active` et jamais `identity_mismatch`. Une requête refusée coûte deux lectures qu'elle évitait, et ce sont deux lectures de lignes appartenant au joueur que le jeton signé nomme, donc un appelant ne peut faire lire au serveur que ses propres lignes.
+
+**Deux lectures de sortie en un aller-retour.** L'agrégat de progression et le pool arrivent tous deux après toutes les écritures et aucun ne lit ce que l'autre renvoie. La fraîcheur exigée par le commentaire d'origine est conservée.
+
+**Deux écritures finales en un aller-retour.** Le curseur du joueur (`users.global_q_index`) et les compteurs de session (`sessions.question_count`) sont deux lignes dans deux tables, sans dépendance. Point d'honnêteté : elles n'étaient pas atomiques entre elles avant, et ne le sont pas davantage. Le driver HTTP envoie un `autocommit` par appel, donc une panne entre les deux pouvait déjà laisser le curseur avancé et la question non comptée. Ce qui change, c'est laquelle des deux moitiés peut être celle qui a atterri seule, pas le fait qu'une moitié puisse atterrir seule.
+
+**Ce que la lecture du pool ne fait pas, contrairement à la compétition.** Elle reste après les écritures. La compétition ne touche jamais la maîtrise, son pool est donc immobile pendant l'appel ; l'entraînement écrit la maîtrise, et lire le pool tôt reviendrait à construire la question suivante depuis un état que la réponse vient d'invalider.
+
+**Le gain restant, et pourquoi il n'a pas été pris.** Il reste **8 écritures séquentielles** au milieu du chemin. Le driver sait les envoyer toutes dans une seule requête HTTP avec `sql.transaction([...])` : 8 allers-retours deviendraient 1, ce qui serait de loin le plus gros gain. Deux raisons de ne pas y toucher maintenant.
+
+D'abord ces écritures sont **conditionnelles** : plusieurs vivent dans des branches selon la justesse de la réponse et le franchissement d'un palier de maîtrise, donc le tableau d'instructions devrait être construit dynamiquement.
+
+Ensuite, et c'est le point bloquant, plusieurs sont **délibérément tolérantes à la panne**. `maybeRebalancePool`, `safeRecomputeVisibleLevel` et les appels de déblocage attrapent l'erreur `42883` « function does not exist » et l'avalent, pour que l'entraînement continue de fonctionner tant qu'une migration n'est pas appliquée. Dans une transaction, une seule instruction en échec annule tout le lot : la dégradation gracieuse deviendrait un refus de réponse. Optimiser ce bloc n'est donc pas mécanique, c'est un choix de conception sur ce qui doit survivre à une migration manquante. À faire après la mise en ligne, avec un banc de mesure, pas avant.
+
+**Limite de vérification, dite clairement.** Les 28 checks et le build sont verts. L'horloge, non : `.env.local` pointe sur la production et `tests/e2e/guard-database.ts` refuse la suite sans un opt-in explicite que je ne me suis pas donné. Le fait mesuré est le nombre d'allers-retours, 15 devenus 11. Le gain en millisecondes est une déduction, pas une mesure. Pour le mesurer, il faut une branche Neon jetable dans `.env.local` puis `JDT_E2E_ALLOW_PROD=1 npm run test:e2e`, comme le 17.
+
+**Deux choses vues et laissées.** `queryRows` est défini à l'identique, une ligne, dans quatre fichiers (`training/provider.ts`, `competition/provider.ts`, `profile-stats.ts`, `mode-select-stats.ts`) : factoriser un alias d'une ligne ajoute une indirection pour rien. Et `globals.css` fait 256 Ko servis sur chaque page ; y chercher du mort demande de la mesure au navigateur, page par page, et c'est de la DA.
+
+---
+
 ## Note — 2026-08-19 — nettoyage avant mise en ligne, 40 Mo sortis du déploiement et cinq modules morts
 
 **Statut : fait, porte `npm run quality` verte de bout en bout, code de sortie 0.** Demande de Marion avant le lancement : ranger et nettoyer. Branche `chore/nettoyage-pre-lancement-2026-08-19`, six commits, rien poussé (le push demande le jeton, cette machine n'a pas d'identifiants).
