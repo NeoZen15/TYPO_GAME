@@ -110,6 +110,32 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-19 (suite 2) — audit des rayons : 2 jetons déclarés, 36 rayons peints
+
+**Statut : audit fait, rien corrigé.** Les rayons sont de la DA, donc aucune valeur n'a été touchée. Demande de Marion : « on a un problème de rayons, j'ai l'impression qu'on a genre mille rayons différents ». L'impression est juste, la cause n'est pas celle qu'on croit. Planche de contrôle publiée en artifact, `Trente-six rayons`.
+
+**Le fichier est discipliné, ce n'est pas là que ça se joue.** 173 déclarations `border-radius` dans `globals.css`, dont 159 lisent un jeton, soit 92 pour cent. Aucune classe Tailwind `rounded-*` dans tout le projet, un seul fichier CSS, et les 27 styles en ligne qui posent un rayon lisent tous un jeton. L'échelle du 14 août tient.
+
+**Mesuré au navigateur, pas déduit du fichier.** Chromium piloté sur 11 pages en 1440 par 900, `getComputedStyle` et `getBoundingClientRect` sur chaque élément du DOM, 349 éléments arrondis relevés. Le rayon réellement peint est `min(rayon déclaré, plus petit côté / 2)`, la formule du navigateur. Aucune écriture en base : la navigation se fait sans cookie invité et `getCurrentUserId` ne fait que lire ce cookie, il ne crée pas de joueur.
+
+**Le résultat, et il tranche.** L'écran peint **36 rayons distincts** pour 2 jetons déclarés. Et la responsabilité n'est pas partagée : `--radius` (1rem) peint **exactement 16 px sur ses 102 éléments**, sans une seule exception. `--radius-pill` peint **34 valeurs différentes sur ses 243 éléments**, de 2,4 à 23,2 px.
+
+**La cause, en une ligne.** `999px` n'est pas un rayon, c'est une consigne. Le navigateur plafonne tout rayon à la moitié du plus petit côté, donc écrire `999px` revient à écrire « la moitié de ma hauteur ». Chaque boîte qui porte ce jeton reçoit son propre rayon, dicté par sa hauteur.
+
+**Pourquoi c'est un bon comportement qui devient visible quand même.** Sous 24 px de haut, une capsule peint moins de 12 px et se lit sans ambiguïté comme une capsule : 89 éléments dans ce cas, la variation est invisible et n'est pas un problème. Au-dessus de 40 px, elle est franchement plus ronde que les panneaux : 7 éléments, les deux boutons de la landing, le lien de pied et le bouton plein de l'onboarding, entre 21,8 et 23,2 px. Entre les deux se trouve la **zone de collision** : une boîte de 24 à 40 px de haut peint entre 12 et 20 px, c'est à dire autour du jeton de surface à 16 px sans jamais l'atteindre. **120 éléments, 36 sélecteurs, 16 rayons distincts.** L'œil ne compare pas des formes, il compare des coins presque identiques, et lit une erreur.
+
+**Les plus présents dans la bande.** Les quatre variantes de `.dw-tag` du profil (35 éléments, 25 px de haut, 12,3 px peints), `.storage-notice__link` et `.storage-notice__button` sur six pages (27 px, 13,5 px), `.theme-switch__track` sur six pages (26 px, 13,1 px), les quatre `.game-v2-hud__*` de l'écran de jeu (27 px, 13,5 px), `.site-nav__link` et les contrôles de la scène de comparaison (30 px, 14,8 et 14,9 px), les `.lp-btn` de la page des modes (38 px, 18,8 px).
+
+**Par page.** `/play/training/rules` fait cohabiter 14 rayons différents, puis la landing et `/compare` à 13, `/profile` à 9. La page de règles est la plus chargée parce qu'elle rassemble le plus de familles de composants sur un écran, et c'est aussi celle où le joueur doit comprendre en quelques secondes.
+
+**Ce qui n'est pas en cause.** Les 3 cercles à `50%` (avatar, emplacements de badge, nœuds de la constellation) : un rayon qui décrit une forme reste littéral, la ligne de partage du 14 août tient.
+
+**Trois formes de décision, aucune choisie.** Ne rien faire (la variation est la conséquence logique de la règle capsule, et l'essentiel est invisible ; coût : 16 rayons proches continuent de cohabiter sur les pages denses). Borner la capsule (réserver `--radius-pill` aux boîtes basses et donner à la bande de 24 à 40 px un jeton de contrôle explicite ; coût : un troisième jeton, 36 sélecteurs à revoir). Aligner sur la surface (faire lire le jeton de surface à tout ce qui dépasse 24 px ; coût : les onglets et les cartouches perdent leur forme de capsule). La planche porte une bascule qui montre à l'œil la différence entre l'état actuel et une bande unifiée.
+
+**Limites du relevé.** Un seul viewport et un seul thème. Quatre déclarations vivent dans des media queries, donc le compte peut différer sous 900 px de large. Les pages internes du labo typo ne sont pas relevées. Script de mesure dans `tmp/mesure-radius.mjs`, non suivi par git, relançable tel quel.
+
+---
+
 ## Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours
 
 **Statut : fait, porte qualité verte, mais l'horloge n'est pas mesurée.** Question de Marion : « le code peut pas être optimisé, sans rien casser ? ». Réponse mesurée sur le code, pas devinée.
