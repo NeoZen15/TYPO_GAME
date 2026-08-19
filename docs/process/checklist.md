@@ -106,7 +106,9 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **La page 12 est passée à cinq.** Elle affirmait trois bonshommes et bâtissait tout son argument sur ce nombre. La silhouette est trop nouée pour que je compte sans risque, Marion a tranché : cinq. Donc « Cinq bonshommes qui courent main dans la main », « ON PEUT Y LIRE CINQ LETTRES », et le titre « POURQUOI TROIS » devient « POURQUOI PLUSIEURS », ce qui laisse son argument intact mot pour mot (« il en faut au moins trois pour qu'un rythme existe »). La page 14 nomme le compte elle aussi.
 
-**Une seule chose reste ouverte : rien ne survit sous 48 px.** Mesuré sur le nouveau tracé : lisible à 64 px, tenable à 32, une tache à 16. Or la page 16 déclare un symbole d'en tête de 19,3 px de large. Le favicon comme cette taille d'en tête demandent une version réduite du dessin, ou une taille d'en tête plus grande. `app/favicon.ico` n'est donc pas régénéré.
+**Le favicon est refait, et il portait un tout autre sujet.** L'ancien `app/favicon.ico` ne contenait pas le symbole du tout : un triangle blanc dans un disque noir, sans rapport avec la marque. Le nouveau porte le vrai symbole en ivoire dans un disque noir, coins transparents, quatre trames de 16, 32, 48 et 256 px, 21 Ko contre 25 Ko. Reconstruit à la main en trames PNG parce que `magick` écrit la trame de 256 sans compression, ce qui donnait un fichier de 285 Ko pour quelque chose qui part à chaque page. Le disque n'est pas un ornement : il donne au petit format la forme franche que le tracé seul n'a pas, et fait passer la lisibilité de nulle à bonne dès 32 px. Ancien fichier archivé dans `EXPORT/OLD/favicon-triangle-avant-2026-08-19.ico`, source du nouveau dans `EXPORT/dwiggins-favicon-disque.svg`.
+
+**Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
 ## Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours
 
@@ -1406,8 +1408,8 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
   - [ ] Identifier la source de l'épingle (Google Lens) — action de Marion
   - [x] Choisir la famille : ronde en perspective, ligne, ou grappe — tranché par le dessin au pinceau du 2026-08-19
   - [x] Passer les masses en largeur variable (le lot 1 est encore du tube d'épaisseur constante) — le tracé au pinceau est en masses pleines
-  - [ ] Trancher la version réduite du favicon (rien ne survit à 16 px)
-  - [x] Remplacer les fichiers et le moteur de badges (2026-08-19) — huit assets, `CROP.symbol`, le chargeur `brand-art`, six `width`/`height` en dur. **Le favicon reste à faire**, il demande la version réduite ci dessous
+  - [x] Trancher la version réduite du favicon (2026-08-19) — **pas de version réduite**, le dessin entier dans un disque noir. Le disque fait le travail que le tracé ne peut pas faire seul en petit : lisible dès 32 px, mou à 16
+  - [x] Remplacer les fichiers et le moteur de badges (2026-08-19) — huit assets, `CROP.symbol`, le chargeur `brand-art`, six `width`/`height` en dur. favicon compris (2026-08-19)
   - [x] Refaire les pages de la charte (2026-08-19) — pages 11, 13, 14, 15 et 16 remplacées et recotées. La page 12 est faite aussi : Marion a confirmé **cinq figures**, donc « Cinq bonshommes qui courent main dans la main », « ON PEUT Y LIRE CINQ LETTRES », et « POURQUOI TROIS » devient « POURQUOI PLUSIEURS », son argument du rythme restant mot pour mot
   - `05_LOGO/test/` — premier lot de 17 propositions + `LISEZ-MOI.md`, générateur `_outil/humains.py`
 - [ ] **Régler la typo du logo (PP Frama, propriétaire)** · `Bloqueur`
