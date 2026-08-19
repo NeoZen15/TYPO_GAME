@@ -82,6 +82,22 @@ Le troisième a été réglé en rendant la promesse vraie plutôt qu'en l'affai
 - **`primary_category` compte 3 `display` sur 1172**, ce qui est manifestement faux. À mesurer avant de corriger.
 - **Le volet Adobe a son propre plan à écrire**, et ce chantier lui prépare l'étagère : Helvetica, Futura PT, Univers Next et Trajan entreront en `common` par nature. Faits établis le 2026-08-19 : les 60 noms cherchés sont **tous** dans la bibliothèque Adobe, le kit `ozq5yfs` existe et s'appelle DWIGGINS mais son domaine vaut `"f"` par erreur, et **aucun fichier de police Adobe n'est téléchargeable**, donc `extract_typeface_specimen_data.py` et `mirror_fonts.py` ne tourneront jamais dessus. Détail dans `docs/typography/adobe-fonts-candidates.md`.
 
+## Note — 2026-08-19 (suite 4) — le chapitre typographie de la charte passe de deux pages à six
+
+Quatre pages produites dans le Figma de la charte, toutes mesurées sur `app/globals.css`, aucune valeur inventée. Le document passe de 33 à 37 pages, numérotation vérifiée : aucun trou, aucun doublon, chaque folio est d'accord avec le nom de sa frame.
+
+**30 · L'échelle de tailles.** 309 déclarations de `font-size`. 229 sont un nombre fixe, et tiennent sur 45 valeurs distinctes qui n'en font plus que 17 arrondies au pixel. Trente et une de ces valeurs se pressent entre 10 et 17 px, pour 191 emplois. Huit colonnes montrent le spécimen à taille réelle, une par pixel entier. Seconde moitié : les 74 tailles fluides, dont les trois plus grandes sont cotées à taille réelle de leur borne basse à leur borne haute (le spécimen de la comparaison bouge de 115 px selon la fenêtre).
+
+**31 · Les graisses.** 146 déclarations, 14 valeurs. Sept vivent entre 600 et 700 exclus, pour cinquante emplois : 610, 620, 630, 640, 650, 660, 680. Le diagramme donne à chaque valeur une colonne dont la hauteur est son nombre d'emplois, ce qui rend visible que 700 porte à lui seul 62 déclarations. Seconde moitié : les quatre coupes réellement nommées de la famille, en spécimens.
+
+**32 · Interlignage et approche.** 181 interlignages pour 39 valeurs, 197 approches pour 36 valeurs. Démonstration plutôt que tableau : le même texte à 1,45 et à 1,5, côte à côte, cinq centièmes d'écart et trois pixels de différence sur trois lignes. Puis le même libellé en capitales à 0,06, 0,08, 0,10, 0,12 et 0,16 em.
+
+**33 · Le mot montré.** La règle la plus importante du chapitre, tirée du commentaire de `.game-v2-word` : le mot montré est la question, donc aucune propriété typographique ne se décide là, tout doit venir du fichier de police. La page dit ce qui est fixé (taille fluide 44,8 à 91,2 px, interlignage 0,9, centré, onze caractères par ligne), ce qui est interdit (une graisse absente du fichier, la synthèse, l'approche), et pourquoi : la graisse 560 demandée autrefois avait fait dédoubler les lettres d'Alumni Sans Inline One par le moteur de rendu.
+
+**Les quatre pages finissent sur « CE QUI RESTE À DÉCIDER » et non sur une décision.** L'échelle, le nombre de graisses et le pas d'approche sont des choix de direction artistique, ils n'appartiennent pas à ce que je peux trancher. Les pages posent le constat mesuré et nomment la décision à prendre.
+
+**Reste à produire dans la charte :** les sections « Les écrans » et « Annexes techniques », qui n'ont aujourd'hui qu'un intercalaire portant la mention « Section à produire ». Les sommaires de réserve R4 à R6 en décrivent le contenu prévu.
+
 ## Note — 2026-08-19 (suite 3) — le symbole est remplacé partout, du dessin de Marion jusqu'aux badges
 
 Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`). Une seule masse continue, trois contreformes fermées, aucune pièce détachée. Le décalque Pinterest sort du projet, le troisième bloqueur go live tombe.
