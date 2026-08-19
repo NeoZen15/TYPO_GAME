@@ -18,6 +18,10 @@ export type QuestionShapeRow = {
   primary_category: string;
   visual_cluster_id: string;
   difficulty_base: string;
+  // Notoriete, depuis typefaces_core.rarity_tag (migration 013). Optionnel parce
+  // que la migration peut ne pas etre appliquee : absent vaut common, donc le tri
+  // est neutre et le code marche avant comme apres.
+  rarity_tag?: string;
 };
 
 const hash = (input: string) =>
@@ -38,6 +42,10 @@ export const hashScore = (seed: string, globalQIndex: number, slug: string) =>
 const DIFFICULTY_RANK: Record<string, number> = { easy: 0, medium: 1, hard: 2 };
 const difficultyRank = (value: string) => DIFFICULTY_RANK[value] ?? 1;
 
+// common < uncommon < rare. Une notoriete inconnue vaut common, donc neutre.
+const RARITY_RANK: Record<string, number> = { common: 0, uncommon: 1, rare: 2 };
+const rarityRank = (value: string | undefined) => RARITY_RANK[value ?? "common"] ?? 0;
+
 export const pickEligibleTypeface = <Row extends QuestionShapeRow>(
   pool: Row[],
   globalQIndex: number,
@@ -55,6 +63,9 @@ export const pickEligibleTypeface = <Row extends QuestionShapeRow>(
     }
     if (difficultyRank(left.difficulty_base) !== difficultyRank(right.difficulty_base)) {
       return difficultyRank(left.difficulty_base) - difficultyRank(right.difficulty_base);
+    }
+    if (rarityRank(left.rarity_tag) !== rarityRank(right.rarity_tag)) {
+      return rarityRank(left.rarity_tag) - rarityRank(right.rarity_tag);
     }
 
     return (

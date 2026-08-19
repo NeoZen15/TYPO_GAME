@@ -156,6 +156,60 @@ try {
         `anyone who can compute that key. The owner asked for a real draw.`
     );
   }
+
+  // La notoriete ordonne ce que le joueur rencontre.
+  //
+  // Demande du proprietaire du 2026-08-19 : les typographies connues sont servies
+  // les premieres parce qu'elles sont les plus simples, les obscures viennent quand
+  // le joueur progresse. rarity_tag porte cette notoriete depuis la migration 013.
+  //
+  // Le test isole la regle : deux polices egalement dues, egalement maitrisees,
+  // egalement difficiles, et seule leur notoriete les separe. La connue doit sortir.
+  {
+    const dues = [
+      {
+        typeface_slug: "obscure",
+        mastery_level: 0,
+        next_due_after_q: 0,
+        primary_category: "sans_serif",
+        visual_cluster_id: "cluster_neo_grotesk_A",
+        difficulty_base: "medium",
+        rarity_tag: "rare",
+      },
+      {
+        typeface_slug: "connue",
+        mastery_level: 0,
+        next_due_after_q: 0,
+        primary_category: "sans_serif",
+        visual_cluster_id: "cluster_neo_grotesk_A",
+        difficulty_base: "medium",
+        rarity_tag: "common",
+      },
+    ];
+
+    const choisie = pickEligibleTypeface(dues, 10, "graine-de-test");
+    if (choisie?.typeface_slug !== "connue") {
+      failures.push(
+        "question-shape: a delai, maitrise et difficulte egaux, la police common doit passer " +
+          `avant la rare. pickEligibleTypeface a rendu "${choisie?.typeface_slug}".`
+      );
+    }
+
+    // Et la notoriete ne doit pas ecraser le delai : une rare due depuis longtemps
+    // passe avant une common pas encore due, sinon le calendrier de revision ne
+    // veut plus rien dire et l'invariant I-02 tombe.
+    const melange = [
+      { ...dues[0], next_due_after_q: 0 },
+      { ...dues[1], next_due_after_q: 50 },
+    ];
+    const parDelai = pickEligibleTypeface(melange, 10, "graine-de-test");
+    if (parDelai?.typeface_slug !== "obscure") {
+      failures.push(
+        "question-shape: le delai passe avant la notoriete. Une police due doit etre servie " +
+          `meme si elle est rare. pickEligibleTypeface a rendu "${parDelai?.typeface_slug}".`
+      );
+    }
+  }
 } catch (error) {
   failures.push(
     `could not import ${SHAPE} to exercise the question chain: ${error.message}. ` +

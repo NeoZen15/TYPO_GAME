@@ -56,6 +56,7 @@ type PoolRow = {
   primary_category: string;
   visual_cluster_id: string;
   difficulty_base: string;
+  rarity_tag: string;
   display_name: string;
 };
 
@@ -371,6 +372,7 @@ const getPoolRows = async (userId: string) =>
       tc.primary_category::text AS primary_category,
       tc.visual_cluster_id,
       tc.difficulty_base::text AS difficulty_base,
+      tc.rarity_tag::text AS rarity_tag,
       tc.display_name
     FROM user_typeface_state uts
     JOIN typefaces_core tc
@@ -1192,6 +1194,7 @@ export const submitTrainingAnswer = async ({
         tc.primary_category::text AS primary_category,
         tc.visual_cluster_id,
         tc.difficulty_base::text AS difficulty_base,
+        tc.rarity_tag::text AS rarity_tag,
         tc.display_name
       FROM user_typeface_state uts
       JOIN typefaces_core tc
