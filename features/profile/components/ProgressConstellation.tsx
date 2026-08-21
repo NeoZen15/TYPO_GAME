@@ -922,7 +922,7 @@ const CSS = `
   /* tags (shared with the "every galaxy" rows below the map) */
   .dw-tag {
     font-family: var(--pf-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 0.24rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.14); color: rgb(${CREAM} / 0.5);
+    padding: 0.24rem 0.55rem; border-radius: var(--radius-control); border: 1px solid rgb(${CREAM} / 0.14); color: rgb(${CREAM} / 0.5);
   }
   .dw-tag--lit { border-color: rgb(${CREAM} / 0.28); color: rgb(${CREAM} / 0.9); }
   /* Keep the yellow as a light touch: only the first one or two lit paliers of

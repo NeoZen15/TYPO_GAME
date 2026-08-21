@@ -254,7 +254,7 @@ const competitionScreenStyles = `
     width: 100%;
     text-align: center;
     padding: 0.34rem 0.62rem;
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-control);
     border: 1px solid rgba(58, 38, 48, 0.16);
     background: rgba(244, 243, 238, 0.66);
     box-shadow: 0 0.12rem 0.3rem rgba(42, 26, 32, 0.04);
@@ -432,7 +432,7 @@ const competitionScreenStyles = `
     justify-self: start;
     margin-top: 0.2rem;
     padding: 0.56rem 0.94rem;
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-control);
     border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
     text-decoration: none;
     color: currentColor;
