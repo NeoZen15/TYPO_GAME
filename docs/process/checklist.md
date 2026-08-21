@@ -135,6 +135,28 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-21 — les rayons proches sont généralisés : 36 peints deviennent 23
+
+**Statut : fait, sauf le build, volontairement.** Suite directe de l'audit de l'avant veille. Marion : « on peut généraliser tous les rayons proches ? ». Oui, mais pas avec la valeur qu'on croit.
+
+**La valeur n'était pas libre, et c'est le point à retenir.** Déclarer le jeton de surface (16 px) sur la bande **ne généralise pas**. Le navigateur re-plafonne tout rayon à la moitié du plus petit côté, donc une boîte de 24 px déclarée à 16 px peint 13, une de 27 px peint 14,5, et on obtient encore cinq coins différents. Mesuré au navigateur sur huit hauteurs de 24 à 44 px : déclarer 16 px donne **5 rayons distincts**, déclarer 12 px en donne **1**. Douze est la plus grande valeur qui survive au plafonnement sur la plus courte boîte de la bande, donc le plus petit changement visuel qui généralise réellement. Nouveau jeton `--radius-control: 0.75rem`, posé juste après `--radius-pill`.
+
+**Correction de l'audit précédent, elle comptait.** J'avais écrit « un seul fichier CSS ». Faux : **vingt composants portent une feuille embarquée** dans un bloc `<style>`, soit 58 déclarations `border-radius` de plus, dont le plus gros amas du site (`.dw-tag`, 35 éléments dans `ProgressConstellation.tsx`). Le premier relevé ne lisait que `globals.css`. La discipline y est comparable, 51 des 58 lisent un jeton, mais l'oubli aurait laissé le principal responsable en place.
+
+**Vingt règles déplacées, chacune classée par mesure.** Dix sept dans `globals.css`, trois dans les feuilles embarquées de `CompetitionScreen.tsx` et `ProgressConstellation.tsx`. Pour chaque règle déclarant `--radius-pill`, les hauteurs auxquelles elle se rend réellement ont été relevées au navigateur sur les onze pages, puis classées : capsule basse (toutes ses instances sous 24 px), bande (toutes entre 24 et 40), haute (toutes au-dessus de 40), ou mixte. **Seule la catégorie bande a bougé.** Travailler sur les règles et non sur les éléments est ce qui évite de casser une capsule légitime : une même règle sert des boîtes de hauteurs différentes selon la page.
+
+**Deux règles à cheval, laissées exprès.** `.lp-btn` va de 37,6 à 46,4 px : elle dessine aussi les boutons principaux de la landing, qui est la référence de direction artistique, donc la basculer aurait fait passer ces boutons de 23,2 à 12 px. `.lp-mode-card__chip` enjambe la frontière (23 à 26,3 px) et ne gagnerait aucune valeur à bouger.
+
+**Résultat mesuré sur le DOM réel.** 36 rayons peints deviennent **23**. La bande de seize valeurs presque identiques devient **trois** : 12,0 px sur 140 éléments, plus les deux règles laissées de côté. **Treize valeurs disparaissent, aucune n'apparaît.** Par page : `/compare` passe de 13 rayons à 4, la landing de 13 à 10, la page de règles de 14 à 12, le profil de 9 à 7, et toutes les autres gagnent au moins une valeur.
+
+**Piège de mesure, rencontré et documenté.** La remesure après édition ne bougeait pas d'un chiffre. La feuille servie par le port 3002 ne contenait aucun `--radius-control` et 86 `--radius-pill` : le serveur servait une feuille périmée. Cause identifiée : **j'ai lancé `npm run quality` plusieurs fois pendant que le serveur de dev tournait**, or la porte finit par `next build`, qui écrit dans le même `.next`. C'est exactement le piège majeur décrit dans le CLAUDE.md pour `test:e2e`, et il vaut pour le build. Le cache Turbopack du serveur est à considérer comme abîmé. Contournement utilisé pour mesurer sans y toucher : injecter la règle dans le DOM chargé, le rayon n'affectant pas la mise en page, les boîtes gardent leurs vraies dimensions.
+
+**Ce qui reste à faire, et pourquoi ce n'est pas fait.** `npm run build` n'a pas été relancé, pour ne pas réécrire dans le `.next` que le serveur de Marion utilise. Les 19 autres étapes de la porte sont vertes, lint et typecheck compris, et `globals.css` a ses accolades équilibrées. **Avant de reprendre : arrêter le serveur du 3002, `rm -rf .next` (le dossier entier), relancer, puis passer la porte complète.**
+
+**Limite du relevé.** 30 des 36 règles à jeton capsule des composants ne se rendent sur aucune des onze pages visitées : les boards du profil sont derrière des onglets fermés, l'écran de compétition demande une manche en cours. Elles n'ont pas été touchées, faute de savoir à quelle hauteur elles se rendent. Même limite pour les états au survol et les pages du labo. Scripts de mesure dans `tmp/`, non suivis : `mesure-radius.mjs`, `mesure-regles.mjs`, `mesure-apres.mjs`, `parse-pill.mjs`, `parse-inline-css.mjs`, `test-clamp.mjs`.
+
+---
+
 ## Note — 2026-08-19 (suite 2) — audit des rayons : 2 jetons déclarés, 36 rayons peints
 
 **Statut : audit fait, rien corrigé.** Les rayons sont de la DA, donc aucune valeur n'a été touchée. Demande de Marion : « on a un problème de rayons, j'ai l'impression qu'on a genre mille rayons différents ». L'impression est juste, la cause n'est pas celle qu'on croit. Planche de contrôle publiée en artifact, `Trente-six rayons`.
