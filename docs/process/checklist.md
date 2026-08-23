@@ -2208,3 +2208,120 @@ absente de son écran. Et le jeton d'API Adobe collé dans la conversation reste
 régénérer.
 
 Porte complète verte, code de sortie 0. Mutations du garde Adobe : 23 sur 23.
+
+### 2026-08-23, l'introduction refaite, sept pages sur la recette de la page 28
+
+**Demande de Marion.** Refaire l'introduction, en se référant au brandbook Discord pour cette partie précisément, avec **nos** couleurs, et en reprenant la façon de poser le texte de sa page 28, qu'il a réglée lui même. « C'est comme si t'allais refaire la slide 28 plusieurs fois, il peut y avoir des variantes. » Le contenu doit dire pourquoi on existe et quel est l'objectif, vite, à quelqu'un qui lit **avant** la charte. Et il veut des phrases un peu drôles.
+
+**Il avait déjà supprimé les anciennes pages 3 à 9.** Constaté à l'ouverture : la rangée de l'introduction ne contenait plus que l'intercalaire, et la numérotation des sections suivantes était intacte, donc exactement sept emplacements libres pour les pages 3 à 9.
+
+**La recette de la page 28, relevée sur son propre réglage.** Inter Extra Bold Italic, 104 px, interligne 94 pour cent, approche moins 1 pour cent, centré, ivoire de marque `#e1e1d7`, dans une boîte de 1360 calée à x 280. Pas de champ de points, le cadre porte sa couleur en plein. Fil d'Ariane en Inter Medium 12 à 14 pour cent d'approche, folio à 8 pour cent d'approche.
+
+**Ce que Discord fait dans son introduction, et qui a été repris.** Une couleur de marque en plein cadre par page, le texte en capitales énormes dans une autre couleur de la marque, et rien d'autre. La page « WHAT IS DISCORD? » entoure sa question de réponses possibles écrites en faible contraste, dont plusieurs sont des blagues (« SANDWICH? », « THE OPPOSITE OF CONCORD? »). Le couple protagoniste et antagoniste, « BELONGING » contre « ISOLATION », vient de sa page de ton de voix.
+
+**Un test de contraste avant de choisir les couleurs, et son résultat.** Les treize couleurs du système ont été passées au calcul WCAG contre les trois encres possibles. Résultat net : **toutes nos couleurs sont claires**, donc la seule encre qui tient dessus est le noir de marque, entre 4,70 pour le rouge de réponse et 14,48 pour le jaune. L'ivoire ne tient que sur le noir. D'où l'alternance retenue, qui n'est pas un choix esthétique mais une conséquence : pages noires à encre ivoire, pages colorées à encre noire.
+
+**Les sept pages.** 3, « C'est quoi, DWIGGINS ? », sur noir, la question en 156 px entourée de neuf réponses possibles en jaune de marque à 20 pour cent, dont « le nom d'un typographe mort en 1956 ? » et « le contraire de scroller ? ». 4, « En une phrase », sur jaune. 5, « Pourquoi », sur ivoire, « personne ne regarde les lettres, tout le monde les lit ». 6, « Le protagoniste et l'antagoniste », sur noir, le regard en vert de réponse contre l'habitude en rouge de réponse : les deux couleurs qui décident dans le jeu servent ici à nommer l'enjeu. 7, « À qui ça parle », sur le bleu du mode expert. 8, « À quoi sert ce document », sur le vert menthe de la carte 2. 9, « Ce qu'elle ne fait pas », sur l'orange du mode compétition.
+
+**Le mot de marque en noir.** Les pages colorées demandaient un mot de marque sombre, qui n'existait pas dans le Figma. Le fichier que le site sert lui même, `public/brand/dwiggins-wordmark-full-black.svg`, a été téléversé comme vecteur éditable puis cloné et remis à l'échelle sur 138 de large, la largeur du mot ivoire des autres pages.
+
+**Les deux pages de navigation suivies.** Les sept lignes de l'intercalaire 2 et la liste de la section 01 sur la couverture portent les nouveaux titres.
+
+### 2026-08-23, la page 42 passe en vectoriel et gagne la nav ordinateur
+
+**Demande.** La nav du site en version téléphone était une capture agrandie, donc un peu floue. La refaire en vectoriel, et ajouter la nav ordinateur sur la même page, sans écrire de quel facteur c'est agrandi.
+
+**Fait.** Les deux barres redessinées entièrement en vectoriel dans Figma, à partir des mesures relevées dans le navigateur au dixième de pixel, et à partir des **fichiers que le site sert lui même** pour le symbole et le mot de marque, `dwiggins-figures-dark.svg` et `dwiggins-wordmark-full-black.svg`, téléversés comme vecteurs éditables. Rien n'est redessiné à la main : ce qu'on voit sur la page est ce que le navigateur reçoit.
+
+**Les deux relevés.** Pastille de 47 de haut à rayon 16, fond `#f4f3ee`, bord noir à 8 pour cent, dans les deux cas. Sur ordinateur : 1120 de large, symbole 23,9 × 17,3 à x 19,4, mot 77,8 × 19,2 à x 50, quatre liens en Inter Bold 10,88 px à 14 pour cent d'approche et noir à 68 pour cent, bouton 134,7 × 23,8 à x 918,6, interrupteur 45,8 × 26,2 à x 1062. Sur téléphone : 369,4 de large, symbole 20,3 × 14,7, mot 68,1 × 16,8, **aucun lien**, bouton à x 168, interrupteur à x 311,5.
+
+**Une seule échelle pour les deux, 1,0536.** Choisie pour que la barre ordinateur remplisse exactement la colonne de 1180 du document. La barre téléphone tombe alors à 389, soit un tiers, et la différence de largeur se lit d'elle même. Deux échelles différentes auraient fait mentir la page.
+
+**Ce que la page démontre maintenant sans un mot.** Le bloc symbole plus mot est identique sur les deux plateformes ; ce qui disparaît en passant au téléphone, ce sont les quatre liens, jamais le logo. C'est exactement ce que dit la colonne de gauche, « la seule forme autorisée en en-tête, à toutes les largeurs », qui n'était jusqu'ici qu'une affirmation.
+
+**Renommée.** La page ne parle plus seulement du téléphone : « 42 · Les écrans · Le logo dans l'en-tête », fil d'Ariane et ligne de l'intercalaire 37 suivis.
+
+### 2026-08-23, introduction, trois corrections après relecture de Marion
+
+**Page 6, le texte gardé, la mise en page refaite.** « Super le texte mais la mise en page bof bof. » Le défaut était l'écartement : 128 px séparaient le bas du mot vert du libellé rouge, donc la page lisait comme deux objets posés loin l'un de l'autre au lieu d'un affrontement. Bloc resserré à 23 px d'écart, les deux mots ramenés de 168 à 150 px, chaque libellé collé à 20 px au dessus de son mot. Le bloc entier se lit maintenant comme une seule masse, ce qui est le sujet de la page.
+
+**Pages 8 et 9, texte réécrit.** « Je comprends rien, le texte est incompréhensible. » Il avait raison, et voilà précisément ce qui n'allait pas.
+
+Page 8 disait « il dit de quoi le jeu a le droit d'avoir l'air », une construction tordue, suivie d'un souffle qui répétait « de quoi » dans un autre sens. Devient « Ce document ne vous apprend pas à jouer. Il dit comment le jeu doit être dessiné », avec un souffle qui énumère au lieu de tourner autour : « Les couleurs, les typographies, les tailles, les écrans. De quoi fabriquer une page de plus sans casser les autres. »
+
+Page 9 disait « Elle ne décide pas à votre place. Elle dit ce qui est déjà décidé. » Deux problèmes : « elle » n'avait pas d'antécédent sur la page, et la phrase se lit comme une contradiction avant de se lire comme un paradoxe. Devient « Si ce n'est pas écrit ici, c'est que vous avez le droit », qui dit la même chose en donnant une permission au lieu d'énoncer une abstraction. Souffle : « Et quand c'est écrit, la raison est juste à côté. Vous pouvez la contester. Vous ne pouvez pas l'ignorer. »
+
+**La page 9 renommée** en « Ce qui reste ouvert », son ancien titre « Ce qu'elle ne fait pas » ne correspondant plus à son texte. Intercalaire 2 et liste de la couverture suivis.
+
+### 2026-08-23, chapitre logo, la page des trois sols
+
+**État réel du chapitre avant de le pousser, relevé page par page.** Cinq pages de contenu seulement : le logo principal, le sens du symbole, la zone de sécurité, le symbole, les proportions du bloc. Plus l'intercalaire 10. La page 17 « Badge » n'est qu'un cadre vide qui annonce « À produire ». Et il y avait un trou à la 16, Marion ayant supprimé « Les tailles du logo ».
+
+**Comparaison chiffrée avec les trois brandbooks.** Eux consacrent 12 à 21 pages au logo, nous 7. Ce qu'ils ont et que nous n'avons pas : le bloc sur chacun de ses fonds autorisés, le favicon en contexte, et surtout quatre pages de Do et Don't chez Tercio contre zéro chez nous.
+
+**Fait : page 16, les trois sols.** Le noir, l'ivoire, et le champ de points. Le bloc composé en vectoriel à partir des quatre fichiers que le site sert, symbole et mot en noir et en ivoire, tous téléversés comme vecteurs éditables.
+
+**Une erreur de méthode à ne pas refaire.** J'ai construit la page en supposant le fond sombre, comme dans les chapitres typographie et écrans. **Le chapitre logo est sur fond clair**, ivoire `#e1e1d7`, encre sombre : toute ma colonne de gauche était ivoire sur ivoire, donc invisible. Vérifié après coup sur la page 13, qui donne la convention du chapitre : `numero` en noir à 34 pour cent, folio à 58, cotes en `#191510` à 58, surfaces à 6 et 16 pour cent. **Relever la convention du chapitre avant de cloner, pas après.**
+
+**Un cas amusant réglé en le nommant.** Le panneau ivoire a exactement la couleur de la page, donc il n'existait pas visuellement. Plutôt que de tricher sur la teinte, il reçoit un filet à 18 pour cent et sa légende le dit : « Le sol du thème clair, et celui de cette page même. »
+
+**Reste à faire dans ce chapitre**, dans cet ordre décidé avec Marion : le favicon en contexte, puis ce qu'on ne fait pas. Le badge en dernier, il veut le traiter lui même.
+
+### 2026-08-23, chapitre logo, la page du favicon
+
+**Premier essai refusé.** « Pas super beau, tu peux refaire ? Fond noir au passage. » L'essai précédent posait le favicon agrandi et un onglet dessiné sur le fond ivoire du chapitre : joli mais vide de propos, et l'onglet lisait comme une barre de recherche parce qu'il flottait seul, sans barre d'onglets autour.
+
+**Le passage au fond noir a rendu la page utile, pas seulement différente.** Sur un sol sombre, la question devient : est-ce que notre favicon tient dans un navigateur en thème sombre ? Mesuré avant de dessiner, et la réponse est non pour le disque.
+
+Le disque du favicon est `#000000`. Contre la barre d'un chrome clair, `#dcdcdc`, il est à **15,3 : 1**, il se voit. Contre un chrome sombre, `#2c2c2e`, il tombe à **1,5 : 1**, il disparaît. Seuil calculé : il faut un fond plus clair que `#5a5a5a` pour que le disque atteigne 3 : 1, et **tous les chromes sombres sont en dessous**.
+
+**Mais le favicon tient quand même, par un autre moyen, et c'est ça qu'il fallait écrire.** Sur un chrome sombre, le symbole ivoire `#e1e1d7` est à **10,6 : 1** contre la barre : c'est lui qui identifie seul. Le disque est un dispositif pour les sols clairs. La page dit les deux, avec les deux barres d'onglets dessinées côte à côte et leur rapport de contraste sous chacune.
+
+**Le rapport de construction, relevé dans le fichier et pas estimé.** `dwiggins-favicon-disque.svg` porte `transform="translate(6.3205 33.9145) scale(0.289094)"` sur un disque de 256. En reportant les bornes du viewBox source, `84.4 82 673 486.9`, le symbole occupe 194,6 de large et se centre exactement sur 128, 128. Donc **la largeur du symbole vaut 76 % du diamètre**, et sur un disque de 32 px le symbole fait 24 px. Formulé en rapport, à la manière d'Elevo page 67, avec l'exemple en pixels en dessous.
+
+**Deux détails de fabrication.** Les barres d'onglets sont dessinées en vectoriel, trois onglets dont le troisième coupé par le bord pour que ça lise comme une barre qui continue. Et la croix de fermeture est un `createVector` avec le tracé `M 0 0 L 18 18 M 18 0 L 0 18` : au premier essai, deux rectangles pivotés à 45 et moins 45 degrés ne se croisaient pas au même point et donnaient un chevron.
+
+**Reste dans ce chapitre** : ce qu'on ne fait pas. Puis le badge, que Marion traitera lui même.
+
+### 2026-08-23, migration 013 vérifiée et prête, bloquée par les permissions
+
+La 013 fait de la notoriété l'axe de progression : les polices connues restent
+atteignables dès le début, les obscures reculent en `uncommon` et `rare`.
+
+**Tout est vérifié contre la vraie base, en lecture seule.** Les 1090 slugs existent,
+1090 sur 1090, ce qui est le contrôle qui manquait à la 014. Aucun n'est une ligne
+Adobe, donc les raretés posées ce matin ne bougent pas. Le retour arrière couvre
+exactement les 1090. La portée du débutant passerait de 1178 à 355.
+
+**Le premier pool d'un joueur neuf, simulé en rejouant la requête d'`init_user_pool`
+avec les raretés futures.** Entrent : Helvetica LT Pro, Futura PT, Gill Sans Nova,
+Franklin Gothic, Impact, Eurostile, ITC Avant Garde Gothic Pro, Exo, Karla, Lexend,
+Merriweather Sans. Sortent : Alumni Sans Inline One, Chocolate Classical Sans, Black
+Han Sans, Elms Sans, Asta Sans, Ancizar Sans, Cal Sans. C'est exactement l'effet visé.
+
+**BLOQUÉE PAR LE CLASSIFIEUR DE PERMISSIONS, à lancer par le propriétaire.** L'écriture
+de masse en production est refusée à l'agent par le shell comme par l'outil Neon. Le
+travail est prêt, il ne reste qu'une commande :
+
+```
+! node scripts/apply_013_rarity.mjs
+```
+
+Puis, obligatoirement :
+
+```
+! ./.venv/bin/python scripts/sync_catalog_rarity_json.py
+```
+
+**Pourquoi la seconde commande n'est pas optionnelle.** `import_catalog_json.py` rejoue
+`content/catalog/typefaces-core.json` et écrase `rarity_tag` depuis lui. Sans la
+synchro, le prochain réimport annulerait la 013 en silence et le premier pool
+reperdrait Helvetica au profit de Chocolate Classical Sans. Même piège que celui
+refermé pour Adobe, sur une autre colonne.
+
+**Ce qui protège l'application.** Les 1090 ordres partent dans une seule transaction,
+close par un contrôle qui lève si le résultat n'est pas exact : aucune ligne Adobe
+touchée (30 canoniques et 78 variantes), au moins 357 `uncommon` et 490 `rare` hors
+Adobe, et une portée du débutant à 355. Une transaction qui lève annule tout, donc la
+vérification ne peut pas arriver trop tard. `--dry-run` montre l'effet sans rien
+écrire, `--rollback` rejoue le retour arrière.
