@@ -24,6 +24,7 @@ const POOL_QUERY_FILES = [
 ];
 const TYPEFACES_CATALOG = "content/catalog/typefaces-core.json";
 const RUNTIME_ASSETS_CATALOG = "content/catalog/font-runtime-assets.json";
+const ADOBE_KIT = "content/catalog/adobe-fonts-kit.json";
 
 const failures = [];
 const notes = [];
@@ -99,8 +100,21 @@ const slugsWithReadyAsset = new Set(
     .map((record) => record.typeface_slug)
 );
 
+// Servable doit vouloir dire la meme chose ici que dans la requete de pool,
+// sinon le garde laisse passer ce que le jeu sert vraiment. Le pool accepte une
+// ligne active qui a un fichier pret OU dont la source est Adobe, parce qu'une
+// police Adobe se rend par la feuille du projet web sans fichier chez nous. Sans
+// cette seconde branche, les 108 lignes Adobe n'entraient dans aucun controle de
+// licence alors qu'elles sont affichees a chaque partie.
+const adobeKitSlugs = new Set(
+  readJson(ADOBE_KIT).families.map((family) => family.typeface_slug)
+);
+
 const servable = typefaces.filter(
-  (record) => record.activation_status === true && slugsWithReadyAsset.has(record.typeface_slug)
+  (record) =>
+    record.activation_status === true &&
+    (slugsWithReadyAsset.has(record.typeface_slug) ||
+      (record.font_source === "adobe" && adobeKitSlugs.has(record.typeface_slug)))
 );
 
 const blocked = servable.filter(

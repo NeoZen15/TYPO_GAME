@@ -30,6 +30,7 @@ const RETOUR = "db/migrations/016_adobe_catalog_rows.rollback.sql";
 const SCHEMA = "db/migrations/002_catalog_tables.sql";
 const ENUMS_015 = "db/migrations/015_adobe_fonts_source.sql";
 const COMPETITION = "lib/game/competition/provider.ts";
+const CATALOGUE = "content/catalog/typefaces-core.json";
 
 const echecs = [];
 const echec = (regle, detail) => echecs.push(`${regle} : ${detail}`);
@@ -42,6 +43,7 @@ const retour = lire(RETOUR);
 const schema = lire(SCHEMA);
 const enums015 = lire(ENUMS_015);
 const competition = lire(COMPETITION);
+const catalogue = JSON.parse(lire(CATALOGUE));
 
 // --- 1. la feuille chargee par le layout est celle du kit ---
 if (!layout.includes(kit.meta.stylesheet) && !layout.includes("ADOBE_KIT_STYLESHEET")) {
@@ -185,7 +187,36 @@ for (const s of couverts) {
   if (!familleParSlug.has(s)) echec("famille-fantome", `${s} est dans la migration mais le kit ne la sert pas`);
 }
 
-// --- 5. transactions et retour arriere ---
+// --- 5. le JSON du catalogue porte les memes lignes que la migration ---
+//
+// LE PIEGE DE REIMPORT, ET IL N'EST PLUS THEORIQUE DEPUIS QUE LA 016 EST APPLIQUEE.
+// scripts/import_catalog_json.py rejoue content/catalog/typefaces-core.json dans la
+// base avec un ON CONFLICT DO UPDATE sur font_source, license_type et
+// activation_status. Si le JSON ignore une ligne Adobe, le prochain reimport la
+// rebascule en 'local' et 'proprietary', donc eteinte, sans erreur et sans bruit.
+// scripts/sync_adobe_catalog_json.py maintient le miroir ; ce garde verifie qu'il
+// a bien ete lance.
+{
+  const parSlug = new Map(catalogue.records.map((r) => [r.typeface_slug, r]));
+  for (const f of kit.families) {
+    const r = parSlug.get(f.typeface_slug);
+    if (!r) {
+      echec("json-sans-la-ligne", `${CATALOGUE} ignore ${f.typeface_slug} : un reimport l'eteindrait. Lancer scripts/sync_adobe_catalog_json.py`);
+      continue;
+    }
+    if (r.font_source !== "adobe" || r.license_type !== "adobe_fonts") {
+      echec("json-desaccorde", `${CATALOGUE} : ${f.typeface_slug} est en ${r.font_source}/${r.license_type}, un reimport ecraserait la base`);
+    }
+    if (r.activation_status !== true) {
+      echec("json-eteinte", `${CATALOGUE} : ${f.typeface_slug} est eteinte, un reimport l'eteindrait en base`);
+    }
+    if (r.fallback_stack && !r.fallback_stack.startsWith(`"${f.css_family}"`)) {
+      echec("json-famille-css", `${CATALOGUE} : ${f.typeface_slug} porte ${r.fallback_stack}, le kit sert "${f.css_family}"`);
+    }
+  }
+}
+
+// --- 6. transactions et retour arriere ---
 for (const [nom, txt] of [["016", migration], ["retour", retour]]) {
   const b = (txt.match(/^BEGIN;$/gm) || []).length;
   const c = (txt.match(/^COMMIT;$/gm) || []).length;

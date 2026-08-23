@@ -28,6 +28,7 @@ const readJson = (relative) => JSON.parse(read(relative));
 
 const CATALOG = "content/catalog/typefaces-core.json";
 const RUNTIME = "content/catalog/font-runtime-assets.json";
+const ADOBE_KIT = "content/catalog/adobe-fonts-kit.json";
 const RUNTIME_SOURCE = "lib/game/fonts/runtime-catalog.ts";
 const INJECTOR = "lib/game/fonts/inject-font-face.ts";
 
@@ -56,11 +57,32 @@ const runtimeReady = new Set(
     .map((record) => record.typeface_slug)
 );
 
-const activeSlugs = readJson(CATALOG)
-  .records.filter((record) => record.activation_status === true)
-  .map((record) => record.typeface_slug);
+// Une police Adobe se rend, mais pas depuis un fichier chez nous : leurs
+// conditions interdisent de telecharger et d'heberger, c'est leur CDN qui la sert
+// au navigateur. Exiger un woff2 pret la declarerait irrendable alors qu'elle
+// s'affiche. Le garde ne renonce pas a la controler pour autant : il exige
+// qu'elle soit dans le kit du projet web, la seule preuve hors ligne qu'un
+// navigateur recevra bien quelque chose. Une ligne 'adobe' absente du kit reste
+// une faute, et c'est check:adobe-migration qui verifie en plus que son nom de
+// famille CSS est exactement celui que la feuille declare.
+const adobeKitSlugs = new Set(
+  readJson(ADOBE_KIT).families.map((family) => family.typeface_slug)
+);
 
-const unrenderable = activeSlugs.filter((slug) => !runtimeReady.has(slug));
+const activeRecords = readJson(CATALOG).records.filter(
+  (record) => record.activation_status === true
+);
+const activeSlugs = activeRecords.map((record) => record.typeface_slug);
+
+const adobeActive = activeRecords.filter((record) => record.font_source === "adobe").length;
+
+const unrenderable = activeRecords
+  .filter((record) =>
+    record.font_source === "adobe"
+      ? !adobeKitSlugs.has(record.typeface_slug)
+      : !runtimeReady.has(record.typeface_slug)
+  )
+  .map((record) => record.typeface_slug);
 
 if (unrenderable.length > 0) {
   failures.push(
@@ -181,6 +203,7 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `check:font-renderable OK : ${activeSlugs.length} active faces, all with a ready runtime asset ; ` +
+  `check:font-renderable OK : ${activeSlugs.length} active faces, ` +
+    `${activeSlugs.length - adobeActive} with a ready runtime asset and ${adobeActive} served by the Adobe web project ; ` +
     `${PROVIDERS.length} providers on the single runtime source ; ${SCREENS.length} screens injecting on demand.`
 );
