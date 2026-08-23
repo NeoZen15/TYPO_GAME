@@ -135,6 +135,38 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-23 — audit du thème clair : 97 textes illisibles, une seule cause
+
+**Statut : audit fait, rien corrigé.** Demande de Marion : le site a été composé sur fond noir, le thème clair n'a jamais eu de vraie passe, beaucoup de choses restent blanches alors qu'elles devraient être noires, et il y a trop d'ombres portées. Planche publiée en artifact, `Le côté clair`. Quatre captures fournies (deck des modes, cartes de typos, scène de comparaison, pied de page) : la mesure les confirme toutes.
+
+**La cause est unique et elle est arithmétique.** Les nuances de texte sont des transparences de l'encre sur le fond. **La même alpha ne donne pas le même contraste selon le fond qu'elle recouvre.** Du beige à 34 pour cent sur du noir donne un ratio de 2,71. De l'encre à 34 pour cent sur du beige donne 2,15, parce que le beige est moins lumineux que le blanc et l'encre chaude moins dense que le noir pur. L'échelle a été calibrée sur le noir puis réutilisée telle quelle sur le beige.
+
+| jeton | alpha | sombre | clair |
+| --- | --- | --- | --- |
+| `--ink-strong` | 0,94 | 16,56 | 14,17 |
+| `--ink-muted` | 0,58 | 6,32 | **4,30** |
+| `--ink-soft` | 0,34 | 2,71 | **2,15** |
+
+**Contrainte de fond, à trancher avant tout le reste.** Pour que `--ink-soft` atteigne le seuil de lisibilité (4,5) sur beige, il lui faut passer de 34 à 59 pour cent, ce qui en fait exactement `--ink-muted`. **Sur fond beige, une échelle à trois niveaux tous lisibles n'existe pas**, la plage utile est comprimée. Soit le niveau le plus pâle reste décoratif et n'est jamais utilisé pour du texte à lire, soit on passe à deux niveaux lisibles en clair.
+
+**Trois mécanismes mesurés, sur 12 pages.**
+
+*97 textes sous le seuil en clair*, sur 324 mesurés. Trente-neuf tombent exactement à 2,15, donc ils partagent une seule valeur d'encre : ce n'est pas 97 corrections mais une poignée de jetons. Les pires : `compare-control.is-active` à 1,13 (quasi invisible), les 16 `lp-typeface-card__cat`, les 6 `lp-mode-card__meta`, les annotations de la landing. Par page : la landing 60, `/compare` 19, `/play` 7, `/profile` 7.
+
+*55 surfaces, 23 classes, peignent la même couleur dans les deux thèmes.* Les plus grandes : `lp-footer` (1440 par 459, crème pleine largeur), `site-nav`, `lp-header`, `dw-hud`, les quatre `game-v2-option`. C'est la nav dont parle Marion, et elle n'est pas seule. À noter : une pastille crème sur page beige ne se distingue que par son ombre, donc l'ombre ne peut pas partir avant que la surface ait changé. Les deux corrections sont liées, dans cet ordre.
+
+*119 ombres déclarées, 3 lisent un jeton.* Les deux jetons `--shadow-soft` et `--shadow-card` existent et sont correctement définis dans les deux thèmes. Les 116 autres déclarations portent une valeur écrite à la main, donc réglée pour un seul fond. Soixante-sept éléments peignent une ombre rigoureusement identique des deux côtés.
+
+*57 textes à couleur littérale*, 24 classes, qui ne bougeront pas même après recalibrage des jetons : liens du pied de page, liens de nav, libellés du bandeau profil.
+
+**Plan en cinq étapes, dans l'ordre où chacune réduit la suivante.** 01 recalibrer l'échelle d'encre en clair (décision DA, 2 jetons, 39 textes réglés d'un coup). 02 rendre les 23 classes de surface sensibles au thème (décision DA, par surface : suit le fond ou s'en détache). 03 faire lire les jetons d'ombre aux 116 déclarations en dur (mécanique, délégable). 04 reprendre les 57 textes à couleur figée (mécanique, délégable). 05 remesurer et poser un `check:contrast` dans la porte, comme `check:copy` pour les textes orphelins.
+
+**Méthode.** Build de production servi sur un port dédié depuis un worktree détaché sur `HEAD` : le serveur de dev du 3002 sert une feuille périmée, mesurer dessus n'aurait rien valu. Chaque page chargée une fois, `data-theme` basculé des deux côtés, instantané des styles calculés à chaque fois, une propriété identique des deux côtés signalant un élément qui ignore le thème. Contraste calculé contre le fond effectif reconstruit en remontant les ancêtres et en compositant les transparences, seuil ajusté selon taille et graisse. Aucune écriture en base. Scripts dans le worktree : `audit-theme.mjs`, `audit-contraste.mjs`.
+
+**Limites.** Un seul viewport. Les états au survol, les menus ouverts, les onglets fermés du profil et l'écran de compétition en manche ne sont pas relevés, ni les pages du labo interne.
+
+---
+
 ## Note — 2026-08-21 — les rayons proches sont généralisés : 36 peints deviennent 23
 
 **Statut : fait, sauf le build, volontairement.** Suite directe de l'audit de l'avant veille. Marion : « on peut généraliser tous les rayons proches ? ». Oui, mais pas avec la valeur qu'on croit.
@@ -2017,3 +2049,69 @@ Les 4 rallumées y entrent aussi, elles n'ont plus de fichier non plus.
 
 Porte complète verte. Mutation du garde : 23 sur 23. **Reste le feu vert pour appliquer
 en production**, et la suppression des deux branches jetables.
+
+### 2026-08-23, retour arrière sur la section des écrans, et le GIF refait depuis l'enregistrement de Marion
+
+**Le constat de Marion.** « Ce que je t'ai envoyé, c'est pour que tu comprennes comment on le fait, pas pour que tu fasses exactement la même chose. » Et : « supprime tous les fonds beige que tu viens de créer, remets les typographies où on a l'habitude de les mettre. » Et enfin, sur le fond : « le but c'est de mettre les pages principales, pas toutes les pages du jeu. Pas 50 fois le même screen, et toujours à la même place. »
+
+**Mon erreur, nommée.** J'ai recopié le gabarit de Tercio au lieu d'en tirer un principe. Bande de montage ivoire pleine largeur, titre de 44 px en bas de page, pastille en monospace : c'était le document de quelqu'un d'autre posé sur le nôtre. Les références servent à comprendre pourquoi une page tient, pas à en décalquer la mise en page.
+
+**Défait.** Les onze bandes d'ivoire supprimées, les onze titres de 44 px et leurs pastilles supprimés, la signature de pied et le folio remis en bas à y 998 comme sur les 48 autres pages du document. Les pages reprennent la mise en page d'origine : fil d'Ariane en haut à gauche, colonne d'explication à gauche à partir de y 254, fenêtre du site de 1180 de large calée à x 370, ligne de fiche à y 930.
+
+**Coût réel de cette erreur, à assumer.** En retirant l'ivoire j'ai aussi retiré les colonnes d'explication que j'avais écrasées en posant la bande. Elles ont été réécrites de mémoire du produit pour les pages qui restent. Ce n'est pas une restauration, c'est une réécriture.
+
+**Le GIF de la page 39, refait depuis l'enregistrement de Marion.** Il a filmé lui-même l'étape 3 de l'entrée, la question de famille avec les quatre réponses, dans `~/Desktop/Enregistrement de l'écran 2026-08-23 à 20.15.28.mov` (3394 × 1756, 19,2 s, 48 images par seconde). La ronde entière se joue entre la 12e et la 19e seconde.
+
+**Ce qui rendait le GIF sale, et le vrai remède.** Un GIF n'a que 256 couleurs, et par défaut `ffmpeg` calcule une seule palette pour toute l'animation, donc le fond noir en dégradé se retrouve tramé et la trame bouge d'une image à l'autre. Le remède est `palettegen` en `stats_mode=single` avec `paletteuse:new=1`, qui recalcule 256 couleurs **par image** au lieu de 256 pour l'ensemble, plus un tramage `bayer` fin plutôt que pas de tramage du tout. Deuxième levier, accordé par Marion : recadrer la vidéo sur la carte de démonstration, ce qui concentre tous les pixels là où quelque chose se passe.
+
+Résultat : recadrage 1280 × 900 dans la source, 10 images par seconde, 64 images, affiché en 1100 × 774 au gabarit de la fenêtre du document. 8,1 Mo, sous la limite de 10 Mo de Figma. Lettres nettes, plus aucune bande.
+
+**Le profil recadré sur sa carte.** Marion a signalé que la page du profil ne montrait pas la carte : elle est sous la ligne de flottaison, la capture ne cadrait qu'un grand vide et un titre. Mesuré : les huit lettres qui épellent DWIGGINS sont à y 1183 dans une page de 4576 de haut. Recapturé avec un défilement de 760 px, la carte est centrée avec sa légende. Téléversé, en attente d'une page.
+
+**Marion travaille dans le fichier en même temps.** Constaté en cours de route : il a supprimé lui même les pages de l'entrée, du choix du mode et des règles d'un mode, dupliqué les pages 39 et 40 pour les regarder, et déplacé l'intercalaire des annexes. Cohérent avec sa demande. J'ai arrêté toute renumérotation et tout déplacement de cadre à partir de ce constat, pour ne pas écrire par dessus lui.
+
+**Reste à faire, dans sa direction.** Les sujets qu'il a nommés et qui ne sont pas des captures de site : l'icône en contexte (son kit Safari mobile contient toutes les barres d'URL, en clair, sombre, multi-onglets et navigation privée, plus les iPhone 16 avec un cadre `screen-here`), les boutons, les couleurs en application. Et une page unique qui rassemble les écrans secondaires au lieu d'une page chacun.
+
+### 2026-08-23, deux pages mobiles montées dans les mockups de Marion
+
+**Demande.** « Fais les mockups iPhone, pas la suite. Que des trucs de logo et le jeu en format mobile. »
+
+**Ce qu'il y a dans son kit, inventorié avant de s'en servir.** Deux appareils, iPhone 16 (377 × 785) et iPhone 16 Plus (409 × 843), chacun en clair et en sombre, avec cadre titane, boutons latéraux, îlot dynamique, barre d'état et un cadre `screen-here` qui contient un rectangle `Wallpaper (delete)` prévu pour recevoir la capture. Plus un jeu complet de barres d'URL Safari mobile en clair, sombre, défilé, multi-onglets et navigation privée. **Aucun mockup de Mac dans le kit.**
+
+**Page 42, le jeu en mobile.** Trois iPhone 16 sombres clonés, remis à l'échelle 340 / 377, calés sur la colonne du document (3 × 340 plus 2 × 80 font exactement 1180). L'accueil, l'écran de jeu, le choix du mode, captures réelles en 393 × 852 en 3×.
+
+**Un piège de montage, réglé.** Les captures ont été prises dans un navigateur de bureau à 393 × 852, donc sans zone de sécurité iOS : le contenu du site commence à y 0. Posées telles quelles dans le mockup, l'îlot dynamique mordait la pastille d'en-tête du site. La capture est donc décalée de 44 px logiques vers le bas dans `screen-here`, ce qui la place où iOS la mettrait vraiment.
+
+**Page 43, le logo sur téléphone.** Un appareil avec l'accueil, puis l'en-tête réel **découpé dans la capture et agrandi 2,2 fois** (un cadre qui rogne, contenant la même image à l'échelle, pas un redessin : ce qu'on montre est ce que le site sort). Puis la tuile d'écran d'accueil aux trois tailles que demande iOS, 180, 120 et 60 px, angles à 22,37 pour cent du côté comme iOS, symbole seul sans le mot. La règle écrite avec : sous 60 px le mot devient une tache, donc il ne descend pas plus bas.
+
+**En attente d'une page.** La capture du profil recadrée sur la carte du regard est téléversée mais Marion a supprimé la page qui la portait. Empreinte `3ce59f7de486`.
+
+**À savoir.** Marion a dupliqué la page 39 avant que je remplace le GIF : sa copie, dans la rangée du dessus, porte encore l'ancien GIF de la landing. Le bon, celui tiré de son enregistrement, est sur la page 39 de la rangée de la section.
+
+### 2026-08-23, quatre pages d'écrans construites sur des valeurs mesurées
+
+Marion a validé la façon de faire de la page du logo sur téléphone et demandé la suite des quatre manques que j'avais listés, avec des variantes. Fait, pages 43 à 46, plus la fermeture du trou de numérotation (la section sautait de 40 à 42).
+
+**43, les largeurs.** Le point de départ était faux : je cherchais une grille à colonnes, il n'y en a pas. Le site a **quatre largeurs** déclarées en rem, relevées dans le navigateur : l'en-tête à 1120 (70 rem), le jeu à 976 (61 rem), le large à 960 (60 rem), l'étroit à 704 (44 rem). Gouttière de page en `clamp(1rem, 3vw, 2rem)`, donc 32 px au bureau et 16 px sur téléphone. Les quatre largeurs sont dessinées à l'échelle, emboîtées, dans un cadre qui représente la fenêtre de 1440, avec l'enveloppe « fenêtre moins les gouttières » à 1376 pour que les traits de gouttière touchent quelque chose (au premier essai ils flottaient dans le vide et ça lisait comme une erreur).
+
+Le téléphone est dessiné **à la même échelle** que le bureau, ce qui montre d'un coup que la fenêtre entière d'un iPhone est plus étroite que la plus étroite des largeurs du bureau. Et sur téléphone les quatre s'écrasent sur 94 % de la fenêtre, donc l'échelle disparaît.
+
+**Un point à trancher, noté sur la page.** Le jeu et le large ne diffèrent que de 16 px. Deux largeurs si proches ne se distinguent pas à l'œil : soit on les écarte, soit on n'en garde qu'une.
+
+**44, le clair et le sombre.** Les deux captures sont prises dans **la même session**, avec la rotation de police gelée, donc le même mot dans la même police des deux côtés : sinon on compare deux choses à la fois. Les valeurs des deux thèmes relevées aux deux états de l'interrupteur, en bandes, avec les pastilles dessinées à leur vraie opacité sur leur vrai sol.
+
+**Un écart à régler, trouvé en mesurant.** L'interface emploie `#f4f3ee` partout, 45 fois dans la feuille de style. La charte déclare l'ivoire à `#e1e1d7`, pages 19 et 24. Écart mesuré : 6,5 points de clarté L*, ΔE76 de 7,0, soit trois fois le seuil de perception. Et `#e1e1d7` n'existe **nulle part** dans l'interface : uniquement dans les fichiers SVG du logo et dans un commentaire. Il faut trancher, soit le site prend l'ivoire de marque, soit la charte déclare deux crèmes en disant laquelle sert à quoi.
+
+**Deux choses ne basculent jamais, et c'est une bonne règle** : la pastille d'en-tête reste `#f4f3ee` sur les deux sols (elle est écrite en dur), et le jaune de marque garde sa valeur.
+
+**45, les états d'une réponse.** Les trois états posés sur le composant réel dans le navigateur puis photographiés un par un. 266 × 63, rayon 16, Inter Regular 16, encre `#f4f3ee`, remplissage 16 / 16 / 16 / 19,52. Juste : bord `#00c853`, fond mêlé à 14 %. Faux : bord `#ff0000`, fond mêlé à 12 %. La géométrie ne bouge dans aucun état.
+
+**Un défaut mesuré, à corriger dans le code.** `.game-v2-option:hover:not(:disabled)` a une spécificité de (0,3,0) et écrase `.game-v2-option.is-wrong` qui n'est qu'à (0,2,0). Donc quand le curseur reste sur la réponse qu'on vient de cliquer, ce qui est exactement ce qui se passe, **le bord rouge n'apparaît pas** : seule la teinte du fond signale l'erreur. Vérifié dans les deux positions : souris dessus, bord `rgba(58,38,48,0.17)` ; souris ailleurs, bord `#ff0000`. Correctif : réserver le survol avec `:not(.is-correct):not(.is-wrong)`.
+
+**Autre constat de comportement.** Une mauvaise réponse ne révèle pas la bonne : le jeu affiche « Incorrect. Try again. » et laisse rejouer, les trois autres réponses restant neutres.
+
+**46, ce qu'on ne fait pas.** Deux panneaux, même taille, même place, un badge vert et un badge rouge sans un mot de commentaire. Le même mot, « courbe », capturé deux fois dans la même session au même corps de 91,2 px : à gauche dans Alan Sans, la police que le joueur doit reconnaître, à droite rendu par une police de repli. Les deux sont affichés **à la même échelle**, sinon la comparaison mentirait. C'est la faute la plus grave que ce produit puisse commettre : la question devient impossible, aucune des quatre réponses n'est juste.
+
+**Trois essais avant de trouver la bonne démonstration**, à noter pour ne pas les refaire. Une fausse graisse sur une police sans gras donne un gras synthétique presque invisible à cette taille. Un faux italique ne se voit pas non plus quand la famille possède un vrai italique, ce qui était le cas de Tinos. La police de repli, en revanche, change tous les dessins d'un coup.
+
+**Un piège de capture, réglé.** Impossible d'attraper l'état juste en jouant : une bonne réponse enchaîne sur le mot suivant plus vite que l'aller-retour de la capture, et geler les minuteurs juste après le clic empêche l'état d'apparaître. La solution est de poser la classe directement sur le composant réel dans la page, souris éloignée, puis de photographier. On rend le vrai composant dans le vrai état, sans dépendre du hasard d'une partie.
