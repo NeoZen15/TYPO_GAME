@@ -1,5 +1,6 @@
 import "server-only";
 
+import adobeKit from "@/content/catalog/adobe-fonts-kit.json";
 import runtimeCatalog from "@/content/catalog/font-runtime-assets.json";
 import { type GameFontFace } from "@/lib/game/fonts/contracts";
 
@@ -61,8 +62,32 @@ const runtimeBySlug = new Map<string, RenderableRecord>(
     .map((record) => [record.typeface_slug, record])
 );
 
+// LA SECONDE ROUTE DE RENDU, et elle existe parce qu'Adobe ne donne pas ses
+// fichiers. Leurs conditions interdisent l'auto-hebergement : on ne telecharge
+// rien, la feuille de style du projet web declare les familles depuis leur CDN et
+// le jeu n'a plus qu'a les nommer.
+//
+// Ce que ca change ici. Une police Adobe n'a AUCUNE entree dans
+// font-runtime-assets.json, puisque ce catalogue recense des fichiers que nous
+// servons. Sans cette carte, hasRuntimeFace la rejetterait, le constructeur de
+// questions ne la choisirait jamais, et elle serait invisible au jeu.
+//
+// getRuntimeFontFace rend deliberement null pour ces polices : il n'y a pas de
+// descripteur a injecter, la feuille d'Adobe s'en charge deja. Le client sait
+// traiter ce null, ensureGameFontFace l'accepte.
+const adobeBySlug = new Map<string, string>(
+  adobeKit.families.map((f) => [f.typeface_slug, f.css_family])
+);
+
+/** L'adresse de la feuille du projet web Adobe, chargee une fois par la coquille. */
+export const ADOBE_KIT_STYLESHEET = adobeKit.meta.stylesheet;
+
+/** Vrai quand la police vient du projet Adobe et non d'un fichier que nous servons. */
+export const isAdobeFace = (slug: string) => adobeBySlug.has(slug);
+
 /** True when a question on this slug can actually render its own typeface. */
-export const hasRuntimeFace = (slug: string) => runtimeBySlug.has(slug);
+export const hasRuntimeFace = (slug: string) =>
+  runtimeBySlug.has(slug) || adobeBySlug.has(slug);
 
 /**
  * Every slug this project can render. Not called anywhere in this repository at
@@ -79,6 +104,12 @@ export const getRuntimeFontFamily = (slug: string, displayName: string) => {
     return `"JDT__${slug}"`;
   }
 
+  // Le nom de famille tel que la feuille d'Adobe le declare, pas un nom invente.
+  const adobe = adobeBySlug.get(slug);
+  if (adobe) {
+    return `"${adobe}"`;
+  }
+
   return LOCAL_FONT_FAMILIES[slug] ?? `"${displayName}", serif`;
 };
 
@@ -88,6 +119,8 @@ export const getRuntimeFontFamily = (slug: string, displayName: string) => {
  * signal that getRuntimeFontFamily fell back.
  */
 export const getRuntimeFontFace = (slug: string): GameFontFace | null => {
+  // Une police Adobe n'a pas de descripteur : la feuille du projet web a deja
+  // declare sa famille. Rendre null ici n'est pas un echec, c'est le contrat.
   const record = runtimeBySlug.get(slug);
   if (!record) {
     return null;

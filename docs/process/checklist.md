@@ -1855,3 +1855,88 @@ Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, 
 **Six autres constats, tous corrigés.** Le rollback de 013 ne prétend plus restaurer « la valeur d'avant migration », il dit qu'il restaure l'état du JSON du catalogue, qui concorde avec la base aujourd'hui mais pas nécessairement demain si quelqu'un a édité `rarity_tag` en base directement. Les en-têtes de 013, son rollback et 014 portent maintenant l'avertissement de réimport qui écrase les valeurs, même convention que `db/migrations/010_license_type_ufl.sql`. L'en-tête de 013 documente l'effet réel de la migration sur les quatre fonctions de `012_pool_serialisation.sql` (catalogue atteignable réduit pour les joueurs N et D, quotas restant servis). `scripts/quality/check-rarity-coverage.mjs` croise désormais chaque slug visé par 013 et 014 avec le catalogue réel et échoue en nommant les inconnus, démonstration faite et restaurée sur une copie de 014 avec `slug_qui_nexiste_pas`. Le message de succès de `check-google-metadata-sync.mjs` ne prétend plus que `popularity` est unique, seule `rank` l'est et c'est ce qui est mesuré. Le commentaire de `rarity_tag` dans `lib/game/training/question-shape.ts` dit maintenant la vraie raison de l'optionnel (protéger les appelants synthétiques comme les tests, pas une migration non appliquée : la colonne est `NOT NULL`).
 
 **Vérifié.** 013 et son rollback comptent chacun 1090 ordres, 243 common, 357 uncommon, 490 rare, inchangé. `check:rarity-coverage` et `check:google-metadata-sync` en sortie 0, `npm run typecheck` et `npm run lint` en sortie 0.
+
+### 2026-08-23, charte Figma, les deux pages vitrine des écrans corrigées
+
+**Le constat de Marion, en deux mots.** « Gros titre comme cela impossible, depuis quand ? » et « la qualité c'est pas possible ». Les deux sont exacts, les deux sont de moi.
+
+**Le titre.** J'avais posé sur les pages 38 et 39 une phrase centrée en Inter Semi Bold 52, qui n'existe nulle part ailleurs dans le document. Vérification faite sur les 57 pages : le titre du document s'appelle `titre`, il fait 84 px en Semi Bold, et il est réservé aux pages de section (Objectifs, Périmètre, les cinq pages de couleur, Badge). Les pages d'écrans, elles, n'ont aucun gros titre : le visuel porte la page seul. Les deux phrases sont supprimées et remplacées par la colonne de légende de gauche déjà validée en page 34, label 10 px Medium à 12 pour cent d'approche, corps 12 px Regular à 150 pour cent d'interligne, largeur 200, calée à x 96. La fenêtre Mac et le GIF récupèrent la place, marge égale à gauche et à droite, 1464 de large.
+
+**La qualité du GIF.** Le grain venait de deux choses que le format ne sait pas coder : le dégradé du plateau de démo et le champ de points animé du fond. Un GIF n'a que 256 couleurs, donc l'encodeur tramait le dégradé, et la trame bougeait d'une image à l'autre. Corrigé dans `scratchpad/gif.js` en aplatissant le fond avant capture (`canvas` masqué, `.lp-demo-board` en `#0b0b0b` plat, ombres coupées), puis encodage en `-colors 200 -dither None`. Deuxième erreur, plus bête : j'exportais à 900 px de large pour l'afficher à 1200, donc un agrandissement de 1,33. Le GIF part maintenant à sa taille de capture, 1236 × 800, et s'affiche à cette taille exacte. 0,88 Mo, plus léger que la version dégradée qu'il remplace.
+
+**Ce que je ne peux pas vérifier moi-même.** Le service d'aperçu de Figma rend un remplissage GIF en aplat uni. Démontré en faisant téléverser le fichier par Figma lui-même : son propre nœud rend aussi vide. Le remplissage est bien attaché, la page 39 se juge dans l'éditeur.
+
+### 2026-08-23, lecture des trois brandbooks d'agence
+
+**Fait.** Marion a envoyé trois brandbooks d'un ami : Tercio, Elevo, Artrade, dans `~/Downloads/Brandbooks/`. 281 pages, toutes en 1920 x 1080, le format exact de notre charte. Ce sont trois livraisons du même studio sur le même gabarit, donc on y lit un système et pas un coup de chance. Lues en entier, en images. Analyse dans `05_LOGO/REFERENCES_BRANDBOOK/BRANDBOOKS_AGENCE_2026.md`, pointeur ajouté dans `ETAT.md` du même dossier.
+
+**Pourquoi il fallait le faire avant de continuer les pages.** Mes deux pages vitrines venaient d'être refusées sur un gros titre centré que j'avais inventé. La question n'était pas le réglage du titre, c'était que je ne connaissais pas l'anatomie d'une page de charte. Ces trois documents la donnent.
+
+**Le texte des PDF est inexploitable en extraction.** Les polices sont sous-ensemblées sans table Unicode, `pdftotext` perd h, p, m, f, x, k et w, donc « principle » ressort en « rincile ». Seuls les titres sortent propres. Lecture faite en images, `pdftoppm -png -scale-to-x 1600`, les 281 pages rendues dans le scratchpad.
+
+**Les cinq règles qui corrigent ce que je faisais.** Le titre est en haut à gauche, ou en bas à gauche quand l'image occupe la page, jamais au milieu. L'explication est collée au bas de la colonne de gauche, largeur 340, et le vide entre le titre et elle est le sujet, pas un défaut de remplissage. Les comparaisons s'empilent en bandes horizontales dans un panneau unique, jamais en colonnes qui se regardent, ce qui règle enfin le « je déteste les slides divisées ». L'élément est montré vivant à sa taille réelle, jamais décrit. Le gabarit se répète à l'identique dans une série, la variante étant portée par un sous-titre gris ou une pastille en monospace.
+
+**Trois trouvailles précises à reprendre.** Les cotes sont écrites dans des pastilles monospace sur filets pointillés, bleu pour les dimensions extérieures, orange pour les intérieures, exactement le style de cotation de Figma. Pour désigner des parties d'un écran, des filets horizontaux très fins partent des étiquettes de gauche et viennent toucher l'élément dans la capture, ce qui coud la page au lieu de la diviser (Artrade page 58). Pour montrer un espacement ou un rayon, un disque translucide rose pâle est posé sur l'endroit concerné et le titre annonce la valeur une seule fois, par exemple « Espacements 8px » ou « Angles radius 12 px ».
+
+**Ce qui nous manque et qu'ils ont.** Un chapitre de ton de voix, une page par adjectif, trois bandes numérotées : ce que l'audience doit ressentir en deux citations, ce que l'adjectif n'est pas en une énumération de contraires, et huit conseils d'écriture à l'impératif. C'est le plus utile des trois documents pour qui devra écrire à la place de la marque plus tard.
+
+**Rien n'a été modifié dans la charte Figma sur cette base.** Lecture et consignation seulement, comme demandé.
+
+### 2026-08-23, les 108 polices Adobe entrent au catalogue, migration écrite, pas appliquée
+
+Le projet web Adobe est arrêté : 108 familles, un seul romain chacune, 67 Ko servis
+par `use.typekit.net`. `content/catalog/adobe-fonts-kit.json` correspond exactement à
+ce que la feuille sert, zéro écart dans les deux sens. `app/layout.tsx` charge la
+feuille et préconnecte le CDN.
+
+**Ce qui est écrit.** `db/migrations/015_adobe_fonts_source.sql`, ramenée aux deux
+seules valeurs d'enum `adobe` et `adobe_fonts`. `db/migrations/016_adobe_catalog_rows.sql`,
+4 rallumages (arial, courier_new, georgia, times_new_roman, éteintes faute de licence)
+et 104 lignes neuves, plus son retour arrière. Le catalogue actif passerait de 1172 à
+1280. Générées par `scripts/build_adobe_catalog_migration.py`, jamais recopiées à la main.
+
+**Aucune des deux n'est appliquée**, elles attendent le feu vert du propriétaire.
+`node scripts/check_adobe_migration_against_db.mjs` est le contrôle à lancer juste
+avant : il ne fait que des SELECT et vérifie que les 4 UPDATE visent des lignes qui
+existent vraiment. C'est exactement le contrôle qui manquait à la migration 014, dont
+treize slugs sur vingt-trois n'existaient pas. Il passe : 4 sur 4, zéro collision.
+
+**Ce qui vient d'Adobe et ce qui est dérivé.** D'Adobe : le nom de famille et le nom
+CSS. Dérivé par règle, donc `qa_status = 'review'` sur les 108 : sous-catégorie,
+cluster visuel, rareté commune, niveau Dreyfus N, difficulté facile. Un seul de ces
+champs change le jeu, `visual_cluster_id`, qui décide des mauvaises réponses.
+`designer`, `foundry` et `release_year` restent NULL, l'API ne les donne pas.
+
+**Adobe se trompe sur 19 familles.** Leur API déclare `sans-serif` pour Times New
+Roman, Georgia, Rockwell, Bodoni Std, Courier New et quinze autres. Dix-huit fois
+c'est eux qui ont tort, une fois c'est le nom qui trompe (Trajan Sans Pro est bien un
+sans). D'où une liste d'exceptions nommées une par une dans le générateur plutôt
+qu'une regex, et un compte final de 56 sans serif, 48 serif, 2 monospace, 2 dessinées.
+
+**Deux défauts trouvés en vérifiant, tous deux corrigés.**
+Le pool de compétition exigeait une ligne `ready` dans `font_runtime_assets`. Une
+police Adobe n'a pas de fichier chez nous et n'en aura jamais : les 108 seraient
+entrées au catalogue et aucune n'aurait été jouable en compétition. `lib/game/competition/provider.ts`
+porte maintenant une branche `font_source = 'adobe'` devant cet EXISTS, dans son
+propre groupe parenthésé pour que le OR ne remonte pas.
+`expert_enabled` passe à false : `expert_answer_keys` porte une réponse canonique pour
+chacune des 2032 lignes du catalogue et aucune pour celles-ci. Le mode expert est
+encore un placeholder, rien ne casse aujourd'hui, mais ces lignes seraient injouables
+le jour où il sera écrit.
+
+**Garde neuf.** `npm run check:adobe-migration`, câblé dans la porte après
+`check:latin-coverage`. Il tient ensemble le kit, la feuille chargée par le layout, la
+migration et la branche du pool de compétition. Hors ligne, sans base. Testé par
+mutation : `bash scripts/quality/mutation-adobe-migration.sh`, 23 mutations, 23
+attrapées. Deux d'entre elles ne mordaient pas au premier essai, une regex à
+quantificateur paresseux traversait la clause de licence plus haut dans le fichier et
+restait verte parenthèse retirée. Réécrite en remontée explicite depuis la ligne visée.
+
+**À retenir pour la mise en ligne.** Le projet web est verrouillé sur `localhost` et
+`127.0.0.1`. Le domaine de production doit y être ajouté AVANT publication, sinon ces
+108 polices ne s'affichent pas et le joueur doit nommer une typo absente de son écran.
+Et la vue `v_qa_active_no_asset` passera de 0 à 104 lignes une fois la 016 appliquée :
+c'est attendu, une police Adobe n'a pas de fichier, mais la vue cesse d'être un signal
+propre pour les Google.
+
+Porte complète verte, code de sortie 0.

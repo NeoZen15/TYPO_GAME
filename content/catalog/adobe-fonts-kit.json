@@ -1,0 +1,1101 @@
+{
+  "meta": {
+    "kit_id": "ozq5yfs",
+    "kit_name": "DWIGGINS",
+    "stylesheet": "https://use.typekit.net/ozq5yfs.css",
+    "note": "Projet web Adobe Fonts. Les fichiers de police restent chez Adobe et ne sont JAMAIS telecharges : leurs conditions interdisent l'auto-hebergement. La feuille ci-dessus declare les familles, le jeu n'a plus qu'a les nommer. Le projet est verrouille sur les domaines qu'il declare, donc ajouter dwiggins.fr le jour du deploiement est obligatoire, sinon rien ne s'affiche en ligne.",
+    "verifie_le": "2026-08-23",
+    "preuve": "Rendu mesure dans un vrai navigateur sur 127.0.0.1:3002 : le mot temoin fait 459 px en Helvetica LT Pro contre 605 px en police de repli, donc la police est bien appliquee et non remplacee en silence.",
+    "familles": 108
+  },
+  "families": [
+    {
+      "typeface_slug": "adobe_caslon_pro",
+      "css_family": "adobe-caslon-pro",
+      "adobe_family_id": "hmqz",
+      "display_name": "Adobe Caslon Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "adobe_garamond_pro",
+      "css_family": "adobe-garamond-pro",
+      "adobe_family_id": "tmmf",
+      "display_name": "Adobe Garamond Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "arial",
+      "css_family": "arial",
+      "adobe_family_id": "tlnz",
+      "display_name": "Arial",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "arial_narrow",
+      "css_family": "arial-narrow",
+      "adobe_family_id": "gyxt",
+      "display_name": "Arial Narrow",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "arial_nova",
+      "css_family": "arial-nova",
+      "adobe_family_id": "yknl",
+      "display_name": "Arial Nova",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "arial_nova_condensed",
+      "css_family": "arial-nova-condensed",
+      "adobe_family_id": "lzkw",
+      "display_name": "Arial Nova Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "arial_rounded_mt_pro",
+      "css_family": "arial-rounded-mt-pro",
+      "adobe_family_id": "kpwq",
+      "display_name": "Arial Rounded MT Pro",
+      "variations": [
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "baskerville_bt",
+      "css_family": "baskerville-bt",
+      "adobe_family_id": "wqtg",
+      "display_name": "Baskerville BT",
+      "variations": [
+        "i7"
+      ]
+    },
+    {
+      "typeface_slug": "baskerville_display_pt",
+      "css_family": "baskerville-display-pt",
+      "adobe_family_id": "qhvh",
+      "display_name": "Baskerville Display PT",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "baskerville_no2",
+      "css_family": "baskerville-no2",
+      "adobe_family_id": "zqgt",
+      "display_name": "Baskerville No2",
+      "variations": [
+        "n6"
+      ]
+    },
+    {
+      "typeface_slug": "baskerville_poster_pt",
+      "css_family": "baskerville-poster-pt",
+      "adobe_family_id": "mpth",
+      "display_name": "Baskerville Poster PT",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "baskerville_urw",
+      "css_family": "baskerville-urw",
+      "adobe_family_id": "twzr",
+      "display_name": "Baskerville URW",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "baskerville_urw_regular_oblique",
+      "css_family": "baskerville-urw-regular-obli",
+      "adobe_family_id": "lypn",
+      "display_name": "Baskerville URW Regular Oblique",
+      "variations": [
+        "i4"
+      ]
+    },
+    {
+      "typeface_slug": "berthold_baskerville_pro",
+      "css_family": "berthold-baskerville-pro",
+      "adobe_family_id": "hjfc",
+      "display_name": "Berthold Baskerville Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "big_caslon_fb",
+      "css_family": "big-caslon-fb",
+      "adobe_family_id": "vcpr",
+      "display_name": "Big Caslon FB",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "bodoni_std",
+      "css_family": "bodoni-std",
+      "adobe_family_id": "rkxl",
+      "display_name": "Bodoni Std",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "bodoni_urw",
+      "css_family": "bodoni-urw",
+      "adobe_family_id": "zjhz",
+      "display_name": "Bodoni URW",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "brush_script_std",
+      "css_family": "brush-script-std",
+      "adobe_family_id": "hgrg",
+      "display_name": "Brush Script Std",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_text_pro",
+      "css_family": "clarendon-text-pro",
+      "adobe_family_id": "kctd",
+      "display_name": "Clarendon Text Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_urw",
+      "css_family": "clarendon-urw",
+      "adobe_family_id": "rsxs",
+      "display_name": "Clarendon URW",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_urw_extra_narrow",
+      "css_family": "clarendon-urw-extra-narrow",
+      "adobe_family_id": "ndnc",
+      "display_name": "Clarendon URW Extra Narrow",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_urw_extra_wide",
+      "css_family": "clarendon-urw-extra-wide",
+      "adobe_family_id": "zzyy",
+      "display_name": "Clarendon URW Extra Wide",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_wide",
+      "css_family": "clarendon-wide",
+      "adobe_family_id": "drqz",
+      "display_name": "Clarendon Wide",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_wide_sc",
+      "css_family": "clarendon-wide-sc",
+      "adobe_family_id": "nzyj",
+      "display_name": "Clarendon Wide SC",
+      "variations": [
+        "n5"
+      ]
+    },
+    {
+      "typeface_slug": "clarendon_wide_stencil",
+      "css_family": "clarendon-wide-stencil",
+      "adobe_family_id": "kpbj",
+      "display_name": "Clarendon Wide Stencil",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "comic_sans_ms",
+      "css_family": "comic-sans-ms",
+      "adobe_family_id": "bglh",
+      "display_name": "Comic Sans MS",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "cooper_black_std",
+      "css_family": "cooper-black-std",
+      "adobe_family_id": "pbzd",
+      "display_name": "Cooper Black Std",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "copperplate",
+      "css_family": "copperplate",
+      "adobe_family_id": "dtvx",
+      "display_name": "Copperplate",
+      "variations": [
+        "n5"
+      ]
+    },
+    {
+      "typeface_slug": "copperplate_condensed",
+      "css_family": "copperplate-condensed",
+      "adobe_family_id": "qgrw",
+      "display_name": "Copperplate Condensed",
+      "variations": [
+        "n5"
+      ]
+    },
+    {
+      "typeface_slug": "courier_new",
+      "css_family": "courier-new",
+      "adobe_family_id": "qfyz",
+      "display_name": "Courier New",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "courier_std",
+      "css_family": "courier-std",
+      "adobe_family_id": "jxcp",
+      "display_name": "Courier Std",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "eurostile",
+      "css_family": "eurostile",
+      "adobe_family_id": "dvtb",
+      "display_name": "Eurostile",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "eurostile_condensed",
+      "css_family": "eurostile-condensed",
+      "adobe_family_id": "pnyq",
+      "display_name": "Eurostile Condensed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "eurostile_extended",
+      "css_family": "eurostile-extended",
+      "adobe_family_id": "tjpc",
+      "display_name": "Eurostile Extended",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic",
+      "css_family": "franklin-gothic",
+      "adobe_family_id": "hlml",
+      "display_name": "Franklin Gothic",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_atf",
+      "css_family": "franklin-gothic-atf",
+      "adobe_family_id": "chhf",
+      "display_name": "Franklin Gothic ATF",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_compressed",
+      "css_family": "franklin-gothic-compressed",
+      "adobe_family_id": "vhkg",
+      "display_name": "Franklin Gothic Compressed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_condensed",
+      "css_family": "franklin-gothic-condensed",
+      "adobe_family_id": "kcpz",
+      "display_name": "Franklin Gothic Condensed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_extra_compressed",
+      "css_family": "franklin-gothic-extra-compre",
+      "adobe_family_id": "dzgl",
+      "display_name": "Franklin Gothic Extra Compressed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_std",
+      "css_family": "franklin-gothic-std",
+      "adobe_family_id": "glst",
+      "display_name": "Franklin Gothic Std",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_std_cond",
+      "css_family": "franklin-gothic-std-cond",
+      "adobe_family_id": "dxxm",
+      "display_name": "Franklin Gothic Std Cond",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_urw",
+      "css_family": "franklin-gothic-urw",
+      "adobe_family_id": "fbft",
+      "display_name": "Franklin Gothic URW",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_urw_compressed",
+      "css_family": "franklin-gothic-urw-comp",
+      "adobe_family_id": "knmp",
+      "display_name": "Franklin Gothic URW Compressed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_urw_condensed",
+      "css_family": "franklin-gothic-urw-cond",
+      "adobe_family_id": "pthz",
+      "display_name": "Franklin Gothic URW Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "franklin_gothic_urw_extra_compressed",
+      "css_family": "franklin-gothic-ext-comp-urw",
+      "adobe_family_id": "kxxt",
+      "display_name": "Franklin Gothic URW Extra Compressed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "futura_100",
+      "css_family": "futura-100",
+      "adobe_family_id": "gccl",
+      "display_name": "Futura 100",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "futura_100_book",
+      "css_family": "futura-100-book",
+      "adobe_family_id": "lsxg",
+      "display_name": "Futura 100 Book",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "futura_100_latin_ext",
+      "css_family": "futura-100-latin-ext",
+      "adobe_family_id": "vhtb",
+      "display_name": "Futura 100 Latin Ext",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "futura_100_latin_ext_book",
+      "css_family": "futura-100-latin-ext-book",
+      "adobe_family_id": "zpcf",
+      "display_name": "Futura 100 Latin Ext Book",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "futura_pt",
+      "css_family": "futura-pt",
+      "adobe_family_id": "ftnk",
+      "display_name": "Futura PT",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "futura_pt_bold",
+      "css_family": "futura-pt-bold",
+      "adobe_family_id": "qgnx",
+      "display_name": "Futura PT Bold",
+      "variations": [
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "futura_pt_condensed",
+      "css_family": "futura-pt-condensed",
+      "adobe_family_id": "jxkf",
+      "display_name": "Futura PT Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_atf_micro",
+      "css_family": "garamond-atf-micro",
+      "adobe_family_id": "ctyh",
+      "display_name": "Garamond ATF Micro",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_atf_subhead",
+      "css_family": "garamond-atf-subhead",
+      "adobe_family_id": "nzkt",
+      "display_name": "Garamond ATF Subhead",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_atf_text",
+      "css_family": "garamond-atf-text",
+      "adobe_family_id": "zsdd",
+      "display_name": "Garamond ATF Text",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_premier_pro",
+      "css_family": "garamond-premier-pro",
+      "adobe_family_id": "lfzn",
+      "display_name": "Garamond Premier Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_premier_pro_caption",
+      "css_family": "garamond-premier-pro-caption",
+      "adobe_family_id": "wwvn",
+      "display_name": "Garamond Premier Pro Caption",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_premier_pro_display",
+      "css_family": "garamond-premier-pro-display",
+      "adobe_family_id": "msmg",
+      "display_name": "Garamond Premier Pro Display",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "garamond_premier_pro_subhead",
+      "css_family": "garamond-premier-pro-subhead",
+      "adobe_family_id": "gclg",
+      "display_name": "Garamond Premier Pro Subhead",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "georgia",
+      "css_family": "georgia",
+      "adobe_family_id": "whyt",
+      "display_name": "Georgia ",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "georgiapro",
+      "css_family": "georgiapro",
+      "adobe_family_id": "ldlk",
+      "display_name": "GeorgiaPro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "georgiapro_condensed",
+      "css_family": "georgiapro-condensed",
+      "adobe_family_id": "xlrs",
+      "display_name": "GeorgiaPro Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova",
+      "css_family": "gill-sans-nova",
+      "adobe_family_id": "ftdr",
+      "display_name": "Gill Sans Nova",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_condensed",
+      "css_family": "gill-sans-nova-condensed",
+      "adobe_family_id": "kgdx",
+      "display_name": "Gill Sans Nova Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_deco",
+      "css_family": "gill-sans-nova-deco",
+      "adobe_family_id": "vhyx",
+      "display_name": "Gill Sans Nova Deco",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_extra_condensed",
+      "css_family": "gill-sans-nova-extra-condens",
+      "adobe_family_id": "vqfq",
+      "display_name": "Gill Sans Nova Extra Condensed",
+      "variations": [
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_inline",
+      "css_family": "gill-sans-nova-inline",
+      "adobe_family_id": "hgks",
+      "display_name": "Gill Sans Nova Inline",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_inline_condensed",
+      "css_family": "gill-sans-nova-inline-conden",
+      "adobe_family_id": "fhgv",
+      "display_name": "Gill Sans Nova Inline Condensed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_shadowed",
+      "css_family": "gill-sans-nova-shadowed",
+      "adobe_family_id": "rjxs",
+      "display_name": "Gill Sans Nova Shadowed",
+      "variations": [
+        "n5"
+      ]
+    },
+    {
+      "typeface_slug": "gill_sans_nova_shadowed_outline",
+      "css_family": "gill-sans-nova-shadowed-outl",
+      "adobe_family_id": "xxjs",
+      "display_name": "Gill Sans Nova Shadowed Outline",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "helvetica_lt_pro",
+      "css_family": "helvetica-lt-pro",
+      "adobe_family_id": "rkwd",
+      "display_name": "Helvetica LT Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "helvetica_neue_lt_pro",
+      "css_family": "helvetica-neue-lt-pro",
+      "adobe_family_id": "xgnl",
+      "display_name": "Helvetica Neue LT Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "helvetica_neue_lt_pro_cond",
+      "css_family": "helvetica-neue-lt-pro-cond",
+      "adobe_family_id": "pcfs",
+      "display_name": "Helvetica Neue LT Pro Cond",
+      "variations": [
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "helvetica_neue_world",
+      "css_family": "helvetica-neue-world",
+      "adobe_family_id": "dyns",
+      "display_name": "Helvetica Neue World",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "itc_avant_garde_gothic_pro",
+      "css_family": "itc-avant-garde-gothic-pro",
+      "adobe_family_id": "plfh",
+      "display_name": "ITC Avant Garde Gothic Pro",
+      "variations": [
+        "n5"
+      ]
+    },
+    {
+      "typeface_slug": "itc_bodoni_seventytwo_pro",
+      "css_family": "itc-bodoni-seventytwo-pro",
+      "adobe_family_id": "xvjy",
+      "display_name": "ITC Bodoni Seventytwo Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "impact",
+      "css_family": "impact",
+      "adobe_family_id": "crsd",
+      "display_name": "Impact",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "king_s_caslon",
+      "css_family": "kings-caslon",
+      "adobe_family_id": "hynz",
+      "display_name": "King's Caslon",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "king_s_caslon_display",
+      "css_family": "kings-caslon-display",
+      "adobe_family_id": "gljv",
+      "display_name": "King's Caslon Display",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "ltc_bodoni_175",
+      "css_family": "ltc-bodoni-175",
+      "adobe_family_id": "mrnw",
+      "display_name": "LTC Bodoni 175",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "ltc_caslon_pro",
+      "css_family": "ltc-caslon-pro",
+      "adobe_family_id": "qbln",
+      "display_name": "LTC Caslon Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "linotype_didot",
+      "css_family": "linotype-didot",
+      "adobe_family_id": "jnhf",
+      "display_name": "Linotype Didot",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "linotype_didot_headline",
+      "css_family": "linotype-didot-headline",
+      "adobe_family_id": "tpnh",
+      "display_name": "Linotype Didot Headline",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "neue_frutiger_world",
+      "css_family": "neue-frutiger-world",
+      "adobe_family_id": "yswy",
+      "display_name": "Neue Frutiger World",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "neue_frutiger_world_ultlt",
+      "css_family": "neue-frutiger-world-ultlt",
+      "adobe_family_id": "jzxj",
+      "display_name": "Neue Frutiger World UltLt",
+      "variations": [
+        "n1"
+      ]
+    },
+    {
+      "typeface_slug": "optima_lt_pro",
+      "css_family": "optima-lt-pro",
+      "adobe_family_id": "rynw",
+      "display_name": "Optima LT Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "optima_nova_lt_pro",
+      "css_family": "optima-nova-lt-pro",
+      "adobe_family_id": "zhhx",
+      "display_name": "Optima Nova LT Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "optima_nova_lt_pro_cond",
+      "css_family": "optima-nova-lt-pro-cond",
+      "adobe_family_id": "jlsr",
+      "display_name": "Optima Nova LT Pro Cond",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "optima_nova_lt_pro_titling",
+      "css_family": "optima-nova-lt-pro-titling",
+      "adobe_family_id": "rjfv",
+      "display_name": "Optima Nova LT Pro Titling",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "p22_franklin_caslon",
+      "css_family": "p22-franklin-caslon",
+      "adobe_family_id": "vkns",
+      "display_name": "P22 Franklin Caslon",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "papyrus_std",
+      "css_family": "papyrus-std",
+      "adobe_family_id": "lbnm",
+      "display_name": "Papyrus Std",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "rockwell",
+      "css_family": "rockwell",
+      "adobe_family_id": "fjdp",
+      "display_name": "Rockwell",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "rockwell_condensed",
+      "css_family": "rockwell-condensed",
+      "adobe_family_id": "rzty",
+      "display_name": "Rockwell Condensed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "rockwell_nova",
+      "css_family": "rockwell-nova",
+      "adobe_family_id": "swxg",
+      "display_name": "Rockwell Nova",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "rockwell_nova_condensed",
+      "css_family": "rockwell-nova-condensed",
+      "adobe_family_id": "qhmp",
+      "display_name": "Rockwell Nova Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "superclarendon",
+      "css_family": "superclarendon",
+      "adobe_family_id": "ywrj",
+      "display_name": "Superclarendon ",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "tahoma",
+      "css_family": "tahoma",
+      "adobe_family_id": "cgyr",
+      "display_name": "Tahoma",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "times_new_roman",
+      "css_family": "times-new-roman",
+      "adobe_family_id": "jdpr",
+      "display_name": "Times New Roman",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "trajan_color",
+      "css_family": "trajan-color",
+      "adobe_family_id": "mmzm",
+      "display_name": "Trajan Color",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "trajan_pro_3",
+      "css_family": "trajan-pro-3",
+      "adobe_family_id": "xwct",
+      "display_name": "Trajan Pro 3",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "trajan_sans_pro",
+      "css_family": "trajan-sans-pro",
+      "adobe_family_id": "zlnd",
+      "display_name": "Trajan Sans Pro",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "univers_next_pro",
+      "css_family": "univers-next-pro",
+      "adobe_family_id": "xcjq",
+      "display_name": "Univers Next Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "univers_next_pro_compressed",
+      "css_family": "univers-next-pro-compressed",
+      "adobe_family_id": "hnhx",
+      "display_name": "Univers Next Pro Compressed",
+      "variations": [
+        "n4"
+      ]
+    },
+    {
+      "typeface_slug": "univers_next_pro_condensed",
+      "css_family": "univers-next-pro-condensed",
+      "adobe_family_id": "jltj",
+      "display_name": "Univers Next Pro Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "univers_next_pro_extended",
+      "css_family": "univers-next-pro-extended",
+      "adobe_family_id": "qzkf",
+      "display_name": "Univers Next Pro Extended",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "verdana",
+      "css_family": "verdana",
+      "adobe_family_id": "ggjt",
+      "display_name": "Verdana",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "verdana_pro",
+      "css_family": "verdana-pro",
+      "adobe_family_id": "pwws",
+      "display_name": "Verdana Pro",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    },
+    {
+      "typeface_slug": "verdana_pro_condensed",
+      "css_family": "verdana-pro-condensed",
+      "adobe_family_id": "xgrz",
+      "display_name": "Verdana Pro Condensed",
+      "variations": [
+        "n4",
+        "i4",
+        "n7"
+      ]
+    }
+  ]
+}

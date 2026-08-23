@@ -151,11 +151,24 @@ const getCompetitionPoolRows = async (userId: string) =>
         OR tc.typeface_slug = ANY(${[...UFL_LEGACY_SLUGS]}::text[])
       )
       AND tc.typeface_slug <> ALL(${[...LATIN_UNREADY_SLUGS]}::text[])
-      AND EXISTS (
-        SELECT 1
-        FROM font_runtime_assets fra
-        WHERE fra.typeface_slug = tc.typeface_slug
-          AND fra.runtime_status = 'ready'
+      AND (
+        -- Une police Adobe n'a pas de fichier chez nous et n'en aura jamais : leurs
+        -- conditions interdisent de telecharger et d'heberger. Elle se rend par la
+        -- feuille du projet web chargee dans app/layout.tsx, donc exiger une ligne
+        -- dans font_runtime_assets la bannirait de la competition alors qu'elle
+        -- s'affiche parfaitement a l'ecran. Sans cette branche, la migration 016
+        -- serait inerte du cote competition : 108 polices au catalogue, zero jouable.
+        -- La contrepartie est que plus rien en base ne prouve qu'une ligne 'adobe'
+        -- se rende. Ce controle la est hors base : npm run check:adobe-migration
+        -- verifie que le nom de famille CSS de chaque ligne est exactement celui que
+        -- la feuille du projet web declare, et que la feuille est bien chargee.
+        tc.font_source::text = 'adobe'
+        OR EXISTS (
+          SELECT 1
+          FROM font_runtime_assets fra
+          WHERE fra.typeface_slug = tc.typeface_slug
+            AND fra.runtime_status = 'ready'
+        )
       )
     ORDER BY tc.display_name ASC
   `);
