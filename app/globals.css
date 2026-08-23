@@ -41,9 +41,16 @@
   --line-strong: rgba(25, 21, 16, 0.22);
   --shadow-soft: 0 24px 80px rgba(25, 21, 16, 0.08);
   --shadow-card: 0 12px 30px rgba(25, 21, 16, 0.07);
+  /* Encres du thème clair, recalibrées le 2026-08-23 (choix du propriétaire :
+     « encore plus contrasté »). Les alphas du thème sombre ne sont PAS
+     transposables : la même transparence ne donne pas le même contraste selon
+     le fond qu'elle recouvre. Du beige à 34 % sur du noir donne un ratio de
+     2,71 ; de l'encre à 34 % sur du beige n'en donne que 2,15, sous le seuil de
+     lisibilité. Mesuré sur beige #f4f3ee : 0.94 -> 14,2 ; 0.80 -> 8,7 ;
+     0.68 -> 5,7. Les trois passent le seuil de 4,5. */
   --ink-strong: rgba(25, 21, 16, 0.94);
-  --ink-muted: rgba(25, 21, 16, 0.58);
-  --ink-soft: rgba(25, 21, 16, 0.34);
+  --ink-muted: rgba(25, 21, 16, 0.8);
+  --ink-soft: rgba(25, 21, 16, 0.68);
   --ink-warm: #2a1a20; /* CANONICAL warm ink (also reused as --typo-ink on typo pages) */
   --accent-yellow: #ffd213;
   --success-green: #00c853; /* CANONICAL success/correct green, single source of truth */
@@ -62,6 +69,24 @@
   --ui-title-gap: 0.72rem;
   --radius: 1rem;
   --radius-pill: 999px;
+
+  /* Barre de navigation, thème CLAIR : la barre est un objet noir posé sur le
+     beige, comme les boutons d'action de la même page (choix du propriétaire,
+     2026-08-23). Le thème sombre l'inverse plus bas. Pas d'ombre portée des
+     deux côtés : la barre se détache par sa valeur, pas par une élévation. */
+  --nav-bg: #141019;
+  --nav-ink: #f4f3ee;
+  --nav-ink-muted: rgba(244, 243, 238, 0.68);
+  --nav-ink-strong: rgba(244, 243, 238, 0.96);
+  --nav-hover-bg: rgba(244, 243, 238, 0.1);
+  --nav-border: rgba(244, 243, 238, 0.14);
+  --nav-cta-bg: #f4f3ee;
+  --nav-cta-bg-hover: #ffffff;
+  --nav-cta-ink: #141019;
+  --nav-cta-border: rgba(244, 243, 238, 0.18);
+  --nav-switch-track: rgba(244, 243, 238, 0.16);
+  --nav-switch-border: rgba(244, 243, 238, 0.34);
+  --nav-switch-thumb: #f4f3ee;
   --radius-control: 0.75rem;
   --page-gutter-x: clamp(1rem, 3vw, 2rem);
   --page-gutter-y-top: clamp(4.8rem, 10vh, 6.8rem);
@@ -84,6 +109,22 @@
   --ink-strong: rgba(244, 243, 238, 0.96);
   --ink-muted: rgba(244, 243, 238, 0.62);
   --ink-soft: rgba(244, 243, 238, 0.34);
+
+  /* Barre crème sur fond noir : l'inverse exact du clair. Le ton secondaire
+     monte de 0.55 à 0.68, il était à 4,04 de contraste, sous le seuil. */
+  --nav-bg: #f4f3ee;
+  --nav-ink: #141019;
+  --nav-ink-muted: rgba(20, 16, 25, 0.68);
+  --nav-ink-strong: rgba(20, 16, 25, 0.95);
+  --nav-hover-bg: rgba(20, 16, 25, 0.07);
+  --nav-border: rgba(20, 16, 25, 0.08);
+  --nav-cta-bg: #141019;
+  --nav-cta-bg-hover: #000000;
+  --nav-cta-ink: #f4f3ee;
+  --nav-cta-border: rgba(20, 16, 25, 0.12);
+  --nav-switch-track: rgba(20, 16, 25, 0.1);
+  --nav-switch-border: rgba(20, 16, 25, 0.28);
+  --nav-switch-thumb: #141019;
   --ink-warm: rgba(244, 243, 238, 0.9);
 }
 
@@ -2508,13 +2549,10 @@ svg {
   /* Cream floating pill — mirrors the validated landing `lp-header` DA
      (the home is the canonical reference; this nav was still on the older
      neon-black skin). */
-  border: 1px solid rgba(20, 16, 25, 0.08);
+  border: 1px solid var(--nav-border);
   border-radius: var(--radius);
-  background: #f4f3ee;
-  color: #141019;
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.55),
-    0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
+  background: var(--nav-bg);
+  color: var(--nav-ink);
   backdrop-filter: none;
 }
 
@@ -2587,7 +2625,7 @@ svg {
   padding: 0.3rem 0.5rem;
   border: 1px solid transparent;
   background: transparent;
-  color: rgba(20, 16, 25, 0.55);
+  color: var(--nav-ink-muted);
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 700;
@@ -2598,35 +2636,35 @@ svg {
 .site-nav__link:hover,
 .site-nav__link.is-active,
 .site-nav__rules:hover {
-  color: rgba(20, 16, 25, 0.95);
+  color: var(--nav-ink-strong);
   transform: none;
   box-shadow: none;
 }
 
 /* Dark ink + subtle pill for the current section — matches `lp-header__link`. */
 .site-nav__link.is-active {
-  color: rgba(20, 16, 25, 0.95);
-  background: rgba(20, 16, 25, 0.07);
+  color: var(--nav-ink-strong);
+  background: var(--nav-hover-bg);
 }
 
 .site-nav__rules {
   min-height: auto;
   padding-inline: 0.5rem;
-  color: rgba(20, 16, 25, 0.55);
+  color: var(--nav-ink-muted);
 }
 
 .site-nav__rules:hover {
   background: transparent;
-  color: rgba(20, 16, 25, 0.95);
+  color: var(--nav-ink-strong);
   box-shadow: none;
 }
 
 /* Dark pill on the cream tab — mirrors `lp-header__cta`. */
 .site-nav__cta {
   padding: 0.34rem 0.8rem;
-  border: 1px solid rgba(20, 16, 25, 0.12);
-  background: #141019;
-  color: #f4f3ee;
+  border: 1px solid var(--nav-cta-border);
+  background: var(--nav-cta-bg);
+  color: var(--nav-cta-ink);
   font-size: 0.68rem;
   line-height: 1;
   font-weight: 700;
@@ -2639,7 +2677,7 @@ svg {
 
 .site-nav__cta:hover {
   transform: translateY(-1px);
-  background: #000;
+  background: var(--nav-cta-bg-hover);
   box-shadow:
     inset 0 1px 0 rgba(244, 243, 238, 0.12),
     0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
@@ -2668,7 +2706,7 @@ svg {
   min-height: 1.9rem;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  color: rgba(20, 16, 25, 0.55);
+  color: var(--nav-ink-muted);
   cursor: pointer;
   list-style: none;
   transition:
@@ -2682,8 +2720,8 @@ svg {
 
 .site-nav__menu-button:hover,
 .site-nav__menu[open] .site-nav__menu-button {
-  background: rgba(20, 16, 25, 0.07);
-  color: rgba(20, 16, 25, 0.95);
+  background: var(--nav-hover-bg);
+  color: var(--nav-ink-strong);
 }
 
 .site-nav__menu-button:focus-visible {
@@ -2701,9 +2739,9 @@ svg {
   /* Never the whole screen: the owner asked for a menu that opens discreetly. */
   width: min(13rem, 62vw);
   padding: 0.4rem;
-  border: 1px solid rgba(20, 16, 25, 0.08);
+  border: 1px solid var(--nav-border);
   border-radius: var(--radius);
-  background: #f4f3ee;
+  background: var(--nav-bg);
   box-shadow:
     inset 0 1px 0 rgba(244, 243, 238, 0.55),
     0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
@@ -2724,13 +2762,13 @@ svg {
 }
 
 .site-nav .theme-switch__track {
-  border-color: rgba(20, 16, 25, 0.28);
-  background: rgba(20, 16, 25, 0.1);
+  border-color: var(--nav-switch-border);
+  background: var(--nav-switch-track);
   box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
 }
 
 .site-nav .theme-switch__thumb {
-  background: #141019;
+  background: var(--nav-switch-thumb);
   box-shadow: 0 1px 3px rgba(20, 16, 25, 0.35);
 }
 
@@ -7671,22 +7709,16 @@ svg {
   justify-content: space-between;
   gap: 0.46rem 1rem;
   padding: 0.5rem 0.7rem 0.5rem 0.95rem;
-  border: 1px solid rgba(20, 16, 25, 0.08);
+  border: 1px solid var(--nav-border);
   /* Clean rounded rectangle — all four corners equal. */
   border-radius: var(--radius);
-  background: #f4f3ee;
-  color: #141019;
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.55),
-    0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
+  background: var(--nav-bg);
+  color: var(--nav-ink);
   transition: padding 220ms ease, box-shadow 220ms ease;
 }
 
 .lp-header.is-scrolled {
   padding-block: 0.4rem;
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.6),
-    0 0.7rem 1.9rem rgba(0, 0, 0, 0.46);
 }
 
 /* The neon-era glyph ring no longer fits the cream tab — the cream + lockup
@@ -7737,7 +7769,7 @@ svg {
   align-items: center;
   padding: 0.3rem 0.5rem;
   border-radius: var(--radius-pill);
-  color: rgba(20, 16, 25, 0.55);
+  color: var(--nav-ink-muted);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -7747,12 +7779,12 @@ svg {
 }
 
 .lp-header__link:hover {
-  color: rgba(20, 16, 25, 0.95);
+  color: var(--nav-ink-strong);
 }
 
 .lp-header__link.is-active {
-  color: rgba(20, 16, 25, 0.95);
-  background: rgba(20, 16, 25, 0.07);
+  color: var(--nav-ink-strong);
+  background: var(--nav-hover-bg);
 }
 
 /* Dark pill on the cream tab — mirrors the footer's primary CTA. */
@@ -7762,9 +7794,9 @@ svg {
   justify-content: center;
   padding: 0.34rem 0.8rem;
   border-radius: var(--radius-pill);
-  border: 1px solid rgba(20, 16, 25, 0.12);
-  background: #141019;
-  color: #f4f3ee;
+  border: 1px solid var(--nav-cta-border);
+  background: var(--nav-cta-bg);
+  color: var(--nav-cta-ink);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -7778,7 +7810,7 @@ svg {
 
 .lp-header__cta:hover {
   transform: translateY(-1px);
-  background: #000;
+  background: var(--nav-cta-bg-hover);
   box-shadow:
     inset 0 1px 0 rgba(244, 243, 238, 0.12),
     0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
@@ -7799,13 +7831,13 @@ svg {
 }
 
 .lp-header .theme-switch__track {
-  border-color: rgba(20, 16, 25, 0.28);
-  background: rgba(20, 16, 25, 0.1);
+  border-color: var(--nav-switch-border);
+  background: var(--nav-switch-track);
   box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
 }
 
 .lp-header .theme-switch__thumb {
-  background: #141019;
+  background: var(--nav-switch-thumb);
   box-shadow: 0 1px 3px rgba(20, 16, 25, 0.35);
 }
 
