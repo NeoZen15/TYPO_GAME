@@ -18,8 +18,21 @@
 --   Rockwell, Bodoni Std, Courier New et quinze autres. Ces 20 exceptions sont
 --   nommees une par une dans le script generateur et tranchees contre Adobe.
 --   Du script, par regle mecanique, donc a relire : sub_category deduite du nom,
---   visual_cluster_id qui en decoule, rarity_tag a 'common', dreyfus_tier a 'N',
---   difficulty_base a 'easy'.
+--   visual_cluster_id qui en decoule, dreyfus_tier a 'N', et le couple
+--   rarity_tag / difficulty_base decrit juste en dessous.
+--
+-- UNE POLICE CANONIQUE PAR FAMILLE, ET C'EST LA DECISION QUI COMPTE.
+-- Le projet web sert 108 lignes mais seulement 30 familles reelles : sept
+-- Baskerville, douze Franklin Gothic, huit Gill Sans Nova, sept Futura. Mesure faite
+-- sur une branche de base jetable le 2026-08-23, en appliquant cette migration puis en
+-- semant un joueur neuf : il recevait 30 polices dont 14 Adobe, et parmi elles
+-- Baskerville URW Regular Oblique et Franklin Gothic URW Extra Compressed. C'est
+-- l'inverse du but du jeu, qui est de reconnaitre les polices les plus connues au
+-- monde et non de distinguer la Baskerville d'URW de celle de Berthold.
+-- Donc 30 lignes canoniques restent common et easy, atteignables des le premier
+-- pool, et 78 variantes passent en uncommon et medium. init_user_pool ne seme que
+-- du common, et try_unlock n'ouvre le uncommon qu'a partir du niveau Dreyfus D :
+-- les variantes existent, elles se jouent, mais plus tard.
 --
 -- UN SEUL DE CES CHAMPS DERIVES CHANGE LE JEU : visual_cluster_id. Les deux
 -- fournisseurs s'en servent pour choisir les mauvaises reponses, une police du meme
@@ -79,6 +92,7 @@ UPDATE typefaces_core SET
   license_type = 'adobe_fonts',
   activation_status = true,
   rarity_tag = 'common',
+  difficulty_base = 'easy',
   fallback_stack = '"arial", sans-serif',
   qa_status = 'review',
   updated_at_utc = now()
@@ -91,6 +105,7 @@ UPDATE typefaces_core SET
   license_type = 'adobe_fonts',
   activation_status = true,
   rarity_tag = 'common',
+  difficulty_base = 'easy',
   fallback_stack = '"courier-new", monospace',
   qa_status = 'review',
   updated_at_utc = now()
@@ -103,6 +118,7 @@ UPDATE typefaces_core SET
   license_type = 'adobe_fonts',
   activation_status = true,
   rarity_tag = 'common',
+  difficulty_base = 'easy',
   fallback_stack = '"georgia", serif',
   qa_status = 'review',
   updated_at_utc = now()
@@ -115,6 +131,7 @@ UPDATE typefaces_core SET
   license_type = 'adobe_fonts',
   activation_status = true,
   rarity_tag = 'common',
+  difficulty_base = 'easy',
   fallback_stack = '"times-new-roman", serif',
   qa_status = 'review',
   updated_at_utc = now()
@@ -186,7 +203,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'arial_narrow', 'Arial Narrow', 'Arial Narrow',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/arial-narrow',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -213,7 +230,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'arial_nova', 'Arial Nova', 'Arial Nova',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/arial-nova',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -240,7 +257,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'arial_nova_condensed', 'Arial Nova Condensed', 'Arial Nova Condensed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/arial-nova-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -267,7 +284,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'arial_rounded_mt_pro', 'Arial Rounded MT Pro', 'Arial Rounded MT Pro',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/arial-rounded-mt-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -294,7 +311,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'baskerville_bt', 'Baskerville BT', 'Baskerville BT',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/baskerville-bt',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -321,7 +338,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'baskerville_display_pt', 'Baskerville Display PT', 'Baskerville Display PT',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/baskerville-display-pt',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -348,7 +365,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'baskerville_no2', 'Baskerville No2', 'Baskerville No2',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/baskerville-no2',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -375,7 +392,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'baskerville_poster_pt', 'Baskerville Poster PT', 'Baskerville Poster PT',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/baskerville-poster-pt',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -429,7 +446,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'baskerville_urw_regular_oblique', 'Baskerville URW Regular Oblique', 'Baskerville URW Regular Oblique',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/baskerville-urw-regular-oblique',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -456,7 +473,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'berthold_baskerville_pro', 'Berthold Baskerville Pro', 'Berthold Baskerville Pro',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/berthold-baskerville-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -483,7 +500,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'big_caslon_fb', 'Big Caslon FB', 'Big Caslon FB',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/big-caslon-fb',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -537,7 +554,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'bodoni_urw', 'Bodoni URW', 'Bodoni URW',
   'serif', 'didone', 'cluster_didone_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/bodoni-urw',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'very_high', 'semi_open',
@@ -591,7 +608,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'clarendon_text_pro', 'Clarendon Text Pro', 'Clarendon Text Pro',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/clarendon-text-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -645,7 +662,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'clarendon_urw_extra_narrow', 'Clarendon URW Extra Narrow', 'Clarendon URW Extra Narrow',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/clarendon-urw-extra-narrow',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -672,7 +689,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'clarendon_urw_extra_wide', 'Clarendon URW Extra Wide', 'Clarendon URW Extra Wide',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/clarendon-urw-extra-wide',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -699,7 +716,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'clarendon_wide', 'Clarendon Wide', 'Clarendon Wide',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/clarendon-wide',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -726,7 +743,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'clarendon_wide_sc', 'Clarendon Wide SC', 'Clarendon Wide SC',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/clarendon-wide-sc',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -753,7 +770,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'clarendon_wide_stencil', 'Clarendon Wide Stencil', 'Clarendon Wide Stencil',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/clarendon-wide-stencil',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -861,7 +878,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'copperplate_condensed', 'Copperplate Condensed', 'Copperplate Condensed',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/copperplate-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -888,7 +905,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'courier_std', 'Courier Std', 'Courier Std',
   'mono', 'slab', 'cluster_mono_slab_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/courier-std',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -942,7 +959,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'eurostile_condensed', 'Eurostile Condensed', 'Eurostile Condensed',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/eurostile-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -969,7 +986,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'eurostile_extended', 'Eurostile Extended', 'Eurostile Extended',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/eurostile-extended',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1023,7 +1040,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_atf', 'Franklin Gothic ATF', 'Franklin Gothic ATF',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-atf',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1050,7 +1067,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_compressed', 'Franklin Gothic Compressed', 'Franklin Gothic Compressed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-compressed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1077,7 +1094,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_condensed', 'Franklin Gothic Condensed', 'Franklin Gothic Condensed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1104,7 +1121,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_extra_compressed', 'Franklin Gothic Extra Compressed', 'Franklin Gothic Extra Compressed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-extra-compressed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1131,7 +1148,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_std', 'Franklin Gothic Std', 'Franklin Gothic Std',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-std',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1158,7 +1175,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_std_cond', 'Franklin Gothic Std Cond', 'Franklin Gothic Std Cond',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-std-cond',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1185,7 +1202,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_urw', 'Franklin Gothic URW', 'Franklin Gothic URW',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-urw',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1212,7 +1229,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_urw_compressed', 'Franklin Gothic URW Compressed', 'Franklin Gothic URW Compressed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-urw-compressed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1239,7 +1256,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_urw_condensed', 'Franklin Gothic URW Condensed', 'Franklin Gothic URW Condensed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-urw-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1266,7 +1283,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'franklin_gothic_urw_extra_compressed', 'Franklin Gothic URW Extra Compressed', 'Franklin Gothic URW Extra Compressed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/franklin-gothic-urw-extra-compressed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1293,7 +1310,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'futura_100', 'Futura 100', 'Futura 100',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/futura-100',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1320,7 +1337,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'futura_100_book', 'Futura 100 Book', 'Futura 100 Book',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/futura-100-book',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1347,7 +1364,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'futura_100_latin_ext', 'Futura 100 Latin Ext', 'Futura 100 Latin Ext',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/futura-100-latin-ext',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1374,7 +1391,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'futura_100_latin_ext_book', 'Futura 100 Latin Ext Book', 'Futura 100 Latin Ext Book',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/futura-100-latin-ext-book',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1428,7 +1445,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'futura_pt_bold', 'Futura PT Bold', 'Futura PT Bold',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/futura-pt-bold',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1455,7 +1472,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'futura_pt_condensed', 'Futura PT Condensed', 'Futura PT Condensed',
   'sans_serif', 'geometric', 'cluster_geometric_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/futura-pt-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1482,7 +1499,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_atf_micro', 'Garamond ATF Micro', 'Garamond ATF Micro',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-atf-micro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1509,7 +1526,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_atf_subhead', 'Garamond ATF Subhead', 'Garamond ATF Subhead',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-atf-subhead',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1536,7 +1553,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_atf_text', 'Garamond ATF Text', 'Garamond ATF Text',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-atf-text',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1563,7 +1580,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_premier_pro', 'Garamond Premier Pro', 'Garamond Premier Pro',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-premier-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1590,7 +1607,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_premier_pro_caption', 'Garamond Premier Pro Caption', 'Garamond Premier Pro Caption',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-premier-pro-caption',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1617,7 +1634,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_premier_pro_display', 'Garamond Premier Pro Display', 'Garamond Premier Pro Display',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-premier-pro-display',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1644,7 +1661,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'garamond_premier_pro_subhead', 'Garamond Premier Pro Subhead', 'Garamond Premier Pro Subhead',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/garamond-premier-pro-subhead',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1671,7 +1688,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'georgiapro', 'GeorgiaPro', 'GeorgiaPro',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/georgiapro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1698,7 +1715,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'georgiapro_condensed', 'GeorgiaPro Condensed', 'GeorgiaPro Condensed',
   'serif', 'transitional', 'cluster_transitional_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/georgiapro-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -1752,7 +1769,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_condensed', 'Gill Sans Nova Condensed', 'Gill Sans Nova Condensed',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1779,7 +1796,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_deco', 'Gill Sans Nova Deco', 'Gill Sans Nova Deco',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-deco',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1806,7 +1823,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_extra_condensed', 'Gill Sans Nova Extra Condensed', 'Gill Sans Nova Extra Condensed',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-extra-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1833,7 +1850,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_inline', 'Gill Sans Nova Inline', 'Gill Sans Nova Inline',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-inline',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1860,7 +1877,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_inline_condensed', 'Gill Sans Nova Inline Condensed', 'Gill Sans Nova Inline Condensed',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-inline-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1887,7 +1904,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_shadowed', 'Gill Sans Nova Shadowed', 'Gill Sans Nova Shadowed',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-shadowed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1914,7 +1931,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'gill_sans_nova_shadowed_outline', 'Gill Sans Nova Shadowed Outline', 'Gill Sans Nova Shadowed Outline',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/gill-sans-nova-shadowed-outline',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1968,7 +1985,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'helvetica_neue_lt_pro', 'Helvetica Neue LT Pro', 'Helvetica Neue LT Pro',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/helvetica-neue-lt-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -1995,7 +2012,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'helvetica_neue_lt_pro_cond', 'Helvetica Neue LT Pro Cond', 'Helvetica Neue LT Pro Cond',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/helvetica-neue-lt-pro-cond',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2022,7 +2039,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'helvetica_neue_world', 'Helvetica Neue World', 'Helvetica Neue World',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/helvetica-neue-world',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2076,7 +2093,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'itc_bodoni_seventytwo_pro', 'ITC Bodoni Seventytwo Pro', 'ITC Bodoni Seventytwo Pro',
   'serif', 'didone', 'cluster_didone_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/itc-bodoni-seventytwo-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'very_high', 'semi_open',
@@ -2130,7 +2147,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'king_s_caslon', 'King''s Caslon', 'King''s Caslon',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/kings-caslon',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -2157,7 +2174,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'king_s_caslon_display', 'King''s Caslon Display', 'King''s Caslon Display',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/kings-caslon-display',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -2184,7 +2201,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'ltc_bodoni_175', 'LTC Bodoni 175', 'LTC Bodoni 175',
   'serif', 'didone', 'cluster_didone_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/ltc-bodoni-175',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'very_high', 'semi_open',
@@ -2211,7 +2228,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'ltc_caslon_pro', 'LTC Caslon Pro', 'LTC Caslon Pro',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/ltc-caslon-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -2265,7 +2282,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'linotype_didot_headline', 'Linotype Didot Headline', 'Linotype Didot Headline',
   'serif', 'didone', 'cluster_didone_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/linotype-didot-headline',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'very_high', 'semi_open',
@@ -2319,7 +2336,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'neue_frutiger_world_ultlt', 'Neue Frutiger World UltLt', 'Neue Frutiger World UltLt',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/neue-frutiger-world-ultlt',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2373,7 +2390,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'optima_nova_lt_pro', 'Optima Nova LT Pro', 'Optima Nova LT Pro',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/optima-nova-lt-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2400,7 +2417,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'optima_nova_lt_pro_cond', 'Optima Nova LT Pro Cond', 'Optima Nova LT Pro Cond',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/optima-nova-lt-pro-cond',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2427,7 +2444,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'optima_nova_lt_pro_titling', 'Optima Nova LT Pro Titling', 'Optima Nova LT Pro Titling',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/optima-nova-lt-pro-titling',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2454,7 +2471,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'p22_franklin_caslon', 'P22 Franklin Caslon', 'P22 Franklin Caslon',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/p22-franklin-caslon',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -2535,7 +2552,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'rockwell_condensed', 'Rockwell Condensed', 'Rockwell Condensed',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/rockwell-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2562,7 +2579,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'rockwell_nova', 'Rockwell Nova', 'Rockwell Nova',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/rockwell-nova',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2589,7 +2606,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'rockwell_nova_condensed', 'Rockwell Nova Condensed', 'Rockwell Nova Condensed',
   'serif', 'slab', 'cluster_slab_serif_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/rockwell-nova-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2670,7 +2687,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'trajan_color', 'Trajan Color', 'Trajan Color',
   'serif', 'old_style', 'cluster_oldstyle_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/trajan-color',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'medium', 'semi_open',
@@ -2724,7 +2741,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'trajan_sans_pro', 'Trajan Sans Pro', 'Trajan Sans Pro',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/trajan-sans-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2778,7 +2795,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'univers_next_pro_compressed', 'Univers Next Pro Compressed', 'Univers Next Pro Compressed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/univers-next-pro-compressed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2805,7 +2822,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'univers_next_pro_condensed', 'Univers Next Pro Condensed', 'Univers Next Pro Condensed',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/univers-next-pro-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2832,7 +2849,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'univers_next_pro_extended', 'Univers Next Pro Extended', 'Univers Next Pro Extended',
   'sans_serif', 'neo_grotesk', 'cluster_neo_grotesk_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/univers-next-pro-extended',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2886,7 +2903,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'verdana_pro', 'Verdana Pro', 'Verdana Pro',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/verdana-pro',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',
@@ -2913,7 +2930,7 @@ INSERT INTO typefaces_core (
 ) VALUES (
   'verdana_pro_condensed', 'Verdana Pro Condensed', 'Verdana Pro Condensed',
   'sans_serif', 'humanist', 'cluster_humanist_A',
-  'N', 'easy', 'common',
+  'N', 'medium', 'uncommon',
   true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/verdana-pro-condensed',
   false, NULL, NULL, NULL,
   'classic', 'single_weight', 'low', 'semi_open',

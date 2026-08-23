@@ -1940,3 +1940,80 @@ c'est attendu, une police Adobe n'a pas de fichier, mais la vue cesse d'être un
 propre pour les Google.
 
 Porte complète verte, code de sortie 0.
+
+### 2026-08-23, charte Figma, la section des écrans refaite sur l'anatomie apprise
+
+**Fait.** Les onze pages de la section 06 remontées à partir des règles lues dans les trois brandbooks d'agence (note du même jour). La section passe de neuf à onze pages, le document de 47 à 49 pages.
+
+**Le désordre corrigé d'abord.** La section portait deux pages numérotées 38, deux numérotées 39, et laissait un emplacement vide au milieu de la rangée. Remis en ordre de lecture, un emplacement par page sur le pas de 2080, folios réécrits, noms de calque réécrits.
+
+**L'ordre retenu.** Trois pages singulières, puis une série de huit strictement identiques. C'est la leçon principale des trois brandbooks : ce qui fait système, ce n'est pas trois bonnes idées, c'est une bonne idée répétée à l'identique.
+
+38 « En application », la capture de l'accueil dans une fenêtre Mac, montée sur une bande d'ivoire pleine largeur qui la coupe par le bas. 39 « La démonstration », le GIF au curseur, entier sur la même bande. 40 « Les rôles nommés », la page qui désigne. Puis 41 à 48, le catalogue : l'accueil, l'entrée du nouveau joueur, le choix du mode, les règles d'un mode, le profil, la fiche d'une typographie, la comparaison, les pages légales.
+
+**Le gros titre centré a disparu, définitivement.** Sur les pages 38, 39 et 40 le titre est en bas à gauche, en 44 px, suivi d'une pastille en monospace qui dit quelle partie de l'écran on regarde. Sur les huit pages du catalogue il est en bas à gauche aussi, mais en encre noire, posé sur l'ivoire, en 40 px.
+
+**La bande de montage.** Aucune capture n'est posée directement sur le fond de la page. Sur 38 et 39 la bande va de y 142 à y 856, donc il reste un pied sombre en dessous pour le titre ivoire. Sur 41 à 48 elle descend jusqu'au bas de page, ce qui permet une capture de 1200 de large, complète, au lieu de 1180 tronquée par rien. Mesuré avant de trancher : les neuf captures ont du contenu jusque dans les quatre coins (barre de navigation en haut, bascule de thème en bas à gauche), donc il n'y avait rien à rogner à la source, et la seule façon d'agrandir était de descendre la bande.
+
+**La coupe ne doit jamais tomber sur une commande.** Premier essai de la page 38 : la bande coupait les deux boutons de l'accueil en deux, ce qui lit comme une erreur et pas comme un cadrage. Fenêtre ramenée de 1500 à 1280 de large pour que la coupe tombe dans le fond vide, sous les boutons.
+
+**La page qui désigne, page 40.** Modèle Artrade page 58. Cinq étiquettes à gauche, chacune deux lignes, et de chaque étiquette part un filet horizontal de 1 px à 24 pour cent qui traverse le vide et s'arrête à 9 px de l'élément qu'il nomme dans la capture. Les compteurs, le mot montré, la jauge, les quatre réponses, la sortie. Aucune bande d'ivoire sur cette page : un filet qui passerait du noir à l'ivoire changerait de contraste en cours de route.
+
+**Pourquoi l'écran de jeu et pas l'accueil pour cette page.** Les éléments de l'accueil sont tassés dans le bas de l'écran, deux filets se seraient chevauchés. Sur l'écran de jeu les cinq rôles s'étalent de 5,7 à 85,9 pour cent de la hauteur, donc les blocs d'étiquette respirent.
+
+**Le folio.** Convention du document vérifiée avant de toucher quoi que ce soit : 48 pages sur 57 le posent en bas à droite à y 998, neuf seulement en haut, et ces neuf étaient mes pages d'écrans. Remis en bas à droite partout, en ivoire sur les trois pages à pied sombre, en encre noire sur les huit où la bande d'ivoire passe dessous.
+
+**Les deux pages de navigation remises d'aplomb.** L'intercalaire 37 listait neuf pages, il en liste onze, et ses douze filets de séparation ont été recalés sur le nouveau pas de 46 px (au premier essai ils barraient trois titres). La couverture annonce 49 pages au lieu de 47, la section 06 va de 38 à 48, les annexes sont en page 49, et la liste des écrans a été réécrite.
+
+### 2026-08-23, migration Adobe jouée sur une branche jetable, un défaut de jeu trouvé et corrigé
+
+Deux branches Neon jetables créées depuis `production` pour jouer les migrations 015
+et 016 sans toucher aux données réelles. La production n'a pas bougé, toujours 1172
+actives à chaque relevé.
+
+**Premier passage, tout applique proprement.** 2 instructions pour la 015, 108 pour la
+016, zéro erreur. Le catalogue passe de 1172 à 1280 actives, 108 lignes Adobe.
+
+**Ce que la branche a révélé, et que la relecture n'avait pas vu.** J'ai semé un joueur
+neuf sur la branche : il recevait 30 polices dont 14 Adobe, parmi lesquelles
+Baskerville URW Regular Oblique et Franklin Gothic URW Extra Compressed. Le projet web
+sert 108 lignes mais seulement 30 familles réelles : sept Baskerville, douze Franklin
+Gothic, huit Gill Sans Nova, sept Futura, cinq Caslon. Toutes marquées communes et
+faciles, elles inondaient le pool du débutant de variantes qu'aucun joueur ne peut
+distinguer, alors que le but est de reconnaître les polices les plus connues au monde.
+
+**Corrigé par une police canonique par famille**, écrite à la main dans le générateur,
+famille par famille, avec le commentaire de ce contre quoi chacune a été choisie. La
+déduction automatique aurait pris Futura 100 contre Futura PT et Clarendon Wide contre
+Clarendon URW. 30 canoniques restent `common` et `easy`, 78 variantes passent en
+`uncommon` et `medium`. `init_user_pool` ne sème que du `common` et le déverrouillage
+n'ouvre le `uncommon` qu'au niveau Dreyfus D : les variantes se jouent, mais plus tard.
+En compétition les 108 restent jouables, ce mode ne filtre pas sur la rareté.
+
+**Second passage, sur une branche neuve.** Le premier pool d'un joueur contient
+maintenant Arial, Georgia, Courier New, Adobe Garamond Pro, Adobe Caslon Pro, Bodoni
+Std, Baskerville URW, Clarendon URW, Copperplate, Linotype Didot, Cooper Black Std,
+Brush Script Std et Papyrus Std. Des noms qu'on peut nommer.
+
+**La branche Adobe du pool de compétition, mesurée et pas seulement raisonnée.** Avec
+elle, 108 polices Adobe jouables. Sans elle, zéro. La correction n'était pas une
+précaution, c'était la différence entre un catalogue et un catalogue mort.
+
+**Le retour arrière joué pour de vrai.** Rejoué sur la branche après application : 1172
+actives, 0 Adobe active, 4 serrures sur 4 refermées en `local` et `proprietary`. Il
+rend exactement l'état de départ.
+
+**Un constat antérieur, pas de mon fait, à traiter séparément.** `init_user_pool`
+ordonne par `category_rank, primary_category, typeface_slug LIMIT 30`. Le premier pool
+est donc alphabétique et identique pour tous les joueurs : trois joueurs neufs semés
+sur la branche ont reçu exactement les mêmes 30 polices. Helvetica LT Pro, Times New
+Roman, Futura PT, Univers et Verdana n'y sont pas, battues par des Google
+alphabétiquement plus précoces. C'est précisément ce que la migration 013
+(`rarity_from_popularity`, écrite et non appliquée) est faite de corriger.
+
+`v_qa_active_no_asset` mesurée après application : 108 lignes, pas 104 comme annoncé.
+Les 4 rallumées y entrent aussi, elles n'ont plus de fichier non plus.
+`v_qa_expert_no_canonical` : 0, ce qui confirme qu'`expert_enabled` à false était juste.
+
+Porte complète verte. Mutation du garde : 23 sur 23. **Reste le feu vert pour appliquer
+en production**, et la suppression des deux branches jetables.

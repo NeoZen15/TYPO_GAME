@@ -36,6 +36,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -43,6 +44,67 @@ KIT_JSON = "content/catalog/adobe-fonts-kit.json"
 KIT_API_DUMP = "/tmp/kit-final.json"
 CATALOG = "content/catalog/typefaces-core.json"
 SORTIE = "db/migrations/016_adobe_catalog_rows.sql"
+
+# ------------------------------------------------------------------
+# LA POLICE CANONIQUE DE CHAQUE FAMILLE
+#
+# Le projet web sert 108 lignes mais seulement 31 familles reelles : sept
+# Baskerville, douze Franklin Gothic, huit Gill Sans Nova, sept Futura. Mesure
+# faite sur une branche de base jetable le 2026-08-23, en appliquant la migration
+# puis en semant un joueur neuf : il recevait 30 polices dont 14 Adobe, et parmi
+# elles Baskerville URW Regular Oblique et Franklin Gothic URW Extra Compressed.
+#
+# C'est l'inverse du but. Le joueur vient apprendre a reconnaitre les polices les
+# plus connues au monde, pas a distinguer la Baskerville d'URW de celle de Berthold.
+# Une variante condensee, en petites capitales ou en oblique n'est pas une police
+# celebre de plus, c'est la meme police sous un autre angle.
+#
+# D'ou une police canonique par famille, nommee ci dessous. Elle seule reste
+# common et easy, donc atteignable des le premier pool. Les 77 autres passent en
+# uncommon et medium : init_user_pool ne seme que du common, et la fonction de
+# deverrouillage n'ouvre le uncommon qu'a partir du niveau Dreyfus D. Elles
+# existent donc, elles se jouent, mais plus tard.
+#
+# La liste est ecrite a la main plutot que deduite : "la plus courte du groupe"
+# aurait choisi Futura 100 contre Futura PT, et Clarendon Wide contre Clarendon URW.
+# ------------------------------------------------------------------
+CANONIQUES = {
+    "Arial",                       # contre Narrow, Nova, Nova Condensed, Rounded MT
+    "Helvetica LT Pro",            # contre les trois Neue
+    "Franklin Gothic",             # contre onze variantes ATF, Std, URW, Compressed
+    "Adobe Garamond Pro",          # contre les sept ATF et Premier
+    "Gill Sans Nova",              # contre Deco, Inline, Shadowed, Condensed
+    "Baskerville URW",             # contre BT, No2, Display PT, Poster PT, Berthold
+    "Clarendon URW",               # contre Text Pro, Wide, Wide SC, Wide Stencil
+    "Futura PT",                   # contre les quatre Futura 100 et PT Bold
+    "Adobe Caslon Pro",            # contre Big Caslon FB, King's, LTC
+    "Bodoni Std",                  # contre URW, ITC Seventytwo, LTC 175
+    "Optima LT Pro",               # contre les trois Nova
+    "Rockwell",                    # contre Condensed, Nova, Nova Condensed
+    "Univers Next Pro",            # contre Compressed, Condensed, Extended
+    "Eurostile",                   # contre Condensed, Extended
+    "Trajan Pro 3",                # contre Color et Sans Pro
+    "Verdana",                     # contre Pro et Pro Condensed
+    "Copperplate",                 # contre Condensed
+    "Courier New",                 # contre Courier Std
+    "Georgia",                     # contre GeorgiaPro et GeorgiaPro Condensed
+    "Linotype Didot",              # contre Headline
+    "Neue Frutiger World",         # contre UltLt
+    # Les familles qui n'ont qu'une seule ligne dans le kit sont canoniques
+    # d'office, elles n'ont pas besoin d'etre nommees ici.
+}
+
+# Racine de famille, pour savoir si une ligne a des soeurs. Les prefixes de
+# fonderie ne font pas partie du nom de la police : ITC Bodoni et Bodoni Std sont
+# la meme Bodoni. GeorgiaPro est traite a part, il colle le suffixe au nom.
+PREFIXES_FONDERIE = r"^(ITC|LTC|P22|Adobe|Berthold|Linotype|Neue|Big|King's)\s+"
+
+
+def racine_famille(nom: str) -> str:
+    sans_prefixe = re.sub(PREFIXES_FONDERIE, "", nom)
+    premier = sans_prefixe.split()[0].rstrip(",")
+    return re.sub(r"Pro$", "", premier)  # GeorgiaPro et Georgia sont la meme famille
+
 
 # ------------------------------------------------------------------
 # CATEGORIE PRINCIPALE
@@ -213,6 +275,10 @@ def main() -> int:
     }
     existants = {t["typeface_slug"] for t in json.loads(Path(CATALOG).read_text(encoding="utf-8"))["records"]}
 
+    # Combien de lignes portent chaque racine de famille : une famille a une seule
+    # ligne est canonique d'office, elle n'a pas de soeur dont la distinguer.
+    tailles = Counter(racine_famille(f["display_name"].strip()) for f in kit["families"])
+
     rallumees, nouvelles = [], []
     for f in kit["families"]:
         api = par_id.get(f["adobe_family_id"])
@@ -221,9 +287,13 @@ def main() -> int:
         nom = f["display_name"].strip()  # Adobe rend "Georgia " et "Superclarendon "
         cat = categorie_depuis(api["css_stack"], nom)
         sous = sous_categorie(nom, cat)
+        canonique = tailles[racine_famille(nom)] == 1 or nom in CANONIQUES
         ligne = {
             "slug": f["typeface_slug"],
             "nom": nom,
+            "canonique": canonique,
+            "rarete": "common" if canonique else "uncommon",
+            "difficulte": "easy" if canonique else "medium",
             "cat": cat,
             "sous": sous,
             "cluster": cluster(sous, cat),
@@ -241,7 +311,8 @@ def main() -> int:
             "  font_source = 'adobe',\n"
             "  license_type = 'adobe_fonts',\n"
             "  activation_status = true,\n"
-            "  rarity_tag = 'common',\n"
+            f"  rarity_tag = '{r['rarete']}',\n"
+            f"  difficulty_base = '{r['difficulte']}',\n"
             f"  fallback_stack = '{echapper_sql(r['pile'])}',\n"
             "  qa_status = 'review',\n"
             "  updated_at_utc = now()\n"
@@ -262,7 +333,7 @@ def main() -> int:
             ") VALUES (\n"
             f"  '{echapper_sql(n['slug'])}', '{echapper_sql(n['nom'])}', '{echapper_sql(n['nom'])}',\n"
             f"  '{n['cat']}', '{n['sous']}', '{n['cluster']}',\n"
-            "  'N', 'easy', 'common',\n"
+            f"  'N', '{n['difficulte']}', '{n['rarete']}',\n"
             "  true, 'adobe', 'adobe_fonts', 'https://fonts.adobe.com/fonts/"
             f"{echapper_sql(par_id[[f['adobe_family_id'] for f in kit['families'] if f['typeface_slug'] == n['slug']][0]]['slug'])}',\n"
             "  false, NULL, NULL, NULL,\n"
@@ -286,6 +357,9 @@ def main() -> int:
 
     horodatage = datetime.now(timezone.utc).date()
     total = len(kit["families"])
+    canoniques = sum(1 for l in rallumees + nouvelles if l["canonique"])
+    variantes = total - canoniques
+    familles = len({racine_famille(l["nom"]) for l in rallumees + nouvelles})
     par_cat = {
         c: sum(1 for l in rallumees + nouvelles if l["cat"] == c)
         for c in ("sans_serif", "serif", "mono", "display")
@@ -311,8 +385,21 @@ def main() -> int:
 --   Rockwell, Bodoni Std, Courier New et quinze autres. Ces 20 exceptions sont
 --   nommees une par une dans le script generateur et tranchees contre Adobe.
 --   Du script, par regle mecanique, donc a relire : sub_category deduite du nom,
---   visual_cluster_id qui en decoule, rarity_tag a 'common', dreyfus_tier a 'N',
---   difficulty_base a 'easy'.
+--   visual_cluster_id qui en decoule, dreyfus_tier a 'N', et le couple
+--   rarity_tag / difficulty_base decrit juste en dessous.
+--
+-- UNE POLICE CANONIQUE PAR FAMILLE, ET C'EST LA DECISION QUI COMPTE.
+-- Le projet web sert {total} lignes mais seulement {familles} familles reelles : sept
+-- Baskerville, douze Franklin Gothic, huit Gill Sans Nova, sept Futura. Mesure faite
+-- sur une branche de base jetable le {horodatage}, en appliquant cette migration puis en
+-- semant un joueur neuf : il recevait 30 polices dont 14 Adobe, et parmi elles
+-- Baskerville URW Regular Oblique et Franklin Gothic URW Extra Compressed. C'est
+-- l'inverse du but du jeu, qui est de reconnaitre les polices les plus connues au
+-- monde et non de distinguer la Baskerville d'URW de celle de Berthold.
+-- Donc {canoniques} lignes canoniques restent common et easy, atteignables des le premier
+-- pool, et {variantes} variantes passent en uncommon et medium. init_user_pool ne seme que
+-- du common, et try_unlock n'ouvre le uncommon qu'a partir du niveau Dreyfus D :
+-- les variantes existent, elles se jouent, mais plus tard.
 --
 -- UN SEUL DE CES CHAMPS DERIVES CHANGE LE JEU : visual_cluster_id. Les deux
 -- fournisseurs s'en servent pour choisir les mauvaises reponses, une police du meme
