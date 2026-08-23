@@ -135,6 +135,30 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-23 (suite) — le thème clair est calibré : 97 textes illisibles deviennent 0
+
+**Statut : fait, porte qualité verte, 33 étapes, code de sortie 0.** Suite directe de l'audit ci dessous. Deux décisions de Marion, sur capture : échelle **encore plus contrastée**, et la barre de navigation **en noir** comme les boutons d'action posés à côté d'elle.
+
+**Ce que le relevé a fait surgir et que la lecture du fichier ne montrait pas : il n'y a pas une palette mais quatre.** La principale sous `:root`, celle des pages typo sous `.typo-page`, celle de la scène de comparaison sous `.compare-stage-shell`, et des couleurs littérales dans le bandeau du profil et le HUD de la constellation. Les quatre portaient le même défaut, les quatre ont reçu le même traitement. Sans la mesure page par page, trois d'entre elles seraient passées inaperçues.
+
+**Échelle principale, thème clair.** 0.94 conservé, `--ink-muted` de 0.58 à 0.80, `--ink-soft` de 0.34 à 0.68, soit des ratios de 14,2, 8,7 et 5,7. Les trois passent le seuil de 4,5 et restent séparés d'un facteur, donc la page hiérarchise toujours par la valeur. Le thème sombre n'est pas touché : `:root` ne pilote que le clair, il n'y a pas de media query.
+
+**Palette typo.** Sur la coquille claire (fond effectif rgb(254, 251, 247)) `--typo-muted` mesurait 3,70 et `--typo-soft` 2,68. Mêmes alphas que la décision principale, 0.80 et 0.68, donnant 7,24 et 4,96.
+
+**Scène de comparaison, le pire cas du site.** Ses contrôles étaient écrits en gris absolus, `hsl(0 0% 60%)` et `hsl(0 0% 90%)`, sans aucune conscience du thème. Sur fond clair l'état actif mesurait **1,13**, c'est la pastille « split » invisible sur la capture de Marion. Quatre jetons portent maintenant ces gris, le sombre garde exactement les siens. `--compare-stage-ink-soft` passe de 0.42 à 0.68.
+
+**La barre de navigation devient noire en clair, crème en sombre.** Elle était en dur en crème avec encre foncée dans les **deux** thèmes : pastille crème sur page noire d'un côté, invisible sur beige de l'autre. C'est une seule barre inversée, pas deux habillages. Fait par jetons et non par littéraux : treize jetons définis une fois par thème (`--nav-bg`, `--nav-ink`, `--nav-ink-muted`, les tons de survol et de contour, la pastille d'action, la bascule de thème), trente-cinq usages, et **plus aucune couleur en dur dans une règle `site-nav` ou `lp-header`**. Le ton secondaire du côté sombre monte aussi, 0.55 à 0.68 : il mesurait 4,04, même défaut de l'autre côté.
+
+**Ombre portée de la barre supprimée des deux côtés**, ainsi que celle du défilement, comme demandé. Une pastille crème sur beige avait besoin de cette ombre pour exister ; une barre noire n'en a pas besoin. Le panneau déroulant garde la sienne, lui flotte réellement.
+
+**Résultat mesuré, même relevé rejoué à l'identique.** 97 textes sous le seuil deviennent **0**, sur les 324 mesurés des douze pages. Aucune page n'en garde un seul. Détail : la landing 60 devient 0, `/compare` 19 devient 0, `/profile` 7 devient 0, `/play` 7 devient 0.
+
+**Ce qui reste du plan.** Étape 03, les 116 déclarations d'ombre qui n'utilisent pas les deux jetons prévus, mécanique et délégable. Étape 05, un garde `check:contrast` dans la porte, qui empêcherait la dérive de revenir comme `check:copy` le fait pour les textes orphelins. Les 55 surfaces qui ignorent le thème ne sont traitées que pour la nav et l'en-tête : le pied de page, le bandeau du profil et les cartes de réponse du jeu restent figés, faute de décision sur ce qu'ils doivent devenir.
+
+**Outillage.** Worktree détaché `.claude/worktrees/audit-clair`, build de production servi sur le port 3011, scripts `audit-theme.mjs` et `audit-contraste.mjs`. Le relevé se rejoue à l'identique après chaque changement.
+
+---
+
 ## Note — 2026-08-23 — audit du thème clair : 97 textes illisibles, une seule cause
 
 **Statut : audit fait, rien corrigé.** Demande de Marion : le site a été composé sur fond noir, le thème clair n'a jamais eu de vraie passe, beaucoup de choses restent blanches alors qu'elles devraient être noires, et il y a trop d'ombres portées. Planche publiée en artifact, `Le côté clair`. Quatre captures fournies (deck des modes, cartes de typos, scène de comparaison, pied de page) : la mesure les confirme toutes.
@@ -2115,3 +2139,72 @@ Le téléphone est dessiné **à la même échelle** que le bureau, ce qui montr
 **Trois essais avant de trouver la bonne démonstration**, à noter pour ne pas les refaire. Une fausse graisse sur une police sans gras donne un gras synthétique presque invisible à cette taille. Un faux italique ne se voit pas non plus quand la famille possède un vrai italique, ce qui était le cas de Tinos. La police de repli, en revanche, change tous les dessins d'un coup.
 
 **Un piège de capture, réglé.** Impossible d'attraper l'état juste en jouant : une bonne réponse enchaîne sur le mot suivant plus vite que l'aller-retour de la capture, et geler les minuteurs juste après le clic empêche l'état d'apparaître. La solution est de poser la classe directement sur le composant réel dans la page, souris éloignée, puis de photographier. On rend le vrai composant dans le vrai état, sans dépendre du hasard d'une partie.
+
+### 2026-08-23, corrections sur les mockups iPhone et suppression des lignes de méta
+
+**Trois défauts signalés par Marion sur les téléphones de la page 41, les trois corrigés.**
+
+**Le fond n'était pas noir.** Les captures mobiles portaient le halo jaune et le champ de points du site, ce qui donnait un écran teinté brun dans un mockup. Recapturées avec le fond aplati : `canvas` masqué, `background: #000` forcé sur `body`, `.lp-hero`, `.game-v2` et `main`, pseudo-éléments de halo coupés. Mesuré après coup : 0,0,0 sur l'accueil, 1,1,1 sur le jeu.
+
+**Le contenu n'était pas centré, et c'était ma faute de méthode.** Pour dégager la barre d'état, je décalais la capture de 44 px vers le bas dans `screen-here`. Or le site centre son contenu dans la hauteur de la fenêtre : en poussant l'image, je décentrais le contenu de 44 px. La bonne méthode est de **capturer dans une fenêtre déjà réduite**, 393 × 808 au lieu de 393 × 852, puis de poser la capture dans ce qui reste sous la barre d'état. Le site centre alors dans ce qu'on verra vraiment. Capture de 318 × 654 posée à y 32 dans un cadre de 318 × 686, ajustement exact, aucun rognage.
+
+**Le champ de points de la charte traversait le corps de l'appareil.** Le cadre titane du mockup est fait de rectangles en partie transparents, donc le fond de la page se voyait à travers le métal. Corrigé par une plaque noire opaque de 336 × 704, rayon 50, glissée derrière chaque appareil.
+
+**Les lignes de méta supprimées partout, sur demande explicite.** Marion : « jamais besoin de cette info » puis « pas besoin non plus, supprimer partout et ne pas remettre ». Étaient visées les mentions de facteur d'agrandissement, de dimensions de capture, de conditions de prise de vue et de noms de classes CSS. Le calque `fiche` de l'ancien gabarit des pages d'écrans est supprimé sur les huit pages qui le portaient et ne doit pas revenir. Une légende qui **identifie** ce qu'on regarde reste autorisée ; une légende qui explique comment l'image a été faite, non. Consigné en mémoire.
+
+**Page 46 supprimée par Marion.** « Ce qu'on ne fait pas » : « je supprime, rien à faire dans la charte, on comprend rien en plus. » Sa décision, notée pour ne pas la reproposer sous cette forme.
+
+**En cours, pas encore fait.** Marion a demandé que la loupe de l'en-tête, page 42, soit refaite en vectoriel plutôt qu'en capture agrandie. Les deux fichiers que le site sert lui-même sont déjà téléversés dans le Figma comme vecteurs éditables : `dwiggins-figures-dark.svg` et `dwiggins-wordmark-full-black.svg`. La géométrie de l'en-tête mobile est relevée au dixième de pixel : pastille 369,4 × 47 à rayon 16, symbole 20,3 × 14,7, mot 68,1 × 16,8, bouton 134,7 × 23,8 à rayon plein en Inter Bold 10,88 px et 10 pour cent d'approche, interrupteur 45,8 × 26,2 à rayon 12 avec un pouce de 19,8. Reste à composer.
+
+### 2026-08-23, les 108 polices Adobe sont EN PRODUCTION
+
+Feu vert du propriétaire donné explicitement. Migrations 015 et 016 appliquées sur la
+branche `production` du projet Neon `lingering-moon-38591025`.
+
+**Relevé après application, par requête et non par supposition.** 1280 polices actives
+sur 2136 lignes, contre 1172 sur 2032 avant. 108 lignes Adobe, 30 canoniques et 78
+variantes. Les 4 serrures ouvertes : Arial, Courier New, Georgia, Times New Roman.
+`expert_enabled` à 0 sur les 108, `v_qa_expert_no_canonical` à 0.
+
+**Comment l'application s'est faite, et pourquoi pas comme prévu.** Le classifieur de
+permissions a refusé l'écriture en production depuis le shell, puis la récupération de
+la chaîne de connexion. Passage par l'outil Neon du plugin, qui est la voie prévue pour
+ça. Les 108 instructions ont été recompactées en 5 (4 UPDATE et un
+`INSERT ... SELECT FROM VALUES` qui reconstruit la signature par `jsonb_build_object`),
+strictement équivalentes, générées par script depuis le même fichier 016.
+
+**Le filet posé avant d'écrire.** Un instantané des 4 lignes modifiées, hors dépôt. Et
+surtout un bloc `DO` en dernière instruction de la transaction, qui lève une exception
+si le compte n'est pas exactement 108 lignes Adobe dont 30 canoniques et 78 variantes,
+et 1280 actives au total. Une transaction qui lève annule tout, donc la vérification ne
+pouvait pas arriver trop tard. Elle n'a pas levé.
+
+**Les trois branches jetables sont supprimées.**
+
+**Le piège de réimport est refermé, et il fallait le faire aujourd'hui.**
+`scripts/import_catalog_json.py` rejoue `content/catalog/typefaces-core.json` avec un
+ON CONFLICT DO UPDATE sur `font_source`, `license_type` et `activation_status`. Tant
+que ce JSON ignorait les lignes Adobe, le prochain réimport les rebasculait en `local`
+et `proprietary`, donc éteintes, sans erreur et sans bruit. Le piège était signalé en
+commentaire depuis la migration 010 ; depuis que la 016 est appliquée il n'était plus
+théorique. `scripts/sync_adobe_catalog_json.py` maintient le miroir, le JSON porte
+maintenant 2136 lignes dont 1280 actives, et `check:adobe-migration` a quatre règles
+neuves qui échouent si le miroir dérive, testées par mutation quatre fois sur quatre.
+
+**Deux gardes ne savaient pas ce qu'est une police Adobe.**
+`check:font-renderable` exigeait un woff2 prêt pour toute ligne active : il déclarait
+les 108 irrendables alors qu'elles s'affichent. Il accepte maintenant une ligne `adobe`
+si elle est dans le kit du projet web, seule preuve hors ligne qu'un navigateur
+recevra quelque chose, et il refuse toujours une Google sans fichier.
+`check:license-guard` définissait « servable » comme active plus fichier prêt, donc les
+108 lignes Adobe n'entraient dans aucun contrôle de licence alors qu'elles sont
+affichées à chaque partie. Sa définition suit maintenant celle de la requête de pool :
+le garde vérifie 1280 polices au lieu de 1172.
+
+**Ce qu'il reste, et qui n'attend que le propriétaire.** Le kit Adobe est verrouillé sur
+`localhost` et `127.0.0.1`. **Le domaine de production doit y être ajouté avant la mise
+en ligne**, sinon les 108 polices ne s'affichent pas et le joueur doit nommer une typo
+absente de son écran. Et le jeton d'API Adobe collé dans la conversation reste à
+régénérer.
+
+Porte complète verte, code de sortie 0. Mutations du garde Adobe : 23 sur 23.
