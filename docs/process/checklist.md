@@ -1,23 +1,74 @@
 # DWIGGINS — Checklist « Où on en est »
 
-## REPRISE — à lire en premier, écrit le 2026-08-15 au soir
+## REPRISE — à lire en premier, réécrite le 2026-08-24
 
-**Trois choses à faire toi même, avant tout le reste :**
+**Six choses à faire toi même. Rien d'autre ne les débloquera.**
 
-1. **Faire tourner le mot de passe Neon.** Il est apparu en clair dans une conversation le 2026-08-15, par ma faute. Console Neon, puis remettre la nouvelle valeur dans `.env.local` (fichier non suivi par git).
-2. **Pousser.** Dix commits ne sont pas sur GitHub. Aucun identifiant n'est configuré sur la machine, il faut un jeton personnel : `git push origin main` depuis le terminal.
-3. **Remplir les sept informations légales** dans `content/legal.ts` : identité et statut juridique, adresse postale, SIRET, directeur de publication, email de contact, hébergeur du site, durée de conservation. `npm run quality` les rappelle à chaque passage.
+1. **Lancer la migration 013**, prête et vérifiée, bloquée par les permissions de
+   l'agent. Deux commandes, dans cet ordre, la seconde n'est pas facultative :
+   `! node scripts/apply_013_rarity.mjs` puis
+   `! ./.venv/bin/python scripts/sync_catalog_rarity_json.py`.
+   Sans la seconde, le prochain réimport du catalogue annulerait la première en
+   silence. `--dry-run` montre l'effet sans écrire, `--rollback` revient en arrière.
+2. **Faire tourner le mot de passe Neon.** Il est réapparu en clair dans une
+   conversation le 2026-08-23, après une première fois le 2026-08-15. Console Neon,
+   puis la nouvelle valeur dans `.env.local`, qui n'est pas suivi par git.
+3. **Régénérer le jeton d'API Adobe Fonts**, collé dans une conversation le 2026-08-23.
+4. **Ajouter le domaine de production au projet web Adobe.** Le kit `ozq5yfs` est
+   verrouillé sur `localhost` et `127.0.0.1`. Sans cet ajout, les 108 polices Adobe ne
+   s'afficheront pas en ligne et le jeu demandera au joueur de nommer une typo absente
+   de son écran. **C'est un préalable de mise en ligne, au même titre que les autres.**
+5. **Pousser.** 52 commits d'avance sur `origin/main`, sur la branche
+   `chore/nettoyage-pre-lancement-2026-08-19`. Aucun identifiant configuré sur la
+   machine, il faut un jeton personnel. La fusion dans `main` attend aussi ton accord.
+6. **Remplir les sept informations légales** dans `content/legal.ts` : identité et
+   statut juridique, adresse postale, SIRET, directeur de publication, email de
+   contact, hébergeur, durée de conservation. `npm run quality` les rappelle à chaque
+   passage.
 
-**Où en est le produit.** Deux bloqueurs go live : PP Frama sans licence webfont, et le légal (écrit, en attente des sept informations et d'une relecture juridique). Le reste du jeu tourne.
+**Où en est le produit.** Le catalogue sert **1280 polices**, dont les 108 d'Adobe
+Fonts entrées en base le 2026-08-23 : Helvetica, Futura, Gill Sans, Times New Roman,
+Franklin Gothic, Garamond, Baskerville, Bodoni. Le jeu tourne, les deux modes sont
+audités, la porte compte 31 contrôles.
+
+**Trois bloqueurs go live**, aucun n'est technique :
+le **symbole du logo** est un décalque d'une image Pinterest, à redessiner ;
+**PP Frama** est servie sans licence webfont ;
+le **légal** est écrit mais attend tes sept informations et une relecture juridique.
+S'y ajoute le point 4 ci dessus, qui est un bloqueur de fait pour les polices Adobe.
 
 **Décisions qui t'attendent, aucune n'est technique :**
-- Deux sens du mot « maîtrisé » : le jeu dit « 3% of your set mastered » sur un pool de 30, le profil dit « 0% mastered » sur tout le catalogue. Un joueur croira que c'est cassé.
-- Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil. L'usage veut un lien sur toutes les pages, or il n'y a pas de pied de page global.
-- Les confusions typo par typo sont calculées par les deux modes et affichées nulle part à l'échelle de l'historique. C'est probablement la donnée la plus utile du produit.
+- Deux sens du mot « maîtrisé » : le jeu dit « 3% of your set mastered » sur un pool de
+  30, le profil dit « 0% mastered » sur tout le catalogue. Un joueur croira que c'est
+  cassé.
+- Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil.
+  L'usage veut un lien sur toutes les pages, or il n'y a pas de pied de page global.
+- Les confusions typo par typo sont calculées par les deux modes et affichées nulle
+  part à l'échelle de l'historique. C'est probablement la donnée la plus utile du
+  produit.
+- **Baskerville BT et Baskerville URW Regular Oblique n'ont pas de romain chez Adobe**,
+  seulement un oblique. Les garder penchées ou les retirer du kit.
 
-**Ce qui a bougé depuis, le 2026-08-17.** La carte du regard explique enfin ce qui l'allume : le bloc `ProgressExplainer` sort sous la constellation, dernier des trois blocs du plan `docs/ui/pages-explication-plan.md`, note au journal du jour. Les trois tâches ci dessus et les trois décisions ci dessous restent entières, elles n'appartiennent qu'à toi. Et **la porte complète reste à lancer serveur de dev arrêté** (`npm run quality` finit par un `build` qui partage `.next`), avec la suite end to end.
+**Le chantier technique suivant, mesuré le 2026-08-24 et pas encore commencé.** Trois
+clusters visuels portent **85 % du catalogue actif** (466, 332 et 286 sur 1280). Le
+cluster décide des mauvaises réponses : à ce niveau de concentration, le bonus de
+difficulté ne discrimine plus rien. La signature structurelle ne sauve pas la mise, ses
+trois plus gros paquets couvrent 81 % du catalogue, parce qu'elle a été inférée par
+heuristique et non mesurée. Un vrai regroupement demanderait de mesurer la géométrie
+dans les fichiers de police, ce qui est possible pour les 1172 Google et impossible pour
+les 108 Adobe, qui n'ont pas de fichier.
 
-**Pièges de la machine, à ne pas rechercher deux fois** (détail dans `CLAUDE.md`) : ne jamais lancer `npm run test:e2e` pendant qu'un serveur de dev tourne, les deux partagent `.next` et corrompent le cache Turbopack, ce qui fait pendre des routes sans aucune erreur. Et l'empreinte du fichier CSS ne change pas en dev, elle ne dit donc rien de sa fraîcheur.
+**Pièges de la machine, à ne pas rechercher deux fois** (détail dans `CLAUDE.md`) : ne
+jamais lancer `npm run test:e2e` pendant qu'un serveur de dev tourne, les deux partagent
+`.next` et corrompent le cache Turbopack, ce qui fait pendre des routes sans aucune
+erreur. L'empreinte du fichier CSS ne change pas en dev, elle ne dit donc rien de sa
+fraîcheur. Et **la porte complète se lance serveur de dev arrêté**, son `build` écrit
+dans le même `.next`.
+
+**Piège d'agent, constaté le 2026-08-23.** Le classifieur de permissions refuse à
+l'agent l'écriture de masse en production, par le shell comme par l'outil Neon, et
+refuse aussi de récupérer une chaîne de connexion. Une migration lourde se prépare donc
+en script vérifié, avec son garde en transaction, et se lance avec `!`.
 
 ---
 
