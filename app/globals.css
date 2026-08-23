@@ -4116,7 +4116,15 @@ svg {
   --compare-stage-line-soft: rgba(17, 17, 20, 0.07);
   --compare-stage-line-strong: rgba(17, 17, 20, 0.16);
   --compare-stage-ink: #050505;
-  --compare-stage-ink-soft: rgba(17, 17, 20, 0.42);
+  /* 0.42 mesurait 2,73 sur la coquille claire, sous le seuil. */
+  --compare-stage-ink-soft: rgba(17, 17, 20, 0.68);
+  /* Les contrôles de la scène étaient écrits en gris absolus (hsl 0 0% 60 et
+     90 pour cent), pensés pour un fond noir uniquement : sur fond clair l'état
+     actif tombait à 1,13 de contraste, illisible. Ils lisent ces jetons. */
+  --compare-control-ink: rgba(17, 17, 20, 0.68);
+  --compare-control-ink-active: rgba(17, 17, 20, 0.95);
+  --compare-control-line: rgba(17, 17, 20, 0.28);
+  --compare-control-line-active: rgba(17, 17, 20, 0.55);
   --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 88%, rgba(244, 243, 238, 0.76));
   --compare-stage-switch-line: color-mix(in srgb, var(--typo-shell-border) 76%, rgba(17, 17, 20, 0.12));
   display: grid;
@@ -4135,6 +4143,10 @@ svg {
   --compare-stage-line-strong: rgba(244, 243, 238, 0.16);
   --compare-stage-ink: rgba(244, 243, 238, 0.94);
   --compare-stage-ink-soft: rgba(244, 243, 238, 0.58);
+  --compare-control-ink: hsl(0 0% 60%);
+  --compare-control-ink-active: hsl(0 0% 90%);
+  --compare-control-line: hsl(0 0% 60% / 0.42);
+  --compare-control-line-active: hsl(0 0% 90% / 0.7);
   --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 78%, rgba(244, 243, 238, 0.04));
   --compare-stage-switch-line: rgba(244, 243, 238, 0.08);
 }
@@ -4218,9 +4230,9 @@ svg {
   min-height: 1.8rem;
   padding: 0.24rem 0.56rem;
   border-radius: var(--radius-control);
-  border: 1px solid hsl(0 0% 60% / 0.42);
+  border: 1px solid var(--compare-control-line);
   background: transparent;
-  color: hsl(0 0% 60%);
+  color: var(--compare-control-ink);
   font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
@@ -4235,22 +4247,22 @@ svg {
 
 .compare-control:hover,
 .compare-control.is-active {
-  border-color: hsl(0 0% 90% / 0.7);
+  border-color: var(--compare-control-line-active);
   background: transparent;
-  color: hsl(0 0% 90%);
+  color: var(--compare-control-ink-active);
 }
 
 .compare-control--secondary {
-  border-color: hsl(0 0% 60% / 0.28);
+  border-color: color-mix(in srgb, var(--compare-control-line) 66%, transparent);
   background: transparent;
-  color: hsl(0 0% 60% / 0.88);
+  color: color-mix(in srgb, var(--compare-control-ink) 88%, transparent);
 }
 
 .compare-control--secondary:hover,
 .compare-control--secondary.is-active {
-  border-color: hsl(0 0% 90% / 0.5);
+  border-color: color-mix(in srgb, var(--compare-control-line-active) 72%, transparent);
   background: transparent;
-  color: hsl(0 0% 90%);
+  color: var(--compare-control-ink-active);
 }
 
 .compare-metrics {
