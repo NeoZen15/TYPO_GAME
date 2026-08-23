@@ -2436,8 +2436,11 @@ svg {
   --typo-shell-bg: rgba(255, 252, 248, 0.92);
   --typo-shell-border: rgba(58, 38, 48, 0.1);
   --typo-ink: #2a1a20; /* canonical warm ink, see --ink-warm */
-  --typo-muted: rgba(58, 38, 48, 0.58);
-  --typo-soft: rgba(58, 38, 48, 0.46);
+  /* Recalibrés le 2026-08-23 avec l'échelle principale, même raison : sur la
+     coquille claire (fond effectif rgb(254, 251, 247)) ces alphas donnaient
+     3,70 et 2,68, sous le seuil. À 0.80 et 0.68 : 7,24 et 4,96. */
+  --typo-muted: rgba(58, 38, 48, 0.8);
+  --typo-soft: rgba(58, 38, 48, 0.68);
   --typo-info: #455cc7;
   --typo-info-soft: rgba(142, 162, 255, 0.13);
   --typo-info-line: rgba(72, 111, 255, 0.22);
@@ -9452,7 +9455,8 @@ svg {
     align-items: center;
     padding: 0.3rem 0.5rem;
     border-radius: var(--radius-pill);
-    color: rgba(20, 16, 25, 0.55);
+    /* 0.55 mesurait 4,09 sur la coquille crème, sous le seuil. */
+    color: rgba(20, 16, 25, 0.72);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.14em;

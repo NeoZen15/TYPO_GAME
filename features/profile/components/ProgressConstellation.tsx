@@ -643,10 +643,10 @@ const CSS = `
   .dw-hud__lvl { color: rgba(${INK}, 0.72); letter-spacing: 0.08em; }
   .dw-hud__xp { width: 5rem; height: 0.3rem; border-radius: var(--radius-pill); background: rgba(${INK}, 0.14); overflow: hidden; }
   .dw-hud__xp-fill { display: block; height: 100%; background: color-mix(in srgb, ${YELLOW} 50%, transparent); border-radius: var(--radius-pill); }
-  .dw-hud__xptext { font-variant-numeric: tabular-nums; color: rgba(${INK}, 0.55); }
+  .dw-hud__xptext { font-variant-numeric: tabular-nums; color: rgba(${INK}, 0.72); }
   .dw-hud__streak { color: rgba(${INK}, 0.74); }
   .dw-hud__count em { font-style: normal; font-weight: 700; color: #141019; }
-  .dw-hud__emerge { color: rgba(${INK}, 0.56); }
+  .dw-hud__emerge { color: rgba(${INK}, 0.72); }
   @media (max-width: 720px) {
     .dw-hud { align-items: center; }
     .dw-hud__row { justify-content: center; }
