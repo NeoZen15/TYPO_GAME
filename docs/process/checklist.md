@@ -2376,3 +2376,99 @@ touchée (30 canoniques et 78 variantes), au moins 357 `uncommon` et 490 `rare` 
 Adobe, et une portée du débutant à 355. Une transaction qui lève annule tout, donc la
 vérification ne peut pas arriver trop tard. `--dry-run` montre l'effet sans rien
 écrire, `--rollback` rejoue le retour arrière.
+
+### 2026-08-24, favicon en version Safari, et les Do/Don't abandonnés
+
+**Les barres refaites à la manière de Safari**, sur demande de Marion, « en général c'est plus beau ». Trois différences avec le navigateur générique que j'avais dessiné, et ce sont elles qui font la propreté : les onglets Safari sont des pastilles **entièrement arrondies** et non des onglets à pied carré ; l'onglet actif est un aplat avec une ombre douce tandis que les inactifs sont transparents, séparés par un simple filet à 16 pour cent et non par un cadre ; et **la croix de fermeture n'apparaît qu'au survol**, donc elle n'a rien à faire sur une planche.
+
+Barre de 1180 x 110, marge de 14, onglets de 378 x 82 à rayon 12, écart de 8. Clair : bandeau `#ececec`, onglet actif blanc. Sombre : bandeau `#2c2c2e`, onglet actif `#48484a`. La démonstration tient toujours : sur la barre sombre le disque se fond dedans, le symbole reste net.
+
+**Les pages Do et Don't sont abandonnées.** Marion : « les don't j'ai pas vraiment envie de les faire, j'ai la flemme. » Sa décision, notée pour ne pas la reproposer. C'est le seul poste où les trois brandbooks de référence sont nettement plus fournis que nous, Tercio y consacrant quatre pages sur son chapitre logo. Le trou est assumé, pas ignoré.
+
+**État du chapitre logo après cette passe.** Neuf pages, 10 à 18 : l'intercalaire, le logo principal, le sens du symbole, la zone de sécurité, le symbole, les proportions du bloc, les trois sols, le badge, le favicon. La page 17, le badge, reste un cadre vide que Marion veut traiter lui même. Le chapitre est passé de 7 à 9 pages, contre 12 à 21 chez les trois références.
+
+### 2026-08-24, point d'arrêt de nuit et état exact du document
+
+**Deux pages étaient empilées et sans nom, réparé avant de fermer.** Les cadres `411:675` et `70:124` se trouvaient tous les deux en 12597, 2680 et s'appelaient « Frame ». Noms et positions rétablis : 16 Les trois sols en 12597, 17 Badge en 14677, 18 Le favicon en 16757.
+
+**État de la numérotation, à régler en priorité demain.** 44 pages. Une collision : le folio 18 est porté à la fois par « Le logo, Le favicon » et par « La couleur, Intercalaire ». Deux trous : 35 et 36, laissés par la suppression du chapitre Les composants. Il faut une passe de renumérotation par ordre de lecture, puis suivre les six intercalaires et la couverture.
+
+**Ce qui reste à construire.** Les composants, chapitre entier à refaire, avec des valeurs à relever dans le navigateur. Les éléments visuels, chapitre inexistant alors que le matériau est là : le champ de points, le halo jaune, la carte du regard, le curseur fantôme. Le discours et le ton de voix, qui demandent les décisions de Marion et ne peuvent pas être écrits sans lui.
+
+**Ce qui est explicitement hors périmètre.** La page 17, le badge, que Marion veut traiter lui même. Les pages Do et Don't, abandonnées. 
+
+**Une tâche programmée pour 10 h 04 a été posée**, avec le détail du travail et les règles de fabrication. Attention : ce type de tâche ne vit que dans la session ouverte, elle ne survit pas à la fermeture de Claude Code. Prévenu.
+
+### 2026-08-24, la page technique ajoutée au programme de 10 h
+
+**Demande de Marion avant de dormir.** Une page de plus dans l'introduction, qui explique vraiment la technique, comment le moteur fonctionne, avec la courbe de l'oubli. Et il veut que les étapes s'enchaînent, chacune lancée quand la précédente est finie.
+
+**Un piège identifié ce soir, et c'est le point important de cette note.** Trois documents parlent de répétition espacée et ils ne décrivent pas le même moteur.
+
+`docs/game/scoring-and-selection-math.md` décrit des boîtes de 0 à 5 et des intervalles en **jours**, `I = [0,1,3,7,21,60]`. Son propre en-tête dit qu'il n'est plus une référence et qu'aucune règle ne peut en être implémentée directement. **Ce moteur n'est pas celui du produit.**
+
+Le moteur réel est dans `docs/game/training-engine-spec-v2-clean.md` : mastery de 0 à 4, intervalles comptés en **questions** et non en jours. Relevé ce soir : retour minimum 2 questions après une erreur (`COOLDOWN_WRONG_Q`), 5 questions après une réussite (`COOLDOWN_CORRECT_Q`), intervalle du niveau 0 entre 1 et 3 questions, du niveau 1 entre 3 et 6, pool actif d'environ 30 typographies qui grandit quand des typographies se stabilisent au niveau 4.
+
+Si la page technique reprenait les chiffres du premier document, **la charte écrirait du faux et le ferait avec autorité**. La consigne est passée explicitement dans la tâche programmée.
+
+**Ordre des quatre étapes, décidé pour ne rien refaire deux fois.** La page technique, puis Les composants, puis Les éléments visuels, puis la renumérotation en dernier : elle doit passer après tous les ajouts de pages, sinon il faut la relancer.
+
+**Réparation faite avant de fermer.** Les cadres `411:675` et `70:124` étaient empilés en 12597, 2680 et s'appelaient tous les deux « Frame ». Rétablis : 16 Les trois sols en 12597, 17 Badge en 14677, 18 Le favicon en 16757.
+
+### 2026-08-24, la 013 est appliquée, et elle a révélé la queue du catalogue
+
+**La 013 est en production.** Portée du débutant de 1178 à 341, répartition passée de
+1184 communes et zéro rare à 361 communes, 1285 peu communes, 490 rares. Le JSON du
+catalogue a suivi dans la foulée, 864 raretés modifiées, les deux disent la même chose.
+Les 108 lignes Adobe n'ont pas bougé.
+
+**Le garde en transaction a servi dès le premier lancement, et c'était mon erreur.** Il
+attendait une portée de 355, en a trouvé 341, et a tout annulé sans rien écrire. En
+vérifiant, l'écart s'expliquait exactement : j'avais compté 20 lignes qui deviennent
+communes sans regarder leur niveau Dreyfus, or 14 d'entre elles sont en niveau C (Abril
+Fatface, Bodoni Moda, Prata, EB Garamond) et un débutant est en N. 355 moins 14 font
+341. **La migration était juste du premier coup, c'est ma prévision qui était fausse**,
+et le garde a rattrapé la prévision. La raison est écrite dans
+`scripts/apply_013_rarity.mjs` pour que le chiffre 341 ne redevienne pas mystérieux.
+
+**Le vrai premier pool, mesuré avec tous les filtres.** 10 Adobe sur 30 : Arial, Comic
+Sans MS, Eurostile, Franklin Gothic, Futura PT, Gill Sans Nova, Helvetica LT Pro,
+Impact, ITC Avant Garde Gothic Pro, Neue Frutiger World. Attention, la portée réelle est
+**313 et non 341** : `LATIN_UNREADY_SLUGS` écarte 36 polices non latines au moment de la
+requête, filtre que mon premier relevé oubliait.
+
+**Ce que la 013 a laissé de côté, et qui est le sujet de la 017.** 88 polices sont
+restées communes par défaut, tout simplement parce que Google ne les classe pas :
+Batang, Gulim, Dotum, les variantes UI de Noto, les bêtas `vfbeta`, les fontes
+mathématiques de jsMath, Noto Color Emoji. Elles étaient donc dans la portée du débutant
+au même titre qu'Helvetica. L'absence du classement est en elle-même le signal : elles
+passent en rare. 87 lignes, plus une qui s'éteint.
+
+**Adobe Blank, une police qui n'affiche rien, était jouable.** Elle porte les 52 lettres
+latines et n'en dessine aucune. `check:latin-coverage` teste la présence du caractère,
+pas l'encre, donc elle passait. Son fichier fait 976 octets contre 24 448 de médiane.
+Une manche l'aurait affichée comme un mot vide en demandant au joueur de la nommer.
+
+**Le garde teste maintenant l'encre, et le bon signal a demandé deux essais.** Compter
+les commandes de tracé échoue des deux côtés : Adobe Blank en a deux, un contour
+dégénéré, donc elle passait ; et Reem Kufi Fun comme Sixtyfour Convergence en ont zéro
+parce qu'elles dessinent par calques de couleur, donc elles étaient accusées à tort. Le
+signal qui sépare proprement est **l'avance du glyphe** : 0 pour Adobe Blank, 700 pour
+Reem Kufi Fun, 1024 pour Sixtyfour Convergence, 1413 pour Inter. Une lettre qui n'avance
+pas le curseur n'occupe aucune place sur la ligne, et aucune police réelle ne fait ça.
+Le test ne porte que sur les lignes actives, sinon il resterait rouge après la
+réparation, ce qui apprend à l'ignorer. Vérifié dans les deux sens : rouge avant, vert
+après.
+
+**La 017 est écrite, le JSON est déjà en miroir, elle attend d'être lancée :**
+
+```
+! node scripts/apply_017_tail_rarity.mjs --dry-run
+! node scripts/apply_017_tail_rarity.mjs
+```
+
+Pas de seconde commande cette fois, `scripts/build_017_tail_rarity.py` a mis le JSON à
+jour dans le même commit. Le garde en transaction attend 274 / 1285 / 577, une portée à
+259, Adobe Blank éteinte et les 108 Adobe intactes.
+
+Porte complète verte, 31 contrôles, code de sortie 0.

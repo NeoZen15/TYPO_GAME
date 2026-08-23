@@ -94,7 +94,49 @@ for (let codePoint = 0x61; codePoint <= 0x7a; codePoint += 1) {
 const missingLatinLetters = (font) =>
   LATIN_CODE_POINTS.filter((codePoint) => !font.hasGlyphForCodePoint(codePoint));
 
+// Avoir le caractere ne veut pas dire le dessiner. Adobe Blank mappe les 52
+// lettres latines sur des glyphes vides : elle passait hasGlyphForCodePoint sans
+// tracer un seul trait, et une manche pouvait donc afficher un mot invisible et
+// demander au joueur de le reconnaitre. C'est la couverture latine une marche plus
+// loin : la police est la, l'encre n'y est pas.
+//
+// LE TEST PORTE SUR LA CHASSE, PAS SUR LE TRACE, et c'est le fruit d'une mesure,
+// pas d'une intuition. Compter les commandes de trace echoue des deux cotes :
+// Adobe Blank en a deux, un contour degenere, donc elle passait ; et Reem Kufi Fun
+// comme Sixtyfour Convergence en ont zero parce qu'elles dessinent par calques de
+// couleur, donc elles etaient accusees a tort. Mesure sur les quatre polices :
+//   adobeblank            avance 0     commandes 2
+//   reemkufifun           avance 700   commandes 0
+//   sixtyfourconvergence  avance 1024  commandes 0
+//   inter                 avance 1413  commandes 18
+// Une lettre qui n'avance pas le curseur n'occupe aucune place sur la ligne. Aucune
+// police reelle ne fait ca sur A, e ou M.
+//
+// Cinq lettres suffisent : une police a laquelle l'encre manque la manque partout,
+// et rouvrir 1172 fichiers coute deja assez cher.
+const INK_SAMPLE = ["A", "e", "g", "M", "s"].map((c) => c.codePointAt(0));
+
+const inklessLatinLetters = (font) =>
+  INK_SAMPLE.filter((codePoint) => {
+    try {
+      const glyph = font.glyphForCodePoint(codePoint);
+      return !glyph || glyph.advanceWidth === 0;
+    } catch {
+      return false; // illisible ici, la couverture latine plus haut a deja tranche
+    }
+  }).map((codePoint) => String.fromCodePoint(codePoint));
+
 const excludedSlugs = new Set(latinUnreadySlugs ?? []);
+
+// Le test d'encre ne porte que sur les lignes ACTIVES. Une ligne eteinte ne sort
+// d'aucun pool, donc son absence d'encre ne peut atteindre personne, et c'est
+// justement la reparation que le message recommande. Sans ce filtre le garde
+// resterait rouge apres la reparation, ce qui apprend a l'ignorer.
+const activeSlugs = new Set(
+  readJson("content/catalog/typefaces-core.json")
+    .records.filter((record) => record.activation_status === true)
+    .map((record) => record.typeface_slug)
+);
 const servedAssets = readJson(RUNTIME_ASSETS_CATALOG).records.filter(
   (record) => record.runtime_status === "ready" && record.file_role === "primary"
 );
@@ -145,6 +187,16 @@ for (const asset of servedAssets) {
   if (missing.length > 0) {
     failures.push(
       `${asset.source_path}: ${asset.typeface_slug} is servable but misses ${missing.length} of the 52 basic Latin letters, so a round could ask about a typeface the browser never draws (add it to LATIN_UNREADY_SLUGS in ${GUARD_MODULE})`
+    );
+    continue;
+  }
+
+  const inkless = activeSlugs.has(asset.typeface_slug)
+    ? inklessLatinLetters(openFontSync(absolutePath))
+    : [];
+  if (inkless.length > 0) {
+    failures.push(
+      `${asset.source_path}: ${asset.typeface_slug} carries the Latin letters but draws nothing for ${inkless.join(", ")}, so a round would show an empty word and ask the player to name it. Deactivate the row rather than excluding it: a typeface with no ink is not a typeface to recognise.`
     );
     continue;
   }

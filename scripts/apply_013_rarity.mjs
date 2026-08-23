@@ -19,7 +19,15 @@
  * trop tard. Le controle porte sur trois choses :
  *   - aucune ligne Adobe touchee : 30 canoniques et 78 variantes, inchangees
  *   - au moins 357 uncommon et 490 rare hors Adobe
- *   - la portee du debutant atterrit sur 355, mesuree avant application
+ *   - la portee du debutant atterrit sur 341, mesuree avant application
+ *
+ * LE GARDE A DEJA SERVI. Premier lancement le 2026-08-24 : il attendait 355, en a
+ * trouve 341, et a tout annule sans rien ecrire.
+ * L'erreur etait dans mon calcul, pas dans la migration : j'avais compte 20 lignes
+ * qui deviennent communes sans verifier leur niveau Dreyfus, or 14 d'entre elles sont
+ * en niveau C (Abril Fatface, Bodoni Moda, Prata, EB Garamond et dix autres) et un
+ * debutant est en N. 355 moins 14 font 341. La migration etait juste du premier coup ;
+ * c'est le garde qui a rattrape une prevision fausse, ce pour quoi il existe.
  *
  * VERIFIE LE 2026-08-23 sur la base reelle, en lecture seule : les 1090 slugs
  * existent tous, aucun n'est une ligne Adobe, et le retour arriere couvre les
@@ -101,8 +109,8 @@ BEGIN
   IF u < 357 OR r < 490 THEN
     RAISE EXCEPTION 'ANNULE : attendu au moins 357 uncommon et 490 rare hors Adobe, trouve % et %', u, r;
   END IF;
-  IF portee <> 355 THEN
-    RAISE EXCEPTION 'ANNULE : portee du debutant attendue a 355, trouvee %', portee;
+  IF portee <> 341 THEN
+    RAISE EXCEPTION 'ANNULE : portee du debutant attendue a 341, trouvee %', portee;
   END IF;
 END $$`;
 
