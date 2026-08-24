@@ -257,7 +257,7 @@ const competitionScreenStyles = `
     border-radius: var(--radius-control);
     border: 1px solid rgba(58, 38, 48, 0.16);
     background: rgba(244, 243, 238, 0.66);
-    box-shadow: 0 0.12rem 0.3rem rgba(42, 26, 32, 0.04);
+    
     font-size: 0.72rem;
     line-height: 1;
     font-weight: 560;
@@ -338,7 +338,7 @@ const competitionScreenStyles = `
     border-radius: var(--radius);
     border: 1px solid rgba(58, 38, 48, 0.12);
     background: rgba(244, 243, 238, 0.86);
-    box-shadow: 0 0.3rem 0.9rem rgba(42, 26, 32, 0.08);
+    
     cursor: pointer;
     transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
   }

@@ -445,7 +445,6 @@ svg {
       color-mix(in srgb, var(--surface-strong) 88%, transparent) 100%
     );
   padding: 1rem 1rem 1rem 1.22rem;
-  box-shadow: 0 12px 24px rgba(17, 17, 20, 0.05);
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -2127,16 +2126,10 @@ svg {
      (#faf9f5). No invented tint, no blue-white. */
   background: linear-gradient(180deg, var(--beige-raised) 0%, var(--beige) 100%);
   color: var(--noir);
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.25),
-    0 0.16rem 0.4rem rgba(0, 0, 0, 0.12);
 }
 
 .onboarding-btn--solid:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.42),
-    0 0.28rem 0.6rem rgba(0, 0, 0, 0.16);
 }
 
 .onboarding-btn--solid:disabled {
@@ -2673,17 +2666,11 @@ svg {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.08),
-    0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
 }
 
 .site-nav__cta:hover {
   transform: translateY(-1px);
   background: var(--nav-cta-bg-hover);
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.12),
-    0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
 }
 
 /* ── Phone menu (2026-08-17) ─────────────────────────────────────────────
@@ -2767,7 +2754,6 @@ svg {
 .site-nav .theme-switch__track {
   border-color: var(--nav-switch-border);
   background: var(--nav-switch-track);
-  box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
 }
 
 .site-nav .theme-switch__thumb {
@@ -7817,18 +7803,12 @@ svg {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1;
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.08),
-    0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
   transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
 }
 
 .lp-header__cta:hover {
   transform: translateY(-1px);
   background: var(--nav-cta-bg-hover);
-  box-shadow:
-    inset 0 1px 0 rgba(244, 243, 238, 0.12),
-    0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
 }
 
 .lp-header__actions {
@@ -7848,7 +7828,6 @@ svg {
 .lp-header .theme-switch__track {
   border-color: var(--nav-switch-border);
   background: var(--nav-switch-track);
-  box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
 }
 
 .lp-header .theme-switch__thumb {
@@ -9413,22 +9392,18 @@ svg {
     justify-content: space-between;
     gap: 0.46rem 1rem;
     padding: 0.5rem 0.7rem 0.5rem 0.95rem;
-    border: 1px solid rgba(25, 21, 16, 0.10);
+    /* Troisième exemplaire de la même barre que `site-nav` et `lp-header` : elle
+       lit les mêmes jetons, donc noire en clair et crème en sombre, sans ombre.
+       Elle portait un forçage `background: #f4f3ee` en sombre que les jetons
+       rendent inutile. */
+    border: 1px solid var(--nav-border);
     border-radius: var(--radius);
-    background: var(--surface-strong);
-    color: #141019;
-    box-shadow:
-      inset 0 1px 0 rgba(244, 243, 238, 0.55),
-      0 0.5rem 1.5rem rgba(0, 0, 0, 0.34);
-    transition: padding 220ms ease, box-shadow 220ms ease;
+    background: var(--nav-bg);
+    color: var(--nav-ink);
+    transition: padding 220ms ease;
   }
-  /* In dark mode the pill stays a light "paper" chip (beige), like the landing. */
-  :root[data-theme="dark"] .pf-top { background: #f4f3ee; }
   .pf-top.is-scrolled {
     padding-block: 0.4rem;
-    box-shadow:
-      inset 0 1px 0 rgba(244, 243, 238, 0.6),
-      0 0.7rem 1.9rem rgba(0, 0, 0, 0.46);
   }
 
   .pf-top__brand {
@@ -9467,8 +9442,7 @@ svg {
     align-items: center;
     padding: 0.3rem 0.5rem;
     border-radius: var(--radius-pill);
-    /* 0.55 mesurait 4,09 sur la coquille crème, sous le seuil. */
-    color: rgba(20, 16, 25, 0.72);
+    color: var(--nav-ink-muted);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -9476,10 +9450,10 @@ svg {
     line-height: 1;
     transition: color 160ms ease, background-color 160ms ease;
   }
-  .pf-top__link:hover { color: rgba(20, 16, 25, 0.95); }
+  .pf-top__link:hover { color: var(--nav-ink-strong); }
   .pf-top__link.is-active {
-    color: rgba(20, 16, 25, 0.95);
-    background: rgba(20, 16, 25, 0.07);
+    color: var(--nav-ink-strong);
+    background: var(--nav-hover-bg);
   }
 
   .pf-top__actions { display: flex; align-items: center; gap: 0.55rem; }
@@ -9489,26 +9463,20 @@ svg {
     justify-content: center;
     padding: 0.34rem 0.8rem;
     border-radius: var(--radius-pill);
-    border: 1px solid rgba(20, 16, 25, 0.12);
-    background: #141019;
-    color: #f4f3ee;
+    border: 1px solid var(--nav-cta-border);
+    background: var(--nav-cta-bg);
+    color: var(--nav-cta-ink);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     line-height: 1;
     text-decoration: none;
-    box-shadow:
-      inset 0 1px 0 rgba(244, 243, 238, 0.08),
-      0 0.2rem 0.5rem rgba(0, 0, 0, 0.18);
     transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
   }
   .pf-top__cta:hover {
     transform: translateY(-1px);
     background: #000;
-    box-shadow:
-      inset 0 1px 0 rgba(244, 243, 238, 0.12),
-      0 0.32rem 0.7rem rgba(0, 0, 0, 0.26);
   }
 
   /* Theme toggle reads as a dark control on the cream pill (like the landing). */
@@ -9516,7 +9484,6 @@ svg {
   .pf-top .theme-switch__track {
     border-color: rgba(20, 16, 25, 0.28);
     background: rgba(20, 16, 25, 0.1);
-    box-shadow: inset 0 1px 0 rgba(244, 243, 238, 0.45);
   }
   .pf-top .theme-switch__thumb {
     background: #141019;
@@ -11439,7 +11406,6 @@ svg {
   border-radius: var(--radius);
   background: var(--surface-strong);
   color: var(--ink-strong);
-  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.14);
 }
 
 .storage-notice__text {

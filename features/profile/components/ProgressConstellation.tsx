@@ -624,9 +624,6 @@ const CSS = `
     border: 1px solid rgba(${INK}, 0.08);
     border-radius: var(--radius);
     background: #f4f3ee;
-    box-shadow:
-      inset 0 1px 0 rgba(244, 243, 238, 0.5),
-      0 0.5rem 1.4rem rgba(0, 0, 0, 0.34);
     font-family: var(--pf-mono);
     font-size: 0.72rem; letter-spacing: 0.04em;
     color: rgba(${INK}, 0.62);
