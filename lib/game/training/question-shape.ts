@@ -78,13 +78,56 @@ export const pickEligibleTypeface = <Row extends QuestionShapeRow>(
   })[0];
 };
 
+// UNE JUMELLE NE PEUT PAS ETRE UN LEURRE. Noto Sans JP, KR, SC et TC dessinent le
+// latin a l'identique : proposer l'une comme bonne reponse et l'autre comme leurre
+// fait une question sans reponse, ou le joueur ne peut que deviner. La liste et la
+// facon dont elle a ete etablie sont dans lib/game/twin-guard.ts.
+//
+// LE TEST ARRIVE EN PARAMETRE, IL N'EST PAS IMPORTE ICI. Node charge ce fichier tel
+// quel dans check:answer-position, pour rejouer la chaine de question et verifier
+// que la bonne reponse ne tombe pas toujours au meme bouton. Node ne resout ni
+// l'alias "@/" ni un import relatif sans extension : tout import de runtime rendrait
+// ce garde la aveugle, ce que CLAUDE.md interdit explicitement. Essaye et constate.
+// Le module reste donc pur, et c'est l'appelant qui fournit le test.
+//
+// LE REPLI EXISTE ET IL EST VOULU. Un pool d'entrainement peut etre petit, une
+// trentaine de polices au depart, et rien ne garantit qu'il reste trois leurres une
+// fois les jumelles retirees. On complete alors avec les jumelles ecartees plutot
+// que de rendre moins de quatre boutons : une question difficile vaut mieux qu'un
+// ecran casse.
+export type SontJumelles = (correctSlug: string, otherSlug: string) => boolean;
+
+const JAMAIS_JUMELLES: SontJumelles = () => false;
+
+const withoutTwins = <Row extends QuestionShapeRow>(
+  others: Row[],
+  correct: QuestionShapeRow,
+  sontJumelles: SontJumelles
+): Row[] => {
+  const clean = others.filter(
+    (row) => !sontJumelles(correct.typeface_slug, row.typeface_slug)
+  );
+  if (clean.length >= 3) {
+    return clean;
+  }
+  const removed = others.filter(
+    (row) => !clean.some((kept) => kept.typeface_slug === row.typeface_slug)
+  );
+  return [...clean, ...removed];
+};
+
 export const pickDistractors = <Row extends QuestionShapeRow>(
   pool: Row[],
   correct: QuestionShapeRow,
   globalQIndex: number,
-  seed: string
+  seed: string,
+  sontJumelles: SontJumelles = JAMAIS_JUMELLES
 ): Row[] => {
-  const others = pool.filter((row) => row.typeface_slug !== correct.typeface_slug);
+  const others = withoutTwins(
+    pool.filter((row) => row.typeface_slug !== correct.typeface_slug),
+    correct,
+    sontJumelles
+  );
 
   return others
     .map((row) => {

@@ -2798,3 +2798,63 @@ une décision de produit, pas de technique. Le rapport complet est dans
 liste de celles qui atteignent un débutant.
 
 Porte complète verte, code de sortie 0.
+
+### 2026-08-24, étapes 2 à 4 des six manques
+
+**Étape 2, des exemples de messages.** Six phrases prises dans `content/copy.ts`, aucune écrite pour la page, et chacune croisée avec l'adjectif qu'elle sert et la raison en une ligne. C'est ce croisement qui rend le chapitre utilisable : on ne lit pas un conseil, on voit une phrase et la règle qui l'a produite.
+
+**Un constat honnête écrit sur la page plutôt que masqué.** En triant les huit phrases vivantes du produit, aucune n'est pince-sans-rire. L'adjectif est donc **une direction à tenir, pas une description de ce qui existe**, et la page le dit. Fabriquer un faux exemple aurait été plus joli et plus faux.
+
+**Étape 3, les règles d'écriture.** Cinq bandes, et chaque règle porte sa mesure relevée dans la copie, pas une intention.
+
+Comptage fait avant d'écrire : **zéro point d'exclamation, zéro tiret séparateur, zéro émoji** dans toute la copie du produit. Ce ne sont donc pas des règles imposées, c'est ce que le produit fait déjà et que la charte constate. Et la mesure la plus utile de la page : sur 47 phrases relevées, la **médiane fait 6 mots**, la moyenne 8,7, et 6 seulement dépassent 20 mots. C'est une meilleure définition du ton que n'importe quel adjectif.
+
+**Étape 4, la direction stratégique.** Trois cartes au modèle de Tercio page 6 : étiquette en pastille monospace, affirmation en 21 px, et l'annotation grise **collée en bas de carte, précédée d'un filet vertical**, qui dit ce que la carte fait là. Observation, conviction, direction. La colonne de gauche pose la règle du genre : trois phrases suffisent, et si elles ont besoin d'un quatrième temps c'est qu'elles sont fausses.
+
+Posée en fin d'introduction, ce qui a demandé de décaler les huit cadres du chapitre Le discours de 2080 vers la droite, traités de droite à gauche pour ne pas se chevaucher en cours de route.
+
+**Les folios de ces quatre pages sont encore ceux de leurs clones.** La renumérotation passe après la sixième étape, une seule fois.
+
+### 2026-08-24, une jumelle ne peut plus être un leurre
+
+Réparation de la trouvaille du jour : le jeu pouvait montrer un mot et proposer Noto
+Sans, Noto Sans JP, Noto Sans KR et Noto Sans SC. Ces quatre-là dessinent le latin à
+l'identique, donc la question n'avait pas de réponse.
+
+**Aucune police n'est retirée du catalogue.** C'est le point important : les 335
+jumelles restent toutes jouables comme bonne réponse, seule leur présence simultanée
+dans une même manche est empêchée. Retirer des polices aurait été une décision de
+produit, celle-ci est une réparation de correction, donc elle n'attendait personne.
+
+`lib/game/twin-guard.ts` porte les 53 familles, généré par
+`scripts/build_twin_guard.py` depuis le rapport de mesure. Les deux fournisseurs
+écartent les jumelles de la bonne réponse au moment de choisir les leurres, avec un
+repli si le pool est trop petit pour en trouver trois autres : mieux vaut une question
+difficile qu'un écran à trois boutons.
+
+**Preuve de comportement, pas seulement de compilation.** 200 manches sur un pool où
+les jumelles sont les leurres les mieux classés : zéro jumelle proposée. Repli vérifié
+sur un pool de six dont quatre jumelles : trois leurres rendus. Police sans jumelle :
+inchangée. Le fichier d'essai est `scripts/quality/essai-jumelles.mts`.
+
+**Un piège de la maison, retrouvé.** `question-shape.ts` ne peut porter aucun import :
+`check:answer-position` le charge tel quel avec Node pour rejouer la chaîne de question,
+et Node ne résout ni l'alias `@/` ni un import relatif sans extension. C'est écrit dans
+CLAUDE.md et je l'ai enfreint deux fois avant de comprendre. Le test des jumelles arrive
+donc **en paramètre**, et c'est l'appelant qui le fournit. Le garde vérifie les deux
+bouts : que le module accepte le paramètre dans sa signature publique, et que le
+fournisseur le passe. Vérifier un seul bout laisserait passer la moitié du défaut.
+
+**Garde `check:twin-guard`, câblé dans la porte, 13 mutations sur 13.** Deux d'entre
+elles ont trouvé de vrais trous : le garde cherchait le paramètre n'importe où dans le
+fichier, donc le retirer de la signature publique le laissait vert, la fonction interne
+portant le même nom d'argument.
+
+**UNE FAUTE À NE PAS REFAIRE, elle a corrompu un fichier de production.** Mon script de
+mutation sauvegardait sous `/tmp/$(basename $f)`. Or `training/provider.ts` et
+`competition/provider.ts` ont le même nom de base : la seconde sauvegarde écrasait la
+première, et la restauration a écrit le fournisseur de compétition par-dessus celui
+d'entraînement. Repris depuis git, sans perte, mais il a fallu s'en apercevoir. Les
+sauvegardes portent maintenant le chemin complet, dans un dossier temporaire dédié.
+
+Porte complète verte, 34 contrôles, code de sortie 0.

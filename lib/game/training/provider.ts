@@ -43,6 +43,7 @@ import {
 import { GameRequestError } from "@/lib/game/request-error";
 import { loadTrainingProgress } from "@/lib/profile/profile-stats";
 import { sql } from "@/lib/server/neon";
+import { isIndistinguishableFrom } from "@/lib/game/twin-guard";
 
 type PoolRow = {
   state_id: string;
@@ -118,7 +119,13 @@ const buildQuestion = (
     );
   }
 
-  const distractors = pickDistractors(pool, correct, user.global_q_index, sessionSeed);
+  const distractors = pickDistractors(
+    pool,
+    correct,
+    user.global_q_index,
+    sessionSeed,
+    isIndistinguishableFrom
+  );
   const optionRows = orderOptionsForDisplay(correct, distractors);
 
   const options = optionRows.map((row) => ({

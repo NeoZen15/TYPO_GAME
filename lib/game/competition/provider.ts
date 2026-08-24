@@ -37,6 +37,7 @@ import {
 } from "@/lib/game/license-guard";
 import { LATIN_UNREADY_SLUGS } from "@/lib/game/latin-coverage-guard";
 import { sql } from "@/lib/server/neon";
+import { isIndistinguishableFrom } from "@/lib/game/twin-guard";
 
 type CompetitionPoolRow = {
   typeface_slug: string;
@@ -485,8 +486,19 @@ const buildQuestion = (
     throw new Error("Unable to select a competition typeface.");
   }
 
-  const distractors = pool
-    .filter((row) => row.typeface_slug !== correct.typeface_slug)
+  // UNE JUMELLE NE PEUT PAS ETRE UN LEURRE, meme regle qu'en entrainement, mais
+  // appliquee directement ici : ce fichier n'est charge par aucun garde qui aurait
+  // besoin qu'il reste sans import. Le pool de competition depasse le millier de
+  // polices, donc retirer jusqu'a 153 jumelles en laisse toujours plus de trois ; le
+  // repli est neanmoins ecrit, pour que la regle ne depende pas de cette taille.
+  const eligible = pool.filter(
+    (row) =>
+      row.typeface_slug !== correct.typeface_slug &&
+      !isIndistinguishableFrom(correct.typeface_slug, row.typeface_slug)
+  );
+  const distractors = (eligible.length >= 3
+    ? eligible
+    : pool.filter((row) => row.typeface_slug !== correct.typeface_slug))
     .map((row) => {
       let weight = 1000;
       if (row.primary_category === correct.primary_category) {
