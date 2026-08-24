@@ -81,8 +81,17 @@ export default function SiteNav({
       <Link href="/" className="site-nav__brand" aria-label="Dwiggins home">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          className="site-nav__figures"
+          className="site-nav__figures mark--on-light"
           src="/brand/dwiggins-figures-dark.svg"
+          alt=""
+          aria-hidden="true"
+          width={673}
+          height={487}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="site-nav__figures mark--on-dark"
+          src="/brand/dwiggins-figures-cream.svg"
           alt=""
           aria-hidden="true"
           width={673}
@@ -91,7 +100,14 @@ export default function SiteNav({
         <Image
           src="/brand/dwiggins-wordmark-full-black.svg"
           alt="Dwiggins"
-          className="site-nav__brand-mark site-nav__brand-mark--full"
+          className="site-nav__brand-mark site-nav__brand-mark--full mark--on-light"
+          width={1394}
+          height={200}
+        />
+        <Image
+          src="/brand/dwiggins-wordmark-full-ivory.svg"
+          alt="Dwiggins"
+          className="site-nav__brand-mark site-nav__brand-mark--full mark--on-dark"
           width={1394}
           height={200}
         />

@@ -98,8 +98,17 @@ export default function ModeSelectPage({ stats }: ModeSelectPageProps) {
         <Link href="/" className="pf-top__brand" aria-label="Dwiggins — home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="pf-top__figures"
+            className="pf-top__figures mark--on-light"
             src="/brand/dwiggins-figures-dark.svg"
+            alt=""
+            aria-hidden="true"
+            width={673}
+            height={487}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="pf-top__figures mark--on-dark"
+            src="/brand/dwiggins-figures-cream.svg"
             alt=""
             aria-hidden="true"
             width={673}
@@ -108,7 +117,15 @@ export default function ModeSelectPage({ stats }: ModeSelectPageProps) {
           <Image
             src="/brand/dwiggins-wordmark-full-black.svg"
             alt="Dwiggins"
-            className="pf-top__logo"
+            className="pf-top__logo mark--on-light"
+            width={812}
+            height={200}
+            priority
+          />
+          <Image
+            src="/brand/dwiggins-wordmark-full-ivory.svg"
+            alt="Dwiggins"
+            className="pf-top__logo mark--on-dark"
             width={812}
             height={200}
             priority

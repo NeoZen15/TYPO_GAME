@@ -2519,3 +2519,25 @@ Avant Garde Gothic Pro, Neue Frutiger World. La portée réelle du débutant est
 sur 1279 actives.
 
 Porte complète verte, 31 contrôles, code de sortie 0.
+
+### 2026-08-24, les quatre étapes exécutées, le document passe à 52 pages
+
+**Étape 1, page 10, La technique.** La courbe de l'oubli dessinée en vectoriel, cinq paliers, chacun redescendant moins vite que le précédent, avec les points de rappel en jaune de marque. Les intervalles écrits sous chaque palier viennent de `training-engine-spec-v2-clean.md` : 1 à 3 questions au niveau 0, 3 à 6 au niveau 1, 10 à 25 au niveau 2, 25 à 50 au niveau 3, 80 à 150 au niveau 4. Le piège signalé la veille a été évité : les chiffres en jours de `scoring-and-selection-math.md` décrivent un moteur non implémenté, ils n'apparaissent pas.
+
+**Étape 2, le chapitre Les composants, quatre pages.** Tout mesuré dans le navigateur avant d'être écrit.
+
+Trois constats que la mesure a produits et qui sont devenus les règles de la page. **Les deux boutons du hero partagent exactement le même gabarit**, 46,4 de haut, même rayon, même remplissage : ce ne sont pas deux boutons, c'est un bouton et son négatif. **Le rayon dit le rôle** : rayon plein pour les trois boutons d'action, rayon 16 pour le bouton de réponse. **Tout le bandeau de jeu prend la couleur du mode**, les compteurs comme le chrono comme le nom, donc le joueur sait où il est sans lire.
+
+Et deux familles de pastilles, pas une : celle du bandeau fait 27 de haut avec un fond à 8 pour cent, celle des cartes fait 23 avec un fond à 6 pour cent et garde une encre ivoire. La carte de mode ne porte sa couleur que sur le bord, à 37 pour cent, jamais en aplat, et empile quatre niveaux d'encre, 96, 62, 34, plus la pastille.
+
+**Étape 3, le chapitre Les éléments visuels, trois pages.**
+
+**Un constat qui a évité d'écrire du faux : le site n'a pas de champ de points.** Ce que je prenais pour tel est une grille de traits de 30 px à l'intérieur du seul `.lp-climb__panel`, masquée par un cercle. Le champ de points des pages de charte est un dispositif de la charte, pas du produit, et la page le dit.
+
+Les vraies lumières du produit sont deux halos, relevés dans la feuille de style : le jaune de marque à 6 pour cent en cercle au sommet de chaque page, éteint à 22 pour cent, et le halo de scène en ivoire à 7 pour cent dont le centre suit la souris. Dessinés en dégradés radiaux réels, pas en images.
+
+**La carte du regard, avec une vérification qui tombe juste.** Les huit lettres capturées sur le site. Le compte d'étoiles par lettre est 4, 6, 6, 4, 3, 3, 5, 4, soit **35 au total**, et le bandeau du profil affiche « 14/35 paliers ». La règle « une étoile est un palier » n'est donc pas une jolie phrase, elle se vérifie. Construction relevée dans le code : capitale Montserrat au corps 112 dans une zone de 160 x 140, rasterisée, puis semée par échantillonnage des points les plus éloignés.
+
+**Étape 4, renumérotation complète.** 52 pages, numérotation continue, plus aucune collision ni aucun trou. Sept intercalaires suivis, chacun avec sa liste de sections à sept entrées et sa liste de pages. L'intercalaire du logo est d'un autre modèle, il ne porte qu'une plage : passée à « 12 → 19 ». La couverture régénérée depuis le document lui même, sept sections avec leurs bornes et leurs listes.
+
+**Une section retirée des listes.** Les Annexes techniques n'ont plus ni chapitre ni intercalaire, Marion les ayant supprimés. La section ne figure plus dans les sommaires. À rouvrir si elle revient.

@@ -163,8 +163,17 @@ export default function LandingExperience() {
         <Link href="/" className="lp-header__brand" aria-label="Dwiggins — home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="lp-header__figures"
+            className="lp-header__figures mark--on-light"
             src="/brand/dwiggins-figures-dark.svg"
+            alt=""
+            aria-hidden="true"
+            width={673}
+            height={487}
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="lp-header__figures mark--on-dark"
+            src="/brand/dwiggins-figures-cream.svg"
             alt=""
             aria-hidden="true"
             width={673}
@@ -173,7 +182,15 @@ export default function LandingExperience() {
           <Image
             src="/brand/dwiggins-wordmark-full-black.svg"
             alt="Dwiggins"
-            className="lp-header__logo"
+            className="lp-header__logo mark--on-light"
+            width={812}
+            height={200}
+            priority
+          />
+          <Image
+            src="/brand/dwiggins-wordmark-full-ivory.svg"
+            alt="Dwiggins"
+            className="lp-header__logo mark--on-dark"
             width={812}
             height={200}
             priority
@@ -398,16 +415,29 @@ export default function LandingExperience() {
               <div className="lp-footer__mark">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  className="lp-footer__figures"
+                  className="lp-footer__figures mark--on-light"
                   src="/brand/dwiggins-figures-dark.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="lp-footer__figures mark--on-dark"
+                  src="/brand/dwiggins-figures-cream.svg"
                   alt=""
                   aria-hidden="true"
                 />
                 <Link href="/" className="lp-footer__wordmark-link" aria-label="Dwiggins — home">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    className="lp-footer__wordmark"
+                    className="lp-footer__wordmark mark--on-light"
                     src="/brand/dwiggins-wordmark-full-black.svg"
+                    alt="Dwiggins"
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="lp-footer__wordmark mark--on-dark"
+                    src="/brand/dwiggins-wordmark-full-ivory.svg"
                     alt="Dwiggins"
                   />
                 </Link>

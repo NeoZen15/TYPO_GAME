@@ -69,14 +69,14 @@ const PALETTES = [
   {
     name: "navigation bar, light",
     block: ":root",
-    ground: "#141019", // --nav-bg in light: the bar is a black object
-    tokens: ["--nav-ink", "--nav-ink-muted", "--nav-ink-strong"],
+    ground: "#141019", // --chrome-bg in light: the bar is a black object
+    tokens: ["--chrome-ink", "--chrome-ink-muted", "--chrome-ink-strong"],
   },
   {
     name: "navigation bar, dark",
     block: ':root[data-theme="dark"]',
     ground: "#f4f3ee",
-    tokens: ["--nav-ink", "--nav-ink-muted", "--nav-ink-strong"],
+    tokens: ["--chrome-ink", "--chrome-ink-muted", "--chrome-ink-strong"],
   },
 ];
 
