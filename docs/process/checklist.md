@@ -2640,11 +2640,53 @@ de leur famille de dessin. Adobe interdit tout téléchargement de fichier, donc
 mesure n'est possible. Le numéro est arbitraire pour elles, la famille non : une
 question sur Helvetica peut ainsi tirer Roboto comme leurre, ce qui est le bon leurre.
 
-**La 018 attend d'être lancée**, le JSON est déjà en miroir :
+**La 018 est appliquée en production**, le même jour. Relevé : 12 clusters actifs
+deviennent 42, le plus gros passe de 466 à 185, plus aucune ligne active sur l'ancien
+nommage. Base et JSON confrontés ligne à ligne, zéro écart sur 2136 lignes.
 
-```
-! node scripts/apply_018_visual_clusters.mjs --dry-run
-! node scripts/apply_018_visual_clusters.mjs
-```
+**L'effet mesuré sur le leurre.** Helvetica LT Pro partage désormais son cluster avec
+Roboto, Arimo et Carlito : une question sur Helvetica peut tirer un clone d'Arial comme
+mauvaise réponse, ce qui est exactement le leurre qu'un joueur doit apprendre à écarter.
+Le mélange Adobe et Google dans le même cluster fonctionne. EB Garamond a 32 voisins,
+Bodoni Moda 49, Futura PT 70.
+
+**Un cas à surveiller.** Anton n'a qu'un seul voisin, parce que la catégorie `display` ne
+compte que trois polices mesurées. Le bonus de difficulté ne se déclenchera presque
+jamais pour elle. C'est un symptôme du constat déjà noté ailleurs : `primary_category`
+ne reconnaît que trois `display` dans tout le catalogue, ce qui est faux et reste à
+corriger.
 
 Porte complète verte, code de sortie 0.
+
+### 2026-08-24, contrôle de cohérence des 52 pages, neuf dérives corrigées
+
+Le document ayant été fabriqué vite sur des chapitres qui n'ont pas la même convention, un contrôle mécanique a été passé sur les 52 pages : position et encre du folio, présence du fil d'Ariane, position de la signature, gabarit de la colonne de gauche, calques interdits, et texte débordant du cadre. Neuf constats, tous corrigés, contre-vérification en sortie vide.
+
+**Six folios du chapitre couleur étaient restés en haut**, pages 21 à 26, alors que l'intercalaire 20 et les pages 27 et 28 du même chapitre les posent en bas. Ce n'était donc pas une convention de chapitre mais une dérive interne, et 46 pages sur 52 les posent en bas à droite. Descendus à y 998, calés pour finir à 1824.
+
+**Un piège évité, et c'est le constat le plus utile de cette passe.** La page 33 portait encore un calque nommé `fiche`, que la consigne bannit. Mais son contenu était « TITRE COURT · INTER BLACK · 112 PX · INTERLIGNAGE 81 % · LIGNE 90,7 PX », c'est à dire une **spécification typographique**, pas une méta de capture. Ce que Marion a banni, ce sont les conditions de prise de vue, les noms de classes et les facteurs d'agrandissement, pas les valeurs qui font la règle. Le calque a été **renommé `specs`, son contenu conservé**. Supprimer sur la foi d'un nom de calque aurait détruit du vrai contenu.
+
+**Deux corrections de géométrie.** La plage de pages de l'intercalaire du logo débordait à 2072, conséquence d'un redimensionnement que j'avais fait sans changer l'alignement : passée en calage à droite, fin à 1824. Et dix blocs de la colonne de gauche de la page 34 étaient à x 93 au lieu de 96.
+
+**Ce qui reste au document**, inchangé depuis hier : la page 18, le badge, cadre vide que Marion veut traiter lui même, et le chapitre de discours, qui demande ses décisions sur le ton de la marque.
+
+### 2026-08-24, le chapitre Le discours, quatre adjectifs
+
+**Fait.** Cinq pages, un intercalaire et quatre adjectifs, sur le modèle des pages de ton de voix de Tercio : un panneau à trois bandes numérotées par une puce en monospace, ce que le lecteur doit ressentir en deux citations, ce que l'adjectif ne veut pas dire en une énumération de contraires, et six conseils d'écriture. Puis l'adjectif seul en 44 px en bas à gauche, avec son paragraphe à droite.
+
+**Les adjectifs n'ont pas été inventés, ils ont été déduits de la copie existante.** Marion n'en avait pas donné, et les demander à froid n'aurait produit que des mots creux.
+
+**Calme**, parce que `content/copy.ts` dit déjà « There is no score to beat and no clock to race » et que la vision impose des formulations qualitatives et une célébration rare.
+**Direct**, parce que le message d'erreur du produit est « This screen stopped working. Try again. » : pas d'excuse, pas de jargon, une instruction.
+**Précis**, parce que le moteur mesure en questions et en paliers, et qu'un discours approximatif trahirait cette exigence.
+**Pince-sans-rire**, parce que Marion a demandé des phrases un peu drôles et que celles qu'il a validées le sont par exactitude, « le nom d'un typographe mort en 1956 ? », jamais par connivence.
+
+Chaque page porte donc sa preuve dans son paragraphe. Les mots restent à trancher par Marion, la structure tiendra quels qu'ils soient.
+
+**Placé après l'introduction, avant le logo**, comme dans les trois brandbooks de référence où la culture ouvre le document. Posé sur la rangée de l'introduction, donc aucun cadre n'a eu à bouger.
+
+**Trois pages supprimées par Marion pendant cette session.** Le chapitre Les éléments visuels, les halos et la carte du regard avec son intercalaire, a disparu du fichier. Sa décision, non reconstruite, et la section retirée des sommaires.
+
+**Renumérotation et resynchronisation.** 54 pages, sept sections, numérotation continue. Les sept intercalaires reconstruits depuis le document lui même, y compris leur liste de sections passée de six à sept entrées. La couverture régénérée, avec une septième ligne clonée au bon pas de 91 px.
+
+**Ce qui reste, une seule chose.** La page du badge, cadre vide que Marion veut traiter lui même.
