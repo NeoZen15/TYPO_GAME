@@ -2898,3 +2898,104 @@ Porte complète verte, 34 contrôles, code de sortie 0.
 **Et une simplification qui vient de là.** Le texte est écrit dans l'encre dont il parle, donc nommer l'encre était redondant : la mention « sur encre noire » a été retirée, « Contraste 8,1 : 1 » suffit. La page 31 garde sa propre structure, la ligne s'ajoute à son bloc de valeurs.
 
 **Question ouverte, à trancher par Marion.** Elevo et Tercio portent aussi le CMJN et le Pantone sur chaque fiche. Si DWIGGINS ne s'imprime jamais, il faut l'écrire, sinon l'absence se lira comme un oubli.
+
+### 2026-08-24, hors produit, une affiche A4 d'après une ref de 1982
+
+**En cours, trois directions à départager par Marion.** Fichiers dans `~/Desktop/AFFICHE_DWIGGINS`, générés par `generer.mjs`, trois SVG A4 vertical (794 x 1123 px, soit 210 x 297 mm à 96 dpi) plus une planche de comparaison `planche.html`.
+
+**La ref.** Couverture de *Graphics Cookbook for the Apple*, Nat Wadsworth, Hayden, 1982. Cinq traits repris : sol noir plein bord, titre débordant sur deux corps, panneau cerné d'un filet, galon de quilt en bandes concentriques, grille 2 x 2 séparée par une croix, signature en capitales au pied. Le rapprochement qui justifie la ref : Dwiggins fabriquait de l'ornement modulaire au pochoir, l'Apple II refait la même chose par contrainte de grille.
+
+**La tension résolue.** La ref est polychrome saturée, la charte est bichrome et interdit le jaune en aplat (fiche 110). Les trois directions diffèrent uniquement sur qui porte la couleur : **A** remplace la couleur par la densité dans le galon, **B** garde le galon bichrome et enferme les quatre couleurs de carte dans les cases, **C** ouvre un champ clair `#8ea2ff` avec galon polychrome. Aucune des trois n'invente de couleur : toutes les valeurs employées sont déjà déclarées dans `globals.css`.
+
+**Le contenu des quatre cases.** Quatre classes Vox, quatre lettres diagnostiques, quatre polices réellement installées sur la machine : `a` Futura (linéale), `g` Didot (didone), `R` Rockwell (mécane), `Q` Baskerville (réale). Chaque case porte son libellé au pas 4, comme la fiche 118 l'exige d'un spécimen.
+
+**Décision technique, le SVG plutôt qu'un canvas web.** L'export PNG d'une page web ne sait pas embarquer les webfonts : les quatre spécimens seraient tous retombés sur la même police de secours. En SVG posé sur des polices système, le texte reste éditable dans Illustrator et l'export est fidèle sur cette machine. Contrepartie : un poste sans Didot ni Rockwell verra autre chose.
+
+**Le seul écart de charte, à assumer ou à corriger.** Le titre est composé à 190 et 195 px, très au-dessus du pas 1 (84 px). L'échelle de la fiche 118 est écrite pour une page écran de 1920, pas pour une affiche lue de loin. Tout le reste de l'affiche tient dans les quatre pas.
+
+**Reste à trancher par Marion.** La direction, le texte du titre (« Jeux de Typo » et « POUR L'ŒIL » sont des propositions), et si le titre a droit à son écart d'échelle.
+
+### 2026-08-24, l'affiche repose sur un module unique, dans Figma
+
+**Fait pour la direction B.** Page 2 du fichier de charte Figma (`3kfcrtrbWHYs4Evsfi26mq`), cadre `AFFICHE A4 · B · Polychromie contenue`, 794 x 1123 px.
+
+**Le défaut que Marion a vu, et il était réel.** La première version SVG faisait ses galons avec trois `<pattern>` de modules différents : 12 px, 6 px et 7 px. Trois tailles de carré, dont deux premières entre elles, donc jamais alignées. Le `<pattern>` remplissait tout seul et masquait le problème ; posé en carrés réels, il saute aux yeux. Le panneau ne tombait pas rond non plus : 702 divisé par 12 donne 58,5.
+
+**La règle appliquée, qui est la même que celle de la fiche 118.** Ce n'est pas le motif qui s'adapte au format, c'est le format qui se plie au module. Module unique de **12 px**. Panneau **57 x 51 modules**, soit 684 x 612 px. Galon de 5 modules par côté. Champ de 47 x 41 modules, croix d'un module, donc deux colonnes de 23 et deux rangées de 20 exactement. Aucun carré coupé, aucun orphelin dans les coins.
+
+**1 174 carrés de 12 x 12, posés un par un**, groupés par rôle : anneau 0 plein (212), anneau 2 damier (98), anneau 3 damier en phase opposée (94), anneau 4 filet intérieur (180), croix (87), et les quatre spécimens (136, 122, 112, 133).
+
+**Les lettres sont de vraies polices, converties en carrés.** Rasterisées dans Chromium via le Playwright du projet, à partir des fichiers système `/System/Library/Fonts/Supplemental`. Didot et Baskerville ont d'abord cassé : leurs déliés disparaissent sous le seuil de couverture. Corrigé en passant en graisses Bold et en abaissant le seuil à 0,32 et 0,34. Les quatre poids finaux sont équilibrés, entre 112 et 136 carrés allumés.
+
+**Contrainte découverte, à noter.** Figma n'expose ici que le catalogue Google Fonts, 1938 familles, et aucune police système. Sans conséquence pour les spécimens puisqu'ils sont devenus des carrés, mais le titre est en **Titan One** et les libellés en **Jost**, qui est un revival de Futura.
+
+**Le titre est étiré bord à bord par calcul d'approche.** Figma compte l'approche après la dernière lettre : il faut diviser l'écart par `n-1` et non par `n`, sinon la ligne déborde. Première tentative à 709 px pour 702 visés.
+
+**Reste à faire.** Les directions A et C, qui ne sont qu'une reteinte du même cadre. Et régénérer les SVG du Bureau, qui portent encore l'ancienne géométrie et sont donc périmés.
+
+### 2026-08-24, étape 6 des six manques, puis la renumérotation complète
+
+**L'étape 6 est faite, la feuille de route `docs/process/charte-six-manques.md` est terminée.** Deux pages « Un exemple en usage », une en fin de La couleur (38), une en fin de La typographie (47). Le chapitre Les composants a glissé de 2080 vers la droite pour faire place à celle de la typo.
+
+**Le parti pris, et pourquoi il n'est pas celui des pages voisines.** Ces deux pages sont sur fond ivoire alors que toutes les pages qui portent une capture sont sur fond noir. Une capture d'écran sombre posée sur un fond noir avec le champ de points ne se détache pas : ses bords disparaissent. Sur l'ivoire, le panneau lit comme un morceau de réalité, et il déborde du bord droit, coupé net à 2050 pour 1920 de page, comme Tercio le fait à la fin de ses chapitres. Les deux chapitres ont déjà des pages ivoire (35 à 37 pour la couleur, 41 pour la typo), donc le sol n'est pas nouveau.
+
+**Aucune cote sur ces deux pages.** Elles montrent, elles ne spécifient pas. Seule la colonne de gauche parle, en trois blocs, et la ligne de règle en pied.
+
+**Page 38, la couleur.** Un seul instant de jeu, capturé en 1680 x 720 dans le navigateur puis posé à l'échelle 1. On y voit travailler en même temps : le noir de fond, l'ivoire du mot montré, le vert d'eau du mode Entraînement dans les compteurs, les quatre couleurs de carte sur les quatre réponses, et le rouge sur les deux réponses fausses ainsi que sur la ligne qui le dit. Huit des treize couleurs de la table, dans un seul écran réel.
+
+**Constat produit relevé au passage, écrit sur la page.** Le vert de réponse juste ne s'affiche jamais en entraînement. `TRAINING_CORRECT_DELAY_MS` vaut 0 dans `lib/game/training/catalog.ts`, et la classe `is-correct` n'existe que pendant `result === "correct"` : une bonne réponse enchaîne sans temps d'arrêt, il n'y a pas d'écran à montrer. La table nomme pourtant le vert « Réponse juste ». À trancher : soit le délai remonte à quelques dixièmes, soit la table dit autre chose.
+
+**Page 47, la typographie.** Une bande de la carte du regard, même méthode, même taille. Les deux familles y font leur travail dans le même écran : l'Inter porte ce qui se lit, le titre du palier et la ligne qui l'explique ; le Geist Mono porte ce qui se mesure, le niveau, les étiquettes, les compteurs de paliers et de points. C'est exactement la règle déjà écrite en page 55, « Geist Mono, capitales, ce sont des mesures, jamais de l'Inter », montrée cette fois sans annotation.
+
+**Deux captures d'écran mal faites, corrigées avant de poser.** La notice de cookie couvrait le bas de l'image : elle se ferme en écrivant `jdt-storage-notice-v1` à `1` dans le localStorage avant chargement. L'indicateur de développement de Next se masque par `nextjs-portal{display:none}`. Et pour que le rouge de la réponse fausse apparaisse, il faut sortir la souris du bouton avant la capture : `.game-v2-option:hover:not(:disabled)` a une spécificité de (0,3,0) et écrase `.is-wrong` à (0,2,0), donc le curseur posé sur la réponse mange la bordure rouge.
+
+**Renumérotation complète, une seule fois, à la fin.** 60 pages. Les cadres et les folios sont renumérotés par ordre de lecture, rangée par rangée puis de gauche à droite. Les folios sont recalés à droite sur 1824 après changement de texte, parce que leur largeur change avec le nombre de chiffres.
+
+**Les sept intercalaires sont reconstruits, pas retouchés.** Chaque liste de pages est effacée puis redessinée depuis les noms de cadres, donc elle ne peut plus mentir. Filets tous les 46 px à partir de 278, numéro en Inter Medium 12 à 14 pour cent, titre en Inter Semi Bold 26 à moins 2 pour cent. Introduction 9 pages, Le discours 7, Le logo 8, La couleur 9, La typographie 8, Les composants 3, Les écrans 8.
+
+**La couverture est reconstruite en flux, et c'est ce qui la sauve.** Les rangées étaient à pas fixe de 91 px, et la liste de La couleur passait déjà à deux lignes : elle touchait le filet suivant. Chaque rangée calcule maintenant la position de la suivante à partir de la hauteur réelle de sa liste, plus 17 px. Le dernier filet tombe à 943, sous la limite de 960.
+
+**Contrôle de cohérence sur les 60 pages, 14 alertes, 12 laissées à Marion.** Vérifié pour chaque page : présence, hauteur et alignement du folio, contraste du folio contre son fond, présence et position du fil d'Ariane, présence et position de la signature en pied, et débordement de tout calque hors du cadre. Aucun débordement, aucun folio invisible. Deux fils d'Ariane hors gabarit ont été recalés, page 20 qui était à y 96 et page 41 à y 92, tous deux ramenés à 100.
+
+**Les 12 alertes non corrigées, volontairement.** Douze pages n'ont pas la signature en pied : 21 à 26 dans Le logo, 30 à 35 dans La couleur. Sur toutes, le visuel occupe la zone de pied. Ajouter le mot-marque à 96, 998 le poserait sur du contenu que Marion a composé. C'est une décision de mise en page, donc elle lui revient : soit ces douze pages assument de ne pas signer, soit leur contenu remonte pour libérer le pied.
+
+**Un point de DA à trancher, découvert en cherchant l'écran de la couleur.** Sur `/play/competition`, les quatre boutons de réponse sont posés en clair, texte gris pâle sur fond gris clair, à la limite de la lisibilité. Ce n'est pas le cas en entraînement. C'est pour cette raison que l'exemple en usage prend l'écran d'entraînement.
+
+### 2026-08-24, l'affiche Vox refaite dans Figma, d'après la référence de Marion
+
+**Page 2 du fichier de charte `3kfcrtrbWHYs4Evsfi26mq` était vide.** L'affiche décrite
+dans la note du matin n'y était plus, le nœud n'existait plus non plus. Reconstruite
+d'après l'image de référence, cadre `AFFICHE A4 · Classification Vox`, 794 × 1123.
+
+**Le module commande le format, pas l'inverse.** Module unique de 12 px. Panneau 59 × 53
+modules, galon de 5 modules, champ de 49 × 43 modules, croix d'un module : deux colonnes
+de 24 et deux rangées de 21 exactement, aucun carré coupé. 510 carrés posés un par un.
+
+**Un défaut trouvé et corrigé en route.** Premier galon : je changeais la phase du damier
+à chaque anneau. Sur les côtés verticaux, deux anneaux voisins tombaient alors sur la
+même parité et le damier se lisait comme des rayures. Une seule parité pour toute la
+bande, la teinte seule variant par anneau, et le damier tient dans les deux sens.
+
+**Couleurs prises dans la charte, pas à l'œil.** Les nuanciers du document portent la
+couleur dans un vecteur enfant : Orange `#FF934A`, Menthe `#67D6B6`, Bleu ciel `#58A9FF`,
+Bleu pervenche `#8EA2FF`, Ivoire `#E1E1D7`.
+
+**UNE RÉSERVE À CONNAÎTRE, ET ELLE EST GÊNANTE SUR UNE AFFICHE DE TYPOGRAPHIE.** Figma
+n'expose ici que le catalogue Google, 1938 familles, aucune police système. Futura,
+Didot, Rockwell et Baskerville n'y sont pas. Les quatre spécimens sont donc dessinés avec
+des substituts, alors que les libellés nomment les originales :
+
+| Le libellé dit | Ce qui est réellement dessiné | Pourquoi ce choix |
+|---|---|---|
+| FUTURA | Poppins Medium | même `a` d'un seul étage, cercle et hampe |
+| DIDOT | Playfair Display | didone à `g` binoculaire et déliés fins |
+| ROCKWELL | Rokkitt Bold | Rokkitt est un revival de Rockwell |
+| BASKERVILLE | Libre Baskerville | la vraie, présente au catalogue Google |
+
+Seul le dernier est exact. **À trancher par le propriétaire** : soit les libellés disent
+la police réellement montrée, soit les lettres sont rasterisées depuis les fichiers
+système comme la version précédente le faisait, soit l'affiche assume le substitut.
+
+**Deux éléments ont disparu du fichier entre deux étapes**, la pastille en flèche et le
+calage à gauche du titre, sans qu'aucune autre session Claude ne soit active. Reposés.
+Si ça se reproduit, c'est une annulation faite à la main pendant que le script écrit.
