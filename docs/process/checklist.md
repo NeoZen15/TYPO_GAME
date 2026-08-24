@@ -2570,3 +2570,81 @@ Les vraies lumières du produit sont deux halos, relevés dans la feuille de sty
 **Étape 4, renumérotation complète.** 52 pages, numérotation continue, plus aucune collision ni aucun trou. Sept intercalaires suivis, chacun avec sa liste de sections à sept entrées et sa liste de pages. L'intercalaire du logo est d'un autre modèle, il ne porte qu'une plage : passée à « 12 → 19 ». La couverture régénérée depuis le document lui même, sept sections avec leurs bornes et leurs listes.
 
 **Une section retirée des listes.** Les Annexes techniques n'ont plus ni chapitre ni intercalaire, Marion les ayant supprimés. La section ne figure plus dans les sommaires. À rouvrir si elle revient.
+
+### 2026-08-24, la tâche de 10 h s'est déclenchée sur du travail déjà fait
+
+Marion ayant dit « on y va » avant l'heure, les quatre étapes avaient déjà été exécutées à la main. La tâche programmée a donc trouvé le document terminé.
+
+**Vérification faite avant de ne rien toucher**, et c'est la seule chose utile que ce déclenchement ait produite : 52 cadres, numérotation de 1 à 52 sans aucune collision ni aucun trou, la page 10 « La technique » présente, le chapitre Les composants complet en 37 à 40, le chapitre Les éléments visuels complet en 50 à 52, aucun cadre resté sans nom, aucun doublon hors rangée.
+
+Aucune page créée, aucune page modifiée. Le réflexe à garder : quand une tâche programmée se déclenche, **vérifier l'état avant d'exécuter le brief**, sinon on duplique.
+
+### 2026-08-24, les clusters visuels mesurés dans les fichiers de police, migration 018
+
+Le cluster décide des mauvaises réponses : une police du même cluster vaut un malus de
+175 à 350 points dans le tri des leurres. Trois clusters portaient 85 pour cent du
+catalogue actif, donc ce malus ne discriminait plus rien.
+
+**La géométrie est maintenant mesurée, pas inférée.** `scripts/measure_typeface_geometry.py`
+ouvre les 1172 fichiers woff2 avec fontTools et relève sept grandeurs normalisées par
+l'em : rapport hauteur d'x sur hauteur de capitale, chasse, graisse, contraste, rondeur,
+débord. Le contraste demande un vrai calcul, un balayage du contour aplati du o pour
+comparer l'épaisseur du fût vertical à celle de la barre horizontale.
+
+**1136 polices mesurées, et les 35 échecs sont exactement les 35 déjà écartées par le
+filtre latin.** Aucune police jouable n'échappe à la mesure. Vérifié sur des témoins :
+Bodoni Moda sort à 5,32 de contraste et Playfair à 4,85, contre 1,13 pour Inter et 1,07
+pour Courier Prime. Anton mesure 0,82 de graisse contre 0,37 pour un serif de labeur.
+
+**Deux corrections en cours de route.** La pente mesurée par StatisticsPen sortait à
+moins trois degrés sur toutes les polices, romaines comprises : c'est l'arche du n qui
+penche, pas un italique, et le catalogue ne contient d'ailleurs aucun fichier italique.
+Grandeur retirée plutôt que gardée à mesurer du bruit. Et 90 polices échouaient sur mon
+aplatissement des courbes : je ne traitais ni les chaînes de plusieurs points de
+contrôle TrueType, qu'il faut décomposer aux milieux, ni les contours entièrement hors
+courbe, dont le point de départ est implicite.
+
+**LE RÉSULTAT QUI A CHANGÉ LE PLAN.** Le but était de remplacer la classification
+héritée. Trois méthodes essayées et mesurées contre treize paires de référence, six qui
+doivent se rejoindre et sept qui doivent rester séparées :
+
+| méthode | score |
+|---|---|
+| tranches à seuils fixes | aucune ne casse le gros paquet |
+| tranches par quantiles | 9 sur 13, et Arimo séparé de Roboto |
+| k moyennes sur la mesure seule | 10 sur 13, mais un cluster de 210 |
+| **la classification héritée** | **10 sur 13** |
+
+La classification héritée fait aussi bien que tout ce que la mesure seule produit. Ce
+n'est pas un hasard : `sub_category` encode l'histoire du dessin, et l'histoire prédit
+la confusion mieux que les proportions. Lato et Open Sans se ressemblent par leurs
+terminaisons, pas par leur chasse. **Elle n'est donc pas remplacée, elle est
+subdivisée** : la sous-catégorie reste la clé, la mesure ne sert qu'à découper les
+paquets trop gros.
+
+**Ce que la 018 change, mesuré.** 12 clusters actifs deviennent 42, le plus gros passe
+de 466 à 185, les trois plus gros couvrent 29 pour cent du catalogue au lieu de 85. Et
+les deux rapprochements faux de la classification héritée disparaissent : Playfair avec
+Abril Fatface, et Bodoni avec Abril Fatface, qui n'ont en commun que d'être des serifs
+de titrage.
+
+**Ce qui reste irréductible, et il faut le dire.** Le paquet `sans_serif/humanist`
+compte 358 polices et garde un noyau de 175 quel que soit le nombre de centres demandé,
+mesuré de k égal 4 à k égal 30. Ces 175 linéales humanistes sont géométriquement
+interchangeables sur les cinq grandeurs. Les séparer demande de reconnaître la forme des
+terminaisons et l'ouverture du e, ce qui est une reconnaissance de forme et non une
+mesure. C'est un autre chantier, et il n'est pas ouvert.
+
+**Les 143 lignes non mesurées, dont les 108 Adobe**, rejoignent le premier sous-cluster
+de leur famille de dessin. Adobe interdit tout téléchargement de fichier, donc aucune
+mesure n'est possible. Le numéro est arbitraire pour elles, la famille non : une
+question sur Helvetica peut ainsi tirer Roboto comme leurre, ce qui est le bon leurre.
+
+**La 018 attend d'être lancée**, le JSON est déjà en miroir :
+
+```
+! node scripts/apply_018_visual_clusters.mjs --dry-run
+! node scripts/apply_018_visual_clusters.mjs
+```
+
+Porte complète verte, code de sortie 0.
