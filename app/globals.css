@@ -8876,6 +8876,21 @@ svg {
 
 .lp-mode-card {
   --mode-accent: var(--mode-training);
+  /* La carte est un objet SOMBRE sur les deux fonds (choix du propriétaire,
+     2026-08-24). En sombre elle l'était déjà, à 5 pour cent d'encre sur le
+     noir ; en clair elle était un lavis presque invisible sur le beige.
+
+     Ses encres sont redéfinies ICI plutôt que sur chaque enfant : les
+     propriétés personnalisées s'héritent, donc le titre, la description, la
+     mention et la pastille suivent sans qu'aucune règle enfant ne bouge.
+     `--line` suit aussi, sinon les `color-mix` de contour mélangeraient une
+     encre foncée invisible sur ce fond. Mesuré sur #141019 : 0.96 donne 15,6,
+     0.80 donne 11,0, 0.68 donne 8,2. Les trois passent le seuil. */
+  --card-surface: #141019;
+  --ink-strong: rgba(244, 243, 238, 0.96);
+  --ink-muted: rgba(244, 243, 238, 0.8);
+  --ink-soft: rgba(244, 243, 238, 0.68);
+  --line: rgba(244, 243, 238, 0.14);
   position: relative;
   overflow: hidden;
   display: grid;
@@ -8886,8 +8901,8 @@ svg {
   border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) 7%, transparent) 0%, transparent 55%),
-    color-mix(in srgb, var(--foreground) 5%, var(--background));
+    linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) 14%, transparent) 0%, transparent 55%),
+    var(--card-surface);
   box-shadow: var(--shadow-card);
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
   will-change: transform;
@@ -9727,6 +9742,10 @@ svg {
 .pb-lede {
   margin: 0;
   max-width: 46ch;
+  /* Mesuré le 2026-08-24 : la dernière ligne tombait à un seul mot
+     (« stakes. » et « it. »). `pretty` répartit la fin du paragraphe sans
+     toucher à la taille ni à la largeur. */
+  text-wrap: pretty;
   font-size: 0.86rem;
   line-height: 1.5;
   color: rgb(from var(--pf-cream) r g b / 0.6);
@@ -10013,6 +10032,10 @@ svg {
 .pm-note {
   margin: 1.4rem 0 0;
   max-width: 34ch;
+  /* Mesuré le 2026-08-24 : la dernière ligne tombait à un seul mot
+     (« stakes. » et « it. »). `pretty` répartit la fin du paragraphe sans
+     toucher à la taille ni à la largeur. */
+  text-wrap: pretty;
   font-family: var(--lp-mono);
   font-size: 0.66rem;
   line-height: 1.55;

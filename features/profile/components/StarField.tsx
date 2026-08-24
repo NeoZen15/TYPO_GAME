@@ -87,8 +87,15 @@ export default function StarField({ density = 0.0003 }: { density?: number }) {
       }));
     };
 
+    // Le champ de points n'existe QUE sur le fond noir (choix du propriétaire,
+    // 2026-08-24). Sur le beige il faisait de la poussière sur une page de
+    // papier. On sort avant la boucle plutôt que de masquer en CSS, sinon une
+    // animation invisible continuerait de tourner à chaque image.
+    const isLight = () => document.documentElement.dataset.theme !== "dark";
+
     const paint = (animate: boolean) => {
       ctx.clearRect(0, 0, w, h); // no trails — keeps the text readable
+      if (isLight()) return;
       for (const s of stars) {
         if (animate) s.phase += s.speed;
         const dx = animate ? Math.sin(s.phase) * s.drift : 0;
@@ -102,11 +109,14 @@ export default function StarField({ density = 0.0003 }: { density?: number }) {
 
     const loop = () => {
       paint(true);
-      raf = requestAnimationFrame(loop);
+      // En clair il n'y a rien à animer : la boucle s'arrête au lieu de peindre
+      // un canvas vide soixante fois par seconde. Le passage au sombre la
+      // relance, plus bas.
+      raf = isLight() ? 0 : requestAnimationFrame(loop);
     };
 
     build();
-    if (reduce) paint(false);
+    if (reduce || isLight()) paint(false);
     else raf = requestAnimationFrame(loop);
 
     const ro = new ResizeObserver(() => build());
@@ -116,7 +126,12 @@ export default function StarField({ density = 0.0003 }: { density?: number }) {
     // new sprite up on its next frame; when reduced-motion (no loop), repaint now.
     const themeObserver = new MutationObserver(() => {
       buildSprite();
-      if (reduce) paint(false);
+      if (reduce || isLight()) {
+        paint(false); // en clair : efface le canvas et n'y revient pas
+        return;
+      }
+      // Retour au sombre : la boucle a pu s'arrêter, on la relance.
+      if (!raf) raf = requestAnimationFrame(loop);
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,
