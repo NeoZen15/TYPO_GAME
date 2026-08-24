@@ -184,6 +184,26 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-24 (suite 4) — le thème clair passe en réserve, il n'est pas proposé au lancement
+
+**Statut : fait, porte verte à 34 étapes, code de sortie 0.** Décision de Marion après discussion : pas de blanc à la sortie, peut-être plus tard. Il est donc **mis en réserve et non supprimé**, derrière un seul drapeau, `LIGHT_THEME_ENABLED` dans `lib/theme-availability.ts`. Le fichier porte le raisonnement pour que le rallumage ne reparte pas de zéro.
+
+**Ce qui a pesé dans la décision, et qui vaut d'être gardé.** Le sombre était déjà le thème servi par défaut, donc le clair n'avait de public que les joueurs qui cliquaient. Et surtout : **le mot du jeu change d'apparence selon le fond**, alors que c'est lui la question posée. `.game-v2-word` est `#2a1a20` en clair et `rgba(244, 243, 238, 0.92)` en sombre. Un texte clair sur fond sombre gagne du poids apparent à l'œil, et le navigateur y applique en plus un gamma différent. Tant que l'écran de jeu n'impose pas son propre fond, deux joueurs sur deux thèmes ne comparent pas la même chose, ce qui contredit la règle « le mot affiché est la question ». **C'est le point à trancher avant de rallumer**, pas le calibrage, qui lui est fait.
+
+**Trois portes fermées, et il fallait les trois.**
+
+Le script d'amorçage de `app/layout.tsx` interpole le drapeau, donc un `"light"` laissé dans le `localStorage` par une visite précédente **n'est plus honoré**. Sans ça la bascule disparaissait mais un visiteur de retour atterrissait encore en clair.
+
+`ThemeSwitch` ne se rend plus. Le garde est porté par une **enveloppe sans hook** et non par le contrôle lui même, pour deux raisons : un retour anticipé placé avant `useSyncExternalStore` enfreint la règle des hooks (eslint l'a refusé), et ainsi le store ne s'abonne même pas quand la bascule n'est pas proposée. Une enveloppe couvre les **treize points de montage** (les trois barres, le pied, l'écran de jeu, l'onboarding, les préférences, les écrans d'erreur), donc rien n'a été retiré ailleurs et rien n'aura à être remis.
+
+La ligne « Theme » des préférences du profil disparaît avec la bascule, sinon il resterait un libellé sans rien à régler à côté.
+
+**Ce qui n'est PAS défait :** la palette claire recalibrée le 2026-08-23 et `check:contrast` qui la garde. Le garde continue de tourner, pour que le travail soit encore valide le jour où on rallume.
+
+**Vérifié au navigateur, deux profils de visiteur.** Visiteur neuf : thème `dark`, zéro bascule. Visiteur portant `jdt-theme = "light"` dans son stockage : sur les six pages testées, thème `dark`, `colorScheme` `dark`, zéro bascule, et la valeur reste dans le stockage sans être honorée (donc rien n'est effacé chez le joueur, la préférence redeviendra vivante au rallumage).
+
+---
+
 ## Note — 2026-08-24 (suite 3) — cartes de mode en noir, points retirés du clair, deux orphelines
 
 **Statut : fait, porte verte à 34 étapes, code de sortie 0.** Trois demandes de Marion sur captures, plus deux défauts trouvés en mesurant la page.
