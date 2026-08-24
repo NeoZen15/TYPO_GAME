@@ -2,14 +2,12 @@
 
 ## REPRISE — à lire en premier, réécrite le 2026-08-24
 
-**Six choses à faire toi même. Rien d'autre ne les débloquera.**
+**Cinq choses à faire toi même. Rien d'autre ne les débloquera.**
 
-1. **Lancer la migration 013**, prête et vérifiée, bloquée par les permissions de
-   l'agent. Deux commandes, dans cet ordre, la seconde n'est pas facultative :
-   `! node scripts/apply_013_rarity.mjs` puis
-   `! ./.venv/bin/python scripts/sync_catalog_rarity_json.py`.
-   Sans la seconde, le prochain réimport du catalogue annulerait la première en
-   silence. `--dry-run` montre l'effet sans écrire, `--rollback` revient en arrière.
+1. ~~Lancer la migration 013~~ **fait le 2026-08-24**, ainsi que la 017 qui la
+   complète. Le catalogue sert 1279 polices, la portée du débutant est de 259, et le
+   premier pool d'un joueur contient Helvetica, Futura, Gill Sans, Franklin Gothic et
+   Avant Garde. Base et JSON confrontés ligne à ligne, zéro écart.
 2. **Faire tourner le mot de passe Neon.** Il est réapparu en clair dans une
    conversation le 2026-08-23, après une première fois le 2026-08-15. Console Neon,
    puis la nouvelle valeur dans `.env.local`, qui n'est pas suivi par git.
@@ -2460,15 +2458,16 @@ Le test ne porte que sur les lignes actives, sinon il resterait rouge après la
 réparation, ce qui apprend à l'ignorer. Vérifié dans les deux sens : rouge avant, vert
 après.
 
-**La 017 est écrite, le JSON est déjà en miroir, elle attend d'être lancée :**
+**La 017 est appliquée en production**, le même jour. Relevé : 274 communes, 1285 peu
+communes, 577 rares, 1279 polices actives, Adobe Blank éteinte, portée du débutant de
+341 à 259. Les 108 lignes Adobe intactes.
 
-```
-! node scripts/apply_017_tail_rarity.mjs --dry-run
-! node scripts/apply_017_tail_rarity.mjs
-```
+**Base et JSON confrontés ligne à ligne : zéro écart sur 2136 lignes.** Un réimport du
+catalogue ne déferait donc ni la 013 ni la 017.
 
-Pas de seconde commande cette fois, `scripts/build_017_tail_rarity.py` a mis le JSON à
-jour dans le même commit. Le garde en transaction attend 274 / 1285 / 577, une portée à
-259, Adobe Blank éteinte et les 108 Adobe intactes.
+**Le premier pool final**, tous filtres appliqués, 10 Adobe sur 30 : Arial, Comic Sans
+MS, Eurostile, Franklin Gothic, Futura PT, Gill Sans Nova, Helvetica LT Pro, Impact, ITC
+Avant Garde Gothic Pro, Neue Frutiger World. La portée réelle du débutant est **259**
+sur 1279 actives.
 
 Porte complète verte, 31 contrôles, code de sortie 0.
