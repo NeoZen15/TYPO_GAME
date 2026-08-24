@@ -1,0 +1,1120 @@
+{
+ "meta": {
+  "seuil": 0.01,
+  "jouables": 1117,
+  "paires": 12416,
+  "familles": 53
+ },
+ "familles": [
+  {
+   "membres": [
+    "notokufiarabic",
+    "notomusic",
+    "notosans",
+    "notosansadlam",
+    "notosansadlamunjoined",
+    "notosansanatolianhieroglyphs",
+    "notosansarabic",
+    "notosansarmenian",
+    "notosansavestan",
+    "notosansbalinese",
+    "notosansbamum",
+    "notosansbassavah",
+    "notosansbatak",
+    "notosansbengali",
+    "notosansbhaiksuki",
+    "notosansbrahmi",
+    "notosansbuginese",
+    "notosansbuhid",
+    "notosanscanadianaboriginal",
+    "notosanscarian",
+    "notosanscaucasianalbanian",
+    "notosanschakma",
+    "notosanscham",
+    "notosanscherokee",
+    "notosanschorasmian",
+    "notosanscoptic",
+    "notosanscuneiform",
+    "notosanscypriot",
+    "notosanscyprominoan",
+    "notosansdeseret",
+    "notosansdevanagari",
+    "notosansduployan",
+    "notosansegyptianhieroglyphs",
+    "notosanselbasan",
+    "notosanselymaic",
+    "notosansethiopic",
+    "notosansgeorgian",
+    "notosansglagolitic",
+    "notosansgothic",
+    "notosansgrantha",
+    "notosansgujarati",
+    "notosansgunjalagondi",
+    "notosansgurmukhi",
+    "notosanshanifirohingya",
+    "notosanshanunoo",
+    "notosanshatran",
+    "notosansimperialaramaic",
+    "notosansindicsiyaqnumbers",
+    "notosansinscriptionalpahlavi",
+    "notosansinscriptionalparthian",
+    "notosansjavanese",
+    "notosanskaithi",
+    "notosanskannada",
+    "notosanskawi",
+    "notosanskayahli",
+    "notosanskharoshthi",
+    "notosanskhmer",
+    "notosanskhojki",
+    "notosanskhudawadi",
+    "notosanslao",
+    "notosanslaolooped",
+    "notosanslepcha",
+    "notosanslimbu",
+    "notosanslineara",
+    "notosanslinearb",
+    "notosanslisu",
+    "notosanslycian",
+    "notosanslydian",
+    "notosansmahajani",
+    "notosansmalayalam",
+    "notosansmandaic",
+    "notosansmanichaean",
+    "notosansmarchen",
+    "notosansmasaramgondi",
+    "notosansmath",
+    "notosansmayannumerals",
+    "notosansmedefaidrin",
+    "notosansmeeteimayek",
+    "notosansmendekikakui",
+    "notosansmeroitic",
+    "notosansmiao",
+    "notosansmodi",
+    "notosansmongolian",
+    "notosansmro",
+    "notosansmultani",
+    "notosansmyanmar",
+    "notosansnabataean",
+    "notosansnagmundari",
+    "notosansnandinagari",
+    "notosansnewa",
+    "notosansnewtailue",
+    "notosansnko",
+    "notosansnkounjoined",
+    "notosansnushu",
+    "notosansogham",
+    "notosansolchiki",
+    "notosansoldhungarian",
+    "notosansolditalic",
+    "notosansoldnortharabian",
+    "notosansoldpermic",
+    "notosansoldpersian",
+    "notosansoldsogdian",
+    "notosansoldsoutharabian",
+    "notosansoldturkic",
+    "notosansoriya",
+    "notosansosage",
+    "notosansosmanya",
+    "notosanspahawhhmong",
+    "notosanspalmyrene",
+    "notosanspaucinhau",
+    "notosansphagspa",
+    "notosansphoenician",
+    "notosanspsalterpahlavi",
+    "notosansrejang",
+    "notosansrunic",
+    "notosanssamaritan",
+    "notosanssaurashtra",
+    "notosansshavian",
+    "notosanssiddham",
+    "notosanssignwriting",
+    "notosanssinhala",
+    "notosanssogdian",
+    "notosanssorasompeng",
+    "notosanssoyombo",
+    "notosanssundanese",
+    "notosanssunuwar",
+    "notosanssylotinagri",
+    "notosanssymbols2",
+    "notosanssyriac",
+    "notosanssyriaceastern",
+    "notosanssyriacwestern",
+    "notosanstagalog",
+    "notosanstagbanwa",
+    "notosanstaile",
+    "notosanstaitham",
+    "notosanstaiviet",
+    "notosanstakri",
+    "notosanstamil",
+    "notosanstamilsupplement",
+    "notosanstangsa",
+    "notosanstelugu",
+    "notosansthaana",
+    "notosansthai",
+    "notosansthailooped",
+    "notosanstifinagh",
+    "notosanstirhuta",
+    "notosansugaritic",
+    "notosansvai",
+    "notosansvithkuqi",
+    "notosanswancho",
+    "notosanswarangciti",
+    "notosansyi",
+    "notosanszanabazarsquare",
+    "notoznamennymusicalnotation"
+   ],
+   "noms": [
+    "Noto Kufi Arabic",
+    "Noto Music",
+    "Noto Sans",
+    "Noto Sans Adlam",
+    "Noto Sans Adlam Unjoined",
+    "Noto Sans Anatolian Hieroglyphs",
+    "Noto Sans Arabic",
+    "Noto Sans Armenian",
+    "Noto Sans Avestan",
+    "Noto Sans Balinese",
+    "Noto Sans Bamum",
+    "Noto Sans Bassa Vah",
+    "Noto Sans Batak",
+    "Noto Sans Bengali",
+    "Noto Sans Bhaiksuki",
+    "Noto Sans Brahmi",
+    "Noto Sans Buginese",
+    "Noto Sans Buhid",
+    "Noto Sans Canadian Aboriginal",
+    "Noto Sans Carian",
+    "Noto Sans Caucasian Albanian",
+    "Noto Sans Chakma",
+    "Noto Sans Cham",
+    "Noto Sans Cherokee",
+    "Noto Sans Chorasmian",
+    "Noto Sans Coptic",
+    "Noto Sans Cuneiform",
+    "Noto Sans Cypriot",
+    "Noto Sans Cypro Minoan",
+    "Noto Sans Deseret",
+    "Noto Sans Devanagari",
+    "Noto Sans Duployan",
+    "Noto Sans Egyptian Hieroglyphs",
+    "Noto Sans Elbasan",
+    "Noto Sans Elymaic",
+    "Noto Sans Ethiopic",
+    "Noto Sans Georgian",
+    "Noto Sans Glagolitic",
+    "Noto Sans Gothic",
+    "Noto Sans Grantha",
+    "Noto Sans Gujarati",
+    "Noto Sans Gunjala Gondi",
+    "Noto Sans Gurmukhi",
+    "Noto Sans Hanifi Rohingya",
+    "Noto Sans Hanunoo",
+    "Noto Sans Hatran",
+    "Noto Sans Imperial Aramaic",
+    "Noto Sans Indic Siyaq Numbers",
+    "Noto Sans Inscriptional Pahlavi",
+    "Noto Sans Inscriptional Parthian",
+    "Noto Sans Javanese",
+    "Noto Sans Kaithi",
+    "Noto Sans Kannada",
+    "Noto Sans Kawi",
+    "Noto Sans Kayah Li",
+    "Noto Sans Kharoshthi",
+    "Noto Sans Khmer",
+    "Noto Sans Khojki",
+    "Noto Sans Khudawadi",
+    "Noto Sans Lao",
+    "Noto Sans Lao Looped",
+    "Noto Sans Lepcha",
+    "Noto Sans Limbu",
+    "Noto Sans Linear A",
+    "Noto Sans Linear B",
+    "Noto Sans Lisu",
+    "Noto Sans Lycian",
+    "Noto Sans Lydian",
+    "Noto Sans Mahajani",
+    "Noto Sans Malayalam",
+    "Noto Sans Mandaic",
+    "Noto Sans Manichaean",
+    "Noto Sans Marchen",
+    "Noto Sans Masaram Gondi",
+    "Noto Sans Math",
+    "Noto Sans Mayan Numerals",
+    "Noto Sans Medefaidrin",
+    "Noto Sans Meetei Mayek",
+    "Noto Sans Mende Kikakui",
+    "Noto Sans Meroitic",
+    "Noto Sans Miao",
+    "Noto Sans Modi",
+    "Noto Sans Mongolian",
+    "Noto Sans Mro",
+    "Noto Sans Multani",
+    "Noto Sans Myanmar",
+    "Noto Sans Nabataean",
+    "Noto Sans Nag Mundari",
+    "Noto Sans Nandinagari",
+    "Noto Sans Newa",
+    "Noto Sans New Tai Lue",
+    "Noto Sans NKo",
+    "Noto Sans NKo Unjoined",
+    "Noto Sans Nushu",
+    "Noto Sans Ogham",
+    "Noto Sans Ol Chiki",
+    "Noto Sans Old Hungarian",
+    "Noto Sans Old Italic",
+    "Noto Sans Old North Arabian",
+    "Noto Sans Old Permic",
+    "Noto Sans Old Persian",
+    "Noto Sans Old Sogdian",
+    "Noto Sans Old South Arabian",
+    "Noto Sans Old Turkic",
+    "Noto Sans Oriya",
+    "Noto Sans Osage",
+    "Noto Sans Osmanya",
+    "Noto Sans Pahawh Hmong",
+    "Noto Sans Palmyrene",
+    "Noto Sans Pau Cin Hau",
+    "Noto Sans PhagsPa",
+    "Noto Sans Phoenician",
+    "Noto Sans Psalter Pahlavi",
+    "Noto Sans Rejang",
+    "Noto Sans Runic",
+    "Noto Sans Samaritan",
+    "Noto Sans Saurashtra",
+    "Noto Sans Shavian",
+    "Noto Sans Siddham",
+    "Noto Sans SignWriting",
+    "Noto Sans Sinhala",
+    "Noto Sans Sogdian",
+    "Noto Sans Sora Sompeng",
+    "Noto Sans Soyombo",
+    "Noto Sans Sundanese",
+    "Noto Sans Sunuwar",
+    "Noto Sans Syloti Nagri",
+    "Noto Sans Symbols 2",
+    "Noto Sans Syriac",
+    "Noto Sans Syriac Eastern",
+    "Noto Sans Syriac Western",
+    "Noto Sans Tagalog",
+    "Noto Sans Tagbanwa",
+    "Noto Sans Tai Le",
+    "Noto Sans Tai Tham",
+    "Noto Sans Tai Viet",
+    "Noto Sans Takri",
+    "Noto Sans Tamil",
+    "Noto Sans Tamil Supplement",
+    "Noto Sans Tangsa",
+    "Noto Sans Telugu",
+    "Noto Sans Thaana",
+    "Noto Sans Thai",
+    "Noto Sans Thai Looped",
+    "Noto Sans Tifinagh",
+    "Noto Sans Tirhuta",
+    "Noto Sans Ugaritic",
+    "Noto Sans Vai",
+    "Noto Sans Vithkuqi",
+    "Noto Sans Wancho",
+    "Noto Sans Warang Citi",
+    "Noto Sans Yi",
+    "Noto Sans Zanabazar Square",
+    "Noto Znamenny Musical Notation"
+   ],
+   "dans_la_portee_du_debutant": [
+    "notokufiarabic",
+    "notosans",
+    "notosansarabic",
+    "notosansbengali",
+    "notosansdevanagari",
+    "notosanskhmer",
+    "notosanstamil",
+    "notosanstelugu",
+    "notosansthai"
+   ]
+  },
+  {
+   "membres": [
+    "kohsantepheap",
+    "notonaskharabic",
+    "notonastaliqurdu",
+    "notoserifahom",
+    "notoserifbalinese",
+    "notoserifdivesakuru",
+    "notoserifdogra",
+    "notoserifgrantha",
+    "notoserifkhitansmallscript",
+    "notoserifkhojki",
+    "notoserifmakasar",
+    "notoserifnphmong",
+    "notoserifolduyghur",
+    "notoseriforiya",
+    "notoserifottomansiyaq",
+    "notoseriftangut",
+    "notoseriftoto",
+    "notoserifvithkuqi",
+    "notoserifyezidi"
+   ],
+   "noms": [
+    "Koh Santepheap",
+    "Noto Naskh Arabic",
+    "Noto Nastaliq Urdu",
+    "Noto Serif Ahom",
+    "Noto Serif Balinese",
+    "Noto Serif Dives Akuru",
+    "Noto Serif Dogra",
+    "Noto Serif Grantha",
+    "Noto Serif Khitan Small Script",
+    "Noto Serif Khojki",
+    "Noto Serif Makasar",
+    "Noto Serif NP Hmong",
+    "Noto Serif Old Uyghur",
+    "Noto Serif Oriya",
+    "Noto Serif Ottoman Siyaq",
+    "Noto Serif Tangut",
+    "Noto Serif Toto",
+    "Noto Serif Vithkuqi",
+    "Noto Serif Yezidi"
+   ],
+   "dans_la_portee_du_debutant": [
+    "notonaskharabic",
+    "notonastaliqurdu"
+   ]
+  },
+  {
+   "membres": [
+    "notorashihebrew",
+    "notoserif",
+    "notoserifarmenian",
+    "notoserifbengali",
+    "notoserifdevanagari",
+    "notoserifethiopic",
+    "notoserifgeorgian",
+    "notoserifgujarati",
+    "notoserifgurmukhi",
+    "notoserifhebrew",
+    "notoserifkannada",
+    "notoserifkhmer",
+    "notoseriflao",
+    "notoserifmalayalam",
+    "notoserifsinhala",
+    "notoseriftamil",
+    "notoseriftelugu",
+    "notoserifthai",
+    "notoseriftibetan"
+   ],
+   "noms": [
+    "Noto Rashi Hebrew",
+    "Noto Serif",
+    "Noto Serif Armenian",
+    "Noto Serif Bengali",
+    "Noto Serif Devanagari",
+    "Noto Serif Ethiopic",
+    "Noto Serif Georgian",
+    "Noto Serif Gujarati",
+    "Noto Serif Gurmukhi",
+    "Noto Serif Hebrew",
+    "Noto Serif Kannada",
+    "Noto Serif Khmer",
+    "Noto Serif Lao",
+    "Noto Serif Malayalam",
+    "Noto Serif Sinhala",
+    "Noto Serif Tamil",
+    "Noto Serif Telugu",
+    "Noto Serif Thai",
+    "Noto Serif Tibetan"
+   ],
+   "dans_la_portee_du_debutant": [
+    "notoserif"
+   ]
+  },
+  {
+   "membres": [
+    "anekbangla",
+    "anekdevanagari",
+    "anekgujarati",
+    "anekgurmukhi",
+    "anekkannada",
+    "aneklatin",
+    "anekmalayalam",
+    "anekodia",
+    "anektamil",
+    "anektelugu"
+   ],
+   "noms": [
+    "Anek Bangla",
+    "Anek Devanagari",
+    "Anek Gujarati",
+    "Anek Gurmukhi",
+    "Anek Kannada",
+    "Anek Latin",
+    "Anek Malayalam",
+    "Anek Odia",
+    "Anek Tamil",
+    "Anek Telugu"
+   ],
+   "dans_la_portee_du_debutant": [
+    "anektelugu"
+   ]
+  },
+  {
+   "membres": [
+    "castoro",
+    "tirobangla",
+    "tirodevanagarihindi",
+    "tirodevanagarimarathi",
+    "tirodevanagarisanskrit",
+    "tirogurmukhi",
+    "tirokannada",
+    "tirotamil",
+    "tirotelugu"
+   ],
+   "noms": [
+    "Castoro",
+    "Tiro Bangla",
+    "Tiro Devanagari Hindi",
+    "Tiro Devanagari Marathi",
+    "Tiro Devanagari Sanskrit",
+    "Tiro Gurmukhi",
+    "Tiro Kannada",
+    "Tiro Tamil",
+    "Tiro Telugu"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "hind",
+    "hindcolombo",
+    "hindguntur",
+    "hindjalandhar",
+    "hindkochi",
+    "hindmadurai",
+    "hindmysuru",
+    "hindsiliguri",
+    "hindvadodara"
+   ],
+   "noms": [
+    "Hind",
+    "Hind Colombo",
+    "Hind Guntur",
+    "Hind Jalandhar",
+    "Hind Kochi",
+    "Hind Madurai",
+    "Hind Mysuru",
+    "Hind Siliguri",
+    "Hind Vadodara"
+   ],
+   "dans_la_portee_du_debutant": [
+    "hind",
+    "hindmadurai",
+    "hindsiliguri"
+   ]
+  },
+  {
+   "membres": [
+    "anuphan",
+    "ibm_plex_sans",
+    "ibmplexsansarabic",
+    "ibmplexsansdevanagari",
+    "ibmplexsanshebrew",
+    "ibmplexsanskr",
+    "ibmplexsansthai",
+    "ibmplexsansthailooped"
+   ],
+   "noms": [
+    "Anuphan",
+    "IBM Plex Sans",
+    "IBM Plex Sans Arabic",
+    "IBM Plex Sans Devanagari",
+    "IBM Plex Sans Hebrew",
+    "IBM Plex Sans KR",
+    "IBM Plex Sans Thai",
+    "IBM Plex Sans Thai Looped"
+   ],
+   "dans_la_portee_du_debutant": [
+    "ibmplexsansarabic"
+   ]
+  },
+  {
+   "membres": [
+    "ekmukta",
+    "mukta",
+    "muktamahee",
+    "muktamalar",
+    "muktavaani"
+   ],
+   "noms": [
+    "Ek Mukta",
+    "Mukta",
+    "Mukta Mahee",
+    "Mukta Malar",
+    "Mukta Vaani"
+   ],
+   "dans_la_portee_du_debutant": [
+    "mukta"
+   ]
+  },
+  {
+   "membres": [
+    "notosanshk",
+    "notosansjp",
+    "notosanskr",
+    "notosanssc",
+    "notosanstc"
+   ],
+   "noms": [
+    "Noto Sans HK",
+    "Noto Sans JP",
+    "Noto Sans KR",
+    "Noto Sans SC",
+    "Noto Sans TC"
+   ],
+   "dans_la_portee_du_debutant": [
+    "notosansjp",
+    "notosanskr",
+    "notosanssc",
+    "notosanstc"
+   ]
+  },
+  {
+   "membres": [
+    "notoserifhk",
+    "notoserifjp",
+    "notoserifkr",
+    "notoserifsc",
+    "notoseriftc"
+   ],
+   "noms": [
+    "Noto Serif HK",
+    "Noto Serif JP",
+    "Noto Serif KR",
+    "Noto Serif SC",
+    "Noto Serif TC"
+   ],
+   "dans_la_portee_du_debutant": [
+    "notoserifjp",
+    "notoserifkr",
+    "notoserifsc",
+    "notoseriftc"
+   ]
+  },
+  {
+   "membres": [
+    "kaiseidecol",
+    "kaiseiharunoumi",
+    "kaiseiopti",
+    "kaiseitokumin"
+   ],
+   "noms": [
+    "Kaisei Decol",
+    "Kaisei HarunoUmi",
+    "Kaisei Opti",
+    "Kaisei Tokumin"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "wdxllubrifontjpn",
+    "wdxllubrifontsc",
+    "wdxllubrifonttc",
+    "zcoolqingkehuangyou"
+   ],
+   "noms": [
+    "WDXL Lubrifont JP N",
+    "WDXL Lubrifont SC",
+    "WDXL Lubrifont TC",
+    "ZCOOL QingKe HuangYou"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "elmessiri",
+    "philosopher",
+    "zcoolxiaowei"
+   ],
+   "noms": [
+    "El Messiri",
+    "Philosopher",
+    "ZCOOL XiaoWei"
+   ],
+   "dans_la_portee_du_debutant": [
+    "philosopher"
+   ]
+  },
+  {
+   "membres": [
+    "lexend",
+    "lexenddeca",
+    "readexpro"
+   ],
+   "noms": [
+    "Lexend",
+    "Lexend Deca",
+    "Readex Pro"
+   ],
+   "dans_la_portee_du_debutant": [
+    "lexend",
+    "lexenddeca",
+    "readexpro"
+   ]
+  },
+  {
+   "membres": [
+    "notosanssymbols",
+    "nototraditionalnushu"
+   ],
+   "noms": [
+    "Noto Sans Symbols",
+    "Noto Traditional Nushu"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "42dotsans",
+    "astasans"
+   ],
+   "noms": [
+    "42dot Sans",
+    "Asta Sans"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "abyssinicasil",
+    "charissil"
+   ],
+   "noms": [
+    "Abyssinica SIL",
+    "Charis SIL"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "afacad",
+    "afacadflux"
+   ],
+   "noms": [
+    "Afacad",
+    "Afacad Flux"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "akatab",
+    "tirra"
+   ],
+   "noms": [
+    "Akatab",
+    "Tirra"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "alumnisans",
+    "alumnisanssc"
+   ],
+   "noms": [
+    "Alumni Sans",
+    "Alumni Sans SC"
+   ],
+   "dans_la_portee_du_debutant": [
+    "alumnisans"
+   ]
+  },
+  {
+   "membres": [
+    "alyamama",
+    "ancizarserif"
+   ],
+   "noms": [
+    "Alyamama",
+    "Ancizar Serif"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "amiri",
+    "amiriquran"
+   ],
+   "noms": [
+    "Amiri",
+    "Amiri Quran"
+   ],
+   "dans_la_portee_du_debutant": [
+    "amiri"
+   ]
+  },
+  {
+   "membres": [
+    "arimo",
+    "tharlon"
+   ],
+   "noms": [
+    "Arimo",
+    "tharlon"
+   ],
+   "dans_la_portee_du_debutant": [
+    "arimo"
+   ]
+  },
+  {
+   "membres": [
+    "arsenal",
+    "arsenalsc"
+   ],
+   "noms": [
+    "Arsenal",
+    "Arsenal SC"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "atkinsonhyperlegible",
+    "atkinsonhyperlegiblenext"
+   ],
+   "noms": [
+    "Atkinson Hyperlegible",
+    "Atkinson Hyperlegible Next"
+   ],
+   "dans_la_portee_du_debutant": [
+    "atkinsonhyperlegible"
+   ]
+  },
+  {
+   "membres": [
+    "baskervville",
+    "baskervvillesc"
+   ],
+   "noms": [
+    "Baskervville",
+    "Baskervville SC"
+   ],
+   "dans_la_portee_du_debutant": [
+    "baskervville"
+   ]
+  },
+  {
+   "membres": [
+    "bodonimoda",
+    "bodonimodasc"
+   ],
+   "noms": [
+    "Bodoni Moda",
+    "Bodoni Moda SC"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "bonanova",
+    "bonanovasc"
+   ],
+   "noms": [
+    "Bona Nova",
+    "Bona Nova SC"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "bpmfhuninn",
+    "huninn"
+   ],
+   "noms": [
+    "Bpmf Huninn",
+    "Huninn"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "cascadiacode",
+    "cascadiamono"
+   ],
+   "noms": [
+    "Cascadia Code",
+    "Cascadia Mono"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "cormorant",
+    "cormorantgaramond"
+   ],
+   "noms": [
+    "Cormorant",
+    "Cormorant Garamond"
+   ],
+   "dans_la_portee_du_debutant": [
+    "cormorant"
+   ]
+  },
+  {
+   "membres": [
+    "fragmentmono",
+    "fragmentmonosc"
+   ],
+   "noms": [
+    "Fragment Mono",
+    "Fragment Mono SC"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "hanuman",
+    "robotoslab"
+   ],
+   "noms": [
+    "Hanuman",
+    "Roboto Slab"
+   ],
+   "dans_la_portee_du_debutant": [
+    "robotoslab"
+   ]
+  },
+  {
+   "membres": [
+    "ibmplexmono",
+    "lilex"
+   ],
+   "noms": [
+    "IBM Plex Mono",
+    "Lilex"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "iosevkacharon",
+    "iosevkacharonmono"
+   ],
+   "noms": [
+    "Iosevka Charon",
+    "Iosevka Charon Mono"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "mada",
+    "source_sans_3"
+   ],
+   "noms": [
+    "Mada",
+    "Source Sans 3"
+   ],
+   "dans_la_portee_du_debutant": [
+    "source_sans_3"
+   ]
+  },
+  {
+   "membres": [
+    "markazitext",
+    "markazitextvfbeta"
+   ],
+   "noms": [
+    "Markazi Text",
+    "markazitextvfbeta"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "mavenpro",
+    "mavenprovfbeta"
+   ],
+   "noms": [
+    "Maven Pro",
+    "mavenprovfbeta"
+   ],
+   "dans_la_portee_du_debutant": [
+    "mavenpro"
+   ]
+  },
+  {
+   "membres": [
+    "mochiypopone",
+    "mochiypoppone"
+   ],
+   "noms": [
+    "Mochiy Pop One",
+    "Mochiy Pop P One"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "mplus1",
+    "mplus2"
+   ],
+   "noms": [
+    "M PLUS 1",
+    "M PLUS 2"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "mplus1code",
+    "mpluscodelatin"
+   ],
+   "noms": [
+    "M PLUS 1 Code",
+    "M PLUS Code Latin"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "mplusrounded1c",
+    "roundedmplus1c"
+   ],
+   "noms": [
+    "M PLUS Rounded 1c",
+    "roundedmplus1c"
+   ],
+   "dans_la_portee_du_debutant": [
+    "mplusrounded1c"
+   ]
+  },
+  {
+   "membres": [
+    "podkova",
+    "podkovavfbeta"
+   ],
+   "noms": [
+    "Podkova",
+    "podkovavfbeta"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "rasa",
+    "yrsa"
+   ],
+   "noms": [
+    "Rasa",
+    "Yrsa"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "reemkufi",
+    "reemkufifun"
+   ],
+   "noms": [
+    "Reem Kufi",
+    "Reem Kufi Fun"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "roboto",
+    "vazirmatn"
+   ],
+   "noms": [
+    "Roboto",
+    "Vazirmatn"
+   ],
+   "dans_la_portee_du_debutant": [
+    "roboto"
+   ]
+  },
+  {
+   "membres": [
+    "sedan",
+    "sedansc"
+   ],
+   "noms": [
+    "Sedan",
+    "Sedan SC"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "shipporimincho",
+    "shipporiminchob1"
+   ],
+   "noms": [
+    "Shippori Mincho",
+    "Shippori Mincho B1"
+   ],
+   "dans_la_portee_du_debutant": [
+    "shipporimincho"
+   ]
+  },
+  {
+   "membres": [
+    "spectral",
+    "spectralsc"
+   ],
+   "noms": [
+    "Spectral",
+    "Spectral SC"
+   ],
+   "dans_la_portee_du_debutant": [
+    "spectral"
+   ]
+  },
+  {
+   "membres": [
+    "stacksansheadline",
+    "stacksansnotch"
+   ],
+   "noms": [
+    "Stack Sans Headline",
+    "Stack Sans Notch"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "ysabeau",
+    "ysabeauoffice"
+   ],
+   "noms": [
+    "Ysabeau",
+    "Ysabeau Office"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "zenantique",
+    "zenantiquesoft"
+   ],
+   "noms": [
+    "Zen Antique",
+    "Zen Antique Soft"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "zenkakugothicantique",
+    "zenkakugothicnew"
+   ],
+   "noms": [
+    "Zen Kaku Gothic Antique",
+    "Zen Kaku Gothic New"
+   ],
+   "dans_la_portee_du_debutant": [
+    "zenkakugothicnew"
+   ]
+  }
+ ]
+}

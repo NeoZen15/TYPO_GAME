@@ -2724,3 +2724,57 @@ La page montre la forme longue en 58 px, puis un panneau à deux bandes qui dit 
 **Placée avant les quatre adjectifs**, comme Tercio qui met Brand signature en page 12 et Brand speech en page 14 : on dit ce que la marque énonce avant de dire comment elle parle. Les quatre pages d'adjectifs ont été décalées de 2080 vers la droite, de la droite vers la gauche pour ne pas se chevaucher en cours de déplacement.
 
 **Son folio est encore celui de la page dont elle est le clone.** C'est voulu : la renumérotation passe à la fin des six étapes, une seule fois.
+
+### 2026-08-24, la reconnaissance de forme : un échec sur la question posée, une trouvaille ailleurs
+
+Chantier ouvert pour séparer les 185 linéales humanistes que la géométrie ne distingue
+pas. **Il a échoué sur cette question, et trouvé un défaut plus grave à côté.**
+
+**La mesure de forme fonctionne.** `scripts/measure_typeface_shapes.py` relève trois
+grandeurs qu'aucune proportion ne capte : l'axe du contraste, mesuré en cherchant
+l'angle où l'anneau du o est le plus mince ; la régularité de cet anneau ; et le nombre
+d'étages du g, lu au nombre de contours. Validée sur témoins : EB Garamond et Cormorant
+sortent à 111 degrés d'axe incliné, signature des anciennes, contre 90 pour Bodoni et
+Playfair. Montserrat à 0,95 de régularité, monolinéaire, contre 0,18 pour Bodoni Moda.
+
+**Une précaution qui a corrigé la mesure.** Un o monolinéaire n'a pas d'axe : deux
+méthodes donnaient 75 et 90 degrés pour le même dessin, du bruit. Le script refuse donc
+de rendre un axe au delà de 0,85 de régularité, et le dit.
+
+**LE RÉSULTAT EST NÉGATIF, et il faut le noter comme tel.** Ajouter ces grandeurs au
+regroupement, en distance ou en clé de découpage, ne l'améliore jamais : le score contre
+les treize paires de référence baisse de 10 à 9 sur 13, les clusters solitaires doublent,
+et le plus gros paquet passe seulement de 185 à 171. **Le regroupement de la 018 reste
+le meilleur disponible et n'est pas touché.**
+
+**Pourquoi, mesuré.** Dans le noyau de 185, l'écart type de l'axe du contraste est de
+**1,6 degré**, celui de la régularité de 0,016 contre 0,201 sur tout le catalogue, celui
+de l'ouverture du c de 0,022 contre 0,101. Douze fois plus serré. Ces 185 polices ne sont
+pas mal mesurées, elles sont réellement des quasi-jumelles : ABeeZee, Amiko, Biryani,
+Duru Sans, Fira Sans, Krub, Lunasima. C'est un fait sur le corpus Google, pas une limite
+de l'outil.
+
+**LA TROUVAILLE, ET ELLE EST SÉRIEUSE.** En regardant les 16 polices du noyau encore
+accessibles à un débutant, huit sont des Noto Sans déclinées par écriture, Bengali,
+Devanagari, Thai, Tamil. Elles dessinent le latin **exactement** comme Noto Sans. Le jeu
+peut donc montrer un mot et proposer Noto Sans, Noto Sans JP, Noto Sans KR et Noto Sans
+SC : une question sans réponse, où le joueur ne peut que deviner.
+
+`scripts/find_indistinguishable_pairs.py` cherche tous les cas. Résultat :
+**335 des 1117 polices jouables sont les jumelles d'une autre**, réparties en 53 familles.
+Ne garder qu'une police par famille en retirerait 282. Quarante-quatre sont dans la
+portée du débutant, dont quatre des cinq Noto Sans CJK.
+
+**Une erreur corrigée en route, et elle changeait le chiffre.** Ma première version
+groupait par proche en proche : si a ressemble à b et b à c, les trois faisaient famille.
+Faux. Elle produisait une famille où Noto Sans et Noto Sans JP se retrouvaient ensemble
+alors qu'elles diffèrent de 49 pour cent en graisse. Le script exige maintenant un lien
+complet, chaque membre indistinguable de chaque autre. Vérifié par tirage au hasard dans
+la plus grande famille : pire écart 0,89 pour cent sur huit paires, seuil à 1 pour cent.
+
+**AUCUNE MIGRATION N'EST ÉCRITE POUR ÇA, et c'est volontaire.** Retirer 282 polices est
+une décision de produit, pas de technique. Le rapport complet est dans
+`data/typography-profiles/indistinguishable-pairs.json`, famille par famille, avec la
+liste de celles qui atteignent un débutant.
+
+Porte complète verte, code de sortie 0.
