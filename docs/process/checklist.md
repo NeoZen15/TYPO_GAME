@@ -184,6 +184,24 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-24 — un garde sur la palette, pour que le clair ne dérive plus
+
+**Statut : fait, porte verte à 33 étapes, code de sortie 0.** Étape 05 du plan du thème clair. `scripts/quality/check-contrast.mjs`, câblé dans la chaîne dans le même commit comme l'exige le CLAUDE.md.
+
+**Pourquoi un garde de palette et pas un garde de pixels.** Mesurer le rendu demanderait un navigateur et un serveur à l'intérieur de la porte, ce qui la rendrait lente et fragile. Or le défaut ne vit pas dans les pixels, il vit dans les jetons : les quatre palettes trouvées le 23 août étaient toutes l'échelle sombre recopiée sur un fond clair. Le garde lit donc les jetons dans la feuille et calcule leur contraste contre le fond sur lequel ils se posent réellement, y compris les deux que la barre de navigation inverse. **18 jetons, 6 palettes.**
+
+**Prouvé faillible avant d'être cru.** Remettre `--ink-soft` à 0.34 le fait annoncer 2,15 et sortir en 1. Un garde qui ne tombe jamais ne protège rien.
+
+**Un défaut de lecture trouvé en l'écrivant, à retenir pour les prochains gardes.** Un même sélecteur peut ouvrir plusieurs règles dans la feuille. Prendre seulement la dernière faisait passer `.compare-stage-shell` pour une règle ne déclarant aucun jeton, donc le garde signalait une palette absente alors qu'elle était là. Il parcourt maintenant toutes les règles du sélecteur et retient la dernière valeur déclarée, ce que fait la cascade.
+
+**Deux corrections de documentation au passage.** Le CLAUDE.md annonçait 28 étapes et n'en énumérait que 28, alors que la porte en compte 33 : quatre gardes ajoutés par l'autre session (`check:google-metadata-sync`, `check:rarity-coverage`, `check:adobe-migration`, `check:competition-integrity`) n'y figuraient pas. L'énumération est désormais **régénérée depuis `package.json`** plutôt que maintenue à la main, et datée du jour de la mesure.
+
+**Piège que j'ai reproduit et qu'il faut arrêter.** J'ai relancé `npm run quality` dans l'arbre principal alors que le serveur de dev du 3002 tournait, donc `next build` a réécrit dans le même `.next`. Son cache était déjà abîmé, rien de neuf n'est perdu, mais c'est la troisième fois. Les mesures et les builds passent désormais par le worktree `.claude/worktrees/audit-clair`, qui a son propre `.next` et son serveur sur le 3011.
+
+**Ce qui reste du plan du thème clair.** Étape 03, les 116 déclarations d'ombre qui n'utilisent pas les deux jetons prévus, mécanique et délégable. Et les surfaces au delà de la nav : le pied de page (1440 par 459, crème dans les deux thèmes), le bandeau du profil, les quatre cartes de réponse du jeu. Elles attendent une décision sur ce qu'elles doivent devenir, la nav ayant été tranchée et pas elles.
+
+---
+
 ## Note — 2026-08-23 (suite) — le thème clair est calibré : 97 textes illisibles deviennent 0
 
 **Statut : fait, porte qualité verte, 33 étapes, code de sortie 0.** Suite directe de l'audit ci dessous. Deux décisions de Marion, sur capture : échelle **encore plus contrastée**, et la barre de navigation **en noir** comme les boutons d'action posés à côté d'elle.
