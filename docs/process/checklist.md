@@ -184,6 +184,34 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-24 (suite 5) — la fusion vers `main` est prête, et ce qu'il reste avant de déployer
+
+**Statut : vérifié, pas poussé.** Le déplacement du ref local a été refusé par le garde-fou de l'outil, mais il n'est pas nécessaire : la commande donnée plus bas s'en passe.
+
+**La fusion est triviale, mesurée et non supposée.** La branche de travail est **70 commits devant `origin/main`** et **0 derrière**. `origin/main` est donc un ancêtre du candidat : c'est une avance rapide pure, aucun conflit n'est possible et il n'y a pas de fusion à résoudre.
+
+**Porte passée sur le commit exact qui partirait**, et pas sur un commit voisin : `d5a73ab`, **35 étapes**, code de sortie 0, build compris et 31 pages générées. À noter que la pointe avait bougé pendant la vérification, l'autre session ayant commité son garde de jumelles entre temps, ce qui a fait passer la porte de 34 à 35 étapes. **Toujours relire `HEAD` juste avant de fusionner quand une autre session travaille.**
+
+**La commande, qui ne touche ni la branche locale ni l'arbre de travail** (important : l'arbre porte du travail de l'autre session) :
+
+```
+git push origin HEAD:main
+```
+
+Elle pousse la pointe courante directement sur `origin/main` en avance rapide. Pas de `checkout`, pas de branche locale à créer, rien qui bouge sur le disque.
+
+**Configuration de déploiement, relevée.** `vercel.json` ne contient que `{"regions": ["lhr1"]}`, la région épinglée près de la base. Trois variables d'environnement sont lues par le code : `DATABASE_URL`, `GAME_PROVIDER_SECRET` et `NODE_ENV`. Les deux premières doivent être posées chez l'hébergeur ; `check:token-secret` vérifie déjà que la production **refuse de démarrer** sans `GAME_PROVIDER_SECRET` et qu'elle ne retombe plus sur `DATABASE_URL`, donc un oubli se verra tout de suite au lieu de signer des jetons avec un secret faible.
+
+**Ce qui reste et n'appartient qu'au propriétaire, par ordre de blocage.**
+
+1. Les **7 informations légales** de `content/legal.ts` : identité et statut juridique de l'éditeur, adresse, email de contact, SIRET, directeur de la publication, durée de conservation retenue, hébergeur (nom, adresse, téléphone). `check:legal-docs` les liste à chaque passage.
+2. La **licence webfont de PP Frama**, seule police servie sans texte de licence redistribuable. Le reste est propre : 1173 dossiers portent leur licence, 1150 OFL, 18 Apache 2, 5 UFL, pour 1171 typos servables.
+3. `GAME_PROVIDER_SECRET` et `DATABASE_URL` à poser chez l'hébergeur.
+4. La **migration 011** des partitions d'événements, écrite et marquée non appliquée : les lignes tombent dans `uef_default` en attendant. Migration en base, donc feu vert explicite.
+5. Le worktree `da-compare-spec-beige` et ses deux commits de DA jamais intégrés, qui datent maintenant d'avant tout le travail de chrome et méritent d'être revus plutôt qu'intégrés tels quels.
+
+---
+
 ## Note — 2026-08-24 (suite 4) — le thème clair passe en réserve, il n'est pas proposé au lancement
 
 **Statut : fait, porte verte à 34 étapes, code de sortie 0.** Décision de Marion après discussion : pas de blanc à la sortie, peut-être plus tard. Il est donc **mis en réserve et non supprimé**, derrière un seul drapeau, `LIGHT_THEME_ENABLED` dans `lib/theme-availability.ts`. Le fichier porte le raisonnement pour que le rallumage ne reparte pas de zéro.
@@ -2858,3 +2886,15 @@ d'entraînement. Repris depuis git, sans perte, mais il a fallu s'en apercevoir.
 sauvegardes portent maintenant le chemin complet, dans un dossier temporaire dédié.
 
 Porte complète verte, 34 contrôles, code de sortie 0.
+
+### 2026-08-24, étape 5, le contraste sur les fiches de couleur
+
+**Fait.** Quinze lignes de contraste posées, une par nuance, sur les six pages de couleur qui portent des fiches. Chaque valeur recalculée avant d'être écrite, **contre l'encre réellement employée sur ce sol** et non contre une encre théorique : l'encre est lue dans le calque `val-N` existant de chaque ligne.
+
+**Un constat d'accessibilité, le seul du nuancier.** `#ff0000` avec une encre ivoire tombe à **3,0 : 1**, sous le seuil de 4,5 du texte courant. Il ne passe qu'en gros corps, et la fiche le dit. À noter que **le produit ne commet pas cette faute** : sur l'écran de jeu, le verdict d'erreur est du rouge sur noir, à 5,25. C'est donc une règle à énoncer, pas un défaut à corriger.
+
+**Trois placements avant de trouver le bon, à retenir.** Ces pages empilent les nuances en cascade, et les bandes se chevauchent : un texte posé à droite de la fiche tombe sur la bande de la nuance voisine. Premier essai à x 780, l'ivoire du rouge se retrouvait sur le vert, à 1,7 de contraste. **Écrire un chiffre d'accessibilité de façon illisible.** Deuxième essai sous la ligne de rôle, à y plus 19 : la bande suivante recouvrait la ligne. Troisième essai retenu : sur la ligne du rôle elle même, décalé de 26 px après lui, seul endroit garanti sur la bande de sa propre couleur.
+
+**Et une simplification qui vient de là.** Le texte est écrit dans l'encre dont il parle, donc nommer l'encre était redondant : la mention « sur encre noire » a été retirée, « Contraste 8,1 : 1 » suffit. La page 31 garde sa propre structure, la ligne s'ajoute à son bloc de valeurs.
+
+**Question ouverte, à trancher par Marion.** Elevo et Tercio portent aussi le CMJN et le Pantone sur chaque fiche. Si DWIGGINS ne s'imprime jamais, il faut l'écrire, sinon l'absence se lira comme un oubli.
