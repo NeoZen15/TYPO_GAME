@@ -184,6 +184,35 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-24 (suite 2) — le pied de page passe en noir, et le logo apprend à s'inverser
+
+**Statut : fait, porte verte à 34 étapes, code de sortie 0.** Demande de Marion : « le footer aussi en noir ».
+
+**Les jetons changent de nom, et c'était nécessaire.** `--nav-*` devient `--chrome-*` : ils servent désormais les **quatre** surfaces qui s'inversent contre la page, les trois barres (`site-nav`, `lp-header`, `pf-top`) et le pied de page. Un jeton nommé « nav » aurait envoyé la prochaine personne chercher au mauvais endroit. 71 occurrences, garde compris. Les 13 couleurs littérales du pied lisent maintenant ces jetons, et **plus aucune couleur en dur ne subsiste dans une règle `lp-footer`**.
+
+**Un vrai défaut de ma main, trouvé en mesurant et pas en regardant.** Rendre les barres noires laissait le logo **noir** posé dessus : le lockup était **invisible en thème clair sur toutes les pages**. Mesuré au navigateur : `dwiggins-figures-dark.svg` et `dwiggins-wordmark-full-black.svg` sur `rgb(20, 16, 25)`. C'est exactement la remarque initiale de Marion (« le symbole en clair devrait être sombre comme le texte »), prise par l'autre bout.
+
+**Un filtre CSS a été écarté, et la raison compte.** Inverser `#141019` donne `#ebe9e6`, alors que la version ivoire de la marque est `#e1e1d7`. Un logo n'est pas un endroit où avoir approximativement raison. Les deux versions existent déjà dans `public/brand`, donc les deux sont rendues et le CSS montre la bonne : 14 marques doublées sur 6 fichiers.
+
+**Convention de nommage à retenir : le suffixe nomme le FOND que la marque habille, pas le thème.** `--on-dark` est la version ivoire, portée par le chrome noir du thème clair. Nommer d'après le thème se lit à l'envers chaque fois qu'on y revient. Bascule en deux classes de spécificité pour battre le `display: block` des règles de base sans `!important`, et un `:not([data-theme="dark"])` plutôt qu'un `[data-theme="light"]` pour que l'absence d'attribut se lise comme du clair.
+
+**Vérifié au navigateur, trois pages et deux thèmes :** en clair les marques ivoire sur `rgb(20, 16, 25)`, en sombre les marques noires sur `rgb(244, 243, 238)`.
+
+**Bilan depuis le relevé de départ.**
+
+| | départ | maintenant |
+| --- | --- | --- |
+| textes illisibles en thème clair | 97 | **0** |
+| ombres identiques dans les deux thèmes | 67 éléments / 17 classes | **7 / 2** |
+| surfaces identiques dans les deux thèmes | 55 / 23 | **41 / 15** |
+| textes à couleur figée | 57 / 24 | **11 / 10** |
+
+**Deux erreurs de méthode, notées pour ne pas les refaire.** Les `<img>` dupliqués n'ont pas hérité du commentaire `eslint-disable-next-line @next/next/no-img-element` que portaient les originaux : huit avertissements et une porte rouge. Et j'ai lu `npm run lint | tail`, qui rend le code de sortie de `tail` et non celui de lint, **le piège exact que le CLAUDE.md documente**. La porte est passée pour verte pendant un commit. Toujours rediriger vers un fichier puis lire `$?`.
+
+**Ce qui reste dans les surfaces identiques.** L'essentiel n'est plus des coquilles mais des **lavis d'accent de mode** à 6 et 8 pour cent (`dw-tag--emerging`, `lp-mode-card__chip`, les `game-v2-hud__*`), plus les cartes de réponse du jeu et quelques pastilles. Un lavis d'accent identique des deux côtés est peut-être voulu, c'est une teinte de couleur et non une valeur de surface : à trancher, pas à corriger d'office.
+
+---
+
 ## Note — 2026-08-24 (suite) — les ombres : 99 déclarations, 18 retirées, et une troisième barre retrouvée
 
 **Statut : fait, porte verte à 34 étapes, code de sortie 0.** Étape 03 du plan du thème clair, demandée par Marion (« les ombres oui vas y », après « je trouve ça pas forcément nécessaire »).
