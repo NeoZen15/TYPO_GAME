@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { FORCED_THEME, LIGHT_THEME_ENABLED } from "@/lib/theme-availability";
 import "./globals.css";
 import UiDebugProbe from "@/components/dev/UiDebugProbe";
 import { ADOBE_KIT_STYLESHEET } from "@/lib/game/fonts/runtime-catalog";
@@ -9,15 +11,19 @@ export const metadata: Metadata = {
   description: "Typographic learning experience.",
 };
 
+// Le drapeau est interpolé dans la chaîne : quand le clair n'est pas proposé,
+// le script n'a plus qu'une branche et une préférence "light" laissée par une
+// visite précédente n'est PAS honorée. Voir lib/theme-availability.ts.
 const themeBootstrapScript = `
 (() => {
   try {
     const key = "jdt-theme";
     const stored = localStorage.getItem(key);
-    const isValid = stored === "dark" || stored === "light";
+    const offered = ${LIGHT_THEME_ENABLED};
+    const isValid = offered && (stored === "dark" || stored === "light");
     const theme = isValid
       ? stored
-      : "dark";
+      : "${FORCED_THEME}";
     const root = document.documentElement;
     root.dataset.theme = theme;
     root.style.colorScheme = theme;
@@ -34,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme={FORCED_THEME} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         {/* La feuille du projet web Adobe Fonts, chargee une fois pour tout le

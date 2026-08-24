@@ -2,6 +2,8 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 
+import { FORCED_THEME, LIGHT_THEME_ENABLED } from "@/lib/theme-availability";
+
 type ThemeMode = "dark" | "light";
 
 const STORAGE_KEY = "jdt-theme";
@@ -35,6 +37,9 @@ const listeners = new Set<() => void>();
 let currentTheme: ThemeMode | null = null;
 
 const readTheme = (): ThemeMode => {
+  // Le clair n'est pas proposé : aucune préférence stockée ne peut le ramener.
+  if (!LIGHT_THEME_ENABLED) return FORCED_THEME;
+
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (isThemeMode(stored)) return stored;
@@ -80,7 +85,9 @@ const setTheme = (theme: ThemeMode) => {
   listeners.forEach((listener) => listener());
 };
 
-export default function ThemeSwitch() {
+// Le contrôle lui-même, avec ses hooks. Il n'est monté que si le thème clair
+// est proposé, ce que décide l'enveloppe en bas de fichier.
+function ThemeSwitchControl() {
   const theme = useSyncExternalStore(
     subscribeTheme,
     getThemeSnapshot,
@@ -116,4 +123,16 @@ export default function ThemeSwitch() {
       </span>
     </button>
   );
+}
+
+// Enveloppe sans hook : un seul point de contrôle pour les treize montages (les
+// trois barres, le pied, l'écran de jeu, l'onboarding, les préférences, les
+// écrans d'erreur). Rien à retirer ailleurs, rien à remettre quand on rallume.
+// Elle porte le garde plutôt que le contrôle, pour deux raisons : un retour
+// anticipé placé avant `useSyncExternalStore` enfreint la règle des hooks, et
+// ainsi le store ne s'abonne même pas quand la bascule n'est pas proposée.
+export default function ThemeSwitch() {
+  if (!LIGHT_THEME_ENABLED) return null;
+
+  return <ThemeSwitchControl />;
 }

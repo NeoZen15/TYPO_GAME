@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
+import { LIGHT_THEME_ENABLED } from "@/lib/theme-availability";
 import StarField from "@/features/profile/components/StarField";
 import type { EyeProfile, PlayerProfile } from "@/lib/profile/mock-profile";
 
@@ -88,13 +89,17 @@ export default function PreferencesBoard({
       {/* ── Appearance ── */}
       <section className="pr-panel pr-sec" aria-label="Appearance">
         <h3 className="pr-panel__title">Appearance</h3>
-        <div className="pr-row">
-          <div className="pr-row__text">
-            <span className="pr-row__label">Theme</span>
-            <span className="pr-row__help">Dark is the home of the map. Light flips the canvas.</span>
+        {/* La ligne entière disparaît avec la bascule, sinon il resterait un
+            libellé « Theme » sans rien à régler à côté. */}
+        {LIGHT_THEME_ENABLED ? (
+          <div className="pr-row">
+            <div className="pr-row__text">
+              <span className="pr-row__label">Theme</span>
+              <span className="pr-row__help">Dark is the home of the map. Light flips the canvas.</span>
+            </div>
+            <ThemeSwitch />
           </div>
-          <ThemeSwitch />
-        </div>
+        ) : null}
         <div className="pr-row">
           <div className="pr-row__text">
             <span className="pr-row__label">Reduced motion</span>
