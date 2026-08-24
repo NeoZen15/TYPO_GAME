@@ -184,6 +184,24 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-24 (suite 3) — cartes de mode en noir, points retirés du clair, deux orphelines
+
+**Statut : fait, porte verte à 34 étapes, code de sortie 0.** Trois demandes de Marion sur captures, plus deux défauts trouvés en mesurant la page.
+
+**Les cartes de mode sont un objet sombre sur les deux fonds.** En sombre elles l'étaient déjà, à 5 pour cent d'encre sur le noir ; en clair la même recette donnait un lavis si pâle qu'il se lisait comme la page. Surface explicite `#141019` des deux côtés, et le dégradé d'accent passe de 7 à 14 pour cent pour que le mode colore encore sa carte.
+
+**Point de méthode qui a évité de toucher cinq règles enfants.** Les encres de la carte sont redéfinies **sur la carte**, pas sur chaque enfant : les propriétés personnalisées s'héritent, donc titre, description, mention et pastille suivent sans qu'aucune règle enfant ne bouge. `--line` suit aussi, sinon le `color-mix` du contour mélangerait une encre foncée invisible sur ce fond. Mesuré sur `#141019` : 15,6, 11,0 et 8,2, les trois passent le seuil.
+
+**Le champ de points quitte le thème clair.** Il était déjà sensible au thème (encre chaude sur beige, beige sur noir), ce qui revenait à de la poussière sur une feuille de papier. Traité dans le composant `StarField` et non en CSS : masquer le canvas aurait laissé une animation invisible repeindre soixante fois par seconde. La boucle s'arrête en clair et repart au passage en sombre. Vérifié en lisant les pixels du canvas : **0 peint en clair, 11 333 en sombre**.
+
+**Deux lignes orphelines, trouvées en mesurant les rectangles de ligne.** `.pb-lede` finissait sur « stakes. » seul (46 px contre 378) et `.pm-note` sur « it. » seul (10 px contre 217). `text-wrap: pretty` répartit la fin du paragraphe sans toucher à la taille ni à la largeur. Remesuré : 0 orpheline.
+
+**Le double « DWIGGINS » vu sur la capture n'est pas dans le code.** Mesuré sur le build à jour : la barre ne contient qu'une marque, `figures` puis `wordmark`, 117 px au total, et la bascule cache exactement un élément de chaque paire dans les deux thèmes. Le symptôme correspond à un cache partiellement périmé sur le 3002, nouveau balisage servi avec une ancienne feuille. **Le remède reste `rm -rf .next` puis redémarrage, un simple redémarrage ne suffit pas quand le cache est abîmé.**
+
+**Deux constats laissés, connus et non urgents.** `.pb-bg` dépasse son parent de 32 px, mais c'est une couche `position: fixed; inset: 0`, le dépassement est sans effet. Et les cibles tactiles de la barre restent sous les 24 px (marque 19 px, pastille 24 px), ce que la note responsive du 2026-08-17 avait déjà relevé en R5.
+
+---
+
 ## Note — 2026-08-24 (suite 2) — le pied de page passe en noir, et le logo apprend à s'inverser
 
 **Statut : fait, porte verte à 34 étapes, code de sortie 0.** Demande de Marion : « le footer aussi en noir ».
@@ -2690,3 +2708,19 @@ Chaque page porte donc sa preuve dans son paragraphe. Les mots restent à tranch
 **Renumérotation et resynchronisation.** 54 pages, sept sections, numérotation continue. Les sept intercalaires reconstruits depuis le document lui même, y compris leur liste de sections passée de six à sept entrées. La couverture régénérée, avec une septième ligne clonée au bon pas de 91 px.
 
 **Ce qui reste, une seule chose.** La page du badge, cadre vide que Marion veut traiter lui même.
+
+### 2026-08-24, feuille de route des six manques, et étape 1 faite
+
+**La feuille de route est sur le disque**, `docs/process/charte-six-manques.md`, et non plus en tâche de session : elle survit à la fermeture de Claude Code, ce que la tâche programmée d'hier ne faisait pas. Six étapes, chacune avec son pourquoi, sa matière source, son emplacement, son contenu et son contrôle de sortie. La renumérotation est explicitement en dernier.
+
+**Étape 1, la signature de marque, faite.**
+
+Le manque était le plus gênant des six : la marque a une signature, elle est servie par le produit, et la charte ne la mentionnait nulle part. Relevée dans `features/landing/components/LandingExperience.tsx`, ligne 254 pour la forme longue et ligne 446 pour la forme courte. Rien d'inventé, rien de reformulé.
+
+La page montre la forme longue en 58 px, puis un panneau à deux bandes qui dit où chacune s'écrit : la longue sous le mot montré sur l'accueil, la courte en pied de page et dans les métadonnées, jamais sur l'accueil.
+
+**Ce que la colonne de gauche ajoute, et qui n'était écrit nulle part.** La signature est un constat suivi d'une invitation, et séparées les deux phrases ne disent plus rien : la première devient une évidence, la seconde un slogan. Il n'existe pas de troisième forme, et si la place manque on écrit le nom seul. Elle reste en anglais comme toute l'interface.
+
+**Placée avant les quatre adjectifs**, comme Tercio qui met Brand signature en page 12 et Brand speech en page 14 : on dit ce que la marque énonce avant de dire comment elle parle. Les quatre pages d'adjectifs ont été décalées de 2080 vers la droite, de la droite vers la gauche pour ne pas se chevaucher en cours de déplacement.
+
+**Son folio est encore celui de la page dont elle est le clone.** C'est voulu : la renumérotation passe à la fin des six étapes, une seule fois.
