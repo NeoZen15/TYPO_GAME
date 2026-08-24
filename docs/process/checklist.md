@@ -184,6 +184,36 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-24 (suite) — les ombres : 99 déclarations, 18 retirées, et une troisième barre retrouvée
+
+**Statut : fait, porte verte à 34 étapes, code de sortie 0.** Étape 03 du plan du thème clair, demandée par Marion (« les ombres oui vas y », après « je trouve ça pas forcément nécessaire »).
+
+**L'inventaire d'abord, parce que « 119 ombres » mélangeait trois dispositifs sans rapport.** Compte réel : **99 déclarations `box-shadow`**, dont 57 ombres portées, 7 filets internes, 3 anneaux de focus, 11 `none` explicites, 3 lisant un jeton. **Aucun anneau de focus n'a été touché** : c'est de l'accessibilité, pas de la décoration. Le premier grep en annonçait 119 parce qu'il comptait des lignes de déclarations multilignes, pas des déclarations.
+
+**Une signature unique traversait tout le site :** `inset 0 1px 0 crème, 0 y flou noir`, un filet crème par dessus une ombre noire. C'est le relief de l'ancienne DA pensée pour le noir seul, et **les deux couches sont mortes** depuis que la barre est noire : sur fond noir l'ombre noire ne se voit pas, et un filet crème sur une pastille crème ne se voit pas non plus. Retirée des pastilles d'action des trois barres, des pistes de bascule de thème, et du bouton plein de l'onboarding.
+
+**Retirées aussi là où l'élément est à plat et que rien ne flotte :** l'avis de stockage, les cartes de réponse au repos (le soulèvement au survol reste, c'est un retour d'information), le bandeau HUD du profil, et une pastille de compétition dont l'ombre était à 0,04 d'alpha, invisible à toute mesure.
+
+**Trouvé en lisant les déclarations : `.pf-top` est la MÊME barre que `site-nav` et `lp-header`**, sur le profil et les pages de règles. Le premier balayage l'avait manquée parce que sa classe ne porte ni l'un ni l'autre nom. Elle codait le crème en dur avec encre foncée, **plus une surcharge de thème sombre qui reforçait le crème**. Elle lit désormais les mêmes jetons de barre, donc noire en clair et crème en sombre comme ses jumelles, et la surcharge disparaît comme redondante.
+
+**Un jeton de teinte pour les trois ombres qui restent.** Les deux jetons existants portent une ombre complète, géométrie comprise, donc ils ne conviennent qu'à un élément prêt à prendre cette géométrie. Un soulèvement de 2px sous un pouce de 20px n'est pas un soulèvement de carte de 12px. `--shadow-tint` porte la couleur seule, définie une fois par thème : le pouce de la bascule, le panneau de la bibliothèque de glyphes et le cerne de la piste le lisent.
+
+**Mesuré, même relevé rejoué.**
+
+| | avant | après |
+| --- | --- | --- |
+| ombres identiques dans les deux thèmes | 67 éléments / 17 classes | **26 / 4** |
+| surfaces identiques dans les deux thèmes | 55 / 23 | **43 / 17** |
+| textes à couleur figée | 57 / 24 | **32 / 15** |
+
+Les trois chiffres baissent alors qu'un seul était visé : convertir `.pf-top` a réglé en même temps une surface et une famille de textes.
+
+**Piège de comptage, à retenir.** Compter des occurrences d'un motif indenté à 2 espaces attrape aussi celui indenté à 4, puisque le court est un sous-ensemble du long. Toujours traiter l'indentation la plus profonde d'abord, sinon les assertions de compte sont fausses et le script s'arrête sans rien écrire.
+
+**Ce qui reste.** Les 43 surfaces encore identiques dans les deux thèmes : le pied de page (1440 par 459, crème des deux côtés), les quatre cartes de réponse du jeu, les accents de mode à 6 et 8 pour cent. Elles attendent une décision sur ce qu'elles doivent devenir, la barre ayant été tranchée et pas elles.
+
+---
+
 ## Note — 2026-08-24 — un garde sur la palette, pour que le clair ne dérive plus
 
 **Statut : fait, porte verte à 33 étapes, code de sortie 0.** Étape 05 du plan du thème clair. `scripts/quality/check-contrast.mjs`, câblé dans la chaîne dans le même commit comme l'exige le CLAUDE.md.
