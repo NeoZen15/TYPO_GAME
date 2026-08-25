@@ -3419,3 +3419,58 @@ durée de référence de la CNIL pour de la mesure d'usage, suivie d'une anonymi
 politique de confidentialité. C'est le point RGPD ci-dessus, celui que la dispense de la
 LCEN ne couvre pas, et il attend la relecture juridique. Le bloqueur légal passe donc de
 « sept informations et une relecture » à « une question de juriste ».
+
+### 2026-08-25, rangement de la Page 1
+
+**Rien n'a été supprimé.** « Ranger » a été traité comme un déplacement réversible : les propositions périmées sont archivées, pas détruites.
+
+**Seize cadres archivés** dans une rangée à **y 40000**, pas de 2100, tous préfixés `ARCHIVE · ` pour être reconnaissables au premier coup d'œil : les six PROPOSITION du bloc Discours, les sept MOTEUR, les trois SÉQUENCE dont le sommaire en liste que l'introduction CR remplace.
+
+**Séquence CR remise sur son pas** : l'introduction alignée à x -1900, y 32000, en tête de la rangée des douze.
+
+**Contrôle programmé sur les 115 objets de la page : aucun chevauchement.**
+
+**Quatre choses trouvées et volontairement pas touchées**, parce qu'elles relèvent d'une décision de Marion et non d'un rangement :
+
+1. **Trois exemplaires de `11 · Introduction · La direction`**, à x 20917, 22877 et 24837 sur la rangée y 1440. Ce sont des doublons, peut-être des variantes en cours.
+2. Le bloc **Le discours, planches 12 à 19, a été déplacé à y 19907**, hors des rangées du document. Il n'est plus dans la grille des autres blocs.
+3. Un rectangle orphelin nommé **`Rectangle 1`**, 100 x 100, à (1161, 9940).
+4. Le cadre **`profil-carte-du-regard`**, 400 x 300 et **vide**, posé à (24957, 200) à côté de la couverture.
+
+### 2026-08-25, nettoyage de la base : 337 sessions refermées, un doublon supprimé
+
+**Ce qui traînait, mesuré avant de toucher à quoi que ce soit.** 531 sessions, dont
+**337 restées ouvertes** depuis mars pour certaines, 1332 événements, un doublon de
+réponse, un utilisateur qui n'a jamais joué, et trois pools contenant Adobe Blank.
+
+**Pourquoi les sessions restaient ouvertes, et ce n'est pas un bug.** Le balayage existe,
+`sweepAbandonedCompetitionSessions`, avec sa règle de trente minutes et une heure de fin
+honnête reprise du dernier événement. Mais **il ne s'exécute que pour un joueur qui
+revient jouer**, et il est limité à ce joueur. Un joueur qui ne revient jamais laisse sa
+session ouverte pour toujours. C'est la règle du jeu lui-même qui a été appliquée, à
+tous, une fois : mêmes trente minutes, même heure de fin.
+
+Résultat : **plus une seule session active au-delà de trente minutes**, et aucune fermée
+sans heure de fin. Les 531 sessions sont toutes là, rien n'a été supprimé.
+
+**Le doublon était le mien.** Deux événements `answer` portant la **même clé
+d'idempotence**, à trente-trois millisecondes d'écart, le 17 août : la trace de mon test
+de concurrence, joué avant que l'écriture atomique ne soit corrigée. Le second est
+supprimé, le premier gardé.
+
+**Adobe Blank reste dans trois pools, et c'est volontaire.** Première tentative :
+`in_active_pool = false`, refusée par la contrainte `chk_unlocked_requires_pool`, qui dit
+`unlocked_at IS NULL OR in_active_pool = true`. Le schéma interdit donc de retirer du
+pool d'un joueur une police qu'il a débloquée, et il a raison : c'est sa progression. La
+police est éteinte au catalogue, les deux requêtes de pool filtrent sur
+`activation_status`, elle ne lui sera jamais servie. La ligne est inerte, on la laisse.
+
+**Deux défauts dans ma propre manœuvre, tous deux arrêtés avant écriture.** La première
+transaction a été annulée en entier par la contrainte ci-dessus, donc rien n'a été écrit
+à moitié. Et j'y avais fabriqué l'identifiant du doublon à partir des huit caractères
+affichés à l'écran : il n'aurait rien supprimé. Le vrai identifiant a été relu dans
+l'instantané pris avant l'opération.
+
+Un contrôle en fin de transaction vérifiait cinq choses et annulait tout sinon : zéro
+session active ancienne, zéro doublon, 531 sessions exactement, 1331 événements, et
+aucune session fermée sans heure de fin.
