@@ -36,7 +36,7 @@ export const privacyCopy = {
   sections: [
     {
       title: "Qui traite vos données",
-      body: "[A COMPLETER: identité de l'éditeur, statut juridique, adresse] est responsable du traitement. Vous pouvez écrire à [A COMPLETER: adresse email de contact] pour toute question ou pour exercer vos droits.",
+      body: "[A COMPLETER: identité de l'éditeur, statut juridique, adresse] est responsable du traitement. Vous pouvez écrire à contact@dwiggins.fr pour toute question ou pour exercer vos droits.",
     },
     {
       title: "Ce que nous collectons",
@@ -64,7 +64,7 @@ export const privacyCopy = {
     },
     {
       title: "Sous-traitants",
-      body: "Neon, pour l'hébergement de la base de données. [A COMPLETER: hébergeur du site une fois le déploiement choisi] pour la mise en ligne des pages. Aucun autre prestataire ne reçoit vos données.",
+      body: "Neon, pour l'hébergement de la base de données. Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis, pour la mise en ligne des pages. Aucun autre prestataire ne reçoit vos données.",
     },
     {
       title: "Vos droits",
@@ -97,11 +97,11 @@ export const legalNoticeCopy = {
     },
     {
       title: "Hébergeur",
-      body: "[A COMPLETER: nom, adresse et téléphone de l'hébergeur du site]. La base de données est hébergée par Neon sur AWS, région eu-west-2, à Londres, Royaume-Uni.",
+      body: "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis, legalnotices@vercel.com. Vercel ne publie pas de numéro de téléphone. La base de données est hébergée par Neon sur AWS, région eu-west-2, à Londres, Royaume-Uni.",
     },
     {
       title: "Contact",
-      body: "[A COMPLETER: adresse email de contact]",
+      body: "contact@dwiggins.fr",
     },
   ],
 } as const;

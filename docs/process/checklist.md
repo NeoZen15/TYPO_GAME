@@ -3351,3 +3351,61 @@ rien et la zone `.fr` n'a aucune délégation. LWS annonce une heure. À revéri
 
 **Le mail de vérification de l'AFNIC est à confirmer** dans les prochaines heures, sans
 quoi le domaine peut être suspendu au bout de quelques jours.
+
+### 2026-08-25, la séquence CR est complète, douze cadres
+
+**Marion a repéré que l'introduction annonçait onze pages alors qu'il en existait six.** Constat juste : elle avait été écrite en avance sur la fabrication. Les cinq manquantes sont faites.
+
+Rangée unique à **y 32000**, pas de 2100. Contrôle programmé : douze cadres, aucune numérotation manquante, **aucun chevauchement**. L'introduction a été déplacée par Marion en tête de rangée, à x -1857.
+
+| # | Planche | Forme du graphique |
+|---|---|---|
+| 00 | Introduction | onze cartes dans la DA de la planche 18, couleur par question |
+| 01 | La promesse | promesse énoncée, puis trois termes portant chacun son micro-schéma |
+| 02 | Le geste | boucle à quatre temps, un seul en plein : celui du joueur |
+| 03 | L'erreur | ligne des quatorze questions suivantes, fenêtre interdite en pointillé |
+| 04 | La mémoire | dix typographies à dix niveaux différents |
+| 05 | Le rythme | cinq fenêtres d'étendue sur un axe de 0 à 150 questions |
+| 06 | Le pool | 1 279 cases, 30 allumées par tirage déterministe |
+| 07 | La difficulté | le même mot quatre fois, sur trois rangs de proximité τ1 τ2 τ3 |
+| 08 | La progression | vingt-cinq barres, longueur égale au seuil de typos maîtrisées |
+| 09 | La compétition | escalier monotone contre ligne volatile, cloison I-11 |
+| 10 | Le système | boucle à cinq temps, plus les deux lectures qui en sortent |
+| 11 | La vision | trois terrains, un seul plein, deux en pointillé |
+
+**Douze formes de graphique, aucune répétée.** Tous les chiffres sont relevés dans le dépôt ou les specs, et les trois planches dont la forme est illustrative le déclarent : « schéma de comportement, pas un relevé ».
+
+**La 07 est la meilleure preuve de la série.** Le même mot rendu dans quatre polices, sur trois rangs : au premier, les quatre sont évidemment différentes ; au troisième, on ne les départage plus. Le lecteur éprouve la difficulté au lieu de la lire. Chiffre en pied : 12 416 paires mesurées indistinguables au seuil 0,01, en 53 familles, sur 1 117 typographies jouables.
+
+**La 10 est le seul endroit du document où les constantes du moteur ont leur place**, et elles y sont toutes en une ligne de pied : pool 30, nouvelle typo à 3 acquises, maîtrise 0 à 4, retour entre 1 et 150 questions, planchers 2 et 5, leurres en τ1 τ2 τ3, niveau visible N.1 à E.5.
+
+**Reste à faire, décidé par Marion pour plus tard :** ranger et renommer les planches une fois validées, et retirer les propositions périmées, dont le sommaire en liste à (2400, 8000) que l'introduction remplace, et les douze planches des séries PROPOSITION et MOTEUR.
+
+### 2026-08-25, mentions légales : de huit informations manquantes à quatre
+
+`contact@dwiggins.fr` existe, chez LWS. Deux marqueurs remplis avec elle, deux autres
+avec l'identité légale de l'hébergeur, relevée dans les conditions de Vercel :
+**Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis**. Ils ne publient
+pas de numéro de téléphone, seulement `legalnotices@vercel.com`, ce qui est courant pour
+un hébergeur étranger et se dit tel quel dans les mentions.
+
+**LA VOIE QUI DISPENSE MARION DE PUBLIER SON IDENTITÉ, vérifiée dans le texte.**
+L'**article 1-1 de la LCEN**, dans sa version issue de la loi du 21 mai 2024, permet à
+une personne qui édite un site **à titre non professionnel** de ne tenir à la disposition
+du public que **le nom et l'adresse de son hébergeur**, à condition de lui avoir
+communiqué sa propre identité. L'hébergeur est alors tenu au secret professionnel,
+opposable à tous sauf à l'autorité judiciaire.
+
+Concrètement : ni nom, ni adresse postale, ni SIRET dans les mentions légales, seulement
+Vercel. **Ça vaut tant que le jeu est gratuit.** Le jour de la première licence vendue à
+une école, Marion devient éditeur professionnel et l'identité complète redevient
+obligatoire. Même seuil, même déclencheur que le passage à l'hébergement payant.
+
+**LA NUANCE À NE PAS ESCAMOTER.** Cette dispense couvre les mentions légales, pas
+clairement la politique de confidentialité : le RGPD demande d'identifier le responsable
+du traitement, et le jeu stocke bien des données de joueurs. C'est le point précis à
+poser à la relecture juridique, déjà prévue.
+
+**Ce qui reste, quatre informations :** l'identité du responsable du traitement (le point
+RGPD ci-dessus), la durée de conservation, et les deux champs d'identité des mentions
+légales que la dispense pourrait supprimer. Décision du propriétaire, pas technique.
