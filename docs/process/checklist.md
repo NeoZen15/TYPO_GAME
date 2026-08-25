@@ -3122,3 +3122,232 @@ exactement la forme de ce projet, 57 Mo de polices en 1305 fichiers.
 créer `contact@dwiggins.fr`, ajouter le domaine au projet web Adobe (sans quoi les 108
 polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
 `GAME_PROVIDER_SECRET`, puis brancher le domaine.
+
+**2026-08-25, le texte de l'affiche.** Le bloc provisoire en haut à droite du symbole, que Marion avait rempli au clavier, porte maintenant : « On a passé cette forme dans la machine. On la reconnaît encore. Ton œil sait faire ça. Il ne sait pas encore le faire avec une lettre. C'est tout le jeu. » Inter Extra Bold Italic 16, interlignage 145 pour cent, encre ivoire, largeur 396, il descend à 222 pour un mot DWIGGINS qui commence à 267. Cinq phrases, aucune ne dépasse dix mots, ton du chapitre Le discours. Et la plaque sous le panneau, qui disait encore « CLASSIFICATION VOX », porte « LA DANSE · 1910 », comme la plaque HAYDEN de la référence porte l'éditeur. Attention : ce crédit rend la citation explicite, ce que la page 22 nomme comme un problème de marque. Il tient parce que Marion garde le tableau entier sur l'affiche, mais il tombe si l'affiche devient publique.
+
+### 2026-08-25, une planche témoin pour le bloc Discours
+
+**Fait.** Cadre `18 · PROPOSITION · Des messages` sur la Page 1 du Figma de charte, posé à (200, 8000), sous le document et au dessus des kits d'interface importés. **La planche 18 d'origine n'a pas été touchée.**
+
+**Le diagnostic qui a lancé ça.** Marion : « ça se voit c'est Claude ». Vérifié dans le fichier, et c'est vrai sur huit planches seulement, pas soixante : la 11 et tout le bloc Discours, 13 à 19. Toutes bâties sur un calque `panneau` à coins arrondis plus une répétition de `col`. Quatre rayons sur les 14 à 17, neuf sur la 11.
+
+**Le marqueur le plus fiable est le nom des calques.** La planche 10, celle que Marion aime, nomme ses calques d'après le phénomène : `courbe-de-l-oubli`, `point-de-rappel`, `ligne-memoire-pleine`. La 14 les nomme d'après le contenant : `panneau`, `col`, `col`. Une page qui sait ce qu'elle démontre nomme la chose, une page qui ne sait pas nomme la boîte.
+
+**Trois refs analysées, et elles ne se recouvrent pas.** Letterform Archive donne la rigueur, montrer la pièce à pleine fidélité avec des champs fixes. Une planche de dataviz sur fond noir donne la lisibilité, la quantité dans la marque et jamais dans un axe. Dear Data donne le seul point qui débloquait le bloc Discours : comment rendre visible ce qui n'est pas mesurable, en décidant ce que vaut une marque. La grammaire de leur verso est fixe : `ABOUT THE DATA` la définition, `HOW TO READ IT` avec une vignette du recto, puis la liste des variables.
+
+**Décision actée : la méthode, pas la main.** Ce qui remplace le tracé manuel n'est pas un filtre tremblé, qui serait pire, c'est la donnée elle même. Une marque réellement pilotée par des valeurs vraies est irrégulière par nécessité, donc aucun gabarit ne transparaît.
+
+**Ce que la planche témoin applique.** Sept cartes sans aucun coin arrondi. La couleur code l'adjectif servi, et une clé de lecture le dit explicitement. Le corps des messages est en `Geist Mono`, déjà employé aux corps 10 et 13 sur la planche 10 : **la charte parle dans Inter, le produit parle dans son mono**, et le changement de voix est visible. L'anatomie de la planche 10 est reprise au pixel : numéro à (96, 100), titre à (280, 168), paragraphe à (380, 916), logo et folio à y 998.
+
+**La septième carte est vide, en filet pointillé.** Aucune phrase du produit n'est pince-sans-rire, la planche 18 d'origine le disait déjà en toutes lettres. Le constat devient un objet dessiné au lieu d'un paragraphe.
+
+**Reste ouvert.** La rotation à plus ou moins 3 degrés est un choix de DA, la version alignée sans rotation est à un réglage. Et les sept autres planches, 11 et 13 à 19, attendent la validation de celle ci.
+
+### 2026-08-25, deuxième planche témoin, celle qui porte un graphique
+
+**Fait.** Cadre `19 · PROPOSITION · Les règles d’écriture` sur la Page 1, à (200, 9400), sous la proposition de la 18. **La planche 19 d’origine n’a pas été touchée.**
+
+**Les chiffres ont été recalculés, pas recopiés.** Script `tmp/mesurer-copie.mjs`, relevé dans `content/copy.ts`, commentaires retirés, chaînes découpées au point, libellés d’un seul mot écartés. Résultat écrit dans `tmp/mesures-copie.json`.
+
+**Écart avec ce que la planche affiche aujourd’hui, à trancher par Marion.** La planche dit 47 phrases, médiane 6, moyenne 8,7. Le relevé donne **44 phrases, médiane 7, moyenne 9,34**. L’écart ne vient pas d’une erreur mais d’une définition : ce qui compte comme une phrase n’est pas la même chose dans les deux comptages. C’est exactement la leçon Dear Data, où Stefanie écrit « un espace est défini par le fait que j’aie dû franchir une porte ». La définition est la décision de design, donc elle doit être écrite sur la planche, et elle l’est.
+
+**Ce qui est confirmé exactement.** Zéro point d’exclamation, zéro tiret séparateur, zéro émoji, zéro point de suspension. Et **six phrases au dessus de vingt mots**, le même chiffre que la planche annonçait.
+
+**La trouvaille qui justifie le graphique.** Les six phrases longues viennent **toutes du même bloc**, `progressionExplainerCopy`, celui qui explique la progression. La règle « une phrase, une idée » tient partout ailleurs. L’exception est concentrée et elle a une raison. Aucun tableau ne montrait ça, le graphique le rend indiscutable en une seconde.
+
+**Le dessin.** Une colonne par phrase, 44 colonnes rangées par longueur croissante. **Un carré de 12 px par mot**, 411 carrés au total, empilés depuis la ligne de base. La couleur code la provenance dans le produit, six blocs. Ligne de médiane à sept mots, ligne de seuil pointillée à vingt. Répartition des carrés : progression 284, mode training 61, page absente 31, erreur 23, fin de séance 8, jauge 4.
+
+**Garde-fou posé dans le script Figma.** Il refuse de s’exécuter si les deux séries ne concordent pas, longueur 44 des deux côtés et somme des mots à 411. Sur 411 objets identiques, l’œil ne vérifie plus, c’est l’arithmétique qui doit le faire.
+
+**Reste ouvert.** Trancher 44 contre 47. Et les six planches restantes : la 11, la 13, et les 14 à 17 qui prennent la carte de la 18.
+
+### 2026-08-25, refonte 10 à 19, quatre planches sur huit
+
+**Consigne de Marion : refaire de la 10 à la 19, et une forme de graphique différente à chaque planche.** Toutes les propositions sont posées sous le document sur la Page 1, à partir de y 8000, nommées `NN · PROPOSITION · …`. Aucune originale n'est touchée.
+
+| Planche | Forme | Donnée qui la porte | y |
+|---|---|---|---|
+| 18 · Des messages | cartes posées | 6 messages réels, 1 adjectif sans exemple | 8000 |
+| 19 · Les règles | colonnes de mots empilés | 44 phrases, 411 mots, médiane 7 | 9400 |
+| 14 · Calme | grille 12 mots x 44 phrases | 3 occurrences sur 528 cases | 10800 |
+| 15 · Direct | bande proportionnelle | 29 / 12 / 3 idées par phrase | 12200 |
+
+**Un module unique traverse les trois planches de mesure.** Pas de 26 px, 44 colonnes, toujours les mêmes 44 phrases dans le même ordre. Les planches 14 et 19 partagent le système de coordonnées, la 15 le garde en changeant seulement le tri, et sa clé le dit.
+
+**Le meilleur relevé de la série.** « score », « clock » et « beat » n'apparaissent qu'une fois chacun dans les 44 phrases vues par le joueur, et les trois sont dans la même phrase : « There is no score to beat and no clock to race. » Le calme cesse d'être un adjectif, c'est un relevé de vocabulaire.
+
+**Deux constats confirmés.** Zéro adverbe en -ly dans toute la copie, alors que la règle de la planche 15 demande de les supprimer. Et la copie ne code en dur qu'**un seul nombre**, « 404 », un code d'erreur : tous les autres nombres vus par le joueur sont calculés à l'exécution (`{eye.level}`, `{eye.streak}`, `{totalPaliers}`, `{step.level}`). La règle « ne jamais écrire un nombre qu'on n'a pas relevé » est donc tenue par la structure, pas par la discipline. C'est ce qui portera la planche 16.
+
+**Point de vigilance pour Marion.** `{eye.streak}` est rendu dans l'interface. Le mot « streak » n'est nulle part dans la copie, donc la planche 14 reste exacte à la lettre, mais si le joueur voit un compteur de série à l'écran, l'esprit de la règle Calme est entamé. À vérifier sur l'écran, pas dans le code.
+
+**Reste à faire.** 16 Précis, 17 Pince-sans-rire, 11 La direction, 13 La signature. Plus le bloc de définition à ajouter à la 10. La 12 est un intercalaire d'une série de sept, laissée de côté.
+
+### 2026-08-25, la séquence MOTEUR, sept planches avant la 10
+
+**Consigne de Marion : expliquer tout le fonctionnement du jeu avec des graphiques, sept ou huit planches, avant la planche 10. Et ne pas montrer la carte du regard.** J'étais parti du code seul, ce qui était l'erreur : les specs de `docs/game` disent bien plus, et surtout elles disent pourquoi.
+
+**Ce que les specs ajoutent au code.** `training-engine-spec-v2-clean.md` porte **quatorze invariants pédagogiques nommés et sourcés**, I-01 à I-14, présentés comme une liste fermée qu'aucune logique ne peut contredire. Plus une table de paramètres tunables complète : `POOL_TARGET_SIZE` 30, `POOL_UNLOCK_THRESHOLD` 3, `COOLDOWN_WRONG_Q` 2, `COOLDOWN_CORRECT_Q` 5, poids adaptatif borné de 0,5 à 2,0, incrément 0,1 sur erreur et décrément 0,05 sur réussite, `POOL_TARGET_BY_TIER` N:30 D:30 C:32 A:34 E:36, trois distracteurs non tunables.
+
+**L'emboîtement, qui est le cœur et que rien n'expliquait.** Typo, puis palier, puis axe, et **tout est dérivé, jamais incrémenté à la main**. Un palier s'allume à `a(P) >= 0,80` ET `m(P) >= 5` typos **distinctes** : c'est un seuil de **généralisation**, pas de mémorisation. Un axe s'allume à 70 % de ses paliers. Les états sont monotones, `lit` reste `lit` à vie, et `needs_refresh` est un drapeau d'affichage qui n'éteint jamais rien.
+
+**Contradiction entre deux specs, tranchée en faveur du code.** `perceptual-progression-spec.md` §4 donne les intervalles en **jours**, 1 / 3 / 7 / 21 / 60, et « une typo ratée ne revient pas avant ~10 questions ET ~24 h ». `training-engine-spec-v2-clean.md` §4.1 les donne en **questions**, 1-3 / 3-6 / 10-25 / 25-50 / 80-150, planchers 2 et 5. **Le code implémente la version en questions.** Les valeurs en jours sont marquées provisoires. À figer dans la charte, sinon un lecteur qui ouvre les deux specs trouve deux moteurs différents dont un n'existe pas.
+
+**Deux planches posées**, sous le document, colonne x 200.
+
+| Planche | Forme | y |
+|---|---|---|
+| MOTEUR 1 · Deux couches étanches | escalier monotone contre ligne volatile, cloison I-11 | 15200 |
+| MOTEUR 2 · L’échelle par typo | échelle à cinq barreaux, deux colonnes de flèches | 16600 |
+
+**Piège rencontré, à retenir.** Les flèches de montée étaient posées à `XB-42`, à l'intérieur de la boîte des libellés de niveau, larges de 150 et alignées à droite. Elles étaient donc invisibles. Une boîte de texte alignée à droite occupe toute sa largeur déclarée, pas seulement celle de ses glyphes.
+
+**Reste cinq planches moteur** : le retour en questions, les deux planchers, le pool qui ne perd rien, généraliser plutôt que mémoriser, l'Œil qui ne recule pas. Plus 17, 11 et 13 du bloc Discours, mises en attente.
+
+### 2026-08-25, la séquence MOTEUR est complète, sept planches
+
+Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept formes de graphique différentes, aucune répétée.
+
+| Planche | Forme | Ce qui la porte | y |
+|---|---|---|---|
+| MOTEUR 1 · Deux couches étanches | escalier monotone contre ligne volatile | I-11, cloison entre l'Œil et l'Arène | 15200 |
+| MOTEUR 2 · L'échelle par typo | échelle à cinq barreaux, deux colonnes de flèches | I-03, I-04, I-05 | 16600 |
+| MOTEUR 3 · Le retour en questions | barres d'étendue sur axe 0 à 150 | les cinq fenêtres et leurs milieux employés | 18000 |
+| MOTEUR 4 · Deux planchers | barres de débattement contre deux murs | coefficient 0,5 à 2,0, planchers 2 et 5, I-13 | 19400 |
+| MOTEUR 5 · Le pool | trente cases, une entrée, une sortie murée | I-06, I-07, POOL_TARGET_BY_TIER | 20800 |
+| MOTEUR 6 · Généraliser | deux piles face à face et un seuil | a(P) ≥ 0,80 ET m(P) ≥ 5 distinctes | 22200 |
+| MOTEUR 7 · L'Œil ne recule pas | deux pistes couplées, état contre mesure | monotonie, needs_refresh | 23600 |
+
+**Une erreur de méthode corrigée en cours de route, à retenir.** Sur la planche 4, l'axe allait de 0 à 240 questions, ce qui écrasait exactement ce que la planche devait montrer : les planchers agissent entre 1 et 5 questions, invisibles à cette échelle. Refaite sur 0 à 40, avec le module de 26 px des autres planches, et réduite à trois cas au lieu de cinq, dont un où le plancher ne mord pas. **L'échelle d'un graphique doit être choisie d'après ce qu'il démontre, pas d'après l'étendue de ses données.**
+
+**Deux pièges de composition rencontrés.** Une boîte de texte alignée à droite occupe toute sa largeur déclarée, pas celle de ses glyphes : les flèches de la planche 2 étaient invisibles dessous. Et sur la planche 6, la clé posée en coordonnée relative à la base du graphique tombait sur le paragraphe de pied, qui est en coordonnée absolue.
+
+**Bilan de la journée : douze planches de proposition**, cinq pour le bloc Discours, sept pour le moteur, douze formes différentes, toutes chiffrées sur des relevés réels ou explicitement marquées « schéma de comportement, pas un relevé ».
+
+**Reste à faire.** Les planches 17, 11 et 13 du bloc Discours, mises en attente lors du basculement vers le moteur. Trancher 44 contre 47 phrases. Et décider du remplacement en place, qui n'a pas été fait : les originales sont intactes.
+
+### 2026-08-25, la séquence est reprise à zéro, du point de vue du lecteur
+
+**Retour reçu, et il était juste.** La séquence MOTEUR racontait DWIGGINS comme un audit du code : titres en relevés (« la phrase médiane fait sept mots »), invariants I-03 / I-13 en clair, noms de variables. Le lecteur apprenait beaucoup sans jamais obtenir de réponse aux cinq questions simples : qu'est-ce que DWIGGINS, qu'est-ce que je fais dedans, pourquoi ça marche, qu'est-ce que j'apprends, pourquoi j'y reviens.
+
+**L'erreur nommée : la mesure était devenue le sujet au lieu d'être la preuve.** Un chiffre ne vaut que sous une affirmation qui intéresse le lecteur. Origine de la faute : sur-correction du reproche « ça se voit que c'est une IA ». Le remède, mesurer plutôt qu'affirmer, a été poussé au delà de son point d'équilibre et est devenu le symptôme suivant.
+
+**Deux questions sur cinq n'avaient aucune planche**, et c'étaient les deux premières. La séquence commençait au chapitre trois.
+
+**Nouvelle hiérarchie de page**, appliquée partout : le titre dit ce que le lecteur y gagne, à la deuxième personne. Le graphique le montre. Une ligne de preuve en mono, en petit corps, porte le chiffre et sa source. Le paragraphe dit le pourquoi en langage courant. Les invariants et les noms de variables ne disparaissent pas, ils descendent en note.
+
+**Nouvelle colonne à x 2400**, indépendante des propositions précédentes.
+
+| Planche | Contenu | y |
+|---|---|---|
+| 00 · Sommaire | cinq questions, neuf pages, liste par bandes | 8000 |
+| 01 · Un mot, quatre réponses | vraie capture de l'écran de jeu, clonée de la planche 55 | 9400 |
+| 02 · Ce qui se passe quand vous répondez | les trois états réels d'une réponse, clonés de la planche 60 | 10800 |
+
+**Décision : réemployer les captures déjà présentes** dans le bloc Les écrans plutôt que d'en produire de nouvelles. `capture-jeu` (351:639), `etat-au repos` (383:747), `etat-juste` (383:750), `etat-faux` (383:754).
+
+**Reste sept planches** à retourner, 03 à 09, qui reprennent les graphiques de la séquence MOTEUR sans les redessiner, mais avec le texte réécrit du point de vue du joueur.
+
+### 2026-08-25, LE SCRIPT DE LA CR, douze planches en rangée
+
+**Retour de Marion, et il portait plus loin que la mise en page.** Sa phrase règle tout : « le graphique doit venir prouver une idée que j'ai déjà comprise, et non me demander de comprendre le produit à travers le graphique ». Mes planches n'illustraient pas une explication, elles **étaient** l'explication.
+
+**La différence de fond.** Sa séquence suit l'ordre de la **découverte**, la mienne suivait l'ordre de l'**architecture**. Son numéro 3, L'ERREUR, arrive avant LA MÉMOIRE et LE RYTHME : contre-intuitif pour qui construit le moteur, juste pour qui découvre, parce qu'on se trompe avant de savoir qu'il existe des niveaux.
+
+**Contrainte de placement, et elle est réelle.** Marion a déplacé les propositions précédentes dans Figma : elles ne sont plus aux coordonnées écrites, et il existe deux cadres nommés `18 · PROPOSITION`. Les coordonnées en dur ne sont donc plus fiables. **Zone calculée : le document occupe jusqu'à y 29054, la nouvelle rangée est posée à y 32000.** Pas de chevauchement possible.
+
+**LE SCRIPT, à exécuter dans cet ordre, une planche par étape.** Rangée unique, y 32000, pas horizontal de 2100 px.
+
+| # | Planche | Idée forte, une seule | Graphique | x |
+|---|---|---|---|---|
+| 01 | LA PROMESSE | ce n'est pas un quiz, c'est un entraînement du regard | un mot, huit caractères, aucun nom | 200 |
+| 02 | LE GESTE | une typo, quatre réponses, un choix | capture réelle de l'écran de jeu | 2300 |
+| 03 | L'ERREUR | se tromper sert à cibler ce qu'il faut revoir | les trois états réels, et les deux flèches | 4400 |
+| 04 | LA MÉMOIRE | chaque typo a sa propre échelle, 0 à 4 | plusieurs typos à des niveaux différents | 6500 |
+| 05 | LE RYTHME | le moteur choisit le moment du retour | les cinq fenêtres d'intervalle | 8600 |
+| 06 | LE POOL | trente, pas mille deux cent quatre-vingts | le pool contre le catalogue | 10700 |
+| 07 | APPRENDRE À REGARDER | il ne dit pas faux, il dit où regarder | une vraie Misread Card | 12800 |
+| 08 | LA DIFFICULTÉ | les leurres se rapprochent du bon | les trois tau du choix des distracteurs | 14900 |
+| 09 | LA PROGRESSION | vingt-cinq crans, N.1 à E.5 | la courbe des seuils de n4 | 17000 |
+| 10 | LA COMPÉTITION | une autre façon de tester, séparée | les deux couches étanches | 19100 |
+| 11 | LE SYSTÈME | tout réuni, une seule planche dense | la boucle complète | 21200 |
+| 12 | LA VISION | la typographie est le premier terrain | déclaration | 23300 |
+
+**Trois sources lues pour cette séquence, qui manquaient jusque là.**
+
+`training-engine-spec-v2-clean.md` §6 : en V2 il n'existe **qu'un seul type de carte**, la **Misread Card**, déclenchée sur `full_error_first_wrong` quand `session_errors == 1` ou `consecutive_session_errors == 2`. Contenus statiques versionnés dans `content/type-cards/*.json`. Champ `visual_instruction`, 120 caractères maximum, exemple de la spec : « La prochaine fois, regardez l'espacement serré et le rythme rigide des lettres. » Durée 3500 ms, non bloquante, pas de fermeture manuelle. **Marion parle de Reading Cards et Misread Cards : la spec n'en connaît qu'une. À trancher.**
+
+`scoring-and-selection-math.md` §8.5 : les trois degrés de proximité des distracteurs. τ1 catégorie différente, τ2 même catégorie et cluster visuel différent, τ3 même cluster ou `confusion_pairs`. Repli journalisé `tau3_fallback` si la donnée de confusion manque. §8.6 : au démarrage à froid, dix défis en τ1 et τ2 seulement.
+
+`global-level-progression.md` : vingt-cinq crans, cinq rangs de cinq. `n4` est le **compte total** de typos à mastery 4, sans filtre de pool, « l'expertise acquise ne se perd pas ». Seuils N.1 à 0, D.1 à 15, C.1 à 40, A.1 à 100, E.1 à 250, E.5 à 650. Courbe serrée au début puis très espacée.
+
+`vision-produit-dwiggins.md`, vision figée du 2026-07-29, document de rang supérieur : « DWIGGINS n'est pas un jeu de quiz. C'est un moteur d'entraînement du regard. » Et « une séance est temporaire, la progression est permanente ».
+
+**Étape 1 faite** : `CR · 01 · La promesse` à (200, 32000). Le mot « regard » rendu dans huit caractères, aucun nommé.
+
+### 2026-08-25, exécution du script CR, six planches sur onze
+
+**APPRENDRE À REGARDER est retirée** sur décision de Marion, faute de temps pour trancher entre Reading Cards et Misread Cards. La séquence passe de douze à **onze planches**, renumérotées à la suite. Le sujet reste un manque assumé : c'est la mécanique qui distingue le mieux le produit d'un quiz, et aucune planche ne la porte.
+
+**Socle commun écrit une fois, réemployé à chaque planche** : `txt`, `preuve`, `souffle`, `pointe`, et `planche(n, nom, bloc, titre, corps)` qui pose le cadre à `x = 200 + (n-1) * 2100`, y 32000, avec numéro, folio, logo et titre centré. Toute planche suivante se réduit à son graphique.
+
+**Piège rencontré :** Figma refuse qu'on accroche une fonction sur un nœud (`f.txt = ...` lève `no such property 'txt' on FRAME node`). Les aides doivent être des fonctions autonomes prenant le cadre en premier argument.
+
+| # | Planche | Graphique | Chiffres, tous relevés |
+|---|---|---|---|
+| 01 | La promesse | le mot « regard » dans huit caractères, aucun nommé | vision figée du 2026-07-29 |
+| 02 | Le geste | capture réelle de l'écran d'entraînement | clonée de la planche 55 |
+| 03 | L'erreur | les deux états réels et le sens du rappel | 5 questions après une réussite, 2 après une erreur |
+| 04 | La mémoire | dix typos à des niveaux différents | I-05, échelle 0 à 4 par couple joueur et typo |
+| 05 | Le rythme | cinq fenêtres sur un axe de 0 à 150 questions | 1-3, 3-6, 10-25, 25-50, 80-150 |
+| 06 | Le pool | 1 279 cases, 30 allumées | catalogue relevé dans `typefaces-core.json` |
+
+**Chiffres réels relevés aujourd'hui, à retenir.** Le catalogue porte **2 136 enregistrements dont 1 279 actives**. Et `data/typography-profiles/indistinguishable-pairs.json` mesure, au seuil 0,01, **12 416 paires indistinguables** regroupées en **53 familles**, sur **1 117 typographies jouables**. C'est la preuve chiffrée de la planche difficulté, et elle est mesurée, pas déclarée.
+
+**Correction faite sur la 06, à retenir comme méthode.** Les trente cases du pool avaient été choisies par une liste d'indices à pas régulier : dans une grille de 43 colonnes, elles formaient une diagonale parfaite, donc un motif décoratif au lieu d'un échantillon. Remplacées par un tirage déterministe à générateur congruentiel, graine 20260825, et la grille est passée en 64 colonnes pour mieux occuper la page. **Un échantillon qui dessine une figure régulière ne se lit plus comme un échantillon.**
+
+**Reste cinq planches** : 07 la difficulté, 08 la progression N.1 à E.5, 09 la compétition, 10 le système, 11 la vision.
+
+### 2026-08-25, trois planches CR refaites en graphique sur retour de Marion
+
+**01 · La promesse.** Elle montrait huit caractères sans expliquer. Refaite en **deux colonnes** : « ce que votre œil voit » face à « ce que vous savez nommer », huit spécimens contre huit cases vides en pointillé, bilan `8 / 8` contre `0 / 8`. La légende nomme les huit polices en pied, après que le constat a porté. Le titre devient le constat lui-même.
+
+**02 · Le geste.** Deux versions abandonnées avant la bonne. La capture seule montrait sans expliquer. Les quatre cartes façon planche 18 expliquaient mais restaient du texte. Retenue : **le schéma de la boucle à quatre temps**, avec la trouvaille qui porte la planche : sur les quatre temps, **un seul appartient au joueur**. Les trois autres sont des décisions du moteur (I-10). Seul le temps 3 est en vert plein, les autres en filet. Boucle de retour dessinée sous les quatre.
+
+**03 · L'erreur.** Les deux captures de boutons disaient l'état mais pas la conséquence. Refaite en **ligne des quatorze questions suivantes**, avec la fenêtre interdite en pointillé et la case du retour au plus tôt en plein. On voit que la typo ne peut pas revenir avant 5 questions après une réussite, ni avant 2 après une erreur.
+
+**Règle qui se dégage de ces trois reprises.** Une capture d'écran montre, elle n'explique pas. Un texte explique, il ne montre pas. **Le schéma est le seul objet qui fasse les deux**, et c'est pour ça que Marion les redemande à chaque fois. La capture reste utile, mais comme pièce à conviction dans un schéma, jamais comme sujet d'une planche.
+
+**État : six planches sur onze.** Restent 07 la difficulté, 08 la progression N.1 à E.5, 09 la compétition, 10 le système, 11 la vision.
+
+### 2026-08-25, la 01 refaite en schéma, et une introduction dans la DA de la 18
+
+**01 · La promesse, troisième version, retenue.** Les deux premières montraient des spécimens sans expliquer. Celle ci est un **schéma comparé** : la ligne du quiz va question, réponse, score, puis bute sur un mur en pointillé, avec la mention « et rien ne s'en souvient ». La ligne DWIGGINS fait **diverger la réponse en deux** : ce que le joueur gagne, et ce que le moteur gagne, puis les deux convergent vers « la question revient au moment précis où vous alliez l'oublier », et la boucle repart. Titre : « Un quiz vous note. DWIGGINS vous entraîne. »
+
+C'est la planche qui répond à l'objectif que Marion avait posé pour tout le document, « pourquoi DWIGGINS est différent d'un simple quiz », et elle y répond en une image.
+
+**00 · Introduction**, posée à (200, 30700), au dessus de la rangée. Reprise de la DA de la planche 18 sur demande : **onze cartes** sans coins arrondis, à plat, légèrement pivotées, une par page de la séquence, texte en Geist Mono. La couleur code **à quelle question la page répond**, et une clé le dit en pied : ce que c'est, ce qui se passe quand vous répondez, comment le système apprend avec vous, jusqu'où ça va.
+
+**Décision de Marion : le rangement et le renommage se feront à la fin**, une fois les pages validées. Les anciennes propositions restent donc en place pour l'instant, y compris le sommaire en liste posé à (2400, 8000) que cette introduction remplace.
+
+**État : sept planches sur douze**, introduction comprise. Restent 07 la difficulté, 08 la progression, 09 la compétition, 10 le système, 11 la vision.
+
+### 2026-08-25, `dwiggins.fr` est acheté, chez LWS
+
+Renouvellement 8,39 € TTC par an, deux adresses mail comprises. Les options « Domain
+Plus » ont été écartées à raison : l'AFNIC anonymise déjà gratuitement le titulaire
+personne physique, vérifié sur deux domaines chez deux registrars différents qui
+partagent le même identifiant de titulaire `ANO00-FRNIC`. Un identifiant unique appartenant
+au registre, et non un écran de fumée propre à chaque vendeur, prouve que la protection
+est faite en amont. Le DNS accéléré a été écarté aussi, sans objet devant Vercel.
+
+LWS préféré à Infomaniak pour une seule raison : le point fort documenté de LWS est la
+réactivité de son support, qui est précisément le point faible d'Infomaniak, où des
+clients rapportent un compte verrouillé après un ou deux mots de passe erronés et un
+déblocage sur pièce d'identité. Les défauts de LWS, interface datée et performances
+d'hébergement, ne touchent pas ce projet puisque le site sera sur Vercel.
+
+**Pas encore délégué au moment d'écrire.** Vérifié de deux façons, le whois ne renvoie
+rien et la zone `.fr` n'a aucune délégation. LWS annonce une heure. À revérifier.
+
+**Le mail de vérification de l'AFNIC est à confirmer** dans les prochaines heures, sans
+quoi le domaine peut être suspendu au bout de quelques jours.
