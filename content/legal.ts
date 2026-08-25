@@ -56,7 +56,7 @@ export const privacyCopy = {
     },
     {
       title: "Combien de temps",
-      body: "Le cookie n'a pas de date d'expiration : il disparaît quand vous fermez votre navigateur. Les parties rattachées à un identifiant devenu inutilisable sont conservées le temps de mesurer et d'améliorer la pédagogie du jeu, puis anonymisées. [A COMPLETER: durée de conservation retenue, par exemple 24 mois]",
+      body: "Le cookie n'a pas de date d'expiration : il disparaît quand vous fermez votre navigateur. Les parties rattachées à un identifiant devenu inutilisable sont conservées le temps de mesurer et d'améliorer la pédagogie du jeu, puis anonymisées. Les données rattachées à un identifiant devenu inutilisable sont conservées vingt-quatre mois au plus, puis anonymisées.",
     },
     {
       title: "Où vos données sont stockées",
@@ -89,11 +89,11 @@ export const legalNoticeCopy = {
   sections: [
     {
       title: "Éditeur",
-      body: "[A COMPLETER: nom ou raison sociale, statut juridique, adresse postale, numéro SIRET, et numéro de TVA intracommunautaire le cas échéant]",
+      body: "Ce site est édité par une personne physique agissant à titre non professionnel. Conformément à l'article 1-1 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, dans sa version issue de la loi n° 2024-449 du 21 mai 2024, l'éditeur ne tient à la disposition du public que le nom et l'adresse de son hébergeur, ses éléments d'identification personnelle ayant été communiqués à ce dernier. L'hébergeur est tenu au secret professionnel à leur égard, dans les conditions des articles 226-13 et 226-14 du code pénal, ce secret n'étant pas opposable à l'autorité judiciaire.",
     },
     {
       title: "Directeur de la publication",
-      body: "[A COMPLETER: nom du directeur de la publication]",
+      body: "Le site n'étant pas édité à titre professionnel, l'éditeur se prévaut de l'article 1-1 de la loi du 21 juin 2004 précitée et ne rend pas cette information publique. Elle est détenue par l'hébergeur, à qui elle a été communiquée.",
     },
     {
       title: "Hébergeur",

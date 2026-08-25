@@ -3406,6 +3406,16 @@ clairement la politique de confidentialité : le RGPD demande d'identifier le re
 du traitement, et le jeu stocke bien des données de joueurs. C'est le point précis à
 poser à la relecture juridique, déjà prévue.
 
-**Ce qui reste, quatre informations :** l'identité du responsable du traitement (le point
-RGPD ci-dessus), la durée de conservation, et les deux champs d'identité des mentions
-légales que la dispense pourrait supprimer. Décision du propriétaire, pas technique.
+**APPLIQUÉ LE MÊME JOUR, sur accord du propriétaire. Il ne reste qu'UNE information.**
+
+La section « Éditeur » invoque désormais la dispense, texte à l'appui, et ne nomme
+personne. La section « Directeur de la publication » est **conservée** plutôt que
+supprimée : `check:legal-docs` l'exige, et il a raison, une section absente se lit comme
+un oubli alors qu'une section qui explique la dispense se lit comme un choix. Elle
+renvoie à l'hébergeur. La durée de conservation est fixée à **vingt-quatre mois**, la
+durée de référence de la CNIL pour de la mesure d'usage, suivie d'une anonymisation.
+
+**Le seul marqueur restant** est l'identité du responsable du traitement dans la
+politique de confidentialité. C'est le point RGPD ci-dessus, celui que la dispense de la
+LCEN ne couvre pas, et il attend la relecture juridique. Le bloqueur légal passe donc de
+« sept informations et une relecture » à « une question de juriste ».
