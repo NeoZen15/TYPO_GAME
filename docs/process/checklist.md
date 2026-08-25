@@ -2999,3 +2999,126 @@ système comme la version précédente le faisait, soit l'affiche assume le subs
 **Deux éléments ont disparu du fichier entre deux étapes**, la pastille en flèche et le
 calage à gauche du titre, sans qu'aucune autre session Claude ne soit active. Reposés.
 Si ça se reproduit, c'est une annulation faite à la main pendant que le script écrit.
+
+### 2026-08-24, l'affiche, le tableau de La Danse passé en pixels
+
+**Ce que Marion demande, et il a fallu trois messages pour que je le comprenne.** Le symbole de la marque **est** La Danse de Matisse, tracée. L'affiche doit montrer la même forme dans deux états : le tableau passé en pixels dessous, la machine, et la silhouette ivoire lisse dessus, la main. Référence donnée par Marion : la couverture de « Graphics Cookbook for the Apple », Nat Wadsworth, Hayden. Ma première lecture était fausse, je proposais de découper des panses et des déliés de lettres, ce qui réinventait moins bien une forme qui existe déjà.
+
+**Fait, page 2 du Figma, cadre `AFFICHE A4 · ici · le tableau en pixels` en 2702, 3730.** Le cadre d'origine `AFFICHE A4 · ici` en 2702, 1965 n'est pas touché, c'est une copie.
+
+**La méthode.** Le rectangle `image 1` est exporté par Figma en PNG à l'échelle 1, ce qui donne 794 x 650 parce que le cadre le rogne : le calque mesure 961 de large mais déborde de la page. Ce PNG est chargé dans Chromium par le Playwright du projet, moyenné case par case sur une grille de **66 x 54 modules de 12 px**, soit 792 x 648, puis réagrandi au module en aplats. Le résultat est **une seule image**, pas 3 564 rectangles : à ce nombre de cases, des carrés réels seraient illisibles dans le panneau des calques et inéditables en pratique. Les galons de l'affiche B restent en vrais carrés, eux, parce qu'ils sont 1 174 et qu'ils portent une règle.
+
+**Trois versions produites, une retenue.** La version moyenne simple est molle. La version quantifiée sur les **six couleurs de l'Apple II** (noir, blanc, vert, violet, orange, bleu ciel) est la citation la plus juste sur le papier mais elle détruit le tableau : le ciel devient cyan et les creux sombres mangent les danseurs. La version retenue quantifie sur **huit couleurs prises dans le tableau lui même**, par coupe médiane : `#355084 #3b807f #354aa7 #375bb7 #b0371d #ee5521 #55677e #c45d3e`. Les danseurs se lisent, et ça ressemble à une image d'ordinateur de 1983. Les trois PNG sont dans le dossier temporaire du job si Marion veut comparer.
+
+**La silhouette est recentrée dans le champ.** Elle était en 67, 484 pour un champ en 1, 413 de 792 x 648, donc décalée de 6 px à gauche et 18 px en haut. Ça se lisait comme une erreur plutôt que comme un parti. Elle est maintenant exactement centrée, en 73, 503. Je n'ai pas cherché à la caler sur les danseurs peints : le tracé a quatre figures là où le tableau en a cinq, donc il n'existe pas de superposition juste, et un centrage systématique est un choix défendable, pas un goût.
+
+**Deux points laissés à Marion.** La grille du tableau démarre à x 1, le damier sous DWIGGINS ne démarre pas au même reste modulo 12, donc les deux trames sont désalignées de 2 px. Invisible à cette échelle, réparable en décalant le tableau. Et la dernière rangée du damier a une teinte verte qui ressemble à un reste.
+
+**Le manque de charte que ça révèle, et il est plus grave que la langue.** Si la page 22, Le sens du symbole, ne dit pas que le symbole vient de La Danse, la charte cache l'origine de sa propre marque. À vérifier et à écrire.
+
+### 2026-08-25, correction : la grille n'a pas de case vide
+
+**Fait.** Marion a repéré que le panneau ne ressemblait pas à la ref, et la cause n'était pas la couleur mais la construction. Dans la couverture Hayden, **aucune case n'est vide** : le fond bleu clair est une nappe de carrés bleus, pas un aplat. Le panneau entier est une seule grille continue, du bord extérieur jusqu'au dessin.
+
+**Ce que je faisais de faux.** Je raisonnais en objets posés sur un fond, ce qui est un réflexe d'outil vectoriel. Sur un Apple II un pixel ne peut pas être vide : il a forcément une couleur, même noire. Il n'y a ni transparence ni fond, l'image EST la grille. Mêmes cinq anneaux qu'avant, mais l'anneau 1 était un creux noir et les quatre cases étaient du vide.
+
+**Reconstruit en entier.** Chaque case du 57 x 51 reçoit son carré, soit **2 907 carrés** au lieu de 1 174. Répartition : galon 980, nappe de fond 1 337, croix 87, spécimens 503. Le total tombe exactement sur 57 x 51, ce qui vaut contrôle de cohérence de la géométrie.
+
+**Changement de mesure.** Carré de **11 x 11 sur un pas de 12**. Toutes les tailles restent identiques et le jeu d'1 px dessine les filets de grille, sans avoir à poser un contour sur 2 907 objets.
+
+**Deux pièges rencontrés.** Une ligne de bitmap retapée à la main faisait 22 caractères au lieu de 23 ; le contrôle de longueur posé dans le script l'a arrêtée avant qu'elle ne pose des carrés décalés, et `bitmaps.json` fait foi, pas ce que je recopie. Et les carrés posés après le cartouche passaient devant : l'ordre des calques a été réécrit explicitement, grille au fond, typographie devant.
+
+**Reste ouvert.** La nappe de fond est à 12 % de beige, donc le panneau lit gris. La ref a un champ clair saturé, ce qui est justement la direction C. Les libellés de classe sont posés à même la grille et se lisent mal, une petite plaque derrière chacun réglerait ça. Et A et C restent à faire.
+
+### 2026-08-25, le galon en pixels autour du tableau
+
+**Demandé par Marion sur la référence Apple.** Le cadre en anneaux concentriques qui entoure l'image sur la couverture du « Graphics Cookbook ». Fait sur `AFFICHE A4 · ici · le tableau en pixels`.
+
+**Panneau 59 x 53 modules de 12 px, soit 708 x 636, en 42, 388.** C'est la largeur qui respecte la marge du symbole et du mot, à 42. Quatre anneaux, de l'extérieur vers l'intérieur : plein orange sur 2 modules, damier orange et rouge sur 2 modules (400 carrés), pointillé ivoire et noir sur 1 module (188 carrés), filet noir sur 1 module. Champ intérieur 47 x 41 modules, soit 564 x 492.
+
+**Les anneaux pleins sont en quatre rectangles, pas en carrés unitaires.** Un aplat de carrés jointifs de 12 px est pixel pour pixel identique à un rectangle dont les cotes sont des multiples de 12. Seuls les anneaux à motif ont besoin d'un carré par case, parce que la couleur y change de case en case. 592 nœuds au total au lieu de 1 200, pour un rendu identique.
+
+**Le point qui a demandé une décision : la trame de l'image est deux fois plus fine que celle du galon.** À 47 colonnes, le tableau devenait illisible, on ne voyait plus la ronde. En regardant la référence de près, le cadre y est en gros blocs et l'image en pixels fins : ce n'est pas la même trame. Donc module 12 pour le galon, module 6 pour l'image, soit 94 x 82 cases dans le champ. 6 divise 12, les deux trames restent en phase, et les danseurs se lisent.
+
+**Le tableau est recadré, pas déformé.** Le champ est au rapport 47 sur 41, le tableau au rapport 794 sur 650. Recadrage central à 745 x 650, donc 25 px retirés de chaque côté, plutôt qu'un étirement.
+
+**Le filet intérieur est passé du vert au noir.** En vert, il disparaissait contre le sol vert du bas du tableau, il ne séparait plus rien. En noir il sépare des deux côtés et il reprend le fond de l'affiche.
+
+**Deux réparations en passant.** Les quatre rectangles de l'anneau 0 avaient perdu leur remplissage, l'anneau apparaissait en clair. Encre remise. Et Marion travaillait dans le fichier en même temps : le `filet de bord` est passé en poids 3 et rentré de 12 px, je l'ai laissé tel quel, c'est mieux que ce que j'avais posé.
+
+**Un texte à changer, laissé à Marion.** La plaque en bas du panneau dit encore « CLASSIFICATION VOX », qui vient de l'autre affiche et qui ne veut plus rien dire ici. Sur la référence, cette plaque porte le nom de l'éditeur, HAYDEN.
+
+### 2026-08-25, hébergement : dix solutions comparées, chiffres relevés le jour même
+
+Recherche menée parce que **le jeu deviendra payant**. Marion a la spécification des
+licences scolaires, donc l'hypothèse « usage non commercial » a une date de péremption.
+
+**LE POINT QUI COMMANDE TOUT.** Le plan gratuit de Vercel est réservé à un usage non
+commercial, et leur définition est large : encaisser un paiement, faire la publicité
+d'un produit, **être payé par quelqu'un pour travailler sur le site**, l'affiliation,
+la publicité, **et même solliciter des dons**. Le jour de la première licence vendue à
+une école, il faut avoir changé.
+
+| Solution | Prix réel /mois | Commercial | Déploiement | Le défaut |
+|---|---|---|---|---|
+| Vercel Hobby | 0 € | **non** | `git push` | interdit dès la première vente |
+| Netlify gratuit | 0 € | oui | `git push` | **site coupé** à 300 crédits, ~15 Go |
+| **Cloudflare Workers Paid** | **5 $** | oui | `git push` | une journée de migration |
+| **OVH VPS-1** | **4,57 € TTC** | oui | à monter | administration système |
+| Hetzner CX22 | 4,49 € | oui | à monter | administration système |
+| Scaleway STARDUST1-S | 0,43 € **+ extras** | oui | à monter | 1 Go de RAM, insuffisant |
+| Scaleway DEV1-S | 6,55 € **+ extras** | oui | à monter | plus cher qu'OVH pour moins |
+| o2switch Grow | 7 € | oui | **manuel en SSH** | pas de `git push`, domaine offert |
+| Hostinger KVM1 | 5,49 puis **11,99 €** | oui | à monter | double au renouvellement |
+| Vercel Pro | ~20 $ | oui | `git push` | quatre fois Cloudflare |
+
+**Netlify autorise bien le commercial en gratuit**, confirmé deux fois par des
+administrateurs sur leur forum, en 2021 et 2023 : *« Yes, you can use the free plan for
+commercial projects »*, la seule interdiction étant de revendre leur hébergement. Mais
+leur modèle 2026 donne 300 crédits par mois, soit environ 15 Go de trafic, et **à
+épuisement le site s'arrête jusqu'au mois suivant**. Coupure sèche, pas de facturation.
+Disqualifiant pour un site public.
+
+**Deux erreurs que j'avais commises et qui sont corrigées ici.** J'avais écarté OVH sur
+2 Go de RAM : le VPS-1 en a **4**, ma source était un comparatif périmé. Et j'avais
+écarté o2switch en août sur un risque de panne mémoire : elle ne vient pas de leur
+hébergement mais du terminal intégré au cPanel, et se contourne avec un vrai client SSH
+ou en compilant en local.
+
+**Le piège Scaleway :** leurs 0,43 € n'incluent ni le stockage ni l'adresse IPv4
+publique, le prix réel monte de un à deux euros.
+
+**CE QUI EST DÉCIDÉ.**
+
+Aujourd'hui, **Vercel gratuit**, sans affiliation ni paiement. Coût total du projet :
+les 8,40 € annuels du domaine. La base Neon et l'hébergement sont gratuits à ce volume.
+
+Le seuil technique à surveiller dans le tableau de bord Vercel : **4 heures de calcul par
+mois**, soit environ cinquante joueurs par jour.
+
+Le jour de la monétisation, **Cloudflare Workers Paid à 5 $**. Choisi contre OVH, à
+quarante centimes près, pour deux raisons : aucune machine à administrer, et surtout
+**les fichiers statiques y sont servis gratuitement et sans quota**, ce qui est
+exactement la forme de ce projet, 57 Mo de polices en 1305 fichiers.
+
+**LA MIGRATION EST DÉJÀ CHIFFRÉE, sur le code réel, pour qu'elle ne fasse pas peur.**
+
+- `lib/brand/brand-art.ts`, 41 lignes, lit trois SVG sur le disque à chaque requête. À
+  embarquer à la compilation.
+- `lib/typography/content.ts`, 257 lignes, parcourt un dossier à chaque requête. Ce
+  dossier fait **8 fichiers et 248 Ko**, donc l'embarquer est trivial ; le seul travail
+  est de remplacer le parcours de dossier par une liste explicite.
+- `node:crypto`, dans quatre fichiers : **aucune ligne à changer**, l'option
+  `nodejs_compat` suffit.
+- Cinq pages seulement dépendent de ces deux lecteurs : `/profile`, `/dev/badges`,
+  `/type/[slug]`, `/compare`, `/compare/[slug]`.
+- **Aucun middleware dans le projet**, ce qui tombe bien : c'est la seule fonctionnalité
+  de Next.js que Cloudflare ne supporte pas.
+- Cinq dépendances seulement, et le pilote Neon est conçu pour la périphérie de réseau.
+- Les 1305 fichiers de police passent large : la limite est de 100 000 fichiers et
+  25 Mio par fichier.
+
+**L'ordre des opérations à la mise en ligne**, à ne pas inverser : acheter le domaine,
+créer `contact@dwiggins.fr`, ajouter le domaine au projet web Adobe (sans quoi les 108
+polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
+`GAME_PROVIDER_SECRET`, puis brancher le domaine.
