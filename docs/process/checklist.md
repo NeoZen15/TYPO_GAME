@@ -128,7 +128,14 @@ Le troisième a été réglé en rendant la promesse vraie plutôt qu'en l'affai
 **Ce qui reste ouvert, et c'est le plus important pour la suite.**
 
 - **Les clusters visuels ne sont pas réparés**, et c'est le pire défaut du rangement, puisque ce sont eux qui fabriquent les mauvaises réponses donc la difficulté. `structural_signature_json` ne peut pas servir de signal : **41 signatures distinctes pour 1172 polices**, et trois monospaces différentes portent la même au champ près, donc elle est preset elle aussi. Un gain intermédiaire existe et vaut d'être mesuré d'abord : regrouper par signature donnerait 41 clusters au lieu de 11, par script. Le réparer vraiment demande soit de faire tourner `extract_typeface_specimen_data.py` sur les 1172 fichiers, soit de l'œil humain.
-- **`primary_category` compte 3 `display` sur 1172**, ce qui est manifestement faux. À mesurer avant de corriger.
+- ~~**`primary_category` compte 3 `display` sur 1172**, ce qui est manifestement faux.~~
+  **MESURÉ LE 2026-08-26, ET C'ÉTAIT CETTE NOTE QUI ÉTAIT FAUSSE.** Croisement des 1090
+  polices Google actives appariées avec les métadonnées de Google, qui classent elles
+  mêmes leurs familles : **7 désaccords sur 1090**. Google ne reconnaît que **5 polices
+  de titrage** parmi les actives du catalogue, contre 3 ici. Les 468 `Display` de Google
+  existent bien, mais dans leur catalogue entier de 1946 familles, pas dans le sous
+  ensemble importé. Le catalogue avait donc raison, et cette note a orienté à tort
+  plusieurs analyses.
 - **Le volet Adobe a son propre plan à écrire**, et ce chantier lui prépare l'étagère : Helvetica, Futura PT, Univers Next et Trajan entreront en `common` par nature. Faits établis le 2026-08-19 : les 60 noms cherchés sont **tous** dans la bibliothèque Adobe, le kit `ozq5yfs` existe et s'appelle DWIGGINS mais son domaine vaut `"f"` par erreur, et **aucun fichier de police Adobe n'est téléchargeable**, donc `extract_typeface_specimen_data.py` et `mirror_fonts.py` ne tourneront jamais dessus. Détail dans `docs/typography/adobe-fonts-candidates.md`.
 
 ## Note — 2026-08-19 (suite 4) — le chapitre typographie de la charte passe de deux pages à dix
@@ -3817,3 +3824,32 @@ Le bloc logo traitait le symbole sous tous les angles et ne disait rien du mot. 
 
 1. L'intercalaire du bloc 2 annonçait « ONZE PAGES », corrigé en « DIX PAGES ».
 2. **Il porte encore une carte « 18 · LA VISION » qui pointe vers une page qui n'existe plus.** Non supprimée volontairement : c'est au propriétaire de dire s'il rétablit la page ou s'il retire la carte.
+
+### 2026-08-26, la catégorie principale n'était pas fausse, c'est la note qui l'était
+
+La checklist affirmait depuis l'audit de juin que `primary_category` ne reconnaît que
+trois polices de titrage, « ce qui est manifestement faux ». **Mesuré : c'est l'affirmation
+qui était fausse.**
+
+Les métadonnées publiques de Google classent leurs propres familles. Sur les **1090
+polices Google actives appariées**, il y a **7 désaccords**. Google compte **5 polices de
+titrage** parmi les actives du catalogue, contre 3 ici. Les 468 `Display` de Google
+existent, mais dans leur catalogue entier de 1946 familles ; le sous-ensemble importé ici
+est presque entièrement composé de polices de labeur.
+
+**Les sept désaccords, jugés un par un.** Google a raison sur quatre : Alumni Sans Inline
+One est une lettre en filet, Castoro Titling porte « Titling » dans son nom, Tektur est
+une techno, Anybody est une variable dont l'instance par défaut est extrême, mesurée à
+0,079 de graisse. Le catalogue a raison sur deux, et ce sont les plus employées : **Anton
+et Bebas Neue**, que Google range en linéales, ce qui est vrai de leur construction mais
+faux de leur usage, personne ne compose un texte avec. Sono reste douteuse.
+
+**Aucune migration écrite, et c'est un arbitrage.** Quatre lignes sur 1279 seraient à
+corriger, mais `primary_category` sert de clé aux clusters posés la veille par la
+migration 018 : les changer désynchroniserait un regroupement fraîchement vérifié pour un
+gain de quatre lignes. Le rapport est mauvais.
+
+**Ce qui reste utile de cette mesure** : la méthode. Croiser le catalogue avec la
+classification de Google, en normalisant les deux côtés comme le fait
+`build_rarity_from_popularity.slugifie`, se rejoue en une commande et vaut mieux qu'une
+impression.
