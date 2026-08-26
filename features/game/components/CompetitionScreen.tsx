@@ -338,8 +338,20 @@ const competitionScreenStyles = `
     min-height: 5.2rem;
     border-radius: var(--radius);
     border: 1px solid rgba(58, 38, 48, 0.12);
-    background: rgba(244, 243, 238, 0.86);
-    
+    /* 2026-08-26. Ici il y avait rgba(244, 243, 238, 0.86), un creme quasi
+       opaque ecrit en dur, alors que le libelle est en --competition-ink, soit
+       #f4f3ee en theme sombre. Creme sur creme : 1,35 de contraste mesure au
+       pixel peint, pour un seuil de 4,5. Les quatre reponses etaient illisibles,
+       donc le mode entier etait injouable. La meme classe en training donne 18,9.
+       On reprend donc le fond EXACT de training (app/globals.css, .game-v2-option),
+       un degrade sur --surface-strong, qui suit le theme au lieu de l ignorer.
+       Pas d accent grave dans ce commentaire : il vit dans un template literal. */
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--surface-strong) 94%, transparent) 0%,
+        color-mix(in srgb, var(--surface-strong) 88%, transparent) 100%
+      );
     cursor: pointer;
     transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
   }
