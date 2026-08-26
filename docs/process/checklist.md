@@ -184,6 +184,24 @@ Marion a redessiné le symbole au pinceau dans Illustrator (`~/Desktop/test.ai`)
 
 **Ce qui reste vrai et n'a pas de correctif technique : le tracé ne se lit pas sous 32 px.** Mesuré : bon à 64, tenable à 32, une tache à 16. Trois échelles du symbole dans le disque ont été comparées à 16 px, aucune ne rattrape quoi que ce soit : ce n'est pas un problème de rendu, c'est la densité du dessin. Conséquence à garder en tête : la page 16 de la charte déclare un symbole d'en tête de 19,3 px de large, donc en en tête le symbole ne se lit pas comme cinq figures, il fait signe. Acceptable pour une marque en en tête, pas si un jour il doit être identifiable à cette taille.
 
+## Note — 2026-08-26 — PP Frama : mesuré, le site ne la télécharge jamais, l'exposition est ailleurs
+
+**Statut : rien changé, mesure seule.** Marion s'apprêtait à acheter une licence webfont (« c'est cher mais pas le choix »), puis a précisé « je l'achète mais que pour le logo » et « sur le site elle doit rien avoir d'autre ». La mesure change les termes de l'achat.
+
+**Le site ne télécharge jamais la police, aujourd'hui.** Piloté au navigateur sur `/profile`, `/`, `/play`, puis en ouvrant les six onglets du profil : les trois `@font-face` sont bien enregistrées par `DwigginsBadgeDefs` sur les onglets Profil et Réussites, mais leur statut reste **`unloaded`**, **aucun `.otf` n'est demandé au serveur**, et **aucun élément rendu ne porte `font-family: 'PP Frama'`**. Une police ne se charge qu'au premier usage réel, et les blasons actuels sont des symboles sans texte.
+
+**Piège de mesure à connaître :** `document.fonts.check("700 16px 'PP Frama'")` renvoie `true` alors que la police n'est pas chargée. Il répond « ce texte peut être rendu », repli compris, pas « cette fonte est là ». La bonne mesure est de parcourir `document.fonts` et de lire le `status`, ou d'écouter les requêtes réseau.
+
+**Mais le risque est armé.** `lib/brand/dwiggins-badge-engine.ts` ligne 59 émet `<text font-family="${FR}">`, où `FR` (ligne 49) nomme `'PP Frama'` en tête de pile. Le jour où un badge dessine du texte, le téléchargement part.
+
+**Et l'exposition réelle n'est pas le rendu.** Les trois `.otf` sont dans `public/fonts/brand/`, donc **publiquement téléchargeables depuis le site déployé**, que quelqu'un les demande ou non. C'est cette mise à disposition que `check:font-licenses` signale, et c'est elle qui relève d'une licence webfont.
+
+**Conséquence pour l'achat, à vérifier auprès de Pangram Pangram avant de payer.** La question n'est pas « puis-je l'utiliser sur mon site » mais « une licence desktop suffit-elle si la police ne quitte jamais la machine et n'apparaît en ligne que sous forme de tracés ». Si oui, retirer les trois `.otf` de `public/` et le `@font-face` fait tomber le blocage go-live, pour une fraction du prix.
+
+**Décidé : les badges seront entièrement refaits**, mais en fin de parcours et pas maintenant. **Contrainte à respecter à ce moment là : aucun texte vivant en PP Frama.** Tout ce qui doit être dans cette police part en tracés, comme le font déjà les quatre SVG de marque (`figures` et `wordmark`, noir et ivoire), qui n'ont besoin d'aucune police.
+
+---
+
 ## Note — 2026-08-24 (suite 5) — la fusion vers `main` est prête, et ce qu'il reste avant de déployer
 
 **Statut : vérifié, pas poussé.** Le déplacement du ref local a été refusé par le garde-fou de l'outil, mais il n'est pas nécessaire : la commande donnée plus bas s'en passe.
@@ -3474,3 +3492,328 @@ l'instantané pris avant l'opération.
 Un contrôle en fin de transaction vérifiait cinq choses et annulait tout sinon : zéro
 session active ancienne, zéro doublon, 531 sessions exactement, 1331 événements, et
 aucune session fermée sans heure de fin.
+
+### 2026-08-25, la courbe de l'oubli, puis renumérotation complète du document
+
+**Deux planches sur l'oubli, sur demande de Marion**, en remplacement de `CR · 02 · Le geste` jugée inutile. Son diagnostic était juste : cette planche dessinait une boucle à quatre temps qui faisait doublon avec la planche Le système.
+
+**Données réelles, pas dessinées de mémoire.** Relevés originaux de Hermann Ebbinghaus, 1885, obtenus par la **méthode des économies de réapprentissage** sur des syllabes sans sens : 58 % à 20 minutes, 44 % à 1 heure, 36 % à 9 heures, **33 % à 24 heures**, 28 % à 2 jours, 25 % à 6 jours, 21 % à 31 jours. Sources croisées sur le web, la table exacte figurant dans plusieurs restitutions concordantes.
+
+- **Page « Pourquoi on oublie »** : les sept relevés tracés sur une échelle de temps logarithmique, le point des 24 heures mis en avant.
+- **Page « Pourquoi vous retenez ici »** : les dents de scie du rappel espacé, avec la courbe sans rappel en pointillé pour comparaison, et le plancher qui remonte à chaque rappel. Déclarée « schéma du principe, pas un relevé ».
+
+**Renumérotation complète, faite depuis la position et non à la main.** Reflux en huit rangées, pas de 1240 en vertical et 2080 en horizontal. **Soixante-huit planches, de 1 à 68, aucun chevauchement**, contrôle programmé sur toute la page.
+
+| Section | Bloc | Pages |
+|---|---|---|
+| 01 | Introduction | 3 à 6 |
+| 02 | **Comment ça marche** | **8 à 19** |
+| 03 | Le discours | 21 à 27 |
+| 04 | Le logo | 29 à 36 |
+| 05 | La couleur | 38 à 46 |
+| 06 | La typographie | 48 à 55 |
+| 07 | Les composants | 57 à 59 |
+| 08 | Les écrans | 61 à 68 |
+
+**Les huit intercalaires reconstruits** : numéro de section, plage, et liste des pages réécrites depuis les cadres eux mêmes. L'intercalaire du nouveau module est passé de onze à douze cartes, renumérotées 08 à 19.
+
+**Le sommaire de couverture reconstruit en huit sections.** Il n'en portait que sept. La huitième a été obtenue en clonant un bloc existant, pour préserver exactement la typographie plutôt que de la réinventer.
+
+**Constat au passage :** la mention `plage` de l'intercalaire du logo annonçait « 17 → 24 » alors qu'elle listait 21 à 28. La numérotation avait donc déjà dérivé avant ce chantier, ce qui confirme qu'elle doit être générée depuis la position et jamais saisie.
+
+**Reste en marge du document, volontairement pas touché :** la rangée d'archive à y 40000, un rectangle orphelin `Rectangle 1`, le cadre vide `profil-carte-du-regard`, et les kits d'interface Safari et iPhone importés.
+
+### 2026-08-25, le symbole du hero apparié aux deux thèmes
+
+**Demande de Marion, en regardant la page en clair et en sombre.** « Le symbole en clair devrait être sombre comme le texte », et pas d'ombre portée sur la barre.
+
+**L'ombre était déjà réglée, la barre aussi.** Mesuré avant d'écrire : les tokens `--chrome-bg` et `--chrome-ink` sont en place, la barre inverse le thème (noire en clair, crème en sombre), et plus aucune ombre ne reste sur `.site-nav` ni sur `.lp-header`, ni sur son état `is-scrolled`. Ce travail était fait la veille par une autre session, avec sa copie de sauvegarde dans `tmp/globals.avant-nav.css`. Rien à refaire.
+
+**Ce qui restait, une seule marque sur tout le site.** `.lp-hero__symbol` chargeait `dwiggins-figures-cream.svg` sans aucune règle de thème. Un aplat crème `#e1e1d7` sur le beige `#f4f3ee` du thème clair, donc un symbole quasi invisible, juste au dessus d'un titre en encre sombre. Vérifié sur les quatre autres pages qui portent la marque (`pf-top` du profil, du choix du mode, des règles, du placeholder) et sur les deux lockups de la landing : toutes étaient déjà appariées. Le hero était le seul oubli.
+
+**Pourquoi une deuxième paire de classes et pas `mark--on-light`.** La convention existante nomme le fond habillé, et sa règle est écrite pour le chrome, qui inverse le thème. Le hero est posé sur la page, qui ne l'inverse pas : beige en clair, noir en sombre. Réutiliser les classes du chrome aurait affiché la marque crème sur le beige, exactement le bug à corriger. D'où `mark--page-light` et `mark--page-dark`, même convention de nom, permutation dans l'autre sens, sans toucher aux règles du chrome.
+
+**Vérifié.** `typecheck` et `lint` passent. Le serveur de dev sert bien les deux `<img>` dans le hero et les deux règles dans la feuille (`app_globals_71f961d1.css`). Pas de capture, Marion regarde en direct.
+
+**Deux points signalés, pas touchés, ils sont de la DA.** Le panneau du menu téléphone (`.site-nav__menu-panel`, ligne 2740) porte encore l'ancienne ombre lourde `0 0.5rem 1.5rem rgba(0, 0, 0, 0.34)`, et son commentaire dit qu'il emprunte l'ombre de la barre, qui n'existe plus. Et `.lp-header` garde une transition `box-shadow` orpheline, sans effet.
+
+## 2026-08-25 — La grille « texte à gauche » posée et propagée
+
+**Fait.** Le user a recomposé lui-même les planches 14 et 16 et les a désignées comme référence. Les deux concordent, j'en ai tiré une grille unique :
+
+- titre `phrase` : x 96, y 196, mesure **502**, Inter Extra Bold Italic 46, interligne 108 %, aligné à gauche
+- texte `souffle` : x 96, y = bas du titre + 26, mesure **387**, Inter Regular **19**, interligne 152 %, aligné à gauche
+- zone du graphique : x **587** à 1824, y 196 à 930, contenu groupé sous le nom `graphique`, mis à l'échelle proportionnellement et centré dans la zone
+- `cle-de-lecture` et `ligne-de-preuve` restent enfants directs du cadre, calés à x 587 en bas de page
+
+**Planches passées à la grille** : 9, 10, 11, 12, 13, 14, 15, 17, 18. La 16 servait de modèle, elle n'a pas bougé. Facteurs d'échelle du graphique de 0,75 (15 et 18) à 1,64 (12).
+
+**Défaut corrigé sur la 14** : le diagramme radial débordait de 107 px au-dessus du cadre, il était donc rogné. Il est maintenant entièrement dans la page, à 0,798.
+
+**Bloc typographie**, consigne du user : le texte passe à gauche, les spécimens centrés ne bougent pas.
+
+- 42 · Les styles : colonne à 387, corps 19, départ y 240, écart entre blocs 26 pour dégager le paragraphe centré du bas (25 px de marge)
+- 43 · L'interlignage : titre ramené à 502, colonne à **340** et non 387, parce que les filets qui démontrent l'interlignage commencent à x 455 et ne doivent pas bouger
+- 44 · L'usage des interlignages : colonne à 387, corps 19
+
+**Reste à traiter.** Les planches 45, 46 et 47 ont une colonne de 200 px coincée par de la matière posée à x 419 (45 et 46) ou par une maquette pleine page (47). Les passer à 387 demande de déplacer ces blocs vers la droite, donc un arbitrage du user : sur la 45 les blocs sont alignés à gauche, sur la 46 ils sont centrés et tombent sous l'interdiction.
+
+**Défaut de contenu repéré.** Le paragraphe `souffle` de la planche 14 est identique mot pour mot à celui de la planche 16. Il faut en réécrire un des deux.
+
+## 2026-08-25 — Grille « texte à gauche » propagée aux blocs logo, composants et écrans
+
+**Outil.** `tmp/figma-grille-texte-gauche.js` porte la grille et la moulinette. Il tourne en mode essai par défaut : il mesure, projette les positions et rapporte les collisions sans rien écrire. Passer `ESSAI` à false pour appliquer. Chaque écart au cas général est déclaré dans `PARTICULIER` avec sa raison, planche par planche.
+
+**Ce que fait la moulinette, dans l'ordre.**
+
+1. Elle repère la colonne : les textes calés entre x 88 et x 114, sous y 130, larges de 420 au plus, alignés à gauche.
+2. Elle la repose au corps 19 sur une mesure de 387, libellés en capitales au corps 11. Si la colonne descend sous y 940, elle retente au corps 17, puis 15, et le signale.
+3. Elle pousse la matière dans la zone de droite, de x 587 à x 1824. Le décalage est calculé pour amener le bord gauche à 587, puis rogné si le bord droit sortait du cadre. Une matière qui déborde déjà n'est pas aggravée.
+4. Elle contrôle qu'après l'opération plus rien ne mord la colonne, et liste les fautifs.
+
+Ne bougent jamais : `folio`, le `numero` d'en-tête, tout ce qui commence par `logo-`, `champ-de-points`, `filet-pied`, et tout élément de 1900 px ou plus, qui est un fond.
+
+**Planches passées.** 20 à 27 pour le logo, 49 à 60 pour les composants et les écrans, plus 41 à 47 pour la typographie.
+
+**Cas particuliers arbitrés.**
+
+- 20 : premier libellé à y 143, la colonne démarre plus haut que les autres.
+- 21 : la page était retournée, texte à droite à x 980. Les six blocs sont rapatriés à gauche, le dessin part à droite.
+- 23 : trois zones sur la page, dont un second bloc de texte à x 1250. On élargit la colonne, on ne pousse rien.
+- 43 : mesure 340 et non 387, les filets qui démontrent l'interlignage commencent à x 455.
+- 55 : mesure 250 et rien ne bouge, la capture déborde déjà à droite.
+- 26 : planche encore vide, il n'y a qu'une colonne.
+
+**Réparation.** Le spécimen « titre court » de la planche 43 avait disparu : les quatre filets et la légende 112 px étaient là, le texte non. Reconstruit en Inter Black 112, interligne 81 %, sur les x 472 à 1449, avec « PERSONNE NE REGARDE LES LETTRES. » qui remplit exactement les trois lignes tracées.
+
+**Chrome.** Douze planches avaient perdu le logo de pied de page : 20 à 25, 29 à 33 et 35. Toutes sur fond noir, le logo ivoire y est remis à x 96, y 998, cloné depuis la planche 27.
+
+**Restent en attente.** Le paragraphe de la 14 est toujours identique à celui de la 16. Le spécimen jumeau de la 43 est en Inter Semi Bold alors que sa propre légende annonce Inter Black. Le bloc couleur, 29 à 38, garde ses planches pleine largeur, il n'a pas été touché.
+
+## 2026-08-25 — Titres posés sur les planches qui n'en avaient pas
+
+**Constat.** Les blocs logo, composants et écrans n'avaient aucun titre. Ces planches ouvraient sur un libellé de colonne en capitales au corps 11, sans phrase d'entrée, alors que tout le module « Comment ça marche » ouvre sur un titre au corps 46. Le texte avait été mis à gauche sans que le titre suive.
+
+**Outil.** `tmp/figma-titres-et-texte.js`. Même logique d'essai que le script de grille : `ESSAI` à true mesure et rapporte sans écrire. Le titre modèle est cloné depuis la planche 16, celle que le propriétaire a composée lui-même, ce qui reprend son encre et son style sans les redéclarer.
+
+**Ce que fait le script.**
+
+1. Il pose ou reprend `phrase` à x 96, y 196, mesure 502, Inter Extra Bold Italic 46, interligne 108 %, aligné à gauche.
+2. Il compte les lignes du titre et alerte au delà de deux : un titre de trois lignes mange la colonne.
+3. Il redescend la colonne à 30 px sous le bas réel du titre, puis la repose au corps 19 sur 387.
+4. Si la colonne franchit y 940, il retente au corps 17, puis 15, et le dit.
+
+**Dix-neuf planches titrées** : 20 à 27, 49 à 51, 53 à 60. Toutes tiennent sur deux lignes de titre, sauf la 26 qui n'en demande qu'une. Quatre colonnes sont descendues au corps 17 faute de hauteur : 21, 27, 58 et 60.
+
+**Deux titres raccourcis après l'essai.** « D'UN SEUL TENANT, JAMAIS EN MORCEAUX » et « QUAND LA PLACE MANQUE, LE MOT PART » passaient sur trois lignes. Devenus « D'UN SEUL TENANT, JAMAIS BRISÉ » et « LA PLACE MANQUE, LE MOT PART ». La limite mesurée est de 33 signes environ pour tenir sur deux lignes au corps 46 sur une mesure de 502.
+
+**Les titres sont de la copie, donc ils appartiennent au propriétaire.** Ils sont tirés de ce que chaque planche affirme déjà dans sa colonne, et rassemblés dans la table `TITRES` en tête du script pour être réécrits d'une ligne sans toucher au reste.
+
+## 2026-08-25 — Bloc couleur, planches 29 à 38
+
+Le bloc couleur portait des planches pleine largeur, seules à ne pas suivre la grille. Il y passe, mais avec une règle propre, parce que ses planches portent des tables et non des schémas.
+
+**La règle du bloc couleur.** Le titre descend au corps **34** sur la mesure de la colonne, et non 46 sur 502. Raison : une table occupe la zone de droite dès x 587, et un titre de 502 la mordrait de onze pixels. Le paragraphe garde le corps 19 sur 387. Le titre passe en capitales, en Inter Extra Bold Italic comme partout.
+
+**29 à 33, la palette cumulative.** Les barres `dossier-*` sont ramenées de 1536 à 1237 de large et posées à x 587. Le contenu de chaque rang, référence, nom, rôle, valeur et contraste, suit du même décalage de 395. Le libellé de famille revient dans la marge de gauche, à x 96, aligné sur le premier rang de son groupe : posé sur les barres il était illisible. La table glisse verticalement pour dégager le bas du paragraphe, puis remonte si elle franchit y 936. La 33, qui empile treize rangs, débordait le filet de pied de page, elle est remontée de 70 px et tient maintenant dans la planche.
+
+**34, la grille de combinaisons.** Pleine page, huit dossiers, aucune colonne de texte possible. Son titre garde sa largeur de 1180 mais rejoint la ligne y 196 comme les autres, et le contenu descend de 70 px pour lui faire place. Le libellé de la première rangée ne contenait plus qu'un « t », il est rétabli en « LA COULEUR SUR LE SOL IVOIRE », sur le modèle de son jumeau.
+
+**35, ivoire et noir.** Les deux panneaux sont mis à l'échelle de la zone, facteur 0,805, et remontés de 64 px pour ne plus déborder. Défaut de fond corrigé au passage : huit textes portaient l'encre du mauvais panneau, donc étaient invisibles. La règle appliquée est simple, le panneau Noir est posé par dessus l'Ivoire à partir de y 571, donc tout ce qui est au dessus prend l'encre noire et tout ce qui est en dessous l'encre ivoire, sauf le panneau qui ne bascule pas, sombre des deux côtés de la couture.
+
+**36, clair et sombre.** Table à trois colonnes redistribuée dans la zone : libellé à 587 sur 340, bascule à 1027 sur 220, valeur à 1287 sur 537.
+
+**37, la table des couleurs.** Déjà en deux colonnes, elle passe à la mesure du système. La table glisse de 211, la colonne de rôle rétrécit de 740 à 537 pour s'arrêter net à x 1824, et treize filets de rang qui couraient jusqu'à 2035 sont rognés au bord de zone.
+
+**38, un exemple en usage.** Cas standard : colonne à 387 au corps 19, capture ramenée dans la zone au facteur 0,736. Elle n'avait pas de titre, elle en a un, « AUCUNE COULEUR NE DÉCORE. »
+
+**Bilan.** Les soixante planches suivent maintenant la même grille, aux trois exceptions déclarées près : les intercalaires 19, 28, 39, 48 et 52 qui ont leur propre anatomie, les planches de texte seul 3 à 6 et 40, et la 34 dont la grille est pleine page.
+
+## 2026-08-25 — Passe sur tous les textes, deux planches de plus, renumérotation
+
+**Le paragraphe de la planche 14 est réécrit.** Il reprenait mot pour mot celui de la 16. Le nouveau parle du pool sans redire les chiffres que le diagramme porte déjà : on n'affronte jamais le catalogue entier, une trentaine tourne, une nouvelle n'entre que lorsque trois autres sont installées, et rien n'en sort jamais.
+
+**Passe sur les 62 planches, textes compris.** Trois familles de défauts trouvées et réparées.
+
+1. **Dix textes vides** traînaient sur l'intercalaire de l'introduction, `page-num-7` à `page-titre-11`, restes d'une liste plus longue. Supprimés.
+2. **Cent soixante corps fractionnaires ou minuscules.** Les mises à l'échelle de graphiques faites plus tôt multiplient les corps : la planche 15 descendait à 6,71 px, la 14 à 7,98, la 18 à 8,3. Tous les corps sont arrondis à l'entier et plancher à 10 px, sur les planches 10 à 18, 50, 51 et 57.
+3. **Le libellé de rangée de la planche 34 était faux.** Il annonçait « LA COULEUR SUR LE SOL IVOIRE » alors que la rangée montre la marque en noir posée sur la couleur. Corrigé en « LA MARQUE EN NOIR SUR LA COULEUR », son jumeau devient « LA COULEUR SUR LE SOL NOIR ».
+
+**Un doublon reste, il est voulu.** Les planches 47 et 48 partagent leur bloc d'introduction, comme deux volets d'une même démonstration.
+
+**Les polices non Inter de la planche 15 sont légitimes.** Jost, Playfair Display, Space Mono, Lora, Archivo Black, Work Sans, Bricolage Grotesque, Outfit et Questrial y écrivent le mot « regard » : ce sont les mauvaises réponses que la planche démontre, pas de la typographie de charte.
+
+**Deux planches de combinaisons de couleur ajoutées**, dans les deux emplacements que le propriétaire avait laissés libres à x 14760 et 16840.
+
+- 35 · Les combinaisons, les modes : vert d'eau, orange, bleu ciel et jaune, sur les deux sols.
+- 36 · Les combinaisons, les réponses : vert, rouge, blanc et ivoire, sur les deux sols.
+
+**Renumérotation.** Le document passe de 60 à 62 planches. Les numéros sont déduits de la position sur le plan de travail, jamais saisis à la main : tri par ligne puis par colonne, puis nom du cadre et folio réécrits. Vingt-huit planches ont changé de numéro.
+
+**Sommaires refaits.** Le sommaire de la planche 1 reprend les sept plages, 3 à 6, 8 à 18, 20 à 27, 29 à 40, 42 à 49, 51 à 53, 55 à 62, et la liste des titres de chaque section. Son sous-titre annonce maintenant 62 pages. Les six intercalaires à liste de pages sont régénérés ; celui de la couleur a reçu deux lignes de plus. L'intercalaire 7 a une anatomie propre, sans liste de pages, il est laissé tel quel.
+
+**Contrôle final : zéro écart sur 62 planches.** Nom de cadre, folio, présence du logo, textes vides, corps sous 10 px ou fractionnaires, débordement hors cadre, police hors Inter.
+
+## 2026-08-25 — Titres du bloc typographie
+
+Six planches du bloc typographie n'avaient pas de titre : 43, 44, 46, 47, 48 et 49. Elles ouvraient directement sur un libellé de colonne au corps 11. Elles en ont un maintenant, au gabarit du système, x 96, y 196, mesure 502, Inter Extra Bold Italic 46, interligne 108 %.
+
+- 43 · Les familles : UNE SEULE POLICE, ET ELLE PORTE TOUT.
+- 44 · Les styles : TROIS TITRES, UN TEXTE.
+- 46 · L'usage des interlignages : UN TITRE LONG DEMANDE DE L'AIR.
+- 47 · Les combinaisons : L'ORDRE NE CHANGE JAMAIS.
+- 48 · Les combinaisons, suite : SANS TITRE, LE SOUS-TITRE MONTE.
+- 49 · Un exemple en usage : CE QUI SE LIT, CE QUI SE MESURE.
+
+Les planches 42 et 45 gardent ce qu'elles avaient : la 42 est une planche de texte seul, la 45 portait déjà son titre.
+
+**Deux titres raccourcis après mesure.** « TROIS STYLES DE TITRE, UN SEUL DE TEXTE » et « QUATRE ASSEMBLAGES AUTORISÉS » passaient sur trois lignes. Le second surprend par sa brièveté, mais « ASSEMBLAGES » est un mot long qui ne tient pas à côté de « QUATRE » au corps 46 sur 502 : la limite n'est pas le nombre de signes seul, c'est aussi la longueur du mot le plus long.
+
+**Deux réparations liées.**
+
+- 44 · Les styles : le paragraphe centré du bas et sa fiche mordaient la colonne, ce qui forçait la colonne au corps 15. Les deux passent dans la zone de droite, la colonne retrouve le corps 19.
+- 47 · Les combinaisons : les deux assemblages avaient été groupés et empilés à x 885, repère 2 au dessus du repère 1. Remis côte à côte à x 587 et x 1254, dans l'ordre de leurs repères, alignés sur y 420.
+
+**Contrôle.** Sur les 62 planches, aucune n'est sans titre hors intercalaires et sommaire, aucun folio ne s'écarte de son rang. Huit recouvrements de boîtes sont signalés par la mesure, aucun n'est un recouvrement d'encre : la mesure de titre s'arrête à x 598 et la zone de droite commence à 587, donc les cadres se frôlent de onze pixels sans que les lettres se touchent jamais.
+
+## 2026-08-25 — Passe sur le bloc écrans, planches 54 à 62
+
+Relevé puis vue de chacune des neuf planches. Le bloc tenait déjà la grille, une seule planche était vraiment fautive.
+
+**57 · Les rôles nommés, reprise complète.** Ses cinq `filet-de-rappel` étaient restés à leur position d'avant la grille, à x 368. Ils partaient donc du vide, traversaient la gouttière, passaient derrière le titre et coupaient la capture. Leurs hauteurs ne correspondaient plus à aucun libellé de la colonne.
+
+- La capture se cale sur le bord droit de la zone, de x 784 à x 1824, au lieu de déborder de seize pixels.
+- La colonne reprend la mesure du système, 387 au lieu de 250, ce qui la fait finir à y 777 au lieu de 922.
+- Chaque filet est raccroché au libellé qu'il désigne : il part de x 503, juste après la colonne, s'arrête à x 764, juste avant la capture, et se place au milieu de son libellé. Les cinq hauteurs relevées sont 326, 433, 540, 618 et 725.
+
+C'est le seul endroit du document où la matière ne commence pas à x 587 : les filets partent plus tôt, sinon ils ne relient plus rien. Exception assumée, une planche annotée n'est pas une planche à deux colonnes.
+
+**Les huit autres sont saines.** Contrôle des débordements sur les neuf planches : aucun élément ne sort du cadre, aucun ne franchit la marge droite à 1824.
+
+**Un manque de contenu, pas de mise en page.** La planche 56, La démonstration, porte un `demo-animee` de 1100 × 774 qui est un emplacement vide. Sa propre colonne annonce ce qui doit s'y trouver, 64 images de 1180 × 830 en boucle, 8,1 Mo. Tant que l'animation n'est pas posée, la planche montre un cadre vide.
+
+## 2026-08-25 — Passe sur le bloc composants, planches 50 à 53
+
+Trois planches de contenu, plus l'intercalaire. Aucune n'était cassée, deux avaient un défaut de composition.
+
+**51 · Les boutons est saine.** Panneau de 587 à 1767, colonne de 326 à 931, rien à reprendre.
+
+**52 · Les pastilles, la zone de droite était entassée en haut.** Ses trois groupes vivaient de y 226 à y 607 pendant que la colonne descendait jusqu'à 873 : la moitié basse de la page était vide et aucun groupe ne faisait face au bloc de texte qui le décrit. Les trois groupes descendent à 326, 525 et 700, chacun à hauteur du bloc de colonne qui l'explique. Dix-huit éléments déplacés. La lecture redevient horizontale, ce qui est le sens même de la grille à deux colonnes.
+
+**53 · Les cartes de mode, les trois cartes ne partaient pas du bord de zone.** Elles commençaient à x 687 alors que leur propre légende commence à 587, ce qui laissait cent pixels de vide entre le titre de la rangée et ce qu'il annonce. Décalées de moins cent, elles partent maintenant de 587, 938 et 1290.
+
+**Les folios recalés sur toute la charte.** Le folio était posé à une abscisse fixe alors que sa largeur change avec ses chiffres : un « 1 » et un « 44 » ne finissaient pas au même endroit, et la 53 dépassait la marge de deux pixels. Les 62 folios sont maintenant alignés par la droite sur x 1824, comme tout le reste de la page. Trente-trois ont bougé, de moins trois à plus huit pixels.
+
+## 2026-08-25 — Passe Inter seul
+
+Audit des polices à toute profondeur, sur les deux pages du fichier et sur les 62 planches.
+
+**Ce que l'audit a séparé.** Le fichier contient des bibliothèques de maquettes iPhone et Safari posées à côté du document, qui emploient SF Pro et SF Compact. Elles ne font pas partie de la charte et ne sont pas comptées. Dans les 62 planches, deux endroits seulement portaient du hors Inter.
+
+1. **58 · Le jeu en mobile** : trois horloges « 9:41 » en SF Pro Text, dans le chrome des maquettes de téléphone. Converties en Inter Semi Bold, une heure se lit pareil.
+2. **15 · La difficulté** : douze fois le mot « regard » en Jost, Playfair Display, Space Mono, Lora, Archivo Black, Work Sans, Bricolage Grotesque, Outfit et Questrial. **Laissées telles quelles.** La planche montre trois rangées de quatre réponses dont une seule est juste, et démontre que les mauvaises se rapprochent de la bonne à mesure que le joueur progresse. Tout mettre en Inter donnerait quatre mots identiques et la planche ne prouverait plus rien.
+
+**Une contradiction réparée.** Le document ne contient plus une seule ligne de Geist Mono, mais trois textes l'annonçaient encore comme seconde famille. Réécrits pour dire ce qui est vrai : tout est en Inter, ce qui se mesure passe en capitales espacées et en petit corps au lieu de changer de police.
+
+- 49 · `regle-cle` et `col`
+- 57 · `role-texte`
+
+Une quatrième mention, « les deux familles et les trois styles » sur la 49, est corrigée en « les trois styles ». Les colonnes des planches 49 et 57 sont remises à plat après réécriture, et les filets de rappel de la 57 raccrochés à leurs nouveaux libellés.
+
+**Trois mentions gardées volontairement.** « Space Mono » sur les planches 12, 14 et 15 est un nom de police du catalogue du jeu, pas de la typographie de charte. Les « deux familles » de la planche 52 sont des familles de pastilles, pas de polices.
+
+**Contrôle final : plus une police hors Inter dans les 62 planches, hors les spécimens de la 15.**
+
+## 2026-08-25 — Où en est la charte à la reprise
+
+**62 planches, sept sections, une grille unique.** Titre à x 96 y 196 sur une mesure de 502, texte à x 96 sur 387 au corps 19, matière de x 587 à x 1824, folio aligné par la droite sur 1824. Trois anatomies s'en écartent volontairement : les intercalaires 2, 7, 19, 28, 41, 50 et 54, les planches de texte seul 3 à 6 et 42, et la 34 dont la grille est pleine page.
+
+**Ce qui reste ouvert, par ordre d'importance.**
+
+1. **56 · La démonstration** porte un emplacement vide de 1100 × 774. Sa colonne annonce ce qui doit y aller, 64 images de 1180 × 830 en boucle, 8,1 Mo. C'est le seul trou de contenu du document.
+2. **15 · La difficulté** garde neuf polices hors Inter. Ce sont les spécimens que la planche démontre. Décision du propriétaire attendue : les garder, ou vider la planche de sa démonstration.
+3. **45 · L'interlignage** porte un spécimen jumeau en Inter Semi Bold alors que sa propre légende annonce Inter Black. Incohérence d'origine, jamais tranchée.
+4. **47 et 48** partagent leur bloc d'introduction mot pour mot. Voulu pour l'instant, deux volets d'une même démonstration.
+
+**Outils laissés en place**, tous deux désarmés, `ESSAI` à true.
+
+- `tmp/figma-grille-texte-gauche.js` : pose la colonne et pousse la matière dans la zone de droite.
+- `tmp/figma-titres-et-texte.js` : pose le titre puis redescend la colonne dessous.
+
+Les deux mesurent, projettent les positions et rapportent les collisions sans rien écrire tant que le réglage n'est pas passé à false.
+
+## 2026-08-26 — Planche 56, le trou de contenu est bouché
+
+C'était le seul manque du document : un emplacement vide de 1100 × 774 sur la planche La démonstration.
+
+**Ce qui a été capturé.** La ronde automatique de l'étape 3 de l'entrée, `micro` dans `OnboardingFlow`, celle qui joue toute seule avec un curseur fantôme. Sa boucle GSAP fait 6,04 s : le curseur entre, va sur la mauvaise réponse, clique, l'explication tombe, il repart sur la bonne, elle verdit, l'explication change, il sort. Capture par Playwright du projet contre le serveur de dev du port 3002, 64 images à 94,4 ms d'intervalle, calées sur le creux du cycle pour partir au bon endroit. Écart mesuré sur la boucle entière : 6096 ms réels pour 6040 visés.
+
+**Pourquoi ce n'est pas un GIF animé.** Le GIF a été monté (1180 × 706, 64 images, 0,4 Mo) et posé sur le nœud. Figma l'a bien stocké, `getImageByHash` rend la bonne taille, mais **il se rend noir**, aussi bien dans la capture du plugin que dans le rendu serveur. Vérifié en posant une image fixe sur le même nœud : elle s'affiche parfaitement. Un GIF animé posé par cette voie n'est donc pas rendu, et une planche noire à l'export est pire qu'une planche fixe.
+
+L'empreinte du GIF reste dans le fichier, `11a81a11e87f2dd9f0c9888a8c98666f0bcf5ceb`, si l'application Figma le joue chez le propriétaire.
+
+**Ce qui est posé à la place.** Une planche-contact de neuf temps prélevés sur la même capture, un toutes les 0,66 seconde, montée en grille de trois par trois. Son rapport, 1,659, tombe juste sur la zone de droite : 1218 × 734, calée sur la hauteur. Le nœud est renommé `ronde-en-neuf-temps`, son filet est retiré, et une légende posée sous la zone donne la cadence.
+
+La fiche de la colonne est réécrite : elle annonçait 1180 × 830 et 8,1 Mo, chiffres qui ne correspondaient à rien de posé.
+
+**Reste à trancher.** Le titre dit encore « une ronde entière, à sa vitesse ». C'est vrai de l'échantillonnage, la légende donne la cadence, mais plus rien ne bouge sur la planche.
+
+## 2026-08-26 — Les cinq tables couleur repartent du même trait
+
+**Ce qui était cassé, et c'était de mon fait.** Les planches 29 à 33 empilent une palette qui grandit, 2 rangs puis 4, 6, 9, 13. Elle doit partir d'une ligne fixe en haut et descendre, pour qu'on voie la pile s'allonger en tournant les pages. Hier, en poussant chaque table vers le bas pour dégager le paragraphe puis en la remontant quand elle franchissait le pied de page, je les ai calées **par le bas** : cinq départs différents, 620, 568, 493, 389, 230. La pile ne grandissait plus, elle remontait.
+
+**Correctif.** Un seul haut pour les cinq, à **y 230**, valeur imposée par la 33 et ses treize rangs qui doivent finir à 936. Les bas suivent la croissance : 364, 468, 572, 728, 936. Le pas reste de 52.
+
+**Le libellé de famille change de place.** Avec un haut à 230 il tombait derrière le titre sur la 29 et derrière le paragraphe sur les autres. Il devient l'en-tête de la table, à x 587, y 204, et nomme la famille que la page ajoute. Les nouveaux rangs restent reconnaissables sans lui : eux seuls portent référence, rôle et valeur, les anciens n'ont que leur nom.
+
+**Un second défaut trouvé en corrigeant le premier.** En rétrécissant les barres de 1536 à 1237, la forme du dossier a été mise à l'échelle, facteur 0,805, mais les textes de rang avaient été déplacés d'une valeur fixe de 395. Ils avaient donc glissé hors de leur onglet : sur la 29 la valeur `#e1e1d7` tombait dans le noir de la page, et `#000000` en encre ivoire sur la barre ivoire. Deux valeurs mesurées à 1,32 de contraste, donc invisibles.
+
+Tous les textes de rang sont replacés à l'échelle de la forme, `x = 587 + (x − 587) × 0,805`, et chaque contraste est reposé derrière son rôle avec un écart de 22.
+
+**Leçon à retenir.** Quand une forme est mise à l'échelle, ce qui vit dessus se déplace du même facteur, jamais d'une valeur fixe. Un décalage constant sur une forme redimensionnée fait sortir le contenu de son cadre sans que rien ne le signale.
+
+## 2026-08-26 — Planche 11, les cases deviennent des dossiers
+
+Les vingt-huit cases de la planche L'erreur étaient de simples rectangles à angles vifs, la seule matière du document à ne pas porter la forme de la charte. Elles sont redessinées en mini dossiers.
+
+**La forme est paramétrée, pas recopiée.** Le vecteur d'origine, celui de la planche 34, fait 400 × 200 avec un rayon de 8, un onglet de 126 posé à 34, et une hauteur d'onglet de 22. Un générateur `dossier(W, H, r, tx0, tw, th)` en redonne le tracé à n'importe quelle taille : corps à coins ronds, onglet en haut à gauche, et les deux raccords concaves entre l'onglet et le corps.
+
+**Réglage retenu pour une case de 59 × 61** : rayon 3, onglet de 20 posé à 5, hauteur d'onglet 9. L'onglet fait donc 34 % de la largeur contre 31,5 % sur le grand dossier, et 15 % de la hauteur contre 11 %. Léger renforcement volontaire : à cette taille un onglet à la proportion exacte ne se lit plus.
+
+Les trois états sont conservés tels quels, remplissage, trait, épaisseur, pointillé et opacité repris du rectangle qu'ils remplacent : `interdit` en contour pointillé, `retour au plus tôt` en aplat, `possible` à 18 %.
+
+**Piste ouverte.** La planche 12, La mémoire, emploie la même trame de petits carrés pour les cinq niveaux de maîtrise. Le même générateur s'y appliquerait, avec une case plus petite donc un onglet à revoir.
+
+### 2026-08-26, l'affiche au symbole en pixels
+
+**Fait, page 2, cadre `AFFICHE A4 · le symbole en pixels` en 3600, 3730.** C'est la version que je recommandais après avoir lu la page 22 : elle garde toute l'idée, la machine dessous et la main dessus, sans reproduire le Matisse. Tout ce qui est imprimé nous appartient, donc rien ne contredit la charte.
+
+**Le symbole tramé.** Exporté à l'échelle 4, soit 1133 x 820, puis moyenné case par case sur 94 x 68 cases de 6 px, le module fin du champ. Seuil de couverture à 0,45. 2 547 cases allumées, encre ivoire `#e1e1d7` sur un sol bleu `#354ba8` pris dans la palette du tableau, donc rien d'inventé. Le symbole est calé sur la largeur du champ et centré en hauteur, 7 cases de sol en haut et en bas, jamais déformé.
+
+**Un piège technique, noté pour la prochaine fois.** L'export d'un groupe de vecteurs par `download_assets` revient **opaque**, sans canal alpha utile : le premier seuillage sur l'alpha allumait les 6 392 cases du champ. Il faut seuiller sur la **luminance**, ce qui marche dans les deux cas puisqu'une zone transparente dessinée sur un canvas vide reste à luminance zéro.
+
+**La plaque.** « LE SYMBOLE · 94 × 68 ». Elle était coupée : la pastille est un cadre de 180 px qui rogne, et le nouveau texte fait 170 px pour 26 px de marge. Élargie à 222 et recentrée sur l'axe du panneau, à 396.
+
+**Le bloc de texte n'est pas sur cette affiche, et c'est voulu.** Marion a supprimé de l'affiche au tableau le texte que j'avais écrit hier. Je ne l'ai donc pas remis sur celle ci. Si la place à droite du symbole doit parler, c'est lui qui le dira.
+
+**État des affiches.** Trois versions vivent côte à côte sur la page 2 : `AFFICHE A4 · ici` en 2702, 1965, l'originale au tableau non tramé ; `AFFICHE A4 · ici · le tableau en pixels` en 2702, 3730 ; et `AFFICHE A4 · le symbole en pixels` en 3600, 3730. Seule la troisième peut sortir sans discussion.
+
+## 2026-08-26 — Planche neuve : la typographie du mot
+
+Le bloc logo traitait le symbole sous tous les angles et ne disait rien du mot. La planche manquait, elle est faite : **21 · Le logo · La typographie du mot**, posée juste après Le sens du symbole.
+
+**Les faits sont vérifiés dans le code, pas supposés.**
+
+- La police est **PP Frama**, dessinée et vendue par **Pangram Pangram**, sous EULA commerciale qui renvoie à pangrampangram.com/pages/eula. Trois coupes dans le projet, `public/fonts/brand/` : Black, Black Italic, Extralight. Le mot est tracé dans la noire italique.
+- **Le mot du logo est un dessin.** `SiteNav.tsx` sert `dwiggins-wordmark-full-black.svg` et `-ivory.svg`, 1394 × 200, comme image. Aucune police n'est chargée pour l'afficher : le logo lui-même ne dépend d'aucune licence.
+- **PP Frama vit encore à un seul endroit, et c'est le mauvais.** `components/brand/DwigginsBadge.tsx` déclare trois `@font-face` sur les fichiers `.otf` de bureau, et le badge est en production sur la page profil (`AchievementsBoard`, `ProfileSummary`). Trois fichiers de bureau sous licence commerciale sans texte redistribuable sont donc téléchargés par tout visiteur qui ouvre son profil. C'est le dernier bloqueur avant la mise en ligne, et il n'est pas théorique.
+- **L'interface, elle, est en Inter**, décision consignée dans un commentaire de `app/globals.css` : « pas de PP Frama, Inter, c'est pas notre typo ? ».
+
+**Le graphique.** Le mot en plein, puis le même mot en tracés, ses huit vecteurs révélés au filet. C'est la démonstration du titre, « le mot est un dessin » : huit tracés, pas huit lettres.
+
+**Renumérotation.** Le document repasse à 62 planches contiguës. Quatre planches seulement changent de numéro, la suppression de l'ancienne 18 et l'ajout de celle-ci s'annulant en aval : 19 à 21 reculent d'un rang et la nouvelle prend le 21.
+
+**Deux conséquences de la suppression de La vision, faite par le propriétaire.**
+
+1. L'intercalaire du bloc 2 annonçait « ONZE PAGES », corrigé en « DIX PAGES ».
+2. **Il porte encore une carte « 18 · LA VISION » qui pointe vers une page qui n'existe plus.** Non supprimée volontairement : c'est au propriétaire de dire s'il rétablit la page ou s'il retire la carte.
