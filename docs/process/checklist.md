@@ -3853,3 +3853,29 @@ gain de quatre lignes. Le rapport est mauvais.
 classification de Google, en normalisant les deux côtés comme le fait
 `build_rarity_from_popularity.slugifie`, se rejoue en une commande et vaut mieux qu'une
 impression.
+
+### 2026-08-26, migration 014 appliquée : les 23 designers que Google connaît
+
+**Vérifiée avant d'écrire, comme les précédentes.** Les 23 slugs existent tous en base,
+aucun n'est une ligne Adobe, et les 23 avaient bien un designer vide. Chaque ordre porte
+sa clause `(designer IS NULL OR designer = '')` : la migration ne remplit que les vides,
+elle n'écrase jamais une saisie faite à la main.
+
+**Elle est exhaustive, et c'est le point à retenir.** Le catalogue actif comptait **156
+designers vides**. La 014 n'en couvre que 23, ce qui ressemblait à un travail à moitié
+fait. Mesure : **108 des 156 sont des lignes Adobe**, dont l'API ne donne pas les
+auteurs, et **25 sont des Google que Google lui-même ne connaît pas**. Les 23 restantes
+sont exactement celles que la migration traite. Il n'y avait rien à étendre.
+
+**Le retour arrière manquait, il est écrit.** `014_designers_from_metadata.rollback.sql`
+remet NULL sur les 23 slugs. Il est sûr précisément parce que la migration ne remplit que
+des vides, à la condition d'être joué avant toute autre écriture sur ces lignes.
+
+**Relevé après application :** 133 designers vides sur 1279 actives, 1146 renseignés,
+et **zéro ligne Adobe n'a reçu de designer**, ce que le contrôle en fin de transaction
+vérifiait explicitement.
+
+**Le JSON est en miroir**, confrontation ligne à ligne : zéro écart sur 2136 lignes. Un
+réimport n'effacera pas les 23.
+
+Porte complète verte.

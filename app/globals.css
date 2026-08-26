@@ -11511,3 +11511,15 @@ svg {
 :root[data-theme="dark"] .mark--on-dark {
   display: none;
 }
+
+/* Les marques posees sur la PAGE, pas sur le chrome. Le chrome inverse le
+   theme (barre noire en clair, creme en sombre), la page ne l'inverse pas :
+   beige en clair, noir en sombre. La permutation s'y fait donc dans l'autre
+   sens, avec la meme convention de nom, le suffixe nomme le fond habille. */
+:root:not([data-theme="dark"]) .mark--page-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .mark--page-light {
+  display: none;
+}

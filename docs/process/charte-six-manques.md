@@ -6,7 +6,38 @@ par sous-section avec le sommaire de Tercio. **Une étape à la fois.** Chaque
 `docs/process/checklist.md`, et seulement ensuite on passe à la suivante.
 
 Fichier Figma : `3kfcrtrbWHYs4Evsfi26mq`, une seule page, cadres de 1920 x 1080.
-État de départ : 54 pages, sept sections, numérotation continue.
+État de départ : 54 pages. État final : 60 pages, sept sections,
+numérotation continue.
+
+## État d'avancement au 2026-08-24 : terminé
+
+Les six étapes sont faites, la renumérotation est passée, le contrôle de
+cohérence est passé. La charte compte **60 pages**, sept sections, numérotation
+continue.
+
+- [x] **Étape 1, la signature de marque.** Page 13. Les deux formes relevées dans `LandingExperience.tsx`, lignes 254 et 446.
+- [x] **Étape 2, des exemples de messages.** Page 18. Six phrases de `content/copy.ts`, chacune croisée avec l'adjectif qu'elle sert.
+- [x] **Étape 3, les règles d'écriture.** Page 19. Cinq bandes, chaque règle portant sa mesure.
+- [x] **Étape 4, la direction stratégique.** Page 11. Trois cartes au modèle Tercio page 6.
+- [x] **Étape 5, le contraste sur les fiches de couleur.** Pages 30 à 35. Quinze lignes, chacune contre l'encre réellement employée.
+- [x] **Étape 6, un exemple en usage par chapitre.** Pages 38 et 47. Fond ivoire, panneau qui déborde du bord droit, aucune cote.
+- [x] **Renumérotation, intercalaires, couverture.** 60 cadres et 60 folios renumérotés par ordre de lecture. Les sept listes d'intercalaire et le sommaire de couverture sont redessinés depuis les noms de cadres, donc ils ne peuvent plus mentir.
+- [x] **Contrôle de cohérence.** 60 pages vérifiées. Aucun débordement, aucun folio invisible. Deux fils d'Ariane recalés.
+
+### Ce qui reste, et qui appartient à Marion
+
+1. **Douze pages sans signature en pied**, 21 à 26 et 30 à 35 : le visuel occupe
+   la zone de pied. Assumer, ou remonter le contenu pour libérer le pied.
+2. **Le CMJN et le Pantone.** Elevo et Tercio les portent sur chaque fiche de
+   couleur. Si DWIGGINS ne s'imprime jamais, il faut l'écrire, sinon l'absence
+   se lira comme un oubli.
+3. **Le vert de réponse juste ne s'affiche jamais** en entraînement,
+   `TRAINING_CORRECT_DELAY_MS` valant 0 dans `lib/game/training/catalog.ts`.
+   Soit le délai remonte, soit la table des couleurs dit autre chose que
+   « Réponse juste ».
+4. **Les quatre boutons de réponse de `/play/competition`** sont posés en clair,
+   texte gris pâle sur gris clair, à la limite de la lisibilité. Ce n'est pas le
+   cas en entraînement.
 
 ## Règles de fabrication, valables pour les six étapes
 
@@ -161,7 +192,7 @@ l'écrire, sinon l'absence se lira comme un oubli.
 
 ---
 
-## Étape 6. Un exemple en usage par chapitre
+## Étape 6. Un exemple en usage par chapitre — FAITE, pages 38 et 47
 
 **Pourquoi.** Deux chapitres sur trois chez Tercio se terminent par une page
 « Example in use » qui montre toutes les règles du chapitre fonctionnant
@@ -182,7 +213,7 @@ cotent pas. Le panneau déborde à droite.
 
 ---
 
-## Après la sixième étape
+## Après la sixième étape — FAIT
 
 Renumérotation complète, reconstruction des sept intercalaires et de la
 couverture, puis contrôle de cohérence sur toutes les pages : position et encre

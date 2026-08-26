@@ -228,9 +228,22 @@ export default function LandingExperience() {
         <ParticleField />
 
         <div className="lp-hero__inner">
+          {/* La marque du hero prend l'encre de la page, pas une valeur fixe.
+              Elle etait en creme dans les deux themes, donc creme sur le beige
+              du theme clair, quasi invisible, alors que le titre juste dessous
+              est en encre sombre. Meme appariement que les marques du chrome,
+              mais dans l'autre sens : ici le fond suit le theme au lieu de
+              l'inverser. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="lp-hero__symbol"
+            className="lp-hero__symbol mark--page-light"
+            src="/brand/dwiggins-figures-dark.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="lp-hero__symbol mark--page-dark"
             src="/brand/dwiggins-figures-cream.svg"
             alt=""
             aria-hidden="true"
