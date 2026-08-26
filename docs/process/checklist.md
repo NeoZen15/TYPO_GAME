@@ -4114,3 +4114,42 @@ troisième écriture du garde et une branche qui tombe dans le `fetch`.
 gardes pour éviter le `build` qui partage `.next` avec le serveur de dev, et j'ai donc
 manqué `check:competition-integrity` pendant plusieurs échanges. Les 31 gardes se lancent
 un par un, sans le `build` : c'est la bonne façon de faire quand le serveur tourne.
+
+**2026-08-26, la page des modes, état final après les allers-retours.** Quatre choses, toutes mesurées au navigateur après coup.
+
+**La carte est noire et neutre, la pastille garde sa couleur.** Toute la décoration de la carte passe par une variable dédiée, `--mode-deco`, éteinte en sombre : contour, halo, dégradé, ombre de survol. Il fallait une variable propre parce que le composant pose `--mode-accent` en **style en ligne**, qu'aucune règle de feuille ne peut neutraliser sans `!important`. La pastille, elle, continue de lire `--mode-accent` : c'est l'étiquette qui nomme le mode, elle reste dans sa couleur. Mesuré : contour ivoire à 38 pour cent sur les trois cartes, pastilles en vert d'eau, orange et bleu ciel, surface rgb(12, 12, 12), halo transparent.
+
+**La note respire.** `margin: 1.4rem 0` au lieu de `1.4rem 0 0`, la valeur du haut reprise en bas plutôt qu'une nouvelle. Son bas tombe à 310 pour des cartes qui commencent à 332, donc 22 px d'air là où il y en avait zéro.
+
+**Les boutons Rules et Play remplissent la largeur de la carte.** Ils faisaient 70 et 62 px sous une carte de 277, donc la paire paraissait tassée et les deux n'avaient pas la même longueur. `flex: 1 1 0` les met à égalité et leur fait 135 px chacun. Aucune valeur en dur : la largeur vient de la carte, elle suivra si la carte change.
+
+**Un piège de mesure, et il a coûté deux échanges.** Le serveur de dev du 3002 a cessé de recompiler pendant trois modifications. La feuille servie gardait le même nom de fichier et mes changements étaient bien sur le disque, avec les accolades équilibrées, mais invisibles dans le navigateur. **Devant un correctif CSS qui ne se voit pas, vérifier d'abord que la feuille servie contient le nouveau nom** : `curl` la page, extraire le chemin du CSS, y chercher la nouvelle variable. C'est immédiat et ça évite de chercher une erreur qui n'existe pas.
+
+**2026-08-26, arbitrage final sur la carte de mode.** Ce qui garde la couleur du mode : la pastille qui le nomme, et le contour de la carte, au repos comme au survol. Ce qui s'éteint, mais **au repos seulement** : le dégradé de surface et le halo flouté, les deux calques qui teintaient la carte en permanence. Au survol la couleur revient, halo et ombre portée, parce que là c'est une réponse au geste et non une teinte de fond. Et la surface reste au gris neutre.
+
+Mesuré au navigateur dans les deux états. Au repos : halo transparent, ombre noire seule, contour vert d'eau à 38 pour cent. Au survol : halo vert d'eau à 20 pour cent agrandi de 1,25, ombre qui gagne une lueur verte à 26 pour cent, contour à 59 pour cent.
+
+## 2026-08-26 — La charte devient une présentation qui se joue
+
+Le fichier n'avait **aucune interaction** et **aucun point de départ** : en mode présentation, rien n'avançait. C'est branché.
+
+**Ce qui est posé sur chaque planche.**
+
+- clic n'importe où : planche suivante
+- flèche droite : planche suivante
+- flèche gauche : planche précédente
+
+La première n'a pas de précédente, la dernière n'a pas de suivante. Les soixante-deux planches sont couvertes, aucune n'est orpheline. Point de départ du flux nommé « Charte DWIGGINS » sur le sommaire, et fond du lecteur mis en noir pour qu'aucune bande grise n'apparaisse autour des planches.
+
+**Deux transitions, et une règle pour choisir.**
+
+- **Fondu**, 0,2 s, sortie douce : le cas général. Sobre, c'est une charte, pas une bande-annonce.
+- **Smart Animate**, 0,45 s, entrée et sortie douces : uniquement là où deux planches voisines partagent au moins quatre calques de même nom, hors chrome, dans un même bloc.
+
+Cette règle n'a pas été choisie à la main, elle a été **mesurée**. Elle désigne exactement sept enchaînements, tous dans le bloc couleur, et tous pour la même raison : ce sont les planches qui **empilent**. La palette cumulative, 4 puis 8, 12 et 18 calques communs, où les rangs déjà posés restent en place et où seuls les nouveaux descendent. Et les planches de combinaisons, où les mêmes dossiers changent de couleur sans bouger.
+
+C'est le seul endroit du document où une animation dit quelque chose que l'image fixe ne dit pas : que la palette grandit sans se redessiner.
+
+**Limite à connaître.** Tout ceci vit dans le lecteur de prototype Figma. Un export en PDF ou en images n'en garde rien, et les planches restent lisibles sans, puisque aucune information ne dépend du mouvement.
+
+**Trou de numérotation refermé.** Le propriétaire a supprimé une planche du bloc écrans pendant le travail ; les cadres allaient jusqu'à 63 pour 62 planches. Renumérotées par position, sommaire et intercalaires refaits. Les interactions pointent par identifiant de nœud, elles ont donc survécu à la renumérotation sans retouche.

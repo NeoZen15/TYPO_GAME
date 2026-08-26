@@ -8891,11 +8891,14 @@ svg {
 
 .lp-mode-card {
   --mode-accent: var(--mode-training);
-  /* LA DECORATION PASSE PAR SA PROPRE VARIABLE. `--mode-accent` est posé en
-     style en ligne par le composant, donc une déclaration de feuille ne peut
-     pas le neutraliser sans `!important`. Tout ce qui colore la carte lit donc
-     `--mode-deco`, qui vaut l'accent par défaut et que le thème peut éteindre.
-     Le composant continue de nommer le mode, la feuille décide si ça se voit. */
+  /* CE QUI SE VOIT ET CE QUI S'ETEINT, arbitré par Marion le 2026-08-26.
+     Gardent la couleur du mode : la pastille qui le nomme et le contour de la
+     carte. S'éteignent en sombre, MAIS AU REPOS SEULEMENT : le dégradé de
+     surface et le halo flouté, qui teintaient la carte en permanence. Au survol
+     la couleur revient, halo et ombre portée, parce que là c'est une réponse au
+     geste et non une teinte de fond. Il fallait une variable à part
+     parce que le composant pose `--mode-accent` en style en ligne, qu'aucune
+     règle de feuille ne peut neutraliser sans `!important`. */
   --mode-deco: var(--mode-accent);
   /* La carte est un objet SOMBRE sur les deux fonds (choix du propriétaire,
      2026-08-24). En sombre elle l'était déjà, à 5 pour cent d'encre sur le
@@ -8934,7 +8937,7 @@ svg {
   min-height: 10.5rem;
   padding: clamp(1.2rem, 2.2vw, 1.55rem);
   border-radius: var(--radius);
-  border: 1px solid color-mix(in srgb, var(--mode-deco) 28%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--mode-deco) var(--mode-veil), transparent) 0%, transparent 55%),
     var(--card-surface);
@@ -8983,14 +8986,14 @@ svg {
 .lp-mode-card:hover {
   --lift: -8px;
   z-index: 10;
-  border-color: color-mix(in srgb, var(--mode-deco) 52%, var(--line));
+  border-color: color-mix(in srgb, var(--mode-accent) 52%, var(--line));
   box-shadow:
     0 26px 50px rgba(0, 0, 0, 0.42),
-    0 8px 38px color-mix(in srgb, var(--mode-deco) 26%, transparent);
+    0 8px 38px color-mix(in srgb, var(--mode-accent) 26%, transparent);
 }
 
 .lp-mode-card:hover::after {
-  background: color-mix(in srgb, var(--mode-deco) 20%, transparent);
+  background: color-mix(in srgb, var(--mode-accent) 20%, transparent);
   transform: scale(1.25);
 }
 
@@ -8998,8 +9001,12 @@ svg {
   justify-self: start;
   padding: 0.3rem 0.7rem;
   border-radius: var(--radius-pill);
-  border: 1px solid color-mix(in srgb, var(--mode-deco) 38%, transparent);
-  background: color-mix(in srgb, var(--mode-deco) 6%, transparent);
+  /* LA PASTILLE GARDE LA COULEUR DU MODE, elle seule. Demande de Marion le
+     2026-08-26 : la carte est neutre, mais l'étiquette qui nomme le mode reste
+     dans sa couleur. Elle lit donc `--mode-accent`, posé en ligne par le
+     composant, et non `--mode-deco` que le thème éteint. */
+  border: 1px solid color-mix(in srgb, var(--mode-accent) 38%, transparent);
+  background: color-mix(in srgb, var(--mode-accent) 6%, transparent);
   color: var(--ink-strong);
   font-size: 0.66rem;
   font-weight: 700;
@@ -10079,10 +10086,24 @@ svg {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.45rem;
+  /* La rangée rentre du même retrait que l'écart entre les deux boutons, donc
+     l'air à gauche, au milieu et à droite est identique. Ils passent de 135 à
+     128 px : la paire ne colle plus au bord de la carte sans cesser de s'y
+     aligner. Demande de Marion le 2026-08-26, « réduis un tout petit peu ». */
+  padding-inline: 0.45rem;
 }
 /* Slightly under the landing's 0.96rem / 2.9rem: two of these sit side by side inside
    a 277px card, where the hero has a whole viewport. */
 .pm-actions .lp-btn {
+  /* LES DEUX BOUTONS REMPLISSENT LA LARGEUR DE LA CARTE. Mesuré le 2026-08-26 :
+     ils faisaient 70 et 62 px pour une carte de 277, donc la moitié de la
+     rangée restait vide et la paire paraissait tassée sous un bloc large. Ils
+     se partagent maintenant la rangée à égalité, ce qui les allonge à environ
+     135 px et aligne la paire sur la carte. Aucune valeur en dur : la largeur
+     vient de la carte, donc elle suit si la carte change. Au passage les deux
+     font la même longueur, alors que « Rules » dépassait « Play » de 8 px. */
+  flex: 1 1 0;
+  min-width: 0;
   min-height: 2.35rem;
   padding: 0.6rem 1rem;
   font-size: 0.84rem;
@@ -10098,7 +10119,12 @@ svg {
 }
 
 .pm-note {
-  margin: 1.4rem 0 0;
+  /* MEME AIR DESSOUS QUE DESSUS. Sur deux lignes la note ne chevauchait plus
+     les cartes, mais son bas tombait à 332 et le haut des cartes à 332 aussi :
+     jointive. Le bas vaut maintenant le double du haut : la note appartient au
+     chapeau, les cartes sont un bloc neuf, et l'écart le dit. 22 px d'air ne
+     suffisaient pas, on passe à 45. Mesuré le 2026-08-26. */
+  margin: 1.4rem 0 2.8rem;
   /* DEUX LIGNES, PAS TROIS. À 34ch, les 85 signes de la note tombaient sur
      trois lignes et la troisième arrivait au ras des cartes. La note est donc
      élargie jusqu'à ce que deux lignes suffisent, et `balance` les égalise au
