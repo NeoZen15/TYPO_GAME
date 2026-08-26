@@ -20,6 +20,10 @@ export const trainingModeCopy = {
   badge: "Training",
   rightLabel: "right",
   wrongLabel: "missed",
+  // Ajouté le 2026-08-26 : troisième total du relevé, à côté des deux autres.
+  // Un mot, comme ses voisins, parce que la forme de la pastille est
+  // « nombre + mot » et qu'une pastille ne porte pas une phrase.
+  dueLabel: "due",
   pointsTitle: "How this mode thinks",
   points: [
     "There is no score to beat and no clock to race.",
@@ -50,11 +54,9 @@ export const trainingModeCopy = {
  * Whatever replaces it must not put a count of faces and the word mastered on
  * either side of this percentage.
  */
-export const trainingProgressCopy = {
-  dueMany: "faces due",
-  dueOne: "face due",
-  dueNone: "Set cleared for now",
-} as const;
+// `trainingProgressCopy` a été supprimé le 2026-08-26 : la ligne isolée qu'il
+// servait est devenue une pastille du relevé, dont l'étiquette vit désormais
+// avec ses deux voisines dans `trainingModeCopy`.
 
 /**
  * What both game screens offer once a session is over (`GameScreen` for

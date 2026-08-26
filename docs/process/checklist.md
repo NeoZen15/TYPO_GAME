@@ -3879,3 +3879,79 @@ vérifiait explicitement.
 réimport n'effacera pas les 23.
 
 Porte complète verte.
+
+## 2026-08-26 — Deux planches sur le mot, et un relevé des trois dessins
+
+Le bloc logo ne disait rien du mot. Deux planches le disent maintenant : **21 · La typographie du mot** et **22 · Le mot retravaillé**. Le document passe à 63 planches.
+
+**Le relevé, d'abord.** Trois dessins du mot cohabitent dans le fichier, distingués par leur rapport largeur sur hauteur.
+
+| | rapport | où |
+|---|---|---|
+| A | 4,205 | la charte, 113 planches, et les SVG servis par le site |
+| B | 4,055 | `dwiggins-wordmark-full-black.svg`, viewBox décalée de 30 |
+| C | 6,990 | l'affiche, en page 2, uniquement |
+
+Le propriétaire a tranché : **A est le vrai dessin**, celui qu'il a retravaillé. **C est la première vectorisation.** À hauteur d'œil égale, A est quarante pour cent plus étroit que C : ce ne sont pas deux réglages d'approche, ce sont deux dessins.
+
+**Une erreur que j'ai commise et corrigée.** J'avais annoncé que le site servait encore l'ancien dessin, en déduisant son rapport des attributs `width` et `height` du composant `<Image>` de `SiteNav.tsx`, 1394 × 200. Ce sont des indications de taille intrinsèque pour Next, pas la géométrie du fichier. Les vraies viewBox disent 842 × 200, soit le rapport de A. **Le site sert bien le dessin d'aujourd'hui.** La leçon : lire le fichier, jamais l'attribut qui prétend le décrire.
+
+**Un vrai défaut trouvé en vérifiant.** `dwiggins-wordmark-full-black.svg` porte `viewBox="30 0 811.89 200.234"` là où l'ivoire porte `viewBox="0 0 841.89 200.234"`. La noire est donc le même dessin rogné de trente unités à gauche. Posées dans un même emplacement, les deux variantes ne se calent pas au même endroit. À corriger dans les fichiers, pas dans la charte.
+
+**Ce que portent les deux planches.**
+
+- 21 · La typographie du mot : PP Frama de Pangram Pangram comme point de départ, le mot retouché à la main, le fait qu'il ne se compose plus donc que le logo ne dépend d'aucune licence, et le fait que la police s'arrête au mot. Graphique : le mot en plein, puis ses huit tracés.
+- 22 · Le mot retravaillé : la superposition, A en tracé jaune de marque sur C en aplat gris, même hauteur d'œil et même bord gauche, avec les deux largeurs mesurées dessous.
+
+**Rappel du bloqueur, inchangé.** PP Frama reste servie en trois fichiers `.otf` de bureau par `DwigginsBadge.tsx`, en production sur la page profil. C'est toujours le dernier point à régler avant la mise en ligne.
+
+### 2026-08-26, le ressenti de la réponse en entraînement, mesuré et non deviné
+
+Signalé par Marion : « le temps de réponse rouge est trop long et le vert trop court ».
+Puis, sur un premier réglage au jugé de ma part : « c'est tout mon jeu, on ne peut pas
+faire ça au hasard ».
+
+**LA CAUSE, ET ELLE EXPLIQUE LES DEUX PLAINTES D'UN COUP.** La couleur n'était posée
+qu'au retour de `/api/training/answer`, donc après un aller-retour jusqu'à la base à
+Londres. Mesure du 2026-08-17 sur un vrai build de production : **250 ms en médiane**
+pour une réponse d'entraînement, 103 en compétition. Le joueur cliquait et il ne se
+passait rien pendant un quart de seconde. Et comme l'enchaînement partait aussitôt la
+réponse reçue, le vert n'était visible que quelques millisecondes : « trop court » était
+littéralement vrai.
+
+**Correction 1, la couleur part au clic.** Le client reçoit déjà `question.typefaceSlug`
+avec la question : il sait donc, sans le serveur, si le clic est juste. Le serveur reste
+l'autorité et écrase l'état optimiste quelques dizaines de millisecondes plus tard.
+
+**Correction 2, le vert tient un temps fixe DEPUIS LE CLIC.** Un délai posé après la
+réponse aurait fait durer le vert le temps du réseau plus ce délai, donc plus longtemps
+sur une mauvaise connexion. `TRAINING_GREEN_HOLD_MS` vaut **250**, exactement la médiane
+mesurée : c'est ce que Marion voit sur sa machine, et le palier garantit que le joueur
+verra la même chose en production, où le site sera à Londres à côté de la base et où la
+réponse tombera bien plus bas.
+
+**CE QUE J'AI FAILLI CASSER, ET POURQUOI JE NE L'AI PAS FAIT.** Le rouge restait lent :
+`answerInFlightRef` jette tout clic tant que la requête vole, donc les boutons semblaient
+actifs et les clics disparaissaient. Le commentaire de l'écran dit que ce garde n'est
+qu'une économie de bande passante, « l'écriture étant idempotente ». **C'est faux, et le
+provider dit le contraire.** Deux réponses en vol sur la même question dérivent le même
+`attempt_index`, construisent la même clé d'idempotence, et la seconde est rejetée comme
+doublon : `submitTrainingAnswer` documente le cas explicitement, et précise qu'une vraie
+seconde tentative ne fonctionne **qu'après** l'écriture de la première. Relâcher le garde
+aurait fait disparaître le second clic du joueur.
+
+**Correction 3, le clic est retenu au lieu d'être jeté.** Un clic joué pendant l'envoi est
+mémorisé et rejoué à la milliseconde où la réponse précédente est enregistrée. Aucune
+attente ressentie, aucun clic perdu, et le contrat du serveur est respecté.
+
+**Une course fermée au passage.** Le clic rejoué part du bloc `finally` et lisait
+`isRoundLocked` dans une fermeture qui pouvait être périmée : il aurait pu se faire
+refuser par un verrou déjà rouvert. Le verrou est donc doublé en référence, exactement le
+raisonnement déjà écrit dans ce fichier pour le garde de réentrance : un état ne prend
+qu'au rendu suivant.
+
+**La compétition a le même défaut de couleur retardée, elle n'est pas touchée.** Le mode
+est chronométré et les points dépendent du temps de réponse : ça demande un accord à part.
+
+Six gardes verts, dont `check:answer-position` et `check:client-attempt-contract`. La
+porte complète n'a pas été lancée, son `build` partage `.next` avec le serveur de dev.

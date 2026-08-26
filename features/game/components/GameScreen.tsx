@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { trainingModeCopy, trainingProgressCopy } from "@/content/copy";
+import { trainingModeCopy } from "@/content/copy";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useSearchParams } from "next/navigation";
@@ -282,6 +282,28 @@ export default function GameScreen() {
   // that runs twice, fires two requests before React has repainted anything.
   const inFlightRef = useRef(false);
   const answerInFlightRef = useRef(false);
+  // LE CLIC JOUE PENDANT L'ENVOI N'EST PAS JETE, IL EST RETENU.
+  //
+  // Sur une mauvaise reponse la main est rendue tout de suite, mais le serveur, lui,
+  // n'accepte la tentative suivante qu'une fois la precedente ECRITE : deux reponses
+  // envoyees ensemble derivent le meme numero de tentative, construisent la meme cle
+  // d'idempotence, et la seconde est rejetee comme doublon. C'est ecrit et voulu dans
+  // submitTrainingAnswer. Relacher le verrou ferait donc DISPARAITRE le second clic.
+  //
+  // On garde donc le verrou et on memorise le choix : il part a la milliseconde ou la
+  // reponse precedente est enregistree. Le joueur ne sent aucune attente et aucun clic
+  // n'est perdu.
+  const clicEnAttenteRef = useRef<string | null>(null);
+  // Porte la derniere version de handleSelect pour que le bloc finally puisse la
+  // rappeler sans que la fonction se cite elle-meme dans ses dependances, ce que React
+  // n'autorise pas et qui recreerait la fonction a chaque rendu.
+  const handleSelectRef = useRef<((optionId: string) => Promise<void>) | null>(null);
+  // Le verrou de manche, DOUBLE en reference. Meme raison que le garde de reentrance
+  // juste en dessous, et deja ecrite dans ce fichier : un etat ne prend qu'au rendu
+  // suivant. Le clic retenu est rejoue depuis le bloc finally, donc il lit la fermeture
+  // en cours : sans cette reference il pourrait relire un verrou encore ferme et se
+  // faire jeter, ce qui ramenerait exactement le clic perdu qu'on vient de supprimer.
+  const verrouManche = useRef(false);
   const endInFlightRef = useRef(false);
 
   const showLevelToast = useCallback((level: string) => {
@@ -592,7 +614,7 @@ export default function GameScreen() {
 
   const handleSelect = useCallback(
     async (optionId: string) => {
-      if (!sessionId || !question || isComplete || isLoading || isRoundLocked) {
+      if (!sessionId || !question || isComplete || isLoading || verrouManche.current) {
         return;
       }
 
@@ -602,12 +624,18 @@ export default function GameScreen() {
       // old value and all fire. The guard was on the start path and not on this
       // one. Harmless here, the answer writer being idempotent since the double
       // start plan, but two wasted requests all the same.
-      if (answerInFlightRef.current) return;
+      if (answerInFlightRef.current) {
+        // Un envoi est en cours : on retient ce choix plutot que de l'ignorer.
+        clicEnAttenteRef.current = optionId;
+        return;
+      }
       answerInFlightRef.current = true;
+      clicEnAttenteRef.current = null;
 
       setSelectedId(optionId);
       setError(null);
       setIsRoundLocked(true);
+      verrouManche.current = true;
 
       // LA COULEUR NE DOIT PAS ATTENDRE LE RESEAU.
       //
@@ -628,6 +656,7 @@ export default function GameScreen() {
         // Le rouge n'attend rien : on rend la main tout de suite pour que le joueur
         // puisse retenter sans delai, ce qui est la demande explicite du proprietaire.
         setIsRoundLocked(false);
+        verrouManche.current = false;
       }
 
       try {
@@ -726,19 +755,29 @@ export default function GameScreen() {
         // included. A ref left true on one path is a screen that never accepts
         // another answer.
         answerInFlightRef.current = false;
+
+        // Le choix retenu pendant l'envoi part maintenant. On le lit puis on l'efface
+        // AVANT de rappeler, sinon un enchainement de clics rapides se rejouerait en
+        // boucle sur le meme choix.
+        const retenu = clicEnAttenteRef.current;
+        clicEnAttenteRef.current = null;
+        if (retenu) {
+          void handleSelectRef.current?.(retenu);
+        }
       }
     },
     [
       beginQuestion,
       isComplete,
       isLoading,
-      isRoundLocked,
       question,
       queueAdvance,
       sessionId,
       showLevelToast,
     ]
   );
+
+  handleSelectRef.current = handleSelect;
 
   const currentQuestion = question;
 
@@ -799,6 +838,15 @@ export default function GameScreen() {
             <span className="game-v2-hud__stat game-v2-hud__stat--wrong" aria-label="Missed on first try">
               <em>{firstTryWrong}</em> {trainingModeCopy.wrongLabel}
             </span>
+            {/* Troisième total, demandé à côté des deux autres. Neutre, sans
+                modificateur d'accent : ce n'est ni une réussite ni une erreur,
+                c'est ce qui reste à voir. Absent tant que le serveur ne l'a pas
+                envoyé, plutôt qu'affiché à zéro par défaut. */}
+            {progress.facesDueNow !== undefined ? (
+              <span className="game-v2-hud__stat" aria-label="Faces due now">
+                <em>{progress.facesDueNow}</em> {trainingModeCopy.dueLabel}
+              </span>
+            ) : null}
           </span>
 
           <span className="game-v2-hud__mode">{trainingModeCopy.badge}</span>
@@ -856,35 +904,6 @@ export default function GameScreen() {
               Back to modes
             </Link>
           </div>
-        ) : null}
-
-        {!error && !isLoading && !isComplete && currentQuestion && progress.facesDueNow !== undefined ? (
-          // Unobtrusive progression indicator. Deliberately NOT the global eye
-          // level, which spec §15 / N-24 keep OFF the game screen except on a
-          // level-change toast.
-          //
-          // D3, 2026-08-15. Was `X / Y faces mastered`, which counted only the
-          // top rung of a 0 to 4 ladder that rises by at most one per first
-          // attempt success on faces spaced apart: a first session read 0 / 30
-          // and could not move.
-          //
-          // D5, 2026-08-26. The gauge that replaced it printed a percentage of
-          // the ladder climbed, and the owner read it as unclear, which it was:
-          // "11% of your set mastered" claimed a count of mastered faces that
-          // the number never carried. It now prints how many faces the engine
-          // would serve right now. That count falls by one on every resolved
-          // answer, so it moves as often as the gauge did, it ranks nobody, and
-          // it gives a training session the end it never had. The percentage
-          // stays in the payload and still feeds the profile.
-          <p className="game-v2-progress" aria-live="polite">
-            {progress.facesDueNow === 0
-              ? trainingProgressCopy.dueNone
-              : `${progress.facesDueNow} ${
-                  progress.facesDueNow === 1
-                    ? trainingProgressCopy.dueOne
-                    : trainingProgressCopy.dueMany
-                }`}
-          </p>
         ) : null}
 
         {!error && !isLoading && !isComplete && currentQuestion ? (
