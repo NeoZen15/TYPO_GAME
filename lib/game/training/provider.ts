@@ -41,6 +41,7 @@ import {
   pickEligibleTypeface,
 } from "@/lib/game/training/question-shape";
 import { GameRequestError } from "@/lib/game/request-error";
+import { buildMissHint } from "@/lib/game/training/miss-hint";
 import { loadTrainingProgress } from "@/lib/profile/profile-stats";
 import { sql } from "@/lib/server/neon";
 import { isIndistinguishableFrom } from "@/lib/game/twin-guard";
@@ -1512,16 +1513,41 @@ export const submitTrainingAnswer = async ({
     : {};
 
   if (!isCorrect) {
-    await sql`
-      UPDATE users
-      SET last_seen_at = now()
-      WHERE user_id = ${user.user_id}::uuid
-    `;
+    // La lecture des deux signatures part EN MÊME TEMPS que l'écriture, donc
+    // l'aide ne coûte pas un aller-retour de plus : une erreur ne répond pas
+    // plus lentement qu'avant. Les deux polices sont dans le pool du joueur,
+    // le leurre en venant lui aussi (`question-shape`), donc une seule requête
+    // les couvre. Repli silencieux : si la lecture échoue, le joueur reçoit le
+    // message générique, jamais une erreur.
+    const [, hintRows] = await Promise.all([
+      sql`
+        UPDATE users
+        SET last_seen_at = now()
+        WHERE user_id = ${user.user_id}::uuid
+      `,
+      queryRows<{ typeface_slug: string; display_name: string; signature: Record<string, unknown> }>(sql`
+        SELECT typeface_slug, display_name, structural_signature_json AS signature
+        FROM typefaces_core
+        WHERE typeface_slug IN (${answerSlug}, ${payload.typefaceSlug})
+      `).catch(() => []),
+    ]);
+
+    const chosen = hintRows.find((row) => row.typeface_slug === answerSlug);
+    const truth = hintRows.find((row) => row.typeface_slug === payload.typefaceSlug);
+    // Rendue null par le constructeur quand aucun des huit traits ne sépare les
+    // deux polices, ce qui arrive sur 27 pour cent des paires du catalogue.
+    const hint =
+      chosen && truth
+        ? buildMissHint(
+            { displayName: chosen.display_name, signature: chosen.signature },
+            { displayName: truth.display_name, signature: truth.signature }
+          )
+        : null;
 
     return {
       result: "wrong",
       questionResolved: false,
-      feedbackText: WRONG_FEEDBACK,
+      feedbackText: hint ?? WRONG_FEEDBACK,
       progress: {
         // Served from the answer statement's own RETURNING, not from the
         // sessions row read at the top of this call. A wrong answer increments

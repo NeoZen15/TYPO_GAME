@@ -8901,6 +8901,16 @@ svg {
      `--line` suit aussi, sinon les `color-mix` de contour mélangeraient une
      encre foncée invisible sur ce fond. Mesuré sur #141019 : 0.96 donne 15,6,
      0.80 donne 11,0, 0.68 donne 8,2. Les trois passent le seuil. */
+  /* LE VOILE D'ACCENT N'A PAS LA MEME FORCE SUR LES DEUX FONDS, et c'est la
+     seule raison pour laquelle il avait doublé partout. Le même jour, la carte
+     est devenue un objet sombre sur les deux fonds : sur le beige, un voile à
+     7 pour cent ne se voyait plus, donc il est passé à 14. Mais en sombre ce
+     doublement n'avait pas été demandé, et il a teinté les trois cartes de
+     l'accueil et de la page des modes, au point que la page où l'on CHOISIT
+     son mode portait déjà la couleur des trois. Le thème clair étant en
+     réserve (fd07622), le voile garde 14 pour cent en clair et revient à 7 en
+     sombre, qui est la valeur d'avant. */
+  --mode-veil: 14%;
   --card-surface: #141019;
   --ink-strong: rgba(244, 243, 238, 0.96);
   --ink-muted: rgba(244, 243, 238, 0.8);
@@ -8916,12 +8926,16 @@ svg {
   border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) 14%, transparent) 0%, transparent 55%),
+    linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) var(--mode-veil), transparent) 0%, transparent 55%),
     var(--card-surface);
   box-shadow: var(--shadow-card);
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
   will-change: transform;
   transition: transform 220ms ease, border-color 200ms ease, box-shadow 220ms ease;
+}
+
+:root[data-theme="dark"] .lp-mode-card {
+  --mode-veil: 7%;
 }
 
 .lp-mode-card::after {
@@ -9754,6 +9768,13 @@ svg {
   color: var(--pf-cream);
 }
 
+/* Accent neutre, le mélange rendrait la crème à pleine force et le libellé
+   pèserait plus que le titre. Il prend donc l'encre du chapeau qu'il annonce,
+   la même que .pb-lede juste dessous. */
+.pm .pb-kicker {
+  color: rgb(from var(--pf-cream) r g b / 0.6);
+}
+
 .pb-lede {
   margin: 0;
   max-width: 46ch;
@@ -9927,9 +9948,13 @@ svg {
   align-content: center;
   justify-items: center;
   padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem);
-  /* .pb-kicker mixes the accent into the ink and reads plain grey without one. The
-     deck's own accents live per card; the head borrows training's, the core mode. */
-  --pb-accent: var(--mode-training);
+  /* L'EN-TETE DE CETTE PAGE N'EMPRUNTE LA COULEUR D'AUCUN MODE. Elle empruntait
+     celle de l'Entraînement, et le libellé « YOUR MODES » sortait donc en vert
+     d'eau sur la page qui sert justement à choisir entre trois modes. La table
+     des couleurs donne à ce vert un rôle exclusif, le mode Entraînement : ici
+     il désignait les trois. L'accent devient neutre, chaque carte garde le sien.
+     Correction demandée par Marion le 2026-08-26. */
+  --pb-accent: var(--pf-cream);
 }
 
 /* THE DECK IS SPREAD HERE, NOT FANNED.
@@ -10046,11 +10071,14 @@ svg {
 
 .pm-note {
   margin: 1.4rem 0 0;
-  max-width: 34ch;
-  /* Mesuré le 2026-08-24 : la dernière ligne tombait à un seul mot
-     (« stakes. » et « it. »). `pretty` répartit la fin du paragraphe sans
-     toucher à la taille ni à la largeur. */
-  text-wrap: pretty;
+  /* DEUX LIGNES, PAS TROIS. À 34ch, les 85 signes de la note tombaient sur
+     trois lignes et la troisième arrivait au ras des cartes. La note est donc
+     élargie jusqu'à ce que deux lignes suffisent, et `balance` les égalise au
+     lieu de laisser une ligne longue et une courte. `pretty`, posé le
+     2026-08-24 contre les lignes orphelines, n'a plus d'objet ici : sur deux
+     lignes, c'est `balance` qui décide de la coupe. */
+  max-width: 46ch;
+  text-wrap: balance;
   font-family: var(--lp-mono);
   font-size: 0.66rem;
   line-height: 1.55;

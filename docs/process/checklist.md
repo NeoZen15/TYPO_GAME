@@ -3955,3 +3955,67 @@ est chronométré et les points dépendent du temps de réponse : ça demande un
 
 Six gardes verts, dont `check:answer-position` et `check:client-attempt-contract`. La
 porte complète n'a pas été lancée, son `build` partage `.next` avec le serveur de dev.
+
+### 2026-08-26, le voile de couleur des cartes de mode, remis à sa valeur d'avant
+
+**Marion voit un problème de couleur sur `/play` et soupçonne le travail sur le thème clair. Il a raison, et c'est mesurable.**
+
+**Le commit responsable est `e934547`, « the mode cards go dark ».** Il a fait deux choses à `.lp-mode-card` : la carte est devenue un objet sombre sur les deux fonds, ce qui était la demande, et le voile d'accent est passé de **7 à 14 pour cent**. Ce doublement n'existait que pour le clair : sur le beige, un voile à 7 pour cent ne se voyait plus. En sombre, personne ne l'avait demandé, et il a teinté les trois cartes de l'accueil et de la page des modes.
+
+**Ce que ça produisait, et pourquoi ça gênait l'œil.** La page où l'on choisit son mode portait déjà la couleur des trois modes à pleine force. Or `/play` et l'accueil partagent la même classe, donc les deux pages avaient doublé de teinte.
+
+**Le correctif, scopé au thème.** Le voile devient une variable, `--mode-veil`, à 14 pour cent par défaut, c'est à dire en clair, et à 7 pour cent sous `:root[data-theme="dark"]`. Rien n'est perdu : le jour où le clair est rallumé, il retrouve son voile fort sans qu'on ait à refaire l'analyse. Vérifié que le HTML servi porte bien `data-theme="dark"` en dur, puisque `LIGHT_THEME_ENABLED` vaut false, donc la règle sombre s'applique toujours.
+
+**Une deuxième couleur sur la même page, laissée à Marion.** Le libellé « YOUR MODES » est vert parce que `--pb-accent: var(--mode-training)` est posé sur l'en-tête de la page. C'est un choix documenté du commit `13e405f`, pas une conséquence du thème. Mais la table des couleurs donne au vert d'eau un rôle exclusif, le mode Entraînement : sur la page qui sert à choisir entre trois modes, l'en-tête porte la couleur d'un seul des trois. À trancher, je n'y touche pas.
+
+### 2026-08-26, la page des modes, trois corrections et un audit du thème
+
+**1. Le voile d'accent des cartes, remis à sa valeur d'avant.** Voir la note précédente : `e934547` l'avait doublé de 7 à 14 pour cent pour le thème clair, et le sombre l'avait pris en pleine face. Le voile devient `--mode-veil`, 14 pour cent par défaut donc en clair, 7 pour cent sous `:root[data-theme="dark"]`. Mesuré dans le navigateur après coup : la carte rend bien `--mode-veil: 7%`.
+
+**2. La note passe de trois lignes à deux.** « Only your training progression is personal and permanent. Competition never moves it. », 85 signes, tombait sur trois lignes à `max-width: 34ch` et la troisième arrivait au ras des cartes. Élargie à 46ch, et `text-wrap` passe de `pretty` à `balance` : sur deux lignes, ce n'est plus l'orpheline qu'il faut éviter, c'est le déséquilibre. Mesuré : 2 lignes, 306 px de large.
+
+**Reste un point d'espacement, qui appartient à Marion.** Le bas de la note tombe à 332 et le haut des cartes à 332 exactement. Elle ne chevauche plus, mais elle est jointive. Une marge basse sur `.lp-modes__head` réglerait ça, je n'y touche pas.
+
+**3. L'en-tête de la page ne porte plus la couleur d'un mode.** `.pm` posait `--pb-accent: var(--mode-training)`, donc le libellé « YOUR MODES » sortait en vert d'eau sur la page qui sert à choisir entre trois modes, alors que la table des couleurs donne à ce vert un rôle exclusif. L'accent devient neutre (`--pf-cream`) et le libellé prend l'encre de la lede qu'il annonce, crème à 60 pour cent. Vérifié dans le navigateur : sur `/play` le libellé rend `0.957 0.953 0.933 / 0.6`, et sur `/play/training/rules` il rend toujours le vert d'eau, ce qui est juste puisque cette page parle bien de l'Entraînement. La correction est donc bien scopée.
+
+**Audit demandé : le changement de couleur a-t-il cassé autre chose ?** Non, et c'est mesuré. `npm run check:contrast` passe, 18 encres sur 6 palettes, la plus serrée à 4,95. Relevé au navigateur dans les cartes de mode sur l'accueil et sur `/play` : 12 textes par page, aucun sous 4,5, le plus serré à 8,13. Redéfinir `--ink-strong`, `--ink-muted`, `--ink-soft` et `--line` sur la carte n'a donc rien abîmé. Le grand aplat clair du pied de l'accueil est `--chrome-bg`, la même crème que la pastille d'en-tête : c'est le parti pris du chrome clair sur fond sombre, pas un reste du thème clair.
+
+**Deux mises en garde de méthode, pour la prochaine fois.** Mesurer le contraste en lisant `color` donne un faux positif sur tout texte peint par un dégradé découpé au texte : sa couleur est transparente, le rapport calculé vaut 1, et on croit à des dizaines de textes invisibles. Il faut écarter `color` à alpha nul, `-webkit-text-fill-color` transparent et `background-clip: text`. Et un correctif fait pour un thème doit être **scopé à ce thème** dès le premier jour : c'est faute de l'avoir fait que le sombre a porté deux jours durant un réglage qui ne le concernait pas.
+
+**Un sujet à part, pas causé par la couleur.** Sur l'accueil, plusieurs petits libellés décoratifs sont sous le seuil : `lp-annot`, `lp-scrollhint` et l'invite de la démo à 2,91, et la note des modes à 2,72. Aucun de ces éléments n'est touché par `e934547`, donc c'est un chantier propre, à ouvrir quand Marion voudra.
+
+### 2026-08-26, le verrou de manche : un bug que j'ai créé, trouvé par Marion en jouant
+
+**Le défaut.** « Le premier marche mais après ça ne marche plus. » Exact, et c'était moi.
+En doublant le verrou de manche en référence pour fermer une course, j'ai mis la
+référence à jour au clic et sur la mauvaise réponse, mais **pas dans les six autres
+endroits qui rouvrent le verrou**. Sur une bonne réponse la référence restait donc fermée
+pour toujours, et le garde d'entrée jetait tout clic suivant. La première question
+marchait, aucune autre.
+
+**La correction n'est pas de recopier la mise à jour au septième endroit.** Recopier une
+mise à jour dans sept sites est une invitation à en oublier un, et c'est exactement ce
+qui vient d'arriver. L'état et la référence passent désormais par **un seul point**,
+`verrouiller(ferme)`, et les huit appels y passent tous. Le bug redevient impossible à
+écrire plutôt que corrigé une fois.
+
+**Vérifié dans le navigateur, pas seulement compilé.** Trois questions jouées de bout en
+bout sur le serveur de dev, en pilotant Chrome :
+
+| geste | attendu | observé |
+|---|---|---|
+| question 1, mauvaise réponse | même question, boutons actifs | manqués 0 → 1, indice affiché |
+| question 1, bonne réponse | question suivante | dues 30 → 29, nouvelles options |
+| question 2, mauvaise réponse | clic accepté | manqués 1 → 2 |
+| question 2, bonne réponse | question suivante | nouvelles options |
+| question 3, mauvaise réponse | clic accepté | manqués 2 → 3 |
+| fin de session | session refermée | `completed` avec heure de fin |
+
+Zéro erreur en console. Les polices Adobe sont bien servies au joueur : Comic Sans MS,
+Papyrus Std, Anton, Adobe Caslon Pro et Adobe Garamond Pro sont sorties dans les options.
+
+**À signaler honnêtement : ce test a écrit en production.** Le serveur de dev lit
+`DATABASE_URL` dans `.env.local`, qui pointe sur la vraie base. Quatre utilisateurs
+invités de plus, une session refermée proprement, et quelques événements. C'est le piège
+que `CLAUDE.md` décrit pour la suite end to end, et il vaut aussi pour un pilotage de
+navigateur. Rien de sale, mais à savoir.

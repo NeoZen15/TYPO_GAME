@@ -304,6 +304,17 @@ export default function GameScreen() {
   // en cours : sans cette reference il pourrait relire un verrou encore ferme et se
   // faire jeter, ce qui ramenerait exactement le clic perdu qu'on vient de supprimer.
   const verrouManche = useRef(false);
+  // UN SEUL POINT DE PASSAGE POUR LE VERROU, et c'est la lecon d'un bug que j'ai
+  // introduit le 2026-08-26 : j'avais mis a jour la reference au clic et sur la mauvaise
+  // reponse, mais PAS sur les six autres endroits qui rouvrent le verrou. Sur une bonne
+  // reponse la reference restait donc fermee et plus aucun clic ne passait : la premiere
+  // question marchait, aucune autre. Recopier une mise a jour dans sept endroits est une
+  // invitation a en oublier un, donc l'etat et la reference bougent ensemble ici ou
+  // nulle part.
+  const verrouiller = useCallback((ferme: boolean) => {
+    verrouManche.current = ferme;
+    setIsRoundLocked(ferme);
+  }, []);
   const endInFlightRef = useRef(false);
 
   const showLevelToast = useCallback((level: string) => {
@@ -349,9 +360,9 @@ export default function GameScreen() {
     setWrongAttemptIds([]);
     firstAttemptRef.current = true;
     setInlineFeedback(null);
-    setIsRoundLocked(false);
+    verrouiller(false);
     attemptStartedAtRef.current = performance.now();
-  }, []);
+  }, [verrouiller]);
 
   const flushAdvance = useCallback(() => {
     if (!pendingAdvanceRef.current) return;
@@ -394,7 +405,7 @@ export default function GameScreen() {
     setWrongAttemptIds([]);
     firstAttemptRef.current = true;
     setInlineFeedback(null);
-    setIsRoundLocked(false);
+    verrouiller(false);
 
     try {
       const onboarding = readOnboarding();
@@ -438,7 +449,7 @@ export default function GameScreen() {
       setIsLoading(false);
       inFlightRef.current = false;
     }
-  }, [beginQuestion, clearAdvanceTimer]);
+  }, [beginQuestion, clearAdvanceTimer, verrouiller]);
 
   // Voluntary end of a session (I-17). A training session has no round cap any
   // more, so nothing closes it on its own: without this call the row stays
@@ -470,7 +481,7 @@ export default function GameScreen() {
       } | null;
 
       clearAdvanceTimer();
-      setIsRoundLocked(false);
+      verrouiller(false);
       setInlineFeedback(null);
       setSummary(payload?.summary ?? null);
       setIsComplete(true);
@@ -486,7 +497,7 @@ export default function GameScreen() {
     } finally {
       endInFlightRef.current = false;
     }
-  }, [clearAdvanceTimer, sessionId]);
+  }, [clearAdvanceTimer, sessionId, verrouiller]);
 
   // L'HORLOGE DE SÉANCE. Elle démarre à la PREMIÈRE question affichée et non au
   // montage : l'attente du serveur, la police qui charge et un démarrage en échec
@@ -634,8 +645,7 @@ export default function GameScreen() {
 
       setSelectedId(optionId);
       setError(null);
-      setIsRoundLocked(true);
-      verrouManche.current = true;
+      verrouiller(true);
 
       // LA COULEUR NE DOIT PAS ATTENDRE LE RESEAU.
       //
@@ -655,8 +665,7 @@ export default function GameScreen() {
       if (!justeSelonLeClient) {
         // Le rouge n'attend rien : on rend la main tout de suite pour que le joueur
         // puisse retenter sans delai, ce qui est la demande explicite du proprietaire.
-        setIsRoundLocked(false);
-        verrouManche.current = false;
+        verrouiller(false);
       }
 
       try {
@@ -701,7 +710,7 @@ export default function GameScreen() {
           setWrongAttemptIds((current) =>
             current.includes(optionId) ? current : [...current, optionId]
           );
-          setIsRoundLocked(false);
+          verrouiller(false);
           attemptStartedAtRef.current = performance.now();
           return;
         }
@@ -745,11 +754,11 @@ export default function GameScreen() {
           return;
         }
 
-        setIsRoundLocked(false);
+        verrouiller(false);
       } catch (submitError) {
         console.error(submitError);
         setError("Unable to submit this answer.");
-        setIsRoundLocked(false);
+        verrouiller(false);
       } finally {
         // Released whichever way the call left, the wrong-answer early return
         // included. A ref left true on one path is a screen that never accepts
@@ -774,6 +783,7 @@ export default function GameScreen() {
       queueAdvance,
       sessionId,
       showLevelToast,
+      verrouiller,
     ]
   );
 
