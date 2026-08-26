@@ -663,6 +663,15 @@ export default function GameScreen() {
       const instantDuClic = performance.now();
       setResult(justeSelonLeClient ? "correct" : "wrong");
       if (!justeSelonLeClient) {
+        // LE ROUGE SE LIT DANS `wrongAttemptIds`, PAS DANS `result`. Mesure faite dans le
+        // navigateur le 2026-08-26 : douze millisecondes apres le clic la classe valait
+        // `is-selected` sans `is-wrong`, parce que cette liste n'etait remplie qu'au
+        // retour du serveur. La moitie de la correction manquait donc : la case se
+        // marquait tout de suite, mais elle ne rougissait qu'apres le reseau. On l'inscrit
+        // ici, et la branche d'apres la reponse la reecrit a l'identique sans effet.
+        setWrongAttemptIds((current) =>
+          current.includes(optionId) ? current : [...current, optionId]
+        );
         // Le rouge n'attend rien : on rend la main tout de suite pour que le joueur
         // puisse retenter sans delai, ce qui est la demande explicite du proprietaire.
         verrouiller(false);

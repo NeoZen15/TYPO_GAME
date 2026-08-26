@@ -9,6 +9,21 @@ export const COMPETITION_TOTAL_DURATION_MS = 2 * 60 * 1000;
 // Competition should feel almost immediate; keep only a tiny handoff before the next word.
 export const COMPETITION_FEEDBACK_DELAY_MS = 80;
 export const COMPETITION_FEEDBACK_PERSIST_MS = 900;
+
+// LA COULEUR TIENT UN TEMPS FIXE DEPUIS LE CLIC, meme correction qu'en entrainement.
+//
+// Avant : la couleur n'etait posee qu'au retour de /api/competition/answer, mesure a
+// 103 ms en mediane sur un build de production, puis le mot suivant partait 80 ms plus
+// tard. La couleur n'etait donc visible que ces 80 ms, et le joueur voyait surtout un
+// quart de seconde ou rien ne bougeait apres son clic.
+//
+// POURQUOI 180 ET PAS LES 250 DE L'ENTRAINEMENT. La competition est chronometree, deux
+// minutes fixes : allonger la couleur retarde le mot suivant et retire des mots a la
+// manche. La meme mesure donne 183 ms du clic au mot suivant aujourd'hui. Le palier est
+// donc cale sur cette valeur : la couleur devient immediate et deterministe, et le
+// nombre de mots par manche ne change pas. Ce n'est pas un reglage de gout, c'est la
+// conservation d'un equilibre deja mesure.
+export const COMPETITION_COLOR_HOLD_MS = 180;
 export const COMPETITION_FAST_BONUS_THRESHOLD_MS = 2_000;
 
 // How much longer than the player's own claim the SERVER is willing to have

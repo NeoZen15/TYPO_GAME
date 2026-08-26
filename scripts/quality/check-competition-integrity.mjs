@@ -100,6 +100,51 @@ const requireIn = (haystack, needle, where, why) => {
   }
 };
 
+// LE GARDE DE REENTRANCE, VERIFIE PAR SA FORME ET NON PAR SON TEXTE.
+//
+// La regle cherchait le littéral `if (answerInFlightRef.current) return;`. Elle a rougi
+// le 2026-08-26 quand l'entrainement est passe a une forme MEILLEURE : au lieu de jeter
+// le clic joué pendant l'envoi, il le retient et le rejoue des que la reponse precedente
+// est ecrite, ce qui supprime une attente ressentie sans violer le contrat du serveur.
+//
+// Ce que la regle doit exiger n'est donc pas une phrase, c'est un comportement : quand un
+// envoi est en cours, la fonction SORT sans en lancer un second. On extrait la branche et
+// on verifie deux choses : elle rend la main, et elle ne part pas envoyer quoi que ce
+// soit. Un garde supprime, ou une branche qui tombe dans le fetch, echoue toujours.
+const requireReentranceGuard = (handler, where) => {
+  const at = handler.indexOf("if (answerInFlightRef.current)");
+  if (at === -1) {
+    failures.push(
+      `${where}: missing the re-entrance guard on \`answerInFlightRef.current\`. ` +
+        "The answer path must refuse a second submission while one is in flight: two answers " +
+        "to the same question derive the same attempt_index and the second is dropped as a duplicate."
+    );
+    return;
+  }
+  const apres = handler.slice(at, at + 320);
+  const surUneLigne = /^if \(answerInFlightRef\.current\)\s*return\s*;/.test(apres);
+  const bloc = apres.match(/^if \(answerInFlightRef\.current\)\s*\{([\s\S]*?)\n\s*\}/);
+  const branche = surUneLigne ? "return;" : bloc ? bloc[1] : null;
+  if (branche === null) {
+    failures.push(
+      `${where}: the re-entrance guard is neither \`) return;\` nor a \`{ … }\` block. ` +
+        "Written any other way, nothing here can prove it stops the second submission."
+    );
+    return;
+  }
+  if (!/\breturn\b/.test(branche)) {
+    failures.push(
+      `${where}: the re-entrance branch does not return, so a second click falls through ` +
+        "into the fetch and the server drops it as a duplicate."
+    );
+  }
+  if (/\b(await|fetch)\b/.test(branche)) {
+    failures.push(
+      `${where}: the re-entrance branch itself sends a request. It must only remember or refuse.`
+    );
+  }
+};
+
 const refuseIn = (haystack, needle, where, why) => {
   if (haystack.includes(needle)) {
     failures.push(`${where}: found \`${needle}\`, which must not be there. ${why}`);
@@ -574,13 +619,7 @@ for (const [file, source] of [
   const code = stripJsComments(source);
   const handlerAt = code.indexOf("const handleSelect = useCallback");
   const handler = handlerAt === -1 ? "" : code.slice(handlerAt);
-  requireIn(
-    handler,
-    "if (answerInFlightRef.current) return;",
-    `${file} handleSelect`,
-    "the answer path must refuse re-entrance on a ref. The start path has had this guard since the " +
-      "double start plan; this one did not."
-  );
+  requireReentranceGuard(handler, `${file} handleSelect`);
   requireIn(
     handler,
     "answerInFlightRef.current = false;",

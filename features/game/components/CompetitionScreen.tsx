@@ -13,6 +13,7 @@ import {
 import { isDevRuntime } from "@/lib/dev-mode";
 import { formatClickTime } from "@/lib/game/competition/format";
 import {
+  COMPETITION_COLOR_HOLD_MS,
   COMPETITION_FEEDBACK_DELAY_MS,
   COMPETITION_FEEDBACK_PERSIST_MS,
 } from "@/lib/game/competition/constants";
@@ -920,6 +921,15 @@ export default function CompetitionScreen() {
       setInlineFeedback(null);
       setIsRoundLocked(true);
 
+      // LA COULEUR NE DOIT PAS ATTENDRE LE RESEAU, meme correction qu'en entrainement.
+      // Le client connait deja la bonne reponse, `question.typefaceSlug` arrive avec la
+      // question. Le serveur reste l'autorite et ecrase cet etat quelques dizaines de
+      // millisecondes plus tard. Le calcul des points n'est pas touche :
+      // `responseTimeMs` est fige dans le corps de la requete juste en dessous, avant
+      // toute mise a jour d'affichage.
+      const instantDuClic = performance.now();
+      setResult(optionId === question.typefaceSlug ? "correct" : "wrong");
+
       try {
         const response = await fetch("/api/competition/answer", {
           method: "POST",
@@ -977,6 +987,14 @@ export default function CompetitionScreen() {
         // short feedback delay before beginQuestion renders it.
         ensureGameFontFace(payload.nextQuestion?.fontFace);
 
+        // Ce qui reste a tenir pour que la couleur ait dure COMPETITION_COLOR_HOLD_MS
+        // DEPUIS LE CLIC. Quand l'aller-retour a deja pris plus longtemps, il ne reste
+        // rien a attendre et le mot suivant part sans delai supplementaire.
+        const resteATenir = Math.max(
+          COMPETITION_FEEDBACK_DELAY_MS,
+          COMPETITION_COLOR_HOLD_MS - (performance.now() - instantDuClic)
+        );
+
         queueAdvance(() => {
           if (payload.nextQuestion) {
             beginQuestion(payload.nextQuestion);
@@ -989,7 +1007,7 @@ export default function CompetitionScreen() {
           setResult("idle");
           setInlineFeedback(null);
           setIsRoundLocked(false);
-        }, COMPETITION_FEEDBACK_DELAY_MS);
+        }, resteATenir);
       } catch (submitError) {
         console.error(submitError);
         setError("Unable to submit this answer.");

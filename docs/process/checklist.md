@@ -4019,3 +4019,98 @@ Papyrus Std, Anton, Adobe Caslon Pro et Adobe Garamond Pro sont sorties dans les
 invités de plus, une session refermée proprement, et quelques événements. C'est le piège
 que `CLAUDE.md` décrit pour la suite end to end, et il vaut aussi pour un pilotage de
 navigateur. Rien de sale, mais à savoir.
+
+### 2026-08-26, audit du site en onze passes contradictoires, deux dispositifs
+
+**Demande de Marion.** « Fais le parcours client et trouve les erreurs, pars de la landing et fais tous les chemins possibles, quatre ou cinq fois, avec des agents cadrés et bien scriptés. » Puis, plus tard : « ils doivent faire tout le site », et « sors-moi les liens morts ».
+
+**Le bloqueur qu'il a fallu lever d'abord.** Le serveur de dev pointe sur la base de PRODUCTION, et ouvrir un écran de jeu suffit à y écrire : `GameScreen.tsx` appelle `startSession()` dans un effet de montage. Le garde-fou `tests/e2e/guard-database.ts` chiffre le coût par passage, et Marion venait de refermer 337 sessions à la main. Faire jouer cinq agents cinq fois sur 3002 était donc exclu.
+
+**Deux dispositifs, dans cet ordre.** D'abord cinq passes sur 3002 avec un intercepteur réseau qui coupe toute requête non-GET, ce qui rend l'écriture structurellement impossible au lieu de simplement l'éviter, mais interdit les quatre routes de jeu. Ensuite, avec le feu vert de Marion, une branche Neon jetable (`audit-parcours-20260826`, expiration automatique le 27) et un second serveur sur 3005 dans un worktree isolé, où six passes ont tout fait, jeu compris. Recette du serveur d'audit notée en mémoire : le piège est le `node_modules`, Turbopack refuse tout lien symbolique qui sort de sa racine, il faut un `cp -Rc`.
+
+**Onze passes, 82 anomalies brutes, 15 confirmées par un contradicteur** dont la seule mission était de faire tomber la ligne en la remesurant lui-même. Sur le second audit, aucune n'est tombée.
+
+**Trois bloqueurs de mise en ligne.**
+
+1. **Competition est injouable.** Les quatre boutons de réponse sont ivoire sur ivoire, ratio mesuré 1,35 pour un seuil de 4,5. Vérifié au pixel peint et pas seulement au calcul : deux couleurs dominantes seulement, 211 pour la carte et 243 pour les glyphes. La même classe en training donne 18,9, donc c'est bien propre à Competition. `CompetitionScreen.tsx:340` pose `background: rgba(244, 243, 238, 0.86)` en dur, avec `:379` et `:185`, et cette feuille de composant écrase le fond thémé de `app/globals.css:449-466`. La règle fautive n'est pas scopée à `.competition-v1-shell`. La ligne 341 est vide avec son indentation conservée, trace d'une déclaration de couleur supprimée : c'est une régression, pas un choix initial.
+
+2. **Le bandeau cookie vole les taps sur tout téléphone.** Sous 561 px, `aside.storage-notice` mesure 369 x 384 px, 45 pour cent de la hauteur d'écran, dont environ 284 px strictement transparents qui captent quand même les clics. Cause : `app/globals.css:11484` pose `flex: 1 1 20rem` sur `.storage-notice__text`, une base pensée pour la largeur, et `app/globals.css:11528` bascule le conteneur en colonne sous 560 px, ce qui transforme la base en **hauteur** de 320 px. Preuve de causalité, dans un contexte neuf : `elementFromPoint` au centre du bouton Continue de `/onboarding` rend `P.storage-notice__text`, le bouton est troisième dans la pile, et après un clic sur « J'ai compris » le même tap fait passer `data-step` de `welcome` à `familiarity`. Cibles volées : les deux CTA de la héro sur `/`, les liens Play et Rules sur `/play`, trois options de réponse sur quatre plus « End session » sur `/game`, huit boutons de lettres sur `/profile`, et sur `/compare` le bouton « Guide » dont le tap écarte le bandeau au lieu d'ouvrir le guide. En 1280 le même bandeau fait 64 px et n'intercepte rien.
+
+3. **La section Typefaces de la landing est morte à 100 pour cent.** Les huit cartes renvoient 404. `LandingExperience.tsx:79-88` écrit les slugs en dur depuis le manifeste de polices, `TypefaceRail.tsx:159` en fait des href, et `app/type/[slug]/page.tsx:72` fait `notFound()` faute de fiche éditoriale : `content/typography/typefaces/` ne contient que `frutiger.json`, `helvetica-neue.json` et `inter.json`. Deux référentiels qui ne se recoupent sur aucun slug. La seule fiche vivante, `inter`, n'est liée de nulle part. **Point important pour le correctif, contredit deux fois par les contradicteurs : ce n'est PAS le garde-fou de la police servie.** Les huit slugs sont `assetStatus: mapped`, donc filtrer sur `hasSpecimenPage()` ne retirerait aucun des huit liens cassés. Le bon test est la présence du JSON éditorial.
+
+**Les liens morts, neuf cibles distinctes.** Les huit `/type/*` ci-dessus, plus `/learn/contrast`, présent sur 100 pour cent des pages de comparaison servies (`app/compare/[slug]/page.tsx:431`, rendu sans condition, alors que le lien spécimen seize lignes plus bas a exactement le garde qui manque). Aucun lien externe mort : le seul du site, Wikipedia sur `/type/inter`, répond 200, et la feuille Typekit aussi.
+
+**Un défaut sorti de la contradiction, pas d'une passe.** Les cartes du rail ne s'activent pas au clic souris : `TypefaceRail.tsx:73` fait `setPointerCapture`, Chromium recible le `click` sur le div du rail, et `target.closest("a")` vaut null. Le garde anti-drag lignes 82 et 96-99 est un second suspect, le rail dérivant de 0,5 px par frame franchit son seuil de 6 px tout seul. Au clavier, en URL directe et pour un robot, la 404 tombe à coup sûr.
+
+**Deux mines pour le jour du rallumage du thème clair.** `app/globals.css:493` et `:499` gardent `color: #f4f3ee` en dur sur `.is-correct` et `.is-wrong`, ce qui donne 1,16 de contraste sur le rose pâle et pire sur le vert. Personne n'est touché aujourd'hui, `LIGHT_THEME_ENABLED` est à false. Mais `check:contrast` ne les verra jamais : ces états n'existent qu'après un clic.
+
+**Ce qui est propre, et c'est mesuré, pas supposé.** Zéro débordement horizontal sur 25 routes en desktop et 21 en mobile. Un seul h1 par page partout. Aucun lien ni bouton sans nom accessible. Aucune exception JavaScript, aucune erreur d'hydratation. Aucune image cassée. **La police affichée est toujours celle qui est demandée**, vérifié sur une trentaine de tours : `document.fonts.check` vrai, et le mot ne porte aucune propriété typographique ajoutée, `fontWeight 400`, `letterSpacing normal`, `fontSynthesis none`. Le comptage du jeu et les confusions du récap sont exacts. Le chronomètre de Competition et son timeout fonctionnent, score au point près même après abandon. Les onglets des pages de règles tiennent dans les trois sens et `replaceState` n'empile pas l'historique. Toutes les URL inexistantes rendent un vrai 404 rédigé avec deux sorties, aucune erreur serveur.
+
+**Les trous de couverture, assumés.** Expert n'existe pas comme partie : `/play/expert` est une page d'attente, et `/game?mode=expert` ouvre en réalité une session training sans le dire, donc les règles écrites n'ont pas pu être confrontées au jeu. La fin naturelle d'une session training n'a jamais été atteinte, il n'y a pas de longueur planifiée, le récap n'a été vu que par fermeture volontaire. Une seule page de spécimen existe pour être auditée, et une seule paire de comparaison est atteignable. Les mesures de contraste hors anomalies confirmées sont à refaire : quatre sondes sur six ne savaient pas lire la syntaxe `color(srgb r g b / a)` que le site utilise partout, et remontaient le fond depuis le mauvais ancêtre.
+
+**Reste 35 lignes non vérifiées, plafond de contradiction atteint, aucune en bloquant.** Les plus utiles à reprendre : `/profile` afficherait un profil fictif niveau 7 à un visiteur sans cookie ; deux pages de règles annoncent deux tailles de catalogue incompatibles, 1172 faces contre 2032 ; le `<title>` serait le nom de travail « Jeux de Typo V2 » sur presque toutes les pages, sans `og:` ni `canonical` ; `lang="en"` est servi sur les trois pages légales écrites en français.
+
+**Vérifié à la main après les audits.** La politique de confidentialité est bien publiée avec un trou visible, `[A COMPLETER: identité de l'éditeur, statut juridique, adresse]`, dans `content/legal.ts`. Cohérent avec le commit du jour qui dit qu'il ne reste qu'une information à fournir.
+
+**Un défaut de protocole à corriger pour la prochaine fois.** Le garde-fou du premier audit était écrit en `pathname.startsWith(p + "/")`, ce qui avale aussi `/play/training/rules` et ses deux jumelles. Trois passes sur cinq ont donc perdu les pages de règles et ont préféré garder la consigne mot pour mot plutôt que de l'assouplir seules. Et le chemin de script imposé était identique pour tous les contradicteurs, qui se sont écrasés entre eux : il faut un nom unique par agent.
+
+**2026-08-26, la vraie cause du problème de couleur des cartes de mode.** Marion l'a dit trois fois avant que je trouve, et il avait raison depuis le début : ça vient de `e934547`, le commit du thème clair. Trois calques teintaient la carte, et je les ai retirés dans cet ordre, chacun mesuré au navigateur.
+
+1. **Le voile du dégradé**, passé de 7 à 14 pour cent par ce commit pour le thème clair. Variabilisé en `--mode-veil`, mis à 0 en sombre.
+2. **Le halo**, un rond flou de 112 px posé en haut à droite par `.lp-mode-card::after`, à 10 pour cent de la couleur du mode. C'est lui qui teintait encore la carte une fois le voile à zéro, et c'est ce que je n'avais pas vu. Variabilisé en `--mode-glow`, mis à 0 en sombre.
+3. **La surface elle même, et c'était la vraie cause.** Le même commit avait figé `--card-surface: #141019` pour que la carte soit sombre sur les deux fonds. Or **#141019 est violet** : bleu 25, rouge 20, vert 16. La page est en noir pur, donc les trois cartes tiraient au violet. La formule d'avant, `color-mix(--foreground 5%, --background)`, donne **rgb(12, 12, 12)**, neutre. Rétablie en sombre, mesurée identique à la valeur d'avant le commit. Le clair garde #141019, qui est ce dont il avait besoin.
+
+**Ce qu'il reste de couleur sur la carte, volontairement :** la pastille du mode et le contour. C'est ainsi qu'une carte dit de quel mode elle parle.
+
+**#141019 ailleurs dans la feuille, vérifié :** 13 occurrences, toutes des encres sur le chrome crème (`--chrome-ink`, `--chrome-cta-*`, le curseur de la bascule). À l'échelle d'une encre, la dérive violette ne se voit pas. La carte était la seule grande surface concernée.
+
+**La leçon, et elle vaut pour la prochaine fois.** Quand le propriétaire dit qu'une couleur est fausse et nomme le commit responsable, il faut lire **tous** les calques colorés de l'élément avant de corriger, pas le premier trouvé. Trois passes ont été nécessaires là où une mesure complète aurait tout donné du premier coup : le relevé qui a débloqué l'affaire liste, pour chaque carte, la surface, le dégradé, le `::after`, le `::before`, l'ombre et chaque enfant coloré.
+
+### 2026-08-26, la compétition alignée, et la moitié du rouge qui manquait
+
+**La compétition reçoit la même correction que l'entraînement**, sur demande. La couleur
+part du clic, le client connaissant déjà `question.typefaceSlug`. Le calcul des points
+n'est pas touché : `responseTimeMs` est figé dans le corps de la requête avant toute mise
+à jour d'affichage, ce qui a été relu ligne par ligne.
+
+**Le palier vaut 180 ms et non les 250 de l'entraînement, et c'est un raisonnement, pas un
+goût.** La compétition est chronométrée sur deux minutes fixes : allonger la couleur
+retarde le mot suivant et retire des mots à la manche. La mesure du 2026-08-17 donne
+**183 ms du clic au mot suivant**. Le palier est calé dessus, donc la couleur devient
+immédiate et déterministe **sans changer le nombre de mots par manche**.
+
+**LA MOITIÉ DU ROUGE MANQUAIT, ET SEULE LA MESURE L'A MONTRÉE.** Instrumentation dans le
+navigateur : douze millisecondes après le clic, la classe valait `is-selected` **sans**
+`is-wrong`. Le rouge ne se lit pas dans `result` mais dans `wrongAttemptIds`, une liste
+que seule la réponse du serveur remplissait. La case se marquait donc tout de suite et ne
+rougissait qu'après le réseau. Corrigé : la liste est écrite au clic, et la branche
+d'après la réponse la réécrit à l'identique, sans effet.
+
+**Mesures finales, dans Chrome, sur le serveur de dev :**
+
+| | mesuré |
+|---|---|
+| entraînement, rouge visible après le clic | **7 à 11 ms**, sur trois questions |
+| compétition, couleur visible après le clic | **12 ms** |
+| compétition, mot suivant | 781 ms en dev, soit la latence plus les 80 ms de report |
+| trois retentes d'affilée en entraînement | toutes acceptées |
+
+**UN FAUX DIAGNOSTIC DE MA PART, À NOTER.** J'ai d'abord annoncé la compétition
+« bloquée » sur la foi d'une capture d'écran d'accessibilité. En relisant l'horloge :
+la réponse avait été générée à 1:08 restantes et ma capture montrait 1:29, donc elle avait
+été prise **avant** l'arrivée de la réponse. L'écran était dans son état normal d'attente.
+La leçon est que l'arbre d'accessibilité ne montre pas les couleurs et ne dit pas quand
+il a été pris : pour juger une question de timing, il faut instrumenter la page, pas la
+photographier.
+
+**Un garde corrigé plutôt que contourné.** `check:competition-integrity` exigeait le
+littéral `if (answerInFlightRef.current) return;`, et il a rougi quand l'entraînement est
+passé à une forme meilleure, qui retient le clic au lieu de le jeter. La règle vérifie
+maintenant la **forme** : elle extrait la branche et exige qu'elle rende la main sans
+envoyer de requête. Testée par mutation, cinq cassures sur cinq attrapées, dont une
+troisième écriture du garde et une branche qui tombe dans le `fetch`.
+
+**Et une erreur de méthode de ma part, corrigée.** J'avais lancé un sous-ensemble de
+gardes pour éviter le `build` qui partage `.next` avec le serveur de dev, et j'ai donc
+manqué `check:competition-integrity` pendant plusieurs échanges. Les 31 gardes se lancent
+un par un, sans le `build` : c'est la bonne façon de faire quand le serveur tourne.

@@ -8891,6 +8891,12 @@ svg {
 
 .lp-mode-card {
   --mode-accent: var(--mode-training);
+  /* LA DECORATION PASSE PAR SA PROPRE VARIABLE. `--mode-accent` est posé en
+     style en ligne par le composant, donc une déclaration de feuille ne peut
+     pas le neutraliser sans `!important`. Tout ce qui colore la carte lit donc
+     `--mode-deco`, qui vaut l'accent par défaut et que le thème peut éteindre.
+     Le composant continue de nommer le mode, la feuille décide si ça se voit. */
+  --mode-deco: var(--mode-accent);
   /* La carte est un objet SOMBRE sur les deux fonds (choix du propriétaire,
      2026-08-24). En sombre elle l'était déjà, à 5 pour cent d'encre sur le
      noir ; en clair elle était un lavis presque invisible sur le beige.
@@ -8911,6 +8917,10 @@ svg {
      réserve (fd07622), le voile garde 14 pour cent en clair et revient à 7 en
      sombre, qui est la valeur d'avant. */
   --mode-veil: 14%;
+  /* LE HALO, c'est le rond flou de 112 px posé en haut à droite par ::after.
+     C'est lui, et non le dégradé, qui teintait encore la carte une fois le
+     voile à zéro. Variable pour qu'il s'éteigne par thème sans être supprimé. */
+  --mode-glow: 10%;
   --card-surface: #141019;
   --ink-strong: rgba(244, 243, 238, 0.96);
   --ink-muted: rgba(244, 243, 238, 0.8);
@@ -8924,9 +8934,9 @@ svg {
   min-height: 10.5rem;
   padding: clamp(1.2rem, 2.2vw, 1.55rem);
   border-radius: var(--radius);
-  border: 1px solid color-mix(in srgb, var(--mode-accent) 28%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--mode-deco) 28%, var(--line));
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--mode-accent) var(--mode-veil), transparent) 0%, transparent 55%),
+    linear-gradient(180deg, color-mix(in srgb, var(--mode-deco) var(--mode-veil), transparent) 0%, transparent 55%),
     var(--card-surface);
   box-shadow: var(--shadow-card);
   transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
@@ -8935,7 +8945,25 @@ svg {
 }
 
 :root[data-theme="dark"] .lp-mode-card {
-  --mode-veil: 7%;
+  /* Zéro : la carte est NOIRE. Demande de Marion le 2026-08-26. Le mode ne
+     colore plus la surface, il ne reste que sur la pastille et sur le contour.
+     Remettre 7% rend le voile d'avant le thème clair, 14% celui d'après. */
+  --mode-veil: 0%;
+  --mode-glow: 0%;
+  /* LA SURFACE REVIENT AU GRIS NEUTRE D'AVANT. `e934547` l'avait figée à
+     #141019 pour que la carte soit sombre sur les deux fonds. Mais #141019 est
+     violet, bleu 25 contre rouge 20 et vert 16, et la page est en noir pur :
+     les trois cartes tiraient donc au violet. La formule d'avant, 5 pour cent
+     d'encre sur le fond, donne rgb(12, 12, 12), neutre. Le thème clair garde
+     #141019, qui est ce dont il avait besoin. */
+  --card-surface: color-mix(in srgb, var(--foreground) 5%, var(--background));
+  /* CONTOUR ET PASTILLE NEUTRES AUSSI, demande de Marion le 2026-08-26. Un seul
+     levier suffit : tout ce qui colorait la carte passe par `--mode-accent`, le
+     contour, le contour et le fond de la pastille, le halo et l'ombre de survol.
+     En le pointant sur l'encre, les cinq deviennent neutres d'un coup, et
+     retirer cette ligne rend la couleur du mode à la carte entière. Le nom du
+     mode reste lisible : son texte était déjà `--ink-strong`. */
+  --mode-deco: var(--foreground);
 }
 
 .lp-mode-card::after {
@@ -8946,7 +8974,7 @@ svg {
   width: 7rem;
   height: 7rem;
   border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--mode-accent) 10%, transparent);
+  background: color-mix(in srgb, var(--mode-deco) var(--mode-glow), transparent);
   filter: blur(34px);
   pointer-events: none;
   transition: transform 320ms ease, background-color 320ms ease;
@@ -8955,14 +8983,14 @@ svg {
 .lp-mode-card:hover {
   --lift: -8px;
   z-index: 10;
-  border-color: color-mix(in srgb, var(--mode-accent) 52%, var(--line));
+  border-color: color-mix(in srgb, var(--mode-deco) 52%, var(--line));
   box-shadow:
     0 26px 50px rgba(0, 0, 0, 0.42),
-    0 8px 38px color-mix(in srgb, var(--mode-accent) 26%, transparent);
+    0 8px 38px color-mix(in srgb, var(--mode-deco) 26%, transparent);
 }
 
 .lp-mode-card:hover::after {
-  background: color-mix(in srgb, var(--mode-accent) 20%, transparent);
+  background: color-mix(in srgb, var(--mode-deco) 20%, transparent);
   transform: scale(1.25);
 }
 
@@ -8970,8 +8998,8 @@ svg {
   justify-self: start;
   padding: 0.3rem 0.7rem;
   border-radius: var(--radius-pill);
-  border: 1px solid color-mix(in srgb, var(--mode-accent) 38%, transparent);
-  background: color-mix(in srgb, var(--mode-accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mode-deco) 38%, transparent);
+  background: color-mix(in srgb, var(--mode-deco) 6%, transparent);
   color: var(--ink-strong);
   font-size: 0.66rem;
   font-weight: 700;
