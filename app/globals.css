@@ -539,6 +539,14 @@ svg {
    contour et en lavis, jamais en aplat, comme le veut la règle de la palette des
    modes. */
 .game-v2-hud {
+  /* COULEUR DU MODE, ET NON UN VERT ÉCRIT EN DUR. Le vert `#40d38f` était répété
+     trois fois dans les règles ci-dessous, alors qu'il a un nom depuis toujours,
+     `--mode-training`, dans la palette des modes en tête de fichier. Le passer en
+     variable est ce qui permet à Competition de reprendre CETTE barre, à
+     l'identique, en ne changeant qu'une ligne (voir `[data-mode]` plus bas).
+     Valeur par défaut : l'entraînement, qui est le mode d'où vient cette barre.
+     Aucun pixel ne bouge pour lui, `--mode-training` VAUT `#40d38f`. */
+  --hud-accent: var(--mode-training);
   /* « Plus haut, plus espacé. » Le relevé quitte la grille de la coquille, qui est
      centrée verticalement et le tenait donc à 114 px du haut, et se pose sur la
      LIGNE HAUTE de l'écran : le même 1,1rem que la pastille de niveau utilise
@@ -597,9 +605,9 @@ svg {
 .game-v2-hud__stat {
   padding: 0.42rem 0.95rem;
   border-radius: var(--radius-control);
-  border: 1px solid color-mix(in srgb, #40d38f 42%, transparent);
-  background: color-mix(in srgb, #40d38f 8%, transparent);
-  color: color-mix(in srgb, #40d38f 62%, var(--ink-warm));
+  border: 1px solid color-mix(in srgb, var(--hud-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--hud-accent) 8%, transparent);
+  color: color-mix(in srgb, var(--hud-accent) 62%, var(--ink-warm));
   /* La typographie d'étiquette du site, relevée sur `.lp-kicker` de la landing,
      qui est l'autorité en matière de DA : 0,72rem, graisse 700, capitales
      dilatées à 0,16em. C'est l'un des deux régimes d'interlettrage qui font la
@@ -615,7 +623,31 @@ svg {
 .game-v2-hud__stat em {
   font-style: normal;
   font-weight: 700;
-  color: color-mix(in srgb, #40d38f 82%, var(--ink-warm));
+  color: color-mix(in srgb, var(--hud-accent) 82%, var(--ink-warm));
+}
+
+/* COMPETITION REPREND CETTE BARRE, demande du propriétaire du 2026-08-26 : « on
+   refait cette page exactement comme la training en DA, mais avec le monde
+   competition ». Elle est donc identique au pixel, forme, typographie, repli sur
+   téléphone comprise, et ne se distingue que par la couleur du mode, qui est déjà
+   attribuée : `--mode-competition` est l'orange que le plateau de choix des modes
+   donne à Competition depuis toujours. Rien d'inventé ici, une valeur existante
+   branchée à un endroit de plus.
+   La règle vise la PAGE et non la barre, parce que le relevé est posé en absolu
+   par rapport à la page : c'est elle qui porte `data-mode`. */
+.game-v2-page[data-mode="competition"] .game-v2-hud {
+  --hud-accent: var(--mode-competition);
+}
+
+/* LES TRENTE DERNIÈRES SECONDES. Le seul état d'accent de la barre, et il
+   n'existe que dans un mode chronométré : l'entraînement n'a pas de fin à
+   redouter. Même recette exactement, contour et lavis, jamais un aplat, comme le
+   veut la règle de la palette ; seule la couleur change, et c'est le rouge déjà
+   en service sur les réponses fausses, `--error-red`. Écrit comme un changement
+   de `--hud-accent` et non comme trois déclarations de couleur : la pastille
+   urgente reste la même pastille, elle ne devient pas un autre objet. */
+.game-v2-hud__stat--urgent {
+  --hud-accent: var(--error-red);
 }
 
 .game-v2-progress {
@@ -862,8 +894,11 @@ svg {
 .mode-select-card__meta,
 .mode-rules-kicker,
 .mode-placeholder-kicker,
-.error-kicker,
-.competition-v1-complete-eyebrow {
+/* `.competition-v1-complete-eyebrow` retirée le 2026-08-26 : elle habillait
+   l'écran de fin que Competition dessinait dans sa coquille, remplacé le
+   2026-08-15 par `SessionRecap`. Plus aucun élément ne la portait, elle a suivi
+   la feuille de style locale du mode. */
+.error-kicker {
   color: var(--ink-soft);
   font-size: 0.72rem;
   font-weight: 700;

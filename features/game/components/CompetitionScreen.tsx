@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { competitionModeCopy } from "@/content/copy";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -150,320 +151,24 @@ const formatRemaining = (remainingMs: number) => {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 };
 
-const competitionScreenStyles = `
-  .game-v1-page.game-v2-page {
-    --competition-page-bg: #f6f3ee;
-    --competition-shell-bg: rgba(255, 252, 248, 0.92);
-    --competition-shell-border: rgba(58, 38, 48, 0.1);
-    --competition-ink: #2a1a20;
-    --competition-muted: rgba(58, 38, 48, 0.58);
-    --competition-subtle: rgba(58, 38, 48, 0.46);
-    --competition-info: #455cc7;
-    --competition-info-soft: rgba(142, 162, 255, 0.13);
-    --competition-info-line: rgba(72, 111, 255, 0.22);
-    --competition-positive: #21785e;
-    --competition-positive-soft: rgba(103, 214, 182, 0.13);
-    --competition-positive-line: rgba(66, 186, 147, 0.24);
-    --competition-warning: #9b5c0e;
-    --competition-warning-soft: rgba(245, 191, 106, 0.14);
-    --competition-warning-line: rgba(242, 167, 68, 0.24);
-    --competition-negative: #b33636;
-    --competition-negative-soft: rgba(179, 54, 54, 0.08);
-    --competition-negative-line: rgba(179, 54, 54, 0.24);
-    min-height: 100svh;
-    width: 100%;
-    display: grid;
-    place-items: center;
-    padding: clamp(0.72rem, 2vw, 1.4rem);
-    background: var(--competition-page-bg);
-    color: var(--competition-ink);
-  }
-
-  :root[data-theme="dark"] .game-v1-page.game-v2-page {
-    --competition-page-bg: #111114;
-    --competition-shell-bg: rgba(17, 17, 20, 0.86);
-    --competition-shell-border: rgba(244, 243, 238, 0.12);
-    --competition-ink: #f4f3ee;
-    --competition-muted: rgba(244, 243, 238, 0.62);
-    --competition-subtle: rgba(244, 243, 238, 0.48);
-    --competition-info: #b9c4ff;
-    --competition-info-soft: rgba(142, 162, 255, 0.14);
-    --competition-info-line: rgba(142, 162, 255, 0.34);
-    --competition-positive: #9ef0d4;
-    --competition-positive-soft: rgba(103, 214, 182, 0.14);
-    --competition-positive-line: rgba(103, 214, 182, 0.34);
-    --competition-warning: #ffd79a;
-    --competition-warning-soft: rgba(245, 191, 106, 0.15);
-    --competition-warning-line: rgba(245, 191, 106, 0.36);
-    --competition-negative: #fca5a5;
-    --competition-negative-soft: rgba(248, 113, 113, 0.12);
-    --competition-negative-line: rgba(248, 113, 113, 0.38);
-  }
-
-  .game-v1-shell.competition-v1-shell {
-    width: min(96vw, 68rem);
-    height: min(94svh, 48rem);
-    display: grid;
-    grid-template-rows: auto 1fr auto auto;
-    gap: 0.76rem;
-    padding: clamp(0.82rem, 1.8vw, 1.1rem);
-    border-radius: var(--radius);
-    border: 1px solid color-mix(in srgb, var(--competition-shell-border) 72%, transparent);
-    background: color-mix(in srgb, var(--competition-shell-bg) 58%, transparent);
-    box-shadow: 0 0.85rem 2rem rgba(42, 26, 32, 0.045);
-    overflow: hidden;
-  }
-
-  :root[data-theme="dark"] .game-v1-shell.competition-v1-shell {
-    box-shadow: 0 0.85rem 2rem rgba(0, 0, 0, 0.22);
-  }
-
-  .game-v1-shell.competition-v1-shell[data-state="complete"] {
-    position: relative;
-    width: min(96vw, 74rem);
-    height: auto;
-    min-height: 0;
-    align-content: start;
-    padding: clamp(1.1rem, 2.4vw, 1.85rem);
-    border-radius: var(--radius);
-    border: 1px solid rgba(255, 210, 19, 0.22);
-    background:
-      radial-gradient(circle at top, rgba(255, 210, 19, 0.05), transparent 30%),
-      color-mix(in srgb, var(--competition-shell-bg) 58%, transparent);
-    box-shadow: 0 0.85rem 2rem rgba(42, 26, 32, 0.05);
-    overflow: hidden;
-  }
-
-  :root[data-theme="dark"] .game-v1-shell.competition-v1-shell[data-state="complete"] {
-    background:
-      radial-gradient(circle at top, rgba(255, 210, 19, 0.045), transparent 28%),
-      color-mix(in srgb, var(--competition-shell-bg) 58%, transparent);
-    box-shadow: 0 0.85rem 2rem rgba(0, 0, 0, 0.24);
-  }
-
-  .competition-v1-top {
-    width: min(100%, 48rem);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.5rem;
-  }
-
-  .game-v1-chip {
-    margin: 0;
-    min-width: 0;
-    width: 100%;
-    text-align: center;
-    padding: 0.34rem 0.62rem;
-    border-radius: var(--radius-control);
-    border: 1px solid rgba(58, 38, 48, 0.16);
-    background: rgba(244, 243, 238, 0.66);
-    
-    font-size: 0.72rem;
-    line-height: 1;
-    font-weight: 560;
-  }
-
-  .competition-v1-chip--time {
-    border-color: var(--competition-info-line);
-    background: var(--competition-info-soft);
-    color: var(--competition-info);
-  }
-
-  .competition-v1-chip--score {
-    border-color: var(--competition-positive-line);
-    background: var(--competition-positive-soft);
-    color: var(--competition-positive);
-  }
-
-  .competition-v1-chip--answered {
-    border-color: var(--competition-warning-line);
-    background: var(--competition-warning-soft);
-    color: var(--competition-warning);
-  }
-
-  .competition-v1-chip--urgent {
-    border-color: var(--competition-negative-line);
-    background: var(--competition-negative-soft);
-    color: var(--competition-negative);
-  }
-
-  .game-v2-word-wrap {
-    display: grid;
-    align-content: center;
-    justify-items: center;
-    width: 100%;
-    min-height: 0;
-  }
-
-  .game-v1-shell.competition-v1-shell[data-state="complete"] .game-v2-word-wrap {
-    display: block;
-    align-self: stretch;
-  }
-
-  .game-v2-word,
-  .competition-v1-word {
-    margin: 0;
-    color: var(--competition-ink);
-    text-align: center;
-    text-wrap: balance;
-  }
-
-  .game-v2-word {
-    font-family: Iowan Old Style, Palatino, "Times New Roman", serif;
-    font-size: clamp(4rem, 9vw, 6.4rem);
-    line-height: 0.92;
-    /* Même raison qu'en training : les approches appartiennent au fondeur, pas
-       à la mise en page, et le mot est la question posée au joueur. */
-    letter-spacing: normal;
-    /* Cette feuille est injectée APRÈS globals, elle écrasait donc la règle qui
-       y interdit la synthèse. Même raison qu'en training : chaque police du
-       catalogue n'a qu'un poids réel, demander 500 laissait le navigateur
-       fabriquer la différence et dédoubler les lettres. Un jeu de
-       reconnaissance ne montre que des lettres dessinées par leur fondeur. */
-    font-weight: 400;
-    font-synthesis: none;
-  }
-
-  .game-v2-options {
-    width: min(100%, 34rem);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.72rem;
-  }
-
-  .game-v2-option {
-    position: relative;
-    min-height: 5.2rem;
-    border-radius: var(--radius);
-    border: 1px solid rgba(58, 38, 48, 0.12);
-    /* 2026-08-26. Ici il y avait rgba(244, 243, 238, 0.86), un creme quasi
-       opaque ecrit en dur, alors que le libelle est en --competition-ink, soit
-       #f4f3ee en theme sombre. Creme sur creme : 1,35 de contraste mesure au
-       pixel peint, pour un seuil de 4,5. Les quatre reponses etaient illisibles,
-       donc le mode entier etait injouable. La meme classe en training donne 18,9.
-       On reprend donc le fond EXACT de training (app/globals.css, .game-v2-option),
-       un degrade sur --surface-strong, qui suit le theme au lieu de l ignorer.
-       Pas d accent grave dans ce commentaire : il vit dans un template literal. */
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--surface-strong) 94%, transparent) 0%,
-        color-mix(in srgb, var(--surface-strong) 88%, transparent) 100%
-      );
-    cursor: pointer;
-    transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
-  }
-
-  .game-v2-option::before {
-    content: "";
-    position: absolute;
-    left: 0.7rem;
-    top: 0.72rem;
-    bottom: 0.72rem;
-    width: 0.22rem;
-    border-radius: var(--radius-pill);
-    background: var(--card-color, #8ea2ff);
-  }
-
-  .game-v2-option:hover,
-  .game-v2-option:focus-visible {
-    transform: translateY(-1px);
-    border-color: rgba(58, 38, 48, 0.2);
-    box-shadow: 0 0.45rem 1rem rgba(42, 26, 32, 0.1);
-  }
-
-  .game-v2-option.is-selected,
-  .game-v2-option.is-correct,
-  .game-v2-option.is-wrong {
-    border-color: color-mix(in srgb, var(--card-color, #8ea2ff) 44%, rgba(58, 38, 48, 0.14));
-  }
-
-  .game-v2-option-label {
-    display: grid;
-    place-items: center;
-    min-height: 100%;
-    padding: 1rem 1.2rem 1rem 1.6rem;
-    text-align: center;
-    font-size: 1.05rem;
-    line-height: 1.16;
-    font-weight: 620;
-    color: var(--competition-ink);
-  }
-
-  .game-v2-feedback {
-    margin: 0;
-    min-height: 1.4rem;
-    text-align: center;
-    font-size: 0.86rem;
-    line-height: 1.35;
-    color: var(--competition-muted);
-  }
-
-  .game-v2-feedback[data-state="correct"] {
-    color: var(--competition-positive);
-  }
-
-  .game-v2-feedback[data-state="wrong"] {
-    color: var(--competition-negative);
-  }
-
-  .game-v2-actions {
-    margin-top: 0.25rem;
-    display: grid;
-    justify-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-
-  .game-v2-validate {
-    border: none;
-    background: transparent;
-    color: #3a2630;
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
-    text-transform: lowercase;
-    font-family: Iowan Old Style, Palatino, "Times New Roman", serif;
-    font-style: italic;
-    font-size: clamp(1.05rem, 2vw, 1.44rem);
-    font-weight: 600;
-    padding: 0.2rem 0.4rem;
-    cursor: pointer;
-  }
-
-  :root[data-theme="dark"] .game-v2-validate {
-    color: #f4f3ee;
-  }
-
-  .game-v2-validate:disabled {
-    opacity: 0.34;
-    cursor: not-allowed;
-  }
-
-
-  @media (max-width: 640px) {
-    .game-v1-page.game-v2-page {
-      padding: 0.68rem;
-    }
-
-    .game-v1-shell.competition-v1-shell {
-      width: min(96vw, 32rem);
-      height: min(95svh, 42rem);
-      padding: 0.88rem 0.74rem;
-      gap: 0.72rem;
-    }
-
-    .competition-v1-top,
-    .game-v2-options {
-      grid-template-columns: 1fr;
-    }
-
-    .game-v2-word {
-      font-size: clamp(3rem, 16vw, 4.4rem);
-    }
-  }
-`;
+// LA FEUILLE LOCALE DE COMPETITION EST PARTIE, demande du proprietaire du
+// 2026-08-26 : « on refait cette page exactement comme la training en DA, mais
+// avec le monde competition ». Il y avait ici 320 lignes de CSS injectees en
+// `<style jsx global>` APRES app/globals.css, donc qui gagnaient sur elle : une
+// deuxieme direction artistique pour le meme jeu. Elles redeclaraient le fond de
+// page, la coquille encadree, les pastilles du haut, le mot, les cartes de
+// reponse, le retour de reponse et les boutons, avec leurs propres couleurs
+// ecrites en dur (`--competition-*`) au lieu des jetons du site. C'est de la que
+// venaient les deux ecarts visibles : un rectangle autour du plateau, retire de
+// training le 2026-08-19, et des pastilles de score en trois couleurs quand
+// training porte une seule barre de relevee.
+//
+// Ce mode n'a donc plus de CSS a lui. Il joue sur les classes `game-v2-*` de
+// app/globals.css, exactement celles de l'entrainement, et ne change qu'une
+// chose : la couleur d'accent du relevee, prise dans la palette des modes qui
+// existe deja (`--mode-competition`), via `data-mode="competition"` pose sur la
+// page. Le monde competition est dans les CHIFFRES du relevee (points, reponses,
+// temps qui descend), pas dans une mise en page separee.
 
 const buildPreviewSummary = (): CompetitionSessionSummary => ({
   wrongCount: 7,
@@ -1067,39 +772,79 @@ export default function CompetitionScreen() {
     );
   }
 
+  // `data-mode` est le SEUL endroit ou cet ecran se distingue de l entrainement :
+  // il fait basculer `--hud-accent` du vert des modes vers l orange, dans
+  // app/globals.css. Pose sur la page et non sur la coquille, parce que le releve
+  // est en position absolue par rapport a la page.
   return (
-    <main className="game-v1-page game-v2-page">
+    <main className="game-v1-page game-v2-page" data-mode="competition">
       <ThemeSwitch />
       <section
-        className="game-v1-shell game-v2-shell competition-v1-shell"
-        data-state={isComplete ? "complete" : "playing"}
+        /* `competition-v1-shell` portait le rectangle : filet, fond, ombre et
+           hauteur fixe. Training l a perdu le 2026-08-19 (« supprime le
+           rectangle »), donc il part ici aussi. `data-state` visait le seul etat
+           `complete`, or une seance finie repart en SessionRecap au dessus et
+           n atteint jamais cette coquille : l attribut ne decrivait plus rien. */
+        className="game-v1-shell game-v2-shell"
         aria-label="Competition mode"
         aria-busy={isLoading || isRoundLocked}
       >
-        {stats && !isComplete ? (
-          <div className="game-v1-top competition-v1-top">
-            <p
-              className={`game-v1-chip competition-v1-chip competition-v1-chip--time${
-                remainingMs <= 30_000 ? " competition-v1-chip--urgent" : ""
-              }`}
-            >
-              Time {formatRemaining(remainingMs)}
-            </p>
-            <p className="game-v1-chip competition-v1-chip competition-v1-chip--score">
-              Score {stats.score}
-            </p>
-            <p className="game-v1-chip competition-v1-chip competition-v1-chip--answered">
-              Answered {stats.answeredCount}
-            </p>
+        {/* RELEVE DE SEANCE, la barre exacte de l entrainement : trois zones sur
+            une ligne, les compteurs a gauche, la pastille du mode au centre
+            exact, le temps a droite. Meme balisage, donc meme repli sur
+            telephone (le mode seul sur la premiere ligne) sans une regle de
+            plus, et l ordre du DOM suit l ordre visuel pour qu un lecteur d
+            ecran lise la barre comme elle se voit.
+            Ce qui change est le CONTENU, et c est bien le monde competition : des
+            points au lieu de bonnes reponses, un total de reponses, et un temps
+            qui DESCEND la ou l entrainement compte celui qui monte. La forme des
+            pastilles reste « nombre + mot ».
+            Trois pastilles remplacaient ici trois couleurs differentes, une par
+            valeur ; la regle de la palette des modes veut une seule couleur de
+            mode par ecran, en contour et en lavis. Le rouge ne revient que pour
+            la derniere demi minute, ou il dit quelque chose. */}
+        {stats ? (
+          <div className="game-v2-hud">
+            <span className="game-v2-hud__side game-v2-hud__side--start">
+              <span className="game-v2-hud__stat" aria-label="Score">
+                <em>{stats.score}</em> {competitionModeCopy.scoreLabel}
+              </span>
+              <span className="game-v2-hud__stat" aria-label="Answers given">
+                <em>{stats.answeredCount}</em> {competitionModeCopy.answeredLabel}
+              </span>
+            </span>
+
+            <span className="game-v2-hud__mode">{competitionModeCopy.badge}</span>
+
+            <span className="game-v2-hud__side game-v2-hud__side--end">
+              {/* Le seul modificateur d accent de la barre. Il ne s allume que
+                  sous 30 secondes, donc le rouge reste un signal et pas une
+                  decoration. Le libelle accessible dit le compte a rebours,
+                  parce qu une duree seule ne dit pas dans quel sens elle va. */}
+              <span
+                className={`game-v2-hud__stat${
+                  remainingMs <= 30_000 ? " game-v2-hud__stat--urgent" : ""
+                }`}
+                aria-label="Time left"
+              >
+                {formatRemaining(remainingMs)}
+              </span>
+            </span>
           </div>
         ) : null}
 
         <div className="game-v2-word-wrap">
           {isLoading ? (
-            <h1 className="game-v2-word competition-v1-word">Loading competition</h1>
+            /* NI L ATTENTE NI L ECHEC NE SONT DES SPECIMENS, la meme correction
+               qu en training. Les deux messages portaient `game-v2-word`, donc la
+               taille, la couleur et l emplacement reserves au mot a reconnaitre :
+               un message d interface empruntait la typographie de la question, ce
+               que la regle de cette classe interdit precisement. Ils passent sur
+               la typographie de titre du site. Le `h1` reste. */
+            <h1 className="game-v2-status">Loading competition</h1>
           ) : currentQuestion ? (
             <h1
-              className="game-v2-word competition-v1-word"
+              className="game-v2-word"
               // Même règle qu'en training : le poids du fichier, jamais un poids
               // que le navigateur devrait fabriquer.
               style={{
@@ -1110,7 +855,7 @@ export default function CompetitionScreen() {
               {currentQuestion.displayWord}
             </h1>
           ) : (
-            <h1 className="game-v2-word competition-v1-word">Competition unavailable</h1>
+            <h1 className="game-v2-status game-v2-status--down">Competition unavailable</h1>
           )}
         </div>
 
@@ -1158,8 +903,6 @@ export default function CompetitionScreen() {
             </p>
           </>
         ) : null}
-
-        <style jsx global>{competitionScreenStyles}</style>
       </section>
     </main>
   );

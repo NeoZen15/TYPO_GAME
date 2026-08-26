@@ -34,6 +34,28 @@ export const trainingModeCopy = {
 } as const;
 
 /**
+ * Le vocabulaire du relevé de séance de Competition (`CompetitionScreen`).
+ *
+ * Écrit le 2026-08-26, quand l'écran de competition a repris la DA de
+ * l'entraînement : ses trois valeurs étaient auparavant des libellés en dur dans
+ * le composant (« Time », « Score », « Answered »), donc deux modes qui montrent
+ * le même relevé nommaient les mêmes choses à deux endroits. Elles se rangent
+ * ici, à côté de `trainingModeCopy`, pour que le vocabulaire d'un mode ne puisse
+ * plus dériver de celui d'à côté sans qu'on le voie.
+ *
+ * La forme des pastilles est celle de l'entraînement, « nombre + mot », d'où des
+ * mots au singulier grammatical minimal et jamais une phrase. Le temps n'a pas
+ * d'étiquette, pour la même raison qu'en entraînement : une durée se lit sans
+ * qu'on la nomme. Ici elle DESCEND, ce qui est toute la différence entre les deux
+ * modes et se lit sans le dire.
+ */
+export const competitionModeCopy = {
+  badge: "Competition",
+  scoreLabel: "points",
+  answeredLabel: "answered",
+} as const;
+
+/**
  * The discreet progression indicator on the training screen (`GameScreen`).
  *
  * Replaced `X / Y faces mastered` on 2026-08-15 (D3, owner's choice). That line

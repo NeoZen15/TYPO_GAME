@@ -4153,3 +4153,76 @@ C'est le seul endroit du document où une animation dit quelque chose que l'imag
 **Limite à connaître.** Tout ceci vit dans le lecteur de prototype Figma. Un export en PDF ou en images n'en garde rien, et les planches restent lisibles sans, puisque aucune information ne dépend du mouvement.
 
 **Trou de numérotation refermé.** Le propriétaire a supprimé une planche du bloc écrans pendant le travail ; les cadres allaient jusqu'à 63 pour 62 planches. Renumérotées par position, sommaire et intercalaires refaits. Les interactions pointent par identifiant de nœud, elles ont donc survécu à la renumérotation sans retouche.
+
+### 2026-08-26, la compétition reprend la DA de l'entraînement, et perd sa feuille de style à elle
+
+**Demandé.** « On refait cette page exactement comme la training en DA, mais avec le
+monde competition. » Il s'agit de `/play/competition`, dont l'écran est
+`features/game/components/CompetitionScreen.tsx`.
+
+**Ce qui faisait les deux écarts visibles, et ce n'était pas un réglage.** Le composant
+portait **320 lignes de CSS** injectées en `<style jsx global>`, donc appliquées **après**
+`app/globals.css` et gagnantes sur elle. Une deuxième direction artistique pour le même
+jeu : elle redéclarait le fond de page, la coquille, les pastilles du haut, le mot, les
+cartes de réponse, le retour de réponse et les boutons, avec ses propres couleurs écrites
+en dur dans un jeu de variables `--competition-*` parallèle aux jetons du site. De là
+venaient le **rectangle** autour du plateau, que l'entraînement a perdu le 2026-08-19, et
+la coquille à **hauteur fixe** de 48 rem quand l'entraînement se centre dans la page.
+
+**La feuille est supprimée. Ce mode n'a plus de CSS à lui.** Il joue sur les classes
+`game-v2-*` de `app/globals.css`, exactement celles de l'entraînement. Bénéfice caché :
+il hérite du même **repli sur téléphone** et de la même **gouttière de page** sans une
+règle de plus, et il ne pourra plus dériver tout seul le jour où l'entraînement bouge.
+
+**Le relevé de séance remplace les trois pastilles de score.** Il y avait trois pastilles
+de **trois couleurs différentes**, une par valeur, dans une grille à part
+(`competition-v1-top`). C'est maintenant la barre à trois zones de l'entraînement :
+compteurs à gauche, pastille du mode au centre exact, temps à droite. Le contenu, lui, est
+bien le monde compétition : **points**, **réponses**, et un temps qui **descend** là où
+l'entraînement compte celui qui monte.
+
+**Une seule couleur, et elle existait déjà.** Le vert `#40d38f` était écrit en dur trois
+fois dans la barre alors qu'il porte un nom depuis toujours, `--mode-training`. Il passe
+en variable, `--hud-accent`, ce qui permet à la compétition de reprendre la même barre en
+ne changeant qu'une ligne : `--mode-competition`, l'orange que le plateau des modes donne
+à ce mode. Rien d'inventé, une valeur existante branchée à un endroit de plus. Le rouge ne
+revient que sous **30 secondes**, où il dit quelque chose, et sous la même recette,
+contour et lavis, jamais un aplat.
+
+**Ni l'attente ni l'échec ne sont des spécimens**, la correction déjà faite en
+entraînement. « Loading competition » et « Competition unavailable » portaient
+`game-v2-word`, donc la taille, la couleur et l'emplacement réservés au mot à reconnaître.
+Ils passent sur `game-v2-status`. Le `h1` reste dans les deux cas.
+
+**Vérifié au navigateur, pas à l'œil, et sans ouvrir de vraie manche** : le démarrage de
+session est intercepté et répond une charge fabriquée, donc rien n'est écrit en base.
+
+| | mesuré |
+|---|---|
+| accent de la barre en compétition | `#ff934a` |
+| accent de la barre en entraînement, après le passage en variable | `#40d38f`, inchangé |
+| géométrie de la barre, 1280 px | 524,6 / 134,8 / 524,6 px, donc mode au centre exact |
+| pastilles | « 7 points », « 12 answered », « 01:35 » |
+| coquille | contour 0 px, ombre `none`, fond transparent : le rectangle est bien parti |
+| temps à 20 s restantes | classe `--urgent` posée, accent `--error-red` |
+| téléphone 390 px | repli `"mode mode" / "start end"`, réponses sur une colonne |
+| mot | 115,2 px à 1280, approches `normal`, `font-synthesis: none` |
+| classes `competition-v1-*` dans le DOM | **0** |
+| feuilles `--competition-*` injectées | **0** |
+
+**Reste à ta main, et je ne l'ai pas touché.** Le contraste des pastilles du relevé :
+l'orange à 82 pour cent sur le fond clair donne **2,7**, le vert de l'entraînement donne
+**2,4** pour le même calcul. La compétition est donc un peu meilleure que sa référence,
+mais les deux sont sous 4,5. Ce n'est pas une régression de ce passage, c'est l'état de la
+barre depuis le 2026-08-19, et le corriger veut dire assombrir les deux modes, ce qui est
+une décision de DA.
+
+**Pas d'action de fin de séance ici.** L'entraînement a un bouton « End session » ;
+la compétition s'arrête au chronomètre et n'a pas de route serveur pour abandonner. En
+ajouter une n'était pas demandé et ne relève pas de la DA.
+
+**Nettoyage au passage.** `.competition-v1-complete-eyebrow` habillait l'écran de fin que
+la compétition dessinait dans sa coquille, remplacé par `SessionRecap` le 2026-08-15 :
+plus rien ne la portait, elle a suivi. Et les trois libellés en dur du relevé rejoignent
+`content/copy.ts` dans un `competitionModeCopy`, à côté de `trainingModeCopy`, pour que le
+vocabulaire d'un mode ne puisse plus dériver de celui d'à côté sans qu'on le voie.
