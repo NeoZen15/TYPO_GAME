@@ -679,7 +679,12 @@ svg {
 .onboarding-btn,
 .mode-placeholder-btn,
 .choice-btn,
-.mode-select-card__rules {
+.mode-select-card__rules,
+/* Ajouté le 2026-08-26 : la fermeture volontaire de la séance était un lien
+   italique souligné, seul de son espèce sur un écran qui n'a que des pastilles.
+   Elle prend la variante discrète de la famille, celle qui ne porte pas le
+   jaune de marque, parce qu'elle ne doit pas concurrencer les réponses. */
+.game-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -715,7 +720,9 @@ svg {
   cursor: not-allowed;
 }
 
-.game-link,
+/* `.game-link` est sortie d'ici : elle est un bouton, pas un lien de texte.
+   `.choice-btn--no` garde ce traitement pour l'instant, mais elle pose le même
+   problème, un lien italique posé à côté du `.choice-btn--yes` jaune plein. */
 .choice-btn--no {
   color: var(--ink-strong);
   font-size: 1rem;

@@ -428,18 +428,6 @@ const competitionScreenStyles = `
     cursor: not-allowed;
   }
 
-  .game-link {
-    justify-self: start;
-    margin-top: 0.2rem;
-    padding: 0.56rem 0.94rem;
-    border-radius: var(--radius-control);
-    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
-    text-decoration: none;
-    color: currentColor;
-    font-size: 0.86rem;
-    line-height: 1;
-    font-weight: 600;
-  }
 
   @media (max-width: 640px) {
     .game-v1-page.game-v2-page {
