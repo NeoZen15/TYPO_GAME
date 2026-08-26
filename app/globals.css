@@ -403,7 +403,15 @@ svg {
   max-width: 11ch;
   color: var(--ink-warm);
   text-align: center;
-  font-size: clamp(2.8rem, 7.9vw, 5.7rem);
+  /* Agrandi le 2026-08-26, demande du propriétaire. Mesuré avant de choisir,
+     sur le pire cas du pool (« typographie », 11 caractères) : à 8rem la
+     police tirée occupait 684 px pour 1376 px disponibles. Même une face très
+     large reste sous la limite. La borne en vw monte avec, sinon la taille
+     maximale ne serait jamais atteinte avant un très grand écran.
+     La TAILLE est la seule propriété typographique permise ici : elle ne touche
+     ni au poids, ni aux approches, ni à la synthèse, qui doivent continuer de
+     venir du fichier de police et de lui seul. */
+  font-size: clamp(3rem, 9vw, 8rem);
   /* 560 était une demande que presque aucune police du catalogue ne peut
      honorer : chaque @font-face injectée ne déclare qu'UN poids, en général 400.
      Le navigateur fabriquait donc la différence, et sur une police à filet comme

@@ -382,6 +382,13 @@ const ensureUserPool = async (
 // row is never served, so never rescheduled, so its next_due_after_q never
 // moves off its seeded 0. Kept in sync by
 // scripts/quality/check-pool-serialisation.mjs.
+// Combien de faces le moteur servirait maintenant. Même test d'éligibilité que
+// le constructeur de questions, donc le compteur ne peut pas promettre une
+// question que le moteur refuserait. Gratuit : le pool est déjà en mémoire,
+// aucune requête de plus.
+const facesDueIn = (pool: PoolRow[], globalQIndex: number) =>
+  pool.filter((row) => row.next_due_after_q <= globalQIndex).length;
+
 const getPoolRows = async (userId: string) =>
   queryRows<PoolRow>(sql`
     SELECT
@@ -1128,6 +1135,7 @@ export const startTrainingSession = async ({
       userId: user.user_id,
       question,
       progress: {
+        facesDueNow: facesDueIn(recovery.pool, recovery.globalQIndex),
         // session.question_count is the RIGHT value here, and it is not the
         // stale read the answer path had to stop serving. Judged, not copied:
         // this call never writes question_count (only an answer does), and
@@ -1620,6 +1628,9 @@ export const submitTrainingAnswer = async ({
     feedbackText: CORRECT_FEEDBACK,
     progress: {
       resolvedCount: resolvedCountAfter,
+      // Compté APRÈS la reprise de pool, donc sur l'état exact d'où sort la
+      // question suivante, et pas sur celui d'avant la réponse.
+      facesDueNow: facesDueIn(recovery.pool, recovery.globalQIndex),
       ...progressFields,
       ...levelFields,
     },

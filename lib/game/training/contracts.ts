@@ -63,6 +63,12 @@ export type TrainingProgress = {
   // poolSize stay in the payload: they are the honest count, they are simply
   // too slow to be the thing a player watches during a session.
   masteryPercent?: number;
+  // D5, 2026-08-26. Ce que l'écran imprime désormais à la place du pourcentage :
+  // combien de faces sont dues MAINTENANT. Le pourcentage reste dans la charge
+  // utile, il alimente le profil. Pourquoi ce chiffre plutôt qu'un autre : il
+  // descend d'une unité à chaque réponse résolue, il ne classe personne, et il
+  // donne une fin à une séance d'entraînement qui n'en avait aucune.
+  facesDueNow?: number;
   visibleLevel?: string;
   levelChanged?: boolean;
 };

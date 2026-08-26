@@ -51,7 +51,9 @@ export const trainingModeCopy = {
  * either side of this percentage.
  */
 export const trainingProgressCopy = {
-  gaugeLabel: "toward mastering your set",
+  dueMany: "faces due",
+  dueOne: "face due",
+  dueNone: "Set cleared for now",
 } as const;
 
 /**

@@ -10,7 +10,10 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import SessionRecap from "@/features/game/components/SessionRecap";
 import { isDevRuntime } from "@/lib/dev-mode";
 import { ensureGameFontFace, isGameFontReady, whenGameFontReady } from "@/lib/game/fonts/inject-font-face";
-import { TRAINING_CORRECT_DELAY_MS } from "@/lib/game/training/catalog";
+import {
+  TRAINING_CORRECT_DELAY_MS,
+  TRAINING_GREEN_HOLD_MS,
+} from "@/lib/game/training/catalog";
 import {
   buildTrainingRecapView,
   TRAINING_RECAP_UNAVAILABLE,
@@ -606,6 +609,27 @@ export default function GameScreen() {
       setError(null);
       setIsRoundLocked(true);
 
+      // LA COULEUR NE DOIT PAS ATTENDRE LE RESEAU.
+      //
+      // Avant : le rouge ou le vert n'apparaissait qu'au retour de /api/training/answer,
+      // donc apres un aller-retour jusqu'a la base a Londres. Le joueur cliquait et il
+      // ne se passait rien pendant ce temps la, ce qui se ressent comme une lenteur du
+      // jeu alors que c'est une latence reseau.
+      //
+      // Le client CONNAIT deja la bonne reponse : `question.typefaceSlug` arrive avec la
+      // question. On peut donc colorer au clic. Le serveur reste l'autorite, il repond
+      // quelques dizaines de millisecondes plus tard et `setInlineFeedback` plus bas
+      // ecrase cet etat optimiste avec le sien. En cas de desaccord, c'est le serveur qui
+      // gagne, et un desaccord serait un defaut a corriger, pas un cas a gerer.
+      const justeSelonLeClient = optionId === question.typefaceSlug;
+      const instantDuClic = performance.now();
+      setResult(justeSelonLeClient ? "correct" : "wrong");
+      if (!justeSelonLeClient) {
+        // Le rouge n'attend rien : on rend la main tout de suite pour que le joueur
+        // puisse retenter sans delai, ce qui est la demande explicite du proprietaire.
+        setIsRoundLocked(false);
+      }
+
       try {
         const response = await fetch("/api/training/answer", {
           method: "POST",
@@ -677,9 +701,17 @@ export default function GameScreen() {
           // la police de repli, et le joueur jugerait des lettres qui ne sont pas
           // celles de la typo demandée.
           void whenGameFontReady(upcoming.fontFace).then(() => {
+            // Ce qui reste a tenir pour que le vert ait dure TRAINING_GREEN_HOLD_MS
+            // DEPUIS LE CLIC. Si le reseau et la police ont deja pris plus longtemps,
+            // il ne reste rien a attendre et l'enchainement est immediat.
+            const dejaEcoule = performance.now() - instantDuClic;
+            const resteATenir = Math.max(
+              TRAINING_CORRECT_DELAY_MS,
+              TRAINING_GREEN_HOLD_MS - dejaEcoule
+            );
             queueAdvance(() => {
               beginQuestion(upcoming);
-            }, TRAINING_CORRECT_DELAY_MS);
+            }, resteATenir);
           });
           return;
         }
@@ -826,7 +858,7 @@ export default function GameScreen() {
           </div>
         ) : null}
 
-        {!error && !isLoading && !isComplete && currentQuestion && progress.masteryPercent !== undefined ? (
+        {!error && !isLoading && !isComplete && currentQuestion && progress.facesDueNow !== undefined ? (
           // Unobtrusive progression indicator. Deliberately NOT the global eye
           // level, which spec §15 / N-24 keep OFF the game screen except on a
           // level-change toast.
@@ -834,11 +866,24 @@ export default function GameScreen() {
           // D3, 2026-08-15. Was `X / Y faces mastered`, which counted only the
           // top rung of a 0 to 4 ladder that rises by at most one per first
           // attempt success on faces spaced apart: a first session read 0 / 30
-          // and could not move. The gauge reads the whole ladder, so a session
-          // shows. Gated on masteryPercent rather than poolSize, since it is now
-          // the value being printed.
+          // and could not move.
+          //
+          // D5, 2026-08-26. The gauge that replaced it printed a percentage of
+          // the ladder climbed, and the owner read it as unclear, which it was:
+          // "11% of your set mastered" claimed a count of mastered faces that
+          // the number never carried. It now prints how many faces the engine
+          // would serve right now. That count falls by one on every resolved
+          // answer, so it moves as often as the gauge did, it ranks nobody, and
+          // it gives a training session the end it never had. The percentage
+          // stays in the payload and still feeds the profile.
           <p className="game-v2-progress" aria-live="polite">
-            {progress.masteryPercent}% {trainingProgressCopy.gaugeLabel}
+            {progress.facesDueNow === 0
+              ? trainingProgressCopy.dueNone
+              : `${progress.facesDueNow} ${
+                  progress.facesDueNow === 1
+                    ? trainingProgressCopy.dueOne
+                    : trainingProgressCopy.dueMany
+                }`}
           </p>
         ) : null}
 
