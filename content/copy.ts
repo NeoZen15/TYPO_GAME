@@ -38,9 +38,20 @@ export const trainingModeCopy = {
  * first attempt success shows. Spec §15 / N-24 keeps the global eye level off
  * this screen, and this is not that level: it is the state of the player's own
  * set, and it ranks nobody.
+ *
+ * WORDING, changed on 2026-08-26 because the old one was not merely vague, it
+ * was false. `setMasteryPercent` divides the SUM of every mastery level by
+ * (number of faces x 4): it is the share of the ladder the set has climbed. A
+ * face sitting at 2 of 4 therefore counts for half while being mastered not at
+ * all. "of your set mastered" parses as "11% of my faces are mastered", which
+ * the number never says. "toward mastering your set" names a distance still to
+ * walk, which is exactly what a share of a climb is.
+ *
+ * Whatever replaces it must not put a count of faces and the word mastered on
+ * either side of this percentage.
  */
 export const trainingProgressCopy = {
-  gaugeLabel: "of your set mastered",
+  gaugeLabel: "toward mastering your set",
 } as const;
 
 /**
