@@ -133,7 +133,7 @@ const getGuestUser = async (locale: Locale, existingUserId?: string | null) => {
 // the single place where a typeface becomes visible to a competition player. The
 // licence clause therefore belongs here and not in the screen: see
 // lib/game/license-guard.ts for why it is an allowlist compared as text.
-const getCompetitionPoolRows = async (userId: string) =>
+const readCompetitionPoolRows = async (userId: string) =>
   queryRows<CompetitionPoolRow>(sql`
     SELECT
       tc.typeface_slug,
@@ -173,6 +173,51 @@ const getCompetitionPoolRows = async (userId: string) =>
       )
     ORDER BY tc.display_name ASC
   `);
+
+// THE SAME 1279 ROWS, ONCE PER ROUND INSTEAD OF ONCE PER ANSWER.
+//
+// This read was the largest single cost of answering. Measured on the production
+// build on 2026-08-17: 52 ms, against 18 ms for a trivial query, and it left with
+// the other two reads so it WAS the critical path of that parallel block. Measured
+// inside Postgres on 2026-08-26 with EXPLAIN ANALYZE: 4,3 ms of execution. So
+// almost none of the 52 ms is work, it is one round trip plus about 115 Ko of rows
+// crossing the wire so that buildQuestion can keep four of them.
+//
+// WHAT MAKES IT CACHEABLE, and it is a property of this mode rather than a bet.
+// The rows depend on the catalogue and on the player's mastery. The catalogue does
+// not change under a running round, and competition never writes mastery: that is
+// the same fact the comment in submitCompetitionAnswer relies on to send this read
+// away in parallel with the write. Within one round the answer is therefore
+// constant, and reading it again per answer re-fetches a result that cannot have
+// moved.
+//
+// THE STALENESS IS REAL AND IT IS HARMLESS. A player training in another tab can
+// raise a mastery level this cache still reports low. mastery_level reaches only
+// the distractor ORDERING, never which typeface is correct and never whether one
+// may be shown: the licence, Latin and Adobe clauses are all in the query above
+// and a cached row already satisfied them. So the worst case is a slightly
+// differently ranked wrong answer for at most one round.
+//
+// Per instance, deliberately. A cold serverless instance reads the pool once and
+// is no slower than before; a warm one serves the rest of the round from memory.
+// Keyed by user and not by session because the query only takes a user, and swept
+// on every read so an instance that lives for days cannot accumulate players.
+const POOL_CACHE_TTL_MS = COMPETITION_TOTAL_DURATION_MS;
+const poolCache = new Map<string, { expiresAt: number; rows: CompetitionPoolRow[] }>();
+
+const getCompetitionPoolRows = async (userId: string) => {
+  const now = Date.now();
+  for (const [key, entry] of poolCache) {
+    if (entry.expiresAt <= now) poolCache.delete(key);
+  }
+
+  const cached = poolCache.get(userId);
+  if (cached) return cached.rows;
+
+  const rows = await readCompetitionPoolRows(userId);
+  poolCache.set(userId, { expiresAt: now + POOL_CACHE_TTL_MS, rows });
+  return rows;
+};
 
 // Scoring, in one place. Both the answer path and the duplicate path below have
 // to say what a submission was worth, and a competition round is short enough
@@ -1236,19 +1281,52 @@ export const submitCompetitionAnswer = async ({
   // chk_ended_after_started compares the two, so mixing the two clocks puts a
   // CHECK violation one skew away. Measured today between this machine and Neon:
   // 20 ms, which is small and is not a guarantee.
+  // users.last_seen_at rides along in the same statement, and that is the whole
+  // reason this is a WITH instead of two plain updates.
+  //
+  // Measured in the browser over eight competition answers on 2026-08-26:
+  // 1519 ms median for this endpoint against 13 ms for the colour change, so the
+  // player waits on the round trips and on nothing else. A normal answer used to
+  // make four of them, and the fourth wrote a timestamp no part of the response
+  // reads. Postgres runs every data-modifying arm of a WITH exactly once and to
+  // completion whether or not the final SELECT reads it, so `seen` still fires
+  // while costing nothing: four trips become three.
+  //
+  // The two arms touch different tables and neither reads the other, so folding
+  // them changes no ordering that anything depends on. last_seen_at was never
+  // read back here, and a session row that exists proves its user row exists.
   const updatedRows = await queryRows<SessionRow>(sql`
-    UPDATE sessions
-    SET question_count = question_count + 1,
-        correct_count = correct_count + ${isCorrect ? 1 : 0}::int,
-        score = score + ${awardedPoints}::int,
-        status = CASE WHEN ${shouldComplete}::boolean
-                      THEN 'completed'::app.session_status_enum
-                      ELSE status END,
-        ended_at = CASE WHEN ${shouldComplete}::boolean
-                        THEN COALESCE(ended_at, now())
-                        ELSE ended_at END
-    WHERE session_id = ${sessionId}::uuid
-    RETURNING
+    WITH bumped AS (
+      UPDATE sessions
+      SET question_count = question_count + 1,
+          correct_count = correct_count + ${isCorrect ? 1 : 0}::int,
+          score = score + ${awardedPoints}::int,
+          status = CASE WHEN ${shouldComplete}::boolean
+                        THEN 'completed'::app.session_status_enum
+                        ELSE status END,
+          ended_at = CASE WHEN ${shouldComplete}::boolean
+                          THEN COALESCE(ended_at, now())
+                          ELSE ended_at END
+      WHERE session_id = ${sessionId}::uuid
+      RETURNING
+        session_id,
+        user_id,
+        seed,
+        question_count,
+        correct_count,
+        score,
+        status,
+        started_global_q_index,
+        started_at,
+        locale
+    ),
+    seen AS (
+      UPDATE users
+      SET last_seen_at = now()
+      WHERE user_id = ${user.user_id}::uuid
+      RETURNING user_id
+    )
+    SELECT
       session_id,
       user_id,
       seed,
@@ -1259,13 +1337,8 @@ export const submitCompetitionAnswer = async ({
       started_global_q_index,
       started_at,
       locale
+    FROM bumped
   `);
-
-  await sql`
-    UPDATE users
-    SET last_seen_at = now()
-    WHERE user_id = ${user.user_id}::uuid
-  `;
 
   const updatedSession = updatedRows[0];
 

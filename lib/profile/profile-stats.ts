@@ -93,6 +93,48 @@ type AttrRow = {
   contrast_profile: string;
 };
 type ModeRow = { mode: ProfileMode; games: number; best_score: number; time_ms: string };
+
+// LES ATTRIBUTS DU CATALOGUE, LUS UNE FOIS PAR PROCESSUS ET NON PAR REPONSE.
+//
+// Cette lecture etait ecrite deux fois dans ce fichier, mot pour mot, et
+// `loadTrainingProgress` en est traverse par CHAQUE reponse d'entrainement.
+// Mesure en base le 2026-08-26 : 2136 lignes, 116 Ko pour ces cinq colonnes,
+// et pas de clause WHERE. `buildEye` n'en retient que les polices que le joueur
+// a effectivement vues, une trentaine. On transportait donc le catalogue entier
+// pour en lire un pour cent.
+//
+// CE QUI AUTORISE LE CACHE : ce sont des donnees de catalogue et rien d'autre.
+// Aucune des cinq colonnes ne depend du joueur, aucune n'est ecrite par le jeu ;
+// elles ne bougent que quand une migration les bouge. Pas de cle par
+// utilisateur, donc, parce qu'il n'y a rien a separer.
+//
+// LA PROMESSE EST MISE EN CACHE, PAS LES LIGNES, pour que deux reponses
+// simultanees sur une instance froide partagent le meme aller-retour au lieu
+// d'en payer deux. Un echec vide le cache immediatement, sinon une seule panne
+// reseau se ferait servir pendant dix minutes.
+//
+// DIX MINUTES, et c'est le seul compromis : apres une migration du catalogue,
+// une instance deja chaude peut servir les anciens attributs pendant au plus ce
+// delai. Ils alimentent les paliers perceptifs du profil, jamais la question
+// posee ni la reponse juste, et un deploiement remet les compteurs a zero.
+const CATALOG_ATTRS_TTL_MS = 10 * 60 * 1000;
+let catalogAttrs: { expiresAt: number; rows: Promise<AttrRow[]> } | null = null;
+
+const readCatalogAttrs = (): Promise<AttrRow[]> => {
+  const now = Date.now();
+  if (catalogAttrs && catalogAttrs.expiresAt > now) return catalogAttrs.rows;
+
+  const rows = queryRows<AttrRow>(sql`
+    SELECT typeface_slug, primary_category::text AS primary_category, sub_category::text AS sub_category,
+           aperture_profile::text AS aperture_profile, contrast_profile::text AS contrast_profile
+    FROM typefaces_core`);
+  const entry = { expiresAt: now + CATALOG_ATTRS_TTL_MS, rows };
+  catalogAttrs = entry;
+  rows.catch(() => {
+    if (catalogAttrs === entry) catalogAttrs = null;
+  });
+  return rows;
+};
 type SessionRow = {
   session_id: string;
   mode: ProfileMode;
@@ -327,10 +369,7 @@ export async function loadRealProfile(
       GROUP BY typeface_slug`),
     queryRows<StateRow>(sql`
       SELECT typeface_slug, mastery_level FROM user_typeface_state WHERE user_id = ${userId}::uuid`),
-    queryRows<AttrRow>(sql`
-      SELECT typeface_slug, primary_category::text AS primary_category, sub_category::text AS sub_category,
-             aperture_profile::text AS aperture_profile, contrast_profile::text AS contrast_profile
-      FROM typefaces_core`),
+    readCatalogAttrs(),
     queryRows<UserRow>(sql`SELECT created_at FROM users WHERE user_id = ${userId}::uuid LIMIT 1`),
   ]);
 
@@ -483,10 +522,7 @@ export async function loadTrainingProgress(
       GROUP BY typeface_slug`),
     queryRows<StateRow>(sql`
       SELECT typeface_slug, mastery_level FROM user_typeface_state WHERE user_id = ${userId}::uuid`),
-    queryRows<AttrRow>(sql`
-      SELECT typeface_slug, primary_category::text AS primary_category, sub_category::text AS sub_category,
-             aperture_profile::text AS aperture_profile, contrast_profile::text AS contrast_profile
-      FROM typefaces_core`),
+    readCatalogAttrs(),
   ]);
 
   const { eye } = buildEye(perTfAnswers, states, attrs);
