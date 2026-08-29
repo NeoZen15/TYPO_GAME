@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { register } from "node:module";
+
 // End-of-session frame guard. No build, no database, no network.
 //
 // THE RULE IT PROTECTS. The three modes share one page, SessionRecap, and each
@@ -26,6 +28,12 @@
 // NO SCORE, NO CLOCK, IN TRAINING. The mode says it in its own rules: "There is
 // no score to beat and no clock to race." An adapter that borrowed competition's
 // vocabulary would contradict the page a player can open from the same screen.
+
+// L'alias "@/" de tsconfig, enseigne a Node, sinon un adaptateur qui importe une
+// couleur ou un formateur du projet fait echouer la garde sans qu'aucune regle du
+// cadre de fin de session ne soit enfreinte. Voir scripts/quality/alias-hooks.mjs.
+// Enregistre avant les import() plus bas, qui sont les seuls a en avoir besoin.
+register("./alias-hooks.mjs", import.meta.url);
 
 const MODULE = "lib/game/{competition,training,expert}/recap-view.ts";
 const failures = [];
@@ -156,7 +164,9 @@ try {
 } catch (error) {
   failures.push(
     `could not import ${MODULE} to exercise the adapters: ${error.message}. ` +
-      `They must stay free of runtime imports so Node can strip their types.`
+      `Their imports resolve through scripts/quality/alias-hooks.mjs, which maps "@/" onto ` +
+      `the repository root; an import that reaches React, the database or the network will ` +
+      `still fail here, and that is the point.`
   );
 }
 

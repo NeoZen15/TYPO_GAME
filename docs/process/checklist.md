@@ -4226,3 +4226,187 @@ la compétition dessinait dans sa coquille, remplacé par `SessionRecap` le 2026
 plus rien ne la portait, elle a suivi. Et les trois libellés en dur du relevé rejoignent
 `content/copy.ts` dans un `competitionModeCopy`, à côté de `trainingModeCopy`, pour que le
 vocabulaire d'un mode ne puisse plus dériver de celui d'à côté sans qu'on le voie.
+
+## 2026-08-26 — Planche 52, Les boutons, refaite
+
+Le propriétaire l'a jugée « trop Claude ». Diagnostic, avant de toucher : trois réflexes de machine, pas un défaut de contenu.
+
+1. **Une grosse carte arrondie contenant tout.** Un panneau de rayon 12, fond ivoire à 4 %, filet à 12 %, qui enfermait les quatre boutons. C'est le réflexe par défaut : ne pas savoir composer, donc mettre dans une boîte.
+2. **Quatre lignes rigoureusement identiques**, chacune avec son nom en haut à gauche, trois lignes de spécifications empilées, et le bouton rejeté à l'extrême droite. L'œil devait traverser neuf cents pixels de vide entre la légende et l'objet qu'elle décrit.
+3. **Aucune hiérarchie entre les quatre**, alors que le titre de la planche dit exactement le contraire : « un gabarit, deux remplissages ». Le principal et le fantôme étaient séparés par un filet, comme s'ils n'avaient rien à voir.
+
+**Ce qui remplace.** Le procédé que la charte emploie déjà sur le logo, planches 22 à 25 : mesurer la chose sur la chose.
+
+- La carte est supprimée. Les boutons sont posés sur le sol, comme les nuanciers du bloc couleur.
+- Deux colonnes, à x 587 et x 1240. Le principal et le fantôme sont **côte à côte**, ce qui donne à voir le propos du titre au lieu de le raconter.
+- Chaque bouton est à sa taille réelle, et porte sous lui un **filet de cote de sa largeur exacte**, avec ses dimensions. La page devient un instrument de mesure.
+- Une **seule** ligne de spécification par bouton, débarrassée des dimensions que la cote porte désormais.
+- Les deux premiers sont pris dans une **paire de filets resserrée sur eux**, avec la mention « même hauteur au pixel ». C'est la preuve du titre.
+- Une ligne de pied ferme la zone : aucun autre gabarit n'existe, quatre lignes, pas une cinquième.
+
+**Une redite retirée.** La ligne du fantôme disait « le même gabarit, au pixel, seul le remplissage change », ce que le fermoir et la colonne de gauche disent déjà. Elle porte maintenant ses seules valeurs propres : rayon plein, fond transparent, filet ivoire à 16 %.
+
+## 2026-08-26 — Compétition, 803 ms par réponse ramenés à 123
+
+Fait, mesuré, en base. Le propriétaire l'a demandé en ces termes : « il faut que ça marche
+plus vite en mode compétition, analyse déjà et propose », puis « fait un test en direct et
+faire un récap ».
+
+**Le diagnostic tenait en une mesure.** `EXPLAIN (ANALYZE)` sur la lecture du pool, contre
+la production, le 2026-08-26 : **4,3 ms d'exécution** pour 1279 lignes. Or le commentaire
+du fichier lui attribuait 52 ms, relevés sur un build de production le 2026-08-17, contre
+18 ms pour une requête triviale. Donc **presque rien de ce coût n'est du travail** : c'est
+un aller-retour, plus environ 115 Ko de lignes qui traversent le réseau à chaque réponse
+pour que `buildQuestion` en garde quatre.
+
+**Deux changements, tous les deux dans `lib/game/competition/provider.ts`.**
+
+1. **`users.last_seen_at` entre dans l'instruction qui incrémente la session**, en `WITH`.
+   Postgres exécute chaque branche modifiante d'un `WITH` exactement une fois et jusqu'au
+   bout, que le `SELECT` final la lise ou non : la branche `seen` part donc quand même, et
+   ne coûte plus rien. Une réponse normale faisait quatre allers-retours, dont un pour
+   écrire un horodatage qu'aucune partie de la réponse ne relit. **Quatre deviennent
+   trois.**
+2. **Le pool est lu une fois par manche au lieu d'une fois par réponse.** Ce qui l'autorise
+   n'est pas un pari mais une propriété du mode : la compétition n'écrit jamais la maîtrise,
+   c'est le fait même sur lequel s'appuyait déjà le départ en parallèle de cette lecture.
+   Pendant une manche la réponse ne peut pas bouger. Cache par instance, clé par joueur,
+   durée d'une manche, balayé à chaque lecture pour qu'une instance qui vit des jours
+   n'accumule pas de joueurs.
+
+**L'A/B, même code, même session, à quelques minutes d'écart.** Contrôle obtenu en
+mettant la durée du cache à zéro, ce qui rétablit exactement l'ancien comportement. Quatre
+sessions de sept réponses de chaque côté, après une session de chauffe.
+
+| | sans cache | avec cache |
+|---|---|---|
+| minimum | 298 ms | **92 ms** |
+| premier quartile | 697 ms | **107 ms** |
+| **médiane** | **803 ms** | **123 ms** |
+| troisième quartile | 1127 ms | **211 ms** |
+| maximum | 3386 ms | **763 ms** |
+
+**Le pire cas tombe plus vite que la médiane**, de 3386 à 763. C'est cohérent avec le
+diagnostic : ce sont les 115 Ko que la liaison erratique punissait, pas le calcul.
+
+**Justesse vérifiée en base, pas déduite.** Session
+`1f9a10ed-bdd3-4289-9246-6cc361fed6eb`, quatorze réponses dont neuf justes : la base dit
+`question_count` 14, `correct_count` 9, `score` 18, exactement ce que le client comptait.
+Quinze événements pour quinze clés d'idempotence distinctes, donc aucun doublon.
+`last_seen_at` daté de la dernière réponse, ce qui **prouve que la branche fusionnée
+s'exécute** puisque rien d'autre dans ce fichier n'écrit cette colonne. Et quatorze polices
+distinctes, quatorze jeux de leurres distincts, quatorze mots distincts : le pool en cache
+ne figeait pas la génération des questions.
+
+**Une hypothèse tuée en route, à ne pas réessayer.** Le premier relevé montrait les
+réponses justes systématiquement plus lentes que les fausses, cinq sur six au-dessus de
+1516 ms. Un test contrôlé et entrelacé l'a démentie dans l'autre sens : 737 ms de médiane
+pour les justes contre 917 pour les fausses. C'était du bruit d'ordre, pas une asymétrie du
+code. **La leçon : sur cette liaison, un écart de moins d'un facteur deux ne veut rien dire
+sans témoin entrelacé.**
+
+**Ce qui reste sur la table, non fait.** Passer de trois allers-retours à deux, en
+adossant l'incrément de session au `RETURNING` de l'écrivain atomique. Gain d'environ un
+aller-retour, soit 18 ms en production. Ça touche un chemin dont l'ordre des écritures et
+les modes de panne sont documentés sur place, et le rapport gain sur risque est mauvais
+comparé aux deux changements ci-dessus. À faire seulement sur demande, et sur branche
+jetable.
+
+**Porte de qualité.** Les 31 gardes lancées une par une, 30 vertes.
+`check:recap-view` est **rouge et l'était déjà avant ce passage** (vérifié en remisant la
+modification) : `lib/game/competition/recap-view.ts` importe `MODE_ACCENT` depuis
+`features/profile/components/board-system`, un import de valeur, alors que la garde exige
+que ces trois fichiers restent sans import exécutable pour que Node puisse en retirer les
+types. Introduit par `c186d72`. Non corrigé ici, hors sujet de ce passage.
+
+## 2026-08-26 — Entraînement, 2060 ms par réponse ramenés à 566
+
+Même méthode que la compétition juste au-dessus, et la cause était ailleurs que là où je
+l'avais annoncée. **Une erreur à consigner**: j'avais dit au propriétaire que l'entraînement
+transportait 115 Ko au pire moment par sa lecture de pool. Faux. `getPoolRows` ne lit que
+`in_active_pool = true`, une trentaine de lignes. Le pool de l'entraînement n'a jamais été
+le problème.
+
+**Ce qui l'était.** `lib/profile/profile-stats.ts` portait **deux fois, mot pour mot**, une
+lecture sans clause `WHERE` sur tout le catalogue:
+
+```sql
+SELECT typeface_slug, primary_category, sub_category, aperture_profile, contrast_profile
+FROM typefaces_core
+```
+
+Mesuré en base le 2026-08-26: **2136 lignes, 116 Ko** pour ces cinq colonnes. Et
+`loadTrainingProgress` en est traversé par **chaque réponse d'entraînement**, alors que
+`buildEye` n'en retient que les polices que le joueur a vues, une trentaine. On
+transportait le catalogue entier pour en lire un pour cent.
+
+**Le correctif.** Un lecteur unique, partagé par les deux sites d'appel, qui met en cache
+**la promesse** et non les lignes, pour que deux réponses simultanées sur une instance
+froide partagent le même aller-retour. Un échec vide le cache aussitôt. Durée dix minutes.
+Ce sont des données de catalogue: aucune des cinq colonnes ne dépend du joueur, aucune n'est
+écrite par le jeu, elles ne bougent que par migration. Le seul compromis est qu'après une
+migration du catalogue, une instance déjà chaude peut servir les anciens attributs pendant
+au plus dix minutes; ils alimentent les paliers perceptifs du profil, jamais la question
+posée ni la réponse juste.
+
+**L'A/B, même protocole que la compétition.** Témoin obtenu en mettant la durée à zéro.
+Quatre sessions de sept réponses justes du premier coup de chaque côté, après chauffe.
+
+| | sans cache | avec cache |
+|---|---|---|
+| minimum | 777 ms | **251 ms** |
+| premier quartile | 1430 ms | **451 ms** |
+| **médiane** | **2060 ms** | **566 ms** |
+| troisième quartile | 2721 ms | **756 ms** |
+| maximum | 4494 ms | **1100 ms** |
+
+**Justesse vérifiée en base sur les 92 réponses des bancs.** Pour chaque session,
+`question_count` égale exactement le nombre de faits `answer` et le nombre de clés
+d'idempotence distinctes. Aucun doublon. Les sessions plus anciennes montrent bien plus de
+faits que de questions comptées (39 pour 17), ce qui est le comportement attendu des
+reprises: une reprise écrit un fait et ne compte pas une question de plus.
+
+**Deux comptages faux que j'avais annoncés, corrigés.** Je disais six à huit allers-retours
+par réponse d'entraînement. En réalité `maybeRebalancePool` **sort en JS sans aller-retour**
+sauf pour un joueur qui s'est déclaré « Quite familiar » ou « Designer » dans sa fenêtre de
+début, et `recoverPoolIfStuck` **sort en JS sans aller-retour** dès qu'une police du pool est
+éligible, ce qui est le cas normal. Le compte réel pour une bonne réponse du premier coup
+est de **six**: les trois lectures groupées, l'écrivain atomique, l'écriture de maîtrise, le
+niveau visible, les deux compteurs groupés, puis l'agrégat et le pool groupés.
+
+**Ce qui reste, non fait et chiffré.** Replier l'écriture de maîtrise dans l'écrivain
+atomique, ce qui ferait cinq allers-retours au lieu de six. Les trois branches de maîtrise
+dépendent de `attempt_index`, connu seulement à l'intérieur de l'instruction, donc il
+faudrait les écrire en `CASE`. C'est le cœur pédagogique du jeu pour environ 18 ms. Mauvais
+rapport, à ne faire que sur demande.
+
+## 2026-08-29 — check:recap-view remise au vert, les 31 gardes passent
+
+Elle était rouge depuis `c186d72`, et pas parce que le cadre de fin de session était
+enfreint. Node ne lit pas tsconfig : `import "@/lib/..."` lui répond « Cannot find package
+'@/lib' ». Le jour où un adaptateur a eu besoin de `MODE_ACCENT`, la garde a cessé de
+pouvoir importer les trois adaptateurs, et donc de vérifier quoi que ce soit.
+
+**Ce que j'ai refusé de faire.** Vider les trois fichiers de leurs imports pour satisfaire
+la garde. Sa règle « aucun import exécutable » ne protégeait rien du jeu : elle contournait
+une limite du banc d'essai, et elle poussait à recopier une couleur ou un formateur plutôt
+qu'à l'importer.
+
+**Ce que j'ai fait.** `scripts/quality/alias-hooks.mjs`, un crochet de résolution qui
+enseigne l'alias `@/` à Node. Les trois modules importés en dessous des adaptateurs
+(`board-system.ts`, `format.ts`, `lib/game/recap-view.ts`) n'ont eux-mêmes aucun import,
+donc le graphe entier se charge sans build, sans base et sans réseau, ce qui était la
+promesse de la garde. Un import qui atteindrait React, la base ou le réseau échouerait
+toujours, et c'est voulu.
+
+**Testée par mutation, parce qu'une garde verte ne prouve rien.** Deux mutations, jugées sur
+le code de sortie et non sur le texte affiché: un accent non hexadécimal, un import
+inexistant. Les deux la font échouer, et le code intact la fait passer.
+
+**Une erreur de méthode à ne pas répéter.** Mon premier test de mutation a conclu « ne mord
+pas » à tort: les échecs de cette garde partent sur la sortie d'erreur, que j'avais
+redirigée vers `/dev/null`, et le mot « accent » que je cherchais figure aussi dans son
+message de succès. **Juger une garde sur son code de sortie, jamais sur une chaîne dans sa
+sortie standard.**
+
+Relevé après ce passage: `tsc --noEmit` propre, **les 31 gardes vertes**, une par une.
