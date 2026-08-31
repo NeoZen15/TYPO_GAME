@@ -230,6 +230,13 @@ BEGIN;
 --    Corps identique a 005, verrou consultatif en premiere instruction.
 -- ============================================================
 
+-- ATTENTION, TRI MODIFIE LE 2026-08-31 PAR LA 019. Les deux arites ci-dessous
+-- classent par notoriete AVANT l'alphabet, exactement comme la 019 le fait sur
+-- la version en production. Cette migration n'est pas appliquee en production :
+-- si on l'y applique un jour, elle ecraserait la 019, et sans cette correction
+-- elle rendrait au debutant la lettre A de Google Fonts. Voir la 019 pour la
+-- mesure : 8 polices Adobe sur 30 avant, 23 apres.
+
 CREATE OR REPLACE FUNCTION init_user_pool(p_user_id uuid)
 RETURNS int
 LANGUAGE plpgsql AS $$
@@ -254,7 +261,7 @@ BEGIN
         primary_category,
         ROW_NUMBER() OVER (
           PARTITION BY primary_category
-          ORDER BY difficulty_base ASC, dreyfus_tier, typeface_slug
+          ORDER BY (font_source::text = 'adobe') DESC, difficulty_base ASC, dreyfus_tier, typeface_slug
         ) AS category_rank
       FROM typefaces_core
       WHERE activation_status = true
@@ -331,7 +338,7 @@ BEGIN
         difficulty_base,
         ROW_NUMBER() OVER (
           PARTITION BY difficulty_base, primary_category
-          ORDER BY dreyfus_tier, rarity_tag, typeface_slug
+          ORDER BY (font_source::text = 'adobe') DESC, dreyfus_tier, rarity_tag, typeface_slug
         ) AS cat_rank
       FROM typefaces_core
       WHERE activation_status = true
