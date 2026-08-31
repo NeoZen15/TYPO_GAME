@@ -4701,3 +4701,20 @@ clusters visuels, et le cluster décide des leurres : `pickDistractors` favorise
 cluster jusqu'à moins 350 points quand le joueur maîtrise une face. Ces clusters vivent
 en base, colonne `visual_cluster_id`, donc les recalculer demande une migration. Je
 mesure l'écart et je te le montre avant de proposer quoi que ce soit.
+
+## 2026-08-31 — 019 appliquée en production, le débutant reçoit 23 Adobe sur 30
+
+Lancée par le propriétaire, `node scripts/apply_019_adobe_first_pool.mjs`. Relevé du script :
+Adobe en `easy` 30 vers 14, en `medium` 0 vers 16. Le bloc de contrôle en fin de transaction
+n'a pas levé, donc les trois comptes attendus étaient exacts.
+
+Vérifié après coup en lecture seule contre la production : les **deux arités** de
+`init_user_pool` portent bien la clé de notoriété, et le pool par défaut fait **30 polices
+dont 23 Adobe, quatre catégories représentées**.
+
+Avant : 8 sur 30. Les 22 autres étaient la lettre A de Google Fonts, ABeeZee à Asap.
+
+**Une erreur de ma part à consigner.** J'avais annoncé au propriétaire 21 Adobe sur 30. Je
+simulais `init_user_pool(uuid)` alors que le jeu appelle `init_user_pool(uuid, text)`, dont
+le filtre et les quotas sont différents. **Vérifier quelle arité le code appelle avant de
+simuler une fonction qui en a plusieurs.**
