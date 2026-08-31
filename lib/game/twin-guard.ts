@@ -1,13 +1,13 @@
 // GENERE PAR scripts/build_twin_guard.py, ne pas editer a la main.
-// Derniere generation : 2026-08-24.
+// Derniere generation : 2026-08-31.
 //
 // DES POLICES QUI DESSINENT LE LATIN A L'IDENTIQUE.
 //
 // Le jeu montre un mot et demande quelle police le dessine. Si deux polices du
 // catalogue tracent le latin exactement pareil et sortent dans la meme manche,
 // l'une comme bonne reponse et l'autre comme leurre, la question n'a pas de
-// reponse : le joueur ne peut que deviner. 335 polices jouables sont dans ce cas,
-// reparties en 53 familles.
+// reponse : le joueur ne peut que deviner. 351 polices jouables sont dans ce cas,
+// reparties en 61 familles.
 //
 // LE CAS QUI A FAIT OUVRIR LA CHASSE. Noto Sans JP, KR, SC et TC sont la meme
 // police latine avec une ecriture supplementaire, et quatre d'entre elles etaient
@@ -90,8 +90,22 @@ export const TWIN_FAMILIES: readonly (readonly string[])[] = [
   ["cormorant", "cormorantgaramond"],
   // 2 polices : Fragment Mono, Fragment Mono SC
   ["fragmentmono", "fragmentmonosc"],
+  // 2 polices : Franklin Gothic Compressed, Franklin Gothic URW Compressed
+  ["franklin_gothic_compressed", "franklin_gothic_urw_compressed"],
+  // 2 polices : Franklin Gothic Condensed, Franklin Gothic URW Condensed
+  ["franklin_gothic_condensed", "franklin_gothic_urw_condensed"],
+  // 2 polices : Franklin Gothic Std, Franklin Gothic URW
+  ["franklin_gothic_std", "franklin_gothic_urw"],
+  // 2 polices : Futura 100, Futura 100 Latin Ext
+  ["futura_100", "futura_100_latin_ext"],
+  // 2 polices : Futura 100 Book, Futura 100 Latin Ext Book
+  ["futura_100_book", "futura_100_latin_ext_book"],
+  // 2 polices : Georgia, GeorgiaPro
+  ["georgia", "georgiapro"],
   // 2 polices : Hanuman, Roboto Slab
   ["hanuman", "robotoslab"],
+  // 2 polices : Helvetica Neue LT Pro, Helvetica Neue World
+  ["helvetica_neue_lt_pro", "helvetica_neue_world"],
   // 2 polices : IBM Plex Mono, Lilex
   ["ibmplexmono", "lilex"],
   // 2 polices : Iosevka Charon, Iosevka Charon Mono
@@ -126,6 +140,8 @@ export const TWIN_FAMILIES: readonly (readonly string[])[] = [
   ["spectral", "spectralsc"],
   // 2 polices : Stack Sans Headline, Stack Sans Notch
   ["stacksansheadline", "stacksansnotch"],
+  // 2 polices : Verdana, Verdana Pro
+  ["verdana", "verdana_pro"],
   // 2 polices : Ysabeau, Ysabeau Office
   ["ysabeau", "ysabeauoffice"],
   // 2 polices : Zen Antique, Zen Antique Soft

@@ -39,6 +39,20 @@ dessin des terminaisons demanderaient une reconnaissance de forme, pas une mesur
 Ils restent dans structural_signature, ou ils sont inferes, et ce script ne
 pretend pas les remplacer.
 
+A QUELLE INSTANCE ON MESURE, corrige le 2026-08-31. Une police variable ne dessine
+pas une lettre mais une famille de lettres, et son instance PAR DEFAUT n'est presque
+jamais celle que le jeu affiche : 136 des 1136 polices profilees etaient dans ce cas,
+dont 42 mesurees en maigre wght 100 quand le joueur voit une reguliere. Le module
+scripts/font_instance.py epingle wght, wdth et opsz sur ce que le navigateur applique
+reellement, et son en tete explique chaque choix. Avant cette correction, l'ecart entre
+l'instance mesuree et l'instance vue atteignait 12 pour cent de rondeur sur Alumni Sans,
+pour un seuil de jumelage fixe a UN pour cent.
+
+LA CHASSE SE PREND SUR LE GLYPHE DE LA CMAP, pas sur un glyphe nomme `n`. Trois
+polices, Castoro Titling, Deco Var Alpha et Qahiri, ne nomment pas leur glyphe `n` :
+l'ancienne version basculait alors sur la largeur d'ENCRE, qui n'est pas une avance, et
+rangeait les deux dans la meme colonne. Ecart mesure sur Castoro Titling : 20 pour cent.
+
 LES POLICES ADOBE N'ONT PAS DE FICHIER CHEZ NOUS, leurs conditions l'interdisent.
 Elles sont donc absentes de cette mesure et gardent le cluster attribue a la main.
 
@@ -57,6 +71,8 @@ from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.statisticsPen import StatisticsPen
 from fontTools.ttLib import TTFont
+
+from font_instance import instance_rendue
 
 ASSETS = "content/catalog/font-runtime-assets.json"
 CATALOGUE = "content/catalog/typefaces-core.json"
@@ -181,8 +197,8 @@ def epaisseur_verticale(contours, x: float) -> float | None:
     return sum(b - a for a, b in zip(croisements[0::2], croisements[1::2]))
 
 
-def mesurer(chemin_fichier: str) -> dict | None:
-    police = TTFont(chemin_fichier, lazy=True, fontNumber=0)
+def mesurer(chemin_fichier: str, poids: float = 400.0) -> dict | None:
+    police, lieu = instance_rendue(chemin_fichier, poids)
     upm = police["head"].unitsPerEm
     jeu = police.getGlyphSet()
     cmap = police.getBestCmap()
@@ -227,11 +243,13 @@ def mesurer(chemin_fichier: str) -> dict | None:
         "x_sur_cap": round(hauteur_x / hauteur_cap, 4),
         "hauteur_x": round(hauteur_x / upm, 4),
         "hauteur_cap": round(hauteur_cap / upm, 4),
-        "chasse": round(jeu["n"].width / upm, 4) if "n" in jeu else round((bn[2] - bn[0]) / upm, 4),
+        "chasse": round(glyphe("n").width / upm, 4),
         "graisse": round(aire_n / boite_n, 4) if boite_n > 0 else None,
         "rondeur": round((bo[2] - bo[0]) / (bo[3] - bo[1]), 4),
         "contraste": round(contraste, 4) if contraste else None,
         "debord": round(-bo[1] / upm, 4),
+        # Vide quand la police est statique ou deja a la bonne instance.
+        "instance": lieu,
     }
 
 
@@ -261,7 +279,7 @@ def main() -> int:
     mesures, echecs = {}, []
     for i, a in enumerate(primaires, 1):
         try:
-            m = mesurer(a["source_path"])
+            m = mesurer(a["source_path"], a.get("weight") or 400)
         except Exception as e:  # un fichier illisible ne doit pas arreter les 1171 autres
             echecs.append((a["typeface_slug"], f"{type(e).__name__}: {e}"))
             continue

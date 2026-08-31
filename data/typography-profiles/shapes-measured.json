@@ -5,9 +5,9 @@
  },
  "mesures": {
   "42dotsans": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8713,
-   "ouverture_c": 0.7047,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8483,
+   "ouverture_c": 0.6752,
    "etages_g": 4
   },
   "abeezee": {
@@ -96,8 +96,8 @@
   },
   "alansans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8266,
-   "ouverture_c": 0.7384,
+   "regularite_anneau": 0.8211,
+   "ouverture_c": 0.6448,
    "etages_g": 4
   },
   "alata": {
@@ -222,8 +222,8 @@
   },
   "alumnisans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5047,
-   "ouverture_c": 0.4359,
+   "regularite_anneau": 0.4118,
+   "ouverture_c": 0.409,
    "etages_g": 2
   },
   "alumnisansinlineone": {
@@ -234,14 +234,14 @@
   },
   "alumnisanssc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5047,
-   "ouverture_c": 0.4359,
+   "regularite_anneau": 0.4118,
+   "ouverture_c": 0.409,
    "etages_g": 2
   },
   "alyamama": {
-   "axe_contraste": 120.0,
-   "regularite_anneau": 0.44,
-   "ouverture_c": 0.9152,
+   "axe_contraste": 114.0,
+   "regularite_anneau": 0.4497,
+   "ouverture_c": 0.8631,
    "etages_g": 3
   },
   "amaranth": {
@@ -282,8 +282,8 @@
   },
   "amstelvaralpha": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5904,
-   "ouverture_c": 0.8894,
+   "regularite_anneau": 0.0544,
+   "ouverture_c": 0.1982,
    "etages_g": 4
   },
   "anaheim": {
@@ -293,15 +293,15 @@
    "etages_g": 3
   },
   "ancizarsans": {
-   "axe_contraste": 117.0,
-   "regularite_anneau": 0.6652,
-   "ouverture_c": 0.833,
+   "axe_contraste": 108.0,
+   "regularite_anneau": 0.6597,
+   "ouverture_c": 0.7165,
    "etages_g": 3
   },
   "ancizarserif": {
-   "axe_contraste": 120.0,
-   "regularite_anneau": 0.44,
-   "ouverture_c": 0.9152,
+   "axe_contraste": 114.0,
+   "regularite_anneau": 0.4497,
+   "ouverture_c": 0.8631,
    "etages_g": 3
   },
   "andadapro": {
@@ -318,62 +318,62 @@
   },
   "anekbangla": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anekdevanagari": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anekgujarati": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anekgurmukhi": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anekkannada": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "aneklatin": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anekmalayalam": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anekodia": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anektamil": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "anektelugu": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7713,
-   "ouverture_c": 0.6913,
+   "regularite_anneau": 0.7724,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "annapurnasil": {
@@ -426,8 +426,8 @@
   },
   "anybody": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.827,
-   "ouverture_c": 0.9096,
+   "regularite_anneau": 0.6716,
+   "ouverture_c": 0.5795,
    "etages_g": 2
   },
   "aoboshione": {
@@ -456,8 +456,8 @@
   },
   "archivo": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7808,
-   "ouverture_c": 0.5234,
+   "regularite_anneau": 0.7968,
+   "ouverture_c": 0.5239,
    "etages_g": 3
   },
   "archivoblack": {
@@ -552,14 +552,14 @@
   },
   "assistant": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8324,
-   "ouverture_c": 0.8624,
+   "regularite_anneau": 0.8061,
+   "ouverture_c": 0.7769,
    "etages_g": 3
   },
   "astasans": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8713,
-   "ouverture_c": 0.7047,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8483,
+   "ouverture_c": 0.6752,
    "etages_g": 4
   },
   "asul": {
@@ -581,9 +581,9 @@
    "etages_g": 2
   },
   "atkinsonhyperlegiblemono": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8694,
-   "ouverture_c": 0.7872,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8048,
+   "ouverture_c": 0.7688,
    "etages_g": 2
   },
   "atkinsonhyperlegiblenext": {
@@ -605,9 +605,9 @@
    "etages_g": 3
   },
   "azeretmono": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8837,
-   "ouverture_c": 0.6781,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8221,
+   "ouverture_c": 0.6351,
    "etages_g": 2
   },
   "b612": {
@@ -768,8 +768,8 @@
   },
   "biorhyme": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7421,
-   "ouverture_c": 0.465,
+   "regularite_anneau": 0.7708,
+   "ouverture_c": 0.4912,
    "etages_g": 4
   },
   "biorhymeexpanded": {
@@ -785,9 +785,9 @@
    "etages_g": 2
   },
   "bitter": {
-   "axe_contraste": 108.0,
-   "regularite_anneau": 0.8012,
-   "ouverture_c": 0.7406,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.684,
+   "ouverture_c": 0.6361,
    "etages_g": 3
   },
   "bizudgothic": {
@@ -828,14 +828,14 @@
   },
   "bodonimoda": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.1845,
-   "ouverture_c": 0.7389,
+   "regularite_anneau": 0.0191,
+   "ouverture_c": 0.7919,
    "etages_g": 4
   },
   "bodonimodasc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.1845,
-   "ouverture_c": 0.7389,
+   "regularite_anneau": 0.0191,
+   "ouverture_c": 0.7919,
    "etages_g": 4
   },
   "bonanova": {
@@ -882,8 +882,8 @@
   },
   "bricolagegrotesque": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7091,
-   "ouverture_c": 0.4869,
+   "regularite_anneau": 0.8011,
+   "ouverture_c": 0.5704,
    "etages_g": 3
   },
   "brygada1918": {
@@ -1044,8 +1044,8 @@
   },
   "catamaran": {
    "axe_contraste": 93.0,
-   "regularite_anneau": 0.7705,
-   "ouverture_c": 0.8264,
+   "regularite_anneau": 0.8189,
+   "ouverture_c": 0.7271,
    "etages_g": 2
   },
   "caudex": {
@@ -1086,20 +1086,20 @@
   },
   "chironheihk": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8257,
-   "ouverture_c": 0.8678,
+   "regularite_anneau": 0.7986,
+   "ouverture_c": 0.7763,
    "etages_g": 2
   },
   "chivo": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.6454,
-   "ouverture_c": 0.5207,
+   "regularite_anneau": 0.6767,
+   "ouverture_c": 0.5246,
    "etages_g": 3
   },
   "chivomono": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.6451,
-   "ouverture_c": 0.5171,
+   "regularite_anneau": 0.6764,
+   "ouverture_c": 0.5216,
    "etages_g": 3
   },
   "chocolateclassicalsans": {
@@ -1121,9 +1121,9 @@
    "etages_g": 2
   },
   "commissioner": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9286,
-   "ouverture_c": 0.8604,
+   "axe_contraste": 87.0,
+   "regularite_anneau": 0.8484,
+   "ouverture_c": 0.7026,
    "etages_g": 3
   },
   "convergence": {
@@ -1139,21 +1139,21 @@
    "etages_g": 3
   },
   "cormorant": {
-   "axe_contraste": 111.0,
-   "regularite_anneau": 0.2008,
-   "ouverture_c": 0.83,
+   "axe_contraste": 108.0,
+   "regularite_anneau": 0.1914,
+   "ouverture_c": 0.8094,
    "etages_g": 4
   },
   "cormorantgaramond": {
-   "axe_contraste": 111.0,
-   "regularite_anneau": 0.2008,
-   "ouverture_c": 0.83,
+   "axe_contraste": 108.0,
+   "regularite_anneau": 0.1914,
+   "ouverture_c": 0.8094,
    "etages_g": 4
   },
   "cormorantinfant": {
-   "axe_contraste": 111.0,
-   "regularite_anneau": 0.2008,
-   "ouverture_c": 0.83,
+   "axe_contraste": 108.0,
+   "regularite_anneau": 0.1914,
+   "ouverture_c": 0.8094,
    "etages_g": 2
   },
   "cormorantsc": {
@@ -1247,9 +1247,9 @@
    "etages_g": 4
   },
   "darkergrotesque": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8922,
-   "ouverture_c": 0.7488,
+   "axe_contraste": 87.0,
+   "regularite_anneau": 0.8437,
+   "ouverture_c": 0.6616,
    "etages_g": 2
   },
   "datatype": {
@@ -1368,8 +1368,8 @@
   },
   "dosis": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9273,
-   "ouverture_c": 0.8141,
+   "regularite_anneau": 0.8693,
+   "ouverture_c": 0.7347,
    "etages_g": 3
   },
   "dotgothic16": {
@@ -1379,9 +1379,9 @@
    "etages_g": 3
   },
   "doto": {
-   "axe_contraste": 135.0,
-   "regularite_anneau": 0.1335,
-   "ouverture_c": 0.6327,
+   "axe_contraste": null,
+   "regularite_anneau": 0.9511,
+   "ouverture_c": 0.768,
    "etages_g": 18
   },
   "dotum": {
@@ -1440,14 +1440,14 @@
   },
   "elmssans": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8569,
-   "ouverture_c": 0.8314,
+   "regularite_anneau": 0.9196,
+   "ouverture_c": 0.7152,
    "etages_g": 3
   },
   "encodesans": {
-   "axe_contraste": 87.0,
-   "regularite_anneau": 0.841,
-   "ouverture_c": 0.8784,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7767,
+   "ouverture_c": 0.7574,
    "etages_g": 2
   },
   "encodesanscondensed": {
@@ -1464,8 +1464,8 @@
   },
   "encodesanssc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8264,
-   "ouverture_c": 0.8881,
+   "regularite_anneau": 0.7738,
+   "ouverture_c": 0.7782,
    "etages_g": 1
   },
   "encodesanssemicondensed": {
@@ -1499,15 +1499,15 @@
    "etages_g": 3
   },
   "epundasans": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8828,
-   "ouverture_c": 0.7821,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7866,
+   "ouverture_c": 0.7661,
    "etages_g": 7
   },
   "epundaslab": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8828,
-   "ouverture_c": 0.6764,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7866,
+   "ouverture_c": 0.6774,
    "etages_g": 7
   },
   "esteban": {
@@ -1517,9 +1517,9 @@
    "etages_g": 3
   },
   "exo": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8596,
-   "ouverture_c": 0.9353,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7655,
+   "ouverture_c": 0.8133,
    "etages_g": 2
   },
   "exo2": {
@@ -1565,9 +1565,9 @@
    "etages_g": 3
   },
   "faustina": {
-   "axe_contraste": 114.0,
-   "regularite_anneau": 0.5839,
-   "ouverture_c": 0.6853,
+   "axe_contraste": 111.0,
+   "regularite_anneau": 0.5889,
+   "ouverture_c": 0.6734,
    "etages_g": 3
   },
   "federo": {
@@ -1584,8 +1584,8 @@
   },
   "figtree": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9129,
-   "ouverture_c": 0.7367,
+   "regularite_anneau": 0.9065,
+   "ouverture_c": 0.7319,
    "etages_g": 2
   },
   "finlandica": {
@@ -1596,8 +1596,8 @@
   },
   "firacode": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7909,
-   "ouverture_c": 0.7632,
+   "regularite_anneau": 0.7564,
+   "ouverture_c": 0.7501,
    "etages_g": 2
   },
   "firamono": {
@@ -1661,15 +1661,15 @@
    "etages_g": 4
   },
   "fraunces": {
-   "axe_contraste": 102.0,
-   "regularite_anneau": 0.3143,
-   "ouverture_c": 0.4464,
+   "axe_contraste": 96.0,
+   "regularite_anneau": 0.0672,
+   "ouverture_c": 0.6966,
    "etages_g": 4
   },
   "fredoka": {
    "axe_contraste": null,
-   "regularite_anneau": 0.932,
-   "ouverture_c": 0.693,
+   "regularite_anneau": 0.9602,
+   "ouverture_c": 0.6351,
    "etages_g": 3
   },
   "fresca": {
@@ -1680,8 +1680,8 @@
   },
   "funnelsans": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9023,
-   "ouverture_c": 0.6676,
+   "regularite_anneau": 0.8958,
+   "ouverture_c": 0.6545,
    "etages_g": 2
   },
   "fustat": {
@@ -1745,15 +1745,15 @@
    "etages_g": 3
   },
   "gemunulibre": {
-   "axe_contraste": 117.0,
-   "regularite_anneau": 0.427,
-   "ouverture_c": 0.852,
+   "axe_contraste": 114.0,
+   "regularite_anneau": 0.567,
+   "ouverture_c": 0.7376,
    "etages_g": 2
   },
   "genos": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7264,
-   "ouverture_c": 0.9015,
+   "regularite_anneau": 0.5322,
+   "ouverture_c": 0.81,
    "etages_g": 2
   },
   "gentiumbookplus": {
@@ -1776,8 +1776,8 @@
   },
   "geologica": {
    "axe_contraste": null,
-   "regularite_anneau": 0.876,
-   "ouverture_c": 0.7914,
+   "regularite_anneau": 0.8843,
+   "ouverture_c": 0.7231,
    "etages_g": 5
   },
   "geom": {
@@ -1788,8 +1788,8 @@
   },
   "georama": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5073,
-   "ouverture_c": 0.9295,
+   "regularite_anneau": 0.7263,
+   "ouverture_c": 0.7384,
    "etages_g": 4
   },
   "gfsdidot": {
@@ -1830,8 +1830,8 @@
   },
   "glory": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.799,
-   "ouverture_c": 0.8563,
+   "regularite_anneau": 0.7402,
+   "ouverture_c": 0.7378,
    "etages_g": 2
   },
   "golostext": {
@@ -2016,8 +2016,8 @@
   },
   "heptaslab": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8797,
-   "ouverture_c": 0.8593,
+   "regularite_anneau": 0.882,
+   "ouverture_c": 0.4786,
    "etages_g": 4
   },
   "hermeneusone": {
@@ -2100,8 +2100,8 @@
   },
   "hostgrotesk": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.833,
-   "ouverture_c": 0.6862,
+   "regularite_anneau": 0.8361,
+   "ouverture_c": 0.6729,
    "etages_g": 2
   },
   "hubballi": {
@@ -2112,8 +2112,8 @@
   },
   "hubotsans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.6803,
-   "ouverture_c": 0.5745,
+   "regularite_anneau": 0.7563,
+   "ouverture_c": 0.6377,
    "etages_g": 2
   },
   "huninn": {
@@ -2202,8 +2202,8 @@
   },
   "imbue": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5956,
-   "ouverture_c": 0.7232,
+   "regularite_anneau": 0.0898,
+   "ouverture_c": 0.7154,
    "etages_g": 4
   },
   "imfelldoublepica": {
@@ -2382,8 +2382,8 @@
   },
   "jaro": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5851,
-   "ouverture_c": 0.5258,
+   "regularite_anneau": 0.7216,
+   "ouverture_c": 0.3476,
    "etages_g": 2
   },
   "jejugothic": {
@@ -2430,14 +2430,14 @@
   },
   "josefinsans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8096,
-   "ouverture_c": 0.8934,
+   "regularite_anneau": 0.8142,
+   "ouverture_c": 0.7421,
    "etages_g": 2
   },
   "josefinslab": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9,
-   "ouverture_c": 0.9141,
+   "regularite_anneau": 0.9304,
+   "ouverture_c": 0.5857,
    "etages_g": 2
   },
   "jost": {
@@ -2496,8 +2496,8 @@
   },
   "jura": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9088,
-   "ouverture_c": 0.6138,
+   "regularite_anneau": 0.9098,
+   "ouverture_c": 0.599,
    "etages_g": 2
   },
   "k2d": {
@@ -2537,9 +2537,9 @@
    "etages_g": 3
   },
   "kalnia": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.894,
-   "ouverture_c": 0.8582,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.1146,
+   "ouverture_c": 0.7483,
    "etages_g": 4
   },
   "kameron": {
@@ -2676,8 +2676,8 @@
   },
   "kreon": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8242,
-   "ouverture_c": 0.7563,
+   "regularite_anneau": 0.7846,
+   "ouverture_c": 0.7265,
    "etages_g": 3
   },
   "kronaone": {
@@ -2754,8 +2754,8 @@
   },
   "leaguespartan": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9675,
-   "ouverture_c": 0.8179,
+   "regularite_anneau": 0.8888,
+   "ouverture_c": 0.7392,
    "etages_g": 3
   },
   "ledger": {
@@ -2861,9 +2861,9 @@
    "etages_g": 4
   },
   "librefranklin": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8833,
-   "ouverture_c": 0.772,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7159,
+   "ouverture_c": 0.7434,
    "etages_g": 3
   },
   "lilex": {
@@ -2897,9 +2897,9 @@
    "etages_g": 2
   },
   "literata": {
-   "axe_contraste": 102.0,
-   "regularite_anneau": 0.5472,
-   "ouverture_c": 0.6124,
+   "axe_contraste": 99.0,
+   "regularite_anneau": 0.1628,
+   "ouverture_c": 0.7045,
    "etages_g": 3
   },
   "livvic": {
@@ -3012,8 +3012,8 @@
   },
   "manrope": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9024,
-   "ouverture_c": 0.7412,
+   "regularite_anneau": 0.887,
+   "ouverture_c": 0.721,
    "etages_g": 3
   },
   "manuale": {
@@ -3072,8 +3072,8 @@
   },
   "martianmono": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9407,
-   "ouverture_c": 0.6151,
+   "regularite_anneau": 0.926,
+   "ouverture_c": 0.6074,
    "etages_g": 2
   },
   "marvel": {
@@ -3084,8 +3084,8 @@
   },
   "matangi": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9197,
-   "ouverture_c": 0.8579,
+   "regularite_anneau": 0.8617,
+   "ouverture_c": 0.8229,
    "etages_g": 3
   },
   "mate": {
@@ -3137,9 +3137,9 @@
    "etages_g": 2
   },
   "merriweather": {
-   "axe_contraste": 99.0,
-   "regularite_anneau": 0.5556,
-   "ouverture_c": 0.6553,
+   "axe_contraste": 93.0,
+   "regularite_anneau": 0.4864,
+   "ouverture_c": 0.6198,
    "etages_g": 3
   },
   "merriweathersans": {
@@ -3216,8 +3216,8 @@
   },
   "mohave": {
    "axe_contraste": 0.0,
-   "regularite_anneau": 0.7905,
-   "ouverture_c": 0.6066,
+   "regularite_anneau": 0.7789,
+   "ouverture_c": 0.6018,
    "etages_g": 2
   },
   "molengo": {
@@ -3245,9 +3245,9 @@
    "etages_g": 3
   },
   "monasans": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9204,
-   "ouverture_c": 0.685,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8344,
+   "ouverture_c": 0.6475,
    "etages_g": 2
   },
   "monda": {
@@ -3270,14 +3270,14 @@
   },
   "montaguslab": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.396,
-   "ouverture_c": 0.4437,
+   "regularite_anneau": 0.4502,
+   "ouverture_c": 0.5019,
    "etages_g": 4
   },
   "montserrat": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9492,
-   "ouverture_c": 0.8999,
+   "regularite_anneau": 0.8749,
+   "ouverture_c": 0.7331,
    "etages_g": 3
   },
   "montserratalternates": {
@@ -3294,8 +3294,8 @@
   },
   "montserratunderline": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9492,
-   "ouverture_c": 0.9637,
+   "regularite_anneau": 0.8749,
+   "ouverture_c": 0.8973,
    "etages_g": 5
   },
   "mooli": {
@@ -3317,21 +3317,21 @@
    "etages_g": 2
   },
   "mozillaheadline": {
-   "axe_contraste": 66.0,
-   "regularite_anneau": 0.823,
-   "ouverture_c": 0.643,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7741,
+   "ouverture_c": 0.6299,
    "etages_g": 3
   },
   "mozillatext": {
-   "axe_contraste": 117.0,
-   "regularite_anneau": 0.8074,
-   "ouverture_c": 0.6487,
+   "axe_contraste": 87.0,
+   "regularite_anneau": 0.7751,
+   "ouverture_c": 0.6396,
    "etages_g": 2
   },
   "mplus1": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9768,
-   "ouverture_c": 0.9197,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8403,
+   "ouverture_c": 0.7388,
    "etages_g": 2
   },
   "mplus1code": {
@@ -3347,9 +3347,9 @@
    "etages_g": 2
   },
   "mplus2": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9705,
-   "ouverture_c": 0.9197,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8448,
+   "ouverture_c": 0.7388,
    "etages_g": 2
   },
   "mpluscodelatin": {
@@ -3389,15 +3389,15 @@
    "etages_g": 3
   },
   "mulish": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9008,
-   "ouverture_c": 0.8048,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7961,
+   "ouverture_c": 0.6884,
    "etages_g": 2
   },
   "murecho": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9054,
-   "ouverture_c": 0.9259,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7311,
+   "ouverture_c": 0.7397,
    "etages_g": 5
   },
   "namdhinggo": {
@@ -3461,9 +3461,9 @@
    "etages_g": 3
   },
   "newsreader": {
-   "axe_contraste": 93.0,
-   "regularite_anneau": 0.461,
-   "ouverture_c": 0.7527,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.2166,
+   "ouverture_c": 0.8012,
    "etages_g": 4
   },
   "newtegomin": {
@@ -3797,15 +3797,15 @@
    "etages_g": 2
   },
   "notosanshebrew": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8638,
-   "ouverture_c": 0.9078,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7526,
+   "ouverture_c": 0.7301,
    "etages_g": 2
   },
   "notosanshk": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8413,
-   "ouverture_c": 0.856,
+   "regularite_anneau": 0.8065,
+   "ouverture_c": 0.7719,
    "etages_g": 3
   },
   "notosansimperialaramaic": {
@@ -3840,8 +3840,8 @@
   },
   "notosansjp": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8413,
-   "ouverture_c": 0.856,
+   "regularite_anneau": 0.8065,
+   "ouverture_c": 0.7719,
    "etages_g": 3
   },
   "notosanskaithi": {
@@ -3894,8 +3894,8 @@
   },
   "notosanskr": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8413,
-   "ouverture_c": 0.856,
+   "regularite_anneau": 0.8065,
+   "ouverture_c": 0.7719,
    "etages_g": 3
   },
   "notosanslao": {
@@ -4254,8 +4254,8 @@
   },
   "notosanssc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8413,
-   "ouverture_c": 0.856,
+   "regularite_anneau": 0.8065,
+   "ouverture_c": 0.7719,
    "etages_g": 3
   },
   "notosanssharada": {
@@ -4410,8 +4410,8 @@
   },
   "notosanstc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8413,
-   "ouverture_c": 0.856,
+   "regularite_anneau": 0.8065,
+   "ouverture_c": 0.7719,
    "etages_g": 3
   },
   "notosanstelugu": {
@@ -4578,20 +4578,20 @@
   },
   "notoserifhentaigana": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.6825,
-   "ouverture_c": 0.7393,
+   "regularite_anneau": 0.5114,
+   "ouverture_c": 0.674,
    "etages_g": 3
   },
   "notoserifhk": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.4408,
-   "ouverture_c": 0.7664,
+   "regularite_anneau": 0.3446,
+   "ouverture_c": 0.7464,
    "etages_g": 4
   },
   "notoserifjp": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.4408,
-   "ouverture_c": 0.7664,
+   "regularite_anneau": 0.3446,
+   "ouverture_c": 0.7464,
    "etages_g": 4
   },
   "notoserifkannada": {
@@ -4620,8 +4620,8 @@
   },
   "notoserifkr": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.4408,
-   "ouverture_c": 0.7664,
+   "regularite_anneau": 0.3446,
+   "ouverture_c": 0.7464,
    "etages_g": 4
   },
   "notoseriflao": {
@@ -4668,8 +4668,8 @@
   },
   "notoserifsc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.4408,
-   "ouverture_c": 0.7664,
+   "regularite_anneau": 0.3446,
+   "ouverture_c": 0.7464,
    "etages_g": 4
   },
   "notoserifsinhala": {
@@ -4692,8 +4692,8 @@
   },
   "notoseriftc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.4408,
-   "ouverture_c": 0.7664,
+   "regularite_anneau": 0.3446,
+   "ouverture_c": 0.7464,
    "etages_g": 4
   },
   "notoseriftelugu": {
@@ -4775,9 +4775,9 @@
    "etages_g": 2
   },
   "nunitosans": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9031,
-   "ouverture_c": 0.8001,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7954,
+   "ouverture_c": 0.6819,
    "etages_g": 2
   },
   "nuosusil": {
@@ -4800,8 +4800,8 @@
   },
   "ojuju": {
    "axe_contraste": 0.0,
-   "regularite_anneau": 0.5676,
-   "ouverture_c": 0.8471,
+   "regularite_anneau": 0.4537,
+   "ouverture_c": 0.7656,
    "etages_g": 2
   },
   "oldstandardtt": {
@@ -4872,8 +4872,8 @@
   },
   "outfit": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9044,
-   "ouverture_c": 0.8408,
+   "regularite_anneau": 0.9351,
+   "ouverture_c": 0.7316,
    "etages_g": 3
   },
   "overpass": {
@@ -4884,8 +4884,8 @@
   },
   "overpassmono": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8549,
-   "ouverture_c": 0.7788,
+   "regularite_anneau": 0.8786,
+   "ouverture_c": 0.7602,
    "etages_g": 2
   },
   "ovo": {
@@ -4938,8 +4938,8 @@
   },
   "parkinsans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8466,
-   "ouverture_c": 0.6823,
+   "regularite_anneau": 0.8459,
+   "ouverture_c": 0.6811,
    "etages_g": 2
   },
   "pathwaygothicone": {
@@ -4991,15 +4991,15 @@
    "etages_g": 3
   },
   "piazzolla": {
-   "axe_contraste": 123.0,
-   "regularite_anneau": 0.4967,
-   "ouverture_c": 0.8146,
+   "axe_contraste": 117.0,
+   "regularite_anneau": 0.5886,
+   "ouverture_c": 0.7533,
    "etages_g": 4
   },
   "platypi": {
    "axe_contraste": 96.0,
-   "regularite_anneau": 0.5575,
-   "ouverture_c": 0.7058,
+   "regularite_anneau": 0.4981,
+   "ouverture_c": 0.693,
    "etages_g": 4
   },
   "play": {
@@ -5147,9 +5147,9 @@
    "etages_g": 3
   },
   "publicsans": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.8633,
-   "ouverture_c": 0.7147,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7771,
+   "ouverture_c": 0.661,
    "etages_g": 3
   },
   "puritan": {
@@ -5196,8 +5196,8 @@
   },
   "quicksand": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9499,
-   "ouverture_c": 0.7968,
+   "regularite_anneau": 0.9332,
+   "ouverture_c": 0.7316,
    "etages_g": 2
   },
   "radiocanada": {
@@ -5274,8 +5274,8 @@
   },
   "recursive": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8665,
-   "ouverture_c": 0.8148,
+   "regularite_anneau": 0.8615,
+   "ouverture_c": 0.6707,
    "etages_g": 2
   },
   "redditmono": {
@@ -5328,8 +5328,8 @@
   },
   "rem": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8444,
-   "ouverture_c": 0.6116,
+   "regularite_anneau": 0.8489,
+   "ouverture_c": 0.6796,
    "etages_g": 2
   },
   "rethinksans": {
@@ -5363,15 +5363,15 @@
    "etages_g": 3
   },
   "robotoflex": {
-   "axe_contraste": 90.0,
-   "regularite_anneau": 0.7945,
-   "ouverture_c": 0.6108,
+   "axe_contraste": null,
+   "regularite_anneau": 0.8737,
+   "ouverture_c": 0.5512,
    "etages_g": 2
   },
   "robotoserif": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.6064,
-   "ouverture_c": 0.5651,
+   "regularite_anneau": 0.3748,
+   "ouverture_c": 0.654,
    "etages_g": 4
   },
   "robotoslab": {
@@ -5388,8 +5388,8 @@
   },
   "rokkitt": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.848,
-   "ouverture_c": 0.4676,
+   "regularite_anneau": 0.8391,
+   "ouverture_c": 0.4993,
    "etages_g": 2
   },
   "rokkittvfbeta": {
@@ -5429,9 +5429,9 @@
    "etages_g": 3
   },
   "rubik": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.913,
-   "ouverture_c": 0.5941,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7852,
+   "ouverture_c": 0.5866,
    "etages_g": 2
   },
   "rubikmonoone": {
@@ -5490,8 +5490,8 @@
   },
   "saira": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.816,
-   "ouverture_c": 0.8749,
+   "regularite_anneau": 0.7429,
+   "ouverture_c": 0.745,
    "etages_g": 2
   },
   "sairacondensed": {
@@ -5555,9 +5555,9 @@
    "etages_g": 2
   },
   "savate": {
-   "axe_contraste": 0.0,
-   "regularite_anneau": 0.5174,
-   "ouverture_c": 0.801,
+   "axe_contraste": 177.0,
+   "regularite_anneau": 0.3707,
+   "ouverture_c": 0.619,
    "etages_g": 4
   },
   "sawarabigothic": {
@@ -5681,15 +5681,15 @@
    "etages_g": 3
   },
   "signika": {
-   "axe_contraste": 87.0,
-   "regularite_anneau": 0.7267,
-   "ouverture_c": 0.6408,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7201,
+   "ouverture_c": 0.5986,
    "etages_g": 2
   },
   "signikanegative": {
-   "axe_contraste": 87.0,
-   "regularite_anneau": 0.7348,
-   "ouverture_c": 0.6478,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7249,
+   "ouverture_c": 0.6057,
    "etages_g": 2
   },
   "signikanegativesc": {
@@ -5700,8 +5700,8 @@
   },
   "signikasc": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7503,
-   "ouverture_c": 0.636,
+   "regularite_anneau": 0.7315,
+   "ouverture_c": 0.5956,
    "etages_g": 3
   },
   "sintony": {
@@ -5736,8 +5736,8 @@
   },
   "smoochsans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.5395,
-   "ouverture_c": 0.779,
+   "regularite_anneau": 0.538,
+   "ouverture_c": 0.4119,
    "etages_g": 1
   },
   "snippet": {
@@ -5747,9 +5747,9 @@
    "etages_g": 3
   },
   "snpro": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9008,
-   "ouverture_c": 0.7947,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.8058,
+   "ouverture_c": 0.6768,
    "etages_g": 2
   },
   "sofiasans": {
@@ -5795,9 +5795,9 @@
    "etages_g": 3
   },
   "sono": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9365,
-   "ouverture_c": 0.8098,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7561,
+   "ouverture_c": 0.6657,
    "etages_g": 2
   },
   "sora": {
@@ -5826,20 +5826,20 @@
   },
   "sourceserif4": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.4737,
-   "ouverture_c": 0.6922,
+   "regularite_anneau": 0.2834,
+   "ouverture_c": 0.7417,
    "etages_g": 4
   },
   "sourgummy": {
    "axe_contraste": 87.0,
-   "regularite_anneau": 0.8012,
-   "ouverture_c": 0.5278,
+   "regularite_anneau": 0.7976,
+   "ouverture_c": 0.6587,
    "etages_g": 3
   },
   "spacegrotesk": {
    "axe_contraste": null,
-   "regularite_anneau": 0.892,
-   "ouverture_c": 0.6213,
+   "regularite_anneau": 0.8872,
+   "ouverture_c": 0.6196,
    "etages_g": 2
   },
   "spacemono": {
@@ -5904,20 +5904,20 @@
   },
   "stacksansheadline": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8945,
-   "ouverture_c": 0.5588,
+   "regularite_anneau": 0.8825,
+   "ouverture_c": 0.5476,
    "etages_g": 4
   },
   "stacksansnotch": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8945,
-   "ouverture_c": 0.5588,
+   "regularite_anneau": 0.8825,
+   "ouverture_c": 0.5476,
    "etages_g": 4
   },
   "stacksanstext": {
    "axe_contraste": null,
-   "regularite_anneau": 0.8945,
-   "ouverture_c": 0.5588,
+   "regularite_anneau": 0.8825,
+   "ouverture_c": 0.5476,
    "etages_g": 4
   },
   "stintultracondensed": {
@@ -6018,14 +6018,14 @@
   },
   "suse": {
    "axe_contraste": null,
-   "regularite_anneau": 0.9468,
-   "ouverture_c": 0.8562,
+   "regularite_anneau": 0.8895,
+   "ouverture_c": 0.7447,
    "etages_g": 4
   },
   "susemono": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9154,
-   "ouverture_c": 0.8113,
+   "axe_contraste": 93.0,
+   "regularite_anneau": 0.7769,
+   "ouverture_c": 0.7424,
    "etages_g": 4
   },
   "suwannaphum": {
@@ -6095,9 +6095,9 @@
    "etages_g": 2
   },
   "teko": {
-   "axe_contraste": 3.0,
-   "regularite_anneau": 0.3594,
-   "ouverture_c": 0.4847,
+   "axe_contraste": 6.0,
+   "regularite_anneau": 0.2968,
+   "ouverture_c": 0.4595,
    "etages_g": 4
   },
   "tektur": {
@@ -6132,8 +6132,8 @@
   },
   "texturina": {
    "axe_contraste": 123.0,
-   "regularite_anneau": 0.5314,
-   "ouverture_c": 0.7144,
+   "regularite_anneau": 0.4816,
+   "ouverture_c": 0.7352,
    "etages_g": 4
   },
   "thabit": {
@@ -6162,8 +6162,8 @@
   },
   "tiktoksans": {
    "axe_contraste": null,
-   "regularite_anneau": 0.882,
-   "ouverture_c": 0.6889,
+   "regularite_anneau": 0.8519,
+   "ouverture_c": 0.6868,
    "etages_g": 2
   },
   "timmana": {
@@ -6257,9 +6257,9 @@
    "etages_g": 3
   },
   "trispace": {
-   "axe_contraste": null,
-   "regularite_anneau": 0.9257,
-   "ouverture_c": 0.7411,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.754,
+   "ouverture_c": 0.7267,
    "etages_g": 2
   },
   "trocchi": {
@@ -6270,8 +6270,8 @@
   },
   "truculenta": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.6975,
-   "ouverture_c": 0.4385,
+   "regularite_anneau": 0.6737,
+   "ouverture_c": 0.4134,
    "etages_g": 2
   },
   "trykker": {
@@ -6372,8 +6372,8 @@
   },
   "varta": {
    "axe_contraste": 87.0,
-   "regularite_anneau": 0.8064,
-   "ouverture_c": 0.7764,
+   "regularite_anneau": 0.8005,
+   "ouverture_c": 0.7699,
    "etages_g": 3
   },
   "vastshadow": {
@@ -6390,8 +6390,8 @@
   },
   "vendsans": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.8466,
-   "ouverture_c": 0.6497,
+   "regularite_anneau": 0.841,
+   "ouverture_c": 0.6447,
    "etages_g": 3
   },
   "vesperlibre": {
@@ -6402,8 +6402,8 @@
   },
   "victormono": {
    "axe_contraste": 90.0,
-   "regularite_anneau": 0.7736,
-   "ouverture_c": 0.8008,
+   "regularite_anneau": 0.7957,
+   "ouverture_c": 0.7798,
    "etages_g": 2
   },
   "vidaloka": {
@@ -6533,9 +6533,9 @@
    "etages_g": 3
   },
   "yaldevi": {
-   "axe_contraste": 93.0,
-   "regularite_anneau": 0.7763,
-   "ouverture_c": 0.8198,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.7701,
+   "ouverture_c": 0.7791,
    "etages_g": 4
   },
   "yaldevicolombo": {
@@ -6545,9 +6545,9 @@
    "etages_g": 3
   },
   "yanonekaffeesatz": {
-   "axe_contraste": 3.0,
-   "regularite_anneau": 0.7746,
-   "ouverture_c": 0.8918,
+   "axe_contraste": 90.0,
+   "regularite_anneau": 0.6017,
+   "ouverture_c": 0.7375,
    "etages_g": 4
   },
   "yantramanav": {
@@ -6570,26 +6570,26 @@
   },
   "ysabeau": {
    "axe_contraste": 99.0,
-   "regularite_anneau": 0.63,
-   "ouverture_c": 0.6547,
+   "regularite_anneau": 0.6499,
+   "ouverture_c": 0.7314,
    "etages_g": 4
   },
   "ysabeauinfant": {
    "axe_contraste": 99.0,
-   "regularite_anneau": 0.63,
-   "ouverture_c": 0.6547,
+   "regularite_anneau": 0.6499,
+   "ouverture_c": 0.7314,
    "etages_g": null
   },
   "ysabeauoffice": {
    "axe_contraste": 99.0,
-   "regularite_anneau": 0.63,
-   "ouverture_c": 0.6547,
+   "regularite_anneau": 0.6499,
+   "ouverture_c": 0.7314,
    "etages_g": 4
   },
   "ysabeausc": {
    "axe_contraste": 99.0,
-   "regularite_anneau": 0.6796,
-   "ouverture_c": 0.7496,
+   "regularite_anneau": 0.6952,
+   "ouverture_c": 0.7513,
    "etages_g": 1
   },
   "yujiboku": {

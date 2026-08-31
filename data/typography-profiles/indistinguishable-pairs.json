@@ -1,9 +1,9 @@
 {
  "meta": {
   "seuil": 0.01,
-  "jouables": 1117,
-  "paires": 12416,
-  "familles": 53
+  "jouables": 1225,
+  "paires": 12424,
+  "familles": 61
  },
  "familles": [
   {
@@ -871,6 +871,74 @@
   },
   {
    "membres": [
+    "franklin_gothic_compressed",
+    "franklin_gothic_urw_compressed"
+   ],
+   "noms": [
+    "Franklin Gothic Compressed",
+    "Franklin Gothic URW Compressed"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "franklin_gothic_condensed",
+    "franklin_gothic_urw_condensed"
+   ],
+   "noms": [
+    "Franklin Gothic Condensed",
+    "Franklin Gothic URW Condensed"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "franklin_gothic_std",
+    "franklin_gothic_urw"
+   ],
+   "noms": [
+    "Franklin Gothic Std",
+    "Franklin Gothic URW"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "futura_100",
+    "futura_100_latin_ext"
+   ],
+   "noms": [
+    "Futura 100",
+    "Futura 100 Latin Ext"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "futura_100_book",
+    "futura_100_latin_ext_book"
+   ],
+   "noms": [
+    "Futura 100 Book",
+    "Futura 100 Latin Ext Book"
+   ],
+   "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "georgia",
+    "georgiapro"
+   ],
+   "noms": [
+    "Georgia",
+    "GeorgiaPro"
+   ],
+   "dans_la_portee_du_debutant": [
+    "georgia"
+   ]
+  },
+  {
+   "membres": [
     "hanuman",
     "robotoslab"
    ],
@@ -881,6 +949,17 @@
    "dans_la_portee_du_debutant": [
     "robotoslab"
    ]
+  },
+  {
+   "membres": [
+    "helvetica_neue_lt_pro",
+    "helvetica_neue_world"
+   ],
+   "noms": [
+    "Helvetica Neue LT Pro",
+    "Helvetica Neue World"
+   ],
+   "dans_la_portee_du_debutant": []
   },
   {
    "membres": [
@@ -1080,6 +1159,19 @@
     "Stack Sans Notch"
    ],
    "dans_la_portee_du_debutant": []
+  },
+  {
+   "membres": [
+    "verdana",
+    "verdana_pro"
+   ],
+   "noms": [
+    "Verdana",
+    "Verdana Pro"
+   ],
+   "dans_la_portee_du_debutant": [
+    "verdana"
+   ]
   },
   {
    "membres": [

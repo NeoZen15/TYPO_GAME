@@ -4627,3 +4627,77 @@ que ce soit là dessus.
 **Corrigé au passage.** La note `meta` de `content/catalog/adobe-fonts-kit.json` répétait
 encore que sans le domaine déclaré « rien ne s'affiche en ligne », ce que la mesure du matin
 a démenti. Reformulée en obligation de licence.
+
+### 2026-08-31 (suite 2) — Fait : la mesure regarde enfin la police que le joueur voit, et les Adobe entrent dans le garde
+
+**Trois corrections livrées, porte verte, aucune migration.**
+
+**1. L'instance mesurée est celle qui est affichée.** Nouveau module
+`scripts/font_instance.py`, branché dans les deux scripts de mesure. Il épingle wght sur
+le poids que l'asset déclare, wdth sur 100 puisque le jeu ne pose aucun `font-stretch`,
+et opsz sur 128, la taille du spécimen sur un écran de bureau. 146 polices ont été
+instanciées ailleurs qu'à leur défaut, **149 voient au moins une grandeur bouger de plus
+de 0,5 %**, et pour les plus optiques l'écart est énorme : 886 % de contraste sur Bodoni
+Moda, 835 sur Kalnia, 332 sur Fraunces. C'est normal et c'est le sujet, une Didone à
+axe optique n'a pas le même contraste à 11 points et à 96.
+
+Le choix de l'axe optique n'est pas supposé, il est mesuré. À 128 pixels le navigateur
+rend une chasse de 0,579 sur Bodoni Moda, exactement la valeur de l'axe poussé à son
+maximum ; avec `font-optical-sizing: none` il rend 0,5955, la valeur par défaut du
+fichier, celle que l'ancienne mesure avait enregistrée. La propriété est donc bien
+active par défaut et pilote l'axe, canevas compris.
+
+**2. La chasse se prend sur le glyphe de la cmap.** Trois polices ne nomment pas leur
+glyphe `n`, Castoro Titling, Deco Var Alpha et Qahiri : l'ancienne version basculait
+alors sur la largeur d'ENCRE, qui n'est pas une avance. Castoro Titling passe de 0,705
+à 0,848, et 0,848 est bien ce que le navigateur rend.
+
+**3. Les 108 Adobe sont mesurées, dans un navigateur.** Nouveau script
+`scripts/browser_font_metrics.mjs`, qui lit des pixels là où le Python lit des contours,
+parce que c'est le seul endroit où ces polices existent. Les neuf mêmes grandeurs, les
+mêmes définitions, le balayage d'une trame de 2000 pixels à la place du balayage d'un
+contour, avec détection de bord en sous pixel.
+
+**Ce que ce second instrument coûte, mesuré et pas supposé.** Confronté aux contours sur
+60 polices Google mesurées des deux façons : proportions identiques au chiffre près,
+médiane nulle ; anneau 0,13 % de médiane, ouverture du c 0,12 %, graisse 0,01 %. Les
+extrêmes tiennent à **deux polices seulement**, Montserrat Underline dont le trait
+souligné traverse le `o` et casse la lecture de l'anneau, et Fragment Mono SC. La
+première version marchait le rayon au pixel entier et donnait 1,18 % de médiane sur
+l'anneau, au dessus du seuil de jumelage : le sous pixel l'a divisée par neuf.
+
+**Résultat sur le garde : 53 familles et 335 polices deviennent 61 et 351.** Les huit
+familles nouvelles sont toutes Adobe. Aucune famille n'a disparu, et c'est logique :
+deux jumelles bougent ensemble quand on corrige leur instance de la même façon.
+
+  Franklin Gothic Condensed / Franklin Gothic URW Condensed
+  Franklin Gothic Compressed / Franklin Gothic URW Compressed
+  Franklin Gothic Std / Franklin Gothic URW
+  Futura 100 / Futura 100 Latin Ext
+  Futura 100 Book / Futura 100 Latin Ext Book
+  Helvetica Neue LT Pro / Helvetica Neue World
+  Georgia / GeorgiaPro
+  Verdana / Verdana Pro
+
+Les deux Futura sont le cas Noto Sans JP à l'identique, la même police avec une
+couverture latine étendue et deux noms.
+
+**Ce que la mesure a REFUSÉ de bloquer, et c'est aussi important.** Clarendon Wide contre
+Clarendon Wide Stencil et Gill Sans Nova contre Gill Sans Nova Deco passaient les cinq
+proportions mais ont été séparées par les mesures de forme : un stencil se voit, la
+question reste jouable. Et **aucune police Adobe n'est jumelle d'une police Google**,
+zéro paire sur 108 fois 1117. Sondé sur le cas d'école : Arial et Arimo ont exactement
+la même chasse, 0,5562 des deux côtés, la compatibilité métrique est retrouvée par la
+mesure, mais leur rapport x sur capitale diffère de 5,6 % et leur contraste de 12 %.
+Métriquement jumelles, visuellement distinctes, donc un joueur peut trancher.
+
+**Vérifié.** `tsc` et `eslint` passent. `check:twin-guard`, `check:adobe-migration`,
+`check:font-renderable`, `check:latin-coverage`, `check:license-guard`, `check:artifacts`
+au vert. Dix cas nommés rejoués contre le garde régénéré, cinq qui doivent bloquer et
+cinq qui doivent laisser passer, tous conformes.
+
+**CE QUI RESTE, ET QUI EST TA DÉCISION.** Les mêmes neuf grandeurs alimentent les
+clusters visuels, et le cluster décide des leurres : `pickDistractors` favorise le même
+cluster jusqu'à moins 350 points quand le joueur maîtrise une face. Ces clusters vivent
+en base, colonne `visual_cluster_id`, donc les recalculer demande une migration. Je
+mesure l'écart et je te le montre avant de proposer quoi que ce soit.

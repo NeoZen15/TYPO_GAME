@@ -3,8 +3,8 @@
     "kit_id": "ozq5yfs",
     "kit_name": "DWIGGINS",
     "stylesheet": "https://use.typekit.net/ozq5yfs.css",
-    "note": "Projet web Adobe Fonts. Les fichiers de police restent chez Adobe et ne sont JAMAIS telecharges : leurs conditions interdisent l'auto-hebergement. La feuille ci-dessus declare les familles, le jeu n'a plus qu'a les nommer. Le projet est verrouille sur les domaines qu'il declare, donc ajouter dwiggins.fr le jour du deploiement est obligatoire, sinon rien ne s'affiche en ligne.",
-    "verifie_le": "2026-08-23",
+    "note": "Projet web Adobe Fonts. Les fichiers de police restent chez Adobe et ne sont JAMAIS telecharges : leurs conditions interdisent l'auto-hebergement. La feuille ci-dessus declare les familles, le jeu n'a plus qu'a les nommer. Declarer le domaine de production dans le projet Adobe est une OBLIGATION DE LICENCE, pas une condition d'affichage : mesure du 2026-08-31, la feuille et les fichiers repondent 200 avec access-control-allow-origin: * pour n'importe quel Origin, y compris un domaine invente, preflight OPTIONS compris. Le risque d'un domaine non declare est qu'Adobe coupe le kit pour usage hors perimetre, pas que le site paraisse casse au premier jour.",
+    "verifie_le": "2026-08-31",
     "preuve": "Rendu mesure dans un vrai navigateur sur 127.0.0.1:3002 : le mot temoin fait 459 px en Helvetica LT Pro contre 605 px en police de repli, donc la police est bien appliquee et non remplacee en silence.",
     "familles": 108
   },

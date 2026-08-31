@@ -22,6 +22,24 @@ grandeur differe de moins du seuil, par defaut un pour cent en relatif. C'est un
 et non une moyenne : deux polices qui different franchement sur une seule grandeur
 restent distinguables, et c'est bien ce qu'on veut.
 
+LES 108 POLICES ADOBE SONT ENTREES LE 2026-08-31, ET PAR UN AUTRE INSTRUMENT. Elles
+n'ont pas de fichier chez nous, leurs conditions l'interdisent, donc elles etaient
+absentes de cette recherche et absentes du garde des jumelles : zero slug Adobe sur
+108, verifie. Or c'est le lot le plus dense en quasi jumelles du catalogue, onze
+Franklin Gothic, huit Gill Sans Nova, sept Clarendon, sept Futura, six Baskerville.
+Elles sont desormais mesurees dans un navigateur par
+scripts/browser_font_metrics.mjs, qui lit des pixels la ou le Python lit des
+contours.
+
+CE QUE CE MELANGE DE DEUX INSTRUMENTS COUTE, MESURE ET PAS SUPPOSE. Les deux methodes
+ont ete confrontees sur des polices Google mesurees des deux facons. Les proportions
+tombent au meme chiffre, ecart median nul et 90e centile sous 0,02 pour cent. Les trois
+grandeurs qui demandent un balayage sont plus bruyantes : anneau 0,13 pour cent en
+median, ouverture du c 0,12, graisse 0,01, et des extremes concentres sur DEUX polices,
+Montserrat Underline dont le trait souligne traverse le o, et Fragment Mono SC. Le
+seuil etant de un pour cent, la comparaison tient, et une paire limite doit etre lue
+comme limite plutot que comme un fait.
+
 CE QUE LE SCRIPT NE FAIT PAS. Il ne decide rien. Il rapporte, et le choix de ce
 qu'on fait des paires trouvees, eteindre la variante ou la rendre plus rare,
 appartient au proprietaire du projet.
@@ -40,6 +58,7 @@ from itertools import combinations
 from pathlib import Path
 
 GEOMETRIE = "data/typography-profiles/geometry-measured.json"
+ADOBE = "data/typography-profiles/adobe-measured.json"
 FORMES = "data/typography-profiles/shapes-measured.json"
 CATALOGUE = "content/catalog/typefaces-core.json"
 GARDE_LATIN = "lib/game/latin-coverage-guard.ts"
@@ -61,6 +80,14 @@ def main() -> int:
     args = parse_args()
     geo = json.loads(Path(GEOMETRIE).read_text(encoding="utf-8"))["mesures"]
     formes = json.loads(Path(FORMES).read_text(encoding="utf-8"))["mesures"]
+
+    # Les Adobe arrivent d'un seul fichier qui porte les neuf grandeurs a la fois,
+    # parce qu'un navigateur les rend toutes en un passage. On les range dans les deux
+    # tables existantes pour que la suite du script ne sache pas d'ou vient la mesure.
+    adobe = json.loads(Path(ADOBE).read_text(encoding="utf-8"))["mesures"]
+    for slug, m in adobe.items():
+        geo[slug] = {k: m[k] for k in GRANDEURS if k in m}
+        formes[slug] = {k: m[k] for k in (*GRANDEURS_FORME, "etages_g") if k in m}
     catalogue = {r["typeface_slug"]: r
                  for r in json.loads(Path(CATALOGUE).read_text(encoding="utf-8"))["records"]}
     source = Path(GARDE_LATIN).read_text(encoding="utf-8")

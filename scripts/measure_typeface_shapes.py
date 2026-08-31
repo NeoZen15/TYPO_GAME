@@ -37,6 +37,11 @@ CE QUI N'EST PAS MESURE. La forme des terminaisons demanderait de suivre le
 contour et d'en qualifier la coupe, ce qui est un cran au dessus. Le a a un ou
 deux etages ne se lit pas au compte de contours, les deux en ont deux.
 
+A QUELLE INSTANCE ON MESURE, corrige le 2026-08-31. Meme correction que dans
+measure_typeface_geometry.py, et pour la meme raison : une police variable est
+mesuree a l'instance que le jeu AFFICHE, pas a celle que le fichier declare par
+defaut. Le pourquoi et le detail des trois axes sont dans scripts/font_instance.py.
+
 L'AXE SE MESURE PAR RAYONS, PAS PAR CORDES. Premiere version : balayer des cordes
 a travers le centre du o en comptant les traversees d'encre. Correct mais beaucoup
 trop lent pour 1136 polices. Ici on separe le contour exterieur de la contreforme,
@@ -56,8 +61,8 @@ from pathlib import Path
 
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.pens.recordingPen import RecordingPen
-from fontTools.ttLib import TTFont
 
+from font_instance import instance_rendue
 from measure_typeface_geometry import aplatir, epaisseur_verticale
 
 ASSETS = "content/catalog/font-runtime-assets.json"
@@ -127,8 +132,8 @@ def anneau_du_o(contours, pas_degres: int = 3) -> tuple[float | None, float | No
     return float(angle % 180), regularite
 
 
-def mesurer(chemin: str) -> dict | None:
-    police = TTFont(chemin, lazy=True)
+def mesurer(chemin: str, poids: float = 400.0) -> dict | None:
+    police, _lieu = instance_rendue(chemin, poids)
     jeu = police.getGlyphSet()
     cmap = police.getBestCmap()
 
@@ -191,7 +196,7 @@ def main() -> int:
     mesures, echecs = {}, 0
     for i, a in enumerate(primaires, 1):
         try:
-            m = mesurer(a["source_path"])
+            m = mesurer(a["source_path"], a.get("weight") or 400)
         except Exception:
             echecs += 1
             continue
