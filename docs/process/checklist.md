@@ -4410,3 +4410,146 @@ message de succès. **Juger une garde sur son code de sortie, jamais sur une cha
 sortie standard.**
 
 Relevé après ce passage: `tsc --noEmit` propre, **les 31 gardes vertes**, une par une.
+
+## 2026-08-29 — Kit de pastilles sorti à côté, la planche 53 n'est pas touchée
+
+Le propriétaire refait lui même la planche 53, en plus grand. Il lui faut les pastilles comme
+objets manipulables, pas comme une image. Rien n'a été modifié sur la planche : elle a été lue,
+c'est tout.
+
+**Pourquoi les pastilles de la planche ne se redimensionnent pas.** Chaque pastille est un cadre
+sans mise en page automatique, et son texte est un bloc figé, `textAutoResize` à `NONE`, posé en
+0,0 à la taille exacte du cadre. Le rembourrage visible n'est pas un rembourrage, c'est du vide
+dans la boîte de texte. Tirer un coin étire donc le cadre sans toucher au texte : le rayon reste
+à 12, la lettre reste à 12, la pastille se déforme.
+
+**Ce qui est posé.** Un cadre `KIT · pastilles · copies libres`, `777:675`, en 50820, 7640, à
+droite de tout le plan de travail, fond noir de la charte. Huit pastilles reconstruites en mise
+en page automatique, cotes et couleurs relevées sur les originales au centième :
+
+- les quatre du bandeau, vert, fond à 8 %, bord à 42 %, encre verte à 96 %, hauteur 27, rayon 12,
+  **largeur libre** : elles épousent leur texte, ce que la planche affirme déjà en toutes lettres.
+- les trois du mode, vert, orange et bleu, **largeur fixe à 118**, texte en remplissage centré :
+  changer le mot ne casse plus l'égalité des trois.
+- la pastille de carte, hauteur 23, fond à 6 %, bord à 38 %, encre ivoire.
+
+Les largeurs retombent à un pixel près des originales : 92 pour 91,6, 103 pour 102, 104 pour
+103,7, 66 pour 65,2. Les hauteurs sont exactes.
+
+**Une rangée ×3 par dessus**, clonée puis passée à `rescale(3)`, qui monte tout ensemble : corps
+36, rayon 36, bord 3, rembourrage triplé. C'est la démonstration que la chose s'agrandit sans se
+déformer, et de quoi partir directement si le « plus gros » se joue à cette échelle.
+
+**Ce que le propriétaire doit savoir pour s'en servir.** Tirer un coin ne fait rien de bon sur une
+pastille à largeur libre, c'est le principe même du hug. Deux gestes marchent : **K puis tirer**,
+qui met tout à l'échelle d'un coup, corps et rayon compris ; ou changer le corps du texte, la
+pastille suit. Sur les trois du mode, tirer le bord latéral est légitime, le texte reste centré.
+
+## 2026-08-29 — Le bloc composants doit présenter, pas spécifier
+
+Constat du propriétaire, et il a raison : les trois planches de composants sont écrites comme
+une doc de dev. Hauteur 27, rayon 12, remplissage 13,1 / 22,4, Inter 620 à 15,4, fond à 8 %,
+bord à 42 %, cotes sous chaque objet. Ça sert à réimplémenter le composant. Or ce document
+présente une direction artistique : le lecteur doit reconnaître la marque, pas pouvoir la
+reconstruire.
+
+**Conséquence directe sur mon travail de la veille.** Le procédé « mesurer la chose sur la
+chose », posé sur la 52 le 2026-08-26 et que je jugeais bon, tire exactement dans le mauvais
+sens pour ce bloc. Il transforme la planche en instrument de mesure. C'était la bonne réponse
+à la mauvaise question.
+
+**Direction retenue, à valider par le propriétaire.** Présenter par la fonction, pas par la
+fiche. Chaque objet est montré en grand, sans une seule valeur chiffrée, et porte le geste
+qu'il produit : agir, choisir, consulter, répondre.
+
+**Planche pilote faite**, `V2 · Les composants · Les boutons`, `783:675`, posée en 50820, 9000,
+hors du plan de travail. Les planches 51 à 54 ne sont pas touchées.
+
+- Clone de la 52, donc chrome, grille, logo et folio strictement identiques.
+- **Vingt-deux éléments retirés** : les quatre lignes de specs, les huit cotes et leurs
+  légendes, les deux filets de hauteur et leur mention, la ligne de pied, et six des huit
+  paragraphes de la colonne.
+- Les quatre boutons passés à `rescale(3)`, donc corps, rayon, bord et remplissage montent
+  ensemble. Deux bandes, chacune fermée à droite sur la marge à 1824, les deux objets de la
+  seconde alignés par leur centre.
+- Le titre devient un énoncé de DA, « le plein agit, le vide propose », au lieu d'un énoncé de
+  gabarit.
+- **Une seule explication**, collée en bas de la colonne de gauche, anatomie relevée sur les
+  brandbooks d'agence. Le vide entre le titre et elle est voulu.
+- Plus aucun chiffre sur la planche.
+
+**Reste à faire une fois la direction validée** : même traitement sur la 53, les pastilles, et
+la 54, les cartes de mode, puis remplacement des originales et report des interactions du
+prototype.
+
+**Trou de numérotation à refermer, non corrigé ici.** Le plan de travail porte 61 planches
+numérotées de 1 à 62 : le 57 manque, une planche du bloc écrans a été supprimée. Sommaire et
+intercalaires sont donc faux d'une ligne. À traiter en même temps que le changement de nombre
+de planches du bloc composants, pour ne renuméroter qu'une fois.
+
+**Correction du pilote, même jour.** Deux retours du propriétaire, dans l'ordre. « C'est moche
+mais bon début » : les quatre objets étaient posés en grille 2×2 sans structure porteuse, l'œil
+ne trouvait aucune règle. Repris en quatre bandes réglées par un filet à 10 %, objet calé à
+gauche sur 587, bloc fermé en haut et en bas. Puis « les textes trop gros, la planche 62 est
+pas mal, prends exemple ».
+
+**L'échelle typographique vient maintenant de la 62, relevée et non inventée.** Libellé 13
+Medium, approche 12 %, encre pleine. Annotation 11 Medium, approche 2 %, encre à 50 %.
+Paragraphe de colonne 17 Regular. Mes libellés étaient à 24 Bold, deux fois trop gros, et
+alignés à droite sur la marge au lieu d'ouvrir une colonne.
+
+**Et la 62 donne aussi l'anatomie**, que le pilote adopte : trois colonnes, le texte à 96, les
+objets à 587, les annotations à 1348. Chaque bande porte le geste puis une ligne qui dit
+pourquoi ce dessin, toujours sans une seule valeur chiffrée.
+
+**Troisième retour, « tous les boutons à la suite ».** Les quatre bandes empilées deviennent une
+seule ligne. Les quatre boutons sont posés côte à côte sur **un filet unique**, de 587 à 1824,
+et **alignés par le bas** : ils ne partagent pas une hauteur, ils partagent un sol. C'est le
+même principe que les nuanciers du bloc couleur.
+
+Le passage à une ligne impose l'échelle : les quatre largeurs cumulées valent 636 à l'échelle
+1, donc la mesure de 1237 fixe le facteur à **1,7** avec 52 d'écart entre les objets. Le
+« plus gros » demandé plus tôt et le « à la suite » demandé ici se contredisent, et c'est la
+ligne qui gagne.
+
+Le geste passe **sous** chaque bouton, calé sur son bord gauche. Les quatre notes de la colonne
+d'annotations sont supprimées, faute de largeur : leur substance tient déjà dans le paragraphe
+de la colonne de gauche. Filet de sol à 18 %, sinon il disparaît à l'écran.
+
+## 2026-08-31 — Polices Adobe, état réel, et un bloqueur que j'annonçais à tort
+
+Relevé du jour, mesuré et non récité.
+
+**Ce qui est en place.** 108 lignes `font_source = 'adobe'` en base, **toutes actives**, dont
+**30 en `common` et à portée du débutant**. La feuille `use.typekit.net/ozq5yfs.css` répond
+200, 67 382 octets, et déclare **108 familles, exactement celles du miroir
+`content/catalog/adobe-fonts-kit.json`, zéro écart**. `check:adobe-migration` verte.
+Migrations 015 et 016 appliquées depuis le 2026-08-23.
+
+**LE BLOQUEUR DE MISE EN LIGNE ÉTAIT FAUX, ET JE L'AI RÉPÉTÉ PLUSIEURS FOIS.** J'affirmais
+que le kit verrouillé sur `localhost` empêcherait les 108 polices de s'afficher en ligne,
+et donc que le jeu demanderait de nommer une typo absente de l'écran. Contrôlé aujourd'hui:
+la feuille **et** les fichiers de police répondent 200 avec
+`access-control-allow-origin: *` pour n'importe quel `Origin` ou `Referer`, **y compris un
+domaine inventé**, préflight `OPTIONS` compris. **Le rendu n'est pas verrouillé.**
+
+Ce qui reste vrai, et c'est autre chose: déclarer `dwiggins.fr` dans le projet web est une
+**obligation de licence**, pas une condition d'affichage. Le risque est qu'Adobe coupe le
+kit pour usage hors périmètre déclaré, pas que le site paraisse cassé au premier jour. À
+faire avant publication, sans urgence de rendu. La mémoire du projet est corrigée.
+
+**Treize familles n'ont pas le poids 400, dont deux sans aucun romain.** Baskerville BT ne
+porte que `i7`, gras italique, et Baskerville URW Regular Oblique que `i4`. Les onze autres
+ont un romain d'un autre poids: Arial Rounded MT Pro `n7`, Copperplate `n5`, ITC Avant Garde
+Gothic Pro `n5`, Neue Frutiger World UltLt `n1`, et sept semblables.
+
+Raisonné et **non vérifié au navigateur**, le serveur de développement étant éteint:
+`.game-v2-word` demande `font-weight: 400` avec `font-synthesis: none`, et
+`getRuntimeFontFace` rend `null` pour une police Adobe, par contrat, donc aucun poids n'est
+appliqué en ligne pour elles. L'appariement CSS choisit alors la fonte réellement présente
+dans la famille, et `font-synthesis: none` interdit d'en fabriquer une fausse. Le joueur
+devrait donc voir un dessin réel. **Un coup d'œil à confirmer** quand le serveur tourne, sur
+Baskerville BT et Copperplate.
+
+**Reste ouvert et à ta main:** le jeton d'API Adobe collé dans un chat le 2026-08-23 n'est
+toujours pas régénéré.
