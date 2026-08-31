@@ -4553,3 +4553,77 @@ Baskerville BT et Copperplate.
 
 **Reste ouvert et à ta main:** le jeton d'API Adobe collé dans un chat le 2026-08-23 n'est
 toujours pas régénéré.
+
+## 2026-08-31 (suite) — Le profil géométrique décrit une police que le joueur ne voit pas
+
+Parti du seul point laissé ouvert le matin même, les treize familles Adobe sans poids 400.
+Serveur de dev allumé, mesuré au navigateur et non raisonné.
+
+**Les treize rendent un vrai dessin, il n'y a rien à corriger.** Le test qui tranche est de
+demander la même famille deux fois, une fois en 400 normal comme le fait `.game-v2-word`,
+une fois au poids que la feuille d'Adobe déclare. Les deux largeurs sont identiques au
+centième sur les treize. Un repli silencieux aurait rendu exactement la largeur du témoin,
+puisque aucune police de secours n'est nommée après la famille. Baskerville BT montre son
+gras italique, Baskerville URW Regular Oblique son italique, Neue Frutiger World UltLt son
+100, les dix autres leur 500 ou leur 700. Aucune synthèse.
+
+**Ce que la mesure a fait sortir, et qui est un vrai défaut.** Le garde des jumelles
+(`lib/game/twin-guard.ts`, 335 polices en 53 familles, généré le 2026-08-24) est bâti en
+mesurant la géométrie DANS les fichiers de police. Les 108 Adobe n'ont pas de fichier :
+**zéro slug Adobe dans le garde, vérifié sur les 108**. Or c'est le lot le plus dense en
+quasi jumelles du catalogue, onze Franklin Gothic, huit Gill Sans Nova, sept Clarendon,
+sept Futura, sept Garamond, six Baskerville.
+
+Et `pickDistractors` ne subit pas cette ressemblance, il la **cherche** : plus le joueur
+maîtrise une face, plus le score favorise un leurre du même cluster visuel, jusqu'à moins
+350 points. Le garde est la seule chose qui empêche cette recherche d'aller jusqu'à la face
+identique.
+
+**Douze paires Adobe sous le seuil d'un pour cent sur cinq grandeurs bon marché, dont six à
+zéro écart exact** : Franklin Gothic URW Cond contre Franklin Gothic Condensed, URW Comp
+contre Compressed, URW Extra Comp contre Extra Compressed, Helvetica Neue World contre
+Helvetica Neue LT Pro, Futura 100 contre Futura 100 Latin Ext, Futura 100 Book contre
+Futura 100 Latin Ext Book. Les deux Futura sont le cas Noto Sans JP à l'identique, la même
+police avec une couverture latine étendue et deux noms. Puis Arial Nova contre Arial à
+0,09 %, GeorgiaPro contre Georgia à 0,11 %, Verdana Pro contre Verdana à 0,14 %.
+
+Ces cinq grandeurs sur estiment et ne suffisent pas à décider : Clarendon Wide contre
+Clarendon Wide Stencil sort à 0,18 % alors qu'un stencil se voit au premier coup d'œil.
+Ce sont les trois mesures de forme du script officiel qui les sépareraient. Il faut donc
+les neuf, pas cinq.
+
+**LE DÉFAUT LE PLUS GRAVE N'EST PAS CÔTÉ ADOBE.** En validant la mesure au navigateur
+contre celle des fichiers sur quatorze polices Google, douze concordent au dernier décimal
+et deux divergent. Les deux écarts sont expliqués, et le premier est un défaut de fond.
+
+Archivo est une police **variable dont l'instance par défaut est wght 600**. fontTools
+mesure l'instance par défaut, donc le fichier a profilé un demi gras. Le jeu déclare
+`font-weight: 400` dans le `@font-face` qu'il injecte, ce qui épingle l'axe à 400, donc le
+joueur voit une régulière. **136 polices sur les 1136 mesurées sont dans ce cas**, dont 42
+à instance par défaut 100, une maigre. Leur profil décrit une police que personne ne voit.
+
+Vérifié sur cinq d'entre elles, en déclarant deux fois la même police, une fois au poids par
+défaut et une fois à 400. Au défaut, la mesure du navigateur rend **exactement** les chiffres
+du JSON. À 400, elle s'en écarte bien au delà du seuil qui définit une jumelle : Alumni Sans
+passe de 0,4745 à 0,5326 de rondeur, soit 12 %, Akshar de 6,5 % en chasse et 7,6 % en
+rondeur, Ancizar Sans de 5,9 % en rondeur.
+
+Second écart, mineur : trois polices n'ont pas de glyphe **nommé** `n`, Castoro Titling,
+Deco Var Alpha et Qahiri. `measure_typeface_geometry.py` bascule alors sur la largeur
+d'encre au lieu de l'avance, deux grandeurs différentes rangées dans la même colonne. Écart
+mesuré sur Castoro Titling : 20 %.
+
+**Ce que ça touche.** Les neuf grandeurs alimentent le garde des jumelles ET les clusters
+visuels, et les clusters décident des leurres. Un profil faux sur 136 polices fait donc
+manquer des jumelles réelles et en invente d'autres, des deux côtés de la même mesure.
+
+**Décidé, et en cours.** Mesurer au navigateur, à la lettre du poids que le jeu déclare, les
+1136 Google et les 108 Adobe d'un seul et même instrument, puis régénérer le garde des
+jumelles. Le garde est un module, pas une colonne : aucune migration. Les clusters visuels,
+eux, vivent en base (`visual_cluster_id`), donc les recalculer demande une migration et
+c'est ta décision, pas la mienne. Je mesure et je rapporte l'écart avant de proposer quoi
+que ce soit là dessus.
+
+**Corrigé au passage.** La note `meta` de `content/catalog/adobe-fonts-kit.json` répétait
+encore que sans le domaine déclaré « rien ne s'affiche en ligne », ce que la mesure du matin
+a démenti. Reformulée en obligation de licence.
