@@ -4718,3 +4718,31 @@ Avant : 8 sur 30. Les 22 autres étaient la lettre A de Google Fonts, ABeeZee à
 simulais `init_user_pool(uuid)` alors que le jeu appelle `init_user_pool(uuid, text)`, dont
 le filtre et les quotas sont différents. **Vérifier quelle arité le code appelle avant de
 simuler une fonction qui en a plusieurs.**
+
+## 2026-08-31 — Les jumelles, décidées famille par famille
+
+`docs/catalogue/jumelles-decisions.md`. Rien en base, c'est un document à parcourir.
+
+**Chiffres refaits sur le garde regénéré ce matin** par l'autre session, qui a fait entrer les
+108 Adobe dans la mesure : **61 familles, 351 polices**, contre 53 et 335 la veille. Proposition :
+**284 à éteindre**, 57 gardées comme canoniques, **4 familles laissées intactes** parce que ce
+sont de vraies polices différentes qui mesurent pareil par hasard.
+
+**Les huit paires Adobe sont les plus nettes**, et elles sortent justement de la mesure de ce
+matin : Franklin Gothic Std contre Franklin Gothic URW, en droit, condensé et comprimé ; Futura
+100 contre sa version Latin Ext ; Georgia contre GeorgiaPro ; Helvetica Neue LT Pro contre
+Helvetica Neue World ; Verdana contre Verdana Pro. Huit fois le même caractère sous deux noms.
+
+**Une famille laissée en suspens exprès.** Dix-neuf Noto Serif exotiques dont aucune n'est le
+Noto Serif ordinaire, et dont le latin mesure différemment du sien. Je ne peux donc pas dire
+« garde Noto Serif », et couronner « Noto Serif Khitan Small Script » n'aurait aucun sens. Je
+propose de les éteindre toutes les dix-neuf, le propriétaire tranche.
+
+**Vérifié : le premier pool issu de la 019 n'est pas concerné.** Zéro collision de jumelles
+parmi ses 23 polices Adobe, et la seule qui appartienne à une famille jumelle est Georgia, dont
+la jumelle Georgia Pro n'est pas servie au débutant.
+
+**Une session parallèle travaille dans ce dépôt.** Commits `3f292b5` et `dc01cfa` de ce matin,
+auteur NeoZen15 : la géométrie regarde désormais l'instance affichée, 136 polices étaient
+profilées au mauvais poids, et les 108 Adobe entrent dans le garde des jumelles. Mon commit
+`1830e99` n'a touché que ce fichier de checklist, rien avalé, vérifié.
