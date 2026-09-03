@@ -1,0 +1,788 @@
+{
+ "meta": {
+  "genere_le": "2026-09-03",
+  "source": "lib/game/twin-guard.ts, genere le 2026-08-31 avec les 108 Adobe dans la mesure",
+  "regle": "Deux polices sont jumelles quand les neuf grandeurs mesurees dans leurs fichiers different de moins d'un pour cent, chacune, et une famille n'existe que si chaque membre est jumeau de chaque autre.",
+  "pourquoi": "Le jeu montre un mot latin et demande quelle police le dessine. Quand deux polices tracent ce latin a l'identique, le joueur apprend une forme sous un nom puis la retrouve sous un autre, se trompe, et la repetition espacee le punit pour une distinction qui n'existe pas. L'exclusion dans une meme manche repare la question, pas l'apprentissage.",
+  "decision": "Eteindre veut dire activation_status = false. La ligne reste au catalogue avec son fichier et ses metadonnees, elle cesse d'etre jouable. Le retour arriere est un UPDATE.",
+  "familles": 61,
+  "a_eteindre": 285,
+  "canoniques": 56,
+  "familles_intactes": 4
+ },
+ "familles": [
+  {
+   "gardees": [
+    "notosans"
+   ],
+   "eteintes": [
+    "notokufiarabic",
+    "notomusic",
+    "notosansadlam",
+    "notosansadlamunjoined",
+    "notosansanatolianhieroglyphs",
+    "notosansarabic",
+    "notosansarmenian",
+    "notosansavestan",
+    "notosansbalinese",
+    "notosansbamum",
+    "notosansbassavah",
+    "notosansbatak",
+    "notosansbengali",
+    "notosansbhaiksuki",
+    "notosansbrahmi",
+    "notosansbuginese",
+    "notosansbuhid",
+    "notosanscanadianaboriginal",
+    "notosanscarian",
+    "notosanscaucasianalbanian",
+    "notosanschakma",
+    "notosanscham",
+    "notosanscherokee",
+    "notosanschorasmian",
+    "notosanscoptic",
+    "notosanscuneiform",
+    "notosanscypriot",
+    "notosanscyprominoan",
+    "notosansdeseret",
+    "notosansdevanagari",
+    "notosansduployan",
+    "notosansegyptianhieroglyphs",
+    "notosanselbasan",
+    "notosanselymaic",
+    "notosansethiopic",
+    "notosansgeorgian",
+    "notosansglagolitic",
+    "notosansgothic",
+    "notosansgrantha",
+    "notosansgujarati",
+    "notosansgunjalagondi",
+    "notosansgurmukhi",
+    "notosanshanifirohingya",
+    "notosanshanunoo",
+    "notosanshatran",
+    "notosansimperialaramaic",
+    "notosansindicsiyaqnumbers",
+    "notosansinscriptionalpahlavi",
+    "notosansinscriptionalparthian",
+    "notosansjavanese",
+    "notosanskaithi",
+    "notosanskannada",
+    "notosanskawi",
+    "notosanskayahli",
+    "notosanskharoshthi",
+    "notosanskhmer",
+    "notosanskhojki",
+    "notosanskhudawadi",
+    "notosanslao",
+    "notosanslaolooped",
+    "notosanslepcha",
+    "notosanslimbu",
+    "notosanslineara",
+    "notosanslinearb",
+    "notosanslisu",
+    "notosanslycian",
+    "notosanslydian",
+    "notosansmahajani",
+    "notosansmalayalam",
+    "notosansmandaic",
+    "notosansmanichaean",
+    "notosansmarchen",
+    "notosansmasaramgondi",
+    "notosansmath",
+    "notosansmayannumerals",
+    "notosansmedefaidrin",
+    "notosansmeeteimayek",
+    "notosansmendekikakui",
+    "notosansmeroitic",
+    "notosansmiao",
+    "notosansmodi",
+    "notosansmongolian",
+    "notosansmro",
+    "notosansmultani",
+    "notosansmyanmar",
+    "notosansnabataean",
+    "notosansnagmundari",
+    "notosansnandinagari",
+    "notosansnewa",
+    "notosansnewtailue",
+    "notosansnko",
+    "notosansnkounjoined",
+    "notosansnushu",
+    "notosansogham",
+    "notosansolchiki",
+    "notosansoldhungarian",
+    "notosansolditalic",
+    "notosansoldnortharabian",
+    "notosansoldpermic",
+    "notosansoldpersian",
+    "notosansoldsogdian",
+    "notosansoldsoutharabian",
+    "notosansoldturkic",
+    "notosansoriya",
+    "notosansosage",
+    "notosansosmanya",
+    "notosanspahawhhmong",
+    "notosanspalmyrene",
+    "notosanspaucinhau",
+    "notosansphagspa",
+    "notosansphoenician",
+    "notosanspsalterpahlavi",
+    "notosansrejang",
+    "notosansrunic",
+    "notosanssamaritan",
+    "notosanssaurashtra",
+    "notosansshavian",
+    "notosanssiddham",
+    "notosanssignwriting",
+    "notosanssinhala",
+    "notosanssogdian",
+    "notosanssorasompeng",
+    "notosanssoyombo",
+    "notosanssundanese",
+    "notosanssunuwar",
+    "notosanssylotinagri",
+    "notosanssymbols2",
+    "notosanssyriac",
+    "notosanssyriaceastern",
+    "notosanssyriacwestern",
+    "notosanstagalog",
+    "notosanstagbanwa",
+    "notosanstaile",
+    "notosanstaitham",
+    "notosanstaiviet",
+    "notosanstakri",
+    "notosanstamil",
+    "notosanstamilsupplement",
+    "notosanstangsa",
+    "notosanstelugu",
+    "notosansthaana",
+    "notosansthai",
+    "notosansthailooped",
+    "notosanstifinagh",
+    "notosanstirhuta",
+    "notosansugaritic",
+    "notosansvai",
+    "notosansvithkuqi",
+    "notosanswancho",
+    "notosanswarangciti",
+    "notosansyi",
+    "notosanszanabazarsquare",
+    "notoznamennymusicalnotation"
+   ],
+   "raison": "154 polices : Noto Sans plus une ecriture supplementaire. Le latin est celui de Noto Sans, identique dans les 154."
+  },
+  {
+   "gardees": [],
+   "eteintes": [
+    "kohsantepheap",
+    "notonaskharabic",
+    "notonastaliqurdu",
+    "notoserifahom",
+    "notoserifbalinese",
+    "notoserifdivesakuru",
+    "notoserifdogra",
+    "notoserifgrantha",
+    "notoserifkhitansmallscript",
+    "notoserifkhojki",
+    "notoserifmakasar",
+    "notoserifnphmong",
+    "notoserifolduyghur",
+    "notoseriforiya",
+    "notoserifottomansiyaq",
+    "notoseriftangut",
+    "notoseriftoto",
+    "notoserifvithkuqi",
+    "notoserifyezidi"
+   ],
+   "raison": "suite d'ecritures partageant un meme latin de Noto Serif"
+  },
+  {
+   "gardees": [
+    "notoserif"
+   ],
+   "eteintes": [
+    "notorashihebrew",
+    "notoserifarmenian",
+    "notoserifbengali",
+    "notoserifdevanagari",
+    "notoserifethiopic",
+    "notoserifgeorgian",
+    "notoserifgujarati",
+    "notoserifgurmukhi",
+    "notoserifhebrew",
+    "notoserifkannada",
+    "notoserifkhmer",
+    "notoseriflao",
+    "notoserifmalayalam",
+    "notoserifsinhala",
+    "notoseriftamil",
+    "notoseriftelugu",
+    "notoserifthai",
+    "notoseriftibetan"
+   ],
+   "raison": "19 editions d'ecriture de Noto Serif au meme latin."
+  },
+  {
+   "gardees": [
+    "aneklatin"
+   ],
+   "eteintes": [
+    "anekbangla",
+    "anekdevanagari",
+    "anekgujarati",
+    "anekgurmukhi",
+    "anekkannada",
+    "anekmalayalam",
+    "anekodia",
+    "anektamil",
+    "anektelugu"
+   ],
+   "raison": "Anek Latin est la version latine, les neuf autres sont des ecritures indiennes"
+  },
+  {
+   "gardees": [
+    "castoro"
+   ],
+   "eteintes": [
+    "tirobangla",
+    "tirodevanagarihindi",
+    "tirodevanagarimarathi",
+    "tirodevanagarisanskrit",
+    "tirogurmukhi",
+    "tirokannada",
+    "tirotamil",
+    "tirotelugu"
+   ],
+   "raison": "Castoro est une police nommee, les huit Tiro sont des editions d'ecriture"
+  },
+  {
+   "gardees": [
+    "hind"
+   ],
+   "eteintes": [
+    "hindcolombo",
+    "hindguntur",
+    "hindjalandhar",
+    "hindkochi",
+    "hindmadurai",
+    "hindmysuru",
+    "hindsiliguri",
+    "hindvadodara"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "ibm_plex_sans"
+   ],
+   "eteintes": [
+    "anuphan",
+    "ibmplexsansarabic",
+    "ibmplexsansdevanagari",
+    "ibmplexsanshebrew",
+    "ibmplexsanskr",
+    "ibmplexsansthai",
+    "ibmplexsansthailooped"
+   ],
+   "raison": "IBM Plex Sans, les autres sont ses editions d'ecriture"
+  },
+  {
+   "gardees": [
+    "mukta"
+   ],
+   "eteintes": [
+    "ekmukta",
+    "muktamahee",
+    "muktamalar",
+    "muktavaani"
+   ],
+   "raison": "Mukta et ses quatre variantes regionales indiennes."
+  },
+  {
+   "gardees": [
+    "notosansjp"
+   ],
+   "eteintes": [
+    "notosanshk",
+    "notosanskr",
+    "notosanssc",
+    "notosanstc"
+   ],
+   "raison": "quatre editions CJK d'un meme latin"
+  },
+  {
+   "gardees": [
+    "notoserifjp"
+   ],
+   "eteintes": [
+    "notoserifhk",
+    "notoserifkr",
+    "notoserifsc",
+    "notoseriftc"
+   ],
+   "raison": "quatre editions CJK d'un meme latin"
+  },
+  {
+   "gardees": [
+    "kaiseidecol"
+   ],
+   "eteintes": [
+    "kaiseiharunoumi",
+    "kaiseiopti",
+    "kaiseitokumin"
+   ],
+   "raison": "quatre Kaisei partageant un latin identique, choix arbitraire assume"
+  },
+  {
+   "gardees": [
+    "wdxllubrifontjpn"
+   ],
+   "eteintes": [
+    "wdxllubrifontsc",
+    "wdxllubrifonttc",
+    "zcoolqingkehuangyou"
+   ],
+   "raison": "trois WDXL plus une ZCOOL au meme latin"
+  },
+  {
+   "gardees": [
+    "afacad"
+   ],
+   "eteintes": [
+    "afacadflux"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "akatab"
+   ],
+   "eteintes": [
+    "tirra"
+   ],
+   "raison": "deux polices tifinagh au meme latin"
+  },
+  {
+   "gardees": [
+    "alumnisans"
+   ],
+   "eteintes": [
+    "alumnisanssc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "amiri"
+   ],
+   "eteintes": [
+    "amiriquran"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "arimo"
+   ],
+   "eteintes": [
+    "tharlon"
+   ],
+   "raison": "Tharlon est birmane, son latin est celui d'Arimo"
+  },
+  {
+   "gardees": [
+    "arsenal"
+   ],
+   "eteintes": [
+    "arsenalsc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "atkinsonhyperlegible"
+   ],
+   "eteintes": [
+    "atkinsonhyperlegiblenext"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "baskervville"
+   ],
+   "eteintes": [
+    "baskervvillesc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "bodonimoda"
+   ],
+   "eteintes": [
+    "bodonimodasc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "bonanova"
+   ],
+   "eteintes": [
+    "bonanovasc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "cascadiacode"
+   ],
+   "eteintes": [
+    "cascadiamono"
+   ],
+   "raison": "Cascadia Mono est Cascadia Code sans les ligatures"
+  },
+  {
+   "gardees": [
+    "charissil"
+   ],
+   "eteintes": [
+    "abyssinicasil"
+   ],
+   "raison": "le latin d'Abyssinica SIL est celui de Charis SIL"
+  },
+  {
+   "gardees": [
+    "cormorant"
+   ],
+   "eteintes": [
+    "cormorantgaramond"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "fragmentmono"
+   ],
+   "eteintes": [
+    "fragmentmonosc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "franklin_gothic_compressed"
+   ],
+   "eteintes": [
+    "franklin_gothic_urw_compressed"
+   ],
+   "raison": "meme chose, en comprime."
+  },
+  {
+   "gardees": [
+    "franklin_gothic_condensed"
+   ],
+   "eteintes": [
+    "franklin_gothic_urw_condensed"
+   ],
+   "raison": "meme chose, en condense."
+  },
+  {
+   "gardees": [
+    "franklin_gothic_std"
+   ],
+   "eteintes": [
+    "franklin_gothic_urw"
+   ],
+   "raison": "Franklin Gothic Std et Franklin Gothic URW : deux editions Adobe du meme caractere."
+  },
+  {
+   "gardees": [
+    "futura_100"
+   ],
+   "eteintes": [
+    "futura_100_latin_ext"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "futura_100_book"
+   ],
+   "eteintes": [
+    "futura_100_latin_ext_book"
+   ],
+   "raison": "Futura 100 Book et sa version Latin Ext : meme dessin, jeu de caracteres plus large."
+  },
+  {
+   "gardees": [
+    "georgia"
+   ],
+   "eteintes": [
+    "georgiapro"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "helvetica_neue_lt_pro"
+   ],
+   "eteintes": [
+    "helvetica_neue_world"
+   ],
+   "raison": "Helvetica Neue LT Pro et Helvetica Neue World : deux editions du meme caractere."
+  },
+  {
+   "gardees": [
+    "huninn"
+   ],
+   "eteintes": [
+    "bpmfhuninn"
+   ],
+   "raison": "BPMF Huninn est Huninn avec du bopomofo"
+  },
+  {
+   "gardees": [
+    "ibmplexmono"
+   ],
+   "eteintes": [
+    "lilex"
+   ],
+   "raison": "Lilex derive d'IBM Plex Mono"
+  },
+  {
+   "gardees": [
+    "iosevkacharon"
+   ],
+   "eteintes": [
+    "iosevkacharonmono"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "markazitext"
+   ],
+   "eteintes": [
+    "markazitextvfbeta"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "mavenpro"
+   ],
+   "eteintes": [
+    "mavenprovfbeta"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "mochiypopone"
+   ],
+   "eteintes": [
+    "mochiypoppone"
+   ],
+   "raison": "Mochiy Pop One et P One partagent leur latin"
+  },
+  {
+   "gardees": [
+    "mplus1"
+   ],
+   "eteintes": [
+    "mplus2"
+   ],
+   "raison": "M PLUS 1 et 2 partagent leur latin"
+  },
+  {
+   "gardees": [
+    "mplus1code"
+   ],
+   "eteintes": [
+    "mpluscodelatin"
+   ],
+   "raison": "deux noms pour le meme latin M PLUS Code"
+  },
+  {
+   "gardees": [
+    "mplusrounded1c"
+   ],
+   "eteintes": [
+    "roundedmplus1c"
+   ],
+   "raison": "M PLUS Rounded 1c et Rounded M+ 1c sont la meme police"
+  },
+  {
+   "gardees": [
+    "notosanssymbols"
+   ],
+   "eteintes": [
+    "nototraditionalnushu"
+   ],
+   "raison": "deux Noto au meme latin"
+  },
+  {
+   "gardees": [
+    "podkova"
+   ],
+   "eteintes": [
+    "podkovavfbeta"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "reemkufi"
+   ],
+   "eteintes": [
+    "reemkufifun"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "roboto"
+   ],
+   "eteintes": [
+    "vazirmatn"
+   ],
+   "raison": "Vazirmatn est persane, son latin est celui de Roboto"
+  },
+  {
+   "gardees": [
+    "robotoslab"
+   ],
+   "eteintes": [
+    "hanuman"
+   ],
+   "raison": "Hanuman est khmere, son latin est celui de Roboto Slab"
+  },
+  {
+   "gardees": [
+    "sedan"
+   ],
+   "eteintes": [
+    "sedansc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "shipporimincho"
+   ],
+   "eteintes": [
+    "shipporiminchob1"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "source_sans_3"
+   ],
+   "eteintes": [
+    "mada"
+   ],
+   "raison": "Mada est arabe, son latin vient de Source Sans"
+  },
+  {
+   "gardees": [
+    "spectral"
+   ],
+   "eteintes": [
+    "spectralsc"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "stacksansheadline"
+   ],
+   "eteintes": [
+    "stacksansnotch"
+   ],
+   "raison": "deux coupes d'une meme Stack Sans"
+  },
+  {
+   "gardees": [
+    "verdana"
+   ],
+   "eteintes": [
+    "verdana_pro"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "yrsa"
+   ],
+   "eteintes": [
+    "rasa"
+   ],
+   "raison": "Rasa est gujarati, Yrsa est sa jumelle latine, memes dessinateurs"
+  },
+  {
+   "gardees": [
+    "ysabeau"
+   ],
+   "eteintes": [
+    "ysabeauoffice"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "zenantique"
+   ],
+   "eteintes": [
+    "zenantiquesoft"
+   ],
+   "raison": "un membre est le prefixe des autres, donc meme dessin sous un nom allonge"
+  },
+  {
+   "gardees": [
+    "zenkakugothicnew"
+   ],
+   "eteintes": [
+    "zenkakugothicantique"
+   ],
+   "raison": "deux Zen Kaku Gothic au meme latin"
+  },
+  {
+   "gardees": [
+    "42dotsans",
+    "astasans"
+   ],
+   "eteintes": [],
+   "raison": "42dot Sans et Asta Sans sont deux polices differentes"
+  },
+  {
+   "gardees": [
+    "alyamama",
+    "ancizarserif"
+   ],
+   "eteintes": [],
+   "raison": "Al Yamama et Ancizar Serif sont deux polices differentes"
+  },
+  {
+   "gardees": [
+    "elmessiri",
+    "philosopher",
+    "zcoolxiaowei"
+   ],
+   "eteintes": [],
+   "raison": "El Messiri, Philosopher et ZCOOL XiaoWei sont trois polices differentes"
+  },
+  {
+   "gardees": [
+    "lexend",
+    "lexenddeca",
+    "readexpro"
+   ],
+   "eteintes": [],
+   "raison": "Lexend et Lexend Deca sont soeurs, Readex Pro est une autre famille : je n'eteins rien ici"
+  }
+ ]
+}
