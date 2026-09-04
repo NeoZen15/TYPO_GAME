@@ -165,6 +165,16 @@ export default function ProfileExperience({
         </nav>
 
         <div className="pf-top__actions">
+          {/* Two rooms of one house. Wording is a proposal, to be judged in
+              the interface rather than in a document. */}
+          <div className="pf-top__switch" role="group" aria-label="Space">
+            <Link href="/profile" className="pf-top__switch-btn is-active" aria-current="true">
+              Learn
+            </Link>
+            <Link href="/teacher" className="pf-top__switch-btn">
+              Teach
+            </Link>
+          </div>
           <Link href="/play" className="pf-top__cta">
             Play
           </Link>

@@ -97,6 +97,470 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-04 (fin de journée) — état de l'espace prof et point de reprise
+
+**Construit et en place** : le Home (cockpit), la liste Classes, la fiche Classe, la liste Exercices. Tout tourne sur `lib/teacher/mock-teacher.ts`, aucune base, aucune authentification, aucune migration.
+
+**Reste à construire, dans l'ordre décidé** : la fiche Élève, la fiche Exercice, la création d'exercice. Puis, côté élève, l'endroit où un devoir assigné apparaît dans son profil, identifié mais pas commencé.
+
+**Reste à valider par Marion** : la fiche Classe depuis sa passe de visualisation et de couleur, la liste Exercices avec « Racing the deadline » et « Who does the work », et le Home dans sa composition en figure de landing.
+
+**Trois décisions ouvertes, aucune bloquante** : comment se dit l'urgence d'une échéance (le rouge est pris par le jeu), comment se marque la valeur courante d'une courbe (aucun usage existant ne tranche), et comment un élève rejoint une classe la première fois (le QR est écarté, un code court est la piste).
+
+**Règles posées pendant la journée, à ne pas redécouvrir.**
+
+- Le professeur ne lit **que ce que ses propres exercices ont produit**. Jamais l'entraînement libre.
+- **Aucune couleur par logique sémantique** : on relève ce qui est réellement peint dans le profil, sinon neutre et on signale. Vert et rouge ne sont peints nulle part dans le profil.
+- **Aucun faux spécimen** : une famille affichée doit être servable par le manifeste, sinon le navigateur invente la lettre.
+- **Une page à la fois**, on montre, on attend le GO.
+- Les ratios de mélange du système sont calibrés pour du petit texte : grandes surfaces autour de 25 %, petites marques autour de 55 %.
+
+**La conversation entière de la journée est archivée** hors du dépôt, dans `09_DEV/conversations/2026-09-04-espace-prof.jsonl`, 31 Mo. Elle contient le raisonnement derrière chaque décision consignée ci dessus.
+
+---
+
+## Note — 2026-09-04 (suite 22) — la composition du Home prend enfin la figure de la landing
+
+**Ce que je n'avais pas fait, et qui explique quatre tours de correction : je n'avais pas REGARDÉ la landing.** J'en avais lu la feuille de style, j'en avais repris des valeurs, mais je n'avais jamais ouvert la page. Marion l'a dit en trois mots, « cf page principale ». Capture prise, et la composition saute aux yeux.
+
+**Chaque section de la landing est la même figure, et je n'en appliquais aucune partie :**
+
+- un surtitre mono, puis un **grand titre aligné à GAUCHE** de deux ou trois lignes, puis un lede à 46 caractères, puis un bouton fantôme ;
+- **l'objet à droite**, dans la même rangée, centré verticalement ;
+- rien de centré, une seule asymétrie répétée, et énormément d'air.
+
+Les valeurs sont celles de `.lp-feature` et `.lp-demo`, identiques : `1.02fr 1fr`, `align-items: center`, écart `clamp(2.2rem, 5.5vw, 5rem)`, largeur `min(95vw, 82rem)`. Le titre reprend `.lp-section__title` (clamp 2,2 à 3,85rem, graisse 650, interligne 1,02, interlettrage -0,04em, `text-wrap: balance`), le surtitre `.lp-kicker`, le lede `.lp-section__lede`. Seule substitution : l'encre, puisque cette page vit sur `.pf-page` et lit la crème du profil.
+
+**Ce que ça change dans la lecture.** Le titre n'est plus une étiquette, il est **écrit depuis la donnée** : « Three things need you today. », « Libre Baskerville against Playfair Display. ». La colonne de gauche dit déjà l'essentiel, la droite porte le détail et l'objet. C'est la façon dont la landing fait parler ses sections, appliquée à un outil.
+
+**Détail de voix** : le compte s'écrit en toutes lettres, « Three things » et non « 3 things ». Un chiffre au début d'une phrase la fait basculer du côté du tableau de bord.
+
+---
+
+## Note — 2026-09-04 (suite 21) — plus un seul bloc sur le Home
+
+**Question de Marion : et si on enlevait tous les blocs ?** Réponse : ça marche, et c'est mieux. **Le Home n'a plus aucun conteneur.**
+
+La carte de recommandation est partie elle aussi, et avec elle les quatre cadres autour des spécimens. Ce qui disait « agis là dessus » n'a jamais été la bordure, c'était la phrase et les deux boutons dessous. Ce qui tient la page, désormais : la typographie, deux filets et de la distance. C'est exactement ce que fait la landing, qui porte des sections entières avec une étiquette, un titre et du vide.
+
+**Les spécimens y gagnent le plus.** Sans cadre, les quatre « Aa » sont des lettres posées sur la page, pas des vignettes dans des boîtes. Sur un produit qui entraîne le regard, c'est la bonne façon de montrer une police.
+
+**Deux corrections d'alignement faites en regardant.**
+
+1. À 44rem centrée, la recommandation était **décalée** par rapport à la liste au dessus : ça se lisait comme une erreur et non comme une variation. La landing garde **une seule gouttière** pour tout et fait varier la **mesure** à l'intérieur, pas la colonne. Les deux zones partagent donc le même bord gauche, et c'est le texte qui est bridé à 34 caractères.
+2. La ligne de preuve en mono était bridée comme de la prose et sortait en trois lignes courtes. C'est une ligne de données, elle court.
+
+**État du Home** : un mot spécimen énorme, une lecture de trois lignes, une recommandation. Zéro rectangle, une seule chose qui bouge.
+
+---
+
+## Note — 2026-09-04 (suite 20) — le Home passe à deux fonctions, au rythme de la landing
+
+**Le vrai diagnostic, et il n'était pas dans la composition.** J'ai passé deux tours à réarranger des blocs alors que le problème était qu'il y en avait trop. Marion l'a tranché : **« Still being mixed up » est supprimé du Home.** Les confusions détaillées appartiennent aux fiches Classe, et sur le Home elles répétaient déjà la raison pour laquelle DWIGGINS propose l'exercice suivant. Le code part avec.
+
+**Le Home tient maintenant en deux fonctions**, plus le spécimen qui porte l'identité.
+
+1. Ce qui demande ton attention aujourd'hui, **trois lignes au maximum**.
+2. Ce que DWIGGINS donnerait ensuite, **une seule recommandation**.
+
+**Le rythme est repris de la landing, en valeurs et pas en impression.**
+
+- **L'air** : `clamp(4.5rem, 12vh, 9rem)`, exactement le padding vertical de `.lp-section`, employé ici comme écart entre les moments. Cette distance est l'essentiel de ce qui rend la landing simple : peu de choses, très espacées.
+- **Une seule chose est dans une boîte.** La landing ne met jamais de cadre autour d'une lecture, elle en met autour de ce sur quoi on clique. « Needs you now » perd donc son panneau et se tient par son étiquette mono et ses filets ; la recommandation garde le sien parce qu'on agit dessus.
+- **Variation d'échelle** : la recommandation passe à `--shell-width-narrow` (44rem) au lieu de la pleine largeur. Un objet à faire, pas une bande de plus. La landing fait la même chose en permanence, un héros à 9rem, un titre de section à 3,85, une étiquette à 0,68.
+
+**Et l'espace libéré reste vide.** C'était la consigne, et c'est ce qui rend la page plus courte et plus évidente.
+
+**Piège corrigé au passage** : mon `padding-bottom` s'ajoutait à celui que `.st` porte déjà, ce qui laissait un vide double en bas de page.
+
+---
+
+## Note — 2026-09-04 (suite 19) — la composition du Home, trois rectangles empilés deviennent un rythme
+
+**Le diagnostic : le contenu était bon, la composition ne l'était pas.** Trois grands panneaux presque pleine largeur empilés donnaient une page longue qui se lisait comme une pile de boards, quel que soit ce qu'il y avait dedans.
+
+**Ce qui a changé, et rien d'autre.** Aucun contenu retiré, aucune logique touchée.
+
+- **La recommandation et les paires confondues passent côte à côte**, dans `.st-cols--b` (1fr 1.2fr), le rang à deux colonnes que le système a déjà. À elles deux elles prennent un tiers de la hauteur qu'elles occupaient, et surtout elles cessent de se ressembler.
+- **Les paires perdent leur container.** Ce sont une lecture, pas une action : les formes sont le visuel, et une boîte autour n'ajoutait qu'un quatrième rectangle. L'étiquette mono et le filet entre les rangées suffisent à les tenir, exactement comme la landing tient ses propres sections sans cadre.
+- **La recommandation garde le sien**, parce que c'est une chose sur laquelle on agit et qu'une bordure est ce qui le dit. La colonne large va aux spécimens, qui ont besoin de la place.
+- **Les quatre spécimens passent en deux par deux.** En rangée souple ils sortaient à trois puis un, et l'orphelin se lisait comme une erreur de mise en page.
+
+**Le rythme obtenu** : un mot spécimen très grand dans du vide, un panneau large pour la priorité, puis un rang à deux colonnes dont une seule est fermée. Une échelle forte, des modules plus petits, du vide entre les trois.
+
+---
+
+## Note — 2026-09-04 (suite 18) — passe d'allègement du Home : une seule chose bouge
+
+**Le diagnostic de Marion : la direction est bonne, la page est trop chargée.** Chaque section avait fini par se payer son propre traitement, donc trois zones réclamaient l'attention en même temps et plus rien n'avait de hiérarchie.
+
+**Ce qui est retiré, et rien n'est remplacé.**
+
+- **L'inclinaison au survol** du panneau de recommandation. C'était l'effet le plus gadget et le seul dont la page ne dit rien sans lui.
+- **Les deux apparitions décalées par index**, sur les spécimens de la recommandation et sur les paires confondues. Elles gardent la révélation de section, comme tous les autres panneaux du site.
+- **Le contour éclairci** du panneau de recommandation : il se distingue déjà par son contenu et ses deux boutons, il n'avait pas besoin d'être aussi le plus lumineux.
+- **Le bouton « New exercise » de la bande** : la barre du haut le porte déjà et il est visible en permanence. Deux fois le même geste à trois centimètres d'écart.
+- **La rangée de deux boutons en bas de page**, qui répétait les onglets. C'était la cinquième zone que je m'étais interdit d'ajouter.
+
+**Ce qui reste, et c'est le point.** **Une seule chose bouge d'elle même sur cette page** : le mot spécimen qui change de famille, avec le flou de la landing. Tout le reste est la révélation au défilement que tous les écrans du site partagent. Une animation forte à un endroit, des zones calmes autour.
+
+**L'air entre les sections** passe de l'écart des boards, `clamp(1.1rem, 3vh, 2rem)`, calibré pour un onglet dense, au jeton de rythme de page `--page-gutter-y-bottom`. Un jeton déclaré, rien d'inventé.
+
+---
+
+## Note — 2026-09-04 (suite 17) — audit du Home contre la DA existante, quatre valeurs inventées retirées
+
+**Garde fou posé par Marion : le Home peut être plus vivant, il ne peut pas avoir sa propre DA.** J'ai donc relu mon propre fichier ligne à ligne en cherchant ce qui ne venait de nulle part. Quatre choses, toutes remplacées par une valeur qui existe déjà.
+
+1. **Une animation maison.** J'avais écrit un `@keyframes` pour l'entrée du spécimen. Le site en a déjà un, **`lp-specimen-in`**, qui vit dans `globals.css` et sert au mot du héros de la landing quand il change de police : opacité, un flou de 9 px et une élévation de 0,12 em sur 0,6 s. C'est **la façon dont ce site change une face**. Réutilisée telle quelle.
+2. **Une taille de titre maison**, `clamp(2.6rem, 7vw, 5rem)`. Remplacée par la taille du titre de section de la landing, `clamp(2.2rem, 5vw, 3.85rem)`.
+3. **Deux tailles de spécimen maison**, 1,7rem et 2rem. Remplacées par celle de la carte du rail typo de la landing, `clamp(1.7rem, 2.4vw, 2.35rem)`.
+4. **Des durées maison**, 260 ms sur l'inclinaison et 500/600 ms sur les révélations. Remplacées par le **180 ms ease** du contrat UI pour l'interaction, et par le **600/700 ms cubic-bezier(0.22, 1, 0.36, 1)** du système de boards pour les révélations.
+
+**Une décision typographique assumée et notée.** Le héros de la landing pose interlettrage, graisse et interlignage sur son titre, donc sur son spécimen : c'est un traitement d'affichage. La bande du Home ne pose **rien** de tout ça. Le mot y existe pour qu'un prof **reconnaisse une face**, donc toute propriété typographique doit venir du fichier de police, comme sur le mot du jeu.
+
+**Vérifié aussi :** les tailles restantes de ce fichier (0,5 à 1rem) apparaissent toutes entre 2 et 11 fois dans le système, ce ne sont pas des valeurs inventées mais l'échelle des étiquettes mono et du texte courant des boards.
+
+---
+
+## Note — 2026-09-04 (suite 16) — le Home prof devient un cockpit, et les spécimens sont enfin vrais
+
+**Pourquoi il fallait le refaire.** Une fois Classes et Exercices construits correctement, le Home répétait les deux, en moins bien : « Running now » et ses barres d'avancement sont le métier de la page Exercices. Quatre zones, quatre rôles, aucune qui soit une liste qu'on lit déjà mieux ailleurs.
+
+1. **La bande spécimen.** Le nom d'une famille, composé dans cette famille, tiré des exercices **en cours**, qui tourne à l'intervalle du héros de la landing (2,4 s). Sous le mot, la classe qui l'a devant les yeux aujourd'hui. Ce n'est pas décoratif : c'est une face qu'un élève doit nommer maintenant.
+2. **Needs you now.** Le tri entre toutes les classes, que seule cette page peut faire : le retard sur échéance et les signaux de classe fusionnés en **une seule liste classée**, quatre au maximum, avec le chemin vers la page concernée. Une classe déjà signalée pour son échéance ne reçoit pas une seconde ligne sur le même exercice.
+3. **Ce que DWIGGINS donnerait ensuite.** Un exercice **déjà composé** à partir de la pire confusion : la paire, plus ce que la classe lit déjà, jamais uniquement ses lacunes. Les familles sont montrées en « Aa » dans leur vraie police.
+4. **Still being mixed up.** Les trois paires les plus fréquentes, montrées **dans les formes elles mêmes** : « Rg » en Libre Baskerville à côté de « Rg » en Playfair Display. C'est le sujet même du produit, et on voit pourquoi elles se confondent au lieu de lire qu'elles se confondent.
+
+**UN DÉFAUT DE FOND CORRIGÉ EN CHEMIN, ET IL AURAIT ÉTÉ GRAVE.** Le mock nommait des familles (Garamond, Futura, Gill Sans, Helvetica) que **le manifeste local ne sert pas** : sur 23 polices servables en local, aucune de celles là. Composer un spécimen dans une famille absente, c'est afficher une lettre inventée par le navigateur, exactement la faute déjà attrapée sur les pages typo (défaut D5 du registre) et ce que la mémoire du projet interdit. Toutes les familles du mock sont donc passées aux **slugs réels du manifeste**, et les paires de confusion avec : Montserrat contre Poppins, Libre Baskerville contre Playfair Display, Roboto contre Inter, des voisinages qui tiennent debout. Les polices du catalogue sont maintenant injectées sur `/teacher`, comme le font déjà la landing, le profil et l'onboarding.
+
+**Mouvement, tout emprunté** : la révélation des boards, l'intervalle du héros, le décalage par index de la heatmap du profil, et l'inclinaison au survol des cartes de la landing **au tiers de son angle** sur le seul panneau de recommandation, parce que 7 degrés sur une carte est un soulèvement et 7 degrés sur un panneau large est une embardée. Tout coupé sous `prefers-reduced-motion`.
+
+**Couleur** : la pastille de mode, rien d'autre.
+
+---
+
+## Note — 2026-09-04 (suite 15) — « Racing the deadline », et pourquoi la frise a été jetée
+
+**La frise chronologique est supprimée, sur analyse de Marion, et elle avait raison sur le fond.** Elle posait chaque exercice ouvert un jour par sa date de fermeture et sa complétion. Deux défauts, dont un grave.
+
+1. **Les points n'étaient pas comparables.** Classes différentes, effectifs différents, durées différentes, échéances différentes : les aligner par complétion brute compare des choses qui ne se comparent pas.
+2. **La figure se lisait à l'envers.** Les exercices les plus récents tombaient en bas parce qu'ils sont **encore ouverts** et que personne n'a pu les finir. Le graphe racontait « la participation s'effondre » alors que c'était faux. Le passage des points en creux atténuait sans régler. **Une dataviz qui peut se lire à l'envers est pire que pas de dataviz du tout**, et il ne fallait pas la peaufiner, il fallait la jeter.
+
+**Ce qui la remplace, principe validé avant d'écrire une ligne.** Pour chaque exercice **encore ouvert**, deux parts posées sur la MÊME barre : la part de la classe qui a terminé (le remplissage) et la part du délai déjà écoulée (le repère). Les deux sont des fractions de leur propre chose, donc un devoir de trois jours pour 22 élèves se lit à côté d'un de deux semaines pour 31. Tri par écart, le plus en retard en haut.
+
+**La lecture tient en une distance** : le remplissage a-t-il rejoint le repère. Rien d'autre à comprendre, pas de légende. « 66 behind » et « on pace » disent en mots ce que l'œil vient de mesurer.
+
+**Monochrome, et c'est un choix motivé.** Aucun usage existant ne dit à quoi ressemble « en retard sur son échéance » dans ce produit, et la règle du jour interdit d'en inventer un. La lecture n'en a pas besoin : l'écart est une distance, pas une couleur.
+
+**Donnée ajoutée au mock : `openedForHours`**, la longueur de la fenêtre entre la mise en ligne et l'échéance. Sans elle rien n'est comparable, et c'est un champ que le vrai produit portera de toute façon. Le mock ne stockait que le temps restant.
+
+**« Who does the work » est conservé** sous le nouveau panneau.
+
+---
+
+## Note — 2026-09-04 (suite 14) — la page Exercices gagne le temps, et « What you give » est supprimé
+
+**Retiré sur retour de Marion :** le panneau « What you give », la répartition entre entraînement et compétition. Verdict : beaucoup de place pour une information secondaire, et un graphique ne se met pas là parce que la donnée existe. Le code part avec, pas de panneau désactivé qui traîne.
+
+**Ce qui manquait vraiment, et c'est le TEMPS.** La liste du haut donne l'état actuel. Le bas donne maintenant le trimestre : **chaque exercice ouvert, placé par la date de sa fermeture et par la part de la classe qui l'a terminé**. Une hampe jusqu'à la ligne de base, un point au sommet. La figure dit trois choses d'un coup : le **rythme** (les vides sont les semaines sans rien donner), le **niveau** (la hauteur), et le **type** (la couleur du mode, la seule établie).
+
+**Pas de ligne reliant les points, volontairement.** Ils appartiennent à quatre classes différentes ; une ligne prétendrait qu'il y a une seule histoire là où il y en a quatre. La hampe suffit à rendre un point lisible.
+
+**Un défaut de lecture attrapé en regardant, et il aurait été grave.** Les trois points les plus récents sont bas, parce que ces exercices sont **encore ouverts** et que personne n'a pu les finir. Tel quel, le graphe racontait « mes derniers exercices échouent », l'inverse de la vérité. La différence de taille était trop discrète pour corriger ça. Les exercices en cours sont désormais **creux**, contour seulement : « pas encore compté » se lit d'un coup d'œil et ne coûte aucune couleur supplémentaire. La légende le dit aussi.
+
+**« Who does the work » est conservé**, jugé utile par Marion, et passe en pleine largeur maintenant qu'il n'a plus de voisin.
+
+**Règle de méthode confirmée pour la suite :** une visualisation ne s'ajoute que si elle répond à une question qu'aucune autre page ne peut poser, et il vaut mieux une figure forte que trois blocs statistiques.
+
+---
+
+## Note — 2026-09-04 (suite 13) — deux visualisations sous la liste des exercices, et ce qui a été écarté
+
+**Le critère retenu : ne montrer que ce qu'aucune autre page ne peut montrer.** Une fiche Classe connaît une classe, une fiche Exercice connaît un devoir. La liste des exercices est le seul endroit qui voit **toute la pratique en même temps**, donc les deux panneaux du bas sont des **comparaisons**, pas des résumés.
+
+**« Who does the work ».** Une rangée par classe, la part de ce qui a été donné qui a réellement été terminé, en `.st-axis` comme le tableau de stats. Répond à « mes exercices atterrissent où », que ni la fiche Classe ni la fiche Exercice ne peuvent dire. Les exercices programmés sont exclus du calcul : personne ne peut avoir terminé ce qui n'est pas ouvert, et les compter ferait chuter toute classe qui en a en attente.
+
+**« What you give ».** La barre empilée par mode et sa légende, reprise **verbatim** de « Games by mode » de StatsBoard, aux **couleurs pleines** des modes : c'est le seul endroit où ce système peint un accent à pleine force, et il le fait pour exactement cette figure. Répond à « quel genre de travail je donne », un trimestre d'un seul mode n'entraînant qu'une seule façon de lire.
+
+**Deux corrections faites en regardant le rendu.** La colonne des noms était trop étroite en première position : deux classes de la même année sortaient toutes les deux en « DSAA 1 · Grou… », donc le panneau ne disait plus rien. Les colonnes sont inversées, le panneau des noms prend la large. Et la **lettre initiale est retirée** de ces rangées : dans le profil elle porte l'initiale d'un axe de DWIGGINS, ce qui veut dire quelque chose ; l'initiale d'une classe ne veut rien dire et deux classes de la même année la partagent.
+
+**Écarté volontairement.** Une courbe de réussite globale (la fiche Classe la fait déjà, par classe, ce qui est le bon niveau). Une analyse par exercice (c'est la fiche Exercice). Un calendrier de régularité façon heatmap du profil : le mock n'a pas la granularité au jour, et son échelle d'intensité demanderait une décision de couleur qui appartient à Marion.
+
+---
+
+## Note — 2026-09-04 (suite 12) — la couleur de la page Exercices, et pourquoi il n'y en a qu'une
+
+**Une seule couleur ajoutée, parce qu'une seule est établie.** Chaque exercice porte désormais la pastille de son mode, avec la recette copiée telle quelle de `.ac-session__mode` et `.st-session__mode` : contour à `color-mix(mode 45%, transparent)`, encre à `color-mix(mode 62%, crème)`, **aucun remplissage**. Les deux boards du profil peignent une séance de cette façon, un exercice a un mode, donc il porte le même jeton. Vert pour l'entraînement, orange pour la compétition, visibles ensemble dans l'onglet Terminés.
+
+**La classe reste neutre à côté**, volontairement : une identité n'est pas un état, et donner de la couleur aux deux à plaudre aurait aplati la hiérarchie au lieu d'en créer une.
+
+**Correction au passage sur la fiche Classe.** Ses pastilles de mode avaient été construites sur les ratios de la carte d'arène (45 % de contour, 8 % de voile, 55 % d'encre) alors qu'une pastille de rangée est une pastille de séance. Elles prennent la bonne recette, sans voile, encre à 62 %.
+
+**Ce que je n'ai pas fait, et c'est le point à trancher.** L'**état d'un exercice** (en cours, programmé, terminé) est le candidat évident : la constellation déclare une échelle d'état validée, jaune « lit / progression », orange « emerging », bleu « roadmap / à venir ». La forme correspond, terminé / en cours / pas encore ouvert, mais **les mots ne sont pas les mêmes** et la transposition serait un choix, pas un relevé. Or la règle du jour dit de ne pas choisir à la place de Marion.
+
+**Nuance importante trouvée en relevant, et elle vaut pour la suite** : le profil peint le **même modèle d'état de deux façons**. La constellation le fait en couleur (jaune, orange, bleu) ; le tableau de stats le fait en **nuances de crème** pour ses axes (`.st-axis--lit`, `--emerging`, `--dormant`, `--roadmap`). Autrement dit le profil choisit lui même le monochrome quand la liste est dense. C'est un argument pour laisser les listes d'exercices et de familles en crème, et il appartient à Marion.
+
+---
+
+## Note — 2026-09-04 (suite 11) — relevé des couleurs réellement peintes, et retrait de tout ce qui n'en venait pas
+
+**Règle posée par Marion, valable pour toute la DA de l'espace prof.** On n'invente aucune couleur et on n'en emploie jamais une **parce qu'elle paraît sémantiquement logique**. On vérifie d'abord ce qui est réellement peint dans les pages existantes, surtout le profil et ses visualisations, et on ne réutilise que ça. Si une donnée demande une couleur et qu'aucun usage existant ne tranche : **neutre, et on signale**.
+
+**Relevé fait dans `features/profile/components/`, valeurs comptées et non supposées.**
+
+- `MODE_ACCENT` (#40d38f entraînement, #ff934a compétition, #58a9ff expert) : 13 emplois, dans StatsBoard, ActivityBoard et le système de boards.
+- **#58a9ff** porte aussi, dans `board-system.ts`, le commentaire « le 3e accent, l'activité **dans le temps** ». C'est la courbe du profil.
+- **#ff934a** est l'accent de l'arène, dans ProfileSummary et le système.
+- La constellation déclare une **échelle d'état validée** : `YELLOW #ffd213` « progression / lit », `ORANGE #ff934a` « emerging », `BLUE #58a9ff` « roadmap », avec renvoi au §12 de la palette.
+- **`--success-green` et `--error-red` sont peints ZÉRO fois dans le profil.** Ils appartiennent au jeu, juste et faux.
+
+**Ce qui a donc été retiré de la fiche Classe.** Le vert sur le point courant de la courbe, sur la valeur de la dernière ligne et sur le chiffre de progression. Le rouge sur les barres de confusion et leur décompte. Tous choisis par raisonnement et non par relevé, exactement ce que la règle interdit. Le jaune avait déjà été refusé la veille.
+
+**Ce qui reste, parce qu'un usage existant le porte.** Le **bleu** de la courbe d'évolution, qui est le bleu que le profil emploie déjà pour sa propre courbe dans le temps. Les **couleurs de mode** sur les pastilles d'exercice et sur l'exercice en cours, StatsBoard et ActivityBoard peignant déjà un mode avec.
+
+**QUATRE DÉCISIONS DE COULEUR ATTENDENT MARION**, aucune n'est tranchable depuis l'existant.
+
+1. **La valeur courante d'une courbe.** Aucun usage n'établit comment on marque « où on en est ». Crème pleine pour l'instant.
+2. **Une confusion, une erreur récurrente.** Le rouge du jeu ne sort pas du jeu. Neutre pour l'instant.
+3. **Les états de famille** (solide, en cours, résiste). L'échelle de la constellation existe et est validée, mais elle dit lit / emerging / roadmap : les deux premiers se transposent, « résiste » n'a pas d'équivalent, roadmap voulant dire « pas encore ouvert » et non « échoue ».
+4. **L'urgence d'une échéance**, ouverte depuis le 2026-09-04 au matin. Le rouge est pris par le jeu.
+
+---
+
+## Note — 2026-09-04 (suite 10) — le fil d'Ariane devient une flèche, et la couleur redescend d'un cran
+
+**Deux corrections de Marion sur la passe précédente.**
+
+**Le retour.** Le fil de texte « CLASSES / DSAA 1 · GROUP B » est remplacé par une **flèche visible**, toujours au même endroit : la première chose sous la barre principale, alignée à gauche sur la colonne des panneaux. Elle vient de `.dw-zoom__back` de la constellation, valeurs inchangées, et la seule addition est la rangée qui l'aligne. `.st-back` entre dans le système partagé, `TeacherBack` le rend, et le même contrôle servira aux quatre sous pages : classe, élève, exercice, création.
+
+**Le libellé nomme la destination, pas l'action** : « All classes », jamais « Retour ». C'est ce que fait le zoom du profil, et c'est ce qui permet à un seul contrôle de porter un contexte : un exercice ouvert depuis une classe reviendra à cette classe par son nom, le même ouvert depuis l'onglet Exercices reviendra à la liste. `.st-crumbs` et `TeacherCrumbs` sont supprimés, pas laissés en doublon.
+
+**La couleur.** Le jaune sur le dernier point de la courbe passe au **vert**, jugé trop agressif. Le vert dit déjà « juste » dans ce produit et ce point est à quel point la classe a juste aujourd'hui. Et « Where the class stands » reçoit trois accents discrets : la pastille de mode de l'exercice en cours, son premier segment de barre et sa puce de légende à la couleur de ce mode, plus le chiffre de progression en vert.
+
+**LA RÈGLE DE RATIO QUI MANQUAIT, et elle a coûté deux essais.** Les mélanges publiés par le système (55 % dans l'encre, 45 % de contour, 8 % de voile) sont calibrés pour du **petit texte et des contours fins**. Appliqués tels quels à un arc d'anneau de 9 px et à une barre pleine, ils sortent en bloc de couleur et la section devient le tableau de bord qu'on voulait éviter. **Grandes surfaces pleines : 22 à 26 %. Petites marques : 50 à 55 %.**
+
+Et l'anneau est **repassé en neutre** : c'est la plus grande forme du panneau, et une grande forme qui porte une teinte n'est plus un accent, c'est un parti pris de couleur. La couleur va sur les petites marques.
+
+**Vérifié au navigateur** : la flèche ramène à la liste, le bouton Précédent aussi.
+
+---
+
+## Note — 2026-09-04 (suite 9) — le retour, repris des deux patrons existants, et le bouton Précédent réparé
+
+**Relevé avant d'écrire quoi que ce soit.** Le site a déjà deux façons de revenir, et pas une troisième à inventer. `.typo-breadcrumbs` sur `/type/[slug]` et `/compare/[slug]` : un vrai fil, liens plus séparateur atténué, la page courante en texte simple au bout. `.dw-zoom__back` dans la constellation du profil : un retour d'un niveau, mono capitales 0,68rem, 0,12em, crème à 0,55, survol crème plein.
+
+**Ce qui a été fait : la structure du premier, la peau du second.** Le fil du monde prof reprend la mécanique des pages typo parce qu'un espace prof a de la profondeur (un élève est dans une classe, un exercice vient d'un contexte), et les valeurs du retour du profil parce qu'il vit dans cette palette là. `.st-crumbs` entre dans le système partagé, et `TeacherCrumbs` le rend, en composant plutôt qu'en balisage recopié : il y aura trois ou quatre sous pages, et un fil écrit à la main dérive dès le deuxième.
+
+**Il prend une liste et pas un simple retour**, et c'est le cas de l'exercice qui l'impose : un exercice ouvert depuis une classe doit revenir à cette classe, le même exercice ouvert depuis l'onglet Exercices doit revenir à la liste. Le fil porte le chemin d'entrée.
+
+**LE VRAI DÉFAUT ÉTAIT AILLEURS, ET C'EST LUI QUI ENFERMAIT.** Ouvrir une classe corrigeait l'adresse en place, comme le font les onglets. Donc le bouton Précédent du navigateur, depuis une fiche classe, **sortait de l'espace prof** au lieu de revenir à la liste. La distinction est posée maintenant : changer d'onglet n'est pas une navigation et reste en `replaceState` comme dans le profil et la page de règles ; **ouvrir une sous page en est une et passe en `pushState`**. Un écouteur `popstate` fait suivre l'écran quand le navigateur parcourt l'historique, l'adresse étant la vérité.
+
+**Vérifié au navigateur, trois chemins** : clic sur une classe donne `?view=classes&class=c1` et le bon titre ; Précédent du navigateur ramène à « Who you teach » ; le fil ramène au même endroit.
+
+**Un piège de balisage au passage.** Le séparateur était enveloppé avec son libellé dans une même balise, donc l'espacement de la rangée tombait entre les paires et jamais entre la barre oblique et le mot qui suit, ce qui donnait « CLASSES /DSAA 1 ». Séparateur et libellé doivent être frères dans la rangée.
+
+**Et le même piège que la veille, rejoué :** une apostrophe inverse dans un commentaire CSS ferme le littéral de gabarit. C'est la deuxième fois en deux jours, dans le même fichier. Guillemets simples dans ces commentaires, toujours.
+
+---
+
+## Note — 2026-09-04 (suite 8) — la fiche Classe passe en visualisation, et la couleur revient par son sens
+
+**Ce qui est devenu graphique**, en reprenant les dispositifs du profil sans en inventer un seul.
+
+- **L'anneau** de `.st-ring`, pour la réussite moyenne de la classe.
+- **Deux barres segmentées** `.st-seg` avec leurs légendes, dans un panneau « où en est la classe » : comment les élèves se répartissent (en avance, avec la classe, en retard, rien à lire), et où en est l'exercice en cours (terminé, commencé, pas ouvert). Répartition et participation sont des questions qu'un prof pose à voix haute, et une liste de 22 lignes n'y répond pas.
+- **Une courbe d'évolution** sur les exercices fermés, avec repères à 25, 50 et 75 et la valeur écrite au-dessus de chaque point. Les rangées de texte restent dessous : la forme est la lecture, les rangées sont la preuve.
+- **Les familles passent sur `.st-axis`**, la rangée du profil : lettre, nom, état, barre, chiffre. Elle a été construite pour dire « où mon œil est solide et où il ne l'est pas », c'est la même question un cran au-dessus.
+- **Les confusions reçoivent une barre** proportionnelle à la pire paire, pour que quatorze fois et six fois cessent d'être deux nombres et deviennent deux longueurs.
+
+**La couleur, et d'où vient chacune.** Aucune palette nouvelle, aucune couleur décorative.
+
+- **Bleu `#58a9ff`** sur la courbe : le profil dessine déjà sa propre courbe dans le temps avec, et `board-system` nomme littéralement ce bleu « le 3e accent, l'activité dans le temps ». Même sens, un niveau au-dessus.
+- **Jaune de marque `#ffd213`** sur le dernier point et sur la dernière ligne : son rôle documenté est l'état actif, jamais un aplat.
+- **Rouge d'erreur** sur les paires confondues : une confusion **est** une mauvaise réponse, et le rouge ne veut dire que ça dans ce produit. Posé aux ratios du système, contour et voile faible, l'encre mélangée dans la crème.
+- **Vert et orange de mode** sur les pastilles d'exercice : un exercice a un mode, le site a déjà une couleur par mode et l'emploie partout où un mode apparaît. Le champ `mode` est donc entré dans le mock, c'est lui qui autorise la couleur.
+
+La répartition des élèves reste **monochrome** volontairement : ses segments sont des intensités d'une même chose, pas des natures différentes, et le profil traite ce cas en nuances de crème.
+
+**UN BUG TROUVÉ DANS LE SYSTÈME PARTAGÉ, ET IL TOUCHE AUSSI LE PROFIL.** L'anneau ne dessinait pas son arc, **depuis toujours**. La règle `.st.is-armed .st-ring__arc { stroke-dasharray: 0 100 !important }` continue de s'appliquer après l'ajout de `is-in`, et son `!important` bat l'attribut posé sur l'élément ; la règle voisine ne déclarait qu'une transition, jamais une valeur, donc rien ne remettait le chiffre. Mesuré au navigateur sur l'onglet Stats du profil : attribut `8 100`, calculé `0px, 100px`. Corrigé en `:not(.is-in)`, la règle cache l'arc avant la révélation puis s'efface. **Conséquence à savoir : l'anneau « catalogue maîtrisé » du profil affiche désormais son arc, ce qu'il n'avait jamais fait.**
+
+**Trois décisions de lecture sur la courbe.** L'axe part de **zéro** : recadrer sur les données est exactement comme ça qu'on fait passer trois points pour un triomphe. Les repères disent où est le bon, sans quoi une courbe n'est qu'une forme. Et le dessin est à **échelle uniforme**, contrairement à la sparkline du profil qui s'étire : une courbe qui porte des étiquettes et des points ne peut pas être déformée, un cercle y devient une ellipse et une lettre une bavure.
+
+**Données ajoutées au mock** : trois à quatre exercices fermés par classe. Un seul exercice fermé ne peut pas montrer une classe qui bouge, et toute la lecture d'une fiche classe est le mouvement.
+
+**Pas commencé, sur consigne** : la fiche Élève.
+
+---
+
+## Note — 2026-09-04 (suite 7) — la fiche Classe, page centrale, et la frontière avec la fiche Exercice
+
+**Fait.** `/teacher?view=classes&class=c1` est une vraie page, adressable, pas un état. Dans l'ordre : l'en tête avec le niveau, le nom et l'effectif plus le bouton « nouvel exercice pour cette classe » ; quatre chiffres (exercices donnés, réussite, écart depuis le premier, participation au dernier fermé) ; la suggestion de DWIGGINS ; **qui mérite un mot** ; l'évolution exercice après exercice ; les familles ; les paires confondues ; l'index des exercices ; la liste des élèves ; les réglages de la classe.
+
+**La frontière posée par Marion en cours de route, et elle est structurante.** Classe = vue globale et durable. Exercice = analyse détaillée d'un devoir. La section « Exercices » de la fiche Classe a donc été **réduite** : nom, état, temps, et c'est tout. Les polices travaillées, la participation détaillée et le reste sont partis, ils appartiennent à la fiche Exercice. Une porte d'entrée ne doit pas essayer d'être la pièce.
+
+**La liste d'élèves est une liste de travail, pas un résumé.** Nom, adresse, statut dans la classe (actif ou invité jamais connecté), exercices fermés terminés, réussite moyenne, position sur ce qui tourne, et un retrait au survol. Ajout d'élèves par collage d'adresses, une par ligne, virgules tolérées. Le nom est le bouton d'entrée vers la fiche Élève, pas la rangée entière : la rangée porte aussi le retrait, et un bouton dans un bouton n'est pas du balisage qu'un navigateur sait interpréter.
+
+**Trois défauts trouvés en regardant la page, aucun n'aurait été vu autrement.**
+
+1. **« Ils lisent celles ci » et « celles ci résistent » affichaient les mêmes quatre familles**, une fois dans chaque ordre : une classe qui n'a fermé qu'un exercice de quatre familles ne peut pas avoir deux moitiés distinctes. En dessous de six familles, la page affiche désormais **un seul panneau** classé de la meilleure à la pire.
+2. **La liste « qui mérite un mot » sortait six lignes identiques.** Douze élèves n'ayant pas ouvert l'exercice produisaient six fois la même phrase. Elle est maintenant **groupée par raison** : un compte, la raison, et les premiers noms. Une ligne qui dit douze est un fait sur lequel on décide.
+3. **Les pourcentages sortaient en suite arithmétique parfaite** le long de la liste, 42, 44, 46, 48, 51. Aucune donnée réelle ne fait ça, et ça donne à toute la page l'air d'un tableau généré. Les écarts sont désormais permutés par un pas premier avec l'effectif : mêmes valeurs, même somme, plus d'échelle.
+
+**Ce qui est dérivé et ce qui est fabriqué, écrit en tête de `lib/teacher/teacher-derive.ts`.** Dérivé, donc vrai le jour du branchement : participation, nombre d'exercices, réussite moyenne, évolution, qui a terminé quoi. **Fabriqué de façon déterministe** faute de données : les noms et adresses des élèves, la répartition par famille à l'intérieur d'un exercice, et la note par élève. Les écarts sont construits pour **retomber exactement** sur l'agrégat réel, donc rien ne contredit rien, mais ce sont des valeurs inventées et elles disparaîtront au premier vrai jeu de données. Les paires confondues sont, elles, écrites en clair dans le mock : elles demandent la réponse choisie à côté de la réponse attendue, que le moteur enregistre déjà et qu'aucune ligne du mock prof ne porte.
+
+**Pas commencé, sur consigne** : la fiche Élève. Le nom d'un élève est un bouton qui n'ouvre encore rien.
+
+---
+
+## Note — 2026-09-04 (suite 6) — l'espace prof rentre dans le système du site, et la bascule Learn / Teach
+
+**Le constat qui a déclenché tout ça.** Le système de blocs de `board-system.ts` n'est pas celui du profil, c'est celui du site : il est déjà lu par les pages légales, le bilan de fin de partie et l'explication de la progression. L'espace prof, lui, avait **recopié** les mêmes recettes sous son propre préfixe. C'est exactement la dérive que ce fichier existe pour empêcher, et je l'avais reproduite.
+
+**Fait.** `features/teacher/components/teacher-system.ts` est **supprimé**. Accueil, Classes et Exercices lisent `BOARD_SYSTEM_CSS` et emploient les classes `st-` du site. Chaque écran ne garde en propre que ses colonnes de grille et ses quelques pièces uniques.
+
+**Ce qui a été ajouté au système partagé, et pourquoi là plutôt qu'à côté**, ce que la règle du fichier impose.
+
+- `.st--flat` : la variante à plat demandée. Les panneaux du système se peignent en lavis à 90 pour cent de la couleur de la page, ce qui ne se lit comme un panneau que posé sur le ciel étoilé. L'espace prof n'a pas de ciel, décision du propriétaire qui veut un espace plus calme, donc la variante leur donne une vraie surface, `--pf-surface`, et retire un flou qui n'a plus rien à flouter. Toute page future sur fond uni l'obtient en ajoutant une classe.
+- `.st-field` et `.st-input` : le champ de saisie, premier du produit.
+- `.st-choice` : le contrôle segmenté, mêmes valeurs que le `.pr-seg` des Préférences, qui vit dans un composant où personne d'autre ne peut l'atteindre. À replier dans le système un jour, c'est le dernier doublon connu.
+- `.st-filter` : filtre qui enveloppe, pour un ensemble dont on ne connaît pas la taille d'avance.
+- `.st-line` : une rangée qu'on peut ouvrir. `.st-session` a la même forme mais est inerte.
+- `.st-time` : un moment, en quatre paliers de crème, jamais en couleur.
+- `.st-empty`, `.st-panel__head` (la page de règles avait dû inventer le sien) et `.st-action--compact` (l'action du système est dimensionnée pour la fin d'un bilan, 11rem de large).
+
+**La bascule Learn / Teach.** Apprendre et enseigner sont deux pièces d'une même maison : l'espace prof n'est pas un septième onglet du profil, son cockpit n'est pas un pair de « Stats », et ce n'était pas non plus un site à part, ce qu'il était devenu puisque **aucune page ne menait à `/teacher`**. La bascule est faite des pièces de la barre elle même, la pastille de `.pf-top__link` et les jetons de chrome. **Le libellé est une proposition à juger dans l'interface, pas une décision.** À restreindre plus tard aux comptes qui enseignent : sans authentification, elle s'affiche pour tout le monde.
+
+**Deux pièges à ne pas rejouer.**
+
+1. **Une apostrophe inverse dans un commentaire CSS ferme le gabarit TypeScript.** Les recettes du système vivent dans un littéral de gabarit ; citer un nom de classe entre apostrophes inverses dans un commentaire termine la chaîne et casse le fichier trente lignes plus bas, là où l'erreur ne veut rien dire. Guillemets simples dans ces commentaires.
+2. **Le serveur de dev avait cessé de recompiler `globals.css`.** La règle était dans le fichier, **absente du chunk servi**, donc absente d'un chargement neuf, et la bascule s'affichait sans style. C'est le piège déjà consigné dans le registre des défauts. Remède appliqué : arrêt du serveur, `rm -rf .next/dev`, relance sur le 3002. La CSS injectée par les composants, elle, arrivait bien, ce qui rendait le défaut d'autant plus trompeur.
+
+**Pas touché, sur consigne** : le flow Classes, création, jonction des élèves, gestion du roster.
+
+---
+
+## Note — 2026-09-04 (suite 5) — les rayons de l'espace prof, mesurés puis alignés
+
+**Relevé, pas choisi au jugé.** Tous les `border-radius` du monde profil et des pages de règles ont été extraits avec leur sélecteur, CSS injecté dans les composants compris. Le résultat est net : **`--radius-pill` sur 61 sélecteurs** (tous les boutons, pastilles, étiquettes, barres, contrôle segmenté, compteur, interrupteur, avatars), **`--radius` sur 21** (tous les panneaux, cartes, tuiles, scènes, et la barre du haut), **`--radius-control` sur 2 seulement**, plus quelques 2px pour les pastilles de légende et 50 % pour les emplacements ronds.
+
+**Le langage est donc binaire : un BLOC vaut 1rem, tout le reste est une capsule.** Il n'y a pas de troisième forme.
+
+**Ce qui était faux dans l'espace prof.** Les boutons, le champ de saisie et la rangée cliquable étaient à `--radius-control`, c'est à dire 0,75rem, une valeur que le profil n'emploie nulle part. Je l'avais reprise de `.pb-cta` de la page de règles, **dont le commentaire dit lui même faire « les boutons comme le profil les fait (.ps-eye__cta) » alors que `.ps-eye__cta` est une capsule.** La dérive était donc déjà dans le code, et je l'ai propagée. Elle s'arrête là.
+
+**Après.** L'espace prof ne contient plus que deux valeurs, 14 capsules et 2 blocs (le panneau et le bloc d'action). Zéro valeur inventée, zéro `--radius-control`.
+
+**Le seul cas sans précédent, signalé à Marion.** Le profil n'a aucune rangée cliquable, il n'y avait donc rien à copier pour la surface de survol d'une ligne. Elle suit la règle générale, capsule, plutôt que d'introduire une troisième forme.
+
+**Méthode à réutiliser.** L'extraction des rayons casse si on ne neutralise pas les trous de gabarit `${...}` des CSS injectées : leurs accolades font croire à des règles, et le relevé sort dix fois trop petit sans rien signaler. Même piège pour les commentaires.
+
+---
+
+## Note — 2026-09-04 (suite 4) — audit des données de l'espace prof, quatre incohérences supprimées
+
+**La réponse honnête à la question posée.** Marion a demandé de n'utiliser que les données déjà présentes dans le projet et de ne rien inventer. **Il n'y avait rien.** Aucune classe, aucun élève, aucun exercice, aucun professeur, ni en base ni dans un mock : le domaine prof n'existait nulle part avant le 2026-09-04. Tout ce qui s'affiche vient donc de `lib/teacher/mock-teacher.ts`, que j'ai écrit. Ce n'est pas contournable pour construire l'écran, c'est le même chemin que le profil (`mock-profile.ts`, dont `MOCK_ARENA` tourne encore en production). Ce qui est corrigeable, et qui l'a été, c'est que ce mock **se contredisait lui même**.
+
+**Quatre incohérences trouvées et supprimées.**
+
+1. **Un signal affirmait ce que la donnée ne dit pas.** « la même paire ratée dans vos 3 derniers exercices » pour une classe qui a **un** exercice terminé, et « 84 pour cent, en hausse depuis 61 il y a trois semaines » alors que 61 n'existe nulle part et que les 84 viennent d'un autre exercice que celui cité. Réécrits pour ne dire que ce que les lignes portent. **Règle : un signal dont la preuve n'est pas vérifiable est pire que pas de signal**, puisque le prof ne peut plus être en désaccord avec nous.
+2. **La dernière activité d'une classe était une chaîne écrite à la main** et elle avait déjà dérivé : une classe annonçait « il y a 2 semaines » alors que son seul exercice s'était fermé un mois plus tôt. Elle est maintenant **dérivée des exercices**, seule source possible puisque le prof ne voit que ce que ses exercices ont produit.
+3. **Une colonne répétait sa voisine.** La pastille disait « 1 running » et la colonne d'à côté « running now ». La colonne dit maintenant **quand ça ferme** (« 9 h left », « tomorrow »), donc quelque chose de neuf.
+4. **Deux mots pour un même fait.** L'accueil écrivait « 7/24 done », la liste des exercices « 7/24 finished ». Un seul mot désormais, et « no exercise » devient « nothing running » pour une classe qui a des exercices terminés, ce qui était faux.
+
+**Nettoyage de fond dans la foulée.** `dueLabel` et `urgencyOf` étaient déclarés **deux fois**, identiques, dans deux écrans. C'est exactement la dérive que le système de boards du profil documente. Le vocabulaire du temps vit maintenant dans `lib/teacher/teacher-time.ts` et les trois écrans le lisent.
+
+**Ce qui manque vraiment et que je n'invente pas.**
+
+- **Aucun élève.** Une classe ne porte qu'un effectif. Pas de nom, pas de ligne par personne, pas de résultat individuel. La fiche Classe et la fiche Élève en dépendent entièrement.
+- **Aucune paire de confusion.** Impossible de dire « Garamond lu comme Baskerville », qui est pourtant le signal le plus utile. Le moteur sait le calculer, le mock prof ne le porte pas.
+- **Aucun historique dans le temps.** Donc aucune phrase du type « en progrès depuis le mois dernier ».
+- Le code de jonction existe dans le type et **ne s'affiche nulle part** : il appartient à la fiche Classe.
+
+---
+
+## Note — 2026-09-04 (suite 3) — la liste des exercices, et une barre qui disait deux choses
+
+**Fait.** L'onglet Exercices de `/teacher` est la liste. Trois groupes en contrôle segmenté avec leur compte, En cours, Programmés, Terminés, plus un filtre par classe. Le temps trie chaque groupe : le plus proche de la fin d'abord pour ce qui tourne, le prochain à s'ouvrir pour les programmés, le plus récemment fermé pour les terminés. Chaque rangée porte la classe, le titre, la longueur en questions, l'avancement, le temps, et la flèche d'entrée. Rien d'autre : Marion a écarté d'avance le tableau de bord générique et les stats de remplissage. Le placeholder « pas encore fait » disparaît, les trois onglets sont maintenant de vrais écrans.
+
+**Trois temps, trois phrases différentes**, parce qu'un exercice programmé n'a pas d'échéance utile et un exercice fermé n'a plus de compte à rebours : « opens in 12 h », « 9 h left », « closed 2 days ago ». Le compte à rebours garde ses quatre paliers de crème, toujours sans rouge.
+
+**Le défaut trouvé en regardant la page, et c'est pour ça qu'il faut la regarder.** Sur une rangée terminée, la barre de participation était collée à un pourcentage de réussite, sans rien qui dise lequel est lequel : la même longueur se lisait comme deux choses différentes. **La barre ne sert plus que pendant que l'exercice tourne.** Une fois fermé, l'avancement n'est plus l'histoire, le résultat l'est, et deux nombres en texte suffisent. Le mot du décompte passe aussi de « done » à « finished », « 22/24 done » dans un onglet nommé Done ne voulait plus rien dire.
+
+**Le groupe est adressable**, `?view=exercises&group=done`, corrigé en `replaceState` comme les onglets du profil. Un groupe que personne ne peut envoyer par lien est un groupe que personne n'envoie, et « regarde ce que les deuxième année ont rendu » doit être une adresse.
+
+**Vérifié moi même au navigateur**, sans rien demander à Marion : Chrome sans interface, capture des trois groupes en 1440 et de la vue étroite en 900. C'est comme ça que la barre ambiguë est sortie. Typecheck et lint verts ne l'auraient jamais vue, comme ils n'avaient pas vu la page Classes sans style.
+
+**Noté, non résolu, pour plus tard.** Le filtre par classe est une rangée de pastilles : lisible à quatre classes, il enveloppera sur trois lignes à quinze. Il faudra un autre contrôle quand le volume arrivera.
+
+**Pas commencé, sur consigne** : la fiche d'un exercice. La rangée est un bouton qui n'ouvre encore rien.
+
+---
+
+## Note — 2026-09-04 (suite 2) — la liste des classes, et le premier champ de saisie du produit
+
+**Fait.** L'onglet Classes de `/teacher` n'est plus une pastille « pas encore fait », c'est la liste. Rangées et non cartes, sur consigne : un prof avec quinze classes doit pouvoir balayer une colonne de noms, pas faire défiler un mur de cartes. Bascule Actives / Archivées reprise du contrôle segmenté des Préférences, valeurs inchangées. Chaque rangée dit le nom, l'effectif, les exercices ouverts comptés depuis les exercices eux mêmes plutôt que stockés sur la classe, et la dernière activité. Typecheck et lint passent.
+
+**Le premier champ de saisie du produit, et rien n'y est inventé.** Le site n'avait aucun `input` texte, le voici, pour créer une classe. Contour à 0,18 comme le contrôle segmenté et le compteur des Préférences, rayon de contrôle et remplissage crème à 6 pour cent comme les boutons, étiquette en mono capitales comme un titre de panneau. **Le focus éclaircit le CONTOUR**, à la manière dont le tableau de stats marque un axe allumé : pas de halo, pas de couleur d'accent. C'est une proposition, la DA appartient à Marion et ce composant attend son jugement.
+
+**Ce qui est volontairement faux, et documenté comme tel.** Créer une classe écrit dans l'état local du navigateur et ne survit pas à un rechargement. C'est un mock, l'intérêt est de montrer le geste et de faire juger le champ.
+
+**Le trou d'une étape, assumé.** Une rangée de classe est un bouton qui n'ouvre encore rien : la fiche Classe est l'écran suivant dans l'ordre décidé. À brancher là.
+
+**Deux défauts trouvés en la montrant à Marion, « tu as pas fait la DA ? », et c'est la leçon de la journée.**
+
+1. **La page Classes est sortie SANS AUCUN STYLE.** `.tc`, `.tc-panel`, `.tc-intro`, `.tc-cta` étaient déclarés dans `TeacherHome`, et `TeacherHome` n'est pas monté quand l'onglet Classes est ouvert. Un écran qui emprunte les noms de classe d'un composant frère n'emprunte rien du tout. Le profil avait rencontré exactement le même mur et y avait répondu par `board-system.ts` : les recettes dans un fichier, chaque écran les importe. J'ai fait la même chose, `features/teacher/components/teacher-system.ts`, et les trois vues embarquent désormais le système. **La règle : aucune longueur, couleur ou graisse de cet espace ne se déclare deux fois.**
+
+2. **Retirer le ciel avait rendu les panneaux invisibles.** Le profil peint ses panneaux en lavis à 90 pour cent de la couleur de la page, et cela ne se lit comme un panneau que parce qu'un champ d'étoiles passe derrière. Sans ciel, ce lavis est la couleur de la page sur la couleur de la page, donc rien : il ne restait que le filet à 10 pour cent. Les panneaux prennent maintenant `--pf-surface`, le palier que le contrat de jetons du profil publie déjà. Même système, bonne valeur pour une page à plat.
+
+**Ce qu'il faut retenir des deux.** Une décision de DA qui retire un élément (ici le ciel) peut casser un composant qui ne la mentionne pas, parce qu'il en dépendait sans le dire. Et un typecheck vert plus un lint vert ne prouvent rien sur l'apparence : aucun des deux ne sait qu'une règle CSS n'a jamais été envoyée au navigateur.
+
+---
+
+## Note — 2026-09-04 (suite) — l'accueil de l'espace prof est construit, sur données factices
+
+**Fait.** `/teacher` répond, l'accueil est complet, les deux autres onglets affichent une pastille pointillée « Not built yet » plutôt qu'une page blanche. Typecheck, lint et les gardes `check:copy`, `check:runtime-boundaries`, `check:dev-routes` passent. Quatre fichiers : `lib/teacher/mock-teacher.ts`, `features/teacher/components/TeacherExperience.tsx`, `.../TeacherHome.tsx`, `app/teacher/page.tsx`. Rien en base, rien d'authentifié, aucune migration.
+
+**Pourquoi ça ressemble au profil sans l'avoir copié.** La page porte `.pf-page` et `.pf-top`, donc elle hérite du contrat de jetons et de la troisième copie de la barre du site. Les panneaux reprennent la géométrie de `.st-panel` et les boutons la recette de `.pb-cta`, crème en encre et remplissage à 6 pour cent, jamais un aplat. Aucune valeur nouvelle n'a été inventée.
+
+**Ce que l'accueil montre, et ce qu'il refuse.** Pas de rangée de compteurs, écartée par Marion. Dans l'ordre : le geste (donner un exercice), ce qui mérite un regard, ce qui tourne, où reprendre. Chaque signal porte sa preuve à côté de sa phrase, sans quoi le prof ne peut pas être en désaccord avec nous.
+
+**Le temps.** La liste est triée par temps restant et non par date de création. Deux mots distincts dans l'interface, « questions » pour la longueur de l'exercice et « left » pour l'échéance. L'urgence est dite en quatre paliers de crème, contour et poids d'encre, **jamais en rouge**, puisque le rouge dit déjà « mauvaise réponse ». C'est un provisoire qui attend la décision de Marion.
+
+**Un piège évité, à ne pas réintroduire.** Le mock stocke un nombre d'heures et non une date. Un compte à rebours calculé sur `Date.now()` rend une chaîne au serveur et une autre à l'hydratation dès qu'il franchit une borne. Avec les vraies données, le serveur enverra une date ISO et le décompte vivant se calculera après montage, côté client.
+
+**Deux corrections de Marion le jour même.** Le **fond étoilé est retiré** de tout l'espace prof : les boards du profil flottent sur un ciel, l'espace prof est une surface de travail et les panneaux se lisent mieux à plat. Et **une page à la fois** devient la règle de marche : Accueil, puis Classes, fiche Classe, fiche Élève, Exercices, fiche Exercice, création. On regarde et on valide avant de passer à la suivante.
+
+**Complété ensuite sur l'accueil.** Trois états vides écrits comme des phrases et non comme des cases grises, pour la semaine calme, l'absence d'exercice en cours et l'absence de classe. Les exercices programmés **sortent de la liste « Running now »** et sont dits une fois dessous : une liste qui s'appelle « en cours » et qui contient quelque chose qui n'a pas commencé est le genre de petit mensonge qui fait qu'un prof cesse de faire confiance à la page. Et les lignes de classe sont devenues de vrais boutons, atteignables au clavier, avec un survol, plutôt que des lignes décorées d'une flèche qui ne mène nulle part.
+
+**Vu en construisant, noté et NON résolu, ça appartient aux pages suivantes.**
+
+- Le bouton « New exercise » et les boutons d'action des signaux sont **inertes** : ils mènent au compositeur, qui n'existe pas. Ils s'activeront à l'étape création.
+- Une ligne de classe ouvre l'onglet Classes, pas encore la fiche de cette classe.
+- **Les signaux sont écrits à la main dans le mock.** Les vrais demandent des règles à définir : ce qui fait un signal, combien on en montre, dans quel ordre, et comment un signal disparaît une fois traité. C'est une conception à part entière, pas un branchement.
+- La ligne « Scheduled » sous la liste grandira sans limite quand il y aura beaucoup d'exercices programmés. Un plafond sera à poser.
+
+**Ce qui reste.** Les onglets Classes et Exercices, le compositeur, et la page élève. Plus les deux décisions ouvertes, l'urgence et la façon de rejoindre une classe.
+
+---
+
+## Note — 2026-09-04 — l'espace prof est arrêté sur le papier, rien n'est construit
+
+**En cours.** Toute l'architecture de l'espace professeur a été décidée en conversation et consignée dans `docs/game/espace-prof-architecture.md`. Aucune ligne de code, aucune migration, aucun écran. Le document remplace la section « Tableau de bord prof » de `classes-comptes-spec.md`, déjà marquée caduque le 2026-07-29.
+
+**Ce qui est tranché.** Trois parties, Accueil, Classes, Exercices, plus un compte secondaire calqué sur l'onglet Préférences. L'accueil montre ce qui se passe maintenant et refuse explicitement la rangée de compteurs type tableau de bord SaaS. Une classe porte d'abord sa gestion (créer, renommer, ajouter, retirer, archiver) puis sa lecture pédagogique. La page d'un exercice a deux vies à la même adresse, la fiche avant, l'analyse après. Le temps restant est la clé de tri des exercices, et l'échéance ne doit jamais être confondue avec la durée de l'exercice. La création se fait sur **une seule page où DWIGGINS conseille et où le professeur décide** : intentions proposées en haut, tout prérempli, composition directe possible.
+
+**La règle qui gouverne le reste.** Le professeur ne lit que ce que ses propres exercices ont produit. Jamais l'entraînement libre, jamais le mastery global, jamais un agrégat. C'est la vision produit du 2026-07-29, et c'est aussi l'argument de vente.
+
+**Un aller retour à ne pas rejouer.** Le téléphone a été évoqué comme appareil des élèves, puis corrigé le jour même par Marion : **on reste sur ordinateur**, la règle d'origine tient. Donc aucun chantier mobile côté élève. Le QR code de jonction sort quand même du périmètre, et la façon de rejoindre une classe est parkée.
+
+**Ce qui manque en DA, mesuré et non supposé.** Le monde du profil a déjà interrupteur, compteur plus/moins, bouton à deux choix et pastille pointillée. Il n'a **aucun champ où taper**, aucun sélecteur dans un catalogue, aucune liste de personnes, aucun tableau de résultats. Ce sont les quatre composants à dessiner, et ce sont des décisions du propriétaire. Point ouvert : l'urgence ne peut pas être rouge, le rouge dit déjà « mauvaise réponse ».
+
+**Le mélange est arrêté le 2026-09-04**, comme base à tester : 45 pour cent de consolidation, 20 d'acquis, 20 de difficultés, 15 de nouveautés, avec un plafond d'environ un tiers de difficultés qui ne bouge jamais, et des proportions qui se déplacent selon l'intention. Deux choses ont été refusées comme règles du système, et il ne faut pas les réintroduire : le taux de réussite de trois sur quatre est une **hypothèse à mesurer**, pas une vérité pédagogique, et l'ordre des questions n'est **pas imposé**, un rythme systématique finirait par s'apprendre et un contrôle serait biaisé.
+
+**Deux décisions attendent encore Marion** : la façon de dire l'urgence sans rouge, et la manière dont un élève rejoint une classe la première fois.
+
+---
+
 ## Note — 2026-08-19 (suite 2) — la notoriété devient l'axe de progression, et Adobe trouve son étagère
 
 **Statut : code livré et porte verte, deux migrations écrites et NON appliquées.** Demande de Marion : les typographies les plus connues doivent être proposées les premières parce qu'elles sont les plus simples, et les moins connues arriver quand le joueur progresse ou passe en expert. Point de départ du chantier Adobe, qu'elle veut mener ensuite.

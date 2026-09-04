@@ -9575,6 +9575,51 @@ svg {
     background: var(--chrome-hover-bg);
   }
 
+  /* SPACE SWITCH — 2026-09-04. Learning and teaching are two rooms of one
+     house, not two houses: the teacher space is NOT a seventh tab of the
+     profile (its cockpit is not a peer of "Stats"), and it must not be a
+     separate site either, which is what it was — /teacher was linked from
+     nowhere and reachable only by typing the address.
+
+     It is built from the bar's own parts: the pill of `.pf-top__link`, the
+     chrome tokens, the same active state. Wording is a proposal to judge in the
+     interface, not a decision.
+
+     TO GATE LATER: this shows for everyone because there is no auth yet. It
+     belongs to accounts that actually teach. */
+  .pf-top__switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.14rem;
+    border: 1px solid var(--chrome-border);
+    border-radius: var(--radius-pill);
+  }
+  .pf-top__switch-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.26rem 0.6rem;
+    border-radius: var(--radius-pill);
+    color: var(--chrome-ink-muted);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+    text-decoration: none;
+    transition: color 160ms ease, background-color 160ms ease;
+  }
+  .pf-top__switch-btn:hover { color: var(--chrome-ink-strong); }
+  .pf-top__switch-btn.is-active {
+    color: var(--chrome-ink-strong);
+    background: var(--chrome-hover-bg);
+  }
+
   .pf-top__actions { display: flex; align-items: center; gap: 0.55rem; }
   .pf-top__cta {
     display: inline-flex;

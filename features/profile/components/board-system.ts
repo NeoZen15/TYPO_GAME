@@ -178,7 +178,15 @@ export const BOARD_SYSTEM_CSS = `
   .st-ring { width: clamp(7rem, 16vw, 9rem); height: auto; flex: none; }
   .st-ring__track { fill: none; stroke: rgb(${CREAM} / 0.1); stroke-width: 9; }
   .st-ring__arc { fill: none; stroke: var(--pf-cream); stroke-width: 9; stroke-linecap: round; }
-  .st.is-armed .st-ring__arc { stroke-dasharray: 0 100 !important; }
+  /* BUG, fixed 2026-09-04, and it had been silent since the ring was written.
+     This rule used to be '.st.is-armed', which still matches after 'is-in' is
+     added, so its !important kept beating the inline stroke-dasharray and the
+     arc stayed at zero FOREVER. The sibling rule below only ever declared a
+     transition, never a value, so nothing put the number back. Measured on the
+     profile's own Stats tab: attribute "8 100", computed "0px, 100px".
+     ':not(.is-in)' lets the rule do its job (hide the arc before the reveal)
+     and then get out of the way. */
+  .st.is-armed:not(.is-in) .st-ring__arc { stroke-dasharray: 0 100 !important; }
   .st.is-armed.is-in .st-ring__arc { transition: stroke-dasharray 1100ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
   .st-ring__pct { fill: var(--pf-cream); font-size: 24px; font-weight: 680; text-anchor: middle; dominant-baseline: middle; font-variant-numeric: tabular-nums; }
   .st-ring__sub { fill: rgb(${CREAM} / 0.5); font-family: var(--pf-mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; text-anchor: middle; }
@@ -321,6 +329,136 @@ export const BOARD_SYSTEM_CSS = `
   .st-action--primary { border-color: transparent; background: var(--pf-cream); color: var(--pf-bg); }
   .st-action--primary:hover, .st-action--primary:focus-visible { border-color: transparent; background: rgb(${CREAM} / 0.86); }
   .st-action:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 3px; }
+
+
+  /* =========================================================================
+     FLAT SURFACES + WORKING CONTROLS
+     Added 2026-09-04 for the teacher space, and added HERE rather than beside,
+     which is this file's own rule.
+
+     Why a flat variant. Every panel above paints itself as a 90% wash of the
+     page colour. That reads as a panel only because a star canvas sits behind
+     it: the wash dims the stars inside its own outline. The teacher space has
+     no sky (owner's call, it must stay calmer), and there the same wash is the
+     page colour over the page colour, i.e. nothing at all. '.st--flat' on the
+     root gives those surfaces a real one, '--pf-surface', the step the token
+     contract already publishes, and drops a blur with nothing left to blur.
+     Any future screen on a plain background gets it by adding one class.
+
+     Why the controls. The system could show numbers but not take input: the
+     switch, stepper and segmented control live inside PreferencesBoard, where
+     no other screen can reach them, and no text field existed anywhere in the
+     product. They are declared once, here.
+     TODO worth doing later: PreferencesBoard's own '.pr-seg' is '.st-choice'
+     under another name. Folding it in would remove the last duplicate.
+     ========================================================================= */
+
+  /* A panel head that carries a title AND a note on one line. The rules page
+     had to invent its own ('.pb-panel__head') for want of this one. */
+  .st-panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem 1rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+  .st-panel__head .st-panel__title { margin: 0; }
+  .st-panel__head .st-panel__meta { display: inline; margin-top: 0; }
+
+  /* '.st-action' is sized for the end of a recap: 11rem wide, generous padding.
+     A button sitting inside a row needs the same recipe at its own scale. */
+  .st-action--compact { min-width: 0; padding: 0.5rem 1.1rem; letter-spacing: 0.1em; }
+
+  /* BACK, one level, always in the same place: the first thing under the main
+     bar, left-aligned on the same column as the panels. Owner, 2026-09-04: a
+     visible arrow rather than a text trail.
+
+     Taken from '.dw-zoom__back' in the profile's galaxy zoom, values unchanged
+     (mono caps, 0.68rem, 0.12em, cream at 0.55, hover to full cream, arrow in
+     the label). The only addition is the row that aligns it to the panel width,
+     so it lands in the same spot on every sub-page of the space.
+
+     The LABEL NAMES THE DESTINATION, not the action: "All classes", not "Back".
+     That is what the galaxy zoom does, and it is what lets one control carry a
+     context — an exercise opened from a class goes back to that class by name. */
+  .st-backbar { width: min(98%, 66rem); margin: 0 auto; display: flex; }
+  .st-back {
+    appearance: none; border: none; background: transparent; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--pf-mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgb(${CREAM} / 0.55);
+    padding: 0.3rem 0; margin: 0; text-decoration: none;
+    transition: color 160ms ease;
+  }
+  .st-back:hover { color: var(--pf-cream); }
+  .st-back:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 3px; }
+  .st-back__arrow { font-size: 0.9rem; line-height: 1; transition: transform 160ms ease; }
+  .st-back:hover .st-back__arrow { transform: translateX(-2px); }
+  @media (prefers-reduced-motion: reduce) {
+    .st-back:hover .st-back__arrow { transform: none; }
+  }
+
+  .st--flat .st-panel,
+  .st--flat .st-kpi {
+    background: var(--pf-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  /* Empty state — a sentence in reading ink, never a grey slab or a shrug. */
+  .st-empty { margin: 0; max-width: 52ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
+
+  /* Segmented control. Same values as PreferencesBoard's '.pr-seg'. */
+  .st-choice { flex: none; display: inline-flex; border: 1px solid rgb(${CREAM} / 0.18); border-radius: var(--radius-pill); padding: 0.16rem; gap: 0.1rem; }
+  .st-choice__btn { appearance: none; cursor: pointer; border: none; background: transparent; color: rgb(${CREAM} / 0.55); font-family: var(--pf-mono); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.28rem 0.7rem; border-radius: var(--radius-pill); transition: background-color 140ms ease, color 140ms ease; font-variant-numeric: tabular-nums; }
+  .st-choice__btn.is-active { background: rgb(${CREAM} / 0.12); color: var(--pf-cream); }
+  .st-choice__btn:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 3px; }
+
+  /* Wrapping filter, for a set whose size is not known in advance. */
+  .st-filter { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .st-filter__btn { appearance: none; cursor: pointer; border: 1px solid rgb(${CREAM} / 0.18); background: transparent; color: rgb(${CREAM} / 0.55); font-family: var(--pf-mono); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.28rem 0.7rem; border-radius: var(--radius-pill); transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease; }
+  .st-filter__btn:hover { color: rgb(${CREAM} / 0.8); }
+  .st-filter__btn.is-active { background: rgb(${CREAM} / 0.12); border-color: rgb(${CREAM} / 0.45); color: var(--pf-cream); }
+  .st-filter__btn:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 3px; }
+
+  /* Text field. The first one in the product, so nothing is invented: the 0.18
+     contour of the segmented control and the stepper, the pill every control in
+     this system wears, the 0.06 fill of a button, the mono caps label of a panel
+     title. Focus brightens the CONTOUR, the way a lit axis is marked — no glow,
+     no accent colour. */
+  .st-field { display: grid; gap: 0.35rem; min-width: 0; }
+  .st-field__label { font-family: var(--pf-mono); font-size: 0.58rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(${CREAM} / 0.58); }
+  .st-input { width: 100%; appearance: none; padding: 0.6rem 1.1rem; border: 1px solid rgb(${CREAM} / 0.18); border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.06); color: var(--pf-cream); font-family: inherit; font-size: 0.9rem; line-height: 1.3; transition: border-color 160ms ease, background-color 160ms ease; }
+  /* Multi-line input: a pasted list of addresses, a note. A pill cannot hold
+     several lines, so this one takes the BLOCK radius, which is the only other
+     shape this system has. Everything else is the field above, unchanged. */
+  .st-textarea { width: 100%; appearance: none; padding: 0.7rem 0.9rem; border: 1px solid rgb(${CREAM} / 0.18); border-radius: var(--radius); background: rgb(${CREAM} / 0.06); color: var(--pf-cream); font-family: var(--pf-mono); font-size: 0.76rem; line-height: 1.7; resize: vertical; min-height: 6rem; transition: border-color 160ms ease, background-color 160ms ease; }
+  .st-textarea::placeholder { color: rgb(${CREAM} / 0.3); }
+  .st-textarea:hover { border-color: rgb(${CREAM} / 0.28); }
+  .st-textarea:focus { outline: none; border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); }
+  .st-input::placeholder { color: rgb(${CREAM} / 0.3); }
+  .st-input:hover { border-color: rgb(${CREAM} / 0.28); }
+  .st-input:focus { outline: none; border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); }
+
+  /* A row you can enter. '.st-session' above is the same shape but inert; this
+     turns it into a real button so the keyboard reaches it and the arrow is not
+     a promise the markup fails to keep. Columns belong to the screen. */
+  .st-line { appearance: none; width: 100%; text-align: left; background: transparent; border: none; border-radius: var(--radius-pill); cursor: pointer; font: inherit; color: inherit; display: grid; align-items: center; gap: 0.9rem; padding: 0.75rem 0.5rem; transition: background-color 160ms ease; }
+  .st-lines { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .st-lines li + li .st-line { border-top: 1px solid rgb(${CREAM} / 0.08); }
+  .st-line:hover { background: rgb(${CREAM} / 0.05); }
+  .st-line:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 3px; }
+  .st-line:hover .st-line__arrow { color: var(--pf-cream); transform: translateX(2px); }
+  .st-line__name { font-size: 0.88rem; color: rgb(${CREAM} / 0.88); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .st-line__meta { font-family: var(--pf-mono); font-size: 0.6rem; letter-spacing: 0.04em; text-transform: uppercase; color: rgb(${CREAM} / 0.5); font-variant-numeric: tabular-nums; }
+  .st-line__when { font-family: var(--pf-mono); font-size: 0.6rem; color: rgb(${CREAM} / 0.4); text-align: right; }
+  .st-line__arrow { color: rgb(${CREAM} / 0.35); text-align: right; transition: color 160ms ease, transform 160ms ease; }
+
+  /* A moment in time, said in four steps of cream and NEVER in a hue: red means
+     "wrong answer" in this product and green means "correct". Pressure shows as
+     a brighter contour and heavier ink, the way a lit axis is marked. */
+  .st-time { display: inline-block; font-family: var(--pf-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.22rem 0.55rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.16); color: rgb(${CREAM} / 0.5); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .is-soon > .st-time, .st-time.is-soon { border-color: rgb(${CREAM} / 0.34); color: rgb(${CREAM} / 0.8); }
+  .is-now > .st-time, .st-time.is-now { border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); color: var(--pf-cream); font-weight: 700; }
+  .is-past > .st-time, .st-time.is-past { border-style: dashed; color: rgb(${CREAM} / 0.35); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .st-line:hover .st-line__arrow { transform: none; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .st-action { transition: none; }
