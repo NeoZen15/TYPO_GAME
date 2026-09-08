@@ -36,12 +36,14 @@ export default function TeacherClassPage({
   onBack,
   onOpenStudent,
   onOpenExercise,
+  onCompose,
 }: {
   teacher: TeacherProfile;
   cls: TeacherClass;
   onBack: () => void;
   onOpenStudent: (studentId: string) => void;
   onOpenExercise: (exerciseId: string) => void;
+  onCompose: () => void;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [renaming, setRenaming] = useState(false);
@@ -132,7 +134,7 @@ export default function TeacherClassPage({
           {roster.length} students. Everything below is what your exercises
           showed. What this class does on its own time stays with them.
         </p>
-        <button type="button" className="st-action st-action--primary tc-give">
+        <button type="button" className="st-action st-action--primary tc-give" onClick={onCompose}>
           New exercise for this class
         </button>
       </header>
@@ -579,7 +581,7 @@ export default function TeacherClassPage({
 
               <button
                 type="button"
-                className="tc-stu__del"
+                className="st-del tc-stu__del"
                 aria-label={`Remove ${s.name} from the class`}
                 onClick={() => setRemoved((prev) => [...prev, s.id])}
               >
@@ -750,9 +752,9 @@ const CLASS_CSS = `
   .tc-stu__live { justify-self: start; }
   .tc-stu__tag { display: inline-block; font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: var(--radius-pill); border: 1px solid rgb(${CREAM} / 0.34); color: rgb(${CREAM} / 0.85); white-space: nowrap; }
   .tc-stu__tag.is-mid { border-color: rgb(${CREAM} / 0.2); color: rgb(${CREAM} / 0.55); }
-  .tc-stu__del { appearance: none; border: none; background: transparent; cursor: pointer; justify-self: end; width: 1.7rem; height: 1.7rem; border-radius: var(--radius-pill); color: rgb(${CREAM} / 0.28); font-size: 1rem; line-height: 1; display: grid; place-items: center; opacity: 0; transition: opacity 160ms ease, color 160ms ease, background-color 160ms ease; }
+  /* The look is '.st-del' in the system; what belongs to a row is the hiding. */
+  .tc-stu__del { justify-self: end; opacity: 0; }
   .tc-stu:hover .tc-stu__del, .tc-stu__del:focus-visible { opacity: 1; }
-  .tc-stu__del:hover { color: var(--pf-cream); background: rgb(${CREAM} / 0.1); }
 
   @media (max-width: 980px) {
     .tc-stu__head { display: none; }

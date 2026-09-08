@@ -97,6 +97,48 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-08 (suite 3) — le compositeur, et l'espace prof est complet
+
+**Fait, et la boucle est fermée.** Le bouton « New exercise » de la barre, la relance de la fiche Classe et les deux boutons de la suggestion du cockpit ouvrent tous le compositeur. On choisit la classe, on nomme, on choisit les faces, la longueur et la fenêtre, on donne, et on arrive sur la page de l'exercice qui vient d'être créé. Les quatre écrans de lecture et le seul écran d'écriture se répondent donc enfin, et les six boutons qui ne menaient nulle part sont branchés.
+
+**LES FAMILLES VIENNENT DU MANIFESTE, JAMAIS D'UNE LISTE ÉCRITE À LA MAIN.** `lib/teacher/teacher-faces.ts` filtre sur `activationStatus` et la présence d'un fichier de runtime : 23 familles aujourd'hui, et ce que le manifeste dira demain. Proposer une famille que le produit ne sait pas servir fabriquerait un exercice dont le spécimen est inventé par le navigateur, exactement le défaut déjà attrapé sur les pages typo. Les choix s'affichent en spécimens et pas en pastilles de texte, pour la même raison que partout ailleurs dans cet espace : ce qu'on demande à un élève, ce sont des lettres.
+
+**La seule lecture que le compositeur propose est mesurée.** Le manifeste porte un `visualClusterId` relevé dans les fichiers, et deux faces d'un même cluster sont celles qui se confondent réellement. L'écran dit donc « Playfair Display contre Abril Fatface, même cluster visuel », ou bien « aucune de ces faces ne se ressemble, ajoutes en deux du même groupe ». Il ne note jamais l'exercice et ne prédit aucun résultat : c'est un fait sur les polices, pas une affirmation sur les élèves. Le raccourci « add the pair they keep missing » reprend la paire que la classe rate déjà, et c'est le seul endroit où le compositeur regarde le passé de la classe.
+
+**Une liste déroulante entre dans le système, la première du produit.** `.st-select` partage la règle de `.st-input` au lieu de la recopier (même contour, même capsule, même lavis, même focus), et le chevron est un frère et non une image de fond, parce qu'un data URI ne peut pas lire `--pf-cream` et que le contrôle doit suivre le thème. Le mode reste sur le contrôle segmenté : deux options ne méritent pas un menu. Et la croix de suppression monte dans le système sous `.st-del`, la fiche Classe ne gardant que le fait de la cacher hors survol.
+
+**Rien n'est enregistré, et c'est dit dans le code.** Il n'y a pas de base pour ça, donc un exercice créé vit dans l'état de l'espace, exactement comme le renommage d'une classe et l'invitation d'élèves depuis le 2026-09-04 : il apparaît dans la liste, sur sa page, dans les comptes de sa classe, et il disparaît au rechargement. Le jour où il y a un backend, cet état devient son cache et aucun écran ne bouge.
+
+**Vérifié en pilotant le navigateur, pas en regardant le code.** Parcours complet joué deux fois : depuis le cockpit et depuis une fiche classe. Le raccourci ajoute bien Montserrat contre Poppins, la lecture de cluster est juste, l'ajout et le retrait d'une face marchent, le bouton reste désactivé tant qu'il manque un nom ou une deuxième face, la phrase de récapitulation dit exactement ce qui va sortir, et l'exercice créé arrive sur sa page dans le bon état (« Waiting to open » s'il ouvre demain, « Against its deadline » s'il ouvre tout de suite, avec 0 pour cent fait et 0 pour cent du temps). Il est ensuite dans le groupe Running de la liste, trié à sa place par échéance. Zéro erreur de page.
+
+**Reste, et ça sort de l'espace prof** : côté élève, l'endroit où un devoir assigné apparaît dans son profil. Et le jour où il y a un backend, « Open it » de la suggestion devrait envoyer directement au lieu de passer par le compositeur.
+
+**Signalé à Marion.** Le compositeur ne demande pas de date, il demande « ça ouvre quand » et « ça reste ouvert combien de temps », en listes déroulantes. C'est ce que le mock sait porter (une durée, pas une date) et c'est aussi ce qui se décide le plus vite, mais un vrai calendrier sera demandé un jour.
+
+---
+
+## Note — 2026-09-08 (suite 2) — le fond étoilé quitte tout le site, sauf la constellation
+
+**Fait, sur décision de Marion.** Le champ d'étoiles n'est plus un fond de page. Il ne reste que dans la constellation du profil, où les étoiles sont le dessin lui même et pas une ambiance. Dix surfaces montaient leur propre calque : les cinq boards du profil, les trois pages de modes, le récap de séance et les pages légales. Les dix sont retirées, imports compris. `ProgressConstellation.tsx` et `StarField.tsx` ne sont pas touchés, zéro octet de diff, c'est vérifiable.
+
+**Ce n'était pas une suppression, c'était une inversion de défaut, et c'est la seule façon propre de le faire.** Le système posait « il y a un ciel » comme règle et le plat comme variante : `.st-panel` et `.st-kpi` se peignaient en lavis à 90 pour cent de la couleur de la page, ce qui ne se lit comme un panneau que parce que des étoiles passent derrière et que le lavis les assombrit à l'intérieur du contour. C'est exactement le mur rencontré le 2026-09-04 sur l'espace prof, réglé alors par `.st--flat` et `--pf-surface`. Le ciel disparaissant partout ailleurs, l'exception devient la règle : les panneaux portent `--pf-surface` d'origine, le flou qui n'avait plus rien à flouter est tombé, et le modificateur `.st--flat` est supprimé avec ses sept usages dans l'espace prof, devenus des classes mortes. Le système ne déclare donc plus qu'une seule recette de panneau, ce qui est la règle propre de `board-system.ts`.
+
+**Les onze surfaces reprises**, toutes avec la même valeur, aucune inventée : `.st-panel` et `.st-kpi` (`board-system.ts`, donc aussi le récap et les pages légales), `.ps-panel` et `.ps-arena`, `.ac-card` et `.ac-panel`, `.av-badge`, `.pr-panel`, puis `.pb-panel`, `.pb-tile` et `.pb-panel--accent` dans `globals.css`. Les deux cartes d'accent gardent leur halo, orange pour l'arène et couleur du mode pour la carte de signature : seule leur base, qui dépendait du ciel, change.
+
+**Mesuré en navigateur, pas déduit.** Les vingt et une pages du site chargées sur le serveur de dev : zéro `canvas.dw-stars` et zéro calque de fond partout, sauf `/profile` qui en a un, le sien. Puis le contraste des surfaces reprises, dans les deux thèmes : écart panneau sur page à 1,075 en sombre et 1,083 en clair, là où le lavis sur page plate donnait 1,000, c'est à dire rien. L'encre sur ces panneaux tient 17,6 en sombre et 15,1 en clair. `check:contrast` reste vert, mais il ne mesure que les jetons d'encre sur leur fond et n'aurait rien vu de tout ça.
+
+**Un contrôle générique passé sur les vingt et une pages**, pour chercher précisément le défaut du 2026-09-04 : toute boîte ayant un contour visible et un fond identique à la couleur de la page. Aucune des onze surfaces reprises n'y apparaît. Ce qui ressort est en filet seul depuis toujours et posé sur un panneau, pas sur la page : les rangées des pages de règles, le contrôle segmenté, le compteur des préférences, les pastilles de la constellation, la bascule de thème du bandeau, qui sort aussi sur la landing où il n'y a jamais eu d'étoiles. Aucune de ces boîtes n'est dans le diff, confronté ligne à ligne.
+
+**Un garde, parce que la règle a déjà été enfreinte une fois.** `check:starfield` échoue si un fichier autre que la constellation importe `StarField`, met en page `.dw-stars`, ou peint une surface en lavis de la couleur de la page. Ce dernier point est le vrai garde : c'est le remplissage qui dépend en silence de ce qu'il y a derrière. Déclaré et câblé dans la porte au même endroit que `check:contrast`, dans le même commit, comme l'exige la règle du repo. La porte compte donc 34 étapes.
+
+**`/game` n'a pas été chargé, exprès.** Le montage de `GameScreen` appelle `startSession()` sans condition, y compris sous `?preview=complete` : ouvrir la page aurait créé un invité et une séance dans la base de production. Ses surfaces sont celles de `board-system.ts`, vérifiées sur `/profile?view=stats` qui rend le même code. À regarder en jouant, à l'occasion.
+
+**Ce travail est parti dans le commit `f560282`, qui ne le nomme pas.** Une autre session travaillait dans le repo en même temps et a committé l'arbre entier, mes fichiers avec les siens. Rien n'est perdu et rien n'est en conflit, mais l'historique ne dit pas que le ciel a été retiré ce jour là : cette note est le seul endroit qui le dise.
+
+**Non fait, et ça n'appartient pas à ce chantier.** Sur la constellation en thème clair, le HUD est crème sur une page crème et `StarField` ne peint pas en clair, donc la carte se lit mal. C'est antérieur à ce changement, la constellation n'a pas été touchée. À arbitrer par Marion.
+
+---
+
 ## Note — 2026-09-08 (suite) — la fiche Exercice, et les faces qui deviennent le sujet
 
 **Le parti pris, et il vient de ce que le produit est.** La liste des exercices dit lequel, où il en est, combien de temps il reste, et refuse le reste exprès. La fiche porte donc les deux choses qu'elle laisse dehors : ce qu'il y a dedans, et ce qui est revenu. Et « ce que j'ai demandé », sur un produit qui entraîne le regard, ce n'est pas une liste de noms de familles, ce sont les lettres : le panneau des spécimens est le sujet de la page, pas son illustration, et chaque face porte son résultat quand l'exercice est fermé.

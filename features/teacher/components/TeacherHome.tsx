@@ -39,10 +39,12 @@ export default function TeacherHome({
   teacher,
   onOpenClass,
   onOpenExercises,
+  onCompose,
 }: {
   teacher: TeacherProfile;
   onOpenClass: (id: string) => void;
   onOpenExercises: () => void;
+  onCompose: (classId: string | null) => void;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [specimen, setSpecimen] = useState(0);
@@ -212,10 +214,21 @@ export default function TeacherHome({
               with what they already read, never only their gaps.
             </p>
             <div className="tc-next__actions">
-              <button type="button" className="st-action st-action--compact st-action--primary">
+              {/* Both land in the composer with this class already chosen: with
+                  no backend, "open it" cannot send anything by itself, and the
+                  composer's shortcut adds the very pair this panel is about. */}
+              <button
+                type="button"
+                className="st-action st-action--compact st-action--primary"
+                onClick={() => onCompose(suggestionClass.id)}
+              >
                 Open it
               </button>
-              <button type="button" className="st-action st-action--compact">
+              <button
+                type="button"
+                className="st-action st-action--compact"
+                onClick={() => onCompose(suggestionClass.id)}
+              >
                 Change it
               </button>
             </div>

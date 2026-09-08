@@ -496,6 +496,13 @@ export const BOARD_SYSTEM_CSS = `
   .st-seg--mode .st-seg__part--lit { background: color-mix(in srgb, var(--m) 26%, var(--pf-cream)); }
   .st-legend__sw--mode { background: color-mix(in srgb, var(--m) 26%, var(--pf-cream)) !important; }
 
+  /* Remove one thing: a chip, a row, a pick. Visible by default; a list that
+     only shows it on hover adds that rule where the list lives.
+     Out of TeacherClassPage 2026-09-08, when the composer needed the same mark. */
+  .st-del { appearance: none; border: none; background: transparent; cursor: pointer; width: 1.7rem; height: 1.7rem; border-radius: var(--radius-pill); color: rgb(${CREAM} / 0.28); font-size: 1rem; line-height: 1; display: grid; place-items: center; transition: opacity 160ms ease, color 160ms ease, background-color 160ms ease; }
+  .st-del:hover { color: var(--pf-cream); background: rgb(${CREAM} / 0.1); }
+  .st-del:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 2px; }
+
   /* Empty state — a sentence in reading ink, never a grey slab or a shrug. */
   .st-empty { margin: 0; max-width: 52ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
 
@@ -519,17 +526,28 @@ export const BOARD_SYSTEM_CSS = `
      no accent colour. */
   .st-field { display: grid; gap: 0.35rem; min-width: 0; }
   .st-field__label { font-family: var(--pf-mono); font-size: 0.58rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(${CREAM} / 0.58); }
-  .st-input { width: 100%; appearance: none; padding: 0.6rem 1.1rem; border: 1px solid rgb(${CREAM} / 0.18); border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.06); color: var(--pf-cream); font-family: inherit; font-size: 0.9rem; line-height: 1.3; transition: border-color 160ms ease, background-color 160ms ease; }
+  .st-input, .st-select { width: 100%; appearance: none; padding: 0.6rem 1.1rem; border: 1px solid rgb(${CREAM} / 0.18); border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.06); color: var(--pf-cream); font-family: inherit; font-size: 0.9rem; line-height: 1.3; transition: border-color 160ms ease, background-color 160ms ease; }
   /* Multi-line input: a pasted list of addresses, a note. A pill cannot hold
      several lines, so this one takes the BLOCK radius, which is the only other
      shape this system has. Everything else is the field above, unchanged. */
+
+  /* A DROP-DOWN, and the first one in the product. It is '.st-input' with a
+     caret, sharing that rule rather than restating it: same border, same pill,
+     same wash, same focus. The caret is a sibling rather than a background
+     image, because a data URI cannot read '--pf-cream' and the control has to
+     follow the theme like everything else. */
+  .st-select { padding-right: 2.2rem; cursor: pointer; }
+  .st-select option { background: var(--pf-bg); color: var(--pf-cream); }
+  .st-selectwrap { position: relative; display: block; min-width: 0; }
+  .st-select__caret { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 0.6rem; line-height: 1; color: rgb(${CREAM} / 0.5); }
+
   .st-textarea { width: 100%; appearance: none; padding: 0.7rem 0.9rem; border: 1px solid rgb(${CREAM} / 0.18); border-radius: var(--radius); background: rgb(${CREAM} / 0.06); color: var(--pf-cream); font-family: var(--pf-mono); font-size: 0.76rem; line-height: 1.7; resize: vertical; min-height: 6rem; transition: border-color 160ms ease, background-color 160ms ease; }
   .st-textarea::placeholder { color: rgb(${CREAM} / 0.3); }
   .st-textarea:hover { border-color: rgb(${CREAM} / 0.28); }
   .st-textarea:focus { outline: none; border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); }
   .st-input::placeholder { color: rgb(${CREAM} / 0.3); }
-  .st-input:hover { border-color: rgb(${CREAM} / 0.28); }
-  .st-input:focus { outline: none; border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); }
+  .st-input:hover, .st-select:hover { border-color: rgb(${CREAM} / 0.28); }
+  .st-input:focus, .st-select:focus { outline: none; border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); }
 
   /* A row you can enter. '.st-session' above is the same shape but inert; this
      turns it into a real button so the keyboard reaches it and the arrow is not

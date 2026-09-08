@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,8 @@ import TeacherClassPage from "@/features/teacher/components/TeacherClassPage";
 import TeacherStudentPage from "@/features/teacher/components/TeacherStudentPage";
 import TeacherExercises from "@/features/teacher/components/TeacherExercises";
 import TeacherExercisePage from "@/features/teacher/components/TeacherExercisePage";
-import { MOCK_TEACHER, type TeacherProfile } from "@/lib/teacher/mock-teacher";
+import TeacherComposePage from "@/features/teacher/components/TeacherComposePage";
+import { MOCK_TEACHER, type TeacherExercise, type TeacherProfile } from "@/lib/teacher/mock-teacher";
 
 // ---------------------------------------------------------------------------
 // Teacher space — the shell.
@@ -65,9 +66,18 @@ export default function TeacherExperience({
   // was opened from: under a class it goes back to that class, under the list it
   // goes back to the list. Same page, two contexts, one control.
   const [exerciseId, setExerciseId] = useState<string | null>(params.get("exercise"));
+  // The composer is an overlay on whatever address you were on, so leaving it
+  // puts you back exactly where you were and the back control can name it.
+  const [composing, setComposing] = useState(params.get("new") === "1");
+  // NOTHING IS SAVED ANYWHERE, because there is nothing to save into yet. A new
+  // exercise lives in this state, the way a renamed class and an invited student
+  // already do on the class page: the space behaves, and a reload forgets. The
+  // day there is a backend, this state becomes its cache and no screen moves.
+  const [created, setCreated] = useState<TeacherExercise[]>([]);
   const [scrolled, setScrolled] = useState(false);
 
   const showView = useCallback((next: ViewId) => {
+    setComposing(false);
     setView(next);
     setClassId(null);
     setStudentId(null);
@@ -83,6 +93,7 @@ export default function TeacherExperience({
   // left the teacher space entirely from a sub-page, which is exactly the "stuck
   // in a sub-page" Marion asked us to avoid.
   const showClass = useCallback((id: string) => {
+    setComposing(false);
     setView("classes");
     setClassId(id);
     setStudentId(null);
@@ -94,6 +105,7 @@ export default function TeacherExperience({
   // Opening a student is a navigation, like opening a class: it pushes, so the
   // browser's own Back comes out of the person and lands on their class.
   const showStudent = useCallback((cid: string, sid: string) => {
+    setComposing(false);
     setView("classes");
     setClassId(cid);
     setStudentId(sid);
@@ -120,6 +132,7 @@ export default function TeacherExperience({
   };
 
   const showExercise = useCallback((id: string, fromClassId: string | null) => {
+    setComposing(false);
     setExerciseId(id);
     setStudentId(null);
     if (fromClassId) {
@@ -145,20 +158,69 @@ export default function TeacherExperience({
     );
   }, []);
 
+  // Opening the composer keeps the address you were on and adds itself to it,
+  // which is what lets one control take you back to the class, the list or the
+  // cockpit by name.
+  const openCompose = useCallback((cid: string | null) => {
+    setComposing(true);
+    setStudentId(null);
+    setExerciseId(null);
+    if (cid) {
+      setView("classes");
+      setClassId(cid);
+    }
+    if (typeof window === "undefined") return;
+    const q = new URLSearchParams(window.location.search);
+    q.delete("student");
+    q.delete("exercise");
+    if (cid) {
+      q.set("view", "classes");
+      q.set("class", cid);
+    }
+    q.set("new", "1");
+    window.history.pushState(null, "", `/teacher?${q.toString()}`);
+  }, []);
+
+  const closeCompose = useCallback(() => {
+    setComposing(false);
+    if (typeof window === "undefined") return;
+    const q = new URLSearchParams(window.location.search);
+    q.delete("new");
+    const rest = q.toString();
+    window.history.replaceState(null, "", rest ? `/teacher?${rest}` : "/teacher");
+  }, []);
+
+  // Given, so it goes where a teacher would look next: its own page.
+  const createExercise = useCallback((ex: TeacherExercise) => {
+    setCreated((prev) => [ex, ...prev]);
+    setComposing(false);
+    setView("exercises");
+    setClassId(null);
+    setStudentId(null);
+    setExerciseId(ex.id);
+    if (typeof window === "undefined") return;
+    window.history.pushState(null, "", `/teacher?view=exercises&exercise=${ex.id}`);
+  }, []);
+
   // An address naming a class that does not exist falls back to the list rather
   // than rendering nothing.
-  const openClass = classId ? teacher.classes.find((c) => c.id === classId) ?? null : null;
+  const live = useMemo<TeacherProfile>(
+    () => (created.length === 0 ? teacher : { ...teacher, exercises: [...created, ...teacher.exercises] }),
+    [teacher, created],
+  );
+
+  const openClass = classId ? live.classes.find((c) => c.id === classId) ?? null : null;
   // An exercise carries its own class, so the page has its context even when the
   // address names the exercise alone.
-  const openExercise = exerciseId ? teacher.exercises.find((e) => e.id === exerciseId) ?? null : null;
+  const openExercise = exerciseId ? live.exercises.find((e) => e.id === exerciseId) ?? null : null;
   const exerciseClass = openExercise
-    ? teacher.classes.find((c) => c.id === openExercise.classId) ?? null
+    ? live.classes.find((c) => c.id === openExercise.classId) ?? null
     : null;
   const fromList = view === "exercises";
   const exerciseScreen =
     openExercise && exerciseClass ? (
       <TeacherExercisePage
-        teacher={teacher}
+        teacher={live}
         cls={exerciseClass}
         ex={openExercise}
         backLabel={fromList ? "Exercises" : exerciseClass.name}
@@ -177,6 +239,7 @@ export default function TeacherExperience({
       setClassId(q.get("class"));
       setStudentId(q.get("student"));
       setExerciseId(q.get("exercise"));
+      setComposing(q.get("new") === "1");
     };
     window.addEventListener("popstate", sync);
     return () => window.removeEventListener("popstate", sync);
@@ -256,50 +319,66 @@ export default function TeacherExperience({
           </div>
           {/* The main gesture of the whole space, so it lives in the bar and is
               reachable from every tab, not only from Home. */}
-          <button type="button" className="pf-top__cta">
+          <button type="button" className="pf-top__cta" onClick={() => openCompose(null)}>
             New exercise
           </button>
           <ThemeSwitch />
         </div>
       </header>
 
-      {view === "home" && (
+      {composing && (
         <div className="pf-constellation-stage">
-          <TeacherHome
-            teacher={teacher}
-            onOpenClass={showClass}
-            onOpenExercises={() => showView("exercises")}
+          <TeacherComposePage
+            teacher={live}
+            presetClassId={classId}
+            backLabel={
+              openClass ? openClass.name : view === "exercises" ? "Exercises" : view === "classes" ? "All classes" : "Home"
+            }
+            onBack={closeCompose}
+            onCreate={createExercise}
           />
         </div>
       )}
 
-      {view === "classes" && (
+      {!composing && view === "home" && (
+        <div className="pf-constellation-stage">
+          <TeacherHome
+            teacher={live}
+            onOpenClass={showClass}
+            onOpenExercises={() => showView("exercises")}
+            onCompose={openCompose}
+          />
+        </div>
+      )}
+
+      {!composing && view === "classes" && (
         <div className="pf-constellation-stage">
           {exerciseScreen ?? (openClass && studentId ? (
             <TeacherStudentPage
-              teacher={teacher}
+              teacher={live}
               cls={openClass}
               studentId={studentId}
               onBack={() => closeStudent(openClass.id)}
             />
           ) : openClass ? (
             <TeacherClassPage
-              teacher={teacher}
+              teacher={live}
               cls={openClass}
               onBack={() => showView("classes")}
               onOpenStudent={(sid) => showStudent(openClass.id, sid)}
               onOpenExercise={(eid) => showExercise(eid, openClass.id)}
+              onCompose={() => openCompose(openClass.id)}
             />
           ) : (
-            <TeacherClasses teacher={teacher} onOpenClass={showClass} />
+            <TeacherClasses teacher={live} onOpenClass={showClass} />
           ))}
         </div>
       )}
 
-      {view === "exercises" && (
+      {!composing && view === "exercises" && (
         <div className="pf-constellation-stage">
           {exerciseScreen ?? (
-            <TeacherExercises teacher={teacher} onOpenExercise={(eid) => showExercise(eid, null)} />
+            <TeacherExercises teacher={live} onOpenExercise={(eid) => showExercise(eid, null)} />
           )}
         </div>
       )}
