@@ -8,6 +8,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import ProgressBoard from "@/features/profile/components/ProgressBoard";
 import ProgressConstellation from "@/features/profile/components/ProgressConstellation";
 import ProgressExplainer from "@/features/profile/components/ProgressExplainer";
+import AssignedBand from "@/features/profile/components/AssignedBand";
 import StatsBoard from "@/features/profile/components/StatsBoard";
 import ProfileSummary from "@/features/profile/components/ProfileSummary";
 import ActivityBoard from "@/features/profile/components/ActivityBoard";
@@ -231,6 +232,10 @@ export default function ProfileExperience({
       {view === "home" &&
         (USE_CONSTELLATION ? (
           <>
+            {/* A devoir, if there is one, before the map. The map is where you
+                are going; a deadline is today, so it is read first. Renders
+                nothing at all when nothing is set. */}
+            <AssignedBand />
             <div className="pf-constellation-stage">
               <ProgressConstellation eye={eye} />
             </div>

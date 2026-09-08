@@ -97,6 +97,28 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-08 (suite 4) — le devoir arrive dans le profil de l'élève, et la boucle est fermée
+
+**Fait, et c'est le voyage de retour du mur à sens unique.** Le prof ne lit que ce que ses propres exercices ont produit, jamais l'entraînement libre : c'est la promesse gelée du produit. Sa contrepartie, c'est que l'élève doit voir ce qu'on lui a donné, avec son échéance, parce qu'une échéance que personne n'annonce n'est pas une échéance. C'est la seule chose qui traverse, dans un sens comme dans l'autre.
+
+**Où, et pourquoi là.** Sur l'onglet Path et nulle part ailleurs, au dessus de la carte. C'est l'onglet sur lequel un joueur arrive, et un devoir qu'il faut aller chercher est un devoir raté. La carte dit où il va, le devoir est pour aujourd'hui, donc il se lit avant. **Placement à arbitrer par Marion** : les autres possibilités étaient l'onglet Activity (où vit le temps, mais c'est le quatrième onglet) et une pastille dans la barre (une décoration de plus sur la barre).
+
+**Zéro direction artistique déclarée**, même discipline que `ProgressExplainer` juste à côté : le panneau, la pastille de mode, la capsule de compte à rebours et le bouton viennent du système partagé, et les seules valeurs locales sont les colonnes de la rangée. L'état est dit **en mots** et jamais en couleur : le rouge et le vert appartiennent au jeu, juste et faux.
+
+**Il ne rend RIEN quand il n'y a rien.** Pas d'état vide : un encart permanent qui rappelle qu'on n'a pas de devoir n'apprend rien à personne.
+
+**LE BOUTON DIT OÙ IL VA, PAS CE QU'IL LANCE.** Le moteur ne sait pas encore ouvrir une séance sur les familles d'un exercice donné. Un bouton « jouer le devoir » lancerait donc une séance ordinaire et trahirait la promesse en silence. Il dit « go and play » et va au jeu. Le jour où une séance peut porter un exercice, ce libellé et cette adresse sont les deux seules choses à changer.
+
+**Le pont est un mock, et il est écrit comme tel dans `lib/profile/assigned.ts`.** Faute de comptes, le profil est traité comme une personne précise d'une classe précise : rang 14 de DSAA 1 · Group A. Ce n'est pas un tirage au hasard, c'est le cas utile et le cas honnête : sur les écrans prof, cette même personne lit « not opened » sur l'exercice qui ferme aujourd'hui et a terminé les quatre qui ont fermé avant. **Mesuré en pilotant le navigateur** : la fiche exercice dit « not opened » au rang 14, le profil dit « you have not opened it », même exercice, même échéance à 9 heures. Les deux côtés racontent la même histoire sur la même personne, ce qui est exactement pourquoi ils sont construits sur un seul mock.
+
+**Une couture de mock signalée, sans conséquence à l'écran.** Sur les écrans prof cette personne s'appelle Lucas Marchand (nom généré par le trombinoscope) et le profil s'appelle Marion Launay. Le bandeau n'affiche aucun nom d'élève, donc rien ne se contredit à l'écran, mais si tu croises les deux pages tu verras deux noms pour un seul rang. Ça disparaît au premier vrai compte.
+
+**Vérifié aussi** : le bandeau n'apparaît que sur Path (zéro sur Stats et Activity), la constellation dessine toujours son canvas juste dessous, zéro erreur de page, et les gardes copy, contrast, starfield, typography-contract, mastery-gauge, misread-truth, runtime-boundaries et dev-routes passent.
+
+**L'espace prof et son retour côté élève sont donc complets** sur données factices. Ce qui reste n'est plus de l'écran mais du branchement : des comptes, des classes en base, et une séance qui sait porter un exercice.
+
+---
+
 ## Note — 2026-09-08 (suite 3) — le compositeur, et l'espace prof est complet
 
 **Fait, et la boucle est fermée.** Le bouton « New exercise » de la barre, la relance de la fiche Classe et les deux boutons de la suggestion du cockpit ouvrent tous le compositeur. On choisit la classe, on nomme, on choisit les faces, la longueur et la fenêtre, on donne, et on arrive sur la page de l'exercice qui vient d'être créé. Les quatre écrans de lecture et le seul écran d'écriture se répondent donc enfin, et les six boutons qui ne menaient nulle part sont branchés.
