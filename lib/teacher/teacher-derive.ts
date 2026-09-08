@@ -147,6 +147,36 @@ export function familyResults(classId: string, exercises: TeacherExercise[]): Fa
     .sort((a, b) => b.rightPct - a.rightPct);
 }
 
+/**
+ * Where ONE person stands on ONE exercise, decided in exactly one place.
+ *
+ * Roster order IS the order of finishing: the first `finished` people finished
+ * it, the next `started - finished` opened it, the rest never did. Crude, and
+ * deliberately so, because it is the only ordering the mock carries. What
+ * matters is that the class list and the student page read the SAME function:
+ * two copies of this rule would drift, and a teacher would catch two screens
+ * contradicting each other about the same person.
+ */
+export type Standing = "finished" | "started" | "not_started";
+
+export function standingOn(index: number, ex: TeacherExercise): Standing {
+  if (index < ex.finished) return "finished";
+  if (index < ex.started) return "started";
+  return "not_started";
+}
+
+/**
+ * GENERATED. Their score on an exercise they finished, null on anything else.
+ *
+ * The offsets sum to zero across the people who finished, so the exercise's own
+ * rate always falls back out of the split. Still invented, and it goes the day
+ * the engine answers per person.
+ */
+export function scoreOn(index: number, ex: TeacherExercise): number | null {
+  if (standingOn(index, ex) !== "finished") return null;
+  return clamp((ex.successPct ?? 0) + spread(ex.finished, 16)[index]);
+}
+
 /** DERIVED. One line per person, from the exercises this teacher gave. */
 export function studentRows(cls: TeacherClass, exercises: TeacherExercise[]): ClassStudent[] {
   const roster = rosterOf(cls);
@@ -154,24 +184,15 @@ export function studentRows(cls: TeacherClass, exercises: TeacherExercise[]): Cl
   const open = exercisesOfClass(cls.id, exercises).find((e) => e.state === "running");
 
   return roster.map((s, i) => {
-    // Roster order IS the order of finishing: the first `finished` people
-    // finished, the next `started - finished` opened it, the rest have not.
     let done = 0;
     let sum = 0;
     for (const ex of closed) {
-      if (i < ex.finished) {
-        done += 1;
-        const offsets = spread(ex.finished, 16);
-        sum += clamp((ex.successPct ?? 0) + offsets[i]);
-      }
+      const score = scoreOn(i, ex);
+      if (score === null) continue;
+      done += 1;
+      sum += score;
     }
-    const live: ClassStudent["live"] = !open
-      ? "nothing_open"
-      : i < open.finished
-        ? "finished"
-        : i < open.started
-          ? "started"
-          : "not_started";
+    const live: ClassStudent["live"] = !open ? "nothing_open" : standingOn(i, open);
     return {
       id: s.id,
       name: s.name,
@@ -395,4 +416,144 @@ export function topConfusions(classes: TeacherClass[], limit = 3): LiveConfusion
     .flatMap((c) => c.confusions.map((k) => ({ ...k, classId: c.id, className: c.name })))
     .sort((a, b) => b.times - a.times)
     .slice(0, limit);
+}
+
+// ---------------------------------------------------------------------------
+// ONE STUDENT, read through the exercises this teacher gave.
+//
+// This is NOT a smaller profile, and the difference is the whole point. The
+// profile is the student's own room: their free training, their pool, their
+// mastery of the catalogue, their badges. A teacher cannot see any of it and
+// nothing below can reach it. What is here is what the teacher's own exercises
+// produced, plus ONE thing the profile never says: where this person sits
+// against their class.
+// ---------------------------------------------------------------------------
+
+/** One exercise, from this person's side. */
+export type StudentExerciseRow = {
+  exercise: TeacherExercise;
+  standing: Standing;
+  /** Their result. Null unless they finished it. */
+  theirs: number | null;
+  /** The class's own rate on it, to sit next to theirs. Null while it runs. */
+  classPct: number | null;
+};
+
+/** A closed exercise as a point on two lines: theirs and the class's. */
+export type StudentHistoryPoint = {
+  id: string;
+  title: string;
+  classPct: number;
+  /** Null when they did not finish that one: the line breaks, it does not lie. */
+  theirs: number | null;
+};
+
+/**
+ * A pair THIS PERSON keeps swapping. Empty today, and that is deliberate.
+ *
+ * The class page states its confusions in the mock because a class-level pair
+ * was worth showing while the page was being judged. Per person, nothing in the
+ * mock produces one, and the owner's rule is explicit: no data is invented to
+ * fill an interface. So the shape exists, the seam exists, and the panel simply
+ * does not render until something real fills it.
+ *
+ * WHAT WILL FILL IT. The engine already records the answer chosen next to the
+ * answer expected, per attempt, per player. Grouped by (player, expected,
+ * chosen) over the attempts belonging to this teacher's exercises, this
+ * function returns rows without a single screen changing.
+ */
+export type StudentConfusion = ClassConfusion;
+
+export function studentConfusions(): StudentConfusion[] {
+  return [];
+}
+
+export type StudentDetail = {
+  student: ClassStudent;
+  /** Their position in the roster, which is what every derivation reads. */
+  index: number;
+  /** Running first, then closed newest first. Scheduled ones are left out. */
+  rows: StudentExerciseRow[];
+  /** How many are queued and deliberately not counted anywhere above. */
+  scheduled: number;
+  /** Oldest first, every closed exercise the class was given. */
+  history: StudentHistoryPoint[];
+  /** GENERATED split, same recipe as the class's, on their own results. */
+  families: FamilyResult[];
+  band: Band;
+  classAvg: number | null;
+  /** Their first to last, in points, across the ones they finished. */
+  trendPct: number | null;
+  confusions: StudentConfusion[];
+};
+
+export function studentDetail(
+  cls: TeacherClass,
+  studentId: string,
+  exercises: TeacherExercise[],
+): StudentDetail | null {
+  const rows = studentRows(cls, exercises);
+  const index = rows.findIndex((s) => s.id === studentId);
+  if (index === -1) return null;
+
+  const student = rows[index];
+  const mine = exercisesOfClass(cls.id, exercises);
+  const closed = closedOfClass(cls.id, exercises);
+  const classAvg = classStats(cls, exercises).successPct;
+
+  // Running before closed: what a teacher can still act on comes first, and
+  // what is over is history. Scheduled ones say nothing about a person, since
+  // nobody can have opened something that has not opened.
+  const running = mine
+    .filter((e) => e.state === "running")
+    .sort((a, b) => a.dueInHours - b.dueInHours);
+  const done = [...closed].reverse();
+
+  const rowOf = (exercise: TeacherExercise): StudentExerciseRow => ({
+    exercise,
+    standing: standingOn(index, exercise),
+    theirs: scoreOn(index, exercise),
+    classPct: exercise.state === "done" ? exercise.successPct ?? null : null,
+  });
+
+  const history: StudentHistoryPoint[] = closed.map((e) => ({
+    id: e.id,
+    title: e.title,
+    classPct: e.successPct ?? 0,
+    theirs: scoreOn(index, e),
+  }));
+
+  // GENERATED, exactly as the class page generates its own: their result on an
+  // exercise, split across the families that exercise asked about, by offsets
+  // that sum to zero. So a family reading always averages back to what they
+  // actually scored, and no family number can contradict the row above it.
+  const acc = new Map<string, { name: string; total: number; count: number }>();
+  for (const ex of closed) {
+    const theirs = scoreOn(index, ex);
+    if (theirs === null) continue;
+    const offsets = spread(ex.typefaces.length, 14);
+    ex.typefaces.forEach((family, i) => {
+      const value = clamp(theirs + offsets[i]);
+      const cur = acc.get(family.slug) ?? { name: family.name, total: 0, count: 0 };
+      acc.set(family.slug, { name: family.name, total: cur.total + value, count: cur.count + 1 });
+    });
+  }
+  const families: FamilyResult[] = [...acc.entries()]
+    .map(([slug, v]) => ({ slug, name: v.name, rightPct: Math.round(v.total / v.count), seenIn: v.count }))
+    .sort((a, b) => b.rightPct - a.rightPct);
+
+  const theirPoints = history.map((h) => h.theirs).filter((v): v is number => v !== null);
+
+  return {
+    student,
+    index,
+    rows: [...running, ...done].map(rowOf),
+    scheduled: mine.filter((e) => e.state === "scheduled").length,
+    history,
+    families,
+    band: bandOf(student, classAvg),
+    classAvg,
+    trendPct: theirPoints.length < 2 ? null : theirPoints[theirPoints.length - 1] - theirPoints[0],
+    confusions: studentConfusions(),
+  };
 }

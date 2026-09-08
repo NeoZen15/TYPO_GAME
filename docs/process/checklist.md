@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-08 — la fiche Élève est construite, et ce qu'elle refuse de dire
+
+**Le principe, validé avant d'écrire une ligne.** Une fiche Élève n'est pas un profil en plus petit. Le profil est la chambre de l'élève : son entraînement libre, son pool, sa maîtrise du catalogue, ses badges, sa constellation. Le prof ne voit rien de tout ça et rien dans la page ne va le chercher. Ce qu'elle porte, c'est ce que les exercices de ce prof ont produit, plus la seule chose que le profil ne dit jamais : où cette personne se situe dans sa classe. Elle est faite pour être ouverte vingt quatre fois de suite, donc quatre compteurs et trois panneaux, pas un tableau de bord.
+
+**Ce qu'elle montre, dans l'ordre.** Qui c'est et où il en est en une phrase adossée à ses chiffres, quatre compteurs (réussite, terminés, écart à la classe, évolution depuis le premier), ce qui est ouvert maintenant et où il en est dessus, l'historique en une figure (sa ligne contre celle de la classe) puis les lignes de preuve avec sa note à côté de celle de la classe, et famille par famille ce qu'il reconnaît, sur la rangée `.st-axis` du profil.
+
+**LA DÉCISION DE MARION, ET ELLE VAUT POUR LA SUITE.** Pas de paires de confusion par élève tant qu'aucune donnée ne les produit. C'était la proposition, elle est écartée : on ne simule pas une information comme si DWIGGINS savait déjà la calculer, même pour remplir un panneau. La forme existe donc dans `lib/teacher/teacher-derive.ts` (`StudentConfusion`, `studentConfusions()` qui retourne vide), le panneau ne se rend pas tant que rien ne le remplit, et le commentaire décrit la requête qui le remplira : le moteur enregistre déjà la réponse choisie à côté de la réponse attendue, il manque le regroupement par joueur sur les exercices de ce prof.
+
+**Dérivé contre généré, dit en clair comme pour la fiche Classe.** Dérivé : qui a fini quoi, la moyenne de la classe, l'écart, l'évolution. Généré : la note d'une personne sur un exercice, et le découpage par famille à l'intérieur. Les écarts somment à zéro, donc la moyenne d'une personne retombe sur celle de l'exercice et aucun chiffre n'en contredit un autre, mais ce sont des valeurs inventées et elles partent au premier vrai jeu de données.
+
+**Deux nettoyages faits en chemin, parce que la règle du système l'imposait.** La figure d'historique (le graphe et ses rangées) vivait dans `TeacherClassPage` ; deux écrans la dessinent maintenant, donc elle passe dans `board-system.ts` sous le préfixe `st-hist`, valeurs inchangées, la fiche Élève n'ajoutant chez elle que sa deuxième ligne et sa colonne en plus. Et « où en est cette personne sur cet exercice » se décidait dans la liste de classe ; c'est désormais `standingOn` et `scoreOn`, lus par les deux écrans, sans quoi deux pages finissent par se contredire sur la même personne.
+
+**Trois choses signalées, aucune décidée seul.** La ligne de l'élève reprend le bleu que le profil emploie déjà pour l'activité dans le temps. La classe passe derrière, en crème pointillé : c'est une référence, pas un second sujet, donc elle ne prend aucune couleur. Et la ligne se coupe là où l'élève n'a pas terminé, plutôt que de relier par dessus : tracer droit à travers un exercice sauté inventerait un résultat sur la page dont le métier est justement de dire ce que cette personne a fait.
+
+**Cas limites traités et vérifiés au rendu.** L'invité qui n'a jamais ouvert la porte reçoit une phrase et rien d'autre, quatre panneaux vides en disent moins. Une classe sans exercice fermé, une personne qui n'a rien fini, un exercice sauté, une adresse qui nomme quelqu'un d'absent de la classe. La fiche est une adresse (`?view=classes&class=c1&student=c1-s3`), ouverte en `pushState` comme une classe, refermée en `replaceState` comme le fait déjà le retour de la fiche Classe.
+
+**Reste à construire** : la fiche Exercice, la création d'exercice, puis côté élève l'endroit où un devoir assigné apparaît dans son profil. **Nettoyage disponible et non fait** : l'effet de révélation est recopié à l'identique dans les cinq écrans du prof, il vaut un hook partagé le jour où on y retouche.
+
+---
+
 ## Note — 2026-09-04 (fin de journée) — état de l'espace prof et point de reprise
 
 **Construit et en place** : le Home (cockpit), la liste Classes, la fiche Classe, la liste Exercices. Tout tourne sur `lib/teacher/mock-teacher.ts`, aucune base, aucune authentification, aucune migration.

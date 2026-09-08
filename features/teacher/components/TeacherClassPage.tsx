@@ -34,10 +34,12 @@ export default function TeacherClassPage({
   teacher,
   cls,
   onBack,
+  onOpenStudent,
 }: {
   teacher: TeacherProfile;
   cls: TeacherClass;
   onBack: () => void;
+  onOpenStudent: (studentId: string) => void;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [renaming, setRenaming] = useState(false);
@@ -304,9 +306,9 @@ export default function TeacherClassPage({
                 The rows stay underneath: the shape is the reading, the rows are
                 the evidence. */}
             {closed.length > 1 && (
-              <svg className="tc-hist__chart" viewBox={`0 0 ${AW} ${AH}`} role="img" aria-label="Right answers, exercise after exercise">
+              <svg className="st-hist__chart" viewBox={`0 0 ${AW} ${AH}`} role="img" aria-label="Right answers, exercise after exercise">
                 <defs>
-                  <linearGradient id="tc-hist-grad" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id="st-hist-grad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stopColor={`color-mix(in srgb, ${BLUE} 30%, transparent)`} />
                     <stop offset="1" stopColor="transparent" />
                   </linearGradient>
@@ -315,21 +317,21 @@ export default function TeacherClassPage({
                 {/* Where good is. A curve without references is a shape. */}
                 {[25, 50, 75].map((v) => (
                   <g key={v}>
-                    <line className="tc-hist__grid" x1={padL} y1={hy(v)} x2={AW - padR} y2={hy(v)} />
-                    <text className="tc-hist__gridlabel" x={padL - 8} y={hy(v) + 3}>{v}</text>
+                    <line className="st-hist__grid" x1={padL} y1={hy(v)} x2={AW - padR} y2={hy(v)} />
+                    <text className="st-hist__gridlabel" x={padL - 8} y={hy(v) + 3}>{v}</text>
                   </g>
                 ))}
-                <line className="tc-hist__base" x1={padL} y1={AH - padY} x2={AW - padR} y2={AH - padY} />
+                <line className="st-hist__base" x1={padL} y1={AH - padY} x2={AW - padR} y2={AH - padY} />
 
-                <path className="tc-hist__fill" d={areaD} fill="url(#tc-hist-grad)" />
-                <path className="tc-hist__line" d={lineD} fill="none" />
+                <path className="st-hist__fill" d={areaD} fill="url(#st-hist-grad)" />
+                <path className="st-hist__line" d={lineD} fill="none" />
 
                 {closed.map((e, i) => {
                   const now = i === closed.length - 1;
                   return (
                     <g key={e.id}>
                       <circle
-                        className={`tc-hist__dot${now ? " is-now" : ""}`}
+                        className={`st-hist__dot${now ? " is-now" : ""}`}
                         cx={hx(i)}
                         cy={hy(e.successPct ?? 0)}
                         r={now ? 5 : 3.5}
@@ -337,7 +339,7 @@ export default function TeacherClassPage({
                       {/* The first label sat on top of the axis figures and the
                           last one ran off the right edge. Ends anchor inward. */}
                       <text
-                        className={`tc-hist__point${now ? " is-now" : ""}`}
+                        className={`st-hist__point${now ? " is-now" : ""}`}
                         x={hx(i)}
                         y={hy(e.successPct ?? 0) - 12}
                         textAnchor={i === 0 ? "start" : now ? "end" : "middle"}
@@ -351,15 +353,15 @@ export default function TeacherClassPage({
               </svg>
             )}
 
-            <ul className="tc-hist">
+            <ul className="st-hist">
               {closed.map((ex, i) => (
-                <li key={ex.id} className={`tc-hist__row${i === closed.length - 1 ? " is-now" : ""}`}>
-                  <span className="tc-hist__name">{ex.title}</span>
+                <li key={ex.id} className={`st-hist__row${i === closed.length - 1 ? " is-now" : ""}`}>
+                  <span className="st-hist__name">{ex.title}</span>
                   <span className="st-bar" role="img" aria-label={`${ex.successPct}% right`}>
                     <span className="st-bar__fill" style={{ width: `${ex.successPct}%` }} />
                   </span>
-                  <span className="tc-hist__val"><em>{ex.successPct}%</em> right</span>
-                  <span className="tc-hist__when">{closedLabel(ex.dueInHours)}</span>
+                  <span className="st-hist__val"><em>{ex.successPct}%</em> right</span>
+                  <span className="st-hist__when">{closedLabel(ex.dueInHours)}</span>
                 </li>
               ))}
             </ul>
@@ -551,7 +553,7 @@ export default function TeacherClassPage({
               {/* The name is the way in, so the name is the button. The row is
                   not one: it also carries a remove control, and a button inside
                   a button is not markup a browser can make sense of. */}
-              <button type="button" className="tc-stu__open">
+              <button type="button" className="tc-stu__open" onClick={() => onOpenStudent(s.id)}>
                 <span className="tc-stu__name">{s.name}</span>
                 <span className="tc-stu__mail">{s.email}</span>
               </button>
@@ -692,50 +694,6 @@ const CLASS_CSS = `
   @media (max-width: 900px) {
     .tc-stand { grid-template-columns: 1fr; }
     .st-ringwrap { flex-direction: column; align-items: flex-start; }
-  }
-
-  /* History */
-  /* The system's line is drawn in the expert-mode blue. That colour already
-     means "expert mode" on this site and the DA contract forbids stretching a
-     mode colour onto a new surface, so this one is cream like everything else. */
-  /* COLOUR, AND WHERE IT COMES FROM. The profile already draws its own
-     over-time chart in this blue, and board-system names it "the 3rd accent →
-     activity over time". Same meaning here, one level up: this is the class
-     moving through the term. Nothing new is introduced.
-     The last point takes the brand yellow, whose documented job is exactly this
-     — marking the active state — and never a fill. */
-  .tc-hist__chart { display: block; width: 100%; height: auto; margin: 0.4rem 0 1.4rem; overflow: visible; }
-  .tc-hist__grid { stroke: rgb(${CREAM} / 0.08); stroke-width: 1; stroke-dasharray: 3 4; }
-  .tc-hist__gridlabel { fill: rgb(${CREAM} / 0.32); font-family: var(--pf-mono); font-size: 9px; text-anchor: end; }
-  .tc-hist__base { stroke: rgb(${CREAM} / 0.16); stroke-width: 1; }
-  .tc-hist__line { stroke: ${BLUE}; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-  .tc-hist__dot { fill: var(--pf-bg); stroke: ${BLUE}; stroke-width: 2; }
-  /* NEUTRAL, AND WAITING FOR A DECISION. This point marks "where the class is
-     now". It was yellow, then green, and BOTH were picked by reasoning about
-     meaning rather than by finding the colour already doing that job somewhere.
-     Measured across the profile's components: green (--success-green) and red
-     (--error-red) are painted ZERO times. So nothing establishes a colour for
-     "the current value", and the rule is to leave it neutral and ask.
-     Full cream against the line's blue is the difference for now. */
-  .tc-hist__dot.is-now { fill: var(--pf-cream); stroke: var(--pf-cream); }
-  .tc-hist__point { fill: rgb(${CREAM} / 0.5); font-family: var(--pf-mono); font-size: 10px; font-weight: 600; text-anchor: middle; }
-  .tc-hist__point.is-now { fill: var(--pf-cream); }
-  .st.is-armed .tc-hist__fill, .st.is-armed .tc-hist__line, .st.is-armed .tc-hist__dot, .st.is-armed .tc-hist__point { opacity: 0; }
-  .st.is-armed.is-in .tc-hist__fill, .st.is-armed.is-in .tc-hist__line, .st.is-armed.is-in .tc-hist__dot, .st.is-armed.is-in .tc-hist__point { opacity: 1; transition: opacity 700ms ease 250ms; }
-  .tc-hist__row.is-now .tc-hist__name { color: var(--pf-cream); }
-  .tc-hist__row.is-now .tc-hist__val em { color: var(--pf-cream); }
-
-  .tc-hist { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
-  .tc-hist__row { display: grid; grid-template-columns: minmax(0, 1fr) 12rem 7rem 8rem; align-items: center; gap: 0.9rem; padding: 0.7rem 0; border-top: 1px solid rgb(${CREAM} / 0.08); }
-  .tc-hist__row:first-child { border-top: none; padding-top: 0; }
-  .tc-hist__name { font-size: 0.86rem; color: rgb(${CREAM} / 0.88); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tc-hist__val { font-family: var(--pf-mono); font-size: 0.6rem; color: rgb(${CREAM} / 0.45); font-variant-numeric: tabular-nums; }
-  .tc-hist__val em { font-style: normal; font-weight: 640; font-size: 0.72rem; color: var(--pf-cream); }
-  .tc-hist__when { font-family: var(--pf-mono); font-size: 0.6rem; color: rgb(${CREAM} / 0.4); text-align: right; }
-  @media (max-width: 820px) {
-    .tc-hist__row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; }
-    .tc-hist__row .st-bar { grid-column: 1 / -1; }
-    .tc-hist__when { grid-column: 1 / -1; text-align: left; }
   }
 
   /* Families */

@@ -8,6 +8,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import TeacherHome from "@/features/teacher/components/TeacherHome";
 import TeacherClasses from "@/features/teacher/components/TeacherClasses";
 import TeacherClassPage from "@/features/teacher/components/TeacherClassPage";
+import TeacherStudentPage from "@/features/teacher/components/TeacherStudentPage";
 import TeacherExercises from "@/features/teacher/components/TeacherExercises";
 import { MOCK_TEACHER, type TeacherProfile } from "@/lib/teacher/mock-teacher";
 
@@ -55,11 +56,16 @@ export default function TeacherExperience({
   // A class page is an ADDRESS, not a state: "look at what the second years are
   // doing" has to be a link a teacher can send to themselves or to a colleague.
   const [classId, setClassId] = useState<string | null>(params.get("class"));
+  // A person is an address too, and for the same reason: "look at what Camille
+  // is doing" has to be a link. It only ever exists under a class, since a
+  // student is read through the exercises that class was given.
+  const [studentId, setStudentId] = useState<string | null>(params.get("student"));
   const [scrolled, setScrolled] = useState(false);
 
   const showView = useCallback((next: ViewId) => {
     setView(next);
     setClassId(null);
+    setStudentId(null);
     if (typeof window === "undefined") return;
     window.history.replaceState(null, "", next === "home" ? "/teacher" : `/teacher?view=${next}`);
   }, []);
@@ -73,8 +79,28 @@ export default function TeacherExperience({
   const showClass = useCallback((id: string) => {
     setView("classes");
     setClassId(id);
+    setStudentId(null);
     if (typeof window === "undefined") return;
     window.history.pushState(null, "", `/teacher?view=classes&class=${id}`);
+  }, []);
+
+  // Opening a student is a navigation, like opening a class: it pushes, so the
+  // browser's own Back comes out of the person and lands on their class.
+  const showStudent = useCallback((cid: string, sid: string) => {
+    setView("classes");
+    setClassId(cid);
+    setStudentId(sid);
+    if (typeof window === "undefined") return;
+    window.history.pushState(null, "", `/teacher?view=classes&class=${cid}&student=${sid}`);
+  }, []);
+
+  // The back control CORRECTS the address in place, exactly as the class page's
+  // does: it is the same move up one level, not a new destination, and stacking
+  // it would make Back walk through the same page twice.
+  const closeStudent = useCallback((cid: string) => {
+    setStudentId(null);
+    if (typeof window === "undefined") return;
+    window.history.replaceState(null, "", `/teacher?view=classes&class=${cid}`);
   }, []);
 
   // An address naming a class that does not exist falls back to the list rather
@@ -89,6 +115,7 @@ export default function TeacherExperience({
       const v = q.get("view");
       setView(isViewId(v) ? v : "home");
       setClassId(q.get("class"));
+      setStudentId(q.get("student"));
     };
     window.addEventListener("popstate", sync);
     return () => window.removeEventListener("popstate", sync);
@@ -187,11 +214,19 @@ export default function TeacherExperience({
 
       {view === "classes" && (
         <div className="pf-constellation-stage">
-          {openClass ? (
+          {openClass && studentId ? (
+            <TeacherStudentPage
+              teacher={teacher}
+              cls={openClass}
+              studentId={studentId}
+              onBack={() => closeStudent(openClass.id)}
+            />
+          ) : openClass ? (
             <TeacherClassPage
               teacher={teacher}
               cls={openClass}
               onBack={() => showView("classes")}
+              onOpenStudent={(sid) => showStudent(openClass.id, sid)}
             />
           ) : (
             <TeacherClasses teacher={teacher} onOpenClass={showClass} />

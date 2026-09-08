@@ -399,6 +399,63 @@ export const BOARD_SYSTEM_CSS = `
     backdrop-filter: none;
   }
 
+
+  /* =========================================================================
+     HISTORY: A LINE OVER CLOSED EXERCISES
+     Moved here 2026-09-08, out of TeacherClassPage, when the student page
+     needed the same figure. Values unchanged, prefix only: a class moving
+     through a term and a person moving through a term are the same drawing,
+     and two copies of it would drift the way this file exists to prevent.
+
+     The student page adds a second line (the class, as a reference behind the
+     person) and one extra column on the rows. Both are declared there, since
+     both belong to that screen and to nothing else.
+     ========================================================================= */
+
+  /* History */
+  /* The system's line is drawn in the expert-mode blue. That colour already
+     means "expert mode" on this site and the DA contract forbids stretching a
+     mode colour onto a new surface, so this one is cream like everything else. */
+  /* COLOUR, AND WHERE IT COMES FROM. The profile already draws its own
+     over-time chart in this blue, and board-system names it "the 3rd accent →
+     activity over time". Same meaning here, one level up: this is the class
+     moving through the term. Nothing new is introduced.
+     The last point takes the brand yellow, whose documented job is exactly this
+     — marking the active state — and never a fill. */
+  .st-hist__chart { display: block; width: 100%; height: auto; margin: 0.4rem 0 1.4rem; overflow: visible; }
+  .st-hist__grid { stroke: rgb(${CREAM} / 0.08); stroke-width: 1; stroke-dasharray: 3 4; }
+  .st-hist__gridlabel { fill: rgb(${CREAM} / 0.32); font-family: var(--pf-mono); font-size: 9px; text-anchor: end; }
+  .st-hist__base { stroke: rgb(${CREAM} / 0.16); stroke-width: 1; }
+  .st-hist__line { stroke: ${BLUE}; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .st-hist__dot { fill: var(--pf-bg); stroke: ${BLUE}; stroke-width: 2; }
+  /* NEUTRAL, AND WAITING FOR A DECISION. This point marks "where the class is
+     now". It was yellow, then green, and BOTH were picked by reasoning about
+     meaning rather than by finding the colour already doing that job somewhere.
+     Measured across the profile's components: green (--success-green) and red
+     (--error-red) are painted ZERO times. So nothing establishes a colour for
+     "the current value", and the rule is to leave it neutral and ask.
+     Full cream against the line's blue is the difference for now. */
+  .st-hist__dot.is-now { fill: var(--pf-cream); stroke: var(--pf-cream); }
+  .st-hist__point { fill: rgb(${CREAM} / 0.5); font-family: var(--pf-mono); font-size: 10px; font-weight: 600; text-anchor: middle; }
+  .st-hist__point.is-now { fill: var(--pf-cream); }
+  .st.is-armed .st-hist__fill, .st.is-armed .st-hist__line, .st.is-armed .st-hist__dot, .st.is-armed .st-hist__point { opacity: 0; }
+  .st.is-armed.is-in .st-hist__fill, .st.is-armed.is-in .st-hist__line, .st.is-armed.is-in .st-hist__dot, .st.is-armed.is-in .st-hist__point { opacity: 1; transition: opacity 700ms ease 250ms; }
+  .st-hist__row.is-now .st-hist__name { color: var(--pf-cream); }
+  .st-hist__row.is-now .st-hist__val em { color: var(--pf-cream); }
+
+  .st-hist { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .st-hist__row { display: grid; grid-template-columns: minmax(0, 1fr) 12rem 7rem 8rem; align-items: center; gap: 0.9rem; padding: 0.7rem 0; border-top: 1px solid rgb(${CREAM} / 0.08); }
+  .st-hist__row:first-child { border-top: none; padding-top: 0; }
+  .st-hist__name { font-size: 0.86rem; color: rgb(${CREAM} / 0.88); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .st-hist__val { font-family: var(--pf-mono); font-size: 0.6rem; color: rgb(${CREAM} / 0.45); font-variant-numeric: tabular-nums; }
+  .st-hist__val em { font-style: normal; font-weight: 640; font-size: 0.72rem; color: var(--pf-cream); }
+  .st-hist__when { font-family: var(--pf-mono); font-size: 0.6rem; color: rgb(${CREAM} / 0.4); text-align: right; }
+  @media (max-width: 820px) {
+    .st-hist__row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.3rem; }
+    .st-hist__row .st-bar { grid-column: 1 / -1; }
+    .st-hist__when { grid-column: 1 / -1; text-align: left; }
+  }
+
   /* Empty state — a sentence in reading ink, never a grey slab or a shrug. */
   .st-empty { margin: 0; max-width: 52ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
 
