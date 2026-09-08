@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
-import StarField from "@/features/profile/components/StarField";
 import { type ModeSelectStats } from "@/lib/modes/mode-select-stats";
 
 // THE LANDING'S OWN MODE DECK, REUSED HERE.
@@ -141,10 +140,6 @@ export default function ModeSelectPage({ stats }: ModeSelectPageProps) {
       </header>
 
       <div className="pm">
-        <div className="pb-bg" aria-hidden="true">
-          <StarField />
-        </div>
-
         <section className="lp-modes" aria-label="Game modes">
           {/* The board's intro, not the landing's section head: .lp-section__title is a
               landing display size (up to 3.85rem) and read twice as large as every

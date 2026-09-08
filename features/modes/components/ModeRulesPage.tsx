@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
-import StarField from "@/features/profile/components/StarField";
 import { trainingModeCopy } from "@/content/copy";
 
 type RulesMode = "training" | "competition" | "expert";
@@ -712,10 +711,6 @@ export default function ModeRulesPage({ initialMode, progress }: ModeRulesPagePr
       </header>
 
       <div className="pb" data-mode={mode}>
-        <div className="pb-bg" aria-hidden="true">
-          <StarField />
-        </div>
-
         {/* key={mode} remounts the panel on every switch, so the stagger replays and
             the change is felt rather than guessed. */}
         {/* pb-stack, not a bare div: .pb is a grid, so this wrapper is one cell and

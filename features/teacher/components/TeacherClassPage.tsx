@@ -35,11 +35,13 @@ export default function TeacherClassPage({
   cls,
   onBack,
   onOpenStudent,
+  onOpenExercise,
 }: {
   teacher: TeacherProfile;
   cls: TeacherClass;
   onBack: () => void;
   onOpenStudent: (studentId: string) => void;
+  onOpenExercise: (exerciseId: string) => void;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [renaming, setRenaming] = useState(false);
@@ -117,7 +119,7 @@ export default function TeacherClassPage({
   const behind = students.filter((s) => s.live === "not_started").length;
 
   return (
-    <div ref={rootRef} className="st st--flat tc--class">
+    <div ref={rootRef} className="st tc--class">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: CLASS_CSS }} />
 
@@ -213,7 +215,7 @@ export default function TeacherClassPage({
               {open ? (
                 <>
                   <span
-                    className="st-seg tc-live__seg"
+                    className="st-seg st-seg--mode"
                     role="img"
                     aria-label="Participation"
                     style={{ ["--m" as string]: MODE_ACCENT[open.mode] }}
@@ -225,7 +227,7 @@ export default function TeacherClassPage({
                   <ul className="st-legend">
                     <li>
                       <span
-                        className="st-legend__sw st-legend__sw--lit tc-live__sw"
+                        className="st-legend__sw st-legend__sw--lit st-legend__sw--mode"
                         style={{ ["--m" as string]: MODE_ACCENT[open.mode] }}
                       />
                       <em>{open.finished}</em> finished
@@ -271,13 +273,13 @@ export default function TeacherClassPage({
             nobody is trailing the class.
           </p>
         ) : (
-          <ul className="tc-att">
+          <ul className="st-att">
             {attention.map((g) => (
-              <li key={g.reason} className="tc-att__row">
-                <span className="tc-att__count"><em>{g.students.length}</em></span>
-                <span className="tc-att__text">
-                  <span className="tc-att__why">{g.reason}</span>
-                  <span className="tc-att__names">
+              <li key={g.reason} className="st-att__row">
+                <span className="st-att__count"><em>{g.students.length}</em></span>
+                <span className="st-att__text">
+                  <span className="st-att__why">{g.reason}</span>
+                  <span className="st-att__names">
                     {g.students.slice(0, 4).map((s) => s.name).join(", ")}
                     {g.students.length > 4 && ` and ${g.students.length - 4} more`}
                   </span>
@@ -459,7 +461,7 @@ export default function TeacherClassPage({
               .sort((a, b) => a.dueInHours - b.dueInHours)
               .map((ex) => (
                 <li key={ex.id}>
-                  <button type="button" className="st-line">
+                  <button type="button" className="st-line" onClick={() => onOpenExercise(ex.id)}>
                     <span className="st-line__name">{ex.title}</span>
                     <span
                       className="tc-exolist__mode"
@@ -682,8 +684,6 @@ const CLASS_CSS = `
      turns into a dashboard, which is exactly what was asked against. Large
      filled surfaces sit around 22 to 26%, small marks keep 50 to 55%. */
   .tc-live__tag { display: inline-block; margin-left: 0.5rem; font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.12rem 0.42rem; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, var(--m) 45%, transparent); color: color-mix(in srgb, var(--m) 62%, var(--pf-cream)); vertical-align: 0.05em; }
-  .tc-live__seg .st-seg__part--lit { background: color-mix(in srgb, var(--m) 26%, var(--pf-cream)); }
-  .tc-live__sw { background: color-mix(in srgb, var(--m) 26%, var(--pf-cream)) !important; }
 
   /* Where the class stands */
   .tc-stand { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2.4vw, 1.8rem); min-width: 0; }
@@ -723,15 +723,6 @@ const CLASS_CSS = `
   .tc-exolist__mode { justify-self: start; font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, var(--m) 45%, transparent); color: color-mix(in srgb, var(--m) 62%, var(--pf-cream)); white-space: nowrap; }
   .tc-exolist__state { justify-self: start; }
 
-  /* Attention list */
-  .tc-att { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
-  .tc-att__row { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); align-items: baseline; gap: 0.9rem; padding: 0.7rem 0; border-top: 1px solid rgb(${CREAM} / 0.08); }
-  .tc-att__row:first-child { border-top: none; padding-top: 0; }
-  .tc-att__count { font-size: 1.1rem; font-weight: 660; line-height: 1; color: var(--pf-cream); font-variant-numeric: tabular-nums; text-align: right; }
-  .tc-att__count em { font-style: normal; }
-  .tc-att__text { display: grid; gap: 0.2rem; min-width: 0; }
-  .tc-att__why { font-size: 0.86rem; color: rgb(${CREAM} / 0.84); }
-  .tc-att__names { font-family: var(--pf-mono); font-size: 0.58rem; letter-spacing: 0.01em; color: rgb(${CREAM} / 0.4); }
 
   /* Students — a working list. Six columns, so it gets a header. */
   .tc-stu__tools { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }

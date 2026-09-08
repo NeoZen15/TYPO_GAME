@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
-import StarField from "@/features/profile/components/StarField";
 import { BOARD_SYSTEM_CSS } from "@/features/profile/components/board-system";
 
 // Les trois pages légales, sur un seul gabarit.
@@ -46,10 +45,6 @@ export default function LegalPage({ current, kicker, title, updated, intro, sect
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
 
       <ThemeSwitch />
-
-      <div className="st-bg" aria-hidden="true">
-        <StarField />
-      </div>
 
       <header className="st-intro st-sec">
         <span className="st-kicker">{kicker}</span>

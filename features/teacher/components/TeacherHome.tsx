@@ -134,7 +134,7 @@ export default function TeacherHome({
   }, [worst, teacher.exercises]);
 
   return (
-    <div ref={rootRef} className="st st--flat tc--home">
+    <div ref={rootRef} className="st tc--home">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: HOME_CSS }} />
 
@@ -221,13 +221,13 @@ export default function TeacherHome({
             </div>
           </div>
 
-          <ul className="tc-next__faces">
+          <ul className="st-faces tc-next__faces">
             {suggestionFamilies.map((f) => (
-              <li key={f.slug} className="tc-next__face">
-                <span className="tc-next__glyph" style={{ fontFamily: `JDT__${f.slug}` }}>
+              <li key={f.slug} className="st-face">
+                <span className="st-face__glyph" style={{ fontFamily: `JDT__${f.slug}` }}>
                   Aa
                 </span>
-                <span className="tc-next__name">{f.name}</span>
+                <span className="st-face__name">{f.name}</span>
               </li>
             ))}
           </ul>
@@ -282,12 +282,10 @@ const HOME_CSS = `
   .tc-alert__why { font-family: var(--pf-mono); font-size: 0.6rem; letter-spacing: 0.02em; color: rgb(${CREAM} / 0.42); font-variant-numeric: tabular-nums; }
   .tc-alert .st-action { margin-top: 0.35rem; }
 
-  /* 3. The faces, as the object on the right. No frames: on a product that
-     trains the eye, a specimen is a letter on the page, not a thumbnail. */
-  .tc-next__faces { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.2rem, 3vw, 2.4rem); margin: 0; padding: 0; list-style: none; }
-  .tc-next__face { display: grid; justify-items: center; gap: 0.5rem; min-width: 0; }
-  .tc-next__glyph { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1; color: var(--pf-cream); }
-  .tc-next__name { font-family: var(--pf-mono); font-size: 0.52rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
+  /* 3. The faces, as the object on the right. The cell itself is '.st-face' in
+     the system now, since the exercise page shows the same specimens; only the
+     two columns are this screen's, because they answer to this column's width. */
+  .tc-next__faces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tc-next__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.6rem; }
 
   @media (prefers-reduced-motion: reduce) {

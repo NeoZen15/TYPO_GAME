@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
-import StarField from "@/features/profile/components/StarField";
 import { BOARD_SYSTEM_CSS } from "@/features/profile/components/board-system";
 import { sessionEndCopy } from "@/content/copy";
 import type { RecapPanel, RecapView } from "@/lib/game/recap-view";
@@ -162,10 +161,6 @@ export default function SessionRecap({
 
       {/* Fixed top right by its own rule in globals, so it costs no layout. */}
       <ThemeSwitch />
-
-      <div className="st-bg" aria-hidden="true">
-        <StarField />
-      </div>
 
       <header className="st-intro st-sec">
         <span className="st-kicker">{view.kicker}</span>

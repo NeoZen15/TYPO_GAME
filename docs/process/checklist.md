@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-08 (suite) — la fiche Exercice, et les faces qui deviennent le sujet
+
+**Le parti pris, et il vient de ce que le produit est.** La liste des exercices dit lequel, où il en est, combien de temps il reste, et refuse le reste exprès. La fiche porte donc les deux choses qu'elle laisse dehors : ce qu'il y a dedans, et ce qui est revenu. Et « ce que j'ai demandé », sur un produit qui entraîne le regard, ce n'est pas une liste de noms de familles, ce sont les lettres : le panneau des spécimens est le sujet de la page, pas son illustration, et chaque face porte son résultat quand l'exercice est fermé.
+
+**Vérifié plutôt que supposé** : les 16 familles du mock prof ont toutes une vraie `@font-face` servie sur `/teacher`, mesuré sur le rendu. La page montre des spécimens d'exercices fermés et programmés, pas seulement de ceux qui tournent, donc la question se posait vraiment. Aucun faux spécimen, aucune lettre inventée par le navigateur.
+
+**Trois états, trois pages, et pas la même page avec des chiffres en moins.** Programmé : ce qui a été construit et quand ça ouvre, rien d'autre n'existe donc rien d'autre n'est dessiné. En cours : la course contre sa propre échéance (les deux parts sur une seule barre, la marque dit où est le temps) et qui relancer. Fermé : ce qui est revenu, l'anneau du profil, et la comparaison.
+
+**La comparaison est contre cette classe et rien d'autre.** Cet exercice contre ce que la même classe fait sur ses autres exercices fermés, avec le nombre d'exercices nommé à côté. Comparer à une autre classe raconterait les classes, pas l'exercice. Et la liste des élèves reste en **ordre de trombinoscope, jamais triée par résultat** : trier une classe par ses notes est un classement, et cet espace n'en fait pas. Les groupes « worth a word » sont là pour trouver qui regarder.
+
+**Deux entrées, une seule page.** Ouvert depuis une classe, le retour nomme la classe ; ouvert depuis la liste, il dit « Exercises », et le groupe de la liste est conservé dans l'adresse pour revenir sur la même étagère. C'est exactement ce que le commentaire de `TeacherBack` prévoyait depuis le début.
+
+**Trois chemins qui ne menaient nulle part sont branchés.** Les lignes d'exercice de la fiche Classe et de la liste étaient des boutons sans clic, elles ouvrent la fiche. Et les noms de la fiche Exercice ouvrent la fiche Élève, donc les deux pages construites aujourd'hui se répondent.
+
+**Quatre recettes montent dans le système partagé, valeurs inchangées, préfixe seul** : la cellule de spécimen (`st-face`), la barre de course (`st-pace`), la liste groupée par raison (`st-att`) et la teinte de mode sur une barre segmentée. Chacune était enfermée dans un écran et un deuxième la dessine maintenant. Un mot de vocabulaire ajouté au fichier du temps : `windowLabel`, la longueur de la fenêtre, qui n'est jamais l'échéance.
+
+**Reste à construire** : la création d'exercice, puis côté élève l'endroit où un devoir assigné apparaît dans son profil.
+
+---
+
 ## Note — 2026-09-08 — la fiche Élève est construite, et ce qu'elle refuse de dire
 
 **Le principe, validé avant d'écrire une ligne.** Une fiche Élève n'est pas un profil en plus petit. Le profil est la chambre de l'élève : son entraînement libre, son pool, sa maîtrise du catalogue, ses badges, sa constellation. Le prof ne voit rien de tout ça et rien dans la page ne va le chercher. Ce qu'elle porte, c'est ce que les exercices de ce prof ont produit, plus la seule chose que le profil ne dit jamais : où cette personne se situe dans sa classe. Elle est faite pour être ouverte vingt quatre fois de suite, donc quatre compteurs et trois panneaux, pas un tableau de bord.

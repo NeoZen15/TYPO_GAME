@@ -9750,7 +9750,8 @@ svg {
     margin: clamp(1.2rem, 3vh, 2.2rem) auto clamp(2rem, 6vh, 4rem);
   }
   /* Constellation journey — full-bleed (no rectangle): break out of the page's
-     horizontal padding so it runs edge-to-edge, on its own starfield. */
+     horizontal padding so it runs edge-to-edge, on its own starfield. It is the
+     ONLY surface of the site that still has one (owner, 2026-09-08). */
   .pf-constellation-stage {
     margin-inline: calc(-1 * clamp(1rem, 3vw, 2rem));
     /* No shell head sits above it (constellation/stats own their intros), so
@@ -9799,10 +9800,11 @@ svg {
    this block only lays out content, exactly like a profile board does.
 
    Vocabulary mirrored from ActivityBoard (features/profile/components): the same
-   root padding, the same fixed starfield layer, the same centred intro scale, the
-   same panel (border at 10 % ink, radius 0.9rem, translucent page fill, blur), the
-   same mono caps label. `rgb(from var(--pf-cream) r g b / a)` is the literal
-   compiled form of the boards' `rgb(${CREAM} / a)`.
+   root padding, the same centred intro scale, the same panel (border at 10 % ink,
+   radius 0.9rem, `--pf-surface` fill), the same mono caps label. `rgb(from
+   var(--pf-cream) r g b / a)` is the literal compiled form of the boards'
+   `rgb(${CREAM} / a)`. The starfield layer this page also mirrored is gone from
+   both, removed site-wide on 2026-09-08.
 
    One thing is ours: the mode accent, on the chip only. The profile's rule, written
    in ProfileSummary, is contour and faint wash, never an aplat.
@@ -9815,21 +9817,6 @@ svg {
   display: grid;
   gap: clamp(1.1rem, 3vh, 2rem);
   padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 8vh, 6rem);
-}
-
-.pb-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.pb-bg .dw-stars {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 /* Mode accent, from the existing global tokens. */
@@ -9914,9 +9901,7 @@ svg {
   padding: clamp(1rem, 2.2vw, 1.4rem);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+  background: var(--pf-surface);
   /* A plain block, like .st-panel. It used to be a grid with a 0.55rem gap WHILE
      the title carried margin-bottom: 0.9rem, so both added up and every title sat
      1.45rem from its content. One rule governs, and it is the title's margin. */
@@ -10054,8 +10039,9 @@ svg {
   }
 }
 
-/* The board the deck sits in: the starfield needs a positioned, isolated parent, and
-   the content centres in the room the header leaves. */
+/* The board the deck sits in: the content centres in the room the header leaves.
+   It stays a positioned, isolated parent so anything stacked inside it keeps its
+   own context (it used to hold the starfield layer, removed 2026-09-08). */
 .pm {
   position: relative;
   isolation: isolate;
@@ -10320,9 +10306,7 @@ svg {
   padding: clamp(0.7rem, 1.5vw, 0.95rem);
   border: 1px solid rgb(from var(--pf-cream) r g b / 0.1);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+  background: var(--pf-surface);
 }
 
 .pb-tile__big {
@@ -10715,7 +10699,8 @@ svg {
 
 /* The mode's signature card takes the ranked-card treatment from ProfileSummary:
    accent contour at 32 %, a 7 % radial wash from the top right. Same numbers, and
-   the same reason: the accent marks the one card that says what this mode IS. */
+   the same reason: the accent marks the one card that says what this mode IS. The
+   accent sits over `--pf-surface`, like `.ps-arena`, since the sky went. */
 .pb-panel--accent {
   border-color: color-mix(in srgb, var(--pb-accent) 32%, transparent);
   background:
@@ -10724,7 +10709,7 @@ svg {
       color-mix(in srgb, var(--pb-accent) 7%, transparent),
       transparent 60%
     ),
-    color-mix(in srgb, var(--pf-bg) 90%, transparent);
+    var(--pf-surface);
 }
 
 .pb-panel--accent .pb-panel__label {

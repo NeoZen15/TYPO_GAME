@@ -31,7 +31,13 @@ const GROUPS: ReadonlyArray<{ id: Group; label: string }> = [
 const isGroup = (value: string | null): value is Group =>
   value !== null && GROUPS.some((g) => g.id === value);
 
-export default function TeacherExercises({ teacher }: { teacher: TeacherProfile }) {
+export default function TeacherExercises({
+  teacher,
+  onOpenExercise,
+}: {
+  teacher: TeacherProfile;
+  onOpenExercise: (exerciseId: string) => void;
+}) {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   // ADDRESSABLE, for the same reason the profile made its tabs addressable: a
@@ -112,7 +118,7 @@ export default function TeacherExercises({ teacher }: { teacher: TeacherProfile 
   const pace = useMemo(() => paceOfOpen(teacher.exercises), [teacher.exercises]);
 
   return (
-    <div ref={rootRef} className="st st--flat tc--exos">
+    <div ref={rootRef} className="st tc--exos">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: EXOS_CSS }} />
 
@@ -193,6 +199,7 @@ export default function TeacherExercises({ teacher }: { teacher: TeacherProfile 
                   <button
                     type="button"
                     className={`st-line${ex.state === "running" ? ` is-${urgencyOf(ex.dueInHours)}` : ""}`}
+                    onClick={() => onOpenExercise(ex.id)}
                   >
                     <span className="st-session__mode">{ex.className}</span>
 
@@ -311,18 +318,18 @@ export default function TeacherExercises({ teacher }: { teacher: TeacherProfile 
                   <span className="tc-pace__class">{e.className}</span>
                 </span>
 
-                <span className="tc-pace__track" role="img" aria-label={`${donePct}% finished, ${elapsedPct}% of the time gone`}>
-                  <span className="tc-pace__fill" style={{ width: `${donePct}%` }} />
+                <span className="st-pace__track" role="img" aria-label={`${donePct}% finished, ${elapsedPct}% of the time gone`}>
+                  <span className="st-pace__fill" style={{ width: `${donePct}%` }} />
                   {/* The mark, on the same bar and not beside it: the gap has to
                       be a distance the eye measures, not two figures to compare. */}
-                  <span className="tc-pace__mark" style={{ left: `${elapsedPct}%` }} />
+                  <span className="st-pace__mark" style={{ left: `${elapsedPct}%` }} />
                 </span>
 
-                <span className="tc-pace__read">
-                  <span className="tc-pace__verdict">
+                <span className="st-pace__read">
+                  <span className="st-pace__verdict">
                     {gap >= 0 ? "on pace" : `${Math.abs(gap)} behind`}
                   </span>
-                  <span className="tc-pace__nums">
+                  <span className="st-pace__nums">
                     {donePct}% done · {elapsedPct}% of the time
                   </span>
                 </span>
@@ -384,22 +391,13 @@ const EXOS_CSS = `
   .tc-pace__title { font-size: 0.86rem; color: rgb(${CREAM} / 0.88); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tc-pace__class { font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(${CREAM} / 0.4); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .tc-pace__track { position: relative; display: block; height: 0.6rem; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.1); overflow: hidden; }
-  .tc-pace__fill { display: block; height: 100%; border-radius: var(--radius-pill); background: rgb(${CREAM} / 0.5); }
-  .tc-pace__mark { position: absolute; top: -0.22rem; bottom: -0.22rem; width: 2px; border-radius: 1px; background: var(--pf-cream); transform: translateX(-1px); }
-  .tc-pace__track { overflow: visible; }
-  .st.is-armed .tc-pace__fill { transform: scaleX(0); transform-origin: left; }
-  .st.is-armed.is-in .tc-pace__fill { transform: scaleX(1); transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
 
-  .tc-pace__read { display: grid; gap: 0.14rem; }
-  .tc-pace__verdict { font-family: var(--pf-mono); font-size: 0.66rem; font-weight: 640; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
-  .tc-pace__nums { font-family: var(--pf-mono); font-size: 0.56rem; color: rgb(${CREAM} / 0.42); font-variant-numeric: tabular-nums; }
   .tc-pace__due { justify-self: end; text-align: right; }
 
   @media (max-width: 980px) {
     .tc-pace__row { grid-template-columns: minmax(0, 1fr) 7rem; row-gap: 0.5rem; }
-    .tc-pace__track { grid-column: 1 / -1; }
-    .tc-pace__read { grid-column: 1; }
+    .st-pace__track { grid-column: 1 / -1; }
+    .st-pace__read { grid-column: 1; }
     .tc-pace__due { grid-row: 1; grid-column: 2; }
   }
 

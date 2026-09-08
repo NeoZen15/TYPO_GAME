@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import StarField from "@/features/profile/components/StarField";
 import {
   BLUE,
   BOARD_SYSTEM_CSS,
@@ -102,10 +101,6 @@ export default function StatsBoard({
   return (
     <div ref={rootRef} className="st">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
-
-      <div className="st-bg" aria-hidden="true">
-        <StarField />
-      </div>
 
       <header className="st-intro st-sec">
         <span className="st-kicker">Your training</span>

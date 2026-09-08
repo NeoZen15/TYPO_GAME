@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import { LIGHT_THEME_ENABLED } from "@/lib/theme-availability";
-import StarField from "@/features/profile/components/StarField";
 import type { EyeProfile, PlayerProfile } from "@/lib/profile/mock-profile";
 
 // ---------------------------------------------------------------------------
@@ -75,10 +74,6 @@ export default function PreferencesBoard({
   return (
     <div ref={rootRef} className="pr">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-
-      <div className="pr-bg" aria-hidden="true">
-        <StarField />
-      </div>
 
       <header className="pr-intro pr-sec">
         <span className="pr-kicker">Your settings</span>
@@ -174,9 +169,6 @@ const CSS = `
     display: grid; gap: clamp(1.1rem, 3vh, 2rem);
     padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 8vh, 6rem);
   }
-  .pr-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-  .pr-bg .dw-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
-
   .pr.is-armed .pr-sec { opacity: 0; transform: translateY(16px); }
   .pr.is-armed.is-in .pr-sec { opacity: 1; transform: none; transition: opacity 600ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1); }
 
@@ -189,8 +181,7 @@ const CSS = `
     width: min(98%, 46rem); margin: 0 auto;
     padding: clamp(1rem, 2.4vw, 1.5rem) clamp(1.1rem, 2.6vw, 1.6rem);
     border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
-    background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    background: var(--pf-surface);
   }
   .pr-panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
   .pr-panel__title { margin: 0 0 0.6rem; font-family: var(--pf-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(${CREAM} / 0.58); }

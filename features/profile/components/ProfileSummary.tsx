@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import StarField from "@/features/profile/components/StarField";
 import { DwigginsBadge, DwigginsBadgeDefs } from "@/components/brand/DwigginsBadge";
 import type { Art, Badge, Tier } from "@/lib/brand/dwiggins-badge-engine";
 import type { ArenaProfile, ArenaRank, EyeProfile, PlayerProfile, RankedMatchMode } from "@/lib/profile/mock-profile";
@@ -139,10 +138,6 @@ export default function ProfileSummary({
     <div ref={rootRef} className="ps">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <DwigginsBadgeDefs />
-
-      <div className="ps-bg" aria-hidden="true">
-        <StarField />
-      </div>
 
       <header className="ps-intro ps-sec">
         <span className="ps-kicker">Your profile</span>
@@ -326,9 +321,6 @@ const CSS = `
     display: grid; gap: clamp(1.1rem, 3vh, 2rem);
     padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 8vh, 6rem);
   }
-  .ps-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-  .ps-bg .dw-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
-
   .ps.is-armed .ps-sec { opacity: 0; transform: translateY(16px); }
   .ps.is-armed.is-in .ps-sec { opacity: 1; transform: none; transition: opacity 600ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1); }
 
@@ -343,8 +335,7 @@ const CSS = `
     width: min(98%, 60rem); margin: 0 auto; position: relative;
     padding: clamp(1.2rem, 2.6vw, 1.8rem);
     border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
-    background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    background: var(--pf-surface);
   }
   .ps-tag {
     display: inline-flex; align-items: center; font-family: var(--pf-mono);
@@ -403,8 +394,7 @@ const CSS = `
     border: 1px solid color-mix(in srgb, ${ORANGE} 32%, transparent); border-radius: var(--radius);
     background:
       radial-gradient(120% 80% at 85% 0%, color-mix(in srgb, ${ORANGE} 7%, transparent), transparent 60%),
-      color-mix(in srgb, var(--pf-bg) 88%, transparent);
-    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      var(--pf-surface);
     display: grid; gap: clamp(1.1rem, 2.6vh, 1.6rem);
   }
   .ps-arena__head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; flex-wrap: wrap; }

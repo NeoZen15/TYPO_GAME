@@ -39,9 +39,6 @@ export const BOARD_SYSTEM_CSS = `
     display: grid; gap: clamp(1.1rem, 3vh, 2rem);
     padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 8vh, 6rem);
   }
-  .st-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-  .st-bg .dw-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
-
   .st.is-armed .st-sec { opacity: 0; transform: translateY(16px); }
   .st.is-armed.is-in .st-sec { opacity: 1; transform: none; transition: opacity 600ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1); }
 
@@ -57,8 +54,7 @@ export const BOARD_SYSTEM_CSS = `
   .st-kpi {
     display: grid; gap: 0.22rem; padding: clamp(0.7rem, 1.5vw, 0.95rem);
     border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
-    background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    background: var(--pf-surface);
   }
   .st-kpi__value { font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 660; letter-spacing: -0.03em; line-height: 1; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
   .st-kpi__label { font-family: var(--pf-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.7); }
@@ -72,8 +68,7 @@ export const BOARD_SYSTEM_CSS = `
     width: min(98%, 66rem); margin: 0 auto;
     padding: clamp(1rem, 2.2vw, 1.4rem);
     border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
-    background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    background: var(--pf-surface);
   }
   .st-cols .st-panel { width: 100%; margin: 0; }
   .st-panel__title { margin: 0 0 0.9rem; font-family: var(--pf-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(${CREAM} / 0.58); }
@@ -336,14 +331,16 @@ export const BOARD_SYSTEM_CSS = `
      Added 2026-09-04 for the teacher space, and added HERE rather than beside,
      which is this file's own rule.
 
-     Why a flat variant. Every panel above paints itself as a 90% wash of the
-     page colour. That reads as a panel only because a star canvas sits behind
-     it: the wash dims the stars inside its own outline. The teacher space has
-     no sky (owner's call, it must stay calmer), and there the same wash is the
-     page colour over the page colour, i.e. nothing at all. '.st--flat' on the
-     root gives those surfaces a real one, '--pf-surface', the step the token
-     contract already publishes, and drops a blur with nothing left to blur.
-     Any future screen on a plain background gets it by adding one class.
+     Why flat is now the default, and no longer a variant (2026-09-08). Every
+     panel used to paint itself as a 90% wash of the page colour, which reads as
+     a panel only because a star canvas sits behind it: the wash dims the stars
+     inside its own outline. The teacher space had no sky, and there the same
+     wash was the page colour over the page colour, i.e. nothing at all, so it
+     took '.st--flat' and '--pf-surface', the step the token contract already
+     publishes. The owner then removed the sky from the WHOLE site except the
+     profile's constellation, so the exception became the rule: '.st-panel' and
+     '.st-kpi' carry '--pf-surface' outright and the modifier is gone. A surface
+     that wants a wash of the page colour now has to say why it has a sky.
 
      Why the controls. The system could show numbers but not take input: the
      switch, stepper and segmented control live inside PreferencesBoard, where
@@ -390,13 +387,6 @@ export const BOARD_SYSTEM_CSS = `
   .st-back:hover .st-back__arrow { transform: translateX(-2px); }
   @media (prefers-reduced-motion: reduce) {
     .st-back:hover .st-back__arrow { transform: none; }
-  }
-
-  .st--flat .st-panel,
-  .st--flat .st-kpi {
-    background: var(--pf-surface);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
   }
 
 
@@ -455,6 +445,56 @@ export const BOARD_SYSTEM_CSS = `
     .st-hist__row .st-bar { grid-column: 1 / -1; }
     .st-hist__when { grid-column: 1 / -1; text-align: left; }
   }
+
+  /* =========================================================================
+     SPECIMENS AND PACE
+     Moved here 2026-09-08, out of TeacherHome and TeacherExercises, when the
+     exercise page needed both. Values untouched, prefix only.
+     ========================================================================= */
+
+  /* A specimen cell: the face, and its name underneath. NO FRAME, and nothing
+     on the glyph but a size: on a product that trains the eye a specimen is a
+     letter on the page, not a thumbnail, and every typographic property has to
+     come from the font file. Each screen sets its own columns on '.st-faces'. */
+  .st-faces { display: grid; gap: clamp(1.2rem, 3vw, 2.4rem); margin: 0; padding: 0; list-style: none; }
+  .st-face { display: grid; justify-items: center; gap: 0.5rem; min-width: 0; }
+  .st-face__glyph { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1; color: var(--pf-cream); }
+  .st-face__name { font-family: var(--pf-mono); font-size: 0.52rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgb( / 0.42); }
+
+  /* TWO SHARES ON ONE BAR: how much of the class has finished, and how much of
+     the window has gone. Both are fractions of their own thing, so exercises of
+     different sizes, lengths and deadlines can be read side by side. The whole
+     reading is one distance: has the fill reached the mark. */
+  .st-pace__track { position: relative; display: block; height: 0.6rem; border-radius: var(--radius-pill); background: rgb( / 0.1); overflow: visible; }
+  .st-pace__fill { display: block; height: 100%; border-radius: var(--radius-pill); background: rgb( / 0.5); }
+  .st-pace__mark { position: absolute; top: -0.22rem; bottom: -0.22rem; width: 2px; border-radius: 1px; background: var(--pf-cream); transform: translateX(-1px); }
+  .st.is-armed .st-pace__fill { transform: scaleX(0); transform-origin: left; }
+  .st.is-armed.is-in .st-pace__fill { transform: scaleX(1); transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 200ms; }
+  .st-pace__read { display: grid; gap: 0.14rem; }
+  .st-pace__verdict { font-family: var(--pf-mono); font-size: 0.66rem; font-weight: 640; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
+  .st-pace__nums { font-family: var(--pf-mono); font-size: 0.56rem; color: rgb( / 0.42); font-variant-numeric: tabular-nums; }
+
+  /* WHO TO LOOK AT, GROUPED BY REASON, and never a ranking. Told one person at
+     a time, thirteen people who never opened an exercise produce thirteen
+     identical lines and a teacher learns nothing they can act on. Grouped, it
+     produces one line that says thirteen, which is a fact worth a decision.
+     Each group carries its reason, so the teacher can disagree with it.
+     Moved out of TeacherClassPage 2026-09-08 for the exercise page. */
+  .st-att { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .st-att__row { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); align-items: baseline; gap: 0.9rem; padding: 0.7rem 0; border-top: 1px solid rgb( / 0.08); }
+  .st-att__row:first-child { border-top: none; padding-top: 0; }
+  .st-att__count { font-size: 1.1rem; font-weight: 660; line-height: 1; color: var(--pf-cream); font-variant-numeric: tabular-nums; text-align: right; }
+  .st-att__count em { font-style: normal; }
+  .st-att__text { display: grid; gap: 0.2rem; min-width: 0; }
+  .st-att__why { font-size: 0.86rem; color: rgb( / 0.84); }
+  .st-att__names { font-family: var(--pf-mono); font-size: 0.58rem; letter-spacing: 0.01em; color: rgb( / 0.4); }
+
+  /* A participation bar painted in the exercise's OWN MODE. Large filled
+     surfaces take 26% rather than the system's 45 or 55: those ratios are
+     calibrated for small text and thin contours, and on a bar they come out as
+     a block of colour. Moved out of TeacherClassPage 2026-09-08. */
+  .st-seg--mode .st-seg__part--lit { background: color-mix(in srgb, var(--m) 26%, var(--pf-cream)); }
+  .st-legend__sw--mode { background: color-mix(in srgb, var(--m) 26%, var(--pf-cream)) !important; }
 
   /* Empty state — a sentence in reading ink, never a grey slab or a shrug. */
   .st-empty { margin: 0; max-width: 52ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import StarField from "@/features/profile/components/StarField";
 import { DwigginsBadge, DwigginsBadgeDefs } from "@/components/brand/DwigginsBadge";
 import type { Art, Badge } from "@/lib/brand/dwiggins-badge-engine";
 import type { PlayerProfile, ProfileBadge } from "@/lib/profile/mock-profile";
@@ -65,10 +64,6 @@ export default function AchievementsBoard({
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <DwigginsBadgeDefs />
 
-      <div className="av-bg" aria-hidden="true">
-        <StarField />
-      </div>
-
       <header className="av-intro av-sec">
         <span className="av-kicker">Your collection</span>
         <h1 className="av-title">Stickers for a sharper eye.</h1>
@@ -129,9 +124,6 @@ const CSS = `
     display: grid; gap: clamp(1.1rem, 3vh, 2rem);
     padding: clamp(1.2rem, 3vw, 2.2rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 8vh, 6rem);
   }
-  .av-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-  .av-bg .dw-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
-
   .av.is-armed .av-sec { opacity: 0; transform: translateY(16px); }
   .av.is-armed.is-in .av-sec { opacity: 1; transform: none; transition: opacity 600ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1); }
 
@@ -149,8 +141,7 @@ const CSS = `
     display: grid; grid-template-columns: clamp(3.6rem, 9vw, 4.6rem) 1fr; gap: 0.9rem; align-items: center;
     padding: clamp(0.9rem, 2vw, 1.2rem);
     border: 1px solid rgb(${CREAM} / 0.1); border-radius: var(--radius);
-    background: color-mix(in srgb, var(--pf-bg) 90%, transparent);
-    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+    background: var(--pf-surface);
   }
   .av-badge.is-earned { border-color: rgb(${CREAM} / 0.2); }
   .av-badge__art { display: grid; place-items: center; }

@@ -10,6 +10,7 @@ import TeacherClasses from "@/features/teacher/components/TeacherClasses";
 import TeacherClassPage from "@/features/teacher/components/TeacherClassPage";
 import TeacherStudentPage from "@/features/teacher/components/TeacherStudentPage";
 import TeacherExercises from "@/features/teacher/components/TeacherExercises";
+import TeacherExercisePage from "@/features/teacher/components/TeacherExercisePage";
 import { MOCK_TEACHER, type TeacherProfile } from "@/lib/teacher/mock-teacher";
 
 // ---------------------------------------------------------------------------
@@ -60,12 +61,17 @@ export default function TeacherExperience({
   // is doing" has to be a link. It only ever exists under a class, since a
   // student is read through the exercises that class was given.
   const [studentId, setStudentId] = useState<string | null>(params.get("student"));
+  // An exercise is reachable from TWO places, and the address says which one it
+  // was opened from: under a class it goes back to that class, under the list it
+  // goes back to the list. Same page, two contexts, one control.
+  const [exerciseId, setExerciseId] = useState<string | null>(params.get("exercise"));
   const [scrolled, setScrolled] = useState(false);
 
   const showView = useCallback((next: ViewId) => {
     setView(next);
     setClassId(null);
     setStudentId(null);
+    setExerciseId(null);
     if (typeof window === "undefined") return;
     window.history.replaceState(null, "", next === "home" ? "/teacher" : `/teacher?view=${next}`);
   }, []);
@@ -80,6 +86,7 @@ export default function TeacherExperience({
     setView("classes");
     setClassId(id);
     setStudentId(null);
+    setExerciseId(null);
     if (typeof window === "undefined") return;
     window.history.pushState(null, "", `/teacher?view=classes&class=${id}`);
   }, []);
@@ -90,6 +97,7 @@ export default function TeacherExperience({
     setView("classes");
     setClassId(cid);
     setStudentId(sid);
+    setExerciseId(null);
     if (typeof window === "undefined") return;
     window.history.pushState(null, "", `/teacher?view=classes&class=${cid}&student=${sid}`);
   }, []);
@@ -103,9 +111,61 @@ export default function TeacherExperience({
     window.history.replaceState(null, "", `/teacher?view=classes&class=${cid}`);
   }, []);
 
+  // The group the list was on is kept in the address, so coming back out of an
+  // exercise lands on the same shelf it was opened from.
+  const groupParam = () => {
+    if (typeof window === "undefined") return "";
+    const g = new URLSearchParams(window.location.search).get("group");
+    return g ? `&group=${g}` : "";
+  };
+
+  const showExercise = useCallback((id: string, fromClassId: string | null) => {
+    setExerciseId(id);
+    setStudentId(null);
+    if (fromClassId) {
+      setView("classes");
+      setClassId(fromClassId);
+      if (typeof window === "undefined") return;
+      window.history.pushState(null, "", `/teacher?view=classes&class=${fromClassId}&exercise=${id}`);
+      return;
+    }
+    setView("exercises");
+    setClassId(null);
+    if (typeof window === "undefined") return;
+    window.history.pushState(null, "", `/teacher?view=exercises${groupParam()}&exercise=${id}`);
+  }, []);
+
+  const closeExercise = useCallback((fromClassId: string | null) => {
+    setExerciseId(null);
+    if (typeof window === "undefined") return;
+    window.history.replaceState(
+      null,
+      "",
+      fromClassId ? `/teacher?view=classes&class=${fromClassId}` : `/teacher?view=exercises${groupParam()}`,
+    );
+  }, []);
+
   // An address naming a class that does not exist falls back to the list rather
   // than rendering nothing.
   const openClass = classId ? teacher.classes.find((c) => c.id === classId) ?? null : null;
+  // An exercise carries its own class, so the page has its context even when the
+  // address names the exercise alone.
+  const openExercise = exerciseId ? teacher.exercises.find((e) => e.id === exerciseId) ?? null : null;
+  const exerciseClass = openExercise
+    ? teacher.classes.find((c) => c.id === openExercise.classId) ?? null
+    : null;
+  const fromList = view === "exercises";
+  const exerciseScreen =
+    openExercise && exerciseClass ? (
+      <TeacherExercisePage
+        teacher={teacher}
+        cls={exerciseClass}
+        ex={openExercise}
+        backLabel={fromList ? "Exercises" : exerciseClass.name}
+        onBack={() => closeExercise(fromList ? null : exerciseClass.id)}
+        onOpenStudent={(sid) => showStudent(exerciseClass.id, sid)}
+      />
+    ) : null;
 
   // The address is the truth: when the browser walks the history, the screen
   // follows it rather than the other way round.
@@ -116,6 +176,7 @@ export default function TeacherExperience({
       setView(isViewId(v) ? v : "home");
       setClassId(q.get("class"));
       setStudentId(q.get("student"));
+      setExerciseId(q.get("exercise"));
     };
     window.addEventListener("popstate", sync);
     return () => window.removeEventListener("popstate", sync);
@@ -214,7 +275,7 @@ export default function TeacherExperience({
 
       {view === "classes" && (
         <div className="pf-constellation-stage">
-          {openClass && studentId ? (
+          {exerciseScreen ?? (openClass && studentId ? (
             <TeacherStudentPage
               teacher={teacher}
               cls={openClass}
@@ -227,16 +288,19 @@ export default function TeacherExperience({
               cls={openClass}
               onBack={() => showView("classes")}
               onOpenStudent={(sid) => showStudent(openClass.id, sid)}
+              onOpenExercise={(eid) => showExercise(eid, openClass.id)}
             />
           ) : (
             <TeacherClasses teacher={teacher} onOpenClass={showClass} />
-          )}
+          ))}
         </div>
       )}
 
       {view === "exercises" && (
         <div className="pf-constellation-stage">
-          <TeacherExercises teacher={teacher} />
+          {exerciseScreen ?? (
+            <TeacherExercises teacher={teacher} onOpenExercise={(eid) => showExercise(eid, null)} />
+          )}
         </div>
       )}
     </main>

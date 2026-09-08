@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
-import StarField from "@/features/profile/components/StarField";
 
 type ModePlaceholderPageProps = {
   modeLabel: string;
@@ -64,10 +63,6 @@ export default function ModePlaceholderPage({
       </header>
 
       <div className="pb">
-        <div className="pb-bg" aria-hidden="true">
-          <StarField />
-        </div>
-
         <header className="pb-intro pb-sec">
           <span className="pb-kicker">{modeLabel}</span>
           <h1 className="pb-title">Being prepared.</h1>

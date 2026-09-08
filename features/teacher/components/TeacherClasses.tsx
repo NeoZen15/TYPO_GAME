@@ -114,7 +114,7 @@ export default function TeacherClasses({
   }
 
   return (
-    <div ref={rootRef} className="st st--flat tc--list">
+    <div ref={rootRef} className="st tc--list">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: LIST_CSS }} />
 

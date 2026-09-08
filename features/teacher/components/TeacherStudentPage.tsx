@@ -75,7 +75,7 @@ export default function TeacherStudentPage({
   // address should: it says so, and it keeps the way out.
   if (!detail) {
     return (
-      <div className="st st--flat tc--person">
+      <div className="st tc--person">
         <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
         <style dangerouslySetInnerHTML={{ __html: PERSON_CSS }} />
         <TeacherBack label={cls.name} onClick={onBack} />
@@ -134,7 +134,7 @@ export default function TeacherStudentPage({
   const drawable = pts.filter((p) => p.theirs !== null).length > 1;
 
   return (
-    <div ref={rootRef} className="st st--flat tc--person">
+    <div ref={rootRef} className="st tc--person">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: PERSON_CSS }} />
 

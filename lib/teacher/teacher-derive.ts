@@ -362,18 +362,20 @@ export type Pace = {
   gap: number;
 };
 
+export function paceOf(e: TeacherExercise): Pace {
+  const donePct = e.assigned === 0 ? 0 : Math.round((e.finished / e.assigned) * 100);
+  const elapsed = e.openedForHours - e.dueInHours;
+  const elapsedPct = Math.max(
+    0,
+    Math.min(100, Math.round((elapsed / Math.max(1, e.openedForHours)) * 100)),
+  );
+  return { exercise: e, donePct, elapsedPct, gap: donePct - elapsedPct };
+}
+
 export function paceOfOpen(exercises: TeacherExercise[]): Pace[] {
   return exercises
     .filter((e) => e.state === "running")
-    .map((e) => {
-      const donePct = e.assigned === 0 ? 0 : Math.round((e.finished / e.assigned) * 100);
-      const elapsed = e.openedForHours - e.dueInHours;
-      const elapsedPct = Math.max(
-        0,
-        Math.min(100, Math.round((elapsed / Math.max(1, e.openedForHours)) * 100)),
-      );
-      return { exercise: e, donePct, elapsedPct, gap: donePct - elapsedPct };
-    })
+    .map(paceOf)
     .sort((a, b) => a.gap - b.gap);
 }
 
@@ -556,4 +558,114 @@ export function studentDetail(
     trendPct: theirPoints.length < 2 ? null : theirPoints[theirPoints.length - 1] - theirPoints[0],
     confusions: studentConfusions(),
   };
+}
+
+// ---------------------------------------------------------------------------
+// ONE EXERCISE: what it asked, and what it produced.
+//
+// The list next door answers "which one, how far along, how long left". This
+// answers the two questions the list refuses to carry: what is in it, and what
+// came back. Same discipline as everywhere else in this space, and the same
+// honesty about which numbers are real.
+// ---------------------------------------------------------------------------
+
+export type ExerciseStudentRow = {
+  student: ClassStudent;
+  standing: Standing;
+  /** Their result on THIS exercise. Null unless they finished it. */
+  theirs: number | null;
+};
+
+/**
+ * One family the exercise asked about, and how it went.
+ *
+ * GENERATED, exactly as the class page generates its own family reading: the
+ * exercise carries ONE rate, and the split across its families is offsets that
+ * sum to zero, so the numbers always average back to the rate the exercise
+ * actually has. `rightPct` is null until it closes, since nothing is measured
+ * while it is still being played.
+ */
+export type ExerciseFamily = { slug: string; name: string; rightPct: number | null };
+
+export type ExerciseDetail = {
+  rows: ExerciseStudentRow[];
+  families: ExerciseFamily[];
+  /** Running only: how much is done against how much of the window has gone. */
+  pace: Pace | null;
+  /**
+   * What this class scores on its OTHER closed exercises, weighted the same way
+   * the class page weights its average. It is the only fair thing to read this
+   * exercise against: comparing one class's result to another class's tells you
+   * about the classes, not about the exercise.
+   */
+  otherAvg: number | null;
+  /** How many others it is being read against. A comparison names its evidence. */
+  otherCount: number;
+  /** Who to chase, grouped by reason. Never a ranking. */
+  groups: AttentionGroup[];
+};
+
+export function exerciseDetail(
+  ex: TeacherExercise,
+  cls: TeacherClass,
+  exercises: TeacherExercise[],
+): ExerciseDetail {
+  const roster = studentRows(cls, exercises);
+  const rows: ExerciseStudentRow[] = roster.map((student, i) => ({
+    student,
+    standing: standingOn(i, ex),
+    theirs: scoreOn(i, ex),
+  }));
+
+  const offsets = spread(ex.typefaces.length, 14);
+  const families: ExerciseFamily[] = ex.typefaces.map((f, i) => ({
+    slug: f.slug,
+    name: f.name,
+    rightPct: ex.state === "done" && ex.successPct !== undefined ? clamp(ex.successPct + offsets[i]) : null,
+  }));
+
+  const others = closedOfClass(cls.id, exercises).filter((e) => e.id !== ex.id);
+  const weight = others.reduce((sum, e) => sum + e.finished, 0);
+
+  return {
+    rows,
+    families,
+    pace: ex.state === "running" ? paceOf(ex) : null,
+    otherAvg:
+      weight === 0
+        ? null
+        : Math.round(others.reduce((sum, e) => sum + (e.successPct ?? 0) * e.finished, 0) / weight),
+    otherCount: others.length,
+    groups: exerciseAttention(rows, ex),
+  };
+}
+
+/**
+ * Who to look at on THIS exercise, grouped by reason.
+ *
+ * Grouped for the same reason the class page groups: told one person at a time,
+ * thirteen people who never opened it produce thirteen lines and nothing to
+ * decide. And the people who were only ever invited are kept in their OWN
+ * group, never inside "have not opened it": you cannot chase someone who has
+ * never signed in, and mixing them in makes the number you would act on wrong.
+ */
+export function exerciseAttention(rows: ExerciseStudentRow[], ex: TeacherExercise): AttentionGroup[] {
+  const invited = rows.filter((r) => r.student.status === "invited");
+  const active = rows.filter((r) => r.student.status === "active");
+  const groups: AttentionGroup[] = [
+    { reason: "invited, never signed in", students: invited.map((r) => r.student) },
+    {
+      reason: ex.state === "done" ? "never opened it" : "have not opened it yet",
+      students: active.filter((r) => r.standing === "not_started").map((r) => r.student),
+    },
+    {
+      reason: ex.state === "done" ? "started it and stopped" : "started, not finished",
+      students: active.filter((r) => r.standing === "started").map((r) => r.student),
+    },
+    {
+      reason: "came out under 55% on it",
+      students: active.filter((r) => r.theirs !== null && r.theirs < 55).map((r) => r.student),
+    },
+  ];
+  return groups.filter((g) => g.students.length > 0);
 }

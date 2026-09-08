@@ -46,6 +46,19 @@ export function opensLabel(hours: number): string {
   return `opens in ${Math.round(hours / 24)} days`;
 }
 
+/**
+ * How LONG the window is, which is never the same fact as when it closes.
+ * "Open for a week" and "9 h left" are both true of the same exercise, and the
+ * space says them in different words on purpose.
+ */
+export function windowLabel(hours: number): string {
+  if (hours < 48) return `${Math.round(hours)} hours`;
+  const days = Math.round(hours / 24);
+  if (days % 7 !== 0) return `${days} days`;
+  const weeks = days / 7;
+  return weeks === 1 ? "a week" : `${weeks} weeks`;
+}
+
 /** How long ago it closed. The same reading, pointing backwards. */
 export function closedLabel(hours: number): string {
   const past = Math.abs(hours);
