@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 11) — Clerk branché en mode tolérant, et le modèle d'accès enseignant arrêté
+
+**Choix du propriétaire : Clerk**, ce que le schéma nomme depuis la migration 003. Donc zéro migration pour l'authentification elle même, la colonne `clerk_id` et sa contrainte étaient déjà là.
+
+**BRANCHÉ EN MODE TOLÉRANT, ET C'EST LE POINT IMPORTANT.** Les clés appartiennent au propriétaire, personne d'autre ne peut les créer, et elles ne doivent jamais passer par une conversation. Le produit ne peut donc pas dépendre de leur présence pour fonctionner : `lib/server/clerk-availability.ts` regarde si la clé publique est **présente**, jamais sa valeur, et tout est conditionné à ça. Le middleware ne fait rien sans clés (`clerkMiddleware()` jette sans elles, un middleware inconditionnel rendrait le site entier inaccessible), le fournisseur n'est monté dans la mise en page que s'il est configuré, et la page de connexion dit une phrase au lieu de planter. **Vérifié : les cinq pages répondent, dont `/sign-in`.**
+
+**L'identité résout un compte avant un invité.** `getCurrentUserId()` regarde d'abord une session Clerk, et raccorde l'identifiant Clerk à l'uuid interne par `clerk_id`, en une instruction qui crée la ligne au premier passage sans jamais la dupliquer (la colonne est UNIQUE, donc deux onglets simultanés n'obtiennent qu'une ligne). Le cookie d'invité ne sert qu'ensuite. Sans clés, tout le monde reste invité, exactement comme avant.
+
+**PAS DE PAGE D'INSCRIPTION, VOLONTAIREMENT**, et donc aucune route `/sign-up`. À verrouiller aussi dans le tableau de bord Clerk en mode restreint : sans ça, l'inscription reste possible par l'API de Clerk même sans page chez nous. C'est noté dans la page de connexion elle même.
+
+**LE MODÈLE D'ACCÈS ENSEIGNANT EST ARRÊTÉ, ET IL SE CONSTRUIT PLUS TARD.** Consigne du propriétaire : il ne veut pas gérer les profs avec des scripts au quotidien, il veut un **tableau de bord Admin** où son rôle se limite à vérifier puis valider ou refuser. Le flux : demande d'accès, arrivée en Pending, pré-vérification et préremplissage par DWIGGINS, contrôle humain, Approve crée le compte Clerk, l'école si nécessaire, l'appartenance enseignante et envoie l'invitation ; Reject ne crée rien. Le tableau de bord veut Pending / Approved / Rejected, une fiche par demande, la détection de doublons, l'établissement existant ou nouveau, et un aperçu de ce qui sera créé.
+
+**Ce qui est fait pour que ce soit constructible proprement** : la migration `023_access_requests` (écrite, appliquée **sur la branche jetable seulement**, en attente de feu vert pour la production) et la section 2.3 de l'architecture backend qui fige le flux. Trois décisions de schéma y évitent une dette : **aucune adresse dans `users`** et il n'y en aura pas, l'adresse appartenant à Clerk et la dupliquer créerait deux vérités ; **une demande acceptée exige un compte créé**, par contrainte, donc un provisionnement à moitié échoué laisse la demande en attente au lieu d'afficher un professeur qui n'existe pas ; et **`invitations` reste la table des élèves**, une invitation d'enseignant n'ayant pas de classe et Clerk s'en chargeant.
+
+**Éprouvé sur la branche** : une demande entre en attente, une deuxième demande de la même adresse est refusée (index unique partiel sur les demandes en attente), une acceptation sans compte créé est refusée, et une décision sans date de décision est refusée.
+
+**Ce qui reste, et l'ordre.** Les deux clés Clerk à poser par le propriétaire dans son environnement, le mode restreint à activer chez Clerk, la migration 023 en production, puis le tableau de bord Admin. Les scripts resteront des outils de secours, jamais le geste quotidien.
+
+---
+
 ## Note — 2026-09-10 (suite 10) — l'identité passe par un seul endroit, et le choix du fournisseur est posé
 
 **Ce que j'ai construit avant de choisir quoi que ce soit.** L'authentification changera la réponse à « qui demande », donc la première chose à faire est que cette question n'ait **qu'un seul endroit** où être posée. C'est fait : `lib/server/current-user.ts` est désormais le seul fichier du produit à nommer et à lire le cookie d'identité, et il a appris à dire le rôle et l'appartenance enseignante (`getCurrentIdentity`).

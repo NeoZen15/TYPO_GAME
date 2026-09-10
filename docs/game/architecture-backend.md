@@ -102,6 +102,26 @@ Ajouté le 2026-09-10, sur demande du propriétaire, **avant** d'écrire une lig
 
 Point à ne pas manquer à l'implémentation : le bilan est une **vue**, jamais un enregistrement. S'il devait être mis en cache pour l'affichage, il reste intégralement reconstructible depuis le journal.
 
+### 2.3 L'accès enseignant : demande, validation, provisionnement
+
+Ajouté le 2026-09-10, sur décision du propriétaire. **Le schéma et l'authentification sont prêts maintenant, le tableau de bord se construit plus tard.**
+
+**Il n'y a pas d'inscription libre.** Un enseignant **demande**, le propriétaire **valide**, et tout est créé derrière. C'est le modèle le plus simple qui laisse une trace, une file d'attente et une décision attribuable.
+
+**Le flux de la V1, dans l'ordre.** Une demande arrive et se pose en `pending`. DWIGGINS **pré-vérifie et préremplit** ce qu'il peut : doublons de demandes sur l'adresse, existence d'un compte, établissement déjà connu ou nouveau. Le propriétaire lit la fiche, voit **l'aperçu de ce qui va être créé**, et clique. Sur **Approve**, le système crée le compte Clerk, l'école si elle n'existe pas, l'appartenance enseignante, puis envoie l'invitation. Sur **Reject**, **rien n'est créé**.
+
+**Ce que le schéma porte pour ça** (migration 023, `access_requests`) : la demande telle qu'elle a été déclarée, le statut en trois valeurs qui sont les trois colonnes du tableau de bord (`pending`, `approved`, `rejected`), la trace de décision (qui, quand), ce qui a été créé derrière (compte, école) et l'identifiant de l'invitation Clerk, pour que l'écran puisse dire « envoyée, pas encore acceptée » sans le deviner et pour n'en envoyer jamais deux.
+
+**Trois décisions de schéma qui évitent une dette.**
+
+- **Aucune adresse dans `users`, et il n'y en aura pas.** L'adresse appartient à Clerk ; la dupliquer créerait deux vérités pour une personne. La détection de doublons se fait donc en deux temps : les demandes entre elles par l'adresse dans notre table, et l'existence d'un compte en interrogeant Clerk au moment de l'affichage. Zéro colonne à ajouter.
+- **Une demande acceptée exige un compte créé**, par contrainte. Si une étape du provisionnement échoue, la demande **reste en attente** et le tableau de bord le montre, au lieu d'afficher un professeur qui n'existe pas.
+- **`invitations` reste la table des ÉLÈVES.** Son `class_id` est obligatoire, et il doit le rester : une invitation d'enseignant n'a pas de classe, et c'est Clerk qui l'envoie. Élargir cette table pour y faire entrer les deux cas rendrait les deux flous.
+
+**Ce que l'authentification doit exposer, et qu'elle expose déjà.** `getCurrentIdentity()` rend le rôle (`guest`, `player`, `admin`) et l'appartenance enseignante, lue dans `school_members` et pas déduite du rôle. Le tableau de bord Admin se garde donc sur `role = 'admin'`, et l'espace professeur sur l'appartenance. Une page d'administration doit **refuser de se rendre** pour qui n'est pas administrateur : la borne des données protège les lectures, elle ne remplace pas le refus d'une page.
+
+**Les scripts restent des outils de secours techniques**, jamais le geste quotidien. Le geste quotidien est le tableau de bord.
+
 ## 3. L'état pédagogique et sa frontière de lecture
 
 ### 3.1 Les faits, et eux seuls

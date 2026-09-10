@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { FORCED_THEME, LIGHT_THEME_ENABLED } from "@/lib/theme-availability";
 import "./globals.css";
 import UiDebugProbe from "@/components/dev/UiDebugProbe";
+import { isClerkConfigured } from "@/lib/server/clerk-availability";
 import { ADOBE_KIT_STYLESHEET } from "@/lib/game/fonts/runtime-catalog";
 import StorageNotice from "@/components/ui/StorageNotice";
 
@@ -34,12 +35,22 @@ const themeBootstrapScript = `
 })();
 `;
 
-export default function RootLayout({
+// LE FOURNISSEUR N'EST MONTE QUE S'IL EST CONFIGURE, et l'import est dynamique
+// pour la meme raison : sans cles, `ClerkProvider` jette au montage et le site
+// entier tombe. Le produit ne doit pas dependre d'une action que seul le
+// proprietaire peut faire (creer l'application Clerk et poser ses deux cles).
+// Tant qu'elles ne sont pas la, tout le monde est invite, exactement comme avant.
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const Provider = isClerkConfigured()
+    ? (await import("@clerk/nextjs")).ClerkProvider
+    : ({ children: inner }: { children: React.ReactNode }) => <>{inner}</>;
+
   return (
+    <Provider>
     <html lang="en" data-theme={FORCED_THEME} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
@@ -67,5 +78,6 @@ export default function RootLayout({
         <StorageNotice />
       </body>
     </html>
+    </Provider>
   );
 }

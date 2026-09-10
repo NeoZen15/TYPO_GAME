@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 
+import { isClerkConfigured } from "@/lib/server/clerk-availability";
 import { sql } from "@/lib/server/neon";
 
 // QUI DEMANDE. Un seul endroit dans tout le produit répond à cette question, et
@@ -25,9 +26,60 @@ const GUEST_USER_ID_PATTERN =
 // Resolve the current player's id from the guest cookie, or null if none/invalid
 // (a fresh visitor who has never played). Server-only.
 export async function getCurrentUserId(): Promise<string | null> {
+  // UN COMPTE PASSE AVANT UN INVITE, toujours. Si une session Clerk existe, c'est
+  // elle l'identite : le cookie d'invite peut trainer d'une visite anterieure, et
+  // rendre l'invite alors qu'une personne est connectee lui ferait perdre son
+  // propre profil sans qu'elle comprenne pourquoi.
+  const account = await getAccountUserId();
+  if (account) return account;
+
   const store = await cookies();
   const value = store.get(GUEST_COOKIE_NAME)?.value ?? null;
   return value && GUEST_USER_ID_PATTERN.test(value) ? value : null;
+}
+
+/**
+ * L'identifiant interne du compte connecte, ou null.
+ *
+ * DEUX MONDES A RACCORDER, ET UN SEUL ENDROIT POUR LE FAIRE. Clerk connait la
+ * personne sous son propre identifiant ; le produit la connait sous un uuid, qui
+ * est celui que portent sa progression, ses sessions et son journal depuis le
+ * premier jour. Le raccord est la colonne `clerk_id`, que le schema prevoit
+ * depuis la migration 003 avec une contrainte qui l'exige pour tout role
+ * authentifie. La ligne est creee au premier passage et jamais dupliquee :
+ * `clerk_id` est UNIQUE, donc deux onglets qui se connectent en meme temps
+ * n'obtiennent qu'une ligne, et le second retombe sur celle du premier.
+ *
+ * TOLERANT PAR CONSTRUCTION. Sans cles Clerk, cette fonction rend null et le
+ * produit se comporte comme avant. Une erreur de Clerk rend null aussi : mieux
+ * vaut un invite qu'une page blanche.
+ */
+async function getAccountUserId(): Promise<string | null> {
+  if (!isClerkConfigured()) return null;
+
+  try {
+    const { auth } = await import("@clerk/nextjs/server");
+    const { userId: clerkId } = await auth();
+    if (!clerkId) return null;
+
+    const rows = (await sql`
+      WITH raccord AS (
+        INSERT INTO users (clerk_id, role)
+        VALUES (${clerkId}, 'player')
+        ON CONFLICT (clerk_id) DO NOTHING
+        RETURNING user_id
+      )
+      SELECT user_id::text FROM raccord
+      UNION ALL
+      SELECT user_id::text FROM users WHERE clerk_id = ${clerkId}
+      LIMIT 1
+    `) as { user_id: string }[];
+
+    return rows[0]?.user_id ?? null;
+  } catch {
+    // Une authentification indisponible ne doit pas fermer le jeu.
+    return null;
+  }
 }
 
 /**
