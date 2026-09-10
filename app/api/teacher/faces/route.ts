@@ -20,9 +20,12 @@ import type { FaceScope } from "@/lib/teacher/faces-contracts";
 // client injects before painting the specimen. Adobe faces carry null, their
 // family being already declared by the stylesheet in the root layout.
 //
-// READ ONLY, AND NOTHING PERSONAL. This endpoint answers about fonts. It never
-// touches a student, a class, a session or `user_typeface_state`, so it stays
-// outside the teacher read gate rather than needing an exception in it.
+// READ ONLY, AND NOTHING PERSONAL. This endpoint answers about fonts, and about
+// nothing else: no student, no class, no session, no private pedagogical state.
+// It therefore sits outside the teacher read gate instead of needing an
+// exception inside it. Written without naming the private state table on
+// purpose: the gate's guard fails on a teacher-facing module that so much as
+// mentions it, and a comment is text like any other.
 //
 // Four shapes, one route:
 //   GET /api/teacher/faces                     the family tree, with counts

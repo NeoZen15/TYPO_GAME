@@ -97,6 +97,28 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 3) — les quatre contextes moteur, verrouillés avant tout schéma
+
+**Le principe que le propriétaire a nommé, et il était le bon risque à voir.** En construisant l'espace prof, DWIGGINS pouvait glisser vers un produit scolaire où l'élève ne joue que quand un enseignant lui donne quelque chose. Ce n'est pas le projet. **I-26** est inscrite : le parcours personnel est premier et autonome, il se suffit à lui même, sans école, sans classe, sans professeur. L'assignation est un second parcours qui coexiste. **I-27** inscrit la symétrie des recommandations : le prof reçoit « voilà ce que ta classe devrait travailler », l'élève reçoit « voilà ce que ton œil devrait travailler », même méthode et jamais les mêmes sources.
+
+**La matrice des quatre contextes est écrite dans `game/architecture-backend.md` §2.2**, c'est à dire au rang qui fait autorité sur le modèle de session, et la spec de création n'y renvoie que. Pour chacun des quatre : qui crée la session, d'où vient l'ensemble jouable, ce qu'il peut lire et écrire de l'état personnel, s'il est adaptatif, comment se comportent répétitions et distracteurs, ce qu'il produit, ce que le professeur en voit. **Les quatre contextes ne sont pas un quatrième axe** : ce sont des combinaisons de `mode`, `context` et `progression_policy`, ce qui confirme que ces trois colonnes suffisent.
+
+**TROIS VÉRIFICATIONS DANS LE CODE, ET LA DEUXIÈME CORRIGE UNE IDÉE REÇUE.**
+
+1. **La compétition personnelle est déjà le patron d'une session hors pool.** Son ensemble jouable est une requête catalogue mise en cache par joueur, elle n'écrit **jamais** `user_typeface_state` (seul le fournisseur d'entraînement l'écrit, trois instructions), et elle lit la maîtrise de la face uniquement pour la journaliser. Donc **le Contrôle assigné est architecturalement une compétition avec un périmètre de prof et un budget de questions**, pas un entraînement bridé. C'est le chemin le moins risqué.
+2. **Un commentaire du fournisseur de compétition affirmait que la maîtrise atteint l'ordre des distracteurs. C'est faux, mesuré.** Les poids lisent la catégorie, le cluster visuel et un hachage de graine, jamais la maîtrise de la ligne. C'est précisément **pourquoi deux scores de compétition sont comparables**. Commentaire corrigé, avec la mesure et sa date.
+3. **Mon propre commentaire de route aurait fait échouer le garde que l'architecture prévoit.** `check:teacher-read-gate` doit échouer si un module destiné au prof **mentionne** la table d'état privé, et mon commentaire la nommait pour dire qu'il n'y touche pas. Réécrit sans la nommer.
+
+**UNE CONTRADICTION QUI SEMBLAIT OUVERTE EST TRANCHÉE PAR LE SCHÉMA, PAS PAR UNE DÉCISION.** Un devoir en `update_mastery` écrit la maîtrise de faces choisies par le prof, parfois absentes du pool. Le registre de la vision redoutait que le prof façonne ainsi l'espace privé. Réponse mesurée : `user_typeface_state.in_active_pool` est `NOT NULL DEFAULT false` et le pool se définit par `in_active_pool = true`. Une réponse de devoir **enregistre la maîtrise sans faire entrer la face dans le pool**. Une ligne d'état n'est pas une appartenance. La seule porte du pool reste la règle du moteur, et le prof ne l'ouvre jamais.
+
+**Deux conséquences assumées, écrites** : une face montée au niveau 4 par un devoir compte dans le niveau global de l'élève, qui reste invisible du prof ; et le moteur ne privilégie pas ce que le prof a enseigné quand il choisit la prochaine face du pool, sinon un tiers dessine l'espace privé.
+
+**Ce qui manque vraiment, et c'est court** : `sessions` n'a ni `context`, ni `progression_policy`, ni `assignment_id`, donc **aucun** des trois contextes assignés n'est exprimable, et un prof ne peut pas lire « ce que mes exercices ont produit » sans lire l'entraînement libre. C'est la première migration et elle commande tout. L'exercice assigné est par ailleurs le seul des quatre à demander un chemin neuf : ensemble jouable venu du contrat, lecture de l'état personnel pour calibrer, écriture de la maîtrise.
+
+**Feu vert reçu pour le point 2, avec une condition** : branche Neon jetable uniquement, jamais la prod, aucune migration irréversible. Rien n'est encore exécuté en base.
+
+---
+
 ## Note — 2026-09-10 (suite 2) — spec fermée sur les cinq arbitrages, et le compositeur passe au vrai catalogue
 
 **Les cinq arbitrages sont rendus et consignés en §20 de la spec.** Format Expert assignable : non en V1, le cran Expert reste du QCM très serré. Compétition : ni budget de questions ni durée réglable, deux minutes pour tout le monde. Contrôle : oui dès la V1, un exercice qui mesure sans modifier la progression. Mix 45 / 20 / 20 / 15 : oui comme hypothèse de départ, jamais comme vérité figée, avec le curseur renforcement contre découverte. Résultats en adaptatif : oui au résultat individuel, mais **toute comparaison à la classe porte sa qualification à côté du chiffre**, la §14 est réécrite dans ce sens (on qualifie, on ne masque pas).

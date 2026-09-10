@@ -18,6 +18,8 @@ Toute la spécification tient sur une distinction, et c'est elle qu'il faut rete
 
 **Et rien de l'état personnel ne remonte jamais au professeur.** Il lit ce que ses exercices ont produit, jamais l'entraînement libre, jamais le mastery, jamais le pool. C'est la règle inscrite en **I-25** dans la vision le 2026-09-10, sur décision du propriétaire.
 
+**ET AVANT TOUT LE RESTE, LE PARCOURS PERSONNEL EST PREMIER.** Cet écran fabrique des devoirs, mais DWIGGINS n'est pas un produit où l'élève ne joue que quand un professeur lui donne quelque chose. Un utilisateur ouvre le jeu quand il veut, s'entraîne, progresse dans son pool et reçoit **ses propres** recommandations, sans école, sans classe et sans professeur. L'assignation est un second parcours qui coexiste avec le premier. Verrouillé en **I-26**, et les quatre contextes moteur qui en découlent sont en matrice dans `game/architecture-backend.md` §2.2, qui fait autorité sur ce point.
+
 Trois choses qu'on ne veut pas, parce que c'est vers elles que ce genre d'écran glisse tout seul : un générateur automatique opaque, un formulaire à programmer, un tunnel de sept écrans.
 
 ---
@@ -74,6 +76,16 @@ Elles sont calculées **uniquement** sur les assignations de ce professeur pour 
 **Conséquence.** Une vue de lecture professeur unique, bornée aux assignations du professeur, comme l'exige la porte de lecture de l'architecture. Aucune requête de recommandation ne touche `user_typeface_state`, et le garde `check:teacher-read-gate` prévu par l'architecture doit échouer si un module de recommandation le mentionne.
 
 ---
+
+### 4.1 Les mêmes recommandations, côté élève
+
+**Ce que le code sait faire.** Le profil affiche déjà la constellation, les paliers et les axes, tous calculés sur l'état personnel de l'élève. La matière d'une recommandation est donc là.
+
+**Ce qui manque.** La recommandation elle même, et sa surface sur le profil.
+
+**Règle.** L'élève reçoit sur son profil ses **propres** recommandations, « voilà ce que ton œil devrait travailler maintenant », calculées **uniquement** sur son état personnel : ce qu'il maîtrise, ce qu'il oublie, ce qu'il confond. Le professeur reçoit « voilà ce que ta classe devrait travailler », calculé **uniquement** sur les assignations qu'il a données. Même méthode, **jamais** les mêmes sources : une recommandation d'élève ne lit aucune donnée institutionnelle, une recommandation de professeur ne lit aucune donnée personnelle. Inscrit en **I-27**.
+
+**Conséquence.** Le calcul de recommandation est un module à **deux entrées** et non deux modules : la nature de ce qu'il cherche (une famille instable, un couple confondu, un palier à pousser) est la même, seule la matière change. La **surface** côté élève, elle, n'appartient pas à cette spec : elle demande son propre brief, avec le placement sur le profil et le rapport à la carte, et elle est de la DA.
 
 ## 5. La classe sans historique
 
@@ -240,6 +252,8 @@ Ces quatre parts sont une **hypothèse de V1 à tester**, pas une règle scienti
 | Exercice | `training` | `update_mastery` | « compte dans leur progression » |
 | Contrôle | `training` | `observe_only` | « ne compte pas, c'est une mesure » |
 | Compétition | `competition` | `observe_only` | « deux minutes, classement, sans effet sur la progression » |
+
+**La matrice complète des droits de ces trois choix, plus l'entraînement personnel, est dans `game/architecture-backend.md` §2.2** : qui crée la session, d'où vient l'ensemble jouable, ce qu'elle peut lire et écrire de l'état personnel, si elle est adaptative, comment se comportent répétitions et distracteurs, ce qu'elle produit et ce que le professeur en voit. Ce document là fait autorité ; celui ci ne fait que remplir le contrat.
 
 **Conséquence.** Le contrôle est offert parce que l'architecture le permet déjà et qu'un professeur le demandera le premier jour. La compétition assignée garde ses deux minutes : elle n'a donc **pas de nombre de questions**, et le compositeur remplace ce réglage par la durée, affichée et non modifiable. Mélanger un budget de questions et un chrono dans le même objet produirait deux exercices incomparables dans la même classe.
 

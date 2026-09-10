@@ -192,11 +192,16 @@ const readCompetitionPoolRows = async (userId: string) =>
 // moved.
 //
 // THE STALENESS IS REAL AND IT IS HARMLESS. A player training in another tab can
-// raise a mastery level this cache still reports low. mastery_level reaches only
-// the distractor ORDERING, never which typeface is correct and never whether one
-// may be shown: the licence, Latin and Adobe clauses are all in the query above
-// and a cached row already satisfied them. So the worst case is a slightly
-// differently ranked wrong answer for at most one round.
+// raise a mastery level this cache still reports low, and it changes nothing:
+// mastery_level does not reach the question at all. Measured 2026-09-10 while
+// formalising the four engine contexts: the distractor weights below read the
+// category, the visual cluster and a seeded hash, never the row's mastery, and
+// the correct face is drawn without it. The column is carried on the pool row so
+// the journal can record where the player stood, and for nothing else. The
+// licence, Latin and Adobe clauses are all in the query above and a cached row
+// already satisfied them. THIS IS ALSO WHY COMPETITION IS COMPARABLE: two
+// players answering the same face get the same four buttons, whatever each of
+// them has already mastered.
 //
 // Per instance, deliberately. A cold serverless instance reads the pool once and
 // is no slower than before; a warm one serves the rest of the round from memory.

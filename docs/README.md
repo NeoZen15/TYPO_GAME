@@ -27,7 +27,7 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 
 ## game/ — moteur de jeu & pédagogie
 - [`architecture-backend.md`](game/architecture-backend.md) — **architecture backend proposée (2026-07-29)** : trois axes de session (mode, contexte, politique de progression), écriture du mastery portée par la base, porte de lecture professeur, quatre natures de données, séquencement.
-- [`vision-produit-dwiggins.md`](game/vision-produit-dwiggins.md) — **vision produit figée (2026-07-29), document de rang supérieur** : en cas de contradiction avec un autre doc, c'est lui qui fait foi. Moteur d'entraînement du regard, séance contre progression, vérité pédagogique unique, étanchéité élève / professeur, invariants I-15 à I-25 (dont I-25, l'adaptation individuelle d'un exercice assigné, 2026-09-10), et registre des contradictions documentaires.
+- [`vision-produit-dwiggins.md`](game/vision-produit-dwiggins.md) — **vision produit figée (2026-07-29), document de rang supérieur** : en cas de contradiction avec un autre doc, c'est lui qui fait foi. Moteur d'entraînement du regard, séance contre progression, vérité pédagogique unique, étanchéité élève / professeur, invariants I-15 à I-27 (dont I-25 l'adaptation individuelle d'un exercice assigné, I-26 le parcours personnel autonome et I-27 la symétrie des recommandations, 2026-09-10), et registre des contradictions documentaires.
 - [`NIVEAU.rtf`](game/NIVEAU.rtf) — **vision joueur** (le pourquoi, le ton) : DWIGGINS, l'entraînement du regard.
 - [`game-unified-spec-v1.md`](game/game-unified-spec-v1.md) — spec unifiée des modes de jeu.
 - [`game-mode-normal-spec.md`](game/game-mode-normal-spec.md) — spec du mode training (`/game`).

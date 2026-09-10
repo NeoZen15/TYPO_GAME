@@ -2,7 +2,7 @@
 
 Date : 2026-07-29.
 Statut : **proposition, en attente de validation. Aucune implémentation avant accord.**
-Source de vérité produit : `docs/game/vision-produit-dwiggins.md` (invariants I-15 à I-25).
+Source de vérité produit : `docs/game/vision-produit-dwiggins.md` (invariants I-15 à I-27).
 Source de vérité du fonctionnement moteur : `docs/game/training-engine-spec-v2-clean.md` (invariants I-01 à I-14).
 
 ## 0. Principe directeur
@@ -44,6 +44,51 @@ Contraintes à poser dans le schéma, pas dans le code :
 - la politique est **obligatoire** (`NOT NULL`), donc jamais implicite. Le défaut par mode est appliqué à la création côté serveur, jamais par le client.
 
 Les trois se propagent sur `user_event_fact` (`context`, `progression_policy`, `assignment_id`), pour qu'une lecture n'ait jamais besoin d'une jointure pour connaître ses droits. C'est la même raison qui fait que `mode` y est déjà dupliqué.
+
+### 2.2 Les quatre contextes moteur, et ce que chacun a le droit de faire
+
+Ajouté le 2026-09-10, sur demande du propriétaire, **avant** d'écrire une ligne de schéma. Le principe à verrouiller d'abord : **DWIGGINS n'est pas un produit où l'élève ne joue que si un professeur lui donne quelque chose.** Le parcours personnel est premier et autonome, l'assignation est un second parcours qui coexiste avec lui et ne le remplace jamais. C'est inscrit en I-26.
+
+**Les quatre contextes ne sont pas un quatrième axe.** Ils sont des combinaisons des trois colonnes du §2, et c'est exactement pourquoi ces trois colonnes suffisent. Une cinquième combinaison existe déjà en production, la compétition personnelle, et une sixième est parkée, le mode Expert.
+
+| Contexte | `mode` | `context` | `progression_policy` |
+|---|---|---|---|
+| Entraînement personnel | `training` | `personal` | `update_mastery` |
+| Exercice assigné | `training` | `teacher_assignment` | `update_mastery` |
+| Contrôle assigné | `training` | `teacher_assignment` | `observe_only` |
+| Compétition assignée | `competition` | `teacher_assignment` | `observe_only` |
+| Compétition personnelle (existe) | `competition` | `personal` | `observe_only` |
+
+**La matrice des droits.** Chaque ligne est une propriété vérifiable, et c'est ce qui permet à un garde de la tenir.
+
+| | Entraînement personnel | Exercice assigné | Contrôle assigné | Compétition assignée |
+|---|---|---|---|---|
+| Qui crée la session | l'élève, en entrant dans le mode | l'élève, en ouvrant le devoir | l'élève, en ouvrant le contrôle | l'élève, en ouvrant le devoir |
+| D'où vient l'ensemble jouable | le **pool personnel** (`user_typeface_state`) | le **périmètre du contrat**, jamais le pool (I-21) | le périmètre du contrat | le périmètre du contrat |
+| Peut LIRE l'état personnel | oui, c'est sa matière | **oui, pour adapter** (I-25) | **non** | non, sauf pour journaliser où en était l'élève |
+| Peut ÉCRIRE l'état personnel | oui, réponse par réponse | **oui** (I-22), invisible du professeur (I-23) | **non** | **non**, interdit au niveau de la ligne |
+| Adaptative | oui, par la répétition espacée | oui, à l'intérieur du contrat | non, un contrôle est calibré pareil pour tous | non, c'est ce qui la rend comparable |
+| Répétition espacée | active | active | **inactive**, aucun intervalle n'est déplacé | inactive |
+| Distracteurs | proximité selon le mastery de la face | proximité selon la bande d'exigence, ajustée par élève | proximité selon le seul cran du professeur | proximité fixe, identique pour tous |
+| Longueur | aucune, l'élève décide (I-17) | budget de questions du contrat | budget de questions du contrat | deux minutes |
+| Résultat produit | un bilan de séance, pour l'élève | justesse au premier essai, plus le déplacement privé | justesse au premier essai | un score et un classement |
+| Visible du professeur | **jamais rien** | les résultats de SA session uniquement | les résultats de SA session uniquement | score et classement de SA session |
+
+**Le sens de circulation, et il est unique.** L'entraînement personnel peut nourrir le moteur pour personnaliser un **exercice assigné**. Ce que l'élève fait dans un exercice assigné peut enrichir son modèle personnel, mais **seulement** en Exercice : le Contrôle mesure et la Compétition performe, donc ni l'un ni l'autre ne déplace la maîtrise. Et dans tous les cas, **rien de l'état privé ne remonte au professeur** : il lit ce que ses propres exercices ont produit, jamais l'activité libre, jamais le pool, jamais le déplacement que sa session a produit.
+
+**Ce que le code fait déjà, mesuré le 2026-09-10 et pas déduit.**
+
+- L'**entraînement personnel** est complet : pool personnel, intervalles, écriture du mastery réponse par réponse, paliers de distracteurs pilotés par le mastery de la face demandée.
+- La **compétition personnelle** est déjà, par construction, le patron d'une session qui n'appartient pas au pool : son ensemble jouable est **une requête catalogue** mise en cache par joueur, elle **n'écrit jamais** `user_typeface_state` (seul le fournisseur d'entraînement l'écrit, trois instructions), et elle lit la maîtrise de la face **uniquement pour la journaliser**. Ses distracteurs sont pondérés sur la catégorie, le cluster et un hachage de graine, **jamais** sur la maîtrise du joueur : c'est précisément ce qui rend deux scores comparables.
+- Donc **le Contrôle assigné est architecturalement une compétition avec un périmètre de professeur et un budget de questions**, et non un entraînement bridé. C'est la façon la moins risquée de le construire.
+- L'**exercice assigné** est le seul des quatre qui demande un chemin neuf : un ensemble jouable venu du contrat, une lecture de l'état personnel pour calibrer, et une écriture du mastery. Aucune des trois pièces n'existe.
+- **Rien de tout cela n'est aujourd'hui exprimable** : `sessions` n'a ni `context`, ni `progression_policy`, ni `assignment_id`, et le journal ne les porte donc pas non plus. Tant que ces colonnes n'existent pas, un professeur ne peut pas lire « ce que mes exercices ont produit » sans lire l'entraînement libre, ce qui est interdit. C'est la première migration, et elle commande tout le reste.
+
+**UNE CONTRADICTION QUI SEMBLAIT OUVERTE EST DÉJÀ TRANCHÉE PAR LE SCHÉMA.** Un exercice assigné en `update_mastery` fait répondre sur des faces choisies par le professeur, dont certaines ne sont pas dans le pool de l'élève. Écrire leur maîtrise crée une ligne d'état : est ce que le professeur façonne alors l'espace privé de l'élève, ce que le registre des contradictions de la vision redoutait au point 3 ? Non, et la réponse est dans la table depuis le début : `user_typeface_state.in_active_pool` est `NOT NULL DEFAULT false`, et le pool est défini par `in_active_pool = true`. Donc une réponse donnée dans un devoir **enregistre la maîtrise de la face sans la faire entrer dans le pool personnel**. Une ligne d'état n'est pas une appartenance au pool. La seule porte d'entrée du pool reste la règle du moteur, trois faces stabilisées pour une nouvelle, et le professeur ne l'ouvre jamais. Rien à ajouter au schéma, rien à décider : il fallait le mesurer et l'écrire.
+
+**Deux conséquences à assumer, toutes deux petites.** Une face montée au niveau 4 par un devoir compte dans le niveau global visible de l'élève, puisqu'il l'a réellement apprise, et ce niveau reste invisible du professeur (I-23). Et le moteur, quand il choisit la prochaine face à faire entrer dans le pool, **ne privilégie pas** ce que le professeur a enseigné : ce serait laisser un tiers dessiner l'espace privé, même avec de bonnes intentions. C'est une idée à reprendre plus tard, pas une V1.
+
+**Les recommandations existent des deux côtés, et c'est la même intelligence.** Le professeur reçoit « voilà ce que ta classe devrait travailler », calculé **uniquement** sur les assignations qu'il a données. L'élève reçoit, sur son profil, « voilà ce que ton œil devrait travailler maintenant », calculé **uniquement** sur son propre état. Les deux calculs partagent leur méthode et **jamais leurs sources** : la recommandation d'un élève ne lit aucune donnée institutionnelle, celle d'un professeur ne lit aucune donnée personnelle. Inscrit en I-27.
 
 ### 2.1 Le cycle de vie d'une séance sans limite
 
