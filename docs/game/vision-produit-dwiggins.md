@@ -9,7 +9,7 @@ Ce document dit **ce qu'est le produit** et **ce qui n'est pas négociable**. Il
 
 En cas de contradiction entre ce document et un autre document du repo, **c'est celui-ci qui fait foi**. La section « Ce que ce document rend caduc » liste les passages devenus faux ailleurs.
 
-Il ne remplace pas `docs/game/training-engine-spec-v2-clean.md` : cette spec reste la source de vérité du **fonctionnement** du moteur (invariants I-01 à I-14, fenêtres d'intervalle, sélection, cooldowns). Le présent document ajoute les invariants **I-15 à I-23** et tranche ce qui restait ambigu.
+Il ne remplace pas `docs/game/training-engine-spec-v2-clean.md` : cette spec reste la source de vérité du **fonctionnement** du moteur (invariants I-01 à I-14, fenêtres d'intervalle, sélection, cooldowns). Le présent document ajoute les invariants **I-15 à I-25** et tranche ce qui restait ambigu.
 
 ## 1. Ce qu'est DWIGGINS
 
@@ -198,9 +198,10 @@ Ces invariants complètent ceux de `training-engine-spec-v2-clean.md` §2. Comme
 | I-18 | Le mastery brut n'est **jamais affiché comme une note**, ni à l'élève ni au professeur. Il n'existe qu'à l'état traduit. |
 | I-19 | La couche d'engagement (XP, combo, jetons, arène) n'influence jamais le mastery, les intervalles, le pool ni le niveau. Elle n'est jamais une preuve de compétence, et jamais visible par le professeur. |
 | I-20 | Le niveau Dreyfus est une **variable de commande interne** du moteur (filtre de déblocage, taille cible du pool). Ce n'est pas une note destinée à l'élève. |
-| I-21 | La sélection des typographies d'une session `teacher_assignment` **ne consulte jamais le pool personnel** de l'élève : elle vient du choix du professeur. |
+| I-21 | La sélection des typographies d'une session `teacher_assignment` **ne consulte jamais le pool personnel** de l'élève : elle vient du choix du professeur. **Délimité par I-25 le 2026-09-10** : ce qui reste interdit, c'est qu'une typographie entre dans l'exercice par le pool personnel plutôt que par le choix du professeur. |
 | I-22 | L'effet d'une session sur la progression pédagogique est déterminé **explicitement par sa politique de progression** (`update_mastery` ou `observe_only`), inscrite sur la session, **indépendamment de son contexte**. Elle n'est jamais déduite du contexte, jamais décidée par le frontend. Le mode `competition` est **toujours** `observe_only` sur le mastery, en personnel comme en assigné. |
 | I-23 | Quand une session `teacher_assignment` porte `update_mastery`, l'effet sur la progression privée de l'élève **reste invisible du professeur** : il lit les résultats de sa session, jamais le mastery global, jamais le pool, jamais le déplacement que sa session a produit. |
+| I-25 | **Adaptation individuelle d'un exercice assigné** (décision du propriétaire, 2026-09-10). Le moteur peut consulter l'état pédagogique personnel de l'élève **uniquement** pour adapter l'exercice que son professeur lui a assigné : quelles typographies du périmètre reviennent, dans quel ordre, et à quel point les mauvaises réponses sont proches. Le **contrat** donné par le professeur reste **commun à la classe** : périmètre, faces imposées, mix, bande d'exigence, nombre de questions, mode, politique de progression et fenêtre sont identiques pour tous les destinataires, et l'adaptation ne peut ni les modifier, ni sortir du périmètre, ni changer le nombre de questions. **Aucune donnée issue de l'entraînement personnel ne remonte au professeur** : il ne lit que ce que ses propres exercices ont produit (I-15, I-16, I-23). Conséquence à porter dans les écrans : sur une assignation adaptative, les résultats de deux élèves ne sont pas strictement comparables, et l'interface doit le dire. |
 
 ## 11. Registre des contradictions documentaires
 
@@ -231,6 +232,8 @@ Relevé exhaustif au 2026-07-29, obtenu en balayant `docs/game`, `docs/process`,
 ## 12. Arbitrages
 
 **Résolu.** L'effet d'une session assignée : il vient de la politique de progression, jamais du contexte. Voir I-22 et I-23.
+
+**E. Adaptation individuelle dans un exercice assigné : RÉSOLU le 2026-09-10.** Direction du propriétaire, sans réserve : oui, DWIGGINS peut consulter l'état personnel de l'élève pour adapter son exercice assigné, à deux conditions inséparables. Le contrat reste commun à la classe, donc l'adaptation joue **à l'intérieur** de ce que le professeur a donné et jamais au delà. Et rien de l'entraînement personnel ne remonte au professeur, qui ne lit que ce que ses propres exercices ont produit. Inscrit en **I-25**, qui délimite I-21 sans le contredire : la sélection reste bornée au choix du professeur, l'état personnel n'ajoute jamais une typographie, il ordonne et calibre à l'intérieur. Application détaillée en `product/spec-creation-exercice.md` §14.
 
 **A. Analyses internes : RÉSOLU le 2026-07-29.** Le principe est validé, à condition de distinguer clairement **le professeur** de **l'opérateur du produit**. La confidentialité interdit toute lecture institutionnelle de l'entraînement personnel, elle ne doit pas rendre impossible l'amélioration scientifique et produit de DWIGGINS. Le régime est inscrit en **I-24**. Deux nuances retenues telles quelles : pas de taille de cohorte minimale imposée à **toute** requête interne, car certains diagnostics techniques ou pédagogiques exigent de suivre un cas individuel, mais masquage obligatoire des petites cohortes sur tout tableau de bord général ; et le mot « anonymisé » est proscrit tant que les événements restent rattachables à un compte, c'est de la **pseudonymisation**.
 

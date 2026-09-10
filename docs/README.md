@@ -27,7 +27,7 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 
 ## game/ — moteur de jeu & pédagogie
 - [`architecture-backend.md`](game/architecture-backend.md) — **architecture backend proposée (2026-07-29)** : trois axes de session (mode, contexte, politique de progression), écriture du mastery portée par la base, porte de lecture professeur, quatre natures de données, séquencement.
-- [`vision-produit-dwiggins.md`](game/vision-produit-dwiggins.md) — **vision produit figée (2026-07-29), document de rang supérieur** : en cas de contradiction avec un autre doc, c'est lui qui fait foi. Moteur d'entraînement du regard, séance contre progression, vérité pédagogique unique, étanchéité élève / professeur, invariants I-15 à I-23, et registre des contradictions documentaires.
+- [`vision-produit-dwiggins.md`](game/vision-produit-dwiggins.md) — **vision produit figée (2026-07-29), document de rang supérieur** : en cas de contradiction avec un autre doc, c'est lui qui fait foi. Moteur d'entraînement du regard, séance contre progression, vérité pédagogique unique, étanchéité élève / professeur, invariants I-15 à I-25 (dont I-25, l'adaptation individuelle d'un exercice assigné, 2026-09-10), et registre des contradictions documentaires.
 - [`NIVEAU.rtf`](game/NIVEAU.rtf) — **vision joueur** (le pourquoi, le ton) : DWIGGINS, l'entraînement du regard.
 - [`game-unified-spec-v1.md`](game/game-unified-spec-v1.md) — spec unifiée des modes de jeu.
 - [`game-mode-normal-spec.md`](game/game-mode-normal-spec.md) — spec du mode training (`/game`).
@@ -45,7 +45,7 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 - [`classes-comptes-spec.md`](game/classes-comptes-spec.md) — comptes, écoles, classes, provisionnement (sa section tableau de bord prof est caduque depuis la vision du 2026-07-29).
 
 ## product/ — briefs produit
-- [`brief-creation-exercice.md`](product/brief-creation-exercice.md) — **brief de la création d'exercice (2026-09-10)**, rang 4 : le professeur exprime une intention, DWIGGINS conseille et préremplit, le professeur arbitre tout. Trois points de départ construits sur les données de la classe, sélection par familles et par typographies précises, quatre crans d'exigence traduits en similarité de distracteurs, difficulté adaptative par élève, mix consolidation contre découverte, preview avant assignation. Contient les six décisions qui appartiennent au propriétaire et les six chantiers qui rendent l'espace prof réel.
+- [`spec-creation-exercice.md`](product/spec-creation-exercice.md) — **spécification fermée de la création d'exercice (2026-09-10)**, rang 4 : le professeur donne un **contrat** commun à sa classe, le moteur **adapte** à l'intérieur (I-25). Couvre le parcours entier et tous les cas : trois recommandations et la création libre, sélection par familles et par typographies imposées, confusions ciblées et arbitrées, quatre crans d'exigence traduits en similarité de distracteurs, adaptation par élève, mix et son repli, classe sans historique, Exercice contre Contrôle contre Compétition, budget de questions et justesse au premier essai, destinataires, fenêtre, preview, puis ce qui devient immuable à la publication. Chaque point donne ce que le code sait faire, ce qui manque, la règle et ses conséquences. Cinq arbitrages restent listés en §20.
 
 ## typography/ — moteur typographique (mesure, compare, specimen)
 - [`typography-system-contract.md`](typography/typography-system-contract.md) — contrat de référence du système typo.

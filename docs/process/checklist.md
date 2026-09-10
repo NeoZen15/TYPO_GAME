@@ -97,6 +97,28 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite) — la création d'exercice passe en spécification fermée, et I-25 entre dans la vision
+
+**Le brief devient une spec, même fichier renommé** : `docs/product/spec-creation-exercice.md`, rang 4, 22 sections. Le parcours entier et tous les cas demandés y sont tranchés, chacun avec ce que le code sait déjà faire, ce qui manque réellement, la règle produit et les conséquences sur le moteur et la base. **Il ne reste aucune question produit ouverte** : cinq arbitrages sont listés en §20, chacun avec une recommandation sur laquelle le produit est constructible si la décision tarde.
+
+**LA COLONNE VERTÉBRALE DE LA SPEC, ET ELLE EST NOUVELLE.** Deux couches nommées. Le **contrat** est ce que le professeur donne, commun à toute la classe : périmètre, faces imposées, mix, bande d'exigence, nombre de questions, mode, politique, fenêtre. L'**adaptation** est ce que le moteur fait à l'intérieur, élève par élève : quelles faces reviennent, dans quel ordre, à quelle proximité de distracteurs. Tout le reste du document se déduit de cette frontière.
+
+**I-25 est inscrite dans la vision, sur direction du propriétaire.** Le moteur peut consulter l'état personnel de l'élève **uniquement** pour adapter son exercice assigné ; le contrat reste commun à la classe ; **aucune donnée d'entraînement personnel ne remonte au professeur**. L'invariant délimite I-21 sans le contredire, et I-21 porte désormais le renvoi : ce qui reste interdit, c'est qu'une typographie entre dans l'exercice par le pool personnel plutôt que par le choix du professeur. L'arbitrage E est consigné dans la section 12 de la vision.
+
+**Un défaut connu réparé au passage.** Le point 7 de cette checklist notait que la plage des invariants était annoncée fausse dans quatre fichiers, I-24 ne tombant dans aucune plage. La vision, l'architecture et le sommaire disent maintenant **I-15 à I-25**.
+
+**Trois trouvailles de code qui changent des règles produit, mesurées et pas supposées.**
+
+1. **En entraînement, le curseur de question n'avance que sur une bonne réponse** : l'élève reprend la même question jusqu'à la réussir. Un pourcentage brut vaudrait donc **toujours 100 %**. Le résultat d'un exercice est défini une fois pour toutes comme la **justesse au premier essai** (`attempt_index = 1 AND is_correct`), et tous les écrans prof écrivent « au premier essai » à côté du chiffre. Sans cette règle, le chiffre de tête des fiches construites cette semaine ne veut rien dire.
+2. **La compétition est bornée à deux minutes par une constante**, avec échéance calculée depuis le début de session. Une compétition assignée n'a donc **pas de nombre de questions** : le compositeur remplace ce réglage par la durée, affichée et non modifiable.
+3. **`pickDistractors` préfère toujours les faces les plus proches**, à tous ses paliers : le cran « mauvaises réponses franchement différentes » de la spec moteur n'existe pas dans le code. La fonction doit prendre une proximité cible et savoir **pénaliser** la proximité. C'est le seul vrai chantier moteur de la spec.
+
+**Une conséquence sur un écran déjà construit, à faire quand on branchera.** Sur une assignation adaptative, les notes de deux élèves ne sont pas strictement comparables : la fiche Exercice doit l'écrire, et la répartition en avance / avec / en retard ne s'affiche pas dans ce cas.
+
+**Rien n'a été codé, sur consigne.** Le compositeur lit toujours le manifeste de 28 polices. Le passage au catalogue actif (1 279 faces) est la **première** ligne de l'ordre de construction en §22, et la seule qui bloque tout le reste : sans elle, aucune recommandation n'a de matière.
+
+---
+
 ## Note — 2026-09-10 — brief produit de la création d'exercice
 
 **Écrit, et c'est un document et pas du code** : `docs/product/brief-creation-exercice.md`, rang 4, inscrit au sommaire. Le principe : le prof exprime une intention pédagogique, DWIGGINS conseille, explique et préremplit, le prof arbitre tout. Ni générateur opaque, ni formulaire à programmer, ni tunnel de sept écrans. Une seule page qui s'ouvre en quatre moments : d'où on part, ce qu'on travaille, comment, pour qui.

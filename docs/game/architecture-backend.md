@@ -2,7 +2,7 @@
 
 Date : 2026-07-29.
 Statut : **proposition, en attente de validation. Aucune implémentation avant accord.**
-Source de vérité produit : `docs/game/vision-produit-dwiggins.md` (invariants I-15 à I-23).
+Source de vérité produit : `docs/game/vision-produit-dwiggins.md` (invariants I-15 à I-25).
 Source de vérité du fonctionnement moteur : `docs/game/training-engine-spec-v2-clean.md` (invariants I-01 à I-14).
 
 ## 0. Principe directeur
