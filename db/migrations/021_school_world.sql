@@ -5,6 +5,15 @@
 -- Contrat rempli par : docs/product/spec-creation-exercice.md
 -- ============================================================
 --
+-- APPLIQUEE EN PRODUCTION le 2026-09-10, sur feu vert explicite du proprietaire.
+-- Branche `production` (br-crimson-union-abwblcwc) du projet Neon TYP-WE_SITE.
+-- Point de restauration pris avant : instantane `avant-021-022-monde-scolaire-2026-09-10`.
+-- Verifie apres coup : 8 tables scolaires, 3 axes sur sessions et 3 sur le journal,
+-- les trois contraintes en place, 595 sessions et 1716 faits retrogarnis sans un
+-- seul NULL, et la forme d'insertion du fournisseur d'entrainement toujours
+-- acceptee grace aux defauts. Le rollback est dans le fichier voisin.
+--
+--
 -- CE QUE CETTE MIGRATION REND POSSIBLE, ET RIEN DE PLUS. Un professeur peut
 -- appartenir a un etablissement, y tenir des classes, y inviter des eleves, et
 -- publier des assignations qui portent un CONTRAT. Elle ne cree aucune session,

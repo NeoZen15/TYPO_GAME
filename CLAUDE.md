@@ -114,6 +114,8 @@ Jamais suivis par git : `.DS_Store`, `Thumbs.db`, `backups/checkpoints/`, `data/
 
 Neon Postgres via `@neondatabase/serverless`. Pas d'ORM : les migrations sont du SQL brut numéroté dans `db/migrations` (`001_user_event_fact.sql` et suivants).
 
+**Quelles migrations sont appliquées, et comment le savoir.** Le fichier le dit dans son bandeau. Une migration non exécutée porte `NON APPLIQUEE` (010, 011, 013 à 017 notamment), une migration passée porte `APPLIQUEE EN PRODUCTION` avec sa date, sa branche et ce qui a été vérifié après coup. **021 (monde scolaire) et 022 (trois axes de session) sont appliquées en production depuis le 2026-09-10**, sur feu vert explicite du propriétaire, avec un instantané pris avant. Toute nouvelle migration part en `NON APPLIQUEE` et ne change de bandeau que le jour où elle passe.
+
 **Toute migration sur la vraie base demande le feu vert explicite du propriétaire du projet.** Le plugin `neon` permet de créer une branche de base jetable pour tester une migration sans toucher aux données réelles : c'est la voie à privilégier.
 
 ## Documentation

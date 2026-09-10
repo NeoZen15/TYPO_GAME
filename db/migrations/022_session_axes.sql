@@ -4,6 +4,15 @@
 -- Specifie par : docs/game/architecture-backend.md sections 2 et 2.2
 -- ============================================================
 --
+-- APPLIQUEE EN PRODUCTION le 2026-09-10, sur feu vert explicite du proprietaire.
+-- Branche `production` (br-crimson-union-abwblcwc) du projet Neon TYP-WE_SITE.
+-- Point de restauration pris avant : instantane `avant-021-022-monde-scolaire-2026-09-10`.
+-- Verifie apres coup : 8 tables scolaires, 3 axes sur sessions et 3 sur le journal,
+-- les trois contraintes en place, 595 sessions et 1716 faits retrogarnis sans un
+-- seul NULL, et la forme d'insertion du fournisseur d'entrainement toujours
+-- acceptee grace aux defauts. Le rollback est dans le fichier voisin.
+--
+--
 -- CE QU'ELLE DEBLOQUE, ET C'EST LE MUR QUE TOUT L'ESPACE PROF CONTOURNAIT.
 -- Sans ces trois colonnes, une reponse ne dit pas POURQUOI elle existe. Un
 -- professeur ne peut donc pas lire « ce que mes exercices ont produit » sans lire

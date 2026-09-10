@@ -97,6 +97,22 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 9) — 021 et 022 sont EN PRODUCTION
+
+**Fait, sur feu vert explicite du propriétaire.** Les deux migrations sont passées sur la branche `production` du projet Neon, dans l'ordre, 021 puis 022. **Un instantané a été pris avant** : `avant-021-022-monde-scolaire-2026-09-10`, plus les six heures de rétention d'historique de la branche. Les deux fichiers portent désormais `APPLIQUEE EN PRODUCTION` dans leur bandeau, avec la date et ce qui a été vérifié, et CLAUDE.md dit comment lire ce marqueur.
+
+**Vérifié après coup, par requête.** Huit tables scolaires, trois axes sur `sessions`, trois sur le journal, les trois contraintes en place avec la bonne définition, trois index. Le rétrogarnissage a couvert **595 sessions et 1716 faits sans un seul NULL**, et il est cohérent avec ce que le code faisait réellement : 293 sessions d'entraînement en `update_mastery`, 302 de compétition en `observe_only`.
+
+**LA VÉRIFICATION QUI COMPTAIT LE PLUS.** Le fournisseur d'entraînement insère une session **sans nommer** les deux nouvelles colonnes : si les défauts ne les couvraient pas, le jeu était cassé à la seconde où la migration passait. Rejoué avec la forme exacte du fournisseur : la ligne entre, en `personal` et `update_mastery`. Et les cinq pages du site répondent toujours, landing, prof, profil, modes et devoir.
+
+**UNE LIGNE D'ESSAI EST ENTRÉE EN PRODUCTION, ET JE L'AI RETIRÉE.** La vérification ci dessus insérait puis supprimait dans **la même instruction**, et une CTE de suppression ne voit pas ce qu'une CTE d'insertion vient d'écrire, tout comme le compte de questions résolues plus tôt dans la journée : le même piège, deux fois, sur deux sujets différents. La ligne est partie par une instruction séparée. Compté avant, pendant et après : 595, 596, 595. Aucun fait, aucune garde d'ingestion orpheline. Rien d'autre n'a été écrit.
+
+**Les deux sondes négatives n'ont PAS été rejouées en production**, le classificateur du harnais ayant refusé l'écriture, et je n'ai pas cherché à le contourner. Ce que je peux affirmer : les définitions des trois contraintes ont été relues **dans la base de production** et sont exactement celles voulues, et les neuf refus ont été joués sur la branche jetable avec un SQL identique. Ce que je ne peux pas affirmer : les avoir vus refuser en production. C'est un test à passer à la première occasion où une écriture y sera légitime.
+
+**La source des écrans prof reste le mock, volontairement.** Les tables existent maintenant, mais elles sont vides : aucune école, aucune classe, aucune assignation. Basculer `JDT_TEACHER_SOURCE=live` afficherait donc un espace prof entièrement vide, et surtout il n'y a pas encore d'authentification, donc pas de professeur à qui appartiendraient ces classes. La bascule attend les comptes, et c'est la seule chose qui reste.
+
+---
+
 ## Note — 2026-09-10 (suite 8) — les routes, l'écran du devoir, et la couture des écrans prof
 
 **Trois routes, `app/api/assigned/*`.** Ouvrir ou reprendre, la question suivante, écrire une réponse. Trois décisions y sont posées et valent d'être dites. **L'identité vient du cookie et jamais du corps**, donc un élève ne peut pas se déclarer quelqu'un d'autre ; le jour des comptes, c'est cette ligne qui change et rien d'autre. **La fin n'est pas une erreur** : plus de question à servir rend `{ done: true }` en 200, sinon l'écran devrait traiter la réussite comme un incident. Et **un doublon n'est pas une erreur** non plus : une soumission rejouée rend ce que la base a enregistré. Vérifié en direct : 401 sans identité, 400 sur un corps malformé, aucune requête en base avant le contrôle d'identité.
