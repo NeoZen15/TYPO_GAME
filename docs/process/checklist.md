@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 8) — les routes, l'écran du devoir, et la couture des écrans prof
+
+**Trois routes, `app/api/assigned/*`.** Ouvrir ou reprendre, la question suivante, écrire une réponse. Trois décisions y sont posées et valent d'être dites. **L'identité vient du cookie et jamais du corps**, donc un élève ne peut pas se déclarer quelqu'un d'autre ; le jour des comptes, c'est cette ligne qui change et rien d'autre. **La fin n'est pas une erreur** : plus de question à servir rend `{ done: true }` en 200, sinon l'écran devrait traiter la réussite comme un incident. Et **un doublon n'est pas une erreur** non plus : une soumission rejouée rend ce que la base a enregistré. Vérifié en direct : 401 sans identité, 400 sur un corps malformé, aucune requête en base avant le contrôle d'identité.
+
+**L'écran du devoir, `app/assigned/[assignmentId]`.** Il **ne déclare aucune direction artistique** : il compose les classes déjà en service sur le jeu et n'ajoute pas une ligne de CSS, parce qu'un devoir doit ressembler au jeu, c'est le même jeu. Vérifié au navigateur : zéro classe inventée. Ce qu'il ajoute est une ligne de contexte dans le bandeau existant, le type de devoir et l'avancement. Le mot **n'est monté que quand la face est prête**, la même bretelle que le jeu : un élève ne juge jamais des lettres qui ne sont pas celles de la question. Et il porte la **porte de réentrance**, un seul envoi en vol, la propriété que le garde de compétition exige des écrans.
+
+**Les cinq refus sont des phrases, pas des codes.** Pas destinataire, pas encore ouvert, échéance passée, devoir terminé, pas connecté. Mesuré sans identité : l'écran dit « Il faut être connecté pour ouvrir un devoir », propose le retour au profil, et ne jette aucune erreur.
+
+**Le bouton du bandeau élève tient enfin sa promesse.** Il disait « go and play » et menait au jeu, parce que le moteur ne savait pas ouvrir une séance sur les familles d'un exercice. Il sait : le bouton dit « Play it » et mène au devoir. Le commentaire qui annonçait que « le libellé et l'adresse seront les deux seules choses à changer » avait raison, et c'est écrit dans le fichier.
+
+**LA COUTURE DES QUATRE ÉCRANS PROF, ET POURQUOI ELLE N'EST PAS UN BRANCHEMENT.** `lib/teacher/source.ts` est désormais **le seul endroit qui décide d'où viennent les données** de l'espace professeur, et les quatre écrans consomment les mêmes formes qu'au premier jour. Le défaut est le **mock**, et il doit le rester : les tables du monde scolaire vivent sur la branche jetable et nulle part ailleurs, donc basculer maintenant ferait planter les quatre écrans sur une relation absente. Le jour de la migration, `JDT_TEACHER_SOURCE=live` suffit et **aucun écran ne bouge**. En mode direct, tout passe par la porte de lecture, les confusions cessent d'être écrites à la main et sortent du journal, et les pourcentages sont **au premier essai**. Les signaux restent vides plutôt que faux : ils demandent le moteur de recommandation.
+
+**Une valeur de DA qui existait en trois copies n'en a plus qu'une.** Les quatre couleurs des cartes de réponse étaient déclarées dans `GameScreen`, `CompetitionScreen` et la démo de la landing, deux fois en majuscules et une en minuscules. Un quatrième écran allait en ajouter une quatrième. Elles vivent maintenant dans `lib/game/card-colors.ts`, et les trois écrans existants la lisent : il suffisait qu'une retouche passe sur un écran et pas sur les autres pour que le jeu et sa démo ne montrent plus le même produit.
+
+**Ce que je n'ai pas pu vérifier, et il faut le dire.** La boucle complète d'un devoir joué de bout en bout demande une base qui porte le monde scolaire. L'application pointe sur la production, qui ne l'a pas et ne l'aura pas avant ta validation, et je ne récupère pas la chaîne de connexion de la branche (une branche hérite du mot de passe du rôle parent). Donc : les routes, l'écran, les refus et les formes sont vérifiés ; la partie jouée d'un bout à l'autre reste à voir le jour de la migration.
+
+**Zéro modification en production.** La porte compte 38 étapes, seize gardes relancés, tous verts.
+
+---
+
 ## Note — 2026-09-10 (suite 7) — l'écrivain de la séance assignée, avec ses six propriétés dès la première ligne
 
 **Fait, et fait dans le bon ordre.** `lib/game/assigned/writer.ts` sert les questions et écrit les réponses, et il porte les propriétés des écrivains **dès sa première ligne** au lieu d'être repassé dessus six mois plus tard. La facture connue est écrite dans le repo : la compétition a été livrée sans elles, deux réponses simultanées écrivaient deux faits pour une question, et 121 sessions sont restées actives cinq mois parce que le balayage porte `AND s.mode = 'training'`.

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import TeacherExperience from "@/features/teacher/components/TeacherExperience";
+import { teacherProfile } from "@/lib/teacher/source";
 import { getRuntimeFontFaceCss } from "@/lib/game/fonts/runtime-catalog";
 import { MOCK_TEACHER } from "@/lib/teacher/mock-teacher";
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: "Teacher",
 };
 
-export default function TeacherPage() {
+export default async function TeacherPage() {
   // THE FACES THE READING SCREENS PAINT, declared here, from the runtime
   // catalogue and no longer from font-manifest-v4.json.
   //
@@ -24,6 +25,11 @@ export default function TeacherPage() {
   // demand: the two rules are identical, so it costs a duplicate and nothing
   // else. Adobe faces are in neither list, their family being declared by the
   // project stylesheet in the root layout.
+  // UN SEUL ENDROIT DECIDE D'OU VIENNENT LES DONNEES, et ce n'est pas cet ecran :
+  // voir lib/teacher/source.ts. Le mock par defaut, la porte de lecture quand la
+  // base porte le monde scolaire.
+  const teacher = await teacherProfile();
+
   const fontFaceCss = getRuntimeFontFaceCss([
     ...new Set(MOCK_TEACHER.exercises.flatMap((e) => e.typefaces.map((f) => f.slug))),
   ]);
@@ -34,7 +40,7 @@ export default function TeacherPage() {
     <>
       {fontFaceCss ? <style dangerouslySetInnerHTML={{ __html: fontFaceCss }} /> : null}
       <Suspense fallback={null}>
-        <TeacherExperience />
+        <TeacherExperience teacher={teacher} />
       </Suspense>
     </>
   );

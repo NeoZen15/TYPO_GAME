@@ -25,6 +25,7 @@ import {
   type TrainingSessionSummary,
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
+import { CARD_COLORS } from "@/lib/game/card-colors";
 
 // Synthetic figures for ?preview=complete. Deliberately plausible rather than
 // round, so the page is judged on real-looking data, and deliberately never
@@ -95,7 +96,7 @@ const formatElapsed = (ms: number) => {
 // shown continuously in game; it surfaces only as this brief toast when it moves.
 const LEVEL_TOAST_MS = 3200;
 
-const CARD_COLORS = ["#8EA2FF", "#67D6B6", "#F5BF6A", "#F39AB1"] as const;
+
 
 const getPreferredLocale = () =>
   typeof document !== "undefined" && document.documentElement.lang.startsWith("en")

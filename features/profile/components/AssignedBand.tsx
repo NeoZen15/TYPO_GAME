@@ -22,11 +22,12 @@ import { dueLabel, opensLabel, urgencyOf } from "@/lib/teacher/teacher-time";
 // door: the panel, the mode chip, the countdown pill and the button are the
 // shared system's, and the only local values are the row's own columns.
 //
-// THE BUTTON SAYS WHERE IT GOES AND NOT WHAT IT STARTS. The engine cannot yet
-// open a session on a given exercise's families, so a button labelled "play it"
-// would start an ordinary session and quietly break the promise. It says "go and
-// play" and goes to the game. The day a session can carry an exercise, this
-// label and this href are the only two things that change.
+// THE BUTTON NOW KEEPS ITS PROMISE, and that day is 2026-09-10. It used to say
+// "go and play" and lead to an ordinary session, because the engine could not
+// open one on a given exercise's families. It can: the assigned path serves the
+// contract's own faces, at the teacher's own exigence. So the label says what it
+// starts, and the address is the exercise. As predicted in this comment's first
+// version, the label and the href were the only two things that had to change.
 export default function AssignedBand() {
   const open = myOpenAssignments();
   const next = myNextAssignments();
@@ -86,8 +87,11 @@ export default function AssignedBand() {
           </span>
 
           {a && !done && (
-            <Link className="st-action st-action--compact st-action--primary" href="/game">
-              Go and play
+            <Link
+              className="st-action st-action--compact st-action--primary"
+              href={`/assigned/${ex.id}`}
+            >
+              Play it
             </Link>
           )}
           {done && shown.mine !== null && (

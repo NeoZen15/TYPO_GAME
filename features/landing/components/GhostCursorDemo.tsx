@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { CARD_COLORS } from "@/lib/game/card-colors";
 
 /**
  * Block 2 demo — the game board, auto-played by a ghost cursor:
@@ -13,7 +14,7 @@ import { gsap } from "gsap";
 const OPTIONS = ["Playfair Display", "PT Serif", "Libre Baskerville", "Lora"];
 const CORRECT = 2;
 const WRONG = 0;
-const CARD_COLORS = ["#8ea2ff", "#67d6b6", "#f5bf6a", "#f39ab1"];
+
 
 export default function GhostCursorDemo() {
   const rootRef = useRef<HTMLDivElement>(null);

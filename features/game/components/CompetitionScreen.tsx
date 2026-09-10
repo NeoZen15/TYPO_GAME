@@ -27,6 +27,7 @@ import {
   type CompetitionStats,
   type CompetitionTimeoutResponse,
 } from "@/lib/game/competition/contracts";
+import { CARD_COLORS } from "@/lib/game/card-colors";
 
 declare global {
   interface Window {
@@ -40,7 +41,7 @@ type InlineFeedback = {
   text: string;
 } | null;
 
-const CARD_COLORS = ["#8EA2FF", "#67D6B6", "#F5BF6A", "#F39AB1"] as const;
+
 
 const getPreferredLocale = () =>
   typeof document !== "undefined" && document.documentElement.lang.startsWith("en")

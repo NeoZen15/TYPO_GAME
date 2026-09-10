@@ -87,6 +87,9 @@ export type TeacherAssignmentRow = {
   due_at: string;
   state: string;
   origin: string;
+  scope: { kind: "category" | "subcategory"; key: string; label: string; parent?: string; count: number }[];
+  target_slugs: string[];
+  target_names: string[];
   assigned: number;
   started: number;
   finished: number;
@@ -135,6 +138,13 @@ export const teacherAssignments = (teacherId: string, classId?: string) =>
       m.due_at,
       m.state::text AS state,
       m.origin,
+      m.scope,
+      COALESCE((SELECT array_agg(t.typeface_slug ORDER BY t.typeface_slug)
+                  FROM assignment_targets t WHERE t.assignment_id = m.assignment_id), '{}') AS target_slugs,
+      COALESCE((SELECT array_agg(tc.display_name ORDER BY tc.typeface_slug)
+                  FROM assignment_targets t
+                  JOIN typefaces_core tc ON tc.typeface_slug = t.typeface_slug
+                 WHERE t.assignment_id = m.assignment_id), '{}') AS target_names,
       (SELECT count(*)::int FROM assignment_recipients r WHERE r.assignment_id = m.assignment_id) AS assigned,
       (SELECT count(*)::int FROM answers x WHERE x.assignment_id = m.assignment_id) AS started,
       (SELECT count(*)::int FROM answers x
