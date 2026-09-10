@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 4) — point 2 fait sur branche jetable : le monde scolaire et les trois axes
+
+**Où c'est appliqué, et où ça ne l'est pas.** Migrations `021_school_world.sql` et `022_session_axes.sql`, avec leurs deux rollbacks, écrites dans le repo et **appliquées uniquement sur la branche Neon jetable** `jetable-schema-scolaire-2026-09-10` (`br-hidden-tooth-abn5xe2v`), créée depuis `production` à HEAD. **La production n'a rien reçu, et c'est vérifié par requête** : zéro table scolaire, zéro colonne d'axe sur `sessions`. Consigne du propriétaire respectée à la lettre, aucune migration en prod, rien d'irréversible.
+
+**021, le monde scolaire.** Huit tables. `schools`, porteur de la **licence et du compteur de sièges**, jamais le professeur. `school_members` avec son rôle. `classes` avec son **code court** contraint au format à six caractères, et son drapeau d'archivage. `class_members`. `invitations`, avec un jeton à usage unique, une expiration, et **aucune colonne de mot de passe** : le professeur invite, l'élève choisit, et le provisionnement n'ouvre aucun pouvoir résiduel. Puis `assignments`, qui porte **le contrat** (périmètre en jsonb, confusions retenues, cran d'exigence, adaptation, mix, budget de questions, fenêtre, état, provenance), `assignment_targets` pour les **faces imposées** et `assignment_recipients` pour les destinataires figés à la publication.
+
+**Un choix de modélisation, et sa raison.** Le périmètre est du **jsonb** parce qu'il désigne des branches du catalogue, qui ne sont pas des entités ; les faces imposées sont une **table avec sa clé étrangère** parce qu'une police, elle, en est une. Conséquence mesurée : une assignation **ne peut pas** nommer une police absente du catalogue, la base la refuse.
+
+**022, les trois axes.** `context`, `progression_policy` et `assignment_id` sur `sessions`, et **propagés sur `user_event_fact`** pour qu'une lecture n'ait jamais besoin d'une jointure pour connaître ses droits. Les anciennes lignes sont remplies d'après ce que le code a réellement fait : l'entraînement écrivait la maîtrise, la compétition et l'expert jamais. **Les quatre contextes n'ajoutent aucun axe**, ce sont des combinaisons des trois colonnes.
+
+**Un échafaudage assumé et écrit en tête de la migration** : les deux colonnes ont un `DEFAULT`, sinon la migration casserait l'entraînement à la seconde où elle est appliquée, le code en production insérant des sessions sans les nommer. Ces défauts doivent tomber **dans le même commit** que le fournisseur qui renseigne les colonnes, sinon une session peut naître avec une politique que personne n'a choisie, ce que I-22 refuse. Les deux lignes d'`ALTER` sont écrites dans le fichier.
+
+**NEUF INVARIANTS VÉRIFIÉS EN BASE, PAS DÉDUITS.** Chaque tentative ci dessous a été jouée sur la branche et **refusée par le schéma** : une session assignée sans contrat, une compétition dont la politique écrirait la maîtrise (I-22 devenu inviolable au niveau de la ligne), une deuxième session sur le même devoir pour le même élève, une compétition avec un budget de questions, un exercice sans budget, une face imposée absente du catalogue, une échéance avant l'ouverture, un code de classe hors format, et une réponse étiquetée privée mais rattachée à un devoir.
+
+**ET LE MUR A ÉTÉ MESURÉ, C'EST LE PLUS IMPORTANT.** Sur la branche : un élève a répondu deux fois, une fois dans un devoir et une fois en entraînement libre. La requête de la porte professeur rend **exactement une ligne**, celle du devoir. La face travaillée librement est invisible du professeur. C'est la première fois que l'étanchéité élève / professeur est démontrée par une requête et non par une intention.
+
+**Ce qui reste avant que ça serve** : le point 3, la porte de lecture professeur et son garde `check:teacher-read-gate`, puis le chemin de session assignée. Et la question ouverte, opératoire et non produit : quand on appliquera en prod, il faudra le faire avec le code qui renseigne les colonnes, dans le même déploiement.
+
+---
+
 ## Note — 2026-09-10 (suite 3) — les quatre contextes moteur, verrouillés avant tout schéma
 
 **Le principe que le propriétaire a nommé, et il était le bon risque à voir.** En construisant l'espace prof, DWIGGINS pouvait glisser vers un produit scolaire où l'élève ne joue que quand un enseignant lui donne quelque chose. Ce n'est pas le projet. **I-26** est inscrite : le parcours personnel est premier et autonome, il se suffit à lui même, sans école, sans classe, sans professeur. L'assignation est un second parcours qui coexiste. **I-27** inscrit la symétrie des recommandations : le prof reçoit « voilà ce que ta classe devrait travailler », l'élève reçoit « voilà ce que ton œil devrait travailler », même méthode et jamais les mêmes sources.
