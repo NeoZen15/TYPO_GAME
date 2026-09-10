@@ -1,6 +1,6 @@
 # Spécification produit — la création d'exercice
 
-**Rang 4, fermée.** Applique la vision (`game/vision-produit-dwiggins.md`), la spec moteur (`game/training-engine-spec-v2-clean.md`) et l'architecture backend (`game/architecture-backend.md`). Ne redéfinit rien au dessus d'elle. Chaque point porte une **règle tranchée** : il n'y a plus de question produit ouverte dans ce document, seulement une liste courte d'arbitrages en section 20, chacun avec sa recommandation.
+**Rang 4, fermée.** Applique la vision (`game/vision-produit-dwiggins.md`), la spec moteur (`game/training-engine-spec-v2-clean.md`) et l'architecture backend (`game/architecture-backend.md`). Ne redéfinit rien au dessus d'elle. Chaque point porte une **règle tranchée**. Les cinq derniers arbitrages ont été rendus par le propriétaire le 2026-09-10 et sont consignés en section 20 : **il ne reste aucune question produit ouverte**. La construction peut partir dans l'ordre de la section 22.
 
 Remplace le brief du 2026-09-10, même chemin, même sujet, refermé. Écrit le 2026-09-10. Tout ce qui est affirmé sur l'existant a été mesuré dans le code, pas supposé.
 
@@ -201,6 +201,8 @@ Ces quatre parts sont une **hypothèse de V1 à tester**, pas une règle scienti
 | Challenging | typographies très proches | même cluster visuel |
 | Expert | reconnaissance très fine | même cluster, micro variations d'ouverture et de contraste |
 
+**D'où viennent les mauvaises réponses, et ce n'est pas du périmètre.** Un leurre est choisi pour sa **proximité visuelle** avec la face demandée, dans tout le catalogue jouable, jamais restreint au périmètre de l'exercice. L'enfermer dans le périmètre rendrait le cran Accessible impossible dès qu'un professeur choisit un seul cluster, et un leurre n'est pas une chose qu'on enseigne, c'est une chose contre laquelle on se trompe. Conséquence pratique sur l'écran : un exercice est valide avec **une seule** famille ou une seule typographie, puisque les trois autres boutons ne viennent pas de là.
+
 **Conséquence.** `pickDistractors` prend une **proximité cible** et sait aussi **pénaliser** la proximité, pas seulement la récompenser. Une fonction, un paramètre, et le garde `check:answer-position` rejoue déjà la chaîne. C'est aussi ce qui rend la spec moteur enfin vraie sur son propre palier bas.
 
 **Le format Expert n'est pas dans cette échelle.** Écrire le nom au clavier est un **format de réponse**, réservé par la spec moteur à un niveau global avancé, donc jamais garanti pour une classe entière. Règle : **le professeur n'assigne pas le format Expert en V1**. Le cran Expert reste un palier de distracteurs en QCM. Un contrat qui retomberait en QCM pour la moitié de la classe ne serait plus un contrat commun.
@@ -221,7 +223,7 @@ Ces quatre parts sont une **hypothèse de V1 à tester**, pas une règle scienti
 
 **Et le professeur ne voit rien de cet état.** Il lit les résultats de ses exercices, jamais le mastery, jamais le pool, jamais le déplacement que sa session a produit.
 
-**Conséquence, et elle touche un écran déjà construit.** Quand une assignation est adaptative, les notes de deux élèves **ne sont pas strictement comparables**. La fiche Exercice doit le dire d'une phrase, et la répartition de la classe en avance / avec / en retard ne s'affiche pas sur une assignation adaptative. Un écran qui compare des exercices calibrés différemment sans le dire est un écran qui ment.
+**Conséquence, et elle touche un écran déjà construit.** Quand une assignation est adaptative, le résultat individuel **reste affiché**, avec l'avancement de l'élève dans l'exercice : c'est l'information qu'un professeur vient chercher. Mais il **n'est jamais présenté comme strictement comparable** d'un élève à l'autre. Concrètement, sur une assignation adaptative : la ligne d'un élève garde son pourcentage, la moyenne de classe reste affichée comme une moyenne de résultats et non comme un barème, et **toute comparaison de l'élève à sa classe porte sa qualification à côté du chiffre**, jamais en note de bas de page. La répartition en avance / avec / en retard est conservée et **étiquetée** comme calibrée par élève. Un écran qui compare des exercices calibrés différemment sans le dire est un écran qui ment ; un écran qui cache le résultat pour être rigoureux est un écran inutile.
 
 ---
 
@@ -322,19 +324,19 @@ Chaque chiffre vient du contrat. **Pas d'estimation de durée au départ** : le 
 
 ---
 
-## 20. Ce qui reste à arbitrer
+## 20. Les cinq arbitrages, tranchés
 
-Cinq points, et rien d'autre. Chacun a une recommandation ; le produit est constructible sur ces recommandations si l'arbitrage tarde.
+Décisions du propriétaire, le 2026-09-10. **La spécification est fermée : il ne reste aucune question produit ouverte.**
 
-| Point | Recommandation | Alternative | Ce que ça change |
-|---|---|---|---|
-| Format Expert assignable | non en V1, le cran Expert reste du QCM | l'autoriser avec retombée en QCM par élève | autoriser casse le contrat commun : deux formats dans une même classe |
-| Nombre de questions en compétition | pas de réglage, deux minutes fixes | rendre la durée réglable par assignation | réglable ajoute un paramètre moteur et un risque de comparabilité |
-| Contrôle sans effet sur la progression | l'exposer dès la V1 | ne garder que Exercice et Compétition | l'exposer coûte une case et répond à une vraie demande d'enseignant |
-| Parts de départ du mix | 45 / 20 / 20 / 15 comme hypothèse mesurée | autre répartition, ou pas de mix en V1 | c'est un point de départ, mesurable et modifiable sans rien casser |
-| Notes non comparables en mode adaptatif | garder les notes et écrire l'avertissement | masquer les notes, ne montrer que l'avancement | masquer protège la rigueur, garder répond à ce qu'un prof cherche |
+**1. Format Expert assignable : NON en V1.** Le cran Expert reste un QCM très exigeant, jamais une saisie libre donnée par un professeur. Raison retenue, et c'est la raison du refus : la saisie libre est réservée par la spec moteur à un niveau global avancé, donc jamais garantie pour une classe entière, et un exercice qui change de format selon l'élève **casse le contrat commun**. À rouvrir seulement si le format devient accessible à tous.
 
----
+**2. Compétition : ni nombre de questions, ni durée réglable.** Les deux minutes restent la règle commune. C'est plus simple, c'est comparable, et c'est précisément ce qui donne un sens au mode. Le compositeur n'affiche donc aucun budget de questions en compétition : il affiche la durée, et elle n'est pas modifiable.
+
+**3. Le Contrôle : OUI dès la V1.** Troisième type assumé à côté de l'Entraînement et de la Compétition : un exercice qui **mesure sans modifier la progression personnelle**. `training` plus `observe_only`, ce que l'architecture permet déjà. Le besoin enseignant est évident et le coût est une case.
+
+**4. Le mix 45 / 20 / 20 / 15 : OUI comme hypothèse de départ mesurée**, surtout pas comme vérité figée. Le professeur garde le curseur renforcement contre découverte ; DWIGGINS calcule le détail derrière et ne montre jamais un coefficient. Les parts s'ajusteront avec les données, sans rien casser puisqu'elles vivent sur le contrat.
+
+**5. Résultats en mode adaptatif : OUI au résultat individuel, jamais présenté comme strictement comparable.** Le professeur voit le résultat de chaque élève et son avancement dans l'exercice, parce que c'est l'information qu'il attend et que la masquer la lui retirerait. Mais **dès qu'une comparaison à la classe est affichée sur une assignation adaptative, elle est explicitement qualifiée** : le calibrage a varié d'un élève à l'autre, et l'écran le dit à côté du chiffre, pas dans une note de bas de page.
 
 ## 21. Conséquences base et moteur, récapitulées
 

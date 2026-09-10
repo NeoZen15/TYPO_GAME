@@ -191,7 +191,8 @@ export default function TeacherExperience({
   }, []);
 
   // Given, so it goes where a teacher would look next: its own page.
-  const createExercise = useCallback((ex: TeacherExercise) => {
+  const createExercise = useCallback((draft: Omit<TeacherExercise, "id">) => {
+    const ex: TeacherExercise = { ...draft, id: `new-${created.length + 1}` };
     setCreated((prev) => [ex, ...prev]);
     setComposing(false);
     setView("exercises");
@@ -200,7 +201,7 @@ export default function TeacherExperience({
     setExerciseId(ex.id);
     if (typeof window === "undefined") return;
     window.history.pushState(null, "", `/teacher?view=exercises&exercise=${ex.id}`);
-  }, []);
+  }, [created.length]);
 
   // An address naming a class that does not exist falls back to the list rather
   // than rendering nothing.

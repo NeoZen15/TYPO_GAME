@@ -97,6 +97,30 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 2) — spec fermée sur les cinq arbitrages, et le compositeur passe au vrai catalogue
+
+**Les cinq arbitrages sont rendus et consignés en §20 de la spec.** Format Expert assignable : non en V1, le cran Expert reste du QCM très serré. Compétition : ni budget de questions ni durée réglable, deux minutes pour tout le monde. Contrôle : oui dès la V1, un exercice qui mesure sans modifier la progression. Mix 45 / 20 / 20 / 15 : oui comme hypothèse de départ, jamais comme vérité figée, avec le curseur renforcement contre découverte. Résultats en adaptatif : oui au résultat individuel, mais **toute comparaison à la classe porte sa qualification à côté du chiffre**, la §14 est réécrite dans ce sens (on qualifie, on ne masque pas).
+
+**Une clarification ajoutée en §13, parce que le moteur la tranche déjà** : les mauvaises réponses sont choisies pour leur proximité visuelle **dans tout le catalogue jouable**, jamais restreintes au périmètre de l'exercice. Enfermer les leurres dans le périmètre rendrait le cran Accessible impossible dès qu'un prof choisit un seul cluster. Conséquence d'écran : **une seule** famille ou une seule typographie suffit à faire un exercice valide.
+
+**Point 1 de l'ordre de construction : FAIT.** Le compositeur lit maintenant `content/catalog/typefaces-core.json`, filtré sur `activation_status` **et** sur la présence d'un asset servable : **1 279 faces jouables** contre 23 avant. Mesuré au navigateur : quatre branches (813 sans serif, 406 serif, 55 mono, 5 display) et leurs feuilles réelles.
+
+**Ce que ça change dans la forme de l'écran, et ce n'était pas un choix.** On ne choisit pas 406 serif dans une liste déroulante, donc le panneau porte les deux gestes de la spec : **le terrain** (des familles, avec leur compte réel) et **les passages obligés** (des faces cherchées par nom, garanties demandées). `TeacherExercise` gagne un `scope`, et la fiche Exercice l'affiche au dessus des faces nommées.
+
+**Architecture, et elle était imposée par le poids des données.** Le catalogue fait 3,4 Mo et le manifeste d'assets 0,8 Mo, tous deux `server-only` par contrat. Donc : un lecteur serveur (`lib/teacher/faces-catalog.ts`), une route (`app/api/teacher/faces`) qui rend l'arbre, la recherche, un échantillon de branche ou des lignes pour une sélection, et des types partagés dans `lib/teacher/faces-contracts.ts` sur le modèle de `lib/game/fonts/contracts.ts`. Les polices sont **injectées à la demande** par l'injecteur du jeu, dont le `font-display: block` fait qu'une face non arrivée ne peint **rien** plutôt qu'un faux spécimen.
+
+**UNE VRAIE FAUTE TROUVÉE EN MESURANT, ET ELLE ÉTAIT GRAVE.** Trois écrans composaient le nom de famille à la main, `JDT__<slug>`. C'est vrai pour une face que nous servons, **faux pour les 108 faces Adobe**, dont la famille est déclarée par la feuille du projet sous son propre nom. Dès que le compositeur a pu choisir dans tout le catalogue, un exercice sur Univers Next Pro peignait donc un spécimen inventé par le navigateur, exactement le défaut que ce produit ne peut pas se permettre. Corrigé à la source : `Family` porte désormais sa famille CSS résolue, `familyOf()` est le seul endroit qui décide, et les trois écrans le lisent. Vérifié au navigateur : `univers-next-pro` pour l'Adobe, `JDT__work_sans` pour la nôtre.
+
+**Et la page prof déclare ses faces depuis la même source.** `app/teacher/page.tsx` lisait `getTrainingFontFaceCss()`, donc le manifeste de 28. Elle lit maintenant `getRuntimeFontFaceCss` sur les slugs que les exercices portent réellement. Les deux chemins, statique pour les écrans de lecture et à la demande pour le compositeur, construisent leurs règles depuis le même module, ce que `check:font-renderable` exige.
+
+**Vérifié en pilotant le navigateur, pas en lisant le code** : l'arbre et ses comptes, l'ouverture d'une branche, la recherche (« univers » rend les quatre Univers Next Pro), l'ajout, le retrait instantané, la lecture de cluster (Univers Next Pro contre Helvetica LT Pro, même cluster), les spécimens peints dans leur vraie famille, le fichier woff2 réellement demandé pour une face auto hébergée, la création, et la fiche Exercice qui affiche le terrain et les faces nommées. Zéro erreur de page. `tsc`, `eslint` et neuf gardes verts, dont `check:font-renderable`.
+
+**Deux détails réglés en chemin.** Une feuille de l'arbre ne se nomme jamais seule : `didone` existe sous serif (50), sans serif (1), display (1) et mono (1), donc un scope porte sa branche et s'affiche « Serif didone ». Et l'identifiant d'un exercice créé est attribué par l'espace et non par le compositeur, qui est démonté au moment où l'exercice part.
+
+**Suite, dans l'ordre de la §22** : le schéma du monde scolaire et les trois axes de session, puis la porte de lecture professeur.
+
+---
+
 ## Note — 2026-09-10 (suite) — la création d'exercice passe en spécification fermée, et I-25 entre dans la vision
 
 **Le brief devient une spec, même fichier renommé** : `docs/product/spec-creation-exercice.md`, rang 4, 22 sections. Le parcours entier et tous les cas demandés y sont tranchés, chacun avec ce que le code sait déjà faire, ce qui manque réellement, la règle produit et les conséquences sur le moteur et la base. **Il ne reste aucune question produit ouverte** : cinq arbitrages sont listés en §20, chacun avec une recommandation sur laquelle le produit est constructible si la décision tarde.

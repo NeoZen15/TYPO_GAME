@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BOARD_SYSTEM_CSS, CREAM } from "@/features/profile/components/board-system";
+import { familyOf } from "@/lib/teacher/mock-teacher";
 import type { TeacherProfile } from "@/lib/teacher/mock-teacher";
 import { familiesInPlay, paceOfOpen, topConfusions } from "@/lib/teacher/teacher-derive";
 import { dueLabel } from "@/lib/teacher/teacher-time";
@@ -148,7 +149,7 @@ export default function TeacherHome({
             {/* The family's own name, set in that family. A specimen that
                 labels itself, and the caption underneath is the data: someone
                 is being asked to name this face today. */}
-            <h1 className="tc-band__word" key={face.slug} style={{ fontFamily: `JDT__${face.slug}` }}>
+            <h1 className="tc-band__word" key={face.slug} style={{ fontFamily: familyOf(face) }}>
               {face.name}
             </h1>
             <p className="tc-band__note">
@@ -237,7 +238,7 @@ export default function TeacherHome({
           <ul className="st-faces tc-next__faces">
             {suggestionFamilies.map((f) => (
               <li key={f.slug} className="st-face">
-                <span className="st-face__glyph" style={{ fontFamily: `JDT__${f.slug}` }}>
+                <span className="st-face__glyph" style={{ fontFamily: familyOf(f) }}>
                   Aa
                 </span>
                 <span className="st-face__name">{f.name}</span>

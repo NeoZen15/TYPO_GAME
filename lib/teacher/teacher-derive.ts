@@ -25,7 +25,7 @@
 // produced. Nothing here can reach a student's own training, and there is no
 // field for it to reach.
 
-import type { ClassConfusion, TeacherClass, TeacherExercise } from "@/lib/teacher/mock-teacher";
+import type { ClassConfusion, Family, TeacherClass, TeacherExercise } from "@/lib/teacher/mock-teacher";
 
 const FIRST = [
   "Camille", "Léa", "Hugo", "Jade", "Nathan", "Manon", "Théo", "Chloé",
@@ -388,7 +388,7 @@ export function paceOfOpen(exercises: TeacherExercise[]): Pace[] {
  * decoration: the word on screen is a face a student is being asked to name
  * today.
  */
-export type LiveFamily = { slug: string; name: string; className: string };
+export type LiveFamily = Family & { className: string };
 
 export function familiesInPlay(exercises: TeacherExercise[]): LiveFamily[] {
   const seen = new Set<string>();
@@ -397,7 +397,7 @@ export function familiesInPlay(exercises: TeacherExercise[]): LiveFamily[] {
     for (const f of e.typefaces) {
       if (seen.has(f.slug)) continue;
       seen.add(f.slug);
-      out.push({ slug: f.slug, name: f.name, className: e.className });
+      out.push({ ...f, className: e.className });
     }
   }
   return out;
@@ -585,7 +585,7 @@ export type ExerciseStudentRow = {
  * actually has. `rightPct` is null until it closes, since nothing is measured
  * while it is still being played.
  */
-export type ExerciseFamily = { slug: string; name: string; rightPct: number | null };
+export type ExerciseFamily = Family & { rightPct: number | null };
 
 export type ExerciseDetail = {
   rows: ExerciseStudentRow[];
@@ -619,9 +619,11 @@ export function exerciseDetail(
 
   const offsets = spread(ex.typefaces.length, 14);
   const families: ExerciseFamily[] = ex.typefaces.map((f, i) => ({
-    slug: f.slug,
-    name: f.name,
-    rightPct: ex.state === "done" && ex.successPct !== undefined ? clamp(ex.successPct + offsets[i]) : null,
+    // Spread, so the resolved font family travels with the row: an Adobe face
+    // painted as "JDT__<slug>" would fall back to an invented letterform.
+    ...f,
+    rightPct:
+      ex.state === "done" && ex.successPct !== undefined ? clamp(ex.successPct + offsets[i]) : null,
   }));
 
   const others = closedOfClass(cls.id, exercises).filter((e) => e.id !== ex.id);

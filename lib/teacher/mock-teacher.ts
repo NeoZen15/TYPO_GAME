@@ -23,7 +23,22 @@ import { dueLabel } from "@/lib/teacher/teacher-time";
  * A typeface family the product can actually paint: the slug is the manifest
  * slug, so `JDT__<slug>` is a face the browser really loads.
  */
-export type Family = { slug: string; name: string };
+export type Family = {
+  slug: string;
+  name: string;
+  /**
+   * The CSS font-family to paint this face with, as the runtime catalogue
+   * resolves it. Self hosted faces come out as `"JDT__<slug>"`, Adobe faces
+   * under the family their stylesheet declares. **Never compose it by hand**:
+   * `JDT__univers_next_pro` is declared nowhere, so the browser would invent the
+   * letterform. Optional only because the rows written before the composer
+   * existed are all self hosted; absent means `"JDT__<slug>"`.
+   */
+  fontFamily?: string;
+};
+
+/** The one place a face's family is decided when the row does not carry it. */
+export const familyOf = (face: Family) => face.fontFamily ?? `"JDT__${face.slug}"`;
 
 /** Read by the clock, not stored: what the countdown says about an exercise. */
 export type ExerciseState = "scheduled" | "running" | "done";
@@ -86,6 +101,24 @@ export function classActivityLabel(classId: string, exercises: TeacherExercise[]
   return `${Math.round(past / (24 * 7))} weeks ago`;
 }
 
+/**
+ * A branch of the catalogue the exercise may draw from: the GROUND.
+ *
+ * Not the same thing as `typefaces`, which are the faces the teacher named and
+ * which are guaranteed to be asked. "Travaille les grotesques, mais je veux
+ * absolument Univers" is a scope plus an imposed face, and the two are stored
+ * apart because the engine treats them differently. Counted at composition time
+ * so the teacher knows whether he opened 406 faces or 12.
+ */
+export type ExerciseScope = {
+  kind: "category" | "subcategory";
+  key: string;
+  label: string;
+  /** The branch of a leaf: "Didone" alone names four different things. */
+  parent?: string;
+  count: number;
+};
+
 export type TeacherExercise = {
   id: string;
   title: string;
@@ -141,6 +174,12 @@ export type TeacherExercise = {
    * named here, `public/fonts` can serve it.
    */
   typefaces: Family[];
+  /**
+   * The ground, when the teacher pointed at families rather than naming faces
+   * one by one. Optional: the exercises written before the composer existed
+   * only ever named faces.
+   */
+  scope?: ExerciseScope[];
 };
 
 /**

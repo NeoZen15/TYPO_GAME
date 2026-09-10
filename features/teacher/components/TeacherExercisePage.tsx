@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { BOARD_SYSTEM_CSS, CREAM, MODE_ACCENT } from "@/features/profile/components/board-system";
 import TeacherBack from "@/features/teacher/components/TeacherBack";
+import { familyOf } from "@/lib/teacher/mock-teacher";
 import type { TeacherClass, TeacherExercise, TeacherProfile } from "@/lib/teacher/mock-teacher";
 import { exerciseDetail } from "@/lib/teacher/teacher-derive";
 import { closedLabel, dueLabel, opensLabel, windowLabel } from "@/lib/teacher/teacher-time";
@@ -281,15 +282,40 @@ export default function TeacherExercisePage({
         <div className="st-panel__head">
           <h2 className="st-panel__title">What it asked</h2>
           <span className="st-panel__meta">
-            {ex.state === "done" ? "in the order you built it" : `${families} families`}
+            {ex.state === "done" ? "in the order you built it" : `${families} named`}
           </span>
         </div>
+
+        {/* THE GROUND FIRST, WHEN THERE IS ONE. A teacher who pointed at
+            families did not choose these faces one by one, and showing only the
+            named ones would hide most of what the exercise draws from. */}
+        {ex.scope && ex.scope.length > 0 && (
+          <p className="tc-exop__ground">
+            Drawing from{" "}
+            <em>
+              {ex.scope
+                .map((s) => (s.parent ? `${s.parent} ${s.label.toLowerCase()}` : s.label))
+                .join(", ")}
+            </em>
+            , <em>{ex.scope.reduce((sum, s) => sum + s.count, 0)}</em>{" "}
+            {ex.scope.reduce((sum, s) => sum + s.count, 0) === 1 ? "face" : "faces"}.
+            {detail.families.length > 0 ? " Named on top of that:" : ""}
+          </p>
+        )}
+
+        {detail.families.length === 0 && (
+          <p className="st-empty">
+            No face was named: everything comes from the families above, and the
+            engine chooses inside them.
+          </p>
+        )}
+
         <ul className="st-faces tc-exop__faces">
           {detail.families.map((f) => (
             <li key={f.slug} className="st-face tc-exop__face">
               {/* Nothing on this element but a size: every typographic property
                   comes from the font file, or the letter is not that face. */}
-              <span className="st-face__glyph" style={{ fontFamily: `JDT__${f.slug}` }}>Aa</span>
+              <span className="st-face__glyph" style={{ fontFamily: familyOf(f) }}>Aa</span>
               <span className="st-face__name">{f.name}</span>
               {f.rightPct !== null && (
                 <>
@@ -391,6 +417,9 @@ const EXOP_CSS = `
   .tc-exop__block .st-seg { margin-bottom: 0.2rem; }
   .tc-exop__vs { margin: 0.5rem 0 0; max-width: 52ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
   .tc-exop__vs em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
+
+  .tc-exop__ground { margin: 0 0 1rem; max-width: 62ch; text-wrap: pretty; font-size: 0.84rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
+  .tc-exop__ground em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
 
   /* The faces. As many columns as fit, because an exercise carries two families
      or six and neither should leave a hole. */
