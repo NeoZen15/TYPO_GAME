@@ -97,6 +97,28 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 5) — point 3 : la porte de lecture professeur, et un garde qui mord
+
+**Une seule porte, `lib/teacher/read-gate.ts`.** Cinq lectures, et tout ce qui est destiné à un professeur passera par là : ses classes, ses assignations avec ce qu'elles ont produit, une assignation élève par élève, la lecture famille par famille, et **les paires que la classe confond réellement**. Chaque requête porte les deux mêmes bornes, `a.teacher_id` et `f.context = 'teacher_assignment'` : la première dit « tes assignations », la seconde dit « pas la vie privée de l'élève ». Le fichier ne nomme jamais la table d'état personnel et n'a qu'une dépendance de données, le client SQL.
+
+**Le signal le plus utile du produit n'a jamais demandé de nouvelle donnée.** Les confusions se lisent dans le journal, qui enregistre depuis le premier jour la réponse choisie à côté de la réponse attendue. Il manquait seulement de quoi savoir à quel devoir une réponse appartient, ce que la migration 022 vient d'ajouter. Mesuré sur la branche jetable : « Playfair Display lu comme Abril Fatface, 1 fois ». Bornée aux premiers essais, parce qu'une erreur de reprise n'est pas une confusion, c'est un tâtonnement.
+
+**Et la répartition famille par famille devient réelle.** Le mock répartissait le taux d'un exercice sur ses faces par des écarts sommant à zéro, faute de données par face. La porte lit les vraies réponses par face, donc ce chiffre cesse d'être fabriqué le jour du branchement.
+
+**LES CINQ LECTURES ONT ÉTÉ JOUÉES SUR LA BRANCHE JETABLE, PAS RELUES.** Sur le jeu de test : une classe, un élève, un exercice adaptatif de 20 questions, une réponse en devoir et une réponse en entraînement libre. La porte rend la classe avec son effectif et son exercice ouvert, l'assignation avec un destinataire, un élève commencé, zéro terminé et 0 % au premier essai, la face du devoir avec son taux réel, et la confusion. **La face travaillée librement n'apparaît dans aucune des cinq lectures.**
+
+**`check:teacher-read-gate` est écrit, câblé dans la porte qualité au même commit, et ÉPROUVÉ.** Trois propriétés, toutes lisibles dans le texte : aucun module professeur ne nomme la table d'état personnel **ni n'importe, même au deuxième rang, un module qui la nomme** (17 modules professeur, 24 fichiers dans leur fermeture d'imports) ; toute requête de la porte est bornée sur `teacher_id`, et toute requête qui touche le journal l'est sur le contexte assigné ; la porte est le **seul** module du monde professeur à parler à la base. Le garde a été essayé sur trois mutations, une mention de la table dans un écran, une borne de contexte retirée d'une requête, un import du client SQL ailleurs : **il échoue sur les trois**, et redevient vert après restauration. Un garde qui ne peut pas échouer ne garde rien, donc cette vérification fait partie de la livraison.
+
+**Un défaut de ma propre plume attrapé par le garde avant qu'il n'existe** : le commentaire de la route des faces nommait la table pour affirmer qu'il n'y touche pas, ce qui aurait fait échouer ce garde là. Réécrit sans la nommer, la veille de son arrivée.
+
+**La porte compte 35 étapes**, le garde est rangé à côté de `check:runtime-boundaries` parce que tous deux suivent des chaînes d'imports, et le compte des fichiers `check-*.mjs` de CLAUDE.md est remis à jour, 33.
+
+**Toujours zéro modification en production.** Tout est joué sur `br-hidden-tooth-abn5xe2v`, gardée à la demande du propriétaire pour les points suivants.
+
+**Suite** : le chemin de session assignée (fenêtre, budget, reprise, unicité), puis la proximité cible dans `pickDistractors`.
+
+---
+
 ## Note — 2026-09-10 (suite 4) — point 2 fait sur branche jetable : le monde scolaire et les trois axes
 
 **Où c'est appliqué, et où ça ne l'est pas.** Migrations `021_school_world.sql` et `022_session_axes.sql`, avec leurs deux rollbacks, écrites dans le repo et **appliquées uniquement sur la branche Neon jetable** `jetable-schema-scolaire-2026-09-10` (`br-hidden-tooth-abn5xe2v`), créée depuis `production` à HEAD. **La production n'a rien reçu, et c'est vérifié par requête** : zéro table scolaire, zéro colonne d'axe sur `sessions`. Consigne du propriétaire respectée à la lettre, aucune migration en prod, rien d'irréversible.
