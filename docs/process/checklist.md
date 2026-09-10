@@ -97,6 +97,20 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 10) — l'identité passe par un seul endroit, et le choix du fournisseur est posé
+
+**Ce que j'ai construit avant de choisir quoi que ce soit.** L'authentification changera la réponse à « qui demande », donc la première chose à faire est que cette question n'ait **qu'un seul endroit** où être posée. C'est fait : `lib/server/current-user.ts` est désormais le seul fichier du produit à nommer et à lire le cookie d'identité, et il a appris à dire le rôle et l'appartenance enseignante (`getCurrentIdentity`).
+
+**LA DÉRIVE AVAIT DÉJÀ COMMENCÉ, ET UNE PARTIE ÉTAIT DE MA MAIN.** Le module existait, avec sa validation de format, et **quatre lectures directes du cookie** s'étaient ajoutées à côté : trois écrites par moi le jour même en construisant le chemin assigné, plus les deux routes de démarrage de partie, antérieures. Deux d'entre elles avaient **perdu la validation** en chemin, de sorte qu'une valeur de cookie forgée partait droit dans un cast uuid et le serveur rendait 500 là où il devait rendre un refus. Mesuré après correction : un cookie bidon rend maintenant `401 no_identity`.
+
+**`check:identity-gate` empêche la cinquième**, câblé dans la porte au même commit, éprouvé sur trois mutations. Quatre propriétés : le nom du cookie écrit une seule fois, lu par le seul module d'identité, importé par ce qui le pose, et le format validé avant toute identité rendue. La porte compte 39 étapes.
+
+**UNE DÉCOUVERTE DANS LE SCHÉMA QUI CHANGE LA QUESTION.** La table `users` porte depuis la migration 003 une colonne `clerk_id UNIQUE` **et** une contrainte `chk_clerk_required_for_authenticated_roles` : un rôle `player` ou `admin` **exige** un identifiant Clerk. Autrement dit le fournisseur d'authentification a été choisi sur le papier il y a six mois, et jamais branché : aucune ligne de Clerk n'existe dans le dépôt, aucune dépendance. Conséquence directe : tant que rien n'est branché, **tout le monde est invité**, la contrainte l'impose, et `getCurrentIdentity` dira la vérité le jour des comptes sans qu'aucun appelant change.
+
+**Le choix est posé au propriétaire**, parce qu'il ajoute une dépendance et peut ajouter une facture, et parce qu'il touchera la production : suivre le schéma et brancher Clerk, ou prendre Neon Auth qui vit dans la base et suit les branches, ce qui demanderait de généraliser `clerk_id` en une petite migration. Rien n'est engagé avant sa réponse.
+
+---
+
 ## Note — 2026-09-10 (suite 9) — 021 et 022 sont EN PRODUCTION
 
 **Fait, sur feu vert explicite du propriétaire.** Les deux migrations sont passées sur la branche `production` du projet Neon, dans l'ordre, 021 puis 022. **Un instantané a été pris avant** : `avant-021-022-monde-scolaire-2026-09-10`, plus les six heures de rétention d'historique de la branche. Les deux fichiers portent désormais `APPLIQUEE EN PRODUCTION` dans leur bandeau, avec la date et ce qui a été vérifié, et CLAUDE.md dit comment lire ce marqueur.

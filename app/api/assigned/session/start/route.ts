@@ -1,5 +1,6 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+import { getCurrentUserId } from "@/lib/server/current-user";
 
 import { isGameRequestError } from "@/lib/game/request-error";
 import { openAssignedSession } from "@/lib/game/assigned/session";
@@ -16,8 +17,6 @@ import { openAssignedSession } from "@/lib/game/assigned/session";
 // encore ouvert, echeance passee, budget epuise : ce sont des situations
 // normales du produit et l'ecran doit pouvoir dire laquelle. Elles partent donc
 // en 409 avec leur nom, jamais en 500.
-
-const GUEST_COOKIE_NAME = "jdt_guest_user_id";
 const ENGINE_VERSION = "assigned-provider-v1";
 
 export async function POST(request: Request) {
@@ -27,8 +26,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "invalid_assigned_start_payload" }, { status: 400 });
     }
 
-    const store = await cookies();
-    const userId = store.get(GUEST_COOKIE_NAME)?.value ?? null;
+    const userId = await getCurrentUserId();
     if (!userId) {
       // Sans identite, il n'y a pas de destinataire a verifier, donc pas de
       // devoir a ouvrir. 401 plutot que 400 : la requete est bien formee, c'est

@@ -1,5 +1,6 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+import { getCurrentUserId } from "@/lib/server/current-user";
 
 import { isGameRequestError } from "@/lib/game/request-error";
 import { buildAssignedQuestion } from "@/lib/game/assigned/writer";
@@ -13,8 +14,6 @@ import { buildAssignedQuestion } from "@/lib/game/assigned/writer";
 //
 // L'identite vient du cookie, jamais du corps : voir la route d'ouverture.
 
-const GUEST_COOKIE_NAME = "jdt_guest_user_id";
-
 export async function POST(request: Request) {
   try {
     const body = (await request.json().catch(() => ({}))) as { sessionId?: string };
@@ -22,8 +21,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "invalid_assigned_question_payload" }, { status: 400 });
     }
 
-    const store = await cookies();
-    const userId = store.get(GUEST_COOKIE_NAME)?.value ?? null;
+    const userId = await getCurrentUserId();
     if (!userId) {
       return NextResponse.json({ error: "no_identity" }, { status: 401 });
     }

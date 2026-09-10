@@ -1,10 +1,11 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+import { getCurrentUserId, GUEST_COOKIE_NAME } from "@/lib/server/current-user";
 
 import { normalizeAttemptId, normalizeFamiliarity } from "@/lib/game/training/contracts";
 import { startTrainingSession } from "@/lib/game/training/provider";
 
-const GUEST_COOKIE_NAME = "jdt_guest_user_id";
+// Le nom vient du module d'identite : un renommage doit rester une seule ligne.
 
 export async function POST(request: Request) {
   try {
@@ -14,8 +15,13 @@ export async function POST(request: Request) {
       warmupCorrect?: boolean;
       attemptId?: string;
     };
-    const cookieStore = await cookies();
-    const existingGuestUserId = cookieStore.get(GUEST_COOKIE_NAME)?.value ?? null;
+    // PAR LE MODULE D'IDENTITE, et il apporte plus qu'une factorisation : la
+    // valeur du cookie est validee avant d'etre utilisee. Lue brute, une valeur
+    // forgee partait dans un cast uuid et le serveur rendait 500 la ou il devait
+    // simplement creer un invite. Un format invalide vaut maintenant "aucune
+    // identite", donc le fournisseur en fabrique une, ce qui est le comportement
+    // attendu d'un premier passage.
+    const existingGuestUserId = await getCurrentUserId();
 
     const result = await startTrainingSession({
       locale: body.locale === "en" ? "en" : "fr",

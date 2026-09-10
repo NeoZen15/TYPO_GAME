@@ -1,6 +1,6 @@
 import "server-only";
 
-import { cookies } from "next/headers";
+import { getCurrentUserId } from "@/lib/server/current-user";
 import { MOCK_TEACHER, type TeacherClass, type TeacherExercise, type TeacherProfile } from "@/lib/teacher/mock-teacher";
 import {
   classConfusions,
@@ -30,8 +30,6 @@ import {
 // raison pour laquelle le mode direct reste hors production : sans comptes, il
 // n'y a pas de professeur a authentifier.
 
-const GUEST_COOKIE_NAME = "jdt_guest_user_id";
-
 export const teacherSource = () =>
   process.env.JDT_TEACHER_SOURCE === "live" ? "live" : "mock";
 
@@ -53,8 +51,7 @@ const stateOf = (state: string, availableFrom: string): TeacherExercise["state"]
 export const teacherProfile = async (): Promise<TeacherProfile> => {
   if (teacherSource() === "mock") return MOCK_TEACHER;
 
-  const store = await cookies();
-  const teacherId = store.get(GUEST_COOKIE_NAME)?.value ?? null;
+  const teacherId = await getCurrentUserId();
   if (!teacherId) return { ...MOCK_TEACHER, classes: [], exercises: [], signals: [] };
 
   const [classRows, assignmentRows] = await Promise.all([
