@@ -97,6 +97,28 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 7) — l'écrivain de la séance assignée, avec ses six propriétés dès la première ligne
+
+**Fait, et fait dans le bon ordre.** `lib/game/assigned/writer.ts` sert les questions et écrit les réponses, et il porte les propriétés des écrivains **dès sa première ligne** au lieu d'être repassé dessus six mois plus tard. La facture connue est écrite dans le repo : la compétition a été livrée sans elles, deux réponses simultanées écrivaient deux faits pour une question, et 121 sessions sont restées actives cinq mois parce que le balayage porte `AND s.mode = 'training'`.
+
+**Les six propriétés.** Un seul énoncé atomique, l'indice de tentative dérivé dans l'instruction et les doublons arbitrés par la clé primaire de la garde d'ingestion. Zéro ligne écrite veut dire doublon : on rend ce que la base a enregistré, jamais une erreur. Les compteurs s'incrémentent dans l'instruction. La maîtrise n'est touchée que sous `update_mastery` et au premier essai. La fenêtre est vérifiée à chaque question **et** à chaque réponse. Le budget vient du contrat, et un jeton signé décide de la face et des options, jamais le corps de la requête.
+
+**TROIS FAUTES TROUVÉES EN MESURANT, ET AUCUNE N'AURAIT ÉTÉ VUE EN RELISANT.**
+
+1. **Le compte de questions résolues était systématiquement en retard d'une.** Il venait d'une sous requête sur le journal, dans la même instruction que l'écriture : une sous requête lit l'instantané pris au début de l'instruction, donc jamais la ligne que l'instruction vient d'écrire. Mesuré sur la branche : une réponse juste rendait un compte de 0. Le budget se serait épuisé une question trop tard, à chaque devoir. Le compte vient maintenant du `RETURNING` de l'UPDATE, qui rend la valeur nouvelle.
+2. **L'écriture de la maîtrise ne trouvait aucune ligne pour une face hors pool.** Écrite en UPDATE seul, elle perdait en silence la maîtrise gagnée dans un devoir dès que le professeur demandait une face que le moteur n'avait jamais servie à l'élève, ce qui est le cas normal d'un devoir. Vérifié sur la branche : l'élève de test n'avait aucune ligne d'état. C'est un UPSERT maintenant, et **`in_active_pool` reste faux à l'insertion**, ce qui est exactement la frontière décidée ce matin : un devoir enregistre la maîtrise sans faire entrer la face dans le pool personnel.
+3. **Un accent grave dans un commentaire SQL fermait le littéral gabarit.** Attrapé par le typecheck, réparé, et cité ici parce que la leçon est que les commentaires vivent dans le même texte que le code.
+
+**MESURÉ SUR LA BRANCHE, PAS DÉDUIT.** La même soumission envoyée deux fois : **un seul fait** pour cette question, et les compteurs de session **n'ont pas bougé** (2 questions, 2 justes). C'est précisément la propriété dont l'absence avait produit deux lignes pour une question en compétition. Et la frontière du pool : après une réponse juste dans un devoir, l'élève a **une ligne d'état** et **zéro face dans son pool actif**. Le professeur lit ses 3 réponses assignées, la réponse privée reste invisible.
+
+**`check:assigned-integrity` est écrit LE MÊME JOUR que l'écrivain**, câblé dans la porte au même commit, et éprouvé sur **huit mutations**. Il en a d'abord manqué une : le besoin `INSERT INTO event_ingestion_guard` restait satisfait par un `..._guard_x`, un préfixe étant toujours inclus dans le nom renommé. Le besoin porte donc sa parenthèse. C'est exactement le trou que le garde de compétition documente pour lui même, et la seule façon dont il se montre est de tester le garde par mutation. Le garde impose aussi la frontière du pool : l'écriture doit poser `in_active_pool` explicitement et jamais à vrai.
+
+**La porte compte 38 étapes**, 36 fichiers de garde. Tout reste sur `br-hidden-tooth-abn5xe2v`, **zéro modification en production**.
+
+**Ce qui reste avant qu'un prof lise du vrai** : les routes d'API du chemin assigné, l'écran élève qui joue un devoir, et le branchement des quatre écrans prof sur la porte de lecture à la place du mock. Le moteur, lui, est complet.
+
+---
+
 ## Note — 2026-09-10 (suite 6) — points 4 et 5 : le cran d'exigence existe enfin, et la séance assignée sait s'ouvrir
 
 **LE POINT 5 D'ABORD, PARCE QU'IL ÉTAIT LE SEUL VRAI CHANTIER MOTEUR, ET IL EST FAIT.** `pickDistractors` prend désormais une **proximité cible** et sait **pénaliser** la proximité, pas seulement la récompenser. Les quatre crans de la spec moteur sont donc exprimables : hors catégorie et contraste opposé, même grande famille mais autre cluster, même cluster, même cluster avec ouverture et contraste voisins. Deux profils optionnels entrent dans la ligne de question (`contrast_profile`, `aperture_profile`) pour que le cran le plus fin fasse ce que la spec écrit ; optionnels, donc les appelants synthétiques des gardes restent valides.
