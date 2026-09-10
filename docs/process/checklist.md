@@ -97,6 +97,25 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 — brief produit de la création d'exercice
+
+**Écrit, et c'est un document et pas du code** : `docs/product/brief-creation-exercice.md`, rang 4, inscrit au sommaire. Le principe : le prof exprime une intention pédagogique, DWIGGINS conseille, explique et préremplit, le prof arbitre tout. Ni générateur opaque, ni formulaire à programmer, ni tunnel de sept écrans. Une seule page qui s'ouvre en quatre moments : d'où on part, ce qu'on travaille, comment, pour qui.
+
+**Ce que le brief apporte en plus de la conversation, parce que ça a été mesuré dans le code et pas supposé.**
+
+- **Le compositeur n'écrit jamais vingt questions, il écrit une intention.** L'architecture est formelle, le backend décide la sélection ; et la table `assignments` qui porte cette intention est **déjà spécifiée**, il n'y a pas d'objet nouveau à inventer.
+- **Le niveau d'exigence est le seul vrai chantier moteur, et il est petit.** `pickDistractors` préfère aujourd'hui **toujours** les faces les plus proches, à tous les paliers : le cran « distracteurs franchement différents » de la spec n'existe pas dans le code. La fonction doit prendre une proximité cible et savoir aussi pénaliser la proximité.
+- **L'adaptation par élève coûte peu**, `user_typeface_state` portant déjà le mastery par élève et par face, et `pickDistractors` le lisant déjà. **Mais elle touche I-21** : une ligne explicite est à écrire dans la vision avant tout code, sinon quelqu'un lira ça plus tard comme une fuite.
+- **Le mix consolidation contre découverte se calcule sur l'historique des assignations du prof, jamais sur l'état personnel de l'élève.** Sinon le mix devient une lecture détournée du pool privé. Nouveau veut dire jamais demandé dans vos exercices, pas jamais vu de sa vie.
+- **Un exemple de la conversation a été corrigé par la donnée** : le trio Helvetica / Univers / Akzidenz-Grotesk n'est pas composable. `helvetica` système est désactivée depuis la migration des jumelles et Akzidenz-Grotesk n'est pas au catalogue. Le trio réel est Helvetica LT Pro, Univers Next Pro et Arial, tous actifs et **tous dans le même cluster visuel**.
+- **Un défaut de mon prototype est nommé** : le compositeur du 2026-09-08 lit le manifeste de 28 polices, pas le catalogue de 1 279 actives. Tant qu'il lit le petit, aucune proposition n'a de matière.
+- **Le jour 1 est traité** : une classe neuve n'a aucune donnée, donc les trois propositions deviennent trois entrées catalogue (familles, clusters, rareté), qui décrivent les polices et pas les élèves.
+- **Training contre Competition est dit en effet et pas en ambiance**, et le troisième cas que l'architecture permet déjà est signalé : un devoir d'entraînement sans effet sur la progression, c'est à dire un contrôle.
+
+**Le brief se termine sur six chantiers ordonnés et six décisions qui appartiennent au propriétaire.** Rien n'est à construire avant ces arbitrages.
+
+---
+
 ## Note — 2026-09-08 (suite 4) — le devoir arrive dans le profil de l'élève, et la boucle est fermée
 
 **Fait, et c'est le voyage de retour du mur à sens unique.** Le prof ne lit que ce que ses propres exercices ont produit, jamais l'entraînement libre : c'est la promesse gelée du produit. Sa contrepartie, c'est que l'élève doit voir ce qu'on lui a donné, avec son échéance, parce qu'une échéance que personne n'annonce n'est pas une échéance. C'est la seule chose qui traverse, dans un sens comme dans l'autre.

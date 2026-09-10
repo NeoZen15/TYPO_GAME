@@ -44,6 +44,9 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 - [`global-level-progression.md`](game/global-level-progression.md) — niveau global visible N.1 à E.5 (migration 009).
 - [`classes-comptes-spec.md`](game/classes-comptes-spec.md) — comptes, écoles, classes, provisionnement (sa section tableau de bord prof est caduque depuis la vision du 2026-07-29).
 
+## product/ — briefs produit
+- [`brief-creation-exercice.md`](product/brief-creation-exercice.md) — **brief de la création d'exercice (2026-09-10)**, rang 4 : le professeur exprime une intention, DWIGGINS conseille et préremplit, le professeur arbitre tout. Trois points de départ construits sur les données de la classe, sélection par familles et par typographies précises, quatre crans d'exigence traduits en similarité de distracteurs, difficulté adaptative par élève, mix consolidation contre découverte, preview avant assignation. Contient les six décisions qui appartiennent au propriétaire et les six chantiers qui rendent l'espace prof réel.
+
 ## typography/ — moteur typographique (mesure, compare, specimen)
 - [`typography-system-contract.md`](typography/typography-system-contract.md) — contrat de référence du système typo.
 - [`anatomy-metrics-system.md`](typography/anatomy-metrics-system.md) — système de métriques d'anatomie.
