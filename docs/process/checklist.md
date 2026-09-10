@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-10 (suite 6) — points 4 et 5 : le cran d'exigence existe enfin, et la séance assignée sait s'ouvrir
+
+**LE POINT 5 D'ABORD, PARCE QU'IL ÉTAIT LE SEUL VRAI CHANTIER MOTEUR, ET IL EST FAIT.** `pickDistractors` prend désormais une **proximité cible** et sait **pénaliser** la proximité, pas seulement la récompenser. Les quatre crans de la spec moteur sont donc exprimables : hors catégorie et contraste opposé, même grande famille mais autre cluster, même cluster, même cluster avec ouverture et contraste voisins. Deux profils optionnels entrent dans la ligne de question (`contrast_profile`, `aperture_profile`) pour que le cran le plus fin fasse ce que la spec écrit ; optionnels, donc les appelants synthétiques des gardes restent valides.
+
+**L'entraînement personnel n'a pas bougé d'un pouce**, et c'est vérifié : sans cran, le mastery décide comme avant. Un devoir passe un cran, une séance personnelle n'en passe aucun.
+
+**Le point 4, la séance assignée, en deux morceaux dont un seul est fait, et je le dis plutôt que de le laisser croire.** Fait : le **cycle de vie**. Ouvrir ou reprendre (une seule séance par élève et par devoir, garantie par l'index unique de la 022, donc un rechargement ne repart jamais de zéro), les **trois refus** typés (pas destinataire, hors fenêtre, budget épuisé), la fermeture, et la **liste des candidats** du contrat avec leur panier de mix. Pas fait : servir les questions et écrire les réponses. Ce chemin doit satisfaire les cinq gardes qui protègent l'écriture d'entraînement (jeton de question, écrivain atomique, convergence, balayage, compteurs), exactement comme la compétition a dû le faire après coup, et c'est une pièce entière. La note de `check:competition-integrity` rappelle ce qu'a coûté un deuxième écrivain porté sans ses propriétés : 121 sessions restées ouvertes pendant cinq mois.
+
+**Deux modules purs, sans aucun import de runtime**, comme `question-shape.ts` et pour la même raison : ces décisions **sont** le devoir, donc un garde doit pouvoir les exercer pour de vrai. `contract.ts` traduit le cran en proximité, dit la politique de progression de chaque type et borne l'adaptation à un cran de part et d'autre. `select.ts` choisit la face : les imposées d'abord, une fois chacune, puis le panier le plus en retard sur sa part, puis la moins demandée de ce panier.
+
+**Mesuré sur la branche jetable, requête réelle** : le contrat du jeu de test rend **53 candidats**, les 51 didones serif du périmètre plus les 2 faces imposées, et les deux imposées ressortent en panier **`targeted`** parce que la paire retenue par le professeur les nomme. Le panier retenu passe devant l'historique, ce qui est bien ce que le professeur a demandé à travailler.
+
+**DEUX GARDES AJOUTÉS, ET TOUS DEUX ÉPROUVÉS PAR MUTATION.** `check:distractor-ladder` exerce la vraie fonction sur des pools synthétiques : les quatre crans doivent produire quatre questions différentes, et il échoue si `far` se remet à préférer la proximité, ce qui était le défaut mesuré. `check:assigned-contract` exerce les deux modules purs : une face imposée passe avant tout, la sélection ne sort jamais du contrat, le mix est servi (mesuré à 45 / 20 / 20 / 15 exactement sur quarante questions), un panier vide se redistribue seul, l'adaptation ne saute jamais deux crans, le contrôle et la compétition n'écrivent jamais la maîtrise. Éprouvé sur quatre mutations, il échoue sur les quatre. **La porte compte 37 étapes**, 35 fichiers de garde, dont sept qui chargent un module `.ts` directement.
+
+**Toujours zéro modification en production.** Tout est joué sur `br-hidden-tooth-abn5xe2v`.
+
+**Suite** : l'écrivain de la séance assignée, avec les cinq propriétés des gardes d'écriture. C'est le dernier morceau avant que le prof lise du vrai.
+
+---
+
 ## Note — 2026-09-10 (suite 5) — point 3 : la porte de lecture professeur, et un garde qui mord
 
 **Une seule porte, `lib/teacher/read-gate.ts`.** Cinq lectures, et tout ce qui est destiné à un professeur passera par là : ses classes, ses assignations avec ce qu'elles ont produit, une assignation élève par élève, la lecture famille par famille, et **les paires que la classe confond réellement**. Chaque requête porte les deux mêmes bornes, `a.teacher_id` et `f.context = 'teacher_assignment'` : la première dit « tes assignations », la seconde dit « pas la vie privée de l'élève ». Le fichier ne nomme jamais la table d'état personnel et n'a qu'une dépendance de données, le client SQL.

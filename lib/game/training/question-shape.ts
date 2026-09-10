@@ -18,6 +18,13 @@ export type QuestionShapeRow = {
   primary_category: string;
   visual_cluster_id: string;
   difficulty_base: string;
+  // Profil de contraste et d'ouverture, depuis typefaces_core. Optionnels comme
+  // rarity_tag et pour la meme raison : les appelants synthetiques des gardes
+  // construisent une ligne sans passer par la base. Ils ne servent qu'au palier
+  // le plus fin, ou "micro variations d'ouverture et de contraste" est
+  // litteralement ce que la spec moteur demande.
+  contrast_profile?: string;
+  aperture_profile?: string;
   // Notoriete, depuis typefaces_core.rarity_tag (migration 013). La colonne est
   // NOT NULL en base (db/migrations/002_catalog_tables.sql), donc une ligne reelle
   // porte toujours une valeur, migration 013 appliquee ou non. Optionnel ici pour
@@ -116,12 +123,42 @@ const withoutTwins = <Row extends QuestionShapeRow>(
   return [...clean, ...removed];
 };
 
+/**
+ * A quel point les mauvaises reponses ressemblent a la bonne.
+ *
+ * LES QUATRE CRANS DE LA SPEC MOTEUR, ENFIN EXPRIMABLES. « La difficulte du QCM
+ * augmente uniquement par la similarite visuelle des mauvaises reponses », et son
+ * palier le plus bas demande « des mauvaises reponses tres contrastees et issues
+ * de categories differentes ». Ce palier n'existait pas dans ce fichier : les
+ * trois paliers pilotes par le mastery PREFERAIENT tous les faces les plus
+ * proches et ne faisaient que reponderer la categorie contre le cluster. Un cran
+ * « accessible » ne se fabrique pas en preferant moins la proximite, il se
+ * fabrique en la PENALISANT, ce que fait 'far' ci dessous.
+ *
+ *   far     hors categorie, contraste oppose        (Accessible)
+ *   family  meme grande famille, cluster different  (Balanced)
+ *   cluster meme cluster visuel                     (Challenging)
+ *   micro   meme cluster, ouverture et contraste voisins (Expert)
+ *
+ * C'est le professeur qui choisit ce cran pour un devoir (spec de creation
+ * d'exercice, section 13). En entrainement personnel, personne ne le choisit :
+ * le parametre est absent et le comportement reste exactement celui d'avant,
+ * pilote par le mastery de la face demandee.
+ */
+export type Proximity = "far" | "family" | "cluster" | "micro";
+
 export const pickDistractors = <Row extends QuestionShapeRow>(
   pool: Row[],
   correct: QuestionShapeRow,
   globalQIndex: number,
   seed: string,
-  sontJumelles: SontJumelles = JAMAIS_JUMELLES
+  sontJumelles: SontJumelles = JAMAIS_JUMELLES,
+  /**
+   * Absent en entrainement personnel, ou le mastery decide. Present pour un
+   * devoir, ou le contrat decide et ou deux eleves du meme cran doivent recevoir
+   * la meme difficulte de leurres.
+   */
+  proximity?: Proximity
 ): Row[] => {
   const others = withoutTwins(
     pool.filter((row) => row.typeface_slug !== correct.typeface_slug),
@@ -132,6 +169,52 @@ export const pickDistractors = <Row extends QuestionShapeRow>(
   return others
     .map((row) => {
       let score = 1000;
+      const sameCategory = row.primary_category === correct.primary_category;
+      const sameCluster = row.visual_cluster_id === correct.visual_cluster_id;
+
+      if (proximity) {
+        // LE SIGNE COMPTE PLUS QUE LA VALEUR. Le plus petit score gagne, donc un
+        // malus ecarte et un bonus rapproche. 'far' est le seul des quatre a
+        // ecarter, et c'est exactement ce qui manquait.
+        if (proximity === "far") {
+          score += sameCategory ? 300 : 0;
+          score += sameCluster ? 400 : 0;
+          // Contraste oppose quand la ligne le porte : deux faces de contraste
+          // different se distinguent d'un coup d'oeil, ce qui est le but du cran.
+          if (
+            correct.contrast_profile !== undefined &&
+            row.contrast_profile !== undefined &&
+            row.contrast_profile !== correct.contrast_profile
+          ) {
+            score -= 120;
+          }
+        } else if (proximity === "family") {
+          score -= sameCategory ? 250 : 0;
+          score += sameCluster ? 200 : 0;
+        } else if (proximity === "cluster") {
+          score -= sameCategory ? 150 : 0;
+          score -= sameCluster ? 350 : 0;
+        } else {
+          score -= sameCategory ? 150 : 0;
+          score -= sameCluster ? 450 : 0;
+          if (
+            correct.contrast_profile !== undefined &&
+            row.contrast_profile === correct.contrast_profile
+          ) {
+            score -= 120;
+          }
+          if (
+            correct.aperture_profile !== undefined &&
+            row.aperture_profile === correct.aperture_profile
+          ) {
+            score -= 80;
+          }
+        }
+
+        score += hashScore(seed, globalQIndex, row.typeface_slug) % 97;
+
+        return { row, score };
+      }
 
       if (correct.mastery_level <= 1) {
         score -= row.primary_category === correct.primary_category ? 125 : 0;
