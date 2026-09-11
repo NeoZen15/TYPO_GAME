@@ -5,7 +5,6 @@ import { CREAM } from "@/features/profile/components/board-system";
 import {
   DUE_SHORTCUTS,
   OPENS_SHORTCUTS,
-  QUICK_TIMES,
   WEEKDAY_INITIALS,
   dayOf,
   dueDayAllowed,
@@ -39,22 +38,29 @@ import {
 // hour. Spec section 18 settles the shape, `lib/teacher/when.ts` holds every
 // rule, and this file is the surface: it decides nothing and computes nothing.
 //
-// ONE CALENDAR, NOT TWO. Both fields open the same grid, the field being edited
-// deciding what a click means. That is what makes the constraint visible rather
-// than merely enforced: the days a deadline cannot take are greyed IN PLACE,
-// under the opening the teacher has just chosen, and the days already inside
-// the window are washed, so the window reads as a shape and not as two strings.
+// ONE CALENDAR, PICKED AS A RANGE. First click sets the opening, second click
+// sets the closing, a click before the opening starts a new range. That is the
+// gesture every flight and hotel calendar has taught people, and the first
+// version did not have it: it edited ONE end at a time, so a second click had
+// to be preceded by a trip back up to the other field button to say "now I mean
+// the closing one". The owner called that nonsense, and it was.
 //
-// A pop-over would have been the reflex, and it costs an anchor, a click-away
-// trap and a focus cage for nothing: this panel has the width.
+// A consequence worth stating, because it is what makes the grid readable: the
+// filled cell is ALWAYS the opening and the ringed cell is ALWAYS the closing.
+// They no longer trade places with a mode, so the legend under the grid is true
+// at every moment, and the only days greyed out are days in the past.
+//
+// THE HOURS SIT BESIDE THE CALENDAR, BOTH OF THEM, for the same reason. An hour
+// field that belongs to whichever end was last touched is a mode, and the mode
+// is exactly what we just removed. Two labelled pairs, no mode left anywhere.
 //
 // DA: nothing is invented here. The field is '.st-select' worn by a button, the
-// shortcuts and the quick hours are '.st-filter__btn', the hour and the minute
-// are two real drop-downs, and the duration takes the ink of '.st-kpi__value',
-// the site's treatment for a number that carries a decision.
+// shortcuts are '.st-filter__btn', the hours are real drop-downs, and the
+// duration takes the ink of '.st-kpi__value', the site's treatment for a number
+// that carries a decision.
 // ---------------------------------------------------------------------------
 
-type Field = "opens" | "due";
+type End = "opens" | "due";
 
 const HOURS = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
 const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
@@ -68,20 +74,19 @@ export default function TeacherWhen({
   onChange,
 }: {
   /**
-   * Null until the composer has a clock. A window computed during server render
-   * would be a different window one second later at hydration, which is the
-   * defect the header of TeacherExercise warns about for countdowns, so the
+   * Null until the composer has a clock. `/teacher` is prerendered static, so a
+   * window computed during render would bake the BUILD time into the HTML; the
    * panel paints its furniture first and its values on mount.
    */
   value: WhenWindow | null;
   now: number;
   onChange: (next: WhenWindow) => void;
 }) {
-  const [editing, setEditing] = useState<Field | null>(null);
-  // The month shown is DERIVED from the field being edited, and overridden only
-  // when the teacher steps or arrows out of it. Keeping it as plain state would
-  // mean an effect to resynchronise it every time a shortcut jumps a month.
+  const [open, setOpen] = useState(false);
+  /** What the next click on the grid means. The whole gesture is this one bit. */
+  const [next, setNext] = useState<End>("opens");
   const [month, setMonth] = useState<{ year: number; month: number } | null>(null);
+  const [hover, setHover] = useState<string | null>(null);
   const gridRef = useRef<HTMLDivElement | null>(null);
   // Focus follows the arrow keys and nothing else: an effect that focused on
   // every render would steal the caret the moment the editor opened.
@@ -97,54 +102,54 @@ export default function TeacherWhen({
     gridRef.current?.querySelector<HTMLButtonElement>(`[data-day="${focused}"]`)?.focus();
   }, [focused, month]);
 
-  const active: Field = editing ?? "opens";
-  const edited = value === null ? null : active === "opens" ? value.opens : value.due;
-  const cursor = month ?? (edited === null ? null : monthCursorOf(edited.day));
+  const cursor = month ?? (value === null ? null : monthCursorOf(value.opens.day));
 
-  const put = (field: Field, moment: LocalMoment) => {
+  const reveal = (end: End) => {
+    setOpen(true);
+    setNext(end);
+    setMonth(null);
+    setFocused(value ? value[end].day : null);
+  };
+
+  /**
+   * THE CYCLE, and it is one expression on purpose: a range picker that spreads
+   * this over three handlers is how "click before the start" ends up doing
+   * nothing. A day at or after the opening that can still hold a deadline
+   * closes the window and hands the next click back to the opening. Anything
+   * else opens a new one.
+   */
+  const pickDay = (day: string) => {
+    if (!value || !opensDayAllowed(day, todayKey)) return;
+    const closes = next === "due" && day >= value.opens.day && dueDayAllowed(day, value.opens);
+    onChange(closes ? setDueDay(value, day) : setOpens(value, withDay(value.opens, day)));
+    setNext(closes ? "opens" : "due");
+    setMonth(monthCursorOf(day));
+    setFocused(day);
+    setHover(null);
+  };
+
+  const jump = (end: End, moment: LocalMoment) => {
     if (!value) return;
-    onChange(
-      field === "opens" ? setOpens(value, moment) : setDueDay({ ...value, due: moment }, moment.day),
-    );
+    onChange(end === "opens" ? setOpens(value, moment) : setDueDay({ ...value, due: moment }, moment.day));
+    setNext(end === "opens" ? "due" : "opens");
     setMonth(monthCursorOf(moment.day));
     setFocused(moment.day);
   };
 
-  const toggle = (field: Field) => {
-    setEditing((prev) => (prev === field ? null : field));
-    setMonth(null);
-    setFocused(null);
-  };
-
-  const dayAllowed = (day: string) =>
-    value === null
-      ? false
-      : active === "opens"
-        ? opensDayAllowed(day, todayKey)
-        : dueDayAllowed(day, value.opens);
-
-  const pickTime = (time: string) => {
+  const pickTime = (end: End, time: string) => {
     if (!value) return;
-    onChange(active === "opens" ? setOpens(value, withTime(value.opens, time)) : setDueTime(value, time));
+    onChange(end === "opens" ? setOpens(value, withTime(value.opens, time)) : setDueTime(value, time));
   };
-
-  // A shortcut that would land a deadline before the opening is offered greyed
-  // out rather than hidden: a teacher reaching for "end of today" on an
-  // exercise that opens tomorrow needs to see why it is not available.
-  const shortcutOff = (field: Field, shortcut: Shortcut) =>
-    value !== null && field === "due" && stampOf(shortcut.resolve(value, now)) <= stampOf(value.opens);
 
   const onGridKey = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
-      setEditing(null);
+      setOpen(false);
       e.preventDefault();
       return;
     }
-    const by = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7, PageUp: -28, PageDown: 28 }[
-      e.key
-    ];
-    if (by === undefined || !edited || !cursor) return;
-    const [y, m, d] = (focused ?? edited.day).split("-").map(Number);
+    const by = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7, PageUp: -28, PageDown: 28 }[e.key];
+    if (by === undefined || !value || !cursor) return;
+    const [y, m, d] = (focused ?? value.opens.day).split("-").map(Number);
     const moved = new Date(y, m - 1, d + by);
     byKey.current = true;
     setFocused(dayOf(moved));
@@ -156,6 +161,15 @@ export default function TeacherWhen({
 
   const minutes = value === null ? 0 : minutesBetween(stampOf(value.opens), stampOf(value.due));
   const immediate = value !== null && stampOf(value.opens) <= now;
+  // While the closing is the one being aimed at, the band follows the cursor:
+  // the range is drawn before it is committed, which is what tells a teacher
+  // their next click lands on the far end and not on a new start.
+  const bandEnd =
+    value === null
+      ? null
+      : next === "due" && hover !== null && hover > value.opens.day
+        ? hover
+        : value.due.day;
 
   return (
     <section className="st-panel st-sec" aria-label="When">
@@ -167,37 +181,26 @@ export default function TeacherWhen({
           label="It opens"
           moment={value?.opens ?? null}
           note={immediate ? "right away" : undefined}
-          open={editing === "opens"}
-          onToggle={() => toggle("opens")}
+          aiming={open && next === "opens"}
+          onToggle={() => (open && next === "opens" ? setOpen(false) : reveal("opens"))}
           shortcuts={OPENS_SHORTCUTS}
-          onShortcut={(s) => {
-            if (!value) return;
-            setEditing("opens");
-            put("opens", s.resolve(value, now));
-          }}
-          shortcutOff={(s) => shortcutOff("opens", s)}
+          onShortcut={(s) => value && jump("opens", s.resolve(value, now))}
+          shortcutOff={() => false}
         />
         <MomentField
           label="It closes"
           moment={value?.due ?? null}
           note={value && value.due.day === value.opens.day ? "same day" : undefined}
-          open={editing === "due"}
-          onToggle={() => toggle("due")}
+          aiming={open && next === "due"}
+          onToggle={() => (open && next === "due" ? setOpen(false) : reveal("due"))}
           shortcuts={DUE_SHORTCUTS}
-          onShortcut={(s) => {
-            if (!value) return;
-            setEditing("due");
-            put("due", s.resolve(value, now));
-          }}
-          shortcutOff={(s) => shortcutOff("due", s)}
+          onShortcut={(s) => value && jump("due", s.resolve(value, now))}
+          shortcutOff={(s) => (value === null ? true : stampOf(s.resolve(value, now)) <= stampOf(value.opens))}
         />
       </div>
 
-      {value !== null && edited !== null && cursor !== null && editing !== null && (
+      {value !== null && cursor !== null && open && (
         <div className="tw-editor" id="tw-editor">
-          {/* Left: the month. Right: the hour, and what the month is being
-              chosen FOR. The calendar is 7 cells wide and nothing else was, so
-              the panel used to run two thirds empty beside it. */}
           <div className="tw-cal">
             <div className="tw-months">
               <button
@@ -233,35 +236,35 @@ export default function TeacherWhen({
               role="grid"
               aria-label={monthTitle(cursor.year, cursor.month)}
               onKeyDown={onGridKey}
+              onMouseLeave={() => setHover(null)}
             >
               {chunk(monthGrid(cursor.year, cursor.month), 7).map((week) => (
                 <div className="tw-grid__row" role="row" key={week[0].day}>
                   {week.map((cell) => {
-                    const isEdge = cell.day === value.opens.day || cell.day === value.due.day;
-                    const isActive = cell.day === edited.day;
-                    const off = !dayAllowed(cell.day);
+                    const isOpens = cell.day === value.opens.day;
+                    const isDue = cell.day === value.due.day || cell.day === bandEnd;
+                    const off = !opensDayAllowed(cell.day, todayKey);
                     return (
-                      <span role="gridcell" aria-selected={isActive} key={cell.day}>
+                      <span role="gridcell" aria-selected={isOpens || isDue} key={cell.day}>
                         <button
                           type="button"
                           data-day={cell.day}
                           className={[
                             "tw-day",
                             cell.inMonth ? "" : "is-out",
-                            off ? "is-off" : "",
                             cell.day === todayKey ? "is-today" : "",
-                            cell.day > value.opens.day && cell.day < value.due.day ? "is-band" : "",
-                            isActive ? "is-active" : isEdge ? "is-edge" : "",
+                            bandEnd !== null && cell.day > value.opens.day && cell.day < bandEnd
+                              ? "is-band"
+                              : "",
+                            isOpens ? "is-opens" : isDue ? "is-due" : "",
                           ]
                             .filter(Boolean)
                             .join(" ")}
-                          tabIndex={cell.day === (focused ?? edited.day) ? 0 : -1}
+                          tabIndex={cell.day === (focused ?? value.opens.day) ? 0 : -1}
                           aria-label={spellDay(cell.day, thisYear)}
                           aria-disabled={off || undefined}
-                          onClick={() => {
-                            if (off) return;
-                            put(active, withDay(edited, cell.day));
-                          }}
+                          onMouseEnter={() => setHover(cell.day)}
+                          onClick={() => pickDay(cell.day)}
                         >
                           {cell.label}
                         </button>
@@ -272,17 +275,22 @@ export default function TeacherWhen({
               ))}
             </div>
 
-            {/* Three marks, three meanings. They looked alike until a teacher
-                said so: today was a ring and the far end of the window was the
-                same ring. */}
+            <p className="tw-say">
+              {next === "opens"
+                ? "Click a day to open on."
+                : "Now the day it closes. An earlier day starts again."}
+            </p>
+
+            {/* Four marks, four meanings, and they no longer trade places: the
+                filled cell is the opening whatever you are about to click. */}
             <ul className="tw-key">
               <li>
-                <span className="tw-key__mark is-active" aria-hidden="true" />
-                {editing === "opens" ? "opens" : "closes"}
+                <span className="tw-key__mark is-opens" aria-hidden="true" />
+                opens
               </li>
               <li>
-                <span className="tw-key__mark is-edge" aria-hidden="true" />
-                {editing === "opens" ? "closes" : "opens"}
+                <span className="tw-key__mark is-due" aria-hidden="true" />
+                closes
               </li>
               <li>
                 <span className="tw-key__mark is-band" aria-hidden="true" />
@@ -296,81 +304,20 @@ export default function TeacherWhen({
           </div>
 
           <div className="tw-side">
-            <span className="st-field__label">
-              {editing === "opens" ? "Choosing the opening" : "Choosing the deadline"}
-            </span>
-            <p className="tw-side__day">{spellDay(edited.day, thisYear)}</p>
-
-            <div className="tw-time">
-              <label className="st-field tw-time__unit">
-                <span className="st-field__label">Hour</span>
-                <span className="st-selectwrap">
-                  <select
-                    className="st-select"
-                    value={edited.time.slice(0, 2)}
-                    onChange={(e) => pickTime(`${e.target.value}:${edited.time.slice(3)}`)}
-                  >
-                    {HOURS.map((h) => (
-                      <option key={h} value={h} disabled={editing === "due" && dueTimeBlocked(value, Number(h))}>
-                        {h}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="st-select__caret" aria-hidden="true">
-                    ▾
-                  </span>
-                </span>
-              </label>
-
-              <span className="tw-time__colon" aria-hidden="true">
-                :
-              </span>
-
-              <label className="st-field tw-time__unit">
-                <span className="st-field__label">Minute</span>
-                <span className="st-selectwrap">
-                  <select
-                    className="st-select"
-                    value={edited.time.slice(3)}
-                    onChange={(e) => pickTime(`${edited.time.slice(0, 2)}:${e.target.value}`)}
-                  >
-                    {MINUTES.map((m) => (
-                      <option
-                        key={m}
-                        value={m}
-                        disabled={
-                          editing === "due" &&
-                          dueTimeBlocked(value, Number(edited.time.slice(0, 2)), Number(m))
-                        }
-                      >
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="st-select__caret" aria-hidden="true">
-                    ▾
-                  </span>
-                </span>
-              </label>
-            </div>
-
-            <div className="tw-quick">
-              {QUICK_TIMES.map((quick) => (
-                <button
-                  key={quick.time}
-                  type="button"
-                  className={`st-filter__btn${edited.time === quick.time ? " is-active" : ""}`}
-                  disabled={
-                    editing === "due" && stampOf(withTime(value.due, quick.time)) <= stampOf(value.opens)
-                  }
-                  onClick={() => pickTime(quick.time)}
-                >
-                  {quick.label} <em>{quick.time}</em>
-                </button>
-              ))}
-            </div>
-
-            <button type="button" className="st-action st-action--compact tw-done" onClick={() => setEditing(null)}>
+            <HourBlock
+              label="Opens at"
+              day={spellDay(value.opens.day, thisYear)}
+              time={value.opens.time}
+              onPick={(t) => pickTime("opens", t)}
+            />
+            <HourBlock
+              label="Closes at"
+              day={spellDay(value.due.day, thisYear)}
+              time={value.due.time}
+              blocked={(hour, minute) => dueTimeBlocked(value, hour, minute)}
+              onPick={(t) => pickTime("due", t)}
+            />
+            <button type="button" className="st-filter__btn tw-done" onClick={() => setOpen(false)}>
               Done
             </button>
           </div>
@@ -396,11 +343,74 @@ export default function TeacherWhen({
   );
 }
 
+function HourBlock({
+  label,
+  day,
+  time,
+  blocked,
+  onPick,
+}: {
+  label: string;
+  day: string;
+  time: string;
+  /** Only the closing has unreachable hours, and only on the opening's own day. */
+  blocked?: (hour: number, minute?: number) => boolean;
+  onPick: (time: string) => void;
+}) {
+  const hour = time.slice(0, 2);
+  const minute = time.slice(3);
+  return (
+    <div className="tw-hour">
+      <span className="st-field__label">{label}</span>
+      <span className="tw-hour__day">{day}</span>
+      <span className="tw-hour__pair">
+        <span className="st-selectwrap">
+          <select
+            className="st-select"
+            aria-label={`${label}, hour`}
+            value={hour}
+            onChange={(e) => onPick(`${e.target.value}:${minute}`)}
+          >
+            {HOURS.map((h) => (
+              <option key={h} value={h} disabled={blocked?.(Number(h))}>
+                {h}
+              </option>
+            ))}
+          </select>
+          <span className="st-select__caret" aria-hidden="true">
+            ▾
+          </span>
+        </span>
+        <span className="tw-hour__colon" aria-hidden="true">
+          :
+        </span>
+        <span className="st-selectwrap">
+          <select
+            className="st-select"
+            aria-label={`${label}, minute`}
+            value={minute}
+            onChange={(e) => onPick(`${hour}:${e.target.value}`)}
+          >
+            {MINUTES.map((m) => (
+              <option key={m} value={m} disabled={blocked?.(Number(hour), Number(m))}>
+                {m}
+              </option>
+            ))}
+          </select>
+          <span className="st-select__caret" aria-hidden="true">
+            ▾
+          </span>
+        </span>
+      </span>
+    </div>
+  );
+}
+
 function MomentField({
   label,
   moment,
   note,
-  open,
+  aiming,
   onToggle,
   shortcuts,
   onShortcut,
@@ -409,7 +419,8 @@ function MomentField({
   label: string;
   moment: LocalMoment | null;
   note?: string;
-  open: boolean;
+  /** True when the next click on the grid lands on this end. */
+  aiming: boolean;
   onToggle: () => void;
   shortcuts: ReadonlyArray<Shortcut>;
   onShortcut: (shortcut: Shortcut) => void;
@@ -418,11 +429,11 @@ function MomentField({
   return (
     <div className="st-field">
       <span className="st-field__label">{label}</span>
-      <span className={`st-selectwrap${open ? " is-open" : ""}`}>
+      <span className={`st-selectwrap${aiming ? " is-open" : ""}`}>
         <button
           type="button"
-          className="st-select tw-field__btn"
-          aria-expanded={open}
+          className={`st-select tw-field__btn${aiming ? " is-aiming" : ""}`}
+          aria-expanded={aiming}
           aria-controls="tw-editor"
           disabled={moment === null}
           onClick={onToggle}
@@ -433,9 +444,6 @@ function MomentField({
           ▾
         </span>
       </span>
-      {/* Only what the value on the button cannot say. Spec section 18 wants
-          the resolved date in clear, and the button carries it; spelling it a
-          second time under every field was two lines of height for nothing. */}
       {note ? <span className="tw-field__note">{note}</span> : null}
       <div className="tw-field__shortcuts">
         {shortcuts.map((shortcut) => (
@@ -457,81 +465,79 @@ function MomentField({
 const WHEN_CSS = `
   .tw-field__btn { text-align: left; cursor: pointer; font-variant-numeric: tabular-nums; }
   .tw-field__btn:disabled { cursor: default; color: rgb(${CREAM} / 0.3); }
+  /* The end the next click will move, said on the field it will move. */
+  .tw-field__btn.is-aiming { border-color: rgb(${CREAM} / 0.7); background: rgb(${CREAM} / 0.1); }
   .st-select__caret { transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1); }
   .st-selectwrap.is-open .st-select__caret { transform: translateY(-50%) rotate(180deg); }
   .tw-field__note { margin-top: 0.35rem; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
   .tw-field__shortcuts { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.55rem; }
   .st-filter__btn:disabled { cursor: default; opacity: 0.35; }
 
-  /* Two columns: the month is seven cells wide and nothing else was, so the
-     panel used to run two thirds empty to the right of it. */
-  .tw-editor { margin-top: 1.4rem; padding-top: 1.3rem; border-top: 1px solid rgb(${CREAM} / 0.1); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.2rem clamp(1.6rem, 4vw, 3rem); align-items: start; }
+  .tw-editor { margin-top: 1.3rem; padding-top: 1.2rem; border-top: 1px solid rgb(${CREAM} / 0.1); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.1rem clamp(1.4rem, 4vw, 2.8rem); align-items: start; }
   @media (max-width: 720px) { .tw-editor { grid-template-columns: 1fr; } }
 
-  .tw-cal { display: grid; gap: 0.5rem; justify-items: start; }
-  .tw-months { display: inline-flex; align-items: center; gap: 0.3rem; }
-  .tw-months__name { min-width: 8.5rem; text-align: center; font-family: var(--pf-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pf-cream); }
-  .tw-step { appearance: none; border: 1px solid rgb(${CREAM} / 0.18); background: transparent; color: rgb(${CREAM} / 0.6); cursor: pointer; width: 1.55rem; height: 1.55rem; border-radius: var(--radius-pill); line-height: 1; font-size: 0.8rem; transition: border-color 140ms ease, color 140ms ease; }
+  .tw-cal { display: grid; gap: 0.4rem; justify-items: start; }
+  .tw-months { display: inline-flex; align-items: center; gap: 0.25rem; }
+  .tw-months__name { min-width: 7.6rem; text-align: center; font-family: var(--pf-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pf-cream); }
+  .tw-step { appearance: none; border: 1px solid rgb(${CREAM} / 0.18); background: transparent; color: rgb(${CREAM} / 0.6); cursor: pointer; width: 1.3rem; height: 1.3rem; border-radius: var(--radius-pill); line-height: 1; font-size: 0.7rem; transition: border-color 140ms ease, color 140ms ease; }
   .tw-step:hover { border-color: rgb(${CREAM} / 0.45); color: var(--pf-cream); }
   .tw-step:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 2px; }
 
   /* NO GAP BETWEEN THE CELLS, so the days inside the window join into one
-     continuous band. Separated pills read as seven chosen days; a band reads
-     as a range, which is what it is. */
-  .tw-week, .tw-grid__row { display: grid; grid-template-columns: repeat(7, clamp(2.45rem, 3vw, 3.1rem)); }
+     continuous band. Separated pills read as chosen days; a band reads as a
+     range, which is what it is. */
+  .tw-week, .tw-grid__row { display: grid; grid-template-columns: repeat(7, 1.95rem); }
   .tw-grid { display: grid; }
-  .tw-week__day { text-align: center; padding-bottom: 0.3rem; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.08em; color: rgb(${CREAM} / 0.35); }
+  .tw-week__day { text-align: center; padding-bottom: 0.2rem; font-family: var(--pf-mono); font-size: 0.52rem; letter-spacing: 0.06em; color: rgb(${CREAM} / 0.35); }
 
   .tw-day {
-    position: relative; appearance: none; cursor: pointer; width: 100%; height: 2.35rem; padding: 0;
+    position: relative; appearance: none; cursor: pointer; width: 100%; height: 1.75rem; padding: 0;
     border: 1px solid transparent; border-radius: var(--radius-pill);
     background: transparent; color: rgb(${CREAM} / 0.72);
-    font-family: var(--pf-mono); font-size: 0.72rem; font-variant-numeric: tabular-nums;
-    transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+    font-family: var(--pf-mono); font-size: 0.64rem; font-variant-numeric: tabular-nums;
+    transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
   }
-  .tw-day:hover:not([aria-disabled]) { background: rgb(${CREAM} / 0.12); color: var(--pf-cream); }
+  .tw-day:hover:not([aria-disabled]) { background: rgb(${CREAM} / 0.14); color: var(--pf-cream); }
   .tw-day:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: -1px; z-index: 1; }
   .tw-day.is-out { color: rgb(${CREAM} / 0.26); }
   .tw-day[aria-disabled] { cursor: default; color: rgb(${CREAM} / 0.14); }
 
-  /* The days the exercise is open, drawn as one strip and not as buttons. */
   .tw-day.is-band { background: rgb(${CREAM} / 0.06); border-radius: 0; color: rgb(${CREAM} / 0.8); }
-  /* The end of the window NOT being edited: outlined, so it stays findable. */
-  .tw-day.is-edge { border-color: rgb(${CREAM} / 0.55); color: var(--pf-cream); }
-  /* The end being edited: the only filled cell on the grid. */
-  .tw-day.is-active { background: var(--pf-cream); border-color: transparent; color: var(--pf-bg); font-weight: 700; }
-  .tw-day.is-active:hover:not([aria-disabled]) { background: rgb(${CREAM} / 0.86); color: var(--pf-bg); }
+  /* Fixed meanings: filled is the opening, ringed is the closing, always. */
+  .tw-day.is-due { border-color: rgb(${CREAM} / 0.55); color: var(--pf-cream); }
+  .tw-day.is-opens { background: var(--pf-cream); border-color: transparent; color: var(--pf-bg); font-weight: 700; }
+  .tw-day.is-opens:hover:not([aria-disabled]) { background: rgb(${CREAM} / 0.86); color: var(--pf-bg); }
   /* Today is a POSITION and not a choice, so it is a dot and never a ring: a
-     ring is what the far end of the window already wears. */
+     ring is what the closing already wears. */
   .tw-day.is-today::after {
-    content: ""; position: absolute; left: 50%; bottom: 0.3rem; width: 3px; height: 3px;
+    content: ""; position: absolute; left: 50%; bottom: 0.2rem; width: 3px; height: 3px;
     margin-left: -1.5px; border-radius: 50%; background: rgb(${CREAM} / 0.55);
   }
-  .tw-day.is-active::after { background: var(--pf-bg); }
+  .tw-day.is-opens::after { background: var(--pf-bg); }
 
-  .tw-key { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin: 0.55rem 0 0; padding: 0; list-style: none; }
-  .tw-key li { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
-  .tw-key__mark { width: 0.75rem; height: 0.75rem; border-radius: var(--radius-pill); border: 1px solid transparent; }
-  .tw-key__mark.is-active { background: var(--pf-cream); }
-  .tw-key__mark.is-edge { border-color: rgb(${CREAM} / 0.55); }
+  .tw-say { margin: 0.35rem 0 0; max-width: 17rem; font-size: 0.72rem; line-height: 1.4; color: rgb(${CREAM} / 0.5); }
+  .tw-key { display: flex; flex-wrap: wrap; gap: 0.25rem 0.8rem; margin: 0.1rem 0 0; padding: 0; list-style: none; }
+  .tw-key li { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
+  .tw-key__mark { width: 0.65rem; height: 0.65rem; border-radius: var(--radius-pill); border: 1px solid transparent; }
+  .tw-key__mark.is-opens { background: var(--pf-cream); }
+  .tw-key__mark.is-due { border-color: rgb(${CREAM} / 0.55); }
   .tw-key__mark.is-band { background: rgb(${CREAM} / 0.12); border-radius: 0; }
   .tw-key__mark.is-today { position: relative; }
   .tw-key__mark.is-today::after { content: ""; position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; border-radius: 50%; background: rgb(${CREAM} / 0.55); }
 
-  .tw-side { display: grid; justify-items: stretch; gap: 0.55rem; }
-  .tw-side__day { margin: 0 0 0.3rem; font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 640; letter-spacing: -0.02em; line-height: 1.15; color: var(--pf-cream); }
-  .tw-time { display: flex; align-items: flex-end; gap: 0.5rem; }
-  .tw-time__unit { width: 5.4rem; }
-  .tw-time__colon { padding-bottom: 0.62rem; font-family: var(--pf-mono); font-size: 0.9rem; color: rgb(${CREAM} / 0.4); }
-  /* The four hours span the column rather than huddling at its left edge:
-     the calendar is a fixed seven cells wide, so whatever is beside it has to
-     take the rest of the width or the panel reads as half empty. */
-  .tw-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: 0.4rem; }
-  .tw-quick .st-filter__btn { text-align: center; }
-  .tw-quick em { font-style: normal; font-variant-numeric: tabular-nums; opacity: 0.55; }
-  .tw-done { margin-top: 0.35rem; justify-self: start; }
+  /* The two hours, side by side. An hour that belonged to whichever end was
+     last touched would be a mode, and the mode is what we just removed. */
+  .tw-side { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 0.9rem 1.2rem; align-items: start; }
+  .tw-hour { display: grid; gap: 0.28rem; min-width: 0; }
+  .tw-hour__day { font-size: 0.82rem; line-height: 1.2; color: var(--pf-cream); }
+  .tw-hour__pair { display: flex; align-items: center; gap: 0.35rem; }
+  .tw-hour__pair .st-selectwrap { flex: 0 0 4.3rem; }
+  .tw-hour__pair .st-select { padding: 0.42rem 1.6rem 0.42rem 0.75rem; font-size: 0.84rem; font-variant-numeric: tabular-nums; }
+  .tw-hour__pair .st-select__caret { right: 0.65rem; }
+  .tw-hour__colon { font-family: var(--pf-mono); font-size: 0.8rem; color: rgb(${CREAM} / 0.4); }
+  .tw-done { align-self: end; justify-self: start; }
 
-  .tw-span { display: grid; gap: 0.25rem; margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
+  .tw-span { display: grid; gap: 0.25rem; margin-top: 1.3rem; padding-top: 1.1rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
   .tw-span__value { font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 660; letter-spacing: -0.03em; line-height: 1.1; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
   .tw-span__gloss { max-width: 56ch; text-wrap: pretty; font-size: 0.8rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
 

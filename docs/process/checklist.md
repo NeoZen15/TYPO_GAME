@@ -121,7 +121,35 @@ L'incompréhension venait des marques : **trois significations portaient deux de
 
 Retiré au passage : la date répétée en toutes lettres sous chaque champ. Le bouton dit déjà `Fri 11 Sep · 08:00`, la spec section 18 est donc servie, et la ligne ne coûtait que de la hauteur. Il ne reste dessous que ce que la valeur ne peut pas dire : « right away », « same day ».
 
+**Troisième passe, deux défauts signalés par le propriétaire, tous deux justes.**
+
+**Le clic ne suivait pas la convention.** Cliquer le 21 puis le 27 donnait deux ouvertures au lieu d'une plage : il fallait remonter au champ « It closes » entre les deux pour que le deuxième clic soit compris comme une fin. Aucun calendrier de réservation ne demande ça. Le calendrier est maintenant une **sélection de plage** : premier clic l'ouverture, deuxième clic la fermeture, un clic avant l'ouverture recommence une plage. La règle tient en une expression, parce qu'un sélecteur de plage qui éclate ce choix sur trois gestionnaires est exactement la façon dont « cliquer avant le début » finit par ne rien faire. Le survol dessine la plage avant de la valider, donc on voit où le prochain clic tombe.
+
+**Conséquence qui règle aussi la lisibilité** : la case pleine est **toujours** l'ouverture et la case cerclée **toujours** la fermeture. Elles n'échangent plus de sens selon un mode, donc la légende est vraie à tout instant, et les seuls jours grisés sont les jours passés (onze au lieu de la moitié de la grille). Les deux heures sont désormais côte à côte à droite, les deux à la fois : une heure qui appartient au dernier bout touché est un mode, et le mode est précisément ce qu'on venait d'enlever.
+
+**C'était trop gros.** Cellules réduites, gouttières resserrées, les quatre pastilles d'heures rapides supprimées (les raccourcis du haut écrivent déjà 08 h 00 et 23 h 59, et les deux listes couvrent le reste en deux clics) et le grand titre de date retiré, chaque bloc d'heure portant déjà son jour. L'éditeur est passé de la pleine hauteur empilée du premier jet à **290 px**, le calendrier de 302 à **218 px** de large, et le panneau replié tient en 353 px.
+
 **Vérifié en exécution**, sur un serveur isolé et non sur celui du propriétaire : ouverture immédiate, exercice programmé plus tard, échéance le même jour (« Open for 4 hours · 31 minutes »), jours et heures antérieurs grisés, échéance devenue impossible repoussée en gardant sa longueur, échéance atteignable laissée en place quand l'ouverture recule. `lint`, `typecheck`, `build` et les gardes `copy`, `starfield`, `contrast`, `teacher-read-gate`, `runtime-boundaries`, `dev-routes` sont verts.
+
+---
+
+## Note — 2026-09-11 (suite 2) — le tableau de bord des demandes d'accès
+
+**Construit, et c'est le geste quotidien** : Pending, Acceptées, Refusées avec leurs comptes, une fiche par demande, et sous chaque fiche **ce qui sera créé avant de cliquer**. La seule question qui change ce que le bouton fait est l'établissement, déjà connu ou à créer : elle se lit donc dans la fiche, pas après.
+
+**Le rapprochement d'établissement se fait sur le nom normalisé.** Un professeur écrit rarement le nom de son école deux fois pareil, et proposer de créer une deuxième « École de design » parce qu'il manque un accent est exactement l'erreur que cet écran doit éviter. Les demandes de la même adresse sont signalées aussi, quel que soit leur état.
+
+**LA PORTE, ET SON EXCEPTION QUI SE REFERME TOUTE SEULE.** La page exige le rôle administrateur. Mais l'authentification n'est pas branchée, donc personne ne le porte, et l'écran serait invisible à son propre propriétaire. L'exception est la plus étroite possible : on n'ouvre sans compte **que** si Clerk n'est pas configuré **et** qu'il n'y a aucune demande. Aucune donnée personnelle ne peut donc être montrée à un visiteur non authentifié, et le jour où une vraie demande arrive, ou le jour où les clés sont posées, la porte redevient la porte. La règle est écrite deux fois, sur la page et sur la route : une page gardée derrière une route ouverte ne garde rien.
+
+**Accepter est refusé explicitement tant que Clerk n'est pas là.** Le geste crée le compte, l'école si besoin, l'appartenance et l'invitation : sans les clés, la moitié de la chaîne marcherait et l'autre non, donc on refuse d'en faire la moitié. La contrainte de base dit déjà la même chose, une demande acceptée exige un compte créé. Refuser, lui, ne crée rien et fonctionne dès aujourd'hui.
+
+**Deux échecs qui ne se ressemblent pas, distingués.** Refuser une demande inexistante rendait « cette demande a déjà été décidée », ce qui est faux et fait mentir l'écran. C'est 404 pour l'inconnue, 409 pour celle qui est déjà tranchée.
+
+**Vérifié au navigateur** : les trois onglets avec leurs comptes, les trois états vides, l'avertissement sur l'acceptation, le refus d'accepter en 409 avec sa raison, et le 404 sur une demande inconnue. Zéro erreur de page.
+
+**CE QUE JE N'AI PAS PU VOIR, ET IL FAUT LE DIRE** : la fiche elle même, faute de demande. Il n'y en a aucune en production et je n'en invente pas pour remplir un écran. Elle se regardera le jour de la première vraie demande, ou sur une branche de test le jour où les clés existent.
+
+**Reste, et c'est le dernier morceau** : le provisionnement complet derrière le bouton Accepter, qui s'écrira contre l'API réelle de Clerk et pas contre une idée d'elle.
 
 ---
 
