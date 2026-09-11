@@ -1,5 +1,32 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-11 (suite 7) — audit de l'Admin, et quatre chiffres faux corrigés
+
+**Passe de vérification demandée par le propriétaire, code figé.** Les dix-sept pages parcourues une par une, et **chaque chiffre affiché recalculé par une requête indépendante** contre la production.
+
+**Ce que l'audit valide.** La barre est conforme : dix-sept entrées, quatre groupes, dix-sept liens sur chaque page, exactement un actif et toujours le bon, dix-sept titres qui correspondent à leur entrée. Identiques au recalcul : les sept contrôles de qualité, la distance des erreurs (133 / 71 / 147 / 13), les signaux moteur, la distribution de maîtrise, les médianes par mode, la justesse au premier essai (521 sur 885), la médiane de réponse (1100 ms), les trois paires, les seuils (16 polices, 8 familles, 27 groupes visuels). **Aucune jointure ne perd de ligne** (zéro slug hors catalogue), donc les dénominateurs affichés sont les vrais. La courbe d'exposition résiste au changement d'ordre de tri, ce n'est pas un artefact. Rien de l'ancienne page santé n'a été perdu, la route d'écriture des demandes répond toujours correctement, le reste du site est à 200.
+
+**Quatre chiffres étaient faux. Corrigés dans ce lot.**
+1. **« Actif » comptait les démarrages de séance, pas les réponses.** Le journal enregistre `session_start` (594 lignes) en plus des réponses. Mesuré : **177 « actifs » sur trente jours, 78 en vrai** ; 1 sur sept jours, **0 en vrai**. L'écart, ce sont les 391 séances mortes-nées. C'était l'indicateur le plus en vue de l'accueil. `active_7d` et `active_30d` filtrent maintenant `event_type = 'answer'`.
+2. **`users.global_q_index` n'est pas un total de réponses**, c'est le curseur d'ordonnancement de la répétition espacée (`lib/modes/mode-select-stats.ts` l'utilise correctement pour ça). Mesuré : **80 comptes sur 99 en désaccord avec le journal, dont 40 à zéro alors qu'ils avaient joué**. La page Comptes annonçait **212** personnes n'ayant jamais joué là où il y en a **172**, et se contredisait elle-même (99 + 212 > 271). Le compte de questions vient maintenant du journal, des deux côtés.
+3. **« 6 questions par séance, moyenne toutes séances » était faux** : la moyenne exclut les 445 séances vides sur 595. Toutes séances confondues elle vaut 1,45. Les deux écrans disent maintenant ce que le chiffre est, et Sessions affiche les 445 pour que la moyenne et la médiane cessent de se contredire en apparence.
+4. **Audience affirmait « le journal commence à la première question jouée »** : faux, il commence au lancement d'une partie. La frontière réelle est « avant la première partie », et c'est ce qui est écrit.
+
+**Une régression corrigée** : `/admin/access`, l'adresse des demandes avant la refonte, renvoyait 404. Redirection permanente vers `/admin/demandes` dans `next.config.ts`.
+
+**Ce qui reste imparfait, signalé et non corrigé** (aucun chiffre faux aujourd'hui) :
+- Activité calcule les abandons par soustraction. Juste tant qu'aucune séance n'est `invalid`, statut que l'enum autorise.
+- Confusions tronque les groupes visuels à 12 sur 27 sans le dire.
+- Établissements compte tous les membres sous le libellé « enseignants », alors que le rôle `admin` existe.
+- Les égalités de classement ne sont pas départagées (Asap et Alumni Sans SC, 62 % sur 13 essais, peuvent permuter).
+- Les jours sont découpés en UTC et pas à Paris. Vérifié sans effet aujourd'hui.
+- `dataHealth.sessions_no_questions` est calculé et jamais affiché.
+
+**Ce qui attend une décision de DA, donc le propriétaire** : sur l'accueil, les six tuiles ont le même poids visuel (valeur à 25 px, titre de page à 32 px), donc rien ne domine ; l'activité récente n'a aucune tuile ; les classes et les sessions ne sont pas des chiffres propres ; et « Justes au premier essai » y est une métrique d'analyse qui appartient plutôt à Progression.
+
+**Mesures notables trouvées en chemin** : les 26 écarts compteur / journal sont **24 sous-comptages et 2 sur-comptages**, tous côté entraînement (compétition tombe juste, 460 = 460) ; les 391 mortes-nées sont 386 abandons et 5 « terminées », de 0 à 906 ms, dont 34 seulement ont une question ; aucune police n'a été stabilisée par plus d'**une** personne, donc le seuil de trois ne peut pas être atteint aujourd'hui.
+
+
 ## Note — 2026-09-11 (suite 6) — l'Admin a sa carte, et ses contrôles ont trouvé du vrai
 
 **Fait.** La coquille de l'Administration (porte d'accès posée une fois dans `app/admin/layout.tsx`, barre permanente à gauche, tête de page) et les **dix-sept pages** de la hiérarchie décidée par le propriétaire : Administration (Demandes, Établissements, Classes, Enseignants, Élèves et comptes), Produit et activité (Activité, Utilisateurs, Sessions, Audience), Pédagogie (Progression, Confusions, Typographies, Devoirs), Système (Moteur, Données et qualité, Paramètres). La question de chaque entrée est écrite **une seule fois** dans `features/admin/components/admin-nav.ts` et sert de description dans la barre **et** de sous-titre de la page.
@@ -33,6 +60,57 @@
 4. Comprendre les **391 séances mortes-nées** et les **26 compteurs en écart**.
 5. Une **purge** de `event_ingestion_guard`.
 
+
+## Note — 2026-09-11 (suite 6) — la bibliothèque Adobe entière est relevée, 6 001 familles prêtes à entrer
+
+Demande du propriétaire : ajouter énormément de polices, et le faire moi même. Fait
+partout où c'est possible sans son compte.
+
+**Le relevé est complet et n'a demandé aucun jeton.** Deux points d'entrée d'Adobe
+répondent 200 sans authentification : `libraries/full` donne les **6 128 familles** de la
+bibliothèque, `families/<id>` donne la fiche de chacune, nom exact, slug, variations,
+classification, fonderie. Les 6 128 fiches sont relevées. Aucun fichier de police n'a été
+téléchargé, leurs conditions l'interdisent.
+
+**Ce que la sélection retient.** 127 familles écartées parce qu'elles ne dessinent pas de
+lettres, Webdings, Noto Sans Symbols, Adorn Ornaments et semblables. **6 001 familles
+gardées, 4 638 groupes** une fois les variantes rassemblées. Aucune écriture non latine
+dans cette bibliothèque, vérifié : ni Kozuka, ni Mincho, ni arabe, ni hébreu.
+
+**Le poids n'est pas le problème que je croyais.** Mesuré sur la feuille servie
+aujourd'hui : 67 Ko bruts mais **6 Ko sur le réseau**, gzip, soit 623 octets par famille
+brut et **57 compressés**. Les 6 001 familles coûteraient donc 334 Ko sur le réseau, une
+fois, en cache. Adobe ne limite pas le nombre de familles d'un projet web, c'est écrit
+dans leur aide.
+
+**Ce qui devient vraiment le problème, et c'est un arbitrage produit.** `browse_info` est
+**vide pour 2 558 familles** : ni classification, ni langue, ni graisse. À 108 familles la
+catégorie se relisait à l'œil, à 6 001 c'est impossible. Or `visual_cluster_id` décide des
+mauvaises réponses. Une catégorie inventée par règle serait pire que pas de catégorie,
+elle serait crue. D'où la proposition : **première vague des 3 443 familles qu'Adobe
+classe vraiment**, 196 Ko, les 2 558 muettes en réserve.
+
+**Deux scripts écrits, et deux pièges trouvés en mesurant.**
+`scripts/adobe_library_select.py` choisit et compte, n'écrit nulle part.
+`scripts/adobe_kit_sync.py` ajoute au kit et publie, à blanc par défaut, jeton lu dans un
+fichier hors dépôt et jamais affiché.
+Piège 1 : les variations d'Adobe sont des objets et non des chaînes, donc `"n4" in
+variations` est toujours faux et le repli prenait la première variation. **Proxima Nova
+THIN serait entrée à la place de la Regular.** Corrigé, le romain 400 sort maintenant pour
+5 140 des 6 001.
+Piège 2 : sans les pluriels ni les bornes de mot, le filtre laissait passer Webdings et
+écartait Kepler Std Semicondensed, parce que « semICONdensed » contient icon.
+
+**Le seul geste impossible sans lui.** Écrire dans le projet web écrit dans son compte
+Adobe. Il lui faut soit régénérer le jeton d'API, à refaire de toute façon depuis la fuite
+du 2026-08-23, et le poser dans `~/.config/dwiggins/adobe-typekit-token`, soit lancer son
+Chrome en mode debug pour que je pilote sa session. Tant que ni l'un ni l'autre, la chaîne
+est prête et ne peut pas partir.
+
+**Suite une fois le kit publié** : miroir JSON, migration de catalogue sur le modèle de la
+016, rang de notoriété sur le modèle de la 013 et la 017, `check:adobe-migration`. Et
+généraliser `build_adobe_catalog_migration.py`, qui code en dur 108 lignes et une liste de
+canoniques écrite à la main.
 
 ## Note — 2026-09-11 (suite 5) — le kit Adobe s'arrête à la priorité 1, 28 grands noms manquent
 
@@ -155,6 +233,25 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 État par sujet : **19 faits · 0 en cours · 15 à faire · 2 bloqueurs · 6 parkés / à décider** (le 2026-08-19, le symbole du logo est redessiné et remplacé partout, il sort des bloqueurs) (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## Note — 2026-09-11 (suite 5) — la couleur passe du mode au cran d'exigence
+
+**Le propriétaire, et il a raison** : la passe précédente teintait la page avec la couleur du mode, donc du vert presque partout, deux modes sur trois étant de l'entraînement. « On a trois couleurs souvent utilisées, on peut peut-être les réutiliser », et « on a déjà la couleur expert ».
+
+**Relevé avant de décider, sur sa consigne** (« si t'as un doute, va voir les autres pages). Deux constats qui ont changé la mise en œuvre :
+
+1. **Ces trois teintes n'ont jamais servi qu'à une chose** dans tout le produit : nommer les trois modes de jeu. Landing, choix des modes, profil, tableau d'activité, arène, les cinq écrans les emploient de la même façon. Les donner à l'exigence leur ajoute donc un second emploi. C'est assumé, pour une raison précise : **les trois modes sont déjà une échelle d'exigence**, entraînement sans pression, compétition sous le chrono, expert en reconnaissance fine. La teinte ne change pas de sens, elle change de support.
+2. **Elles ont des noms depuis toujours**, `--mode-training`, `--mode-competition`, `--mode-expert`, et `app/globals.css` dit la règle en toutes lettres à `.game-v2-hud` : le vert écrit en dur trois fois a déjà dû être défait une fois. L'échelle passe donc par les variables, jamais par les hex.
+
+**La règle posée** : la page prend l'accent du **cran d'exigence**, seule échelle ordonnée de l'écran, et la couleur est le seul dispositif qui montre un ordre d'un coup d'œil. Accessible en vert, Balanced en crème, Challenging en orange, Expert en bleu. Le crème tient le cran par défaut, donc la page ne prend une teinte qu'à partir du moment où le professeur s'écarte du milieu.
+
+**Deux accents qui ne se disputent rien.** Le mode garde le sien là où il vivait avant qu'on touche à l'écran : sur son propre groupe de boutons et sur la pastille du récap. Le contrôle prend le vert de l'entraînement, parce que c'est ce qu'il est pour le moteur ; lui inventer une quatrième couleur aurait été la seule valeur nouvelle de l'écran.
+
+**Mesuré**, en faisant peindre la couleur finale par le navigateur et en relisant le pixel, `color-mix` se résolvant en `oklab` que les analyseurs de chaîne lisent faux (premier essai : 1,00 partout). Bouton final : vert rgb(107,219,165) contraste **12,3**, crème **18,6**, orange **11,1**, bleu **10,2**. Pastille du cran retenu sur la page : **13,5 / 18,9 / 12,6 / 12**. Seuil WCAG à 4,5.
+
+**Trouvé au passage** : les trois boutons de mode étaient restés en français (« Exercice », « Contrôle », « Compétition »), ratés par la passe de langue parce qu'ils ressemblent à des mots anglais. Traduits.
 
 ---
 

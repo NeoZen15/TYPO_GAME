@@ -128,7 +128,15 @@ export type AccountsSummary = {
   deleted: number;
 };
 
-/** Le repertoire, en volumes. La gestion commence par savoir combien. */
+/**
+ * Le repertoire, en volumes. La gestion commence par savoir combien.
+ *
+ * `never_played` INTERROGE LE JOURNAL ET PAS `users.global_q_index`. Ce compteur
+ * porte l'ordonnancement de la repetition espacee, pas un total de reponses :
+ * mesure du 2026-09-11, 40 comptes qui ont repondu l'avaient encore a zero, et
+ * 80 comptes sur 99 etaient en desaccord avec le journal. Il annoncait donc 212
+ * personnes n'ayant jamais joue la ou il y en a 172.
+ */
 export const accountsSummary = async (): Promise<AccountsSummary> => {
   const [row] = await rows<AccountsSummary>(sql`
     SELECT
@@ -140,7 +148,9 @@ export const accountsSummary = async (): Promise<AccountsSummary> => {
       count(*) FILTER (WHERE EXISTS (
         SELECT 1 FROM class_members cm WHERE cm.user_id = users.user_id))::int AS in_a_class,
       count(*) FILTER (WHERE last_seen_at > now() - interval '7 days')::int AS seen_7d,
-      count(*) FILTER (WHERE global_q_index = 0)::int AS never_played,
+      count(*) FILTER (WHERE NOT EXISTS (
+        SELECT 1 FROM user_event_fact f
+         WHERE f.user_id = users.user_id AND f.event_type = 'answer'))::int AS never_played,
       count(*) FILTER (WHERE deleted_at IS NOT NULL)::int AS deleted
     FROM users
   `);
@@ -162,6 +172,10 @@ export type AccountRow = {
 /**
  * Les derniers comptes, pour ouvrir celui qu'on cherche.
  *
+ * LE NOMBRE DE QUESTIONS VIENT DU JOURNAL, pour la meme raison que ci dessus :
+ * `users.global_q_index` est le compteur d'ordonnancement du moteur, il ne
+ * compte pas les reponses et se trompait sur 80 comptes sur 99.
+ *
  * VOLONTAIREMENT COURT ET NON CLASSABLE PAR PERFORMANCE. On vient ici parce que
  * quelqu'un est bloque, pas pour comparer des eleves entre eux. L'ordre est donc
  * l'ordre d'arrivee, et les colonnes disent l'etat d'un compte, jamais un taux
@@ -174,7 +188,8 @@ export const recentAccounts = (limit = 40) =>
       u.role::text,
       (u.clerk_id IS NOT NULL) AS has_account,
       (SELECT count(*)::int FROM class_members cm WHERE cm.user_id = u.user_id) AS classes,
-      u.global_q_index AS questions,
+      (SELECT count(*)::int FROM user_event_fact f
+        WHERE f.user_id = u.user_id AND f.event_type = 'answer') AS questions,
       (SELECT count(*)::int FROM sessions s WHERE s.user_id = u.user_id) AS sessions,
       to_char(u.created_at, 'YYYY-MM-DD') AS created_at,
       to_char(u.last_seen_at, 'YYYY-MM-DD') AS last_seen_at,

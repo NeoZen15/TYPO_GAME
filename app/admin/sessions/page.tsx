@@ -25,6 +25,8 @@ const duree = (s: number | null) => {
 export default async function AdminSessionsPage() {
   const [health, shapes] = await Promise.all([productHealth(), sessionShapes()]);
   const mortesNees = shapes.reduce((sum, shape) => sum + shape.stillborn, 0);
+  const vides = shapes.reduce((sum, shape) => sum + shape.empty, 0);
+  const seances = shapes.reduce((sum, shape) => sum + shape.n, 0);
 
   return (
     <>
@@ -39,7 +41,7 @@ export default async function AdminSessionsPage() {
         <div className="st-kpi">
           <span className="st-kpi__value">{health.questions_per_session ?? "—"}</span>
           <span className="st-kpi__label">Questions par séance</span>
-          <span className="st-kpi__helper">moyenne, toutes séances</span>
+          <span className="st-kpi__helper">moyenne des séances qui en ont eu au moins une</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{mortesNees}</span>
@@ -80,7 +82,10 @@ export default async function AdminSessionsPage() {
           </ul>
         )}
         <p className="ad-note">
-          Les médianes ne portent que sur les séances <strong>terminées</strong>, et
+          {vides} séances sur {seances} n&apos;ont reçu <strong>aucune</strong>{" "}
+          question, et c&apos;est ce qui explique les deux chiffres ci-dessus : la
+          moyenne les écarte, la médiane les compte. Les médianes ne portent que sur
+          les séances <strong>terminées</strong>, et
           cette restriction est la mesure elle-même : en comptant tout, la médiane
           de durée tombait à un dixième de seconde, écrasée par les séances
           mortes-nées. Une séance ouverte puis refermée en moins d&apos;une seconde

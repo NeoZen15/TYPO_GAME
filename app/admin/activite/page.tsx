@@ -64,7 +64,7 @@ export default async function AdminActivitePage() {
         <div className="st-kpi">
           <span className="st-kpi__value">{health.questions_per_session ?? "—"}</span>
           <span className="st-kpi__label">Questions par séance</span>
-          <span className="st-kpi__helper">en moyenne</span>
+          <span className="st-kpi__helper">moyenne, hors séances sans question</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{daily.reduce((sum, day) => sum + day.answers, 0)}</span>

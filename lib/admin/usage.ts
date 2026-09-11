@@ -52,6 +52,15 @@ export type ProductHealth = {
  * est ce que les gens jouent, ou est ce qu'ils creent un compte et disparaissent ?
  * D'ou la presence, cote a cote, des comptes crees, des comptes actifs, des
  * seances ouvertes et des seances terminees.
+ *
+ * ACTIF VEUT DIRE « A REPONDU », et cette precision vaut un facteur deux. Le
+ * journal enregistre aussi les demarrages de seance : compter toutes les lignes
+ * comptait donc les gens qui ouvrent la page et disparaissent. Mesure du
+ * 2026-09-11 en production : 177 personnes sur trente jours en comptant tout,
+ * **78** en comptant celles qui ont repondu a une question ; sur sept jours, 1
+ * contre 0. L'ecart n'est pas du bruit, ce sont les 391 seances nees et
+ * refermees en moins d'une seconde. Un indicateur d'usage qui compte les gens qui
+ * n'ont rien fait mesure la curiosite, pas l'usage.
  */
 export const productHealth = async (): Promise<ProductHealth> => {
   const [health] = await rows<Omit<ProductHealth, "by_mode">>(sql`
@@ -59,9 +68,9 @@ export const productHealth = async (): Promise<ProductHealth> => {
       (SELECT count(*)::int FROM users) AS accounts,
       (SELECT count(*)::int FROM users WHERE created_at > now() - interval '30 days') AS accounts_30d,
       (SELECT count(DISTINCT user_id)::int FROM user_event_fact
-        WHERE event_ts_utc > now() - interval '30 days') AS active_30d,
+        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '30 days') AS active_30d,
       (SELECT count(DISTINCT user_id)::int FROM user_event_fact
-        WHERE event_ts_utc > now() - interval '7 days') AS active_7d,
+        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '7 days') AS active_7d,
       (SELECT count(*)::int FROM sessions) AS sessions,
       (SELECT count(*)::int FROM sessions WHERE status = 'completed') AS sessions_completed,
       (SELECT count(*)::int FROM sessions WHERE status = 'active') AS sessions_open,
@@ -73,6 +82,10 @@ export const productHealth = async (): Promise<ProductHealth> => {
          FROM user_event_fact WHERE event_type = 'answer' AND attempt_index = 1) AS first_try_right_pct,
       (SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY response_time_ms)::int
          FROM user_event_fact WHERE event_type = 'answer' AND attempt_index = 1) AS median_answer_ms,
+      -- LA MOYENNE EXCLUT LES SEANCES VIDES, et l'ecran doit le dire. Toutes
+      -- seances confondues elle vaut 1,45 le 2026-09-11, contre 5,75 sur les
+      -- seules seances qui ont eu une question : les deux sont vraies, une seule
+      -- repond a « combien de questions quand on joue ».
       (SELECT round(avg(question_count))::int FROM sessions WHERE question_count > 0) AS questions_per_session
   `);
 
@@ -186,6 +199,7 @@ export type SessionShape = {
   abandoned: number;
   open: number;
   stillborn: number;
+  empty: number;
   median_questions: number | null;
   median_seconds: number | null;
 };
@@ -209,6 +223,11 @@ export type SessionShape = {
  * quelque chose de vrai sur le produit : des centaines de seances ouvertes puis
  * refermees aussitot signalent un demarrage qui se rejoue, pas des joueurs qui
  * renoncent.
+ *
+ * `empty` compte les seances sans une seule question. Il existe pour que la
+ * moyenne de questions par seance soit lisible : celle ci exclut les seances
+ * vides, et sans savoir combien il y en a (445 sur 595 le 2026-09-11) on lit
+ * « 6 questions par seance » en croyant que c'est vrai de toutes.
  */
 export const sessionShapes = () =>
   rows<SessionShape>(sql`
@@ -219,6 +238,7 @@ export const sessionShapes = () =>
       count(*) FILTER (WHERE status = 'abandoned')::int AS abandoned,
       count(*) FILTER (WHERE status = 'active')::int AS open,
       count(*) FILTER (WHERE duration_ms IS NOT NULL AND duration_ms < 1000)::int AS stillborn,
+      count(*) FILTER (WHERE question_count = 0)::int AS empty,
       percentile_cont(0.5) WITHIN GROUP (ORDER BY question_count)
         FILTER (WHERE status = 'completed')::int AS median_questions,
       round(percentile_cont(0.5) WITHIN GROUP (ORDER BY duration_ms)

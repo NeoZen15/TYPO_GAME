@@ -14,6 +14,12 @@ export const metadata: Metadata = { title: "Audience et acquisition" };
 // sait rien aujourd'hui. Melanger les deux produirait un taux de conversion dont
 // le numerateur et le denominateur ne parlent pas de la meme population.
 //
+// CE QUE LE JOURNAL SAIT DEJA, ET IL FAUT ETRE EXACT LA DESSUS. Il n'enregistre
+// pas seulement des reponses : `session_start` y est ecrit des le lancement d'une
+// partie (594 lignes le 2026-09-11). La frontiere n'est donc pas « avant la
+// premiere question » mais « avant la premiere partie », et tout ce qui se passe
+// sur l'accueil, les regles et les pages d'explication reste invisible.
+//
 // LA PLACE EST PRETE, LA DONNEE N'EST PAS INVENTEE. L'entree existe dans la barre
 // pour que personne n'aille chercher l'audience dans Utilisateurs, et la page dit
 // ce qui manque plutot que d'afficher un graphique gris.
@@ -24,7 +30,7 @@ export default function AdminAudiencePage() {
       <AdminPageHead href="/admin/audience" />
 
       <AdminGap
-        missing="DWIGGINS ne mesure aucune visite aujourd'hui. Le journal commence à la première question jouée : avant ça, personne n'est compté, ni la page d'accueil, ni les pages d'explication, ni d'où vient la personne."
+        missing="DWIGGINS ne mesure aucune visite aujourd'hui. Le journal commence au lancement d'une partie : il enregistre le démarrage d'une séance et les réponses, donc quelqu'un qui lit l'accueil, les règles ou une page d'explication sans jamais lancer de partie n'existe nulle part. D'où viennent les gens n'est enregistré nulle part non plus."
         fills={[
           "Une mesure d'audience, à choisir : hébergeur, page vue côté serveur, ou outil dédié respectueux de la vie privée.",
           "La première question qu'elle devra trancher : combien de visiteurs arrivent sur l'accueil et combien lancent une première partie.",
