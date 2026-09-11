@@ -1,6 +1,5 @@
 "use client";
 
-import { CREAM } from "@/features/profile/components/board-system";
 import type { ClassConfusion } from "@/lib/teacher/mock-teacher";
 
 // CE QUE LE PROFESSEUR DONNE, ET QUI EST COMMUN A TOUTE LA CLASSE.
@@ -37,10 +36,10 @@ export const confusionKey = (pair: ClassConfusion) => `${pair.seen.slug}:${pair.
 
 /** Ce que chaque cran veut dire, en mots de professeur et jamais en parametres. */
 const EXIGENCE: ReadonlyArray<{ id: Exigence; label: string; says: string }> = [
-  { id: "accessible", label: "Accessible", says: "les mauvaises réponses sont franchement différentes" },
-  { id: "balanced", label: "Balanced", says: "même grande famille, différences visibles" },
-  { id: "challenging", label: "Challenging", says: "typographies très proches" },
-  { id: "expert", label: "Expert", says: "reconnaissance très fine, à l'intérieur d'un même cluster" },
+  { id: "accessible", label: "Accessible", says: "the wrong answers are plainly different" },
+  { id: "balanced", label: "Balanced", says: "same broad family, visible differences" },
+  { id: "challenging", label: "Challenging", says: "faces that sit very close together" },
+  { id: "expert", label: "Expert", says: "fine recognition, inside a single visual cluster" },
 ];
 
 // Les quatre parts, hypothese de V1 mesuree et non verite figee (arbitrage 4 du
@@ -53,9 +52,9 @@ export const MIX_PRESETS: Record<MixBias, { consolidation: number; upkeep: numbe
 };
 
 const BIAS: ReadonlyArray<{ id: MixBias; label: string }> = [
-  { id: "reinforce", label: "Plus de renforcement" },
-  { id: "even", label: "Équilibré" },
-  { id: "discover", label: "Plus de découverte" },
+  { id: "reinforce", label: "More reinforcing" },
+  { id: "even", label: "Even" },
+  { id: "discover", label: "More discovery" },
 ];
 
 export default function TeacherContract({
@@ -86,135 +85,151 @@ export default function TeacherContract({
   return (
     <section className="st-panel st-sec" aria-label="How hard, and for whom">
       <div className="st-panel__head">
-        <h2 className="st-panel__title">Comment ils vont le passer</h2>
-        <span className="st-panel__meta">commun à toute la classe</span>
+        <h2 className="st-panel__title">How they will take it</h2>
+        <span className="st-panel__meta">the same for the whole class</span>
       </div>
 
-      {/* ── Le niveau d'exigence ── */}
-      <span className="st-field__label tc-ct__sub">Niveau d&apos;exigence</span>
-      <div className="st-choice tc-ct__choice" role="group" aria-label="Niveau d'exigence">
-        {EXIGENCE.map((cran) => (
-          <button
-            key={cran.id}
-            type="button"
-            className={`st-choice__btn${value.exigence === cran.id ? " is-active" : ""}`}
-            aria-pressed={value.exigence === cran.id}
-            onClick={() => onChange({ ...value, exigence: cran.id })}
-          >
-            {cran.label}
-          </button>
-        ))}
-      </div>
-      <span className="tc-ct__hint">
-        {chosen.says}. La difficulté d&apos;une question ne monte que par la
-        ressemblance des mauvaises réponses, jamais par autre chose.
-      </span>
-
-      {/* ── L'adaptation par élève ── */}
-      <span className="st-field__label tc-ct__sub">Pour qui</span>
-      <div className="st-choice tc-ct__choice" role="group" aria-label="Adaptation">
-        <button
-          type="button"
-          className={`st-choice__btn${!value.adaptive ? " is-active" : ""}`}
-          aria-pressed={!value.adaptive}
-          onClick={() => onChange({ ...value, adaptive: false })}
-        >
-          Le même pour tous
-        </button>
-        <button
-          type="button"
-          className={`st-choice__btn${value.adaptive ? " is-active" : ""}`}
-          aria-pressed={value.adaptive}
-          onClick={() => onChange({ ...value, adaptive: true })}
-        >
-          Adapté à chaque élève
-        </button>
-      </div>
-      <span className="tc-ct__hint">
-        {value.adaptive
-          ? "Même exercice, même périmètre, même longueur : seule la proximité des mauvaises réponses bouge d'un cran selon ce que chacun tient déjà. Leurs résultats ne se comparent donc pas au chiffre près, et l'écran le dira."
-          : "Tout le monde reçoit exactement la même difficulté, ce qui est la définition d'une mesure."}
-      </span>
-
-      {/* ── Le mix ── */}
-      <span className="st-field__label tc-ct__sub">L&apos;équilibre de l&apos;exercice</span>
-      <div className="st-choice tc-ct__choice" role="group" aria-label="Équilibre">
-        {BIAS.map((bias) => (
-          <button
-            key={bias.id}
-            type="button"
-            className={`st-choice__btn${value.mixBias === bias.id ? " is-active" : ""}`}
-            aria-pressed={value.mixBias === bias.id}
-            onClick={() => onChange({ ...value, mixBias: bias.id })}
-          >
-            {bias.label}
-          </button>
-        ))}
-      </div>
-      <span className="st-seg tc-ct__seg" role="img" aria-label="Composition de l'exercice">
-        <span className="st-seg__part st-seg__part--lit" style={{ flexGrow: mix.consolidation }} />
-        <span className="st-seg__part st-seg__part--emerging" style={{ flexGrow: mix.upkeep }} />
-        <span className="st-seg__part st-seg__part--dormant" style={{ flexGrow: mix.targeted }} />
-        <span className="st-seg__part st-seg__part--roadmap" style={{ flexGrow: mix.novelty }} />
-      </span>
-      <ul className="st-legend">
-        <li><span className="st-legend__sw st-legend__sw--lit" /><em>{mix.consolidation}%</em> à consolider</li>
-        <li><span className="st-legend__sw st-legend__sw--emerging" /><em>{mix.upkeep}%</em> d&apos;entretien</li>
-        <li><span className="st-legend__sw st-legend__sw--dormant" /><em>{mix.targeted}%</em> ciblé</li>
-        <li><span className="st-legend__sw st-legend__sw--roadmap" /><em>{mix.novelty}%</em> de nouveau</li>
-      </ul>
-      <span className="tc-ct__hint">
-        Un exercice recommandé ne doit pas être une punition faite de tout ce
-        qu&apos;ils ratent. Nouveau veut dire jamais demandé dans vos exercices, et
-        pas jamais vu de leur vie.
-      </span>
-
-      {/* ── Les confusions retenues ── */}
-      <span className="st-field__label tc-ct__sub">Ce qu&apos;ils confondent</span>
-      {confusions.length === 0 ? (
-        <p className="st-empty">
-          Rien de récurrent chez {className} pour l&apos;instant. Ça se remplit avec
-          les exercices que vous donnez.
-        </p>
-      ) : (
-        <>
-          <p className="tc-ct__hint tc-ct__hint--tight">
-            Décochez ce que vous ne voulez pas travailler cette fois. Rien
-            n&apos;est ciblé sans que vous l&apos;ayez vu.
-          </p>
-          <div className="tc-ct__pairs">
-            {confusions.map((pair) => {
-              const key = confusionKey(pair);
-              const kept = value.keptConfusions.includes(key);
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  className={`st-filter__btn${kept ? " is-active" : ""}`}
-                  aria-pressed={kept}
-                  onClick={() => toggleConfusion(pair)}
-                >
-                  {pair.seen.name} pour {pair.chosen.name} <em>{pair.times}×</em>
-                </button>
-              );
-            })}
+      {/* ── How hard ── */}
+      <div className="tc-set">
+        <div className="tc-set__main">
+          <span className="st-field__label">How hard</span>
+          <div className="st-choice" role="group" aria-label="How hard">
+            {EXIGENCE.map((cran) => (
+              <button
+                key={cran.id}
+                type="button"
+                className={`st-choice__btn${value.exigence === cran.id ? " is-active" : ""}`}
+                aria-pressed={value.exigence === cran.id}
+                onClick={() => onChange({ ...value, exigence: cran.id })}
+              >
+                {cran.label}
+              </button>
+            ))}
           </div>
-        </>
-      )}
+        </div>
+        <p className="tc-set__say">
+          <em>{chosen.says}</em>. A question gets harder only by how much the
+          wrong answers resemble the right one, never by anything else.
+        </p>
+      </div>
+
+      {/* ── Adaptive, or the same for everyone ── */}
+      <div className="tc-set">
+        <div className="tc-set__main">
+          <span className="st-field__label">For whom</span>
+          <div className="st-choice" role="group" aria-label="For whom">
+            <button
+              type="button"
+              className={`st-choice__btn${!value.adaptive ? " is-active" : ""}`}
+              aria-pressed={!value.adaptive}
+              onClick={() => onChange({ ...value, adaptive: false })}
+            >
+              The same for all
+            </button>
+            <button
+              type="button"
+              className={`st-choice__btn${value.adaptive ? " is-active" : ""}`}
+              aria-pressed={value.adaptive}
+              onClick={() => onChange({ ...value, adaptive: true })}
+            >
+              Tuned per student
+            </button>
+          </div>
+        </div>
+        <p className="tc-set__say">
+          {value.adaptive
+            ? "Same exercise, same scope, same length: only how close the wrong answers sit moves, by one step, with what each of them already holds. Their results are then not comparable to the digit, and the screen says so."
+            : "Everyone gets exactly the same difficulty, which is the definition of a measurement."}
+        </p>
+      </div>
+
+      {/* ── The mix ── */}
+      <div className="tc-set">
+        <div className="tc-set__main tc-ct__wide">
+          <span className="st-field__label">What it is made of</span>
+          <div className="st-choice" role="group" aria-label="What it is made of">
+            {BIAS.map((bias) => (
+              <button
+                key={bias.id}
+                type="button"
+                className={`st-choice__btn${value.mixBias === bias.id ? " is-active" : ""}`}
+                aria-pressed={value.mixBias === bias.id}
+                onClick={() => onChange({ ...value, mixBias: bias.id })}
+              >
+                {bias.label}
+              </button>
+            ))}
+          </div>
+          <span className="st-seg tc-ct__seg" role="img" aria-label="What the exercise is made of">
+            <span className="st-seg__part st-seg__part--lit" style={{ flexGrow: mix.consolidation }} />
+            <span className="st-seg__part st-seg__part--emerging" style={{ flexGrow: mix.upkeep }} />
+            <span className="st-seg__part st-seg__part--dormant" style={{ flexGrow: mix.targeted }} />
+            <span className="st-seg__part st-seg__part--roadmap" style={{ flexGrow: mix.novelty }} />
+          </span>
+          <ul className="st-legend">
+            <li><span className="st-legend__sw st-legend__sw--lit" /><em>{mix.consolidation}%</em> to firm up</li>
+            <li><span className="st-legend__sw st-legend__sw--emerging" /><em>{mix.upkeep}%</em> upkeep</li>
+            <li><span className="st-legend__sw st-legend__sw--dormant" /><em>{mix.targeted}%</em> targeted</li>
+            <li><span className="st-legend__sw st-legend__sw--roadmap" /><em>{mix.novelty}%</em> new</li>
+          </ul>
+        </div>
+        <p className="tc-set__say">
+          A recommended exercise must not be a punishment made of everything they
+          get wrong. New means never asked in your exercises, not never seen in
+          their life.
+        </p>
+      </div>
+
+      {/* ── The confusions kept ── */}
+      <div className="tc-set">
+        <div className="tc-set__main tc-ct__wide">
+          <span className="st-field__label">What they confuse</span>
+          {confusions.length === 0 ? (
+            <p className="st-empty tc-ct__none">
+              Nothing recurring in {className} yet. It fills up with the
+              exercises you give.
+            </p>
+          ) : (
+            <div className="tc-ct__pairs">
+              {confusions.map((pair) => {
+                const key = confusionKey(pair);
+                const kept = value.keptConfusions.includes(key);
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    className={`st-filter__btn${kept ? " is-active" : ""}`}
+                    aria-pressed={kept}
+                    onClick={() => toggleConfusion(pair)}
+                  >
+                    {pair.seen.name} for {pair.chosen.name} <em>{pair.times}×</em>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <p className="tc-set__say">
+          {confusions.length === 0
+            ? "This is the one place the screen looks at what the class has already done, and it is a shortcut, never a default."
+            : "Untick what you do not want to work on this time. Nothing is targeted without you having seen it."}
+        </p>
+      </div>
 
       <style dangerouslySetInnerHTML={{ __html: CONTRACT_CSS }} />
     </section>
   );
 }
 
-/* Rien que les longueurs propres a ce bloc. Tout le reste vient du systeme. */
+/* Rien que les longueurs propres a ce bloc. L'anatomie '.tc-set' et le rythme
+   viennent du compositeur, qui est le parent et qui est toujours monte. */
 const CONTRACT_CSS = `
-  .tc-ct__sub { display: block; margin-top: 1.4rem; }
-  .tc-ct__sub:first-of-type { margin-top: 0; }
-  .tc-ct__choice { margin-top: 0.5rem; flex-wrap: wrap; }
-  .tc-ct__hint { display: block; margin-top: 0.5rem; max-width: 62ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.5; color: rgb(${CREAM} / 0.45); }
-  .tc-ct__hint--tight { margin-top: 0.15rem; margin-bottom: 0.6rem; }
-  .tc-ct__seg { margin-top: 0.9rem; }
-  .tc-ct__pairs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem; }
+  /* Le reglage qui porte une barre ou une nappe de pastilles prend toute sa
+     colonne, sinon la barre se lit comme une jauge a moitie pleine. */
+  .tc-ct__wide { width: 100%; }
+  .tc-ct__seg { margin-top: 0.35rem; width: 100%; }
+  .tc-ct__wide .st-legend { margin-top: 0.1rem; }
+  .tc-ct__pairs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .tc-ct__pairs em { font-style: normal; font-variant-numeric: tabular-nums; opacity: 0.55; }
+  .tc-ct__none { margin: 0; }
 `;

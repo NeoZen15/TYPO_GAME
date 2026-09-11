@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import AdminDecision from "@/features/admin/components/AdminDecision";
+import AdminNav from "@/features/admin/components/AdminNav";
 import { BOARD_SYSTEM_CSS, CREAM } from "@/features/profile/components/board-system";
 import { isClerkConfigured } from "@/lib/server/clerk-availability";
 import { getCurrentIdentity } from "@/lib/server/current-user";
@@ -91,6 +92,8 @@ export default async function AdminAccessPage({
             refus ne crée rien.
           </p>
         </header>
+
+        <AdminNav active="access" />
 
         <section className="st-panel st-sec" aria-label="Demandes">
           <div className="st-panel__head">

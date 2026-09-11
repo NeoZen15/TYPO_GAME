@@ -670,15 +670,14 @@ export default function TeacherComposePage({
             avec l'adaptation elles ne sont meme pas les memes pour tout le monde.
             Ce qui est montre est ce qui est decide ici. */}
         <p className="tc-new__preview">
-          <span>{cls ? `${cls.studentCount} élèves` : "aucune classe"}</span>
+          <span>{cls ? `${cls.studentCount} students` : "no class yet"}</span>
           <span>{kind === "competition" ? "2 minutes" : `${count} questions`}</span>
-          <span>{EXIGENCE_WORD[terms.exigence]}{terms.adaptive ? ", adapté par élève" : ""}</span>
+          <span>{EXIGENCE_WORD[terms.exigence]}{terms.adaptive ? ", tuned per student" : ""}</span>
           {scopes.length > 0 && <span>{scopes.map(scopeName).join(", ")}</span>}
-          {picks.length > 0 && <span>{picks.length} typographies imposées</span>}
+          {picks.length > 0 && <span>{picks.length} {faceWord(picks.length)} asked for sure</span>}
           {keptPairs.length > 0 && (
             <span>
-              {keptPairs.length} confusion{keptPairs.length > 1 ? "s" : ""} ciblée
-              {keptPairs.length > 1 ? "s" : ""}
+              {keptPairs.length} confusion{keptPairs.length > 1 ? "s" : ""} targeted
             </span>
           )}
         </p>
@@ -737,11 +736,14 @@ const NEW_CSS = `
   }
   .tc-set__main { display: grid; gap: 0.5rem; justify-items: start; min-width: 0; }
   .tc-set__main > .st-choice, .tc-set__main > .tc-new__branches, .tc-set__main > .tc-ct__pairs { margin: 0; }
-  .tc-set__say { margin: 0; max-width: 46ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.55; color: rgb(${CREAM} / 0.45); }
+  .tc-set__say { margin: 0; max-width: 60ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.55; color: rgb(${CREAM} / 0.45); }
   .tc-set__say em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
   /* On a narrow screen the explanation follows its control instead of sitting
      in a column of its own, so it must not keep the two-column top gap. */
   @media (max-width: 780px) { .tc-set__say { margin-top: -0.15rem; } }
+  @media (max-width: 460px) {
+    .tc-set__main > .st-choice { max-width: 100%; flex-wrap: wrap; border-radius: var(--radius); }
+  }
   .tc-new__hint { display: block; margin-top: 0.45rem; max-width: 56ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.5; color: rgb(${CREAM} / 0.45); }
   .st-panel .st-empty { margin-top: 1.5rem; }
   .tc-new__fixed { font-size: 0.9rem; color: var(--pf-cream); padding: 0.6rem 0; }
@@ -789,4 +791,5 @@ const NEW_CSS = `
   .tc-new__sentence em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
   .tc-new__mode { display: inline-block; vertical-align: 0.05em; }
   .tc-new__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .tc-new__actions + .tc-new__hint { margin-top: 1.1rem; }
 `;

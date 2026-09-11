@@ -324,21 +324,22 @@ export default function TeacherWhen({
         </div>
       )}
 
-      <div className="tw-span">
-        <span className="st-field__label">Open for</span>
-        <strong className="tw-span__value">{value === null ? "—" : spanLabel(minutes)}</strong>
-        {value !== null && (
-          <span className="tw-span__gloss">
-            {immediate ? "Opens right away" : `Opens ${spellMoment(value.opens, thisYear)}`}, closes{" "}
-            {spellMoment(value.due, thisYear)}.
-          </span>
-        )}
+      <div className="tc-set tw-span">
+        <div className="tc-set__main">
+          <span className="st-field__label">Open for</span>
+          <strong className="tw-span__value">{value === null ? "—" : spanLabel(minutes)}</strong>
+          {value !== null && (
+            <span className="tw-span__gloss">
+              {immediate ? "Opens right away" : `Opens ${spellMoment(value.opens, thisYear)}`}, closes{" "}
+              {spellMoment(value.due, thisYear)}.
+            </span>
+          )}
+        </div>
+        <p className="tc-set__say">
+          The window is what makes a reading possible: half the class finished
+          says nothing until you know how much of the time has gone.
+        </p>
       </div>
-
-      <span className="tc-new__hint">
-        The window is what makes a reading possible: half the class finished says
-        nothing until you know how much of the time has gone.
-      </span>
     </section>
   );
 }
@@ -473,7 +474,7 @@ const WHEN_CSS = `
   .tw-field__shortcuts { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.55rem; }
   .st-filter__btn:disabled { cursor: default; opacity: 0.35; }
 
-  .tw-editor { margin-top: 1.3rem; padding-top: 1.2rem; border-top: 1px solid rgb(${CREAM} / 0.1); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.1rem clamp(1.4rem, 4vw, 2.8rem); align-items: start; }
+  .tw-editor { margin-top: 1.4rem; padding-top: 1.3rem; border-top: 1px solid rgb(${CREAM} / 0.1); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.1rem clamp(1.4rem, 4vw, 2.8rem); align-items: start; }
   @media (max-width: 720px) { .tw-editor { grid-template-columns: 1fr; } }
 
   .tw-cal { display: grid; gap: 0.4rem; justify-items: start; }
@@ -537,9 +538,10 @@ const WHEN_CSS = `
   .tw-hour__colon { font-family: var(--pf-mono); font-size: 0.8rem; color: rgb(${CREAM} / 0.4); }
   .tw-done { align-self: end; justify-self: start; }
 
-  .tw-span { display: grid; gap: 0.25rem; margin-top: 1.3rem; padding-top: 1.1rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
+  .tw-span { margin-top: 1.3rem; padding-top: 1.1rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
+  .tw-span .tc-set__main { gap: 0.2rem; }
   .tw-span__value { font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 660; letter-spacing: -0.03em; line-height: 1.1; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
-  .tw-span__gloss { max-width: 56ch; text-wrap: pretty; font-size: 0.8rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
+  .tw-span__gloss { max-width: 46ch; text-wrap: pretty; font-size: 0.8rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
 
   @media (max-width: 420px) {
     .tw-week, .tw-grid__row { grid-template-columns: repeat(7, 1fr); }

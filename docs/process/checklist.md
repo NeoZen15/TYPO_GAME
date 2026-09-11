@@ -97,6 +97,26 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-11 (suite) — passe entière sur le compositeur, mesurée et non jugée à l'œil
+
+**Demande du propriétaire** : espacements faux, textes collés, bloc 1 décalé, « tout est collé à gauche, aucun sens », et la consigne d'aller chercher moi même les défauts qu'il n'avait pas vus. La page a donc été **mesurée dans le navigateur** avant d'être touchée, panneau par panneau, plutôt que relue.
+
+**Le défaut de fond, et il explique presque tous les autres.** Un panneau fait 1 011 px à l'intérieur, une ligne lisible de ce texte en fait 440. Toute la prose de la page était donc un ruban collé au bord gauche avec **55 % de vide à côté de chaque phrase**. D'où l'anatomie posée une fois pour les trois fichiers de l'écran, `.tc-set` : **ce qu'on touche à gauche, ce que ça veut dire à droite**, les deux commençant sur la même ligne. Déclarée dans le compositeur, qui est le parent et qui est toujours monté, donc les trois panneaux ne peuvent pas diverger. Les explications occupent maintenant 77 à 90 % de leur colonne au lieu de 36 à 46 % du panneau.
+
+**Le rythme vertical était aléatoire, et c'est ce que « les textes sont collés » désignait.** Mesuré avant : 14, puis **2**, puis 11, puis 21, puis **0** px entre deux blocs du même panneau. Le 2 px venait des explications glissées **entre** le libellé et son contrôle, le 0 px de « Nothing chosen yet » posé contre la ligne de recherche. Un seul pas maintenant : 14 px sous le titre du panneau, 28 px entre deux réglages, rien en dessous de 18 px. Les deux règles qui fabriquaient les 2 px (`tc-new__sub`, `--tight`) sont supprimées avec le balisage qui les utilisait.
+
+**Le bloc 1 était bien décalé, et la mesure dit pourquoi** : la deuxième rangée avait 101 px à gauche (le choix plus son explication) contre 59 px à droite (une liste nue), donc un trou de 42 px sous la liste. Les deux cellules portent chacune leur ligne : 101 contre 110.
+
+**Deux défauts trouvés seuls, non signalés.** L'écran parlait **deux langues**, parfois dans le même panneau : libellés anglais, explications françaises, deux titres de panneau sur cinq en français. Le site est en anglais (`lang="en"`, `content/copy.ts`, huit écrans prof sur neuf), donc tout est repassé en anglais, y compris le bloc contrat entier. Et le champ de recherche portait **deux libellés empilés**, « Faces you want for sure » puis « Search the catalogue », sur le même champ : l'intérieur devient le texte d'invite.
+
+**Ce que le propriétaire croyait voir et qui n'y était pas** : les pastilles sont toutes centrées, vérifié au pixel sur les trois familles de boutons. Ce qui est mal aligné est le **chevron des listes déroulantes**, à 0,6 rem, qui se lit comme un point bas à droite du champ. Il appartient à `board-system.ts`, donc à tout l'espace prof et au profil : **pas touché**, c'est une décision de DA à prendre à part.
+
+**Trouvé à la mesure, corrigé** : « 1 faces asked for sure » (le fichier avait déjà son helper de pluriel), et le groupe à quatre positions qui débordait de 10 px hors de son panneau à 390 px, faute de pouvoir rétrécir.
+
+**Vérifié après coup, sur serveur isolé** : quatre largeurs (1440, 1024, 760, 390), zéro débordement de panneau, zéro défilement horizontal, console propre. La recherche répond toujours (8 résultats sur « baskerville ») et le contrat pilote toujours l'aperçu. Les panneaux ont maigri : contrat 597 → 426 px, When 353 → 306 px. `lint`, `typecheck` et les gardes `copy`, `contrast`, `starfield`, `when-window`, `teacher-read-gate` sont verts.
+
+---
+
 ## Note — 2026-09-11 — le bloc QUAND du compositeur devient un vrai calendrier
 
 **Fait, sur demande du propriétaire, et rien d'autre n'a bougé sur la page.** Le bloc QUAND demandait la fenêtre en deux listes de décalages, « demain » et « une semaine ». Un professeur ne peut pas y écrire « pour vendredi, avant le cours », et l'écran ne lui disait pas quel vendredi il venait d'acheter. Ce sont désormais **deux moments choisis à la minute**, date et heure, chacun avec son calendrier.
@@ -130,6 +150,24 @@ Retiré au passage : la date répétée en toutes lettres sous chaque champ. Le 
 **C'était trop gros.** Cellules réduites, gouttières resserrées, les quatre pastilles d'heures rapides supprimées (les raccourcis du haut écrivent déjà 08 h 00 et 23 h 59, et les deux listes couvrent le reste en deux clics) et le grand titre de date retiré, chaque bloc d'heure portant déjà son jour. L'éditeur est passé de la pleine hauteur empilée du premier jet à **290 px**, le calendrier de 302 à **218 px** de large, et le panneau replié tient en 353 px.
 
 **Vérifié en exécution**, sur un serveur isolé et non sur celui du propriétaire : ouverture immédiate, exercice programmé plus tard, échéance le même jour (« Open for 4 hours · 31 minutes »), jours et heures antérieurs grisés, échéance devenue impossible repoussée en gardant sa longueur, échéance atteignable laissée en place quand l'ouverture recule. `lint`, `typecheck`, `build` et les gardes `copy`, `starfield`, `contrast`, `teacher-read-gate`, `runtime-boundaries`, `dev-routes` sont verts.
+
+---
+
+## Note — 2026-09-11 (suite 4) — l'Admin devient un poste d'observation, et le premier relevé fait mal
+
+**La direction, donnée par le propriétaire** : l'Admin ne doit pas seulement accepter des établissements, il doit devenir l'endroit où on apprend, sur des faits, si le moteur pédagogique fonctionne. Avec la règle qui va avec : **ne pas en faire une usine à gaz avant d'avoir des utilisateurs**, préparer l'accueil et ne rendre visible que ce que le système collecte déjà. L'ordre est arrêté : comptes et demandes, puis usage réel, puis apprentissage et confusions, puis diagnostic moteur, puis qualité, puis tendances.
+
+**Ce qui est construit aujourd'hui** : la vue Santé du produit, sur les vraies données de production, et le début de la vue Apprentissage. **Rien n'est esquissé en panneau vide** : les quatre vues suivantes sont décrites dans `product/spec-admin.md`, avec pour chacune ce qui manque pour la construire.
+
+**LE PREMIER RELEVÉ, ET IL DIT QUELQUE CHOSE.** 271 comptes, 179 créés sur 30 jours, 177 actifs sur 30 jours, **1 seul actif sur 7 jours**. 595 séances, **92 terminées**, 30 encore ouvertes. 6 questions par séance en moyenne, 59 % de justes au premier essai, 1,1 seconde de médiane. Autrement dit : des gens arrivent, jouent six questions, et ne reviennent pas. C'est exactement la question que cette vue existe pour poser, et elle y répond dès le premier jour.
+
+**LE MASQUAGE DES PETITES COHORTES N'EST PAS UNE PRÉCAUTION ICI, C'EST LA SITUATION.** 885 premiers essais répartis sur 333 polices, donc moins de trois essais par police, et **seulement 16 polices dépassent dix essais**. Un classement des polices les plus ratées calculé là dessus serait du bruit présenté comme un résultat. Chaque chiffre sort donc avec son effectif, et ce qui n'atteint pas le seuil n'est pas classé du tout : l'écran dit « aucune paire n'est revenue trois fois » plutôt que d'afficher un classement fondé sur deux observations. C'est le régime I-24 appliqué honnêtement.
+
+**Une égalité qui ressemblait à un bug et qui n'en est pas un.** 6 974 états suivis, 6 974 dans un pool actif : aujourd'hui une ligne d'état n'existe **que** pour une police entrée dans un pool. L'écran l'explique au lieu de laisser croire à une erreur, et il note ce qui changera : le premier devoir joué enregistrera la maîtrise de polices choisies par un professeur **sans** les faire entrer dans le pool.
+
+**Une trouvaille pour le diagnostic moteur, écrite avant de le construire** : le journal dit la police demandée et la réponse choisie, mais **pas les quatre options proposées**. On ne peut donc pas encore mesurer quels leurres sortent avec quelle police. Deux voies, à trancher le jour venu : enregistrer les options sur le fait, ou les recalculer depuis la graine et l'index de question que le journal porte déjà. La seconde ne coûte aucune colonne.
+
+**Et une vue qu'il ne faut surtout pas dessiner** : celle des Type Cards. Le registre des contradictions de la vision le dit depuis juillet, ni Reading Card ni Misread n'existent dans le runtime. Ce n'est pas une vue en attente de données, c'est une vue en attente d'une fonctionnalité.
 
 ---
 
