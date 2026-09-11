@@ -82,6 +82,25 @@ const SHELL_CSS = `
   .ad-head__title { margin: 0; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 640; letter-spacing: -0.04em; line-height: 1.05; color: var(--pf-cream); }
   .ad-head__question { margin: 0; max-width: 62ch; text-wrap: pretty; font-size: 0.86rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
 
+  /* RANG 1, LE POULS. Le seul endroit de l'espace où un chiffre passe devant le
+     titre de la page : 70px contre 32px, et 5 fois la ligne du monde scolaire.
+     Trois poids nets valent mieux que six tuiles d'égale importance, parce qu'un
+     cockpit se lit dans l'ordre des tailles et pas de gauche à droite. */
+  .ad-pulse { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); padding: clamp(0.4rem, 1.5vh, 1rem) 0 clamp(0.6rem, 2vh, 1.2rem); }
+  @media (max-width: 620px) { .ad-pulse { grid-template-columns: 1fr; gap: 1.6rem; } }
+  .ad-pulse__cell { display: grid; gap: 0.1rem; align-content: start; min-width: 0; }
+  .ad-pulse__head { display: flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }
+  .ad-pulse__value { font-size: clamp(2.6rem, 7vw, 4.4rem); font-weight: 660; letter-spacing: -0.05em; line-height: 0.92; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
+  .ad-pulse__unit { font-size: clamp(0.88rem, 1.7vw, 1.1rem); font-weight: 560; letter-spacing: -0.01em; color: var(--pf-cream); }
+  .ad-pulse__label { margin-top: 0.45rem; font-family: var(--pf-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.7); }
+  .ad-pulse__helper { font-family: var(--pf-mono); font-size: 0.52rem; letter-spacing: 0.03em; color: rgb(${CREAM} / 0.38); }
+
+  /* Rang 3 : une ligne, tant que le sujet est jeune. */
+  .ad-facts--line { align-items: baseline; gap: 0.3rem 1.4rem; margin: 0; }
+  .ad-facts__title { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.35); }
+
+  .ad-note code { font-family: var(--pf-mono); font-size: 0.92em; color: rgb(${CREAM} / 0.65); }
+
   /* Les mesures : une grille de chiffres, chacun avec son effectif. */
   .ad-kpis { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 760px) { .ad-kpis { grid-template-columns: repeat(2, 1fr); } }

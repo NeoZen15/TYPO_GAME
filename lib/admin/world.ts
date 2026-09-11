@@ -268,3 +268,20 @@ export const worldCounts = async (): Promise<WorldCounts> => {
   `);
   return row;
 };
+
+/**
+ * Les invitations a relancer : expirees, ou en attente au dela de leur date.
+ *
+ * LE STATUT SEUL NE SUFFIT PAS. `expired` doit etre pose par quelqu'un, et
+ * personne ne le pose aujourd'hui : une invitation oubliee reste donc `pending`
+ * avec une date depassee. Compter les deux formes evite une liste d'actions qui
+ * reste vide pendant que des gens attendent leur courriel.
+ */
+export const invitationsToRelaunch = async (): Promise<number> => {
+  const [row] = await rows<{ n: number }>(sql`
+    SELECT count(*)::int AS n FROM invitations
+     WHERE status = 'expired'
+        OR (status = 'pending' AND expires_at < now())
+  `);
+  return row.n;
+};

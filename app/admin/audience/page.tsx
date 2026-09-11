@@ -40,9 +40,11 @@ export default function AdminAudiencePage() {
 
       <p className="ad-note">
         Tant que cette page est vide, les chiffres d&apos;Utilisateurs comptent des
-        comptes qui ont joué, jamais des visiteurs. C&apos;est une population plus
-        petite et plus engagée, et la confondre avec l&apos;audience ferait paraître
-        la conversion bien meilleure qu&apos;elle n&apos;est.
+        comptes qui ont lancé une partie ou répondu, jamais des{" "}
+        <strong>visiteurs</strong> au sens strict, c&apos;est-à-dire des gens qui
+        chargent une page. C&apos;est une population plus petite et plus engagée, et
+        la confondre avec l&apos;audience ferait paraître la conversion bien
+        meilleure qu&apos;elle n&apos;est.
       </p>
     </>
   );

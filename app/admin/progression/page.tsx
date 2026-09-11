@@ -6,6 +6,7 @@ import {
   exposureCurve,
   learningShape,
   masteryDistribution,
+  productHealth,
   repetitionsToStabilise,
   SEUIL_ETATS,
   SEUIL_POLICE,
@@ -39,11 +40,12 @@ const NIVEAUX = [
 ];
 
 export default async function AdminProgressionPage() {
-  const [shape, levels, curve, repetitions] = await Promise.all([
+  const [shape, levels, curve, repetitions, health] = await Promise.all([
     learningShape(),
     masteryDistribution(),
     exposureCurve(),
     repetitionsToStabilise(),
+    productHealth(),
   ]);
 
   const etats = levels.reduce((sum, level) => sum + level.n, 0);
@@ -54,7 +56,17 @@ export default async function AdminProgressionPage() {
     <>
       <AdminPageHead href="/admin/progression" />
 
+      {/* JUSTES AU PREMIER ESSAI VIT ICI, ET PLUS SUR L'ACCUEIL. Decision du
+          proprietaire, 2026-09-12 : le taux est interessant, il n'est pas vital.
+          Sa place est a cote des mesures d'apprentissage, ou il se lit contre la
+          courbe d'exposition au lieu d'occuper une tuile de cockpit. */}
       <p className="ad-facts">
+        <span>
+          <em>
+            {health.first_try_right_pct === null ? "—" : `${health.first_try_right_pct} %`}
+          </em>{" "}
+          justes au premier essai, sur {health.first_tries} essais
+        </span>
         <span><em>{shape.states}</em> états suivis</span>
         <span><em>{shape.stabilised}</em> stabilisés</span>
         <span><em>{shape.in_pool}</em> dans un pool actif</span>

@@ -1,5 +1,24 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-12 (suite 8) — l'accueil devient un cockpit, et un signal s'est révélé faux
+
+**Arbitrages du propriétaire, appliqués.**
+
+**Le vocabulaire des personnes est fixé, et « actif » est proscrit dans tout l'espace.** Il avait désigné deux populations différentes en deux jours. Cinq noms, cinq faits observables, écrits dans l'entête de `features/admin/components/admin-nav.ts` : **visiteur** (charge une page, non mesuré), **compte** (une ligne de `users`), **compte authentifié** (`clerk_id`), **a lancé une partie** (`session_start`), **a répondu** (`answer`). Zéro occurrence du mot « actif » dans le rendu des pages, vérifié. Les deux derniers diffèrent d'un facteur deux, 177 contre 78 sur trente jours, et cet écart est un signal, pas une imprécision.
+
+**UN SIGNAL QUE J'ALLAIS AFFICHER ÉTAIT FAUX, et c'est le propriétaire qui a demandé la vérification avant de coder.** Je voulais mettre « 66 % des séances refermées en moins d'une seconde » à l'accueil. Mesuré : les **473 séances abandonnées ne portent aucun événement `session_end`**, les **92 terminées en portent toutes un**. Une séance abandonnée est fermée par le balayage, qui écrit `ended_at = dernier événement journalisé` ; pour une séance sans réponse, ce dernier événement est son propre `session_start`, écrit quelques dizaines de millisecondes après la ligne. **`duration_ms` d'une séance abandonnée mesure donc la latence entre deux INSERT du serveur**, pas un temps vécu. Médiane de 46 ms alors que le balayage ne se déclenche qu'après trente minutes. L'indicateur « séances mortes-nées » est retiré de partout, et la page Sessions explique maintenant pourquoi ses médianes ne portent que sur les séances terminées.
+
+**L'accueil en trois poids.** Rang 1 le pouls, **70 px** : « 16 jours depuis la dernière réponse » et « 78 personnes ont répondu sur 30 jours ». Récence plus volume récent, un couple qui reste lisible dans les deux états du produit. Rang 2 le volume, **25 px**, quatre tuiles dont **chaque libellé porte sa fenêtre** (`Comptes · total`, `Réponses · 30 jours`). Rang 3 le monde scolaire, **14 px**, une ligne tant que tout est à zéro.
+
+**« Ce qui vous attend » et « À investiguer » ne se mélangent plus.** Le premier ne contient que des **actions** : demandes à trancher, rapprochements d'établissement à confirmer, invitations expirées à relancer, clés d'authentification à poser. Les anomalies techniques (partition par défaut, compteurs en écart, séances coincées) sont passées dans le second, avec les deux signaux de comportement.
+
+**Les seuils sont provisoires et le disent.** `SEUILS_PROVISOIRES` dans `lib/admin/signals.ts`, modifiables en une ligne : 40 % de séances sans question, 30 % de personnes qui lancent sans répondre. Chaque ligne affiche **son ratio**, et l'écran écrit qu'ils viennent d'un jugement posé sur 99 personnes, pas d'une norme. **À revoir quand le produit aura quelques milliers de séances.**
+
+**« Justes au premier essai » a quitté l'accueil** pour Progression, où il se lit contre la courbe d'exposition.
+
+**État de l'accueil aujourd'hui** : une seule action en attente (brancher Clerk) et cinq lignes à investiguer, dont 75 % de séances sans question et 99 personnes qui ont lancé sans jamais répondre.
+
+
 ## Note — 2026-09-11 (suite 7) — audit de l'Admin, et quatre chiffres faux corrigés
 
 **Passe de vérification demandée par le propriétaire, code figé.** Les dix-sept pages parcourues une par une, et **chaque chiffre affiché recalculé par une requête indépendante** contre la production.
@@ -60,6 +79,28 @@
 4. Comprendre les **391 séances mortes-nées** et les **26 compteurs en écart**.
 5. Une **purge** de `event_ingestion_guard`.
 
+
+## Note — 2026-09-11 (suite 7) — première vague en cours d'injection dans le kit Adobe
+
+Jeton fourni par le propriétaire, reconnu par l'API : kit `ozq5yfs`, nom DWIGGINS, 108
+familles au brouillon avant l'opération. Stocké dans `~/.config/dwiggins/adobe-typekit-token`,
+droits 600, hors du dépôt. L'entête `X-Typekit-Token` et le paramètre `token` marchent tous
+les deux, c'est l'entête qui est utilisée pour que la valeur ne finisse jamais dans une URL.
+
+**Vague 1 : 3 443 familles, celles qu'Adobe classe vraiment.** 59 y étaient déjà, donc
+3 384 à ajouter, chacune avec un seul romain et le sous ensemble latin par défaut. Vingt
+d'abord, pour vérifier que le POST passe, puis le reste. Le kit n'est PAS publié tant que
+la vague n'est pas finie : sans publication la feuille servie ne change pas, donc rien ne
+bouge sur le site pendant l'injection.
+
+**LE JETON EST PASSÉ DANS LE CHAT, IL EST À REFAIRE.** Le propriétaire a supprimé les
+autres et laissé celui-ci, mais il est écrit en clair dans la conversation du jour, comme
+celui du 2026-08-23. À régénérer dès la vague terminée. C'est le point 3 de la REPRISE, il
+ne se coche pas tant que ce jeton là vit.
+
+**Piège de mesure, pendant l'injection.** Un GET du brouillon pendant que les POST tournent
+dépasse les 20 secondes : le kit grossit et l'API répond moins vite. Ne pas lire l'état
+pendant l'écriture, attendre la fin.
 
 ## Note — 2026-09-11 (suite 6) — la bibliothèque Adobe entière est relevée, 6 001 familles prêtes à entrer
 
@@ -233,6 +274,24 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 État par sujet : **19 faits · 0 en cours · 15 à faire · 2 bloqueurs · 6 parkés / à décider** (le 2026-08-19, le symbole du logo est redessiné et remplacé partout, il sort des bloqueurs) (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## Note — 2026-09-12 — le récap flotte, le contrat se replie, et la page perd une étape
+
+**Deux choses demandées, une arbitrée par le propriétaire.** « Ça fait énormément d'informations », mais **pas de déroulé question par question** : « je trouve ça un peu trop limitant, je trouve ça cool de pouvoir voir son ensemble avant de valider ». Proposition faite en deux formes, il a pris les deux.
+
+**Le récap flotte.** Il était la cinquième étape, tout en bas, donc invisible pendant qu'on remplit les quatre autres. Il devient une barre qui porte le récap en une ligne, ce qui manque, Cancel et le bouton d'envoi. **`position: sticky` et non `fixed`**, et c'est la différence qui compte : mesuré, la barre reste à 0 px du bas à 0, 25, 50 et 75 % du défilement, puis **se repose à 95 px du bas en fin de page**, à sa place naturelle. Elle ne recouvre donc jamais la fin du formulaire et n'oblige à réserver aucune marge sous la page. La cinquième étape disparaît par la même occasion : quatre au lieu de cinq.
+
+**Le contrat se replie, et ce n'est pas un enchaînement.** Rien n'attend une réponse pour s'ouvrir : les quatre réglages ont un bon défaut, la ligne repliée dit **leur valeur courante** (« Expert · tuned per student · an even mix · 2 confusions targeted »), et un clic ouvre le tout. L'étape passe de **382 px à 70 px** repliée. La page entière passe de 1 897 px au début du chantier à **1 485 px**.
+
+**La barre dit ce qui manque**, donc on ne cherche plus pourquoi le bouton est éteint : « give it a name » tant que l'exercice n'a pas de nom, puis le bouton s'allume et prend le nom de la classe.
+
+**Couleur, et un défaut trouvé à la mesure.** L'accent a été étendu à tout ce que le professeur retient : familles, faces nommées, confusions cochées, en plus des positions de groupe. Mais la mesure a montré que **la page était entièrement incolore au repos** : Balanced tenait le crème, et Balanced est le cran par défaut. Accessible et Balanced partagent donc le vert, les deux crans où l'on reste en terrain normal, et la couleur est là dès l'ouverture. Pastilles retenues mesurées à **13,7** de contraste, seuil 4,5.
+
+**Barre sur téléphone** : 205 px au premier jet, soit le quart de l'écran, parce que le récap se déroulait sur six lignes. Coupé à deux lignes, **132 px**.
+
+**Vérifié en exécution** : la ligne repliée suit les réglages, la barre suit aussi, le cycle du calendrier est intact, quatre largeurs sans défilement horizontal, console propre. Gardes verts.
 
 ---
 

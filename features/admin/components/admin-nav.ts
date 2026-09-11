@@ -17,6 +17,22 @@
 // appartient a son professeur, dans l'espace professeur. Le repertoire des
 // comptes existe pour la gestion et le depannage, pas pour juger un regard.
 //
+// LE VOCABULAIRE DES PERSONNES, FIXE LE 2026-09-12 PAR LE PROPRIETAIRE. Le mot
+// « actif » est PROSCRIT dans tout cet espace : il avait deja designe deux
+// populations differentes en deux jours. Chaque population porte le nom d'un fait
+// observable, et un seul :
+//
+//   visiteur .............. charge une page du site. NON MESURE, couche audience.
+//   compte ................ une ligne de `users`, creee au premier lancement.
+//   compte authentifie .... porte un `clerk_id`.
+//   a lance une partie .... une seance a demarre (`session_start`).
+//   a repondu ............. au moins une reponse au journal (`answer`).
+//
+// Les deux derniers different d'un facteur deux (177 contre 78 sur trente jours
+// le 2026-09-12) : l'ecart est un signal, pas une imprecision. Le jour ou
+// l'audience existera, « visiteur » s'ajoutera sans rien rendre ambigu, parce
+// qu'aucun mot n'aura servi deux fois.
+//
 // DEUX COUCHES QU'ON NE MELANGE PAS. Les comptes, les joueurs et les seances
 // viennent de DWIGGINS. Les visiteurs, les sources de trafic et la conversion
 // visite vers inscription relevent d'une couche d'analyse d'audience qui n'existe
@@ -83,7 +99,7 @@ export const ADMIN_GROUPS: AdminGroup[] = [
       {
         href: "/admin/utilisateurs",
         label: "Utilisateurs",
-        question: "Combien de personnes, arrivées quand, et lesquelles reviennent.",
+        question: "Combien de personnes, arrivées quand, lesquelles répondent et lesquelles reviennent.",
       },
       {
         href: "/admin/sessions",

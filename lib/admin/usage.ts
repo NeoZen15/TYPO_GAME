@@ -32,8 +32,6 @@ export const SEUIL_PAIRE = 3;
 export type ProductHealth = {
   accounts: number;
   accounts_30d: number;
-  active_30d: number;
-  active_7d: number;
   sessions: number;
   sessions_completed: number;
   sessions_open: number;
@@ -53,24 +51,17 @@ export type ProductHealth = {
  * D'ou la presence, cote a cote, des comptes crees, des comptes actifs, des
  * seances ouvertes et des seances terminees.
  *
- * ACTIF VEUT DIRE « A REPONDU », et cette precision vaut un facteur deux. Le
- * journal enregistre aussi les demarrages de seance : compter toutes les lignes
- * comptait donc les gens qui ouvrent la page et disparaissent. Mesure du
- * 2026-09-11 en production : 177 personnes sur trente jours en comptant tout,
- * **78** en comptant celles qui ont repondu a une question ; sur sept jours, 1
- * contre 0. L'ecart n'est pas du bruit, ce sont les 391 seances nees et
- * refermees en moins d'une seconde. Un indicateur d'usage qui compte les gens qui
- * n'ont rien fait mesure la curiosite, pas l'usage.
+ * LE MOT « ACTIF » N'EXISTE PLUS DANS CE MODULE, et c'est une decision du
+ * proprietaire du 2026-09-12. Il avait deja designe deux populations differentes
+ * en deux jours. Tout se dit maintenant par un fait observable : « a lance une
+ * partie », « a repondu ». Les fenetres et les populations vivent dans `pulse()`,
+ * qui est leur source unique.
  */
 export const productHealth = async (): Promise<ProductHealth> => {
   const [health] = await rows<Omit<ProductHealth, "by_mode">>(sql`
     SELECT
       (SELECT count(*)::int FROM users) AS accounts,
       (SELECT count(*)::int FROM users WHERE created_at > now() - interval '30 days') AS accounts_30d,
-      (SELECT count(DISTINCT user_id)::int FROM user_event_fact
-        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '30 days') AS active_30d,
-      (SELECT count(DISTINCT user_id)::int FROM user_event_fact
-        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '7 days') AS active_7d,
       (SELECT count(*)::int FROM sessions) AS sessions,
       (SELECT count(*)::int FROM sessions WHERE status = 'completed') AS sessions_completed,
       (SELECT count(*)::int FROM sessions WHERE status = 'active') AS sessions_open,
@@ -198,7 +189,6 @@ export type SessionShape = {
   completed: number;
   abandoned: number;
   open: number;
-  stillborn: number;
   empty: number;
   median_questions: number | null;
   median_seconds: number | null;
@@ -211,23 +201,25 @@ export type SessionShape = {
  * vers le haut et fait croire que tout le monde joue longtemps. La mediane dit ce
  * que vit la personne du milieu, qui est la question.
  *
- * LES MEDIANES NE PORTENT QUE SUR LES SEANCES TERMINEES, et cette restriction est
- * la mesure elle meme. Mesure du 2026-09-11 en production : la mediane de duree
- * toutes seances confondues valait 101 ms en competition et 141 ms en
- * entrainement, parce que 473 seances abandonnees ont une mediane de 81 ms. Une
- * seance nee et refermee en moins d'une seconde n'est pas une seance courte,
- * c'est une seance qui n'a jamais commence : la melanger aux autres remplacait
- * « une partie dure deux minutes » par « une partie dure un dixieme de seconde ».
+ * LES MEDIANES NE PORTENT QUE SUR LES SEANCES TERMINEES, ET C'EST UNE QUESTION DE
+ * VERITE, PAS DE PRUDENCE. Verifie le 2026-09-12 sur demande du proprietaire :
+ * les 92 seances terminees portent toutes un evenement `session_end`, les 473
+ * abandonnees n'en portent AUCUN. Une seance abandonnee est fermee par le
+ * balayage, qui ecrit `ended_at = dernier evenement journalise` ; pour une seance
+ * sans reponse, ce dernier evenement est son propre `session_start`, ecrit
+ * quelques dizaines de millisecondes apres la creation de la ligne.
  *
- * `stillborn` compte ces seances mortes-nees separement, parce qu'elles disent
- * quelque chose de vrai sur le produit : des centaines de seances ouvertes puis
- * refermees aussitot signalent un demarrage qui se rejoue, pas des joueurs qui
- * renoncent.
+ * DONC `duration_ms` D'UNE SEANCE ABANDONNEE NE MESURE PAS UNE DUREE VECUE : elle
+ * mesure l'ecart entre deux ecritures du serveur. Mediane mesuree : 46 ms pour
+ * les 374 seances abandonnees sans question, alors que le balayage ne se
+ * declenche qu'apres trente minutes, donc ces seances ont vecu au moins une demi
+ * heure. J'en avais tire un indicateur de « seances mortes-nees » : il comptait
+ * une latence d'insertion. Il est retire.
  *
- * `empty` compte les seances sans une seule question. Il existe pour que la
- * moyenne de questions par seance soit lisible : celle ci exclut les seances
- * vides, et sans savoir combien il y en a (445 sur 595 le 2026-09-11) on lit
- * « 6 questions par seance » en croyant que c'est vrai de toutes.
+ * `empty` compte les seances sans une seule question, et celui la est un fait
+ * direct : `question_count` est ecrit par la meme instruction atomique que le
+ * journal. Il existe pour que la moyenne de questions par seance soit lisible,
+ * celle ci excluant les seances vides (445 sur 595 le 2026-09-11).
  */
 export const sessionShapes = () =>
   rows<SessionShape>(sql`
@@ -237,7 +229,6 @@ export const sessionShapes = () =>
       count(*) FILTER (WHERE status = 'completed')::int AS completed,
       count(*) FILTER (WHERE status = 'abandoned')::int AS abandoned,
       count(*) FILTER (WHERE status = 'active')::int AS open,
-      count(*) FILTER (WHERE duration_ms IS NOT NULL AND duration_ms < 1000)::int AS stillborn,
       count(*) FILTER (WHERE question_count = 0)::int AS empty,
       percentile_cont(0.5) WITHIN GROUP (ORDER BY question_count)
         FILTER (WHERE status = 'completed')::int AS median_questions,
@@ -590,4 +581,52 @@ export const engineSignals = async (): Promise<EngineSignals> => {
   `);
 
   return { ...signals, versions };
+};
+
+export type Pulse = {
+  last_answer: string | null;
+  seconds_since: number | null;
+  answered_7d: number;
+  answered_30d: number;
+  answers_7d: number;
+  answers_30d: number;
+  launched_30d: number;
+};
+
+/**
+ * LE POULS : est ce que DWIGGINS vit, et depuis quand.
+ *
+ * DEUX FAITS ET PAS UN DE PLUS, parce que c'est ce qu'on lit en dix secondes :
+ * quand quelqu'un a repondu pour la derniere fois, et combien de personnes ont
+ * repondu sur trente jours. Recence et volume recent. Le couple reste lisible
+ * quel que soit l'etat du produit : « il y a 16 jours / 78 personnes » aujourd'hui,
+ * « il y a 2 min / 1 482 personnes » le jour ou ca marche.
+ *
+ * AUCUN DE CES CHAMPS NE S'APPELLE « ACTIF ». Chaque nom dit un fait observable,
+ * et la distinction entre `launched_30d` et `answered_30d` est exactement celle
+ * qui manquait : 177 personnes ont lance une partie sur trente jours, 78 ont
+ * repondu a une question. Les 99 autres ont ouvert le jeu et rien fait.
+ *
+ * `seconds_since` VIENT DE POSTGRES ET PAS DU NAVIGATEUR : une date rendue cote
+ * serveur puis comparee a l'horloge du client donnerait un « il y a » different
+ * selon qui regarde, et faux de plusieurs heures pour qui voyage.
+ */
+export const pulse = async (): Promise<Pulse> => {
+  const [row] = await rows<Pulse>(sql`
+    SELECT
+      (SELECT max(event_ts_utc)::text FROM user_event_fact WHERE event_type = 'answer') AS last_answer,
+      (SELECT extract(epoch FROM now() - max(event_ts_utc))::int
+         FROM user_event_fact WHERE event_type = 'answer') AS seconds_since,
+      (SELECT count(DISTINCT user_id)::int FROM user_event_fact
+        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '7 days') AS answered_7d,
+      (SELECT count(DISTINCT user_id)::int FROM user_event_fact
+        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '30 days') AS answered_30d,
+      (SELECT count(*)::int FROM user_event_fact
+        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '7 days') AS answers_7d,
+      (SELECT count(*)::int FROM user_event_fact
+        WHERE event_type = 'answer' AND event_ts_utc > now() - interval '30 days') AS answers_30d,
+      (SELECT count(DISTINCT user_id)::int FROM user_event_fact
+        WHERE event_type = 'session_start' AND event_ts_utc > now() - interval '30 days') AS launched_30d
+  `);
+  return row;
 };

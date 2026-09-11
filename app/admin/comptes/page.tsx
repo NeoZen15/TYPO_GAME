@@ -40,8 +40,8 @@ export default async function AdminComptesPage() {
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{summary.with_clerk}</span>
-          <span className="st-kpi__label">Authentifiés</span>
-          <span className="st-kpi__helper">{summary.guests} en visiteur</span>
+          <span className="st-kpi__label">Comptes authentifiés</span>
+          <span className="st-kpi__helper">{summary.guests} comptes invités</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{summary.in_a_class}</span>
@@ -50,8 +50,8 @@ export default async function AdminComptesPage() {
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{summary.never_played}</span>
-          <span className="st-kpi__label">Sans une seule question</span>
-          <span className="st-kpi__helper">compte créé, jamais joué</span>
+          <span className="st-kpi__label">N&apos;ont jamais répondu</span>
+          <span className="st-kpi__helper">compte créé, aucune réponse au journal</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{summary.players + summary.admins}</span>

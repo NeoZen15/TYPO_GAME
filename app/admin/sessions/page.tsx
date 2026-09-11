@@ -24,7 +24,6 @@ const duree = (s: number | null) => {
 
 export default async function AdminSessionsPage() {
   const [health, shapes] = await Promise.all([productHealth(), sessionShapes()]);
-  const mortesNees = shapes.reduce((sum, shape) => sum + shape.stillborn, 0);
   const vides = shapes.reduce((sum, shape) => sum + shape.empty, 0);
   const seances = shapes.reduce((sum, shape) => sum + shape.n, 0);
 
@@ -42,11 +41,6 @@ export default async function AdminSessionsPage() {
           <span className="st-kpi__value">{health.questions_per_session ?? "—"}</span>
           <span className="st-kpi__label">Questions par séance</span>
           <span className="st-kpi__helper">moyenne des séances qui en ont eu au moins une</span>
-        </div>
-        <div className="st-kpi">
-          <span className="st-kpi__value">{mortesNees}</span>
-          <span className="st-kpi__label">Séances mortes-nées</span>
-          <span className="st-kpi__helper">ouvertes puis refermées en moins d&apos;une seconde</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{secondes(health.median_answer_ms)}</span>
@@ -71,7 +65,7 @@ export default async function AdminSessionsPage() {
                   <b>
                     {shape.n} séances · {shape.completed} terminées · {shape.abandoned} abandonnées
                     {shape.open > 0 ? ` · ${shape.open} ouvertes` : ""}
-                    {shape.stillborn > 0 ? ` · dont ${shape.stillborn} mortes-nées` : ""}
+                    {shape.empty > 0 ? ` · dont ${shape.empty} sans question` : ""}
                   </b>
                 </span>
                 <span className="ad-rows__value">
@@ -84,15 +78,19 @@ export default async function AdminSessionsPage() {
         <p className="ad-note">
           {vides} séances sur {seances} n&apos;ont reçu <strong>aucune</strong>{" "}
           question, et c&apos;est ce qui explique les deux chiffres ci-dessus : la
-          moyenne les écarte, la médiane les compte. Les médianes ne portent que sur
-          les séances <strong>terminées</strong>, et
-          cette restriction est la mesure elle-même : en comptant tout, la médiane
-          de durée tombait à un dixième de seconde, écrasée par les séances
-          mortes-nées. Une séance ouverte puis refermée en moins d&apos;une seconde
-          n&apos;est pas une partie courte, c&apos;est une partie qui n&apos;a jamais
-          commencé, et {mortesNees} d&apos;entre elles disent quelque chose du
-          démarrage, pas des joueurs. Une séance restée ouverte n&apos;a pas de durée
-          du tout.
+          moyenne les écarte, la médiane les compte.
+        </p>
+        <p className="ad-note">
+          Les médianes ne portent que sur les séances <strong>terminées</strong>, et
+          c&apos;est une question de vérité, pas de prudence. Les séances terminées
+          portent toutes un événement de fin explicite. Les abandonnées n&apos;en
+          portent aucun : elles sont fermées par le balayage, qui prend comme heure
+          de fin le dernier événement enregistré. Pour une séance sans réponse, ce
+          dernier événement est son propre démarrage, écrit quelques dizaines de
+          millisecondes plus tôt. <strong>La durée d&apos;une séance abandonnée ne
+          mesure donc pas un temps vécu</strong> mais l&apos;écart entre deux
+          écritures du serveur, et une séance restée ouverte n&apos;a pas de durée du
+          tout.
         </p>
       </section>
     </>
