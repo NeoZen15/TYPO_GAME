@@ -11,8 +11,16 @@ import { sql } from "@/lib/server/neon";
 // CE QU'IL PRE-VERIFIE, ET POURQUOI CHAQUE VERIFICATION EXISTE.
 //   - Les demandes de la meme adresse, pour qu'une personne qui insiste ne
 //     ressorte pas comme deux enseignants.
-//   - L'etablissement : deja connu, ou a creer. C'est la seule question qui
-//     change ce que le bouton va faire, donc elle se lit avant de cliquer.
+//   - Les etablissements qui pourraient etre celui la. C'est la seule question
+//     qui change ce que le bouton va faire, donc elle se lit avant de cliquer.
+//
+// LE RAPPROCHEMENT PROPOSE, IL N'IDENTIFIE JAMAIS. Deux etablissements differents
+// peuvent porter exactement le meme nom, et deux ecritures du meme etablissement
+// peuvent differer d'un accent. Comparer des noms normalises est donc une aide a
+// la decision, jamais une decision : le module rend une LISTE de candidats avec
+// la raison de chaque rapprochement, l'ecran la montre, et c'est l'humain qui
+// tranche. Une normalisation pratique aujourd'hui ne doit pas devenir une regle
+// d'identite demain.
 //
 // CE QU'IL NE FAIT PAS. Il ne demande pas a Clerk si un compte existe deja : cet
 // appel a besoin des cles, il vit donc du cote qui les possede, et l'ecran s'en
@@ -36,11 +44,26 @@ export type AccessRequestRow = {
   decided_at: string | null;
   /** Combien d'autres demandes portent cette adresse, quel que soit leur etat. */
   same_email: number;
-  /** L'etablissement deja connu qui porte ce nom, s'il existe. */
-  matched_school_id: string | null;
-  matched_school_name: string | null;
-  /** Combien de classes cet etablissement tient deja. Un contexte, pas un critere. */
-  matched_school_classes: number;
+  /**
+   * Les etablissements deja connus qui POURRAIENT etre celui la. Une liste, et
+   * jamais un rapprochement fait d'office.
+   */
+  school_candidates: SchoolCandidate[];
+};
+
+/**
+ * Un etablissement propose, avec ce qui le propose.
+ *
+ * `why` existe des maintenant alors qu'il ne porte qu'une raison : le jour ou on
+ * aura la ville, le domaine de courriel ou un identifiant d'etablissement, ils
+ * s'ajouteront ici et la decision se lira toujours de la meme facon. Une raison
+ * unique aujourd'hui ne doit pas devenir une regle d'identite demain.
+ */
+export type SchoolCandidate = {
+  school_id: string;
+  name: string;
+  classes: number;
+  why: string[];
 };
 
 /**
@@ -68,12 +91,33 @@ export const accessRequests = (status: AccessRequestStatus) =>
         SELECT count(*)::int FROM access_requests o
         WHERE lower(o.email) = lower(r.email) AND o.request_id <> r.request_id
       ) AS same_email,
-      s.school_id::text AS matched_school_id,
-      s.name AS matched_school_name,
-      COALESCE((SELECT count(*)::int FROM classes c WHERE c.school_id = s.school_id), 0) AS matched_school_classes
+      COALESCE((
+        SELECT jsonb_agg(jsonb_build_object(
+          'school_id', s.school_id::text,
+          'name', s.name,
+          'classes', (SELECT count(*)::int FROM classes c WHERE c.school_id = s.school_id),
+          'why', jsonb_build_array('nom voisin, accents et espaces ignorés')
+        ) ORDER BY s.name)
+        FROM schools s
+        -- MESURE DU 2026-09-11, ET ELLE A CORRIGE MA PREMIERE VERSION. Comparer
+        -- en minuscules et sans espaces de bord ne suffit pas : « École de
+        -- design » et « Ecole de design » ne se rapprochaient pas, donc
+        -- l'administration aurait cree le doublon que cet ecran doit eviter. On
+        -- ignore donc aussi les accents et les espaces internes. C'est une
+        -- comparaison volontairement LARGE, parce qu'elle propose et ne decide
+        -- rien : rater un rapprochement coute un doublon, en proposer un de trop
+        -- coute une seconde de lecture.
+        -- L'expression est ecrite des deux cotes plutot que rangee dans une
+        -- fonction : elle se relit ici, cote a cote, et une aide a la decision
+        -- doit pouvoir se relire sans ouvrir autre chose.
+        WHERE regexp_replace(translate(lower(btrim(s.name)),
+                'àâäáãåçéèêëíìîïñóòôöõúùûüýÿœæ', 'aaaaaaceeeeiiiinooooouuuuyyoa'),
+              '\s+', ' ', 'g')
+            = regexp_replace(translate(lower(btrim(r.school_name)),
+                'àâäáãåçéèêëíìîïñóòôöõúùûüýÿœæ', 'aaaaaaceeeeiiiinooooouuuuyyoa'),
+              '\s+', ' ', 'g')
+      ), '[]'::jsonb) AS school_candidates
     FROM access_requests r
-    LEFT JOIN schools s
-      ON lower(btrim(s.name)) = lower(btrim(r.school_name))
     WHERE r.status = ${status}::app.access_request_status_enum
     ORDER BY r.created_at DESC
   `);

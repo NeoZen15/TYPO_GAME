@@ -133,6 +133,21 @@ Retiré au passage : la date répétée en toutes lettres sous chaque champ. Le 
 
 ---
 
+## Note — 2026-09-11 (suite 3) — deux principes posés, et une mesure qui corrige ma correction
+
+**« Un levier, un conducteur par contexte de séance » devient un principe d'architecture**, à la demande du propriétaire, après sa vérification que les crans d'exigence ne créaient pas un système de difficulté parallèle. Ils n'en créent pas : ils ne touchent **que** la proximité des mauvaises réponses, c'est à dire le seul levier que la spec moteur autorise pour le QCM, et ils laissent intacts le choix de la face demandée, la maîtrise interne, les intervalles de répétition, la rareté et le niveau global. Ce levier avait un conducteur, la maîtrise ; il en a deux maintenant, jamais en même temps. Le cas qui se présentera est nommé dans l'architecture : le niveau global voudra le même levier en séance personnelle le jour où il sera branché.
+
+**LE RAPPROCHEMENT PROPOSE, IL N'IDENTIFIE JAMAIS**, et ça corrige deux défauts réels de ce que j'avais écrit la veille.
+
+1. **Un vrai bug.** Le rapprochement se faisait par une jointure : deux établissements portant le même nom auraient produit **deux fois la même demande** dans la liste. La requête rend maintenant une **liste de candidats** attachée à une seule demande.
+2. **La fiche affirmait au lieu de proposer.** Elle disait « rattaché à X » comme si c'était décidé. Elle dit maintenant « établissement à confirmer », montre les candidats avec la raison de chaque rapprochement et le nombre de classes de chacun, plus la possibilité d'en créer un nouveau. Et **accepter exige désormais que ce choix ait été fait** : un existant nommé, ou un nouveau demandé. Mesuré : une acceptation sans ce choix rend 400 avec sa phrase.
+
+**ET LA MESURE A TROUVÉ MIEUX QUE MA CORRECTION.** En jouant la requête sur la branche jetable avec deux écoles homonymes, une seule est ressortie : « École de design » ne se rapprochait pas de « Ecole de design », mon rapprochement ignorant la casse et les espaces mais **pas les accents**. C'est exactement le doublon que cet écran doit éviter. La comparaison ignore maintenant aussi les accents et les espaces internes, et les deux écoles ressortent bien comme deux candidates d'une seule demande. Le choix d'une comparaison **large** est assumé : rater un rapprochement coûte un doublon, en proposer un de trop coûte une seconde de lecture.
+
+**La forme est prête pour la suite** : chaque candidat porte la raison qui le propose, donc le jour où on aura la ville, le domaine de courriel ou un identifiant d'établissement, ils s'ajouteront aux raisons sans changer ni l'écran ni la décision.
+
+---
+
 ## Note — 2026-09-11 (suite 2) — le tableau de bord des demandes d'accès
 
 **Construit, et c'est le geste quotidien** : Pending, Acceptées, Refusées avec leurs comptes, une fiche par demande, et sous chaque fiche **ce qui sera créé avant de cliquer**. La seule question qui change ce que le bouton fait est l'établissement, déjà connu ou à créer : elle se lit donc dans la fiche, pas après.

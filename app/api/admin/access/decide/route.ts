@@ -23,6 +23,15 @@ export async function POST(request: Request) {
     const body = (await request.json().catch(() => ({}))) as {
       requestId?: string;
       decision?: "approve" | "reject";
+      /**
+       * QUEL ETABLISSEMENT, ET LA QUESTION EST OBLIGATOIRE. Le rapprochement par
+       * le nom est une proposition de l'ecran, jamais une identite : deux
+       * etablissements peuvent porter le meme nom. Accepter exige donc que
+       * l'humain ait tranche, soit en nommant un etablissement existant, soit en
+       * demandant d'en creer un. Une acceptation sans ce choix est refusee, et
+       * elle le restera meme quand les cles seront posees.
+       */
+      school?: { kind: "existing"; schoolId: string } | { kind: "new" };
     };
 
     if (!body.requestId || (body.decision !== "approve" && body.decision !== "reject")) {
@@ -37,6 +46,16 @@ export async function POST(request: Request) {
     }
 
     if (body.decision === "approve") {
+      const choice = body.school;
+      const chosen =
+        choice?.kind === "new" ||
+        (choice?.kind === "existing" && typeof choice.schoolId === "string" && choice.schoolId.length > 0);
+      if (!chosen) {
+        return NextResponse.json(
+          { error: "choisissez l'établissement : un existant, ou un nouveau" },
+          { status: 400 },
+        );
+      }
       if (!isClerkConfigured()) {
         return NextResponse.json(
           { error: "accepter crée le compte chez Clerk : ses clés ne sont pas posées" },

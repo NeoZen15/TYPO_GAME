@@ -123,7 +123,7 @@ export default async function AdminAccessPage({
           ) : (
             <ul className="ad-list">
               {requests.map((request) => {
-                const nouvelleEcole = request.matched_school_id === null;
+                const candidats = request.school_candidates;
                 return (
                   <li key={request.request_id} className="ad-card">
                     <div className="ad-card__head">
@@ -137,18 +137,36 @@ export default async function AdminAccessPage({
                     </p>
                     {request.message ? <p className="ad-card__message">{request.message}</p> : null}
 
-                    {/* CE QUI SERA CREE, AVANT DE CLIQUER. La seule question qui
-                        change ce que le bouton fait est l'établissement : déjà
-                        connu, ou à créer. Elle se lit donc ici et pas après. */}
+                    {/* CE QUI SERA CREE, AVANT DE CLIQUER. L'établissement est
+                        la seule question qui change ce que le bouton fait, donc
+                        elle se lit ici. Et elle se lit comme une QUESTION : le
+                        rapprochement par le nom est une proposition, jamais une
+                        identité. Deux établissements peuvent porter le même nom,
+                        et c'est l'humain qui trancherait. */}
                     <p className="ad-card__preview">
                       <span>compte enseignant</span>
                       <span>
-                        {nouvelleEcole
+                        {candidats.length === 0
                           ? `nouvel établissement « ${request.school_name} »`
-                          : `rattaché à « ${request.matched_school_name} », ${request.matched_school_classes} classe${request.matched_school_classes > 1 ? "s" : ""}`}
+                          : `établissement à confirmer, ${candidats.length} déjà connu${candidats.length > 1 ? "s" : ""} sous ce nom`}
                       </span>
                       <span>invitation par courriel</span>
                     </p>
+
+                    {candidats.length > 0 && (
+                      <ul className="ad-card__candidates">
+                        {candidats.map((candidat) => (
+                          <li key={candidat.school_id}>
+                            <em>{candidat.name}</em>
+                            {" · "}
+                            {candidat.classes} classe{candidat.classes > 1 ? "s" : ""}
+                            {" · "}
+                            {candidat.why.join(", ")}
+                          </li>
+                        ))}
+                        <li className="ad-card__candidates--new">ou en créer un nouveau</li>
+                      </ul>
+                    )}
 
                     {request.same_email > 0 && (
                       <p className="ad-card__flag">
@@ -193,6 +211,10 @@ const ADMIN_CSS = `
   .ad-card__id span + span::before, .ad-card__preview span + span::before { content: "·"; margin-right: 0.8rem; color: rgb(${CREAM} / 0.3); }
   .ad-card__preview { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.55rem; color: rgb(${CREAM} / 0.55); }
   .ad-card__message { margin: 0; max-width: 62ch; text-wrap: pretty; font-size: 0.84rem; line-height: 1.5; color: rgb(${CREAM} / 0.6); }
+  /* Les candidats : une liste à lire, pas une case déjà cochée. */
+  .ad-card__candidates { display: grid; gap: 0.2rem; margin: 0; padding: 0 0 0 0.9rem; list-style: none; font-family: var(--pf-mono); font-size: 0.58rem; color: rgb(${CREAM} / 0.45); border-left: 1px solid rgb(${CREAM} / 0.14); }
+  .ad-card__candidates em { font-style: normal; color: var(--pf-cream); }
+  .ad-card__candidates--new { color: rgb(${CREAM} / 0.32); }
   .ad-card__flag { margin: 0; font-family: var(--pf-mono); font-size: 0.58rem; color: rgb(${CREAM} / 0.7); }
   .ad-card__decided { margin: 0; font-family: var(--pf-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.4); }
   .ad-decide { justify-content: flex-start; width: auto; margin: 0.2rem 0 0; align-items: center; }

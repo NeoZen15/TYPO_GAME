@@ -384,10 +384,10 @@ export default function TeacherComposePage({
             </div>
             <span className="tc-new__hint">
               {kind === "exercise"
-                ? "Ils peuvent reprendre une question jusqu'à la lire juste, et ça compte dans leur progression."
+                ? "They can retry a question until they read it right, and it counts towards their progress."
                 : kind === "control"
-                  ? "Ils peuvent reprendre, mais ça ne touche pas leur progression : c'est une mesure."
-                  : "Une seule réponse chacun, deux minutes, et aucun effet sur leur progression."}
+                  ? "They can retry, but it does not touch their progress: this one is a measurement."
+                  : "One answer each, two minutes, and no effect on their progress."}
             </span>
           </div>
 
@@ -406,6 +406,10 @@ export default function TeacherComposePage({
                 </select>
                 <span className="st-select__caret" aria-hidden="true">▾</span>
               </span>
+              <span className="tc-new__hint">
+                The same number for everyone. Who gets which faces is decided
+                below, the length never is.
+              </span>
             </label>
           ) : (
             <div className="st-field">
@@ -414,7 +418,7 @@ export default function TeacherComposePage({
                   so it is stated and not offered as a setting (spec §20). */}
               <span className="tc-new__fixed">Two minutes, the same for everyone</span>
               <span className="tc-new__hint">
-                A competition is not a number of questions, it is a window. As
+                A competition is not a number of questions, it is a window: as
                 many as they can read in the time.
               </span>
             </div>
@@ -432,12 +436,10 @@ export default function TeacherComposePage({
         </div>
 
         {/* The ground */}
-        <span className="st-field__label tc-new__sub">The ground</span>
-        <p className="tc-new__hint tc-new__hint--tight">
-          Point at families. The engine draws from there, and the count tells you
-          how much you just opened.
-        </p>
-        <div className="tc-new__branches">
+        <div className="tc-set">
+          <div className="tc-set__main">
+            <span className="st-field__label">The ground</span>
+            <div className="tc-new__branches">
           {tree.map((branch) => {
             const isOn = scopes.some((s) => scopeKey(s) === scopeKey(branch.scope));
             const isOpen = openBranch === branch.scope.key;
@@ -481,40 +483,51 @@ export default function TeacherComposePage({
                     })}
                   </div>
                 )}
-              </div>
-            );
-          })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <p className="tc-set__say">
+            Point at families. The engine draws from there, and the count on each
+            one tells you how much you just opened.
+          </p>
         </div>
 
         {/* The stops */}
-        <span className="st-field__label tc-new__sub">Faces you want for sure</span>
-        <p className="tc-new__hint tc-new__hint--tight">
-          Named here, asked to every student. Search by name.
-        </p>
-        <div className="tc-new__addrow">
-          <label className="st-field tc-new__add">
-            <span className="st-field__label">Search the catalogue</span>
-            <input
-              className="st-input"
-              type="search"
-              value={query}
-              placeholder="univers, baskerville, mono…"
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </label>
+        <div className="tc-set">
+          <div className="tc-set__main tc-new__stops">
+            {/* ONE label, not two. "Faces you want for sure" sat above a second
+                label reading "Search the catalogue", on the same field: the
+                placeholder says what to type, so the inner one was noise. */}
+            <span className="st-field__label">Faces you want for sure</span>
+            <div className="tc-new__addrow">
+              <input
+                className="st-input tc-new__add"
+                type="search"
+                value={query}
+                aria-label="Search the catalogue by name"
+                placeholder="Search by name: univers, baskerville, mono…"
+                onChange={(e) => setQuery(e.target.value)}
+              />
 
-          {theirPair && (
-            <button
-              type="button"
-              className="st-action st-action--compact tc-new__shortcut"
-              onClick={() => {
-                addSlug(theirPair.seen.slug);
-                addSlug(theirPair.chosen.slug);
-              }}
-            >
-              Add the pair they keep missing
-            </button>
-          )}
+              {theirPair && (
+                <button
+                  type="button"
+                  className="st-action st-action--compact tc-new__shortcut"
+                  onClick={() => {
+                    addSlug(theirPair.seen.slug);
+                    addSlug(theirPair.chosen.slug);
+                  }}
+                >
+                  Add the pair they keep missing
+                </button>
+              )}
+            </div>
+          </div>
+          <p className="tc-set__say">
+            Named here, asked to every student, whatever the families above draw.
+          </p>
         </div>
 
         {hits.length > 0 && (
@@ -620,7 +633,7 @@ export default function TeacherComposePage({
           setDropped(all.filter((key) => !next.keptConfusions.includes(key)));
         }}
         confusions={cls?.confusions ?? []}
-        className={cls?.name ?? "cette classe"}
+        className={cls?.name ?? "this class"}
       />
 
       {/* ── 3. When ── */}
@@ -629,8 +642,8 @@ export default function TeacherComposePage({
       {/* ── 4. What is about to go out, in one sentence ── */}
       <section className="st-panel st-sec tc-new__recap" aria-label="About to go out">
         <div className="st-panel__head">
-          <h2 className="st-panel__title">Ce qui va partir</h2>
-          <span className="st-panel__meta">relisez, puis donnez</span>
+          <h2 className="st-panel__title">About to go out</h2>
+          <span className="st-panel__meta">read it back, then give it</span>
         </div>
         <p className="tc-new__sentence">
           <em>{mode === "competition" ? "Two minutes" : `${count} questions`}</em> on{" "}
@@ -704,15 +717,35 @@ export default function TeacherComposePage({
 
 /* Only what belongs to this screen. Everything else reads the site's system. */
 const NEW_CSS = `
-  .tc-new__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.9rem, 2vw, 1.4rem); }
+  .tc-new__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem) clamp(0.9rem, 2vw, 1.4rem); align-items: start; }
   @media (max-width: 760px) { .tc-new__grid { grid-template-columns: 1fr; } }
+
+  /* ── THE ANATOMY OF A SETTING, and the reason this screen was redone ──
+     A panel is 1011 px wide inside and a readable line of this text is 440.
+     Prose left-aligned in a box that wide leaves fifty-five per cent void
+     beside every sentence, which is what "everything is stuck to the left,
+     it makes no sense" was pointing at. So a setting is two columns: what you
+     touch on the left, what it means on the right, both starting on the same
+     line. Declared here and used by TeacherContract and TeacherWhen too: the
+     composer is their parent and is always mounted, so one declaration is
+     enough and the three panels cannot drift apart. */
+  .tc-set { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 0.55rem clamp(1.5rem, 3.2vw, 2.8rem); align-items: start; }
+  .tc-set + .tc-set { margin-top: 1.75rem; }
+  @media (max-width: 780px) {
+    .tc-set { grid-template-columns: 1fr; }
+    .tc-set + .tc-set { margin-top: 1.45rem; }
+  }
+  .tc-set__main { display: grid; gap: 0.5rem; justify-items: start; min-width: 0; }
+  .tc-set__main > .st-choice, .tc-set__main > .tc-new__branches, .tc-set__main > .tc-ct__pairs { margin: 0; }
+  .tc-set__say { margin: 0; max-width: 46ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.55; color: rgb(${CREAM} / 0.45); }
+  .tc-set__say em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
+  /* On a narrow screen the explanation follows its control instead of sitting
+     in a column of its own, so it must not keep the two-column top gap. */
+  @media (max-width: 780px) { .tc-set__say { margin-top: -0.15rem; } }
   .tc-new__hint { display: block; margin-top: 0.45rem; max-width: 56ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.5; color: rgb(${CREAM} / 0.45); }
-  .tc-new__hint--tight { margin: 0.15rem 0 0.7rem; }
+  .st-panel .st-empty { margin-top: 1.5rem; }
   .tc-new__fixed { font-size: 0.9rem; color: var(--pf-cream); padding: 0.6rem 0; }
 
-  /* A sub head inside a panel, for the two gestures of the same question. */
-  .tc-new__sub { display: block; margin-top: 1.3rem; }
-  .tc-new__sub:first-of-type { margin-top: 0; }
 
   /* The ground: four branches, nine leaves, counts in the label. */
   .tc-new__branches { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: flex-start; }
@@ -722,15 +755,16 @@ const NEW_CSS = `
   .tc-new__more:hover { color: var(--pf-cream); }
   .tc-new__leaves { display: flex; flex-wrap: wrap; gap: 0.4rem; max-width: 26rem; }
   .st-filter__btn em { font-style: normal; font-variant-numeric: tabular-nums; opacity: 0.55; }
-  .tc-new__ground { margin: 1rem 0 0; font-size: 0.84rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
+  .tc-new__ground { margin: 1.5rem 0 0; font-size: 0.84rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
   .tc-new__ground em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
 
-  .tc-new__addrow { display: flex; align-items: flex-end; gap: 0.8rem; flex-wrap: wrap; }
-  .tc-new__add { flex: 1 1 20rem; }
+  .tc-new__addrow { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; width: 100%; }
+  .tc-new__add { flex: 1 1 16rem; min-width: 0; }
   .tc-new__shortcut { flex: none; }
+  .tc-new__stops { width: 100%; }
 
   /* Search results: the name in its own face, so the eye chooses. */
-  .tc-new__hits { display: grid; gap: 0; margin: 0.9rem 0 0; padding: 0; list-style: none; max-height: 17rem; overflow-y: auto; }
+  .tc-new__hits { display: grid; gap: 0; margin: 1.1rem 0 0; padding: 0; list-style: none; max-height: 17rem; overflow-y: auto; }
   .tc-new__hit { width: 100%; appearance: none; border: none; background: transparent; cursor: pointer; text-align: left; display: grid; gap: 0.1rem; padding: 0.5rem 0.6rem; border-radius: var(--radius-pill); border-top: 1px solid rgb(${CREAM} / 0.08); transition: background-color 140ms ease; }
   .tc-new__hits li:first-child .tc-new__hit { border-top: none; }
   .tc-new__hit:hover:not(:disabled) { background: rgb(${CREAM} / 0.05); }
@@ -738,12 +772,12 @@ const NEW_CSS = `
   .tc-new__hitname { font-size: 1.15rem; line-height: 1.25; color: var(--pf-cream); }
   .tc-new__hitmeta { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.38); }
 
-  .tc-new__picks { grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); margin-top: 1.2rem; }
+  .tc-new__picks { grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); margin-top: 1.5rem; }
   .tc-new__pick { position: relative; align-content: start; }
   .tc-new__diff { font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.32); }
   .tc-new__rm { position: absolute; top: -0.35rem; right: -0.35rem; }
 
-  .tc-new__read { margin: 1.2rem 0 0; max-width: 62ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.55; color: rgb(${CREAM} / 0.55); }
+  .tc-new__read { margin: 1.5rem 0 0; max-width: 62ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.55; color: rgb(${CREAM} / 0.55); }
   .tc-new__read em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
 
   .tc-new__recap { border-color: rgb(${CREAM} / 0.22); }
