@@ -1,5 +1,63 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-11 (suite 6) — l'Admin a sa carte, et ses contrôles ont trouvé du vrai
+
+**Fait.** La coquille de l'Administration (porte d'accès posée une fois dans `app/admin/layout.tsx`, barre permanente à gauche, tête de page) et les **dix-sept pages** de la hiérarchie décidée par le propriétaire : Administration (Demandes, Établissements, Classes, Enseignants, Élèves et comptes), Produit et activité (Activité, Utilisateurs, Sessions, Audience), Pédagogie (Progression, Confusions, Typographies, Devoirs), Système (Moteur, Données et qualité, Paramètres). La question de chaque entrée est écrite **une seule fois** dans `features/admin/components/admin-nav.ts` et sert de description dans la barre **et** de sous-titre de la page.
+
+**Correction appliquée, et elle vient du propriétaire** : Élèves et comptes sert à la **gestion et au dépannage**, jamais à l'analyse pédagogique individuelle. Aucun taux de réussite, aucun classement, aucun tri par performance. La priorité va à l'**agrégé**, pour comprendre et améliorer le moteur.
+
+**Quatre mesures ont corrigé ce que j'avais écrit.**
+1. La médiane de durée d'une séance valait **101 ms**, écrasée par **391 séances sur 595 nées et refermées en moins d'une seconde**. Les médianes ne portent plus que sur les séances terminées (2 min en compétition, 50 s et 4 questions en entraînement), les mortes-nées sont comptées à part. **Question ouverte : d'où viennent ces 391 séances.**
+2. Le contrôle « polices jouables sans fichier déclaré » remontait **108 polices**, c'est à dire exactement le kit Adobe, qui se rend par nom de famille. Un contrôle qui signale le fonctionnement normal est pire qu'aucun contrôle.
+3. Les deux classements de quinze polices montraient **les mêmes seize polices** à l'endroit puis à l'envers. En dessous du double de la longueur de liste, une seule liste, et la page dit pourquoi.
+4. `engine_version` porte le composeur **et** la révision : voir `training-provider-v1` et `competition-provider-v1` côte à côte est normal, pas une alerte.
+
+**Ce que les contrôles ont trouvé en production, et qui n'était pas su :**
+- **1305 réponses rangées dans la partition par défaut.** La **migration 011 n'a jamais été appliquée** (son entête le dit : NON APPLIQUEE) : le journal partitionné s'arrête au **2026-06-01**. Rien n'est perdu, mais le découpage ne sert plus à rien depuis juin. **À appliquer, et à étendre à 2027.**
+- **26 séances** dont le compteur contredit le journal, **30 séances** ouvertes depuis plus de 24 h.
+- **1139 clés d'idempotence** gardées, la plus ancienne depuis **38 jours**. Rien ne purge cette table.
+- **7 polices jouables seules dans leur groupe visuel** : le moteur n'a aucun voisin à leur proposer.
+
+**Ce que la courbe d'exposition dit, et c'est la mesure la plus importante de tout l'espace** : 56 % de réussite à la première rencontre d'une police, 56 % à la deuxième, **67 % à la troisième, 73 % à la quatrième et à la cinquième**. La reconnaissance monte avec l'exposition. Un produit qui occupe les gens sans rien leur apprendre produirait exactement les mêmes chiffres d'usage ; seule cette courbe les sépare.
+
+**L'échelle des leurres fait son travail** : 37 % des erreurs tombent dans le même groupe visuel, 20 % dans la même sous-catégorie, 40 % dans la même grande catégorie, **4 % seulement dans « rien de commun »**.
+
+**`check:session-convergence` était rouge, sur du code correct.** Sa règle exigeait `cookies()` DANS la route de démarrage, ce que `check:identity-gate` interdit depuis que `lib/server/current-user.ts` est le seul lecteur du cookie : les deux gardes se contredisaient. La règle nomme maintenant `getCurrentUserId()`. Une mutation a aussi traversé la règle voisine, qui cherchait `body.userId` et laissait passer `(body as { userId?: string }).userId` : elle suit maintenant la lecture à travers un cast. Les deux mutations sont rattrapées, la chaîne est verte.
+
+**Commentaire corrigé** : `lib/teacher/source.ts` disait que les tables du monde scolaire vivaient sur une branche jetable. Elles sont **en production depuis le 2026-09-10**. Ce qui manque est l'authentification, pas les tables.
+
+**Reste à faire sur l'Admin, par ordre :**
+1. Appliquer la **migration 011** et déclarer les mois manquants (juin 2026 → décembre 2027).
+2. Le **provisionnement derrière Accepter**, qui attend les clés de Clerk.
+3. Trancher la **trace des leurres proposés** : les enregistrer sur le fait, ou les recalculer depuis la graine et l'index de question (la seconde ne coûte aucune colonne).
+4. Comprendre les **391 séances mortes-nées** et les **26 compteurs en écart**.
+5. Une **purge** de `event_ingestion_guard`.
+
+
+## Note — 2026-09-11 (suite 5) — le kit Adobe s'arrête à la priorité 1, 28 grands noms manquent
+
+Mesuré, pas estimé : les slugs de `docs/typography/adobe-fonts-candidates.md` confrontés
+un par un au miroir `content/catalog/adobe-fonts-kit.json`.
+
+**Priorité 1 : faite.** 29 des 30 noms que le grand public peut citer sont dans le kit.
+Le seul absent, `itc-franklin-gothic`, est couvert autrement, huit variantes Franklin
+Gothic sont déjà là.
+
+**Priorité 2 : zéro sur 14.** Proxima Nova, Avenir, DIN 2014, Akzidenz-Grotesk Next,
+Neue Haas Grotesk, Museo, Museo Sans, Brandon Grotesque, Sofia, Freight, Interstate,
+Trade Gothic Next, Sabon, Bembo MT.
+
+**Priorité 3 : zéro sur 14.** Minion 3, Myriad, Warnock, Chaparral, Acumin, Bickham
+Script, Lithos, Poplar, Rosewood, Tekton, Birch, Blackoak, Utopia, Adobe Text.
+
+Toutes les 28 ont été vérifiées présentes dans la bibliothèque Adobe le 2026-08-19, sans
+achat séparé. Ce qui manque n'est pas un droit, c'est l'ajout au projet web `ozq5yfs`,
+qui passe par le compte Adobe du propriétaire.
+
+**Suite quand les familles sont ajoutées au kit** : régénérer le miroir JSON, générer la
+migration de catalogue comme la 016, poser le rang de notoriété comme la 013 et la 017,
+puis `check:adobe-migration`. Le chemin est déjà rodé, c'est le même que le 2026-08-23.
+
 ## REPRISE — à lire en premier, réécrite le 2026-08-24
 
 **Cinq choses à faire toi même. Rien d'autre ne les débloquera.**
@@ -12,10 +70,12 @@
    conversation le 2026-08-23, après une première fois le 2026-08-15. Console Neon,
    puis la nouvelle valeur dans `.env.local`, qui n'est pas suivi par git.
 3. **Régénérer le jeton d'API Adobe Fonts**, collé dans une conversation le 2026-08-23.
-4. **Ajouter le domaine de production au projet web Adobe.** Le kit `ozq5yfs` est
-   verrouillé sur `localhost` et `127.0.0.1`. Sans cet ajout, les 108 polices Adobe ne
-   s'afficheront pas en ligne et le jeu demandera au joueur de nommer une typo absente
-   de son écran. **C'est un préalable de mise en ligne, au même titre que les autres.**
+4. **Déclarer `dwiggins.fr` dans le projet web Adobe.** Corrigé le 2026-09-11 : c'est une
+   **obligation de licence, pas une condition d'affichage**. Mesuré le 2026-08-31, la
+   feuille `ozq5yfs.css` et les fichiers de police répondent 200 pour n'importe quel
+   domaine, préflight compris. Le risque est qu'Adobe coupe le kit pour usage hors
+   périmètre déclaré, pas que le site paraisse cassé le premier jour. À faire avant
+   publication, sans urgence de rendu.
 5. **Pousser.** 52 commits d'avance sur `origin/main`, sur la branche
    `chore/nettoyage-pre-lancement-2026-08-19`. Aucun identifiant configuré sur la
    machine, il faut un jeton personnel. La fusion dans `main` attend aussi ton accord.
@@ -33,7 +93,8 @@ audités, la porte compte 31 contrôles.
 le **symbole du logo** est un décalque d'une image Pinterest, à redessiner ;
 **PP Frama** est servie sans licence webfont ;
 le **légal** est écrit mais attend tes sept informations et une relecture juridique.
-S'y ajoute le point 4 ci dessus, qui est un bloqueur de fait pour les polices Adobe.
+Le point 4 ci dessus n'est PAS un quatrième bloqueur : le rendu des polices Adobe n'est
+pas verrouillé, c'est une obligation de licence à tenir avant publication.
 
 **Décisions qui t'attendent, aucune n'est technique :**
 - Deux sens du mot « maîtrisé » : le jeu dit « 3% of your set mastered » sur un pool de
@@ -94,6 +155,62 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 État par sujet : **19 faits · 0 en cours · 15 à faire · 2 bloqueurs · 6 parkés / à décider** (le 2026-08-19, le symbole du logo est redessiné et remplacé partout, il sort des bloqueurs) (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## Note — 2026-09-11 (suite 4) — une couleur, celle du mode, et la sélection retrouve une place
+
+**« Mets un peu de couleur »**, et rien n'a été inventé pour autant. Relevé d'abord, décidé ensuite : le produit ne peint que trois teintes, `MODE_ACCENT`, et elles portent **un seul sens**, le mode (`#40d38f` entraînement, `#ff934a` compétition, `#58a9ff` expert). Le compositeur s'en servait déjà pour la pastille de mode du récap. Aucune valeur nouvelle n'est donc entrée dans le fichier.
+
+**La règle appliquée : seule la couleur de l'exercice existe, et elle ne peint que ce que le professeur a CHOISI.** La position retenue d'un groupe, le jour d'ouverture du calendrier, le champ en cours de réglage, le bouton qui envoie. Elle change avec ce qu'il fabrique : vert tant que c'est un exercice ou un contrôle, orange dès qu'il passe en compétition. Rien n'est coloré par logique sémantique, ce qui reste interdit.
+
+**Les dosages sont ceux qui existaient**, ceux de `.st-arena__tag`, le seul endroit du produit qui teintait déjà une surface : 9 à 14 % en fond, 45 à 55 % en contour, 58 % mélangé au crème pour l'encre. Jamais d'aplat.
+
+**Contraste mesuré** sur les trois surfaces teintées, seuil WCAG à 4,5 : pastille active sur la page **13,5**, encre du bouton final sur son propre fond **12,15**, chiffre du jour d'ouverture sur son fond **12,4**. Un premier calcul avait rendu 1,00 partout : il divisait par 255 des valeurs `color(srgb …)` déjà normalisées. Corrigé, et c'est la seule raison pour laquelle ces chiffres sont dignes de confiance.
+
+**« Nothing chosen yet », mal placé et trop collé, et c'était vrai deux fois.** La phrase flottait sous le champ de recherche sans titre, et sa moitié était une explication et non un état. La sélection devient une **zone nommée**, « Chosen so far », posée comme tous les autres réglages de la page, à 24 px du bloc précédent. Il ne reste à l'écran que l'état, « Nothing yet. » ; l'explication rejoint le marqueur de survol comme partout ailleurs.
+
+**Vérifié en exécution** : l'accent bascule bien du vert à l'orange au changement de mode, le cycle du calendrier est intact, quatre largeurs sans débordement ni défilement horizontal, console propre, `check:contrast`, `check:copy`, `check:starfield` et `check:when-window` verts.
+
+---
+
+## Note — 2026-09-11 (suite 3) — plus de cartes : le compositeur se lit comme la landing
+
+**Le propriétaire, et il a raison sur le fond** : « des blocs dans des blocs dans des blocs, c'est un enfer », « sur la page principale il n'y a pas de bloc, mais on a la sensation qu'il y en a », et « How they will take it, il n'y a aucun équilibre ».
+
+**Vérifié dans la landing avant de toucher à quoi que ce soit** : `.lp-section` n'a ni bordure, ni fond, ni rayon. Elle sépare avec un grand pas vertical (`clamp(4.5rem, 12vh, 9rem)`) et un grand titre (`clamp(2.2rem, 5vw, 3.85rem)`), rien d'autre. La sensation de bloc vient de la typographie et de l'espace, jamais d'un contour.
+
+**Les cinq étapes du compositeur prennent la même règle.** `.st-panel` disparaît de l'écran : ce que la carte apportait vraiment, la largeur et le centrage, reste dans `.tc-step` ; ce qu'elle ajoutait, un contour et une surface autour de grilles qui contenaient elles mêmes des groupes, part. Le titre d'étape passe de 0,66 rem en capitales mono à **24 px**, sous un h1 à 32 px, donc la hiérarchie se lit sans contour. Les étapes sont séparées par **64 px**, mesurés et réguliers.
+
+**Mesure de l'emboîtement** : une pastille de choix était dans **4 conteneurs peints**, elle en a **2**. C'est la réponse littérale à « des blocs dans des blocs » : zéro `.st-panel` sur la page.
+
+**L'équilibre du bloc contrat.** Quatre réglages sur deux rangées de deux, mais deux d'entre eux portent une étagère (la barre du mix, la nappe de pastilles des confusions) et deux portent un groupe de pastilles court. Mélangés deux par deux, aucune rangée n'était d'aplomb. Les deux courts partagent maintenant une rangée, **mesurés à 54 px contre 54 px**, et chaque étagère prend sa propre pleine largeur, où elle est enfin lisible.
+
+**Question posée par le propriétaire, et la réponse argumentée** : peut on supprimer des étapes ? Non, et ce n'était pas le problème. Les cinq sont cinq décisions distinctes qu'un professeur prend l'une après l'autre, et depuis que les cartes sont parties leur nombre ne coûte plus rien. Ce qui coûtait, c'était l'emboîtement, qui est réglé. La seule fusion défendable serait **When dans Who it is for**, les deux formant l'enveloppe du devoir, ce qui ramènerait à quatre étapes ; elle n'est pas faite, c'est un arbitrage qui lui appartient.
+
+**Vérifié en exécution**, serveur isolé : bulle au survol non rognée (384 px), cycle du calendrier intact (21 puis 27 donne « 6 days · 5 hours »), recherche à 8 résultats, bouton final correctement désactivé tant que l'exercice n'a pas de nom, quatre largeurs sans débordement ni défilement horizontal, console propre. Gardes verts.
+
+---
+
+## Note — 2026-09-11 (suite 2) — le compositeur devient un formulaire et non un document
+
+**Consigne du propriétaire, et elle annule en partie la passe précédente.** « Cette page est hyper hyper importante », « on est un peu perdu, il y a beaucoup d'informations, beaucoup de textes », « à mon avis ils peuvent être utiles qu'ils apparaissent que quand on survole », « le bloc 1 fonctionne », « le troisième bloc ne fonctionne pas du tout », « le bloc avec le calendrier est beaucoup trop lourd », et le but : **un professeur qui crée doit enchaîner, et trouver toutes les options s'il les veut**.
+
+**Ce que la passe précédente avait mal résolu.** Le vide à droite était réel, mais y installer une colonne d'explication permanente revenait à payer le vide en prose. C'est la moitié de chaque panneau consacrée à du texte que personne ne relit après la première fois. L'anatomie `.tc-set` à deux colonnes est donc supprimée.
+
+**La forme retenue est celle du bloc 1**, le seul que le propriétaire garde : un libellé, son contrôle sur toute la largeur, rien d'autre. Les quatre réglages du contrat passent dans la **même grille à deux colonnes** que le bloc 1 au lieu d'une pile d'un seul réglage par rangée.
+
+**`TeacherWhy`, l'explication à la demande.** Un marqueur discret après le libellé, la bulle au survol **et au focus clavier**, liée par `aria-describedby`. Une bulle qui n'existe qu'au survol n'existe ni au clavier ni au lecteur d'écran, c'est le défaut classique du motif. Aucun état React : survol et focus sont des états CSS, les porter en state obligerait chaque panneau à savoir quelle bulle est ouverte pour un résultat identique.
+
+**Mesuré après la bascule** : **253 mots** d'explication sont passés sous **9 marqueurs**, zéro visible au repos, et il ne reste que **58 mots** de prose permanente à l'écran (la phrase de récap, l'état « rien de choisi », et la ligne qui dit où tombe le prochain clic du calendrier). Rien n'a été supprimé, tout est à un survol.
+
+**Le calendrier allégé.** La légende de quatre entrées disparaît : elle décrivait quatre dessins dont trois se devinent au premier clic. Les six raccourcis quittent les deux champs pour l'éditeur, où seule la série du bout visé s'affiche : un professeur qui n'ouvre pas l'éditeur voit **deux valeurs et rien d'autre**. La phrase « Open for » perd son doublon qui redisait les deux dates lisibles juste au dessus.
+
+**Hauteurs, avant puis après cette passe** : contrat 426 → **317 px**, When 306 → **246 px**, bloc 1 270 → **221 px**, bloc 2 350 → **276 px**. Les cinq panneaux tiennent maintenant en 1 309 px contre 1 897 px au début de la journée.
+
+**Vérifié en exécution**, serveur isolé : la bulle s'ouvre au survol et au focus clavier, le cycle du calendrier est intact (clic 21 puis 27 donne la plage, un clic avant l'ouverture recommence, deux clics sur le même jour donnent une fenêtre d'un jour), quatre largeurs sans débordement ni défilement horizontal, console propre. `lint`, `typecheck` et les gardes `copy`, `contrast`, `starfield`, `when-window`, `teacher-read-gate`, `dev-routes`, `runtime-boundaries` sont verts.
+
+**Reste ouvert, et c'est de la DA** : le chevron des listes déroulantes de `board-system.ts`, trop petit et optiquement bas, qui sert aussi au profil et aux autres écrans prof.
 
 ---
 
