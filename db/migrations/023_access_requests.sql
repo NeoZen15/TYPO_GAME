@@ -1,9 +1,17 @@
 -- ============================================================
 -- MIGRATION 023 -- les demandes d'acces enseignant
 -- Requiert : 021 (monde scolaire) appliquee
--- NON APPLIQUEE EN PRODUCTION. Elle demande le feu vert explicite du
--- proprietaire. Appliquee le 2026-09-10 sur la branche jetable
--- `jetable-schema-scolaire-2026-09-10` uniquement.
+-- APPLIQUEE EN PRODUCTION le 2026-09-11, sur feu vert explicite du proprietaire.
+-- Branche `production` (br-crimson-union-abwblcwc) du projet Neon TYP-WE_SITE.
+-- Eprouvee d'abord sur la branche jetable `jetable-schema-scolaire-2026-09-10`.
+--
+-- PAS D'INSTANTANE POUR CELLE CI, ET C'EST UN CHOIX EXPLIQUE. Le plan Neon
+-- n'autorise qu'un instantane manuel, et celui qui existe est le point de retour
+-- pris avant 021 et 022. Le supprimer pour une migration purement additive, une
+-- table vide et un type, aurait echange un vrai filet contre un filet inutile :
+-- 023 ne touche aucune ligne existante et son rollback est exact (DROP TABLE,
+-- DROP TYPE). Verifie apres coup : 13 colonnes, 5 controles, 4 index, les trois
+-- statuts, zero demande, et les 271 comptes comme les 595 sessions inchanges.
 -- ============================================================
 --
 -- LE MODELE, DECIDE PAR LE PROPRIETAIRE LE 2026-09-10, ET C'EST LE PLUS SIMPLE

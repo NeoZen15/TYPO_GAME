@@ -97,6 +97,40 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 ---
 
+## Note — 2026-09-11 — le bloc QUAND du compositeur devient un vrai calendrier
+
+**Fait, sur demande du propriétaire, et rien d'autre n'a bougé sur la page.** Le bloc QUAND demandait la fenêtre en deux listes de décalages, « demain » et « une semaine ». Un professeur ne peut pas y écrire « pour vendredi, avant le cours », et l'écran ne lui disait pas quel vendredi il venait d'acheter. Ce sont désormais **deux moments choisis à la minute**, date et heure, chacun avec son calendrier.
+
+**Ce qu'il y a à l'écran.** Deux champs, « It opens » et « It closes », qui portent la valeur en clair (`Fri 11 Sep · 08:00`) et, dessous, la date résolue en toutes lettres, ce que la spec section 18 demande nommément pour que personne ne découvre un décalage après coup. Sous chaque champ, trois raccourcis qui ne font qu'**écrire des valeurs précises**, éditables ensuite comme si elles avaient été saisies : Now, Tomorrow morning, Next Monday pour l'ouverture ; End of today, In three days, In one week pour l'échéance. Un raccourci d'échéance compte depuis **l'ouverture** et pas depuis maintenant, donc « in one week » sur une ouverture le lundi tombe le lundi suivant. Et en bas, la durée obtenue en gros : **Open for 7 days · 15 hours**.
+
+**UN SEUL CALENDRIER, PARTAGÉ PAR LES DEUX CHAMPS**, celui qu'on édite décidant ce qu'un clic veut dire. C'est ce qui rend la contrainte visible au lieu de seulement l'appliquer : les jours qu'une échéance ne peut pas prendre sont grisés **à leur place**, sous l'ouverture qu'on vient de choisir, et les jours déjà dans la fenêtre sont lavés, de sorte que la fenêtre se lit comme une forme et non comme deux chaînes. Pas de pop-over : ça coûte un ancrage, un piège de clic dehors et une cage de focus, et le panneau a la largeur.
+
+**Les règles réparent au lieu de signaler**, et c'est pour ça qu'il n'y a aucun message d'erreur sur l'écran : chaque geste rend une fenêtre valide. Une échéance posée sur le jour de l'ouverture tombe à 23 h 59, parce que c'est ce qu'un professeur veut dire par « pour vendredi ». Une ouverture déplacée **ne déplace pas une échéance encore atteignable** : « pour vendredi » est un moment de la semaine de cours, pas une durée, donc ouvrir plus tard achète moins de temps, jamais un vendredi plus tard. Elle ne bouge que si elle devenait antérieure, et elle garde alors la longueur qu'elle avait. Les heures antérieures à l'ouverture sont grisées dans le sélecteur le jour même, et un raccourci qui tomberait trop tôt est proposé grisé plutôt que caché, pour qu'on voie pourquoi.
+
+**Le contrat de l'exercice n'a pas changé.** `windowContract()` est le seul endroit qui traduit les deux moments en `dueInHours` / `opensInHours` / `openedForHours`, le vocabulaire relatif du mock, et c'est donc la seule fonction à réécrire le jour où le compositeur écrira en base (`available_from` et `due_at` de la section 18).
+
+**Pourquoi l'horloge arrive au montage et pas avant.** `/teacher` est **prérendu statique** (mesuré au build), donc une fenêtre calculée pendant le rendu figerait l'heure du build dans le HTML. Le panneau peint son mobilier d'abord et ses valeurs une image plus tard. Vérifié : zéro erreur et zéro avertissement en console, donc aucun écart d'hydratation.
+
+**`check:when-window`, ajouté avec sa ligne de chaîne dans le même commit.** Il balaie **15 376 fenêtres** (chaque jour d'un mois à quatre heures comme ouverture, croisé avec autant d'échéances) et vérifie qu'aucune ne revient avec une échéance au plus tôt à son ouverture. Il fige aussi les trois décisions faciles à défaire sans le voir : un moment est une **heure murale** et pas un instant, une échéance atteignable ne bouge pas avec l'ouverture, et le jour de l'ouverture veut dire 23 h 59. **Éprouvé sur six mutations, il échoue sur les six.** La deuxième est passée au premier essai : le test de changement d'heure était écrit à 08 h 00, et une implémentation en instants y tombe une heure à côté, ce qui donne encore le bon **jour**. Réécrit près de minuit, aux deux changements d'heure, il mord.
+
+**Vérifié en exécution**, sur un serveur isolé et non sur celui du propriétaire : ouverture immédiate, exercice programmé plus tard, échéance le même jour (« Open for 4 hours · 31 minutes »), jours et heures antérieurs grisés, échéance devenue impossible repoussée en gardant sa longueur, échéance atteignable laissée en place quand l'ouverture recule. `lint`, `typecheck`, `build` et les gardes `copy`, `starfield`, `contrast`, `teacher-read-gate`, `runtime-boundaries`, `dev-routes` sont verts.
+
+**À signaler au propriétaire, sans rapport avec ce travail** : le serveur de dev du port 3000, démarré le 2026-09-08, rend un 200 vide sur **toutes** les routes de page alors que les fichiers statiques sortent normalement. Une copie isolée du même code sert la page en 2 secondes. C'est le processus qui est périmé, pas le code : il demande un redémarrage.
+
+---
+
+## Note — 2026-09-11 — 023 est en production, et la table des demandes attend son tableau de bord
+
+**Appliquée, sur feu vert explicite.** La table des demandes d'accès enseignant et son type de statut sont en production. Vérifié après coup : 13 colonnes, 5 contrôles, 4 index, les trois statuts `pending / approved / rejected`, zéro demande, et les 271 comptes comme les 595 sessions strictement inchangés. C'est une migration purement additive : elle ne touche aucune ligne existante.
+
+**PAS D'INSTANTANÉ POUR CELLE CI, ET LA RAISON EST ÉCRITE DANS LE FICHIER.** Le plan Neon n'autorise **qu'un** instantané manuel, et celui qui existe est le point de retour pris avant 021 et 022. Le supprimer pour couvrir une table vide aurait échangé un vrai filet contre un filet inutile. Le rollback de 023 est exact et tient en deux instructions. À savoir pour la suite : **le prochain instantané demandera de décider du sort de celui d'hier**, dont la valeur pratique baisse de toute façon chaque jour, puisque le restaurer effacerait aussi tout ce qui a été joué depuis.
+
+**Ce que cette table permet, et qui n'est pas encore construit.** Le tableau de bord Admin, décidé la veille : Pending / Approved / Rejected, une fiche par demande, détection de doublons, établissement existant ou nouveau, aperçu de ce qui sera créé, et un seul geste humain, valider ou refuser. Le flux et ses trois décisions de schéma sont figés en architecture backend §2.3.
+
+**Il reste deux gestes qui n'appartiennent qu'au propriétaire** : créer l'application Clerk et poser ses deux clés dans son environnement, sans jamais les faire passer par une conversation, puis activer le mode restreint chez Clerk pour que l'inscription libre reste fermée même sans page chez nous. Tant que les clés ne sont pas là, le produit continue exactement comme aujourd'hui, tout le monde invité.
+
+---
+
 ## Note — 2026-09-10 (suite 11) — Clerk branché en mode tolérant, et le modèle d'accès enseignant arrêté
 
 **Choix du propriétaire : Clerk**, ce que le schéma nomme depuis la migration 003. Donc zéro migration pour l'authentification elle même, la colonne `clerk_id` et sa contrainte étaient déjà là.
