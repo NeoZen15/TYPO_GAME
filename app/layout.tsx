@@ -50,7 +50,6 @@ export default async function RootLayout({
     : ({ children: inner }: { children: React.ReactNode }) => <>{inner}</>;
 
   return (
-    <Provider>
     <html lang="en" data-theme={FORCED_THEME} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
@@ -71,13 +70,17 @@ export default async function RootLayout({
         <link rel="stylesheet" href={ADOBE_KIT_STYLESHEET} />
       </head>
       <body className="bg-background font-sans antialiased">
+        {/* DANS le body et non autour de <html> : c'est ce que dit la
+            documentation de Clerk, et c'est la seule place qui garde la balise
+            racine rendue par le serveur. */}
+        <Provider>
         <UiDebugProbe />
         {children}
         {/* Sur toutes les pages : un visiteur doit être informé là où il arrive,
             pas seulement s'il passe par l'accueil. */}
         <StorageNotice />
+        </Provider>
       </body>
     </html>
-    </Provider>
   );
 }

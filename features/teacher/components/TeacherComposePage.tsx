@@ -4,6 +4,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BOARD_SYSTEM_CSS, CREAM, MODE_ACCENT } from "@/features/profile/components/board-system";
 import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
 import TeacherBack from "@/features/teacher/components/TeacherBack";
+import TeacherContract, {
+  confusionKey,
+  MIX_PRESETS,
+  type ExerciseContract,
+} from "@/features/teacher/components/TeacherContract";
+import TeacherWhen from "@/features/teacher/components/TeacherWhen";
+import { initialWindow, spellMoment, stampOf, windowContract, type WhenWindow } from "@/lib/teacher/when";
 import type { ExerciseScope, TeacherExercise, TeacherProfile } from "@/lib/teacher/mock-teacher";
 import type { FaceScope, FaceTree, PickableFace } from "@/lib/teacher/faces-contracts";
 
@@ -39,20 +46,16 @@ import type { FaceScope, FaceTree, PickableFace } from "@/lib/teacher/faces-cont
 // ---------------------------------------------------------------------------
 
 const COUNTS = [10, 15, 20, 25, 30];
-const OPENS: ReadonlyArray<{ hours: number; label: string }> = [
-  { hours: 0, label: "right away" },
-  { hours: 24, label: "tomorrow" },
-  { hours: 72, label: "in three days" },
-  { hours: 168, label: "in a week" },
-];
-const WINDOWS: ReadonlyArray<{ hours: number; label: string }> = [
-  { hours: 48, label: "two days" },
-  { hours: 72, label: "three days" },
-  { hours: 168, label: "a week" },
-  { hours: 336, label: "two weeks" },
-];
 
 const scopeKey = (scope: FaceScope) => `${scope.kind}|${scope.key}`;
+
+/** Le cran, dit au professeur et jamais en paramètre de moteur. */
+const EXIGENCE_WORD: Record<string, string> = {
+  accessible: "Accessible",
+  balanced: "Balanced",
+  challenging: "Challenging",
+  expert: "Expert",
+};
 
 /** "Serif", or "Serif didone": a leaf is never named without its branch. */
 const scopeName = (scope: FaceScope) =>
@@ -89,11 +92,38 @@ export default function TeacherComposePage({
   const classes = useMemo(() => teacher.classes.filter((c) => !c.archived), [teacher.classes]);
 
   const [classId, setClassId] = useState(presetClassId ?? classes[0]?.id ?? "");
-  const [mode, setMode] = useState<"training" | "competition">("training");
+  // Trois types, et ce sont des EFFETS et non des ambiances (spec section 15).
+  // L'exercice compte dans la progression, le contrôle mesure sans y toucher, la
+  // compétition fait performer. Le mode du moteur en découle, il n'est pas choisi.
+  const [kind, setKind] = useState<"exercise" | "control" | "competition">("exercise");
+  const mode = kind === "competition" ? "competition" : "training";
+  // Le reste du contrat : exigence, adaptation, équilibre. Les paires retenues
+  // sont stockées à l'envers, par ce qui a été DÉCOCHÉ, pour qu'un changement de
+  // classe reparte de ses propres paires toutes cochées.
+  const [terms, setTerms] = useState<Omit<ExerciseContract, "keptConfusions">>({
+    exigence: "balanced",
+    adaptive: false,
+    mixBias: "even",
+  });
+  const [dropped, setDropped] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [count, setCount] = useState(20);
-  const [opensIn, setOpensIn] = useState(0);
-  const [openFor, setOpenFor] = useState(168);
+  // THE WINDOW IS TWO MOMENTS, and they cannot be initial state.
+  //
+  // '/teacher?new=1' is a real address, so this screen does get a server render,
+  // and the server's clock is neither the visitor's instant nor their timezone:
+  // a default window computed there is a different window after hydration, and
+  // for a few hours every evening it is a different DAY. That is the defect the
+  // header of TeacherExercise describes for countdowns. So the clock arrives on
+  // mount, the two of them together, and TeacherWhen paints its furniture with
+  // no values for the one frame before that.
+  const [clock, setClock] = useState<{ now: number; when: WhenWindow } | null>(null);
+  const now = clock?.now ?? 0;
+  const when = clock?.when ?? null;
+  const setWhen = useCallback(
+    (next: WhenWindow) => setClock((prev) => (prev === null ? prev : { ...prev, when: next })),
+    [],
+  );
 
   // The ground, the stops, and what the catalogue answered about them.
   const [tree, setTree] = useState<FaceTree>([]);
@@ -128,6 +158,22 @@ export default function TeacherComposePage({
       window.clearTimeout(fallback);
     };
   }, []);
+
+  // The clock, read through a callback and never bare in a function declared
+  // during render: to the compiler's eye `Date.now()` there is an impure call
+  // it cannot know is only ever reached from an event. Same shape as `getNowMs`
+  // in CompetitionScreen, for the same reason.
+  const readClock = useCallback(() => Date.now(), []);
+
+  useEffect(() => {
+    const stamp = readClock();
+    // The clock IS the external system this effect synchronises with, which is
+    // the case the rule's own text allows: reading it during render is what the
+    // purity rule forbids two lines above, and reading it on the server is the
+    // hydration defect described where `clock` is declared. It runs once.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setClock({ now: stamp, when: initialWindow(stamp) });
+  }, [readClock]);
 
   // The tree is small (four branches and nine leaves with their counts), so it
   // arrives once and stays. The 3.4 MB it was computed from never leaves the
@@ -216,7 +262,12 @@ export default function TeacherComposePage({
   const theirPair = cls?.confusions[0] ?? null;
 
   const groundCount = scopes.reduce((sum, s) => sum + s.count, 0);
-  const ready = cls !== null && title.trim().length > 0 && (scopes.length > 0 || picks.length > 0);
+  const keptPairs = (cls?.confusions ?? []).filter(
+    (pair) => !dropped.includes(confusionKey(pair)),
+  );
+
+  const ready =
+    cls !== null && when !== null && title.trim().length > 0 && (scopes.length > 0 || picks.length > 0);
   const missing = !cls
     ? "pick a class"
     : title.trim().length === 0
@@ -224,17 +275,19 @@ export default function TeacherComposePage({
       : "choose a family, or name a typeface"; // one is enough: the wrong answers come from the whole catalogue
 
   const give = () => {
-    if (!cls || !ready) return;
-    const scheduled = opensIn > 0;
+    if (!cls || !ready || !when) return;
+    // The clock is read AGAIN here, not reused from mount: a composer left open
+    // for an hour would otherwise write a window that started an hour ago.
+    const contract = windowContract(when, readClock());
     onCreate({
       title: title.trim(),
       mode,
       classId: cls.id,
       className: cls.name,
-      state: scheduled ? "scheduled" : "running",
-      dueInHours: opensIn + openFor,
-      opensInHours: scheduled ? opensIn : undefined,
-      openedForHours: openFor,
+      state: contract.scheduled ? "scheduled" : "running",
+      dueInHours: contract.dueInHours,
+      opensInHours: contract.opensInHours,
+      openedForHours: contract.openedForHours,
       // Competition is two minutes for everyone (spec §20, decision 2), so its
       // length is not a question budget. The field still carries a number
       // because the mock's type demands one; the screen never asks for it.
@@ -250,11 +303,20 @@ export default function TeacherComposePage({
         fontFamily: face.fontFamily,
       })),
       scope: scopes.map<ExerciseScope>((s) => ({ ...s })),
+      // LE CONTRAT, tel que le professeur vient de le poser. Commun à toute la
+      // classe : le moteur adaptera à l'intérieur, jamais au delà (I-25).
+      kind,
+      exigence: terms.exigence,
+      adaptive: terms.adaptive,
+      mix: MIX_PRESETS[terms.mixBias],
+      confusions: keptPairs,
     });
   };
 
-  const openLabel = OPENS.find((o) => o.hours === opensIn)?.label ?? "right away";
-  const windowLabelText = WINDOWS.find((w) => w.hours === openFor)?.label ?? "a week";
+  // Read in the recap sentence. `when` is null for the first frame only.
+  const opensSentence =
+    when === null ? "…" : stampOf(when.opens) <= now ? "right away" : spellMoment(when.opens);
+  const closesSentence = when === null ? "…" : spellMoment(when.due);
 
   return (
     <div ref={rootRef} className="st tc--new">
@@ -303,28 +365,29 @@ export default function TeacherComposePage({
 
           <div className="st-field">
             <span className="st-field__label">How it is played</span>
-            <div className="st-choice" role="group" aria-label="Mode">
-              <button
-                type="button"
-                className={`st-choice__btn${mode === "training" ? " is-active" : ""}`}
-                aria-pressed={mode === "training"}
-                onClick={() => setMode("training")}
-              >
-                Training
-              </button>
-              <button
-                type="button"
-                className={`st-choice__btn${mode === "competition" ? " is-active" : ""}`}
-                aria-pressed={mode === "competition"}
-                onClick={() => setMode("competition")}
-              >
-                Competition
-              </button>
+            <div className="st-choice" role="group" aria-label="Type">
+              {([
+                ["exercise", "Exercice"],
+                ["control", "Contrôle"],
+                ["competition", "Compétition"],
+              ] as const).map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`st-choice__btn${kind === id ? " is-active" : ""}`}
+                  aria-pressed={kind === id}
+                  onClick={() => setKind(id)}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
             <span className="tc-new__hint">
-              {mode === "training"
-                ? "They can retry a question until they read it right, and it counts towards their progression."
-                : "One answer each, two minutes, and no effect on their progression."}
+              {kind === "exercise"
+                ? "Ils peuvent reprendre une question jusqu'à la lire juste, et ça compte dans leur progression."
+                : kind === "control"
+                  ? "Ils peuvent reprendre, mais ça ne touche pas leur progression : c'est une mesure."
+                  : "Une seule réponse chacun, deux minutes, et aucun effet sur leur progression."}
             </span>
           </div>
 
@@ -542,51 +605,33 @@ export default function TeacherComposePage({
         )}
       </section>
 
-      {/* ── 3. When ── */}
-      <section className="st-panel st-sec" aria-label="When">
-        <h2 className="st-panel__title">When</h2>
-        <div className="tc-new__grid">
-          <label className="st-field">
-            <span className="st-field__label">It opens</span>
-            <span className="st-selectwrap">
-              <select
-                className="st-select"
-                value={opensIn}
-                onChange={(e) => setOpensIn(Number(e.target.value))}
-              >
-                {OPENS.map((o) => (
-                  <option key={o.hours} value={o.hours}>{o.label}</option>
-                ))}
-              </select>
-              <span className="st-select__caret" aria-hidden="true">▾</span>
-            </span>
-          </label>
+      <TeacherContract
+        value={{
+          ...terms,
+          // Toutes les paires de la classe sont retenues par défaut, sauf celles
+          // que le professeur a décochées : c'est lui qui retire, pas lui qui ajoute.
+          keptConfusions: (cls?.confusions ?? [])
+            .map(confusionKey)
+            .filter((key) => !dropped.includes(key)),
+        }}
+        onChange={(next) => {
+          setTerms({ exigence: next.exigence, adaptive: next.adaptive, mixBias: next.mixBias });
+          const all = (cls?.confusions ?? []).map(confusionKey);
+          setDropped(all.filter((key) => !next.keptConfusions.includes(key)));
+        }}
+        confusions={cls?.confusions ?? []}
+        className={cls?.name ?? "cette classe"}
+      />
 
-          <label className="st-field">
-            <span className="st-field__label">And stays open for</span>
-            <span className="st-selectwrap">
-              <select
-                className="st-select"
-                value={openFor}
-                onChange={(e) => setOpenFor(Number(e.target.value))}
-              >
-                {WINDOWS.map((w) => (
-                  <option key={w.hours} value={w.hours}>{w.label}</option>
-                ))}
-              </select>
-              <span className="st-select__caret" aria-hidden="true">▾</span>
-            </span>
-          </label>
-        </div>
-        <span className="tc-new__hint">
-          The window is what makes a reading possible: half the class finished
-          says nothing until you know how much of the time has gone.
-        </span>
-      </section>
+      {/* ── 3. When ── */}
+      <TeacherWhen value={when} now={now} onChange={setWhen} />
 
       {/* ── 4. What is about to go out, in one sentence ── */}
       <section className="st-panel st-sec tc-new__recap" aria-label="About to go out">
-        <h2 className="st-panel__title">About to go out</h2>
+        <div className="st-panel__head">
+          <h2 className="st-panel__title">Ce qui va partir</h2>
+          <span className="st-panel__meta">relisez, puis donnez</span>
+        </div>
         <p className="tc-new__sentence">
           <em>{mode === "competition" ? "Two minutes" : `${count} questions`}</em> on{" "}
           {scopes.length > 0 ? <em>{scopes.map(scopeName).join(", ")}</em> : null}
@@ -604,8 +649,39 @@ export default function TeacherComposePage({
           >
             {mode}
           </span>
-          . It opens {openLabel} and stays open for {windowLabelText}.
+          . It opens <em>{opensSentence}</em> and closes <em>{closesSentence}</em>.
         </p>
+
+        {/* L'APERCU, ET IL NE PROMET QUE CE QUE LE CONTRAT PORTE. Pas les vingt
+            questions exactes : le moteur les compose au moment ou l'eleve joue, et
+            avec l'adaptation elles ne sont meme pas les memes pour tout le monde.
+            Ce qui est montre est ce qui est decide ici. */}
+        <p className="tc-new__preview">
+          <span>{cls ? `${cls.studentCount} élèves` : "aucune classe"}</span>
+          <span>{kind === "competition" ? "2 minutes" : `${count} questions`}</span>
+          <span>{EXIGENCE_WORD[terms.exigence]}{terms.adaptive ? ", adapté par élève" : ""}</span>
+          {scopes.length > 0 && <span>{scopes.map(scopeName).join(", ")}</span>}
+          {picks.length > 0 && <span>{picks.length} typographies imposées</span>}
+          {keptPairs.length > 0 && (
+            <span>
+              {keptPairs.length} confusion{keptPairs.length > 1 ? "s" : ""} ciblée
+              {keptPairs.length > 1 ? "s" : ""}
+            </span>
+          )}
+        </p>
+
+        {picks.length > 0 && (
+          <ul className="st-faces tc-new__previewfaces">
+            {picks.slice(0, 6).map((face) => (
+              <li key={face.slug} className="st-face">
+                {/* Rien que la taille sur cet element : le reste vient du fichier
+                    de police, sinon ce n'est pas un specimen. */}
+                <span className="st-face__glyph" style={{ fontFamily: face.fontFamily }}>Aa</span>
+                <span className="st-face__name">{face.name}</span>
+              </li>
+            ))}
+          </ul>
+        )}
 
         <div className="tc-new__actions">
           <button
@@ -671,6 +747,10 @@ const NEW_CSS = `
   .tc-new__read em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
 
   .tc-new__recap { border-color: rgb(${CREAM} / 0.22); }
+  /* L'apercu : des faits separes, lisibles d'un coup d'oeil, jamais une phrase. */
+  .tc-new__preview { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin: 0 0 1.1rem; font-family: var(--pf-mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: rgb(${CREAM} / 0.5); }
+  .tc-new__preview span + span::before { content: "·"; margin-right: 0.9rem; color: rgb(${CREAM} / 0.3); }
+  .tc-new__previewfaces { grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); margin-bottom: 1.2rem; }
   .tc-new__sentence { margin: 0 0 1.1rem; max-width: 62ch; text-wrap: pretty; font-size: 0.95rem; line-height: 1.6; color: rgb(${CREAM} / 0.6); }
   .tc-new__sentence em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
   .tc-new__mode { display: inline-block; vertical-align: 0.05em; }

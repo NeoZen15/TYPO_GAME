@@ -2,7 +2,13 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { isClerkConfigured } from "@/lib/server/clerk-availability";
 
-// LE MIDDLEWARE NE FAIT RIEN TANT QUE CLERK N'EST PAS CONFIGURE, et c'est
+// `proxy.ts` ET NON `middleware.ts`. Next 16 a renomme la convention : le
+// serveur de dev le dit lui meme, « The "middleware" file convention is
+// deprecated. Please use "proxy" instead ». Le fichier tournait quand meme, Next
+// acceptant encore l'ancien nom, mais un avertissement a chaque demarrage est un
+// avertissement qu'on finit par ne plus lire. Contenu identique.
+//
+// CE PROXY NE FAIT RIEN TANT QUE CLERK N'EST PAS CONFIGURE, et c'est
 // deliberé. `clerkMiddleware()` jette sans cles, donc un middleware qui
 // l'appellerait sans condition rendrait le site entier inaccessible le temps que
 // le proprietaire cree son application Clerk. Le produit ne doit pas dependre

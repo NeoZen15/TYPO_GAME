@@ -180,6 +180,18 @@ export type TeacherExercise = {
    * only ever named faces.
    */
   scope?: ExerciseScope[];
+  /**
+   * LE CONTRAT, commun à toute la classe (I-25). Le moteur adapte à l'intérieur,
+   * jamais au delà. Tout est optionnel parce que les exercices écrits avant le
+   * compositeur n'en portaient pas ; une ligne sans contrat se lit comme un
+   * exercice d'entraînement, non adaptatif, au cran intermédiaire.
+   */
+  kind?: "exercise" | "control" | "competition";
+  exigence?: "accessible" | "balanced" | "challenging" | "expert";
+  adaptive?: boolean;
+  mix?: { consolidation: number; upkeep: number; targeted: number; novelty: number };
+  /** Les paires que le professeur a retenues après arbitrage. */
+  confusions?: ClassConfusion[];
 };
 
 /**

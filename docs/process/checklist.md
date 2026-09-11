@@ -113,9 +113,33 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 
 **`check:when-window`, ajouté avec sa ligne de chaîne dans le même commit.** Il balaie **15 376 fenêtres** (chaque jour d'un mois à quatre heures comme ouverture, croisé avec autant d'échéances) et vérifie qu'aucune ne revient avec une échéance au plus tôt à son ouverture. Il fige aussi les trois décisions faciles à défaire sans le voir : un moment est une **heure murale** et pas un instant, une échéance atteignable ne bouge pas avec l'ouverture, et le jour de l'ouverture veut dire 23 h 59. **Éprouvé sur six mutations, il échoue sur les six.** La deuxième est passée au premier essai : le test de changement d'heure était écrit à 08 h 00, et une implémentation en instants y tombe une heure à côté, ce qui donne encore le bon **jour**. Réécrit près de minuit, aux deux changements d'heure, il mord.
 
+**Deuxième passe, sur retour du propriétaire : « pas mal de vide, et pas facile à comprendre ».** Deux défauts, tous deux réels.
+
+Le vide venait de la composition : le calendrier fait sept cellules de large et rien d'autre ne l'accompagnait, donc les deux tiers droits du panneau ne portaient rien. L'éditeur est maintenant **en deux colonnes**, le mois à gauche, à droite ce pour quoi on choisit ce mois : ce qu'on édite, la date en toutes lettres, l'heure, les quatre heures de la journée scolaire étalées sur la largeur, et Done. L'éditeur est passé de pleine hauteur empilée à 336 px, soit la hauteur du calendrier lui même, et la colonne de droite occupe ses 659 px au lieu de 493. Sous 720 px les deux colonnes s'empilent, et à 390 px rien ne déborde.
+
+L'incompréhension venait des marques : **trois significations portaient deux dessins**. Aujourd'hui était un anneau, et l'autre bout de la fenêtre était le même anneau ; les jours ouverts étaient des pastilles pleines, qu'on lisait comme sept jours choisis. Désormais un seul dessin par sens : le bout qu'on édite est plein, l'autre bout est cerclé, aujourd'hui est un point sous le chiffre, et les jours ouverts forment **une bande continue** (gouttière supprimée entre les cellules) qui se lit comme une plage et non comme des boutons. Une légende de quatre entrées est posée sous la grille, et elle se renomme selon le champ édité.
+
+Retiré au passage : la date répétée en toutes lettres sous chaque champ. Le bouton dit déjà `Fri 11 Sep · 08:00`, la spec section 18 est donc servie, et la ligne ne coûtait que de la hauteur. Il ne reste dessous que ce que la valeur ne peut pas dire : « right away », « same day ».
+
 **Vérifié en exécution**, sur un serveur isolé et non sur celui du propriétaire : ouverture immédiate, exercice programmé plus tard, échéance le même jour (« Open for 4 hours · 31 minutes »), jours et heures antérieurs grisés, échéance devenue impossible repoussée en gardant sa longueur, échéance atteignable laissée en place quand l'ouverture recule. `lint`, `typecheck`, `build` et les gardes `copy`, `starfield`, `contrast`, `teacher-read-gate`, `runtime-boundaries`, `dev-routes` sont verts.
 
-**À signaler au propriétaire, sans rapport avec ce travail** : le serveur de dev du port 3000, démarré le 2026-09-08, rend un 200 vide sur **toutes** les routes de page alors que les fichiers statiques sortent normalement. Une copie isolée du même code sert la page en 2 secondes. C'est le processus qui est périmé, pas le code : il demande un redémarrage.
+---
+
+## Note — 2026-09-11 (suite) — le compositeur porte enfin le contrat entier
+
+**L'écart entre la spec fermée et l'écran est comblé.** Le compositeur laissait choisir la classe, le nom, le type, la longueur, les polices et la fenêtre. Il laisse maintenant poser **tout le contrat** : le niveau d'exigence, l'adaptation ou non, l'équilibre de l'exercice, et l'arbitrage des confusions. Et il montre un **aperçu** avant de donner.
+
+**Trois types et non deux, comme l'arbitrage 3 l'a tranché.** Exercice, Contrôle, Compétition, et ce sont des **effets** dits en mots : ça compte dans leur progression, ça mesure sans y toucher, ou ça fait performer. Le mode du moteur en découle, il n'est plus choisi à la main.
+
+**Le curseur renforcement contre découverte est un contrôle à trois positions, pas une réglette**, et c'est délibéré : une réglette est un contrôle que le produit n'a nulle part, donc son dessin appartient au propriétaire. Trois positions disent la même chose sans rien inventer. Les quatre parts bougent ensemble et la barre segmentée du profil les montre. Mesuré au navigateur : 45 / 20 / 20 / 15 en équilibré, 30 / 15 / 20 / 35 en découverte.
+
+**Les confusions s'arbitrent, elles ne s'imposent pas.** Les paires réelles de la classe sont là, toutes cochées, et le professeur décoche ce qu'il ne veut pas travailler. Stockées à l'envers, par ce qui a été décoché, pour qu'un changement de classe reparte de ses propres paires. Rien n'est ciblé sans qu'il l'ait vu.
+
+**L'aperçu ne promet que ce que le contrat porte** : nombre d'élèves, longueur, cran, adaptation, périmètre, typographies imposées, confusions ciblées, plus de vrais spécimens. **Jamais les vingt questions exactes** : le moteur les compose au moment où l'élève joue, et avec l'adaptation elles ne sont même pas les mêmes pour tout le monde.
+
+**DEUX SESSIONS ONT ÉCRIT DANS LE MÊME FICHIER EN MÊME TEMPS**, et ça a laissé deux traces. Le nouveau bloc est dans **son propre composant** (`TeacherContract.tsx`) précisément pour ne toucher le compositeur qu'en quelques points d'ancrage. Et le mot `contract` était déjà pris par le contrat de **fenêtre** écrit en parallèle : le mien s'appelle `terms`, parce que deux contrats dans un fichier demandent que le lecteur sache lequel il lit.
+
+**Vérifié au navigateur** : les trois types, les quatre crans, les deux choix d'adaptation avec leur phrase, les trois positions d'équilibre et la légende qui suit, les deux paires réelles de la classe qui se décochent, et l'aperçu qui affiche « 24 élèves, 20 questions, Expert adapté par élève, 1 confusion ciblée ». Zéro erreur de page, typecheck et lint verts, gardes verts.
 
 ---
 
