@@ -17,13 +17,15 @@ import {
 // a pris : `mock-profile.ts` a servi les ecrans jusqu'a ce que la base existe, et
 // `MOCK_ARENA` en sert encore une partie aujourd'hui.
 //
-// LE DEFAUT EST LE MOCK, ET IL DOIT LE RESTER JUSQU'A LA MIGRATION EN PRODUCTION.
-// Les tables du monde scolaire vivent aujourd'hui sur une branche Neon jetable et
-// nulle part ailleurs (decision du proprietaire : aucune migration en production
-// avant que toute l'architecture soit validee). Basculer sur la porte sans ces
-// tables ferait planter les quatre ecrans sur une erreur de relation absente.
-// D'ou une variable d'environnement et non une constante : le jour de la
-// migration, `JDT_TEACHER_SOURCE=live` suffit, et aucun ecran ne bouge.
+// LE DEFAUT EST LE MOCK, ET CE N'EST PLUS POUR LA MEME RAISON. Corrige le
+// 2026-09-11 : les tables du monde scolaire SONT en production depuis le
+// 2026-09-10 (migrations 021 et 022), donc la porte de lecture ne planterait plus
+// sur une relation absente. Ce qui manque maintenant, ce sont les COMPTES : sans
+// authentification, aucun professeur n'est identifiable, et la porte servirait
+// quatre ecrans vides a tout le monde. Mesure du 2026-09-11 dans l'Admin : zero
+// etablissement, zero classe, zero devoir. D'ou une variable d'environnement et
+// non une constante : le jour ou Clerk est branche et ou une premiere demande est
+// acceptee, `JDT_TEACHER_SOURCE=live` suffit, et aucun ecran ne bouge.
 //
 // L'IDENTITE DU PROFESSEUR, EN ATTENDANT LES COMPTES. Elle vient du meme cookie
 // que le reste du produit. C'est la seule identite qui existe, et c'est aussi la

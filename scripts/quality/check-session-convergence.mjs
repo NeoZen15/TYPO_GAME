@@ -216,15 +216,30 @@ if (!/attemptId/.test(route)) {
       "while the word attemptId stays in the file."
   );
 }
-if (/body\.(userId|guestUserId)/.test(route)) {
+// ROUND 2. The first form of this rule was `/body\.(userId|guestUserId)/`, and a
+// mutation walked straight through it: `(body as { userId?: string }).userId`
+// takes the identity from the payload without ever writing `body.` immediately
+// before the field. The read is now matched across an intervening cast, bounded
+// to a single statement so it cannot span two lines and fire on an unrelated
+// pair.
+if (/\bbody\b[^;\n]*\.\s*(userId|guestUserId)\b/.test(route)) {
   failures.push(
-    `${ROUTE}: reads an identity out of the request body. Identity comes from the httpOnly cookie, only the attempt identifier comes from the client.`
+    `${ROUTE}: reads an identity out of the request body. Identity comes from the identity module, which alone reads and validates the httpOnly cookie; only the attempt identifier comes from the client.`
   );
 }
-if (!/cookies\(\)/.test(route) || !/GUEST_COOKIE_NAME/.test(route)) {
+// ROUND 2, 2026-09-11. This rule used to require `cookies()` IN THE ROUTE. That
+// became false the day `check:identity-gate` made lib/server/current-user.ts the
+// only file allowed to read the guest cookie: the two guards then asked for
+// opposite things, and the chain went red on code that was correct. The property
+// being protected never changed — identity does not come from the client — so
+// the rule now names where identity DOES come from. A route that stopped calling
+// the identity module would be resolving identity some other way, which is the
+// defect this rule has always existed to catch.
+if (!/getCurrentUserId\(\)/.test(route)) {
   failures.push(
-    `${ROUTE}: no longer resolves the guest identity from the cookie store. The attempt ` +
-      "identifier is the only thing the client is allowed to choose."
+    `${ROUTE}: no longer resolves the identity through getCurrentUserId(). The attempt ` +
+      "identifier is the only thing the client is allowed to choose, and the identity module " +
+      "is the single place that reads and validates the guest cookie."
   );
 }
 
