@@ -25,8 +25,15 @@
 //   visiteur .............. charge une page du site. NON MESURE, couche audience.
 //   compte ................ une ligne de `users`, creee au premier lancement.
 //   compte authentifie .... porte un `clerk_id`.
-//   a lance une partie .... une seance a demarre (`session_start`).
+//   a ouvert le jeu ....... une seance a demarre (`session_start`).
 //   a repondu ............. au moins une reponse au journal (`answer`).
+//
+// ET DEUX MOTS POUR LES SEANCES, depuis l'enquete du 2026-09-14 :
+//   ouverture du jeu ...... une ligne de `sessions` sans aucune reponse. Le jeu
+//                           demarre au chargement de sa page, donc une ouverture
+//                           est une VISITE et pas un abandon.
+//   partie ................ une ligne de `sessions` portant au moins une reponse.
+//                           C'est le seul nombre qu'on a le droit d'appeler ainsi.
 //
 // Les deux derniers different d'un facteur deux (177 contre 78 sur trente jours
 // le 2026-09-12) : l'ecart est un signal, pas une imprecision. Le jour ou
@@ -94,7 +101,7 @@ export const ADMIN_GROUPS: AdminGroup[] = [
       {
         href: "/admin/activite",
         label: "Activité",
-        question: "Ce qui se passe dans le produit : séances lancées, terminées, abandonnées.",
+        question: "Ce qui se passe dans le produit : parties jouées, terminées, abandonnées.",
       },
       {
         href: "/admin/utilisateurs",
@@ -104,7 +111,7 @@ export const ADMIN_GROUPS: AdminGroup[] = [
       {
         href: "/admin/sessions",
         label: "Sessions",
-        question: "La forme d'une séance : longueur, durée, ce qui la termine ou l'interrompt.",
+        question: "La forme d'une partie : longueur, durée, ce qui la termine ou l'interrompt, et ce qui n'est qu'une ouverture.",
       },
       {
         href: "/admin/audience",

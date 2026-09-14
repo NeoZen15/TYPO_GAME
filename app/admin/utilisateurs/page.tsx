@@ -77,9 +77,9 @@ export default async function AdminUtilisateursPage() {
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{vital.launched_30d - vital.answered_30d}</span>
-          <span className="st-kpi__label">Ont lancé sans répondre · 30 jours</span>
+          <span className="st-kpi__label">Ont ouvert sans répondre · 30 jours</span>
           <span className="st-kpi__helper">
-            {vital.launched_30d} ont lancé, {vital.answered_30d} ont répondu
+            {vital.launched_30d} ont ouvert le jeu, {vital.answered_30d} ont répondu
           </span>
         </div>
       </section>

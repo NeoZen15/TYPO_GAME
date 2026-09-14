@@ -33,7 +33,9 @@ export type ProductHealth = {
   accounts: number;
   accounts_30d: number;
   sessions: number;
+  sessions_played: number;
   sessions_completed: number;
+  sessions_completed_empty: number;
   sessions_open: number;
   answers: number;
   first_tries: number;
@@ -51,6 +53,18 @@ export type ProductHealth = {
  * D'ou la presence, cote a cote, des comptes crees, des comptes actifs, des
  * seances ouvertes et des seances terminees.
  *
+ * UNE OUVERTURE DU JEU N'EST PAS UNE PARTIE, et la difference est enorme.
+ * Enquete du 2026-09-14 : `GameScreen` demarre la seance dans un effet de
+ * montage, pas sur un clic. Charger la page du jeu cree donc une ligne dans
+ * `sessions`, et le serveur cree le compte invite au meme instant. Mesure : 445
+ * des 595 lignes ne portent aucune reponse, 219 comptes sur 271 n'ont qu'une
+ * seule seance, 183 n'ont que des seances vides.
+ *
+ * DONC `sessions` COMPTE DES CHARGEMENTS DE PAGE ET PAS DES PARTIES. Le choix
+ * produit reste (le jeu demarre sans friction, et personne ne veut le changer) :
+ * c'est la MESURE qui s'adapte. `sessions` garde son nom brut, et
+ * `sessions_played` est le seul nombre qu'on a le droit d'appeler une partie.
+ *
  * LE MOT « ACTIF » N'EXISTE PLUS DANS CE MODULE, et c'est une decision du
  * proprietaire du 2026-09-12. Il avait deja designe deux populations differentes
  * en deux jours. Tout se dit maintenant par un fait observable : « a lance une
@@ -63,7 +77,10 @@ export const productHealth = async (): Promise<ProductHealth> => {
       (SELECT count(*)::int FROM users) AS accounts,
       (SELECT count(*)::int FROM users WHERE created_at > now() - interval '30 days') AS accounts_30d,
       (SELECT count(*)::int FROM sessions) AS sessions,
+      (SELECT count(*)::int FROM sessions WHERE question_count > 0) AS sessions_played,
       (SELECT count(*)::int FROM sessions WHERE status = 'completed') AS sessions_completed,
+      (SELECT count(*)::int FROM sessions
+        WHERE status = 'completed' AND question_count = 0) AS sessions_completed_empty,
       (SELECT count(*)::int FROM sessions WHERE status = 'active') AS sessions_open,
       (SELECT count(*)::int FROM user_event_fact WHERE event_type = 'answer') AS answers,
       (SELECT count(*)::int FROM user_event_fact
@@ -190,6 +207,7 @@ export type SessionShape = {
   abandoned: number;
   open: number;
   empty: number;
+  completed_empty: number;
   median_questions: number | null;
   median_seconds: number | null;
 };
@@ -218,8 +236,15 @@ export type SessionShape = {
  *
  * `empty` compte les seances sans une seule question, et celui la est un fait
  * direct : `question_count` est ecrit par la meme instruction atomique que le
- * journal. Il existe pour que la moyenne de questions par seance soit lisible,
- * celle ci excluant les seances vides (445 sur 595 le 2026-09-11).
+ * journal. Depuis l'enquete du 2026-09-14 on sait ce qu'il mesure : des
+ * CHARGEMENTS de la page du jeu, la seance etant creee au montage du composant.
+ * Ce n'est donc pas un abandon, et ce n'est pas une anomalie.
+ *
+ * `completed_empty`, EN REVANCHE, EN EST UNE. Une seance TERMINEE EXPLICITEMENT
+ * sans une seule reponse n'a rien de mecanique : quelqu'un a lance, est reste, et
+ * a ferme proprement sans jamais repondre. Mesure du 2026-09-14 : 57 en
+ * competition, duree moyenne 2 min 34, maximum 18 minutes. Celui la merite d'etre
+ * regarde.
  */
 export const sessionShapes = () =>
   rows<SessionShape>(sql`
@@ -230,6 +255,7 @@ export const sessionShapes = () =>
       count(*) FILTER (WHERE status = 'abandoned')::int AS abandoned,
       count(*) FILTER (WHERE status = 'active')::int AS open,
       count(*) FILTER (WHERE question_count = 0)::int AS empty,
+      count(*) FILTER (WHERE status = 'completed' AND question_count = 0)::int AS completed_empty,
       percentile_cont(0.5) WITHIN GROUP (ORDER BY question_count)
         FILTER (WHERE status = 'completed')::int AS median_questions,
       round(percentile_cont(0.5) WITHIN GROUP (ORDER BY duration_ms)

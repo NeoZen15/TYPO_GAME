@@ -31,6 +31,12 @@ export const metadata: Metadata = {
 // deux etats du produit : « il y a 16 jours / 78 personnes » aujourd'hui, « il y a
 // 2 min / 1 482 personnes » le jour ou ca marche.
 //
+// UNE OUVERTURE DU JEU N'EST PAS UNE PARTIE (enquete du 2026-09-14). Charger la
+// page du jeu cree une seance et un compte, parce que le jeu demarre au montage
+// du composant et sans friction. Le cockpit ne compte donc comme PARTIE qu'une
+// seance portant au moins une reponse, et il dit « ouvertures » pour le reste.
+// Le choix produit ne bouge pas, c'est la mesure qui s'y adapte.
+//
 // CHAQUE CHIFFRE PORTE SA FENETRE DANS SON LIBELLE. Un total depuis le premier
 // jour et un compte sur trente jours ne se comparent pas, et rien n'empeche de le
 // faire de tete si l'ecran ne le dit pas a l'endroit ou l'oeil passe.
@@ -71,8 +77,8 @@ export default async function AdminOverviewPage() {
     invitationsToRelaunch(),
   ]);
 
-  const seances = shapes.reduce((sum, shape) => sum + shape.n, 0);
-  const seancesVides = shapes.reduce((sum, shape) => sum + shape.empty, 0);
+  const ouvertures = shapes.reduce((sum, shape) => sum + shape.n, 0);
+  const partiesTermineesSansReponse = shapes.reduce((sum, shape) => sum + shape.completed_empty, 0);
 
   const aFaire = actions({
     demandesEnAttente: counts.pending,
@@ -81,7 +87,11 @@ export default async function AdminOverviewPage() {
     clerkBranche: clerkOn,
   });
 
-  const aRegarder = investigations({ pulse: vital, data, seances, seancesVides });
+  const aRegarder = investigations({
+    data,
+    partiesTerminees: health.sessions_completed,
+    partiesTermineesSansReponse,
+  });
 
   const recence = depuis(vital.seconds_since);
 
@@ -128,7 +138,7 @@ export default async function AdminOverviewPage() {
           </span>
           <span className="ad-pulse__label">ont répondu · 30 derniers jours</span>
           <span className="ad-pulse__helper">
-            {vital.answered_7d} sur 7 jours · {vital.launched_30d} ont lancé une partie
+            {vital.answered_7d} sur 7 jours · {vital.launched_30d} ont ouvert le jeu
           </span>
         </div>
       </section>
@@ -138,12 +148,14 @@ export default async function AdminOverviewPage() {
         <div className="st-kpi">
           <span className="st-kpi__value">{health.accounts}</span>
           <span className="st-kpi__label">Comptes · total</span>
-          <span className="st-kpi__helper">{health.accounts_30d} créés sur 30 jours</span>
+          <span className="st-kpi__helper">un par navigateur ayant ouvert le jeu</span>
         </div>
         <div className="st-kpi">
-          <span className="st-kpi__value">{seances}</span>
-          <span className="st-kpi__label">Séances · total</span>
-          <span className="st-kpi__helper">{health.sessions_completed} terminées depuis le début</span>
+          <span className="st-kpi__value">{health.sessions_played}</span>
+          <span className="st-kpi__label">Parties jouées · total</span>
+          <span className="st-kpi__helper">
+            sur {ouvertures} ouvertures du jeu
+          </span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{vital.answers_30d}</span>
@@ -183,13 +195,16 @@ export default async function AdminOverviewPage() {
           </ul>
           <p className="ad-note">
             Ces lignes signalent, elles n&apos;accusent pas : chacune porte son
-            ratio, et les seuils qui les déclenchent ({SEUILS_PROVISOIRES.seancesSansQuestion} %
-            de séances sans question, {SEUILS_PROVISOIRES.lanceursSansReponse} % de
-            personnes qui lancent sans répondre) sont <strong>provisoires</strong>.
-            Ils viennent d&apos;un jugement posé sur 99 personnes ayant joué, pas
-            d&apos;une norme : ils se règlent en une ligne dans{" "}
-            <code>lib/admin/signals.ts</code> et devront être revus quand le produit
-            aura de l&apos;usage derrière lui.
+            ratio, et le seuil qui déclenche la première (
+            {SEUILS_PROVISOIRES.partiesTermineesSansReponse} % des parties terminées
+            sans réponse) est <strong>provisoire</strong>. Il vient d&apos;un jugement
+            posé sur un produit qui compte 99 personnes ayant répondu, pas d&apos;une
+            norme : il se règle en une ligne dans <code>lib/admin/signals.ts</code>.
+            Ce qui relève de la conception et non de l&apos;anomalie n&apos;est pas
+            ici : les ouvertures du jeu sans partie se lisent dans{" "}
+            <Link href="/admin/sessions" className="ad-link">Sessions</Link>, la part
+            des gens qui ouvrent sans répondre dans{" "}
+            <Link href="/admin/utilisateurs" className="ad-link">Utilisateurs</Link>.
           </p>
         </section>
       )}

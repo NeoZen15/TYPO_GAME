@@ -1,5 +1,22 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-14 (suite 10) — le vocabulaire des séances est corrigé, le jeu n'a pas bougé
+
+**Sortie choisie par le propriétaire : garder le jeu, corriger la mesure.** Aucune ligne du moteur ni du démarrage n'a été touchée.
+
+**Deux mots nouveaux, écrits dans la carte de l'espace** (`features/admin/components/admin-nav.ts`) : une **ouverture du jeu** est une ligne de `sessions` sans aucune réponse, c'est une visite et pas un abandon ; une **partie** est une ligne portant au moins une réponse, et c'est le seul nombre qu'on a le droit d'appeler ainsi. `sessions_played` est le champ correspondant.
+
+**Ce qui change à l'écran.** L'accueil affiche **150 parties jouées sur 595 ouvertures du jeu** au lieu de « 595 séances », et « Comptes · total 271 » précise maintenant « un par navigateur ayant ouvert le jeu ». Le pouls dit « ont ouvert le jeu » et non « ont lancé une partie ». Sessions sépare les deux en deux tuiles et explique la cause en toutes lettres. Activité et Utilisateurs suivent le même vocabulaire.
+
+**Le bloc « À investiguer » est nettoyé.** Les deux lignes qui y figuraient (« 75 % des séances sans question », « 99 personnes ont lancé sans répondre ») étaient les conséquences **mécaniques** du démarrage au montage : présenter une conséquence de conception comme une anomalie apprend à ne plus lire le bloc. Elles restent affichées ailleurs comme faits d'entonnoir, dans Sessions et dans Utilisateurs.
+
+**À leur place, le seul signal qui reste inexpliqué : 59 parties terminées explicitement sans une seule réponse, soit 64 % des parties terminées.** Elles portent toutes un `session_end`, presque toutes en compétition, durée moyenne de deux minutes et demie. Quelqu'un lance, reste, et ferme proprement sans jamais répondre.
+
+**Les seuils passent de trois à un** : `partiesTermineesSansReponse: 20` %, toujours provisoire et toujours modifiable en une ligne dans `lib/admin/signals.ts`.
+
+**Prochaine enquête, quand tu voudras** : pourquoi ces 59 parties. Hypothèse à vérifier, non testée : en compétition, l'écran de règles ou le compte à rebours pourrait consommer la séance avant la première question.
+
+
 ## Note — 2026-09-14 (suite 9) — les 445 séances vides : une séance est créée au chargement de la page
 
 **Enquête demandée par le propriétaire avant de toucher à quoi que ce soit.** Réponse trouvée dans le code, confirmée par la mesure.

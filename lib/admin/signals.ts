@@ -1,7 +1,6 @@
 import "server-only";
 
 import type { DataHealth } from "@/lib/admin/quality";
-import type { Pulse } from "@/lib/admin/usage";
 
 // DEUX LISTES QU'ON NE MELANGE JAMAIS : CE QU'ON FAIT, CE QU'ON REGARDE.
 //
@@ -29,10 +28,12 @@ import type { Pulse } from "@/lib/admin/usage";
 // A revoir quand le produit aura quelques milliers de seances derriere lui.
 // ---------------------------------------------------------------------------
 export const SEUILS_PROVISOIRES = {
-  /** Part des seances sans une seule question, au dela de laquelle on regarde. */
-  seancesSansQuestion: 40,
-  /** Part des personnes qui lancent une partie sans jamais repondre. */
-  lanceursSansReponse: 30,
+  /**
+   * Part des parties TERMINEES EXPLICITEMENT qui n'ont recu aucune reponse.
+   * Quelqu'un a lance, est reste, et a ferme proprement sans repondre : ca ne
+   * s'explique par aucun mecanisme connu. 62 % le 2026-09-14.
+   */
+  partiesTermineesSansReponse: 20,
 } as const;
 
 export type Ligne = { key: string; text: string; href: string };
@@ -86,44 +87,44 @@ export const actions = (input: ActionsInput): Ligne[] => {
 };
 
 export type InvestigationsInput = {
-  pulse: Pulse;
   data: DataHealth;
-  seances: number;
-  seancesVides: number;
+  partiesTerminees: number;
+  partiesTermineesSansReponse: number;
 };
 
 /**
  * A INVESTIGUER : ce qui ne se repare pas d'un clic, et qu'il faut comprendre.
  *
- * CE QUI N'Y EST PAS, ET POURQUOI. J'y avais mis « 66 % des seances refermees en
- * moins d'une seconde ». Verification demandee par le proprietaire le 2026-09-12,
- * et il avait raison : ce chiffre mesurait la latence entre deux ecritures du
- * serveur. Les seances abandonnees sont fermees par le balayage, qui prend
- * `ended_at` du dernier evenement journalise ; sans reponse, ce dernier evenement
- * est leur propre `session_start`. Un signal faux dans un tableau de bord coute
- * plus cher qu'un signal absent : on enquete pour rien, puis on cesse de croire
- * l'ecran.
+ * CE QUI N'Y EST PLUS, ET POURQUOI. Deux lignes y figuraient et n'avaient rien a
+ * y faire : « 75 % des seances n'ont recu aucune question » et « 99 personnes ont
+ * lance sans jamais repondre ». L'enquete du 2026-09-14 a montre que ce sont les
+ * consequences MECANIQUES du demarrage au montage : charger la page du jeu cree
+ * une seance et un compte. Presenter une consequence de conception comme une
+ * anomalie apprend a ne plus lire le bloc. Ces deux nombres restent affiches
+ * ailleurs, comme des faits d'entonnoir : dans Sessions et dans Utilisateurs.
+ *
+ * ET CE QUI Y EST ENTRE A LEUR PLACE : les parties terminees explicitement sans
+ * une seule reponse. Celles la ne s'expliquent par aucun mecanisme connu.
+ *
+ * J'Y AVAIS AUSSI MIS « 66 % des seances refermees en moins d'une seconde ».
+ * Verification demandee par le proprietaire le 2026-09-12 : ce chiffre mesurait
+ * la latence entre deux ecritures du serveur. Un signal faux coute plus cher
+ * qu'un signal absent : on enquete pour rien, puis on cesse de croire l'ecran.
  */
 export const investigations = (input: InvestigationsInput): Ligne[] => {
   const lignes: Ligne[] = [];
-  const { pulse, data, seances, seancesVides } = input;
+  const { data, partiesTerminees, partiesTermineesSansReponse } = input;
 
-  const partVides = seances === 0 ? 0 : Math.round((100 * seancesVides) / seances);
-  if (partVides >= SEUILS_PROVISOIRES.seancesSansQuestion) {
+  const partMuettes =
+    partiesTerminees === 0 ? 0 : Math.round((100 * partiesTermineesSansReponse) / partiesTerminees);
+  if (
+    partiesTermineesSansReponse > 0 &&
+    partMuettes >= SEUILS_PROVISOIRES.partiesTermineesSansReponse
+  ) {
     lignes.push({
-      key: "vides",
-      text: `${partVides} % des séances n'ont reçu aucune question (${seancesVides} sur ${seances})`,
+      key: "muettes",
+      text: `${partiesTermineesSansReponse} parties terminées explicitement sans une seule réponse (${partMuettes} % des parties terminées)`,
       href: "/admin/sessions",
-    });
-  }
-
-  const muets = pulse.launched_30d - pulse.answered_30d;
-  const partMuets = pulse.launched_30d === 0 ? 0 : Math.round((100 * muets) / pulse.launched_30d);
-  if (muets > 0 && partMuets >= SEUILS_PROVISOIRES.lanceursSansReponse) {
-    lignes.push({
-      key: "muets",
-      text: `${muets} personnes ont lancé une partie sans jamais répondre, sur 30 jours (${partMuets} % de celles qui ont lancé)`,
-      href: "/admin/utilisateurs",
     });
   }
 

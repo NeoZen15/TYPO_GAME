@@ -8,6 +8,10 @@ export const metadata: Metadata = { title: "Activité" };
 
 // CE QUI SE PASSE DANS LE PRODUIT.
 //
+// UNE OUVERTURE DU JEU N'EST PAS UNE PARTIE. Le jeu demarre au chargement de sa
+// page : une ligne de `sessions` sans reponse est une visite, pas un abandon.
+// Seules les seances portant au moins une reponse sont appelees des parties.
+//
 // LA SEULE COMPARAISON QUI COMPTE ICI : lance contre termine. Une seance ouverte
 // et jamais refermee n'est pas un demi succes, c'est un abandon qui n'a pas dit
 // son nom, et le distinguer d'une seance finie est ce qui empeche de lire une
@@ -40,9 +44,9 @@ export default async function AdminActivitePage() {
 
       <section className="st-kpis ad-kpis" aria-label="Séances">
         <div className="st-kpi">
-          <span className="st-kpi__value">{health.sessions}</span>
-          <span className="st-kpi__label">Séances lancées</span>
-          <span className="st-kpi__helper">depuis le premier jour</span>
+          <span className="st-kpi__value">{health.sessions_played}</span>
+          <span className="st-kpi__label">Parties jouées</span>
+          <span className="st-kpi__helper">sur {health.sessions} ouvertures du jeu</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{health.sessions_completed}</span>
