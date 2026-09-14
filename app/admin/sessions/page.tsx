@@ -31,7 +31,6 @@ export default async function AdminSessionsPage() {
   const [health, shapes] = await Promise.all([productHealth(), sessionShapes()]);
   const vides = shapes.reduce((sum, shape) => sum + shape.empty, 0);
   const ouvertures = shapes.reduce((sum, shape) => sum + shape.n, 0);
-  const muettes = shapes.reduce((sum, shape) => sum + shape.completed_empty, 0);
 
   return (
     <>
@@ -41,7 +40,9 @@ export default async function AdminSessionsPage() {
         <div className="st-kpi">
           <span className="st-kpi__value">{health.sessions_played}</span>
           <span className="st-kpi__label">Parties jouées</span>
-          <span className="st-kpi__helper">au moins une réponse</span>
+          <span className="st-kpi__helper">
+            {health.sessions_played_completed} terminées jusqu&apos;au bout
+          </span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{vides}</span>
@@ -74,9 +75,9 @@ export default async function AdminSessionsPage() {
                 <span className="ad-rows__name">
                   <em>{shape.mode}</em>
                   <b>
-                    {shape.n - shape.empty} parties sur {shape.n} ouvertures ·{" "}
-                    {shape.completed} terminées · {shape.abandoned} abandonnées
-                    {shape.open > 0 ? ` · ${shape.open} encore en cours` : ""}
+                    {shape.played} parties sur {shape.n} ouvertures ·{" "}
+                    {shape.played_completed} terminées · {shape.played_abandoned} abandonnées
+                    {shape.played_open > 0 ? ` · ${shape.played_open} en cours` : ""}
                   </b>
                 </span>
                 <span className="ad-rows__value">
@@ -96,16 +97,6 @@ export default async function AdminSessionsPage() {
           on ne compte comme <strong>partie</strong> qu&apos;une séance portant au
           moins une réponse.
         </p>
-        {muettes > 0 && (
-          <p className="ad-note">
-            <strong>{muettes} parties ont pourtant été terminées explicitement sans
-            une seule réponse</strong>, et celles-là ne s&apos;expliquent par aucun
-            mécanisme : quelqu&apos;un a lancé, est resté, et a fermé proprement sans
-            jamais répondre. Mesuré le 2026-09-14, presque toutes en compétition,
-            pour une durée moyenne de deux minutes et demie. C&apos;est le seul
-            signal de cette page qui mérite une enquête.
-          </p>
-        )}
         <p className="ad-note">
           Les médianes ne portent que sur les parties <strong>terminées</strong>, et
           c&apos;est une question de vérité, pas de prudence. Les parties terminées

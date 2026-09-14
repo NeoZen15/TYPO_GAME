@@ -4,7 +4,7 @@ import Link from "next/link";
 import AdminPageHead from "@/features/admin/components/AdminPageHead";
 import { accessRequestCounts, accessRequests } from "@/lib/admin/access-requests";
 import { dataHealth } from "@/lib/admin/quality";
-import { actions, investigations, SEUILS_PROVISOIRES } from "@/lib/admin/signals";
+import { actions, investigations } from "@/lib/admin/signals";
 import { productHealth, pulse, sessionShapes } from "@/lib/admin/usage";
 import { invitationsToRelaunch, worldCounts } from "@/lib/admin/world";
 import { isClerkConfigured } from "@/lib/server/clerk-availability";
@@ -78,7 +78,6 @@ export default async function AdminOverviewPage() {
   ]);
 
   const ouvertures = shapes.reduce((sum, shape) => sum + shape.n, 0);
-  const partiesTermineesSansReponse = shapes.reduce((sum, shape) => sum + shape.completed_empty, 0);
 
   const aFaire = actions({
     demandesEnAttente: counts.pending,
@@ -87,11 +86,7 @@ export default async function AdminOverviewPage() {
     clerkBranche: clerkOn,
   });
 
-  const aRegarder = investigations({
-    data,
-    partiesTerminees: health.sessions_completed,
-    partiesTermineesSansReponse,
-  });
+  const aRegarder = investigations({ data });
 
   const recence = depuis(vital.seconds_since);
 
@@ -183,7 +178,7 @@ export default async function AdminOverviewPage() {
         <section className="st-panel" aria-label="À investiguer">
           <div className="st-panel__head">
             <h2 className="st-panel__title">À investiguer</h2>
-            <span className="st-panel__meta">seuils provisoires</span>
+            <span className="st-panel__meta">attendus à zéro</span>
           </div>
           <ul className="ad-rows">
             {aRegarder.map((ligne) => (
@@ -194,17 +189,16 @@ export default async function AdminOverviewPage() {
             ))}
           </ul>
           <p className="ad-note">
-            Ces lignes signalent, elles n&apos;accusent pas : chacune porte son
-            ratio, et le seuil qui déclenche la première (
-            {SEUILS_PROVISOIRES.partiesTermineesSansReponse} % des parties terminées
-            sans réponse) est <strong>provisoire</strong>. Il vient d&apos;un jugement
-            posé sur un produit qui compte 99 personnes ayant répondu, pas d&apos;une
-            norme : il se règle en une ligne dans <code>lib/admin/signals.ts</code>.
-            Ce qui relève de la conception et non de l&apos;anomalie n&apos;est pas
-            ici : les ouvertures du jeu sans partie se lisent dans{" "}
+            Trois contrôles d&apos;intégrité, tous attendus à zéro : aucun seuil
+            n&apos;est en jeu, l&apos;écart est l&apos;anomalie. Ce qui relève de la
+            conception et non de l&apos;anomalie n&apos;est pas ici : les ouvertures
+            du jeu sans partie se lisent dans{" "}
             <Link href="/admin/sessions" className="ad-link">Sessions</Link>, la part
             des gens qui ouvrent sans répondre dans{" "}
             <Link href="/admin/utilisateurs" className="ad-link">Utilisateurs</Link>.
+            Trois signaux de comportement ont été essayés puis retirés, chacun
+            décrivant une décision d&apos;architecture et pas un usage : leur
+            histoire est dans <code>lib/admin/signals.ts</code>.
           </p>
         </section>
       )}

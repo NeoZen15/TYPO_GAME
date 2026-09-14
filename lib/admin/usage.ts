@@ -35,7 +35,7 @@ export type ProductHealth = {
   sessions: number;
   sessions_played: number;
   sessions_completed: number;
-  sessions_completed_empty: number;
+  sessions_played_completed: number;
   sessions_open: number;
   answers: number;
   first_tries: number;
@@ -80,7 +80,7 @@ export const productHealth = async (): Promise<ProductHealth> => {
       (SELECT count(*)::int FROM sessions WHERE question_count > 0) AS sessions_played,
       (SELECT count(*)::int FROM sessions WHERE status = 'completed') AS sessions_completed,
       (SELECT count(*)::int FROM sessions
-        WHERE status = 'completed' AND question_count = 0) AS sessions_completed_empty,
+        WHERE status = 'completed' AND question_count > 0) AS sessions_played_completed,
       (SELECT count(*)::int FROM sessions WHERE status = 'active') AS sessions_open,
       (SELECT count(*)::int FROM user_event_fact WHERE event_type = 'answer') AS answers,
       (SELECT count(*)::int FROM user_event_fact
@@ -202,64 +202,58 @@ export const learningShape = async (): Promise<LearningShape> => {
 
 export type SessionShape = {
   mode: string;
+  /** Ouvertures du jeu : toutes les lignes, jouees ou non. */
   n: number;
-  completed: number;
-  abandoned: number;
-  open: number;
+  /** Parties : au moins une reponse. Le seul nombre qu'on appelle ainsi. */
+  played: number;
+  played_completed: number;
+  played_abandoned: number;
+  played_open: number;
   empty: number;
-  completed_empty: number;
   median_questions: number | null;
   median_seconds: number | null;
 };
 
 /**
- * La forme d'une seance, par mode.
+ * La forme d'une partie, par mode.
  *
- * MEDIANE ET PAS MOYENNE. Une poignee de seances tres longues tire une moyenne
- * vers le haut et fait croire que tout le monde joue longtemps. La mediane dit ce
- * que vit la personne du milieu, qui est la question.
+ * TOUT SE COMPTE EN PARTIES, ET C'EST UNE CORRECTION DU 2026-09-14. Les colonnes
+ * disaient « terminees », « abandonnees », « ouvertes » sur TOUTES les lignes,
+ * ouvertures du jeu comprises. Consequence mesuree : « 78 competitions
+ * terminees » dont 57 sans une seule reponse, et une mediane de « 0 question »
+ * pour une partie de deux minutes. Une ouverture du jeu qui expire n'est pas une
+ * partie terminee.
  *
- * LES MEDIANES NE PORTENT QUE SUR LES SEANCES TERMINEES, ET C'EST UNE QUESTION DE
- * VERITE, PAS DE PRUDENCE. Verifie le 2026-09-12 sur demande du proprietaire :
- * les 92 seances terminees portent toutes un evenement `session_end`, les 473
- * abandonnees n'en portent AUCUN. Une seance abandonnee est fermee par le
- * balayage, qui ecrit `ended_at = dernier evenement journalise` ; pour une seance
- * sans reponse, ce dernier evenement est son propre `session_start`, ecrit
- * quelques dizaines de millisecondes apres la creation de la ligne.
+ * POURQUOI LE CHRONO LES FERME EN « TERMINEE ». Une competition dure 120 secondes
+ * a partir de `started_at`, et la seance est creee au chargement de la page. Qui
+ * ouvre la page sans jouer voit donc son chrono s'ecouler, et la route de timeout
+ * ferme proprement avec un `session_end`. Mesure : 53 des 57 ont une duree entre
+ * 100 et 200 secondes, mediane 140. Ce n'est pas un abandon, ce n'est pas une
+ * anomalie, c'est le chrono.
  *
- * DONC `duration_ms` D'UNE SEANCE ABANDONNEE NE MESURE PAS UNE DUREE VECUE : elle
- * mesure l'ecart entre deux ecritures du serveur. Mediane mesuree : 46 ms pour
- * les 374 seances abandonnees sans question, alors que le balayage ne se
- * declenche qu'apres trente minutes, donc ces seances ont vecu au moins une demi
- * heure. J'en avais tire un indicateur de « seances mortes-nees » : il comptait
- * une latence d'insertion. Il est retire.
- *
- * `empty` compte les seances sans une seule question, et celui la est un fait
- * direct : `question_count` est ecrit par la meme instruction atomique que le
- * journal. Depuis l'enquete du 2026-09-14 on sait ce qu'il mesure : des
- * CHARGEMENTS de la page du jeu, la seance etant creee au montage du composant.
- * Ce n'est donc pas un abandon, et ce n'est pas une anomalie.
- *
- * `completed_empty`, EN REVANCHE, EN EST UNE. Une seance TERMINEE EXPLICITEMENT
- * sans une seule reponse n'a rien de mecanique : quelqu'un a lance, est reste, et
- * a ferme proprement sans jamais repondre. Mesure du 2026-09-14 : 57 en
- * competition, duree moyenne 2 min 34, maximum 18 minutes. Celui la merite d'etre
- * regarde.
+ * LES MEDIANES NE PORTENT QUE SUR LES PARTIES TERMINEES, et c'est une question de
+ * verite. Les parties terminees portent toutes un evenement de fin explicite ;
+ * les abandonnees n'en portent AUCUN et sont fermees par le balayage, qui ecrit
+ * `ended_at = dernier evenement journalise`. Pour une seance sans reponse ce
+ * dernier evenement est son propre `session_start` : la duree d'une seance
+ * abandonnee mesure donc l'ecart entre deux ecritures du serveur, pas un temps
+ * vecu.
  */
 export const sessionShapes = () =>
   rows<SessionShape>(sql`
     SELECT
       mode,
       count(*)::int AS n,
-      count(*) FILTER (WHERE status = 'completed')::int AS completed,
-      count(*) FILTER (WHERE status = 'abandoned')::int AS abandoned,
-      count(*) FILTER (WHERE status = 'active')::int AS open,
+      count(*) FILTER (WHERE question_count > 0)::int AS played,
+      count(*) FILTER (WHERE question_count > 0 AND status = 'completed')::int AS played_completed,
+      count(*) FILTER (WHERE question_count > 0 AND status = 'abandoned')::int AS played_abandoned,
+      count(*) FILTER (WHERE question_count > 0 AND status = 'active')::int AS played_open,
       count(*) FILTER (WHERE question_count = 0)::int AS empty,
-      count(*) FILTER (WHERE status = 'completed' AND question_count = 0)::int AS completed_empty,
       percentile_cont(0.5) WITHIN GROUP (ORDER BY question_count)
-        FILTER (WHERE status = 'completed')::int AS median_questions,
+        FILTER (WHERE status = 'completed' AND question_count > 0)::int AS median_questions,
       round(percentile_cont(0.5) WITHIN GROUP (ORDER BY duration_ms)
-        FILTER (WHERE status = 'completed' AND duration_ms IS NOT NULL) / 1000.0)::int AS median_seconds
+        FILTER (WHERE status = 'completed' AND question_count > 0
+                AND duration_ms IS NOT NULL) / 1000.0)::int AS median_seconds
     FROM sessions
     GROUP BY mode
     ORDER BY n DESC

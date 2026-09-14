@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import AdminBars from "@/features/admin/components/AdminBars";
 import AdminPageHead from "@/features/admin/components/AdminPageHead";
-import { contextSplit, dailyActivity, productHealth } from "@/lib/admin/usage";
+import { contextSplit, dailyActivity, productHealth, sessionShapes } from "@/lib/admin/usage";
 
 export const metadata: Metadata = { title: "Activité" };
 
@@ -29,13 +29,20 @@ const LIBELLE_CONTEXTE: Record<string, string> = {
 };
 
 export default async function AdminActivitePage() {
-  const [health, split, daily] = await Promise.all([
+  const [health, split, daily, shapes] = await Promise.all([
     productHealth(),
     contextSplit(),
     dailyActivity(),
+    sessionShapes(),
   ]);
 
-  const abandoned = health.sessions - health.sessions_completed - health.sessions_open;
+  // Parties abandonnees = parties moins celles qui sont allees au bout, moins
+  // celles qui tournent encore. On soustrait dans le monde des PARTIES et jamais
+  // dans celui des ouvertures : une ouverture du jeu qui expire n'a rien
+  // abandonne, personne n'avait commence.
+  const partiesOuvertes = shapes.reduce((sum, shape) => sum + shape.played_open, 0);
+  const partiesAbandonnees =
+    health.sessions_played - health.sessions_played_completed - partiesOuvertes;
   const pointe = Math.max(1, ...daily.map((day) => day.answers));
 
   return (
@@ -49,16 +56,16 @@ export default async function AdminActivitePage() {
           <span className="st-kpi__helper">sur {health.sessions} ouvertures du jeu</span>
         </div>
         <div className="st-kpi">
-          <span className="st-kpi__value">{health.sessions_completed}</span>
-          <span className="st-kpi__label">Terminées</span>
+          <span className="st-kpi__value">{health.sessions_played_completed}</span>
+          <span className="st-kpi__label">Parties terminées</span>
           <span className="st-kpi__helper">
-            {Math.round(part(health.sessions_completed, health.sessions))} % du total
+            {Math.round(part(health.sessions_played_completed, health.sessions_played))} % des parties
           </span>
         </div>
         <div className="st-kpi">
-          <span className="st-kpi__value">{abandoned < 0 ? 0 : abandoned}</span>
-          <span className="st-kpi__label">Abandonnées</span>
-          <span className="st-kpi__helper">{health.sessions_open} encore ouvertes</span>
+          <span className="st-kpi__value">{partiesAbandonnees < 0 ? 0 : partiesAbandonnees}</span>
+          <span className="st-kpi__label">Parties abandonnées</span>
+          <span className="st-kpi__helper">{partiesOuvertes} encore en cours</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{health.answers}</span>
@@ -67,8 +74,8 @@ export default async function AdminActivitePage() {
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{health.questions_per_session ?? "—"}</span>
-          <span className="st-kpi__label">Questions par séance</span>
-          <span className="st-kpi__helper">moyenne, hors séances sans question</span>
+          <span className="st-kpi__label">Questions par partie</span>
+          <span className="st-kpi__helper">moyenne, sur les parties jouées</span>
         </div>
         <div className="st-kpi">
           <span className="st-kpi__value">{daily.reduce((sum, day) => sum + day.answers, 0)}</span>
@@ -80,14 +87,14 @@ export default async function AdminActivitePage() {
       <section className="st-panel" aria-label="Ce qu'ils lancent">
         <div className="st-panel__head">
           <h2 className="st-panel__title">Ce qu&apos;ils lancent</h2>
-          <span className="st-panel__meta">{health.sessions} séances en tout</span>
+          <span className="st-panel__meta">{health.sessions_played} parties en tout</span>
         </div>
         <AdminBars
-          rows={health.by_mode.map((row) => ({
-            key: row.mode,
-            label: row.mode,
-            value: `${row.n} séances`,
-            pct: part(row.n, health.sessions),
+          rows={shapes.map((shape) => ({
+            key: shape.mode,
+            label: shape.mode,
+            value: `${shape.played} parties sur ${shape.n} ouvertures`,
+            pct: part(shape.played, health.sessions_played),
           }))}
         />
       </section>
@@ -104,7 +111,7 @@ export default async function AdminActivitePage() {
                 <em>{LIBELLE_CONTEXTE[row.context] ?? row.context}</em>
               </span>
               <span className="ad-rows__value">
-                {row.sessions} séances · {row.answers} réponses
+                {row.sessions} ouvertures · {row.answers} réponses
               </span>
             </li>
           ))}

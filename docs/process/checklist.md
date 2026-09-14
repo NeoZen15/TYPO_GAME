@@ -1,5 +1,43 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-14 (suite 11) — le chrono de la compétition, et zéro seuil de comportement
+
+**Le « seul signal inexpliqué » n'en était pas un.** J'avais avancé une hypothèse sans rien vérifier (« l'écran de règles ou le compte à rebours pourrait consommer la séance »), le propriétaire l'a relevée, et le code a donné la vraie réponse.
+
+**Une compétition dure 120 secondes** (`COMPETITION_TOTAL_DURATION_MS`), comptées depuis `started_at`, et la séance est créée au chargement de la page comme en entraînement. Qui ouvre la page sans jouer voit son chrono s'écouler, et `/api/competition/session/timeout` ferme la séance en **`completed` avec un `session_end`**, que la personne ait répondu ou non. Mesure : **53 des 57 ont une durée entre 100 et 200 secondes, médiane 140**. C'est le chrono, pas un comportement.
+
+**TROIS SEUILS DE COMPORTEMENT PROPOSÉS, TROIS DÉMONTÉS PAR LA MESURE.** Le motif est toujours le même : sur ce produit, un ratio élevé désigne une décision d'architecture et pas un usage.
+1. « 66 % des séances refermées en moins d'une seconde » mesurait la latence entre deux écritures du serveur.
+2. « 75 % des séances sans question » et « 99 personnes ont lancé sans répondre » décrivaient le démarrage au chargement de la page.
+3. « 64 % des parties terminées sans réponse » décrivait le chrono de la compétition.
+
+`SEUILS_PROVISOIRES` est **supprimé**. Le bloc « À investiguer » ne contient plus que trois contrôles d'intégrité attendus à zéro (partition par défaut, compteurs en écart, séances coincées), et l'histoire des trois signaux retirés est conservée dans l'entête de `lib/admin/signals.ts` pour que personne ne les réinvente.
+
+**« TERMINÉE » VEUT MAINTENANT DIRE « PARTIE TERMINÉE ».** `sessions_completed` valait 92 dont 57 compétitions où personne n'avait joué. Le vrai nombre est **33**. `sessionShapes` compte désormais tout en parties (`played`, `played_completed`, `played_abandoned`, `played_open`), et **les médianes ne portent plus que sur les parties terminées ayant au moins une réponse** : la compétition affichait « 0 question · 2 min », elle affiche « 5 questions · 2 min ».
+
+**Reste ouvert** : les 26 compteurs en écart (entraînement sous-compte 22 réponses), la migration 011, et le provisionnement Clerk.
+
+
+## Note — 2026-09-14 (suite 11) — la fiche Exercice et la page Comparer perdent leurs boîtes
+
+**FICHE EXERCICE.** Zéro `.st-panel` : les cinq sections deviennent des étapes séparées par l'espace et le titre, comme le compositeur. Un bloc dans un bloc supprimé : « Who got to the end » portait un titre de panneau **à l'intérieur** d'un panneau, deux fois la même voix, il devient un sous titre `.tc-step__sub`.
+
+**Une fusion refusée, et c'est le code qui l'interdit.** « Worth a word » et « Everyone on it » listent les mêmes élèves, donc le réflexe est de les fondre. Le commentaire de la seconde dit pourquoi il ne faut pas : « ROSTER ORDER, NEVER SORTED BY RESULT. Sorting a class by its results is a ranking, and this space does not make one. » Fusionner obligerait à trier par résultat. À la place, la liste complète, qui faisait **1 220 px sur une page de 2 545**, se replie derrière une ligne qui dit ce qu'elle contient. La page passe à **1 394 px** et rien n'est retiré.
+
+**L'anatomie a quitté le compositeur** pour `features/teacher/components/teacher-steps.ts` : dès qu'un troisième écran la prend, la laisser là revient à la dupliquer, et deux copies d'un rythme vertical divergent au premier ajustement.
+
+**PAGE COMPARER.** Trois surfaces retirées. Les deux blocs du bas deviennent deux colonnes à 48 px de gouttière, leur signal passant du fond à un filet de 2 px au dessus du titre, ambre et vert. Et surtout `.compare-stage-shell` ne peint plus : elle posait un cadre autour de `.compare-stage`, qui en peint un second. **La pile la plus profonde passe de 4 conteneurs peints à 3.**
+
+**LE GARDE A ÉTÉ CORRIGÉ AVEC.** `check:contrast` déclare cette coquille comme une palette et mesure ses encres contre un `ground` figé, `#fefbf7`, qui était le fond qu'elle peignait. Dépeindre sans toucher au garde l'aurait rendu **faux sans le faire échouer**, pire que de le casser. Mesuré avant : sur `#f6f3ee`, l'encre forte passe de 19,76 à 18,41, les douces de 6,45 à 6,30, l'active de 16,31 à 15,36, seuil 4,5. Les quatre passent.
+
+**Gardées et pourquoi** : `.compare-stage` est le dispositif qu'on regarde ; `.compare-stage-glyph-library-panel` est un flottant (`position: absolute`, z-index 10) qui a besoin de son fond.
+
+**Piège de mesure, et je m'y suis laissé prendre.** J'ai conclu à une feuille périmée parce que **le nom du chunk ne changeait pas** entre deux éditions. Faux : `app_globals_71f961d1.css` dérive du chemin du module, pas du contenu, il est stable par construction. Il faut vérifier le **contenu** servi. Après redémarrage, les marqueurs de l'ancienne peinture sont absents et la feuille tombe de 310 255 à 308 700 octets.
+
+**Vérifié dans les deux thèmes** : 1 244 px, coquille non peinte, pile à 3, aucun défilement horizontal, `check:contrast` rend 18 jetons sur 6 palettes, typecheck et lint verts.
+
+---
+
 ## Note — 2026-09-14 (suite 10) — le vocabulaire des séances est corrigé, le jeu n'a pas bougé
 
 **Sortie choisie par le propriétaire : garder le jeu, corriger la mesure.** Aucune ligne du moteur ni du démarrage n'a été touchée.
