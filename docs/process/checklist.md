@@ -1,5 +1,31 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-14 (suite 9) — les 445 séances vides : une séance est créée au chargement de la page
+
+**Enquête demandée par le propriétaire avant de toucher à quoi que ce soit.** Réponse trouvée dans le code, confirmée par la mesure.
+
+**LA CAUSE.** `features/game/components/GameScreen.tsx` appelle `startSession()` dans un `useEffect` **au montage du composant**, pas sur un clic. Charger `/play/training` crée donc une séance immédiatement. Et comme le compte invité est créé par le serveur au même moment, **un chargement de la page de jeu = un compte + une séance**, même si la personne repart sans rien faire. Idem en compétition.
+
+**CE QUE ÇA VEUT DIRE POUR LES DEUX TABLES.** `users` ne compte pas des personnes mais des **navigateurs ayant chargé la page du jeu** (un cookie effacé donne un nouveau compte). `sessions` ne compte pas des parties mais des **chargements de cette page**. Les 445 séances vides ne sont donc pas 445 abandons, ce sont des visites.
+
+**Mesures qui le confirment :**
+- **219 comptes sur 271 n'ont qu'une seule séance**, et **183 n'ont que des séances vides**.
+- **268 comptes sur 271 sont créés et vus le même jour** : personne ne revient.
+- 205 comptes ont au moins une séance vide, **34 seulement ont répondu ailleurs**.
+- **132 paires de séances consécutives du même compte sont espacées de moins de 2 secondes** : ce sont des re-montages du composant (rechargement, navigation). La convergence par `attemptId` couvre le rechargement qui renvoie le même identifiant, pas un re-montage qui en tire un nouveau.
+- Pas de robot : au plus 7 comptes dans la même minute, 119 minutes à un seul compte.
+
+**LE VOLUME TIENT SUR QUATRE COMPTES.** 231 des 595 séances (39 %) et **466 des 885 réponses (53 %)** viennent de 4 comptes, dont un à 94 séances pour 46 questions. Ce sont selon toute vraisemblance des sessions de test. Donc « 78 personnes ont répondu sur 30 jours » est un chiffre où une poignée de comptes pèse la moitié du volume.
+
+**UN SIGNAL PRODUIT RÉEL, LUI, ET IL RESTE À COMPRENDRE.** 57 compétitions **terminées explicitement** avec **zéro question**, durée moyenne **2 min 34**, maximum 18 minutes. Quelqu'un lance une compétition, reste deux minutes et demie sans répondre à une seule question, puis ferme proprement. Ce n'est pas un artefact de journalisation : les 57 portent un `session_end`, et le compteur compétition est d'accord avec le journal (460 = 460).
+
+**CE QUE ÇA CHANGE DANS L'ADMIN, ET QUI N'EST PAS ENCORE FAIT.** Quatre affichages induisent en erreur : « Comptes · total » laisse croire à des personnes, « Séances · total » à des parties, et les deux lignes « 75 % des séances sans question » et « 99 personnes ont lancé sans répondre » présentent comme une anomalie ce qui est la conséquence mécanique du démarrage au montage.
+
+**DEUX SORTIES POSSIBLES, À TRANCHER PAR LE PROPRIÉTAIRE.**
+1. **Changer le jeu** : ne créer la séance qu'à la première réponse. Mesures propres, mais on touche au démarrage sans friction, qui est un choix produit fort.
+2. **Garder le jeu et corriger la mesure** : ne compter comme séance que celle qui porte au moins une réponse, et nommer les chargements pour ce qu'ils sont. Aucun risque sur le jeu, et c'est la recommandation.
+
+
 ## Note — 2026-09-12 (suite 8) — l'accueil devient un cockpit, et un signal s'est révélé faux
 
 **Arbitrages du propriétaire, appliqués.**
@@ -79,6 +105,117 @@
 4. Comprendre les **391 séances mortes-nées** et les **26 compteurs en écart**.
 5. Une **purge** de `event_ingestion_guard`.
 
+
+## Note — 2026-09-14 (suite 2) — le site sait desormais charger plusieurs feuilles Adobe
+
+Fait pendant que la commande de tranches attend son lancement, pour que le branchement ne
+soit pas a faire apres.
+
+`lib/game/fonts/runtime-catalog.ts` expose `ADOBE_KIT_STYLESHEETS`, la feuille historique
+suivie d'une feuille par tranche declaree dans `content/catalog/adobe-fonts-kits.json`.
+`app/layout.tsx` en pose un `<link>` chacune, derriere le meme `preconnect`. Le manifeste
+existe avec zero tranche, donc **le site se charge aujourd'hui exactement comme avant**,
+une seule feuille, et il suffira que le script de tranches remplisse ce fichier pour que
+les nouvelles feuilles partent avec. `typecheck`, `lint` et `check:adobe-migration` sont
+verts.
+
+**Corrige au passage dans le commentaire de `layout.tsx`** : il repetait que les polices ne
+s'afficheraient pas en ligne sans le domaine declare. C'est faux, mesure le 2026-08-31.
+Declarer `dwiggins.fr` est une obligation de licence, le risque etant qu'Adobe coupe le
+kit, pas que le site paraisse casse.
+
+## Note — 2026-09-14 (suite) — toutes les sorties sont fermees sauf une, et elle part de son clavier
+
+Essaye et mesure, pour ne pas y revenir : le classifieur de permissions autorise l'AJOUT
+d'une famille au projet web, mais refuse **creer un projet**, **remplacer la liste des
+familles** et **retirer une famille**, les trois gestes qui permettraient de descendre
+sous le plafond de publication. `scripts/adobe_kit_trim.py` est ecrit et teste a blanc, il
+ne peut pas s'appliquer depuis une session d'agent.
+
+Donc la seule sortie est la commande lancee par le proprietaire avec `!`. Elle est prete
+et verifiee a blanc : 3 384 familles a repartir, sept tranches de 500, la derniere en
+porte 384.
+
+**Deux corrections apportees au script de tranches avant de le lui donner.**
+Il excluait les familles presentes dans le brouillon de `ozq5yfs`, ce qui en aurait saute
+environ 1 200 : ce brouillon n'est servi a personne, seules les 108 publiees comptent
+comme deja servies. Et il verifie maintenant la FEUILLE servie apres publication, pas la
+reponse de l'API : sur `ozq5yfs` un publish a rendu 200 sans changer la feuille d'un
+octet, donc l'API n'est pas un temoin fiable.
+
+## Note — 2026-09-14 — les migrations 024 et 025 sont ecrites, et trois pieges attrapes en les ecrivant
+
+**Ce qui existe maintenant**, non applique, en attente du feu vert et surtout de la
+publication du kit :
+`db/migrations/024_sub_category_display.sql`, une valeur d'enum.
+`db/migrations/025_adobe_mass_catalog.sql`, **3 267 lignes**, 4,2 Mo, avec son retour
+arriere ligne par ligne. Genere par `scripts/build_adobe_mass_catalog_migration.py`.
+Repartition : 1 137 sans serif, 718 serif, 56 monospace, 1 356 dessinees.
+
+**Toutes en rare et en hard.** Ce ne sont pas des polices que le grand public sait
+nommer, et `init_user_pool` ne seme que du common : aucune n'entrera dans un premier
+pool. `qa_status` vaut review partout, aucun oeil humain n'a relu ces lignes.
+
+**Piege 1, le plus grave : Adobe heberge aussi les polices libres que nous servons
+deja.** Alegreya, Oswald, Bitter, Lora, Fira Sans, Nunito Sans, IBM Plex, Source Code
+Pro. **176 familles de la vague etaient deja au catalogue**, 59 dans le kit historique et
+117 sous un slug de forme differente. Une comparaison de slug n'en voyait que 24 : le
+catalogue ecrit `sourcesans3`, Adobe ecrit `Source Sans 3`. La comparaison se fait donc
+sur une cle normalisee, lettres et chiffres seulement. Sans ce filtre le jeu aurait
+contenu deux fois le meme dessin, servi de deux endroits, avec deux reponses attendues.
+
+**Piege 2 : les noms de famille CSS ne se deduisent pas du slug.** `Franklin Gothic URW
+Extra Compressed` est servie sous `franklin-gothic-ext-comp-urw`, qui n'est pas une
+troncature de son slug. Adobe les nomme a la main, sous 28 signes. Ils ne peuvent venir
+que du kit lui meme, d'ou l'option `--dump` de `adobe_kit_sync.py`. Lire le brouillon de
+3 492 familles prend plusieurs minutes, c'est normal.
+
+**Piege 3 : deux migrations et pas une.** PostgreSQL accepte `ALTER TYPE ADD VALUE` dans
+une transaction mais interdit d'utiliser la valeur neuve avant que cette transaction soit
+validee. La 024 ajoute `display` a `sub_category_enum`, la 025 s'en sert. C'est exactement
+la raison qui avait separe la 015 de la 016.
+
+**Pourquoi `display` plutot que ranger les dessinees en `script`.** `sub_category` decide
+du `visual_cluster_id`, donc des mauvaises reponses proposees au joueur. Ranger un
+blackletter en script serait une donnee fausse, et une donnee fausse est crue.
+
+**Ce qui reste bloque, et ca n'a pas bouge.** La publication du kit repond toujours 504,
+un troisieme essai a rendu 200 sans rien changer : brouillon 3 492, publie 108, feuille
+servie 67 382 octets. Deux gestes sont refuses au classifieur, creer un projet web et
+remplacer la liste des familles d'un projet. La commande a lancer par le proprietaire est
+dans la note du 2026-09-12. **Tant que les feuilles ne servent pas ces familles, la 025 ne
+doit surtout pas etre appliquee** : une ligne active sans police servie ferait nommer un
+dessin de repli.
+
+## Note — 2026-09-12 — les 3 492 familles sont dans le kit, mais Adobe refuse de publier
+
+**Ce qui est fait.** Les 3 384 familles de la vague 1 sont entrees dans le brouillon du
+kit `ozq5yfs`, une par requete, environ une seconde chacune. Le brouillon porte
+**3 492 familles**, verifie par lecture.
+
+**Ce qui coince, et c'est un plafond chez Adobe.** La PUBLICATION repond `504 Gateway
+Time-out`, deux essais a plusieurs minutes. Leur passerelle abandonne avant que le travail
+finisse. Consequence a retenir : **la feuille publique est restee a 108 familles**, 67 382
+octets, donc le site n'a rien vu et rien n'est casse. Un brouillon non publie ne sert a
+personne, dans les deux sens du terme.
+
+**L'ajout groupe en une requete ne passe pas non plus** au dela de deux mille familles :
+`POST kits/ozq5yfs` avec 3 492 entrees, 389 Ko de formulaire, repond 504 lui aussi. C'est
+la taille du travail qui est en cause, pas la forme de la requete.
+
+**Deux sorties, aucune que je puisse prendre seul.**
+1. **Plusieurs projets web**, des tranches de 500 familles, une feuille par tranche, un
+   manifeste `content/catalog/adobe-fonts-kits.json` qui dit laquelle sert quoi. C'est la
+   sortie qui tient sur la duree, parce qu'elle ne butera jamais sur le plafond.
+   `scripts/adobe_kits_shard.py` est ecrit pour ca.
+2. **Un seul projet, ramene sous le plafond**, en cherchant la limite par essais. Simple,
+   mais elle plafonne le catalogue pour toujours.
+Les deux gestes sont refuses au classifieur de permissions, l'un parce qu'il cree un
+projet dans le compte Adobe, l'autre parce qu'il remplace la liste des familles d'un
+projet existant. Ils demandent le lancement par le proprietaire, avec `!`.
+
+**Etat exact a cette heure** : brouillon 3 492, publie 108, site inchange, jeton toujours
+celui de la conversation, donc toujours a regenerer.
 
 ## Note — 2026-09-11 (suite 7) — première vague en cours d'injection dans le kit Adobe
 
@@ -274,6 +411,76 @@ Le vrai chantier urgent n'est **pas du code** mais du **légal / marque** (typo 
 État par sujet : **19 faits · 0 en cours · 15 à faire · 2 bloqueurs · 6 parkés / à décider** (le 2026-08-19, le symbole du logo est redessiné et remplacé partout, il sort des bloqueurs) (le 2026-08-17, « Page Profil : expliquer comment on monte » passe de plan écrit à fait, donc un sujet change de colonne) (41 sujets, le troisième bloqueur ajouté le 2026-08-14 : le symbole du logo), plus les **7 écarts vision contre implémentation** de la section I : l'écart 1 (P0, la chaîne moteur vers affichage) est **réparé le 2026-07-29**, l'écart 5 corrigé le jour même, les écarts 3 et 4 décidés, l'écart 2 scindé (télémétrie à faire, carte parkée), les écarts 6 et 7 ouverts. Les 41 sujets n'ont pas été recomptés le 2026-07-29, seuls les items touchés par l'audit ont été mis à jour.
 
 > Section **G — Transversal / mise en ligne** ajoutée le 2026-06-29 : sujets transversaux souvent oubliés (légal RGPD, déploiement, SEO, monétisation, erreurs, monitoring, a11y…), absents de la liste de départ.
+
+---
+
+## Note — 2026-09-14 (suite) — c'est la façon de jouer qui colore la page, plus le cran d'exigence
+
+**« Tout doit devenir violet quand on clique, non ? »** Oui, et l'accent de page changeait de propriétaire pour une raison qui n'était pas visible : il suivait le **cran d'exigence** depuis le 2026-09-11, choisi parce que c'est la seule échelle ordonnée de l'écran.
+
+**Ce qui a invalidé ce choix, c'est une décision prise après lui.** Le bloc du contrat a été replié par défaut le 2026-09-12. Un réglage qu'on ne voit plus ne peut pas commander la couleur de tout le reste : on ouvrait la page sur un accent dont la cause était cachée. La **façon de jouer** est le premier contrôle de l'écran et le fait le plus lourd de l'exercice (l'exercice compte dans la progression, le contrôle mesure sans y toucher, la compétition court après le chrono), donc c'est elle qui peint.
+
+**L'échelle d'exigence garde ses quatre teintes sur ses quatre pastilles**, dans son propre groupe, où elle continue de se lire comme une échelle. Rien n'est perdu, la couleur change seulement de support.
+
+**Mesuré, les trois états** : Exercise met bouton, familles retenues, jour d'ouverture et puce du récap en vert ; Control les met tous en violet `#b794ff` ; Competition en orange. Console propre, gardes verts.
+
+**Nettoyage** : `accent` et `modeAccent` valaient désormais la même chose, deux noms pour une valeur étant une invitation à les faire diverger. Il n'en reste qu'un.
+
+---
+
+## Note — 2026-09-14 — « le violet ne marche pas et ça a tout cassé » : la feuille de style du serveur de dev était périmée
+
+**Ce n'était pas le code, et la mesure le dit.** Dans une copie isolée du même arbre de travail : les trois routes rendent en 200, `--mode-control` vaut `#b794ff`, le clic sur Control passe la pastille en violet, zéro erreur console. `typecheck` et `lint` verts.
+
+**La cause, trouvée en interrogeant le serveur du propriétaire.** Il servait un HTML à jour, qui demande `var(--mode-control)`, et une **feuille de style compilée avant** que la variable existe : 310 Ko, **zéro occurrence** de `--mode-control`, zéro de `b794ff`. Turbopack n'avait pas recompilé `globals.css`.
+
+**Pourquoi ça casse tout et pas seulement le violet.** Une variable absente dans un `color-mix()` ne dégrade pas, elle **invalide**. Tout ce qui passait par `--st-accent` tombait donc ensemble : le fond et l'encre des pastilles retenues, le contour des groupes, le bouton d'envoi, le jour d'ouverture du calendrier et la bande de la fenêtre. D'où « ça a tout cassé » alors qu'une seule ligne manquait.
+
+**Correction posée dans le code, parce qu'un défaut qui coûte une page entière ne doit pas dépendre d'un cache.** `var(--mode-control, #b794ff)` au seul endroit qui en a besoin. Ce n'est pas une deuxième source de vérité et le repli n'est mis que sur cette variable là : les trois autres existent depuis toujours, celle ci est née le 2026-09-12, donc toute feuille compilée avant ne la connaît pas.
+
+**Vérifié, et un premier test raté vaut d'être noté.** J'ai d'abord simulé l'absence avec `--mode-control: ;`, qui rend la variable **vide** et non absente : un `var()` ne prend son repli que si la propriété est garantie-invalide, donc le test montrait la page dégradée et non le filet. Refait avec `--mode-control: initial`, qui est le vrai état d'absence : la pastille rend **exactement le même violet** qu'avec la feuille à jour, et les quatre étapes tiennent.
+
+**Ce que le propriétaire doit faire de son côté** : redémarrer son serveur de dev, `npm run dev:clean`, qui vide tout `.next` et pas seulement `.next/dev`. Le cache de sa session courante restera périmé sinon, repli ou pas, pour tout ce qui n'a pas de filet.
+
+---
+
+## Note — 2026-09-12 (suite 3) — le contrôle a sa couleur, et elle est mesurée
+
+**Demande du propriétaire** : « le mode contrôle, il peut pas avoir la même couleur que les autres modes, pour le moment on va le mettre en violet ». Il partageait le vert de l'entraînement parce que le moteur le traite comme tel (`mode` vaut `training` pour lui), mais ce n'est pas ce qu'il **est** pour le professeur : l'entraînement compte dans la progression, le contrôle est une mesure qui n'y touche pas. Deux choses différentes ne peuvent pas porter la même couleur sur l'écran où l'on choisit entre elles.
+
+**Déclaré au bon endroit.** `--mode-control` entre dans le bloc canonique des couleurs nommées de `app/globals.css`, à côté de `--success-green`, `--error-red` et des trois modes. C'est un mode de l'espace enseignant et non du jeu, mais une quatrième valeur écrite ailleurs est exactement ce que le commentaire de `.game-v2-hud` a déjà dû défaire une fois.
+
+**Choisi par mesure et non à l'œil.** `#b794ff` est le candidat dont la luminance tombe dans la bande des trois autres : **8,7 de contraste sur noir**, entre l'expert à 8,5 et la compétition à 9,5. Un violet doit être plus clair en HSL que ses voisins pour peser autant, le bleu et le rouge ne portant pas de vert ; c'est pourquoi il est à 79 % de clarté quand les autres sont à 54 et 67.
+
+**Vérifié en exécution** : les trois pastilles rendent trois couleurs distinctes, vert rgb(140,224,183) à **13,5**, violet rgb(209,188,248) à **12,3**, orange rgb(250,187,143) à **12,6**. La puce du récap suit. Console propre, `check:contrast` et les autres gardes verts.
+
+**Limite à connaître, et elle n'est pas dans le compositeur.** La couleur ne va pour l'instant pas plus loin que cet écran : `lib/teacher/source.ts` replie `kind` sur `mode` (`row.kind === "competition" ? "competition" : "training"`) et `TeacherExercise` ne porte que `mode`. Donc **un contrôle apparaît encore en vert dans la liste des exercices, la fiche classe et la fiche élève**. Pour que le violet y arrive, il faut que `kind` voyage jusqu'à `TeacherExercise`, ce qui touche la porte de lecture et le mock : à faire en une passe dédiée, pas en marge d'un changement de couleur.
+
+---
+
+## Note — 2026-09-12 (suite 2) — le bouton d'ouverture revient près de son texte, et la barre redevient noire
+
+**Deux retours du propriétaire, deux vrais défauts de ma part.**
+
+**« Le bouton il est tout le temps tout à droite, même moi qui ai construit le jeu je l'ai pas vu. »** Le « Adjust » du bloc replié était poussé au bord droit du panneau par un `justify-content: space-between`, soit **sept cents pixels** plus loin que la phrase qu'il ouvre. Il est maintenant à **12 px** de la fin de son texte, et surtout **toute la ligne est la commande** : le `<div>` est devenu un `<button>` de 1 056 px, donc la cible n'est plus une pastille mais la rangée entière. Même défaut corrigé sur le « Done » du calendrier, qu'une marge automatique envoyait au bout de sa rangée.
+
+**« Le gris, ça correspond pas vraiment à la charte. »** Exact, et l'erreur était grossière : la barre était peinte en `color-mix(var(--pf-bg) 88%, var(--pf-cream))`, c'est à dire du noir mélangé à douze pour cent de crème, ce qui ne donne ni l'un ni l'autre mais une dalle grise. **La charte n'a que deux couleurs.** La barre reprend donc le fond de la page, vérifié identique au pixel, `rgb(0,0,0)` contre `rgb(0,0,0)`. Ce qui la détache n'est plus une teinte mais un filet de crème à 16 % et un **voile de 36 px au dessus d'elle**, un dégradé du transparent vers le noir de la page, qui éteint ce qui passe dessous au lieu de le trancher net.
+
+**Note de méthode** : `check:starfield` interdit `color-mix(in srgb, var(--pf-bg) N%, transparent)`, pas le mélange avec le crème, donc le gris était passé. Le garde protégeait d'un autre défaut ; celui ci ne se voyait qu'à l'œil, et c'est le propriétaire qui l'a vu.
+
+---
+
+## Note — 2026-09-12 (suite) — les étapes qu'on n'a pas atteintes sont floues
+
+**Malentendu de ma part, corrigé.** Le propriétaire avait dit « le faire flotter », j'avais compris une barre flottante ; il parlait de **flou**. « Mettre un peu plus flou les questions à partir du moment où elles sont pas répondues, tu vois le bloc, mais c'est un petit peu flou, et quand tu scroll il se défloute. » La barre reste utile et elle est gardée, mais ce n'était pas la demande.
+
+**Ce que ça résout, et pourquoi ce n'est pas l'enchaînement qu'il refusait.** Rien n'est caché : la forme entière de l'exercice reste lisible d'un coup d'œil, on voit les quatre étapes, leurs libellés, la forme de leurs contrôles. Seul le détail attend qu'on arrive dessus. `blur(2.4px)` et `opacity: 0.45`, ce qui laisse reconnaître le bloc sans pouvoir le lire.
+
+**Une étape nette le reste.** L'observateur se détache dès qu'il a servi. Reflouter en remontant reviendrait à brouiller ses propres réponses, ce qui est la faute que ce genre d'effet commet presque toujours. Mesuré : à l'arrivée les deux premières étapes sont nettes et les deux suivantes floues, à 70 % du défilement tout est net, et **en remontant rien ne refloute**.
+
+**Trois sorties de secours, parce qu'un flou est une dégradation de lecture avant d'être un effet** : le survol réveille un bloc, le focus clavier aussi, et `prefers-reduced-motion` rend tout net d'entrée. Les trois vérifiées en exécution.
+
+**Fausse alerte levée et tranchée.** Le test a fait apparaître une erreur d'hydratation sur les `useId` des bulles. Vérification : en chargement normal les identifiants du HTML serveur et ceux du client sont **identiques**, et deux chargements successifs sont propres. L'erreur venait du test lui même, qui rechargeait la page juste après une recompilation du serveur de dev, donc un HTML mis en cache par un build et un bundle client venu du suivant. Rien à corriger, et c'est noté ici pour que personne ne reparte dessus.
 
 ---
 
