@@ -1,7 +1,7 @@
 {
   "purpose": "pre-write snapshot for the abandon backfill of training sessions left active",
   "capturedAtUtc": "2026-07-29T14:49:00.761Z",
-  "database": "ep-rapid-union-ab8x3lo3-pooler.eu-west-2.aws.neon.tech",
+  "database": "ep-<identifiant retire le 2026-09-18, audit securite>.eu-west-2.aws.neon.tech",
   "selection": "mode = 'training' AND status = 'active'",
   "rowCount": 73,
   "uniqueSessionIds": 73,

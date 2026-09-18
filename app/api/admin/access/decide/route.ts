@@ -2,15 +2,16 @@ import { NextResponse } from "next/server";
 
 import { isClerkConfigured } from "@/lib/server/clerk-availability";
 import { getCurrentIdentity } from "@/lib/server/current-user";
-import { accessRequestCounts, rejectAccessRequest } from "@/lib/admin/access-requests";
+import { rejectAccessRequest } from "@/lib/admin/access-requests";
+import { isAdminAccessAllowed } from "@/lib/admin/gate";
 
 // La décision, et elle porte la même porte que la page.
 //
-// UNE PAGE GARDÉE DERRIÈRE UNE ROUTE OUVERTE NE GARDE RIEN. La règle est donc
-// écrite deux fois parce qu'elle protège deux choses : la page protège la
-// lecture, cette route protège l'écriture. Même exception étroite, et elle se
-// referme d'elle même : sans Clerk et sans aucune demande, il n'y a ni donnée à
-// lire ni décision à prendre.
+// UNE PAGE GARDÉE DERRIÈRE UNE ROUTE OUVERTE NE GARDE RIEN. La porte est donc
+// posée deux fois parce qu'elle protège deux choses : la page protège la
+// lecture, cette route protège l'écriture. Depuis l'audit du 2026-09-18 les deux
+// posent la même question à `lib/admin/gate.ts` au lieu de réécrire la règle
+// chacune de son côté, et cette règle ne s'ouvre plus sans compte en production.
 //
 // ACCEPTER N'EST PAS ENCORE POSSIBLE, ET C'EST UN REFUS EXPLICITE. Le geste crée
 // le compte chez Clerk, l'école si besoin, l'appartenance enseignante puis
@@ -38,9 +39,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "décision incomprise" }, { status: 400 });
     }
 
-    const [identity, counts] = await Promise.all([getCurrentIdentity(), accessRequestCounts()]);
-    const total = counts.pending + counts.approved + counts.rejected;
-    const allowed = identity.role === "admin" || (!isClerkConfigured() && total === 0);
+    // L'IDENTITÉ EST LUE POUR DEUX RAISONS DIFFÉRENTES : la porte, et la trace de
+    // qui a décidé, que `rejectAccessRequest` écrit plus bas.
+    const [identity, allowed] = await Promise.all([getCurrentIdentity(), isAdminAccessAllowed()]);
     if (!allowed) {
       return NextResponse.json({ error: "réservé à l'administration" }, { status: 403 });
     }

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { sql } from "@/lib/server/neon";
+import { sql } from "@/lib/admin/guarded-sql";
 
 // LE POSTE D'OBSERVATION DU PRODUIT.
 //

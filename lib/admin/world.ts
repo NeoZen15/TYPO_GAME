@@ -1,6 +1,6 @@
 import "server-only";
 
-import { sql } from "@/lib/server/neon";
+import { sql } from "@/lib/admin/guarded-sql";
 
 // LE MONDE SCOLAIRE, VU DE L'ADMINISTRATION.
 //

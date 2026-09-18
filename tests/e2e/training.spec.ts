@@ -72,11 +72,23 @@ test.describe("training round", () => {
     const options = page.getByRole("radiogroup", { name: "Typeface options" });
     await expect(options).toBeVisible();
     await expect(options.getByRole("radio")).toHaveCount(4);
-    // The in-game indicator is a set mastery gauge since 2026-08-15 (D3). It
-    // replaced "X / Y faces mastered", which counted only faces at the top of a
-    // 0 to 4 ladder and could not move within a session: a first session read
-    // 0 / 30 for ever. This assertion moved with it.
-    await expect(page.getByText(/of your set mastered$/)).toBeVisible();
+    // L'INDICATEUR DE SÉANCE, ET CETTE LIGNE ÉTAIT RESTÉE SUR L'ANCIEN.
+    //
+    // La jauge de maîtrise a remplacé « X / Y faces mastered » le 2026-08-15,
+    // puis le relevé de séance a remplacé la jauge le 2026-08-26 : `content/copy.ts`
+    // a retiré « of your set mastered » ce jour là en expliquant pourquoi le mot
+    // était faux. L'assertion, elle, n'a pas suivi, donc ce test était rouge
+    // depuis trois semaines sans que rien ne le dise, `npm run quality` ne
+    // lançant pas la suite.
+    //
+    // Trouvé le 2026-09-18 en vérifiant qu'un audit de sécurité n'avait rien
+    // cassé : la trace du test montre `POST /api/training/session/start` en 200,
+    // donc le tour se jouait et c'est le texte attendu qui n'existait plus.
+    //
+    // `Faces due now` vient du MÊME `progress` que l'ancienne jauge, et c'est un
+    // nom accessible plutôt qu'une phrase, donc il ne bougera pas au prochain
+    // arbitrage de formulation.
+    await expect(page.getByLabel("Faces due now")).toBeVisible();
 
     // The payload carries the answer slug, so the round can be resolved
     // deterministically instead of guessing.

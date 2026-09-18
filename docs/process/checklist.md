@@ -1,5 +1,422 @@
 # DWIGGINS — Checklist « Où on en est »
 
+## Note — 2026-09-18 — l'état courant quitte ce fichier, et un garde l'empêche de regonfler
+
+**LE COÛT DE REPRISE ÉTAIT ICI.** Ce fichier fait 158 000 mots, et la `CLAUDE.md` le désignait
+comme source de vérité de l'avancement. Répondre à « on en est où » demandait donc d'ouvrir
+200 000 jetons. Ce n'était pas une mauvaise recherche, c'était la consigne qui envoyait là.
+
+**Trois fichiers d'état sont morts avant celui ci, et pas de la même chose.** La page
+`DWIGGINS — Où on en est.html` du 7 juillet et `docs/overview/project-onboarding-2026-07-30.md`
+sont morts **périmés** : des instantanés datés que personne n'a rouverts. Cette checklist est morte
+**obèse** : bien tenue à jour, mais toujours en ajoutant à la fin. Au point que sa propre section
+« REPRISE, à lire en premier » s'était retrouvée ligne 547, enterrée sous vingt notes plus récentes
+posées au dessus d'elle, et périmée de trois semaines : elle annonçait trois bloqueurs de mise en
+ligne alors qu'il n'en reste qu'un.
+
+**Les deux façons de rater sont opposées, et c'est la taille qui tranche.** Ne pas mettre à jour
+périme, mettre à jour en ajoutant gonfle. Seul un texte qu'on réécrit entièrement survit aux deux.
+Or ce n'est pas la discipline qui décide lequel des deux comportements on adopte : sous un millier
+de mots réécrire reste plus simple qu'ajouter, au dessus ajouter gagne. Le plafond n'est donc pas
+une règle d'hygiène, **c'est le mécanisme**.
+
+**CE QUI EST FAIT.** REPRISE est extraite, remise à jour et devient la section « Où on en est » en
+tête de `CLAUDE.md`, le fichier qui se charge seul à chaque session : 491 mots. La ligne qui
+désignait cette checklist comme source de vérité de l'avancement est corrigée, elle devient la
+mémoire longue du **pourquoi**, à ne jamais lire en entier. Et `scripts/quality/check-etat.mjs`,
+câblé dans `quality` juste après `check:legal-docs`, refuse une section au dessus de 700 mots, un
+`CLAUDE.md` au dessus de 5000, ou la disparition pure et simple de la section. **Éprouvé sur les
+trois mutations correspondantes, les trois sont attrapées.** Vérifié : lint 0, typecheck 0.
+
+**LA BOUCLE DE DISTILLATION DU JOURNAL EST LANCÉE.** Ralph, bornée à 60 itérations et à une
+condition d'arrêt qui exige un registre vide, prompt dans `.claude/ralph-loop.local.md`. Douze notes
+par itération, la question posée à chacune étant unique : contient elle une **décision**, une
+**piste refusée** ou un **piège** ? Sinon c'est du journal de bord, et elle est écartée avec un motif
+écrit. Un plafond de 1500 mots par fiche est ajouté à `check:etat` : sans lui, les quatre fiches
+redeviendraient la checklist en quatre exemplaires, même mécanisme et même piège.
+
+**Itération 1, notes 1 à 12.** Onze rangées, une écartée. Ce qui en sort et qui vaut le détour :
+**un ratio élevé sur ce produit désigne une décision d'architecture et pas un usage**, démontré
+trois fois, parce qu'une séance est créée au chargement de la page et non sur un clic ; **le nom
+d'une police change d'un projet Adobe à l'autre**, `lust-didone-1` au lieu de `lust-didone`, et un
+repli mal nommé fait demander de nommer un dessin qui n'est pas celui de la question ; **une porte
+toujours rouge cesse d'être lue**, d'où le troisième état du contrôle de conformité ; et
+**dépeindre une surface sans toucher à son garde le rend faux sans le faire échouer**, ce qui est
+pire que de le casser.
+
+**Itération 15, notes 212 à 238. LA DISTILLATION EST COMPLÈTE.** Les **238 sections sont toutes
+rangées ou écartées avec un motif écrit**, vérifié par `registre.py --verifier`. **125 rangées, 113
+écartées.** Les prises finales : **les trois réflexes de machine qui font dire « trop Claude »**, une
+grosse carte arrondie qui contient tout, des cotes sous chaque objet, une régularité parfaite là où
+il fallait un rythme ; **un bloc de composants présente, il ne spécifie pas** ; **un garde rouge ne
+l'est pas toujours pour la raison annoncée**, Node ne lisant pas la configuration TypeScript, donc un
+import par alias fait tomber le contrôle sur autre chose que son sujet ; et **un profil mesuré peut
+décrire une police que le joueur ne voit pas**, le navigateur ayant toujours raison contre le fichier.
+
+**LE BILAN.** 149 824 mots de journal deviennent **8 482 mots dans sept fiches**, soit un rapport de
+dix-huit contre un. Aucune ne dépasse son plafond de 1500 mots, et il n'a jamais été relevé : les
+fiches ont été resserrées neuf fois et scindées trois fois, chaque scission répondant à une vraie
+frontière de domaine (l'espace enseignant, le système de jetons, les écritures). Trois règles de
+travail sont montées dans `CLAUDE.md`.
+
+**CE QUI RESTE, ET IL N'EST PAS FAIT.** Basculer ce fichier en archive datée et repartir sur une
+checklist vide. Ce n'était pas possible avant la distillation, ça l'est maintenant. Mais **une autre
+session Claude écrit dans ce fichier en ce moment**, donc renommer sous ses pieds lui ferait perdre
+son travail. À faire quand elle aura fini.
+
+**Itération 14, notes 186 à 211.** Trois rangées, vingt-trois écartées : le lot de la charte Figma et
+de l'affiche, qui ne vivent pas dans ce dépôt. Prises : **un graphique prouve une idée déjà
+comprise**, la phrase du propriétaire réglant tout le sujet, après une série de planches qui
+racontait le produit comme un audit du code, où le lecteur apprenait beaucoup sans rien obtenir ;
+**l'hébergement gratuit a une date de péremption**, son plan interdisant l'usage commercial alors que
+le jeu deviendra payant ; et **le registre français anonymise déjà gratuitement un titulaire personne
+physique**, donc l'option de confidentialité vendue à côté ne protège rien.
+
+**Itération 13, notes 166 à 185.** Trois rangées, dix-sept écartées, et **une septième fiche** :
+`docs/game/arbitrages-ecritures.md`, parce que ce que le moteur enseigne et la façon dont ses
+écritures tiennent sont deux domaines. Prises : **une jumelle ne peut pas être un leurre**, le jeu
+pouvant proposer quatre variantes d'une famille qui dessinent le latin à l'identique, donc une
+question sans réponse, corrigée **sans retirer aucune police** ; **les clusters visuels se mesurent
+dans les fichiers**, trois d'entre eux portant 85 % du catalogue, donc le malus des leurres ne
+discriminait plus rien ; et **un chantier qui échoue sur sa question peut valoir par ce qu'il trouve
+à côté**.
+
+**Itération 12, notes 144 à 164.** Quatre rangées, dix-sept écartées : c'est le lot de la charte
+Figma, qui ne vit pas dans ce dépôt, et de refontes déjà distillées. Prises : **une référence sert à
+comprendre la méthode, pas à être copiée** ; **une page de règles répond à une seule question**, ce
+qui te fait avancer et ce qui te fait reculer ; et **on compare sur la clé normalisée mais on écrit
+avec le slug réel**, un script ayant produit treize ordres sur vingt-trois visant une ligne
+inexistante.
+
+**UNE AUTRE SESSION CLAUDE ÉCRIT DANS CE FICHIER EN MÊME TEMPS**, constaté à cette itération : le
+registre est passé de 237 à 238 sections sans que j'aie rien ajouté. Sa note signale une **deuxième
+fuite du mot de passe de la base**, cette fois sans que personne ne l'imprime, une bibliothèque
+l'ayant recrachée dans son message d'erreur. Sa leçon est distillée : **ne pas afficher un secret ne
+suffit pas, il ne doit pas transiter par une ligne de commande.** Le registre a absorbé la note
+étrangère sans rien perdre, ce qui valide sa raison d'être.
+
+**Itération 11, notes 124 à 135.** Cinq rangées, sept écartées. Le rapport s'inverse franchement :
+les notes de juillet sont des audits datés, qui listent des écarts sans énoncer de règle.
+
+**Une note capitale y était enterrée, et elle est légale.** Un fichier de police est un logiciel
+protégé : le télécharger ou le posséder sans licence est illégal **même sans le servir**, avec des
+procès réels à plusieurs millions. Donc aucun fichier commercial dans les dossiers du projet, jamais,
+y compris pour un essai. En revanche **une licence de bureau autorise à produire des images**, ce qui
+est la seule voie légale pour montrer une police qu'on n'a pas le droit de servir.
+
+Trois autres prises. **Le vrai défaut du dossier `docs` n'a jamais été le nombre de fichiers, mais
+que cinquante-huit documents ne disaient pas lesquels étaient périmés** ; la réponse tentée, un
+document d'accueil de 182 Ko, est morte en quelques semaines comme les deux fichiers d'état avant
+elle. **L'état du code est une implémentation, pas une intention**, donc un écart avec la vision se
+tranche, il ne prouve pas que la vision avait tort. Et **un chiffre qui circule sans source n'est pas
+un chiffre** : le nombre de polices jouables se transmettait de document en document, avec deux
+valeurs différentes selon l'endroit.
+
+**Itération 10, notes 112 à 123.** Huit rangées, quatre écartées. Le plafond a mordu trois fois sur
+la fiche du jeu : **elle a été resserrée trois fois plutôt que scindée**, parce que le contenu est
+d'un seul domaine et que scinder à chaque fois que le garde parle reviendrait à s'en débarrasser.
+
+Le lot du plan double démarrage donne les pièges de concurrence, tous silencieux. **Une fusion
+absorbée sans erreur reste une fusion** : deux initialisations concurrentes remplissaient le pool
+deux fois, 47 lignes au lieu de 30, sans qu'aucun code d'erreur soit levé. **Un compteur lu puis
+réécrit perd des incréments** dès que deux sessions répondent en parallèle. **C'est la base qui
+arbitre une course**, pas le code.
+
+Et trois leçons qui dépassent le sujet. **Un invariant perdu à ne pas redécouvrir** : « au plus une
+session active par joueur » n'est plus imposé, c'est un état supporté, et tout code qui suppose
+l'unicité est faux. **Durcir le serveur ne sert à rien tant que le client ne s'en sert pas**, six
+tâches étant restées dormantes faute d'un identifiant envoyé. **L'ordre de déploiement compte** : la
+progression quotidienne a dû cesser de compter des sessions avant la déduplication, sinon la série
+chutait visiblement le jour de la mise en production. Enfin, **la base était l'angle mort de tout un
+audit** : plusieurs passes avaient lu des fichiers, personne n'avait interrogé la base.
+
+**Itération 9, notes 100 à 111.** Sept rangées, cinq écartées, et **une règle de travail est montée
+dans `CLAUDE.md`** parce que trois notes distinctes racontent le même accident : une journée entière
+restée en copie de travail, deux agents emportés par une coupure réseau dont le travail a dormi cinq
+jours, une unification de rayons rattrapée le lendemain par hasard. À chaque fois **rien n'était
+cassé et personne ne le savait**. Un incident est une anecdote, trois sont une règle.
+
+Trois prises produit. **Un refus n'est pas une panne** : session expirée, jeton d'une autre manche,
+question déjà répondue sortaient toutes en erreur serveur, donc l'écran ne pouvait rien dire d'utile.
+**La bonne réponse était toujours le premier bouton en entraînement**, invisible à la lecture du
+code et vidant le jeu de son sens, désormais tenu par un garde. Et **quand une page ressemble à une
+voiture de course, on retire des données**, on ne les range pas mieux.
+
+**Itération 8, notes 88 à 99. Une sixième fiche, pour la même raison que la cinquième.** La fiche
+Interface était pleine et portait deux domaines : **ce qu'on dessine** et **le système qui le
+dessine**. `docs/ui/arbitrages-systeme.md` recueille le second. Dix rangées, deux écartées.
+
+Quatre prises qui valent le détour. **Il n'y a pas une palette mais quatre**, ce que la lecture du
+fichier ne montrait pas et qui explique que 97 textes soient restés illisibles en thème clair : une
+correction posée sur l'une ne corrige rien ailleurs. **Un rayon déclaré n'est pas un rayon peint**,
+le navigateur re-plafonnant tout rayon à la moitié du plus petit côté, donc généraliser un jeton ne
+généralise pas le rendu, et c'est pourquoi trente-six rayons apparaissaient là où deux jetons sont
+déclarés. **Un garde de jetons et jamais un garde de pixels**, parce que le défaut ne vit pas dans
+les pixels. Et **compter avant de conclure** : « cent dix-neuf ombres » mélangeait trois dispositifs
+sans rapport, le compte réel en donne 99 réparties en cinq catégories.
+
+**Itération 7, notes 76 à 87.** Sept rangées, cinq écartées. Le rythme s'inverse comme prévu : les
+notes anciennes sont surtout du journal. Prises : **des rangées et pas des cartes**, un professeur
+qui a quinze classes doit balayer une colonne de noms ; **un compte se dérive, il ne se stocke pas**,
+sinon les deux divergent au premier oubli ; **l'espace prof avait recopié le système du site sous
+son propre préfixe** au lieu de le lire, exactement la dérive que ces fiches existent pour empêcher ;
+**la notoriété est l'axe de progression**, le champ existait mais valait « commun » sur 1148 polices
+sur 1172, donc il ne triait rien. Et deux mesures qui changent une décision : **le site ne télécharge
+jamais PP Frama aujourd'hui**, ce qui déplace la question avant d'acheter une licence de diffusion ;
+et **deux fragments parasites définissaient à eux seuls le cadre de sélection du symbole**, donc tout
+calage pris dessus aurait été faux.
+
+**Itération 6, notes 64 à 75.** Onze rangées, une écartée. Lot des visualisations de l'espace prof,
+qui donne le critère le plus utile du lot : **une page ne montre que ce qu'aucune autre ne peut
+montrer**, ce qui a vidé le Home de ce que Classes et Exercices faisaient déjà mieux, et fait des
+panneaux de la liste des exercices des comparaisons plutôt que des résumés. Avec son corollaire :
+**un graphique ne se met pas là parce qu'on a le chiffre.**
+
+**La frise chronologique jetée mérite d'être retenue comme un piège de figure** : ses points
+n'étaient pas comparables, classes, effectifs et durées différents, et surtout elle **se lisait à
+l'envers**, les exercices récents tombant en bas parce qu'ils sont encore ouverts, donc le graphe
+racontait le contraire de la vérité. Côté interface : **chercher le geste existant avant d'en
+dessiner un**, une animation avait été écrite à la main alors que le site en a une qui **est** sa
+façon de changer une police ; **on retire sans remplacer** ; et **une identité n'est pas un état**,
+donc la classe reste neutre à côté de la pastille de mode.
+
+**Itération 5, notes 52 à 63. Une cinquième fiche est née, et c'est le plafond qui l'a révélée.**
+La fiche du jeu refusait de descendre sous 1650 mots. Diagnostic : elle portait **deux domaines**,
+le moteur et l'espace enseignant, chacun avec assez de décisions pour que les tenir ensemble oblige
+à en couper. `docs/game/arbitrages-espace-prof.md` est donc séparée. Cela contredit une règle que
+j'avais moi même écrite dans le prompt de la boucle, « ne pas inventer un cinquième fichier » : elle
+visait une note qui ne rentre nulle part, pas un thème qui dépasse son hôte. Le prompt est corrigé
+pour dire la différence, et le garde connaît la nouvelle fiche.
+
+Prises du lot : **le compositeur écrit une intention et jamais vingt questions**, le professeur
+posant un contrat commun que le moteur adapte à l'intérieur (I-25) ; **le mur est à sens unique**,
+le professeur ne lisant que ce que ses exercices ont produit, avec sa contrepartie, une échéance que
+personne n'annonce n'est pas une échéance ; **une fiche Élève n'est pas un profil en plus petit** ;
+**enlever tous les conteneurs marche et c'est mieux**, ce qui disait « agis là dessus » n'ayant
+jamais été la bordure ; **retirer un effet global, c'est inverser un défaut** et non supprimer dix
+calques ; et l'aveu qui explique quatre tours de correction, **lire la feuille de style ne remplace
+pas regarder la page**.
+
+**Itération 4, notes 40 à 51.** Dix rangées, deux écartées. Lot d'architecture, le plus dense jusqu'ici.
+**Deux invariants majeurs y étaient enterrés** : I-26, le parcours personnel est premier et autonome,
+il se suffit sans école ni professeur, posé précisément parce que le produit pouvait glisser vers un
+outil scolaire où l'élève ne joue que si on lui donne quelque chose ; et I-27, la symétrie des
+recommandations entre le professeur et l'élève.
+
+Autres prises : **un exercice se choisit par son effet et non par un mode**, le mode du moteur en
+découlant ; **trois règles pour toute route de séance**, l'identité vient du cookie et jamais du
+corps, la fin n'est pas une erreur, un doublon non plus ; **les six propriétés d'un écrivain se
+posent dès la première ligne**, avec la facture de l'oubli écrite dans le dépôt, 121 sessions restées
+actives cinq mois ; **le signal le plus utile du produit n'a jamais demandé de nouvelle donnée**, les
+confusions se lisant dans le journal depuis le premier jour ; et **les clés d'authentification se
+testent en présence, jamais en valeur**, parce qu'elles ne doivent jamais passer par une
+conversation.
+
+**Itération 3, notes 28 à 39.** Douze rangées, aucune écartée : c'est le lot du compositeur et de
+l'Admin, dense en décisions. **Le plafond a mordu**, la fiche du jeu est montée à 1584 mots pour 1500
+autorisés. Conformément à la consigne, il n'a pas été relevé : les fiches Jeu et Interface ont été
+**réécrites en plus serré**, et elles sortent à 1106 et 1115 mots **en ayant absorbé vingt points de
+plus**. La preuve que le plafond fait bien son travail : il force à distinguer le pourquoi du récit.
+
+Ce qui en sort : **un levier, un conducteur par contexte de séance**, les crans d'exigence ne
+touchant que la proximité des mauvaises réponses ; **la sensation de bloc vient de la typographie et
+de l'espace, jamais d'un contour**, vérifié dans la landing avant de toucher à quoi que ce soit ;
+**une ligne lisible fait 440 pixels dans un panneau qui en fait 1011**, donc toute prose en pleine
+largeur est un ruban avec 55 % de vide à côté ; **une barre de récapitulation se pose en `sticky` et
+jamais en `fixed`**, pour se reposer à sa place en fin de page au lieu de recouvrir le formulaire ;
+et **un rapprochement d'établissement se propose, il n'identifie jamais**.
+
+**Itération 2, notes 13 à 27.** Neuf rangées, trois écartées. Le lot Adobe donne enfin sa méthode :
+**un 504 veut dire réessaye, pas trop gros**, et il faut **vérifier la feuille servie et jamais la
+réponse de l'interface**, une publication ayant déjà rendu 200 sans changer un octet. Deux prises
+qui auraient cassé le jeu : **176 familles Adobe étaient déjà au catalogue** sous une autre forme de
+slug, et sans comparaison normalisée le jeu aurait contenu deux fois le même dessin avec deux
+réponses attendues ; et **les noms de famille CSS ne se déduisent pas du slug**, Adobe les nomme à
+la main. Côté interface, la trouvaille du jour : **une variable CSS absente dans un `color-mix()`
+n'atténue pas, elle invalide**, ce qui explique qu'une seule ligne manquante ait fait dire « ça a
+tout cassé ». D'où la règle du repli systématique dans le `var()`.
+
+**« GAINS RAPIDES » NE CONTENAIT PAS CE QUE SON TITRE ANNONÇAIT.** Trois tâches, toutes faites
+depuis, puis **61 notes de journal datées, 27 518 mots**, empilées dessous sans jamais lui
+appartenir : elles y ont atterri parce que ce titre était le dernier du fichier au moment de les
+écrire. Le registre les comptait comme une seule section de 28 201 mots, donc elles étaient
+**invisibles**. Remontées au rang de notes, le registre passe de 176 à **237 sections**, et la
+catégorie hétéroclite s'effondre de 32 883 à 4 798 mots. Les autres `###` du fichier sont de vraies
+sous-parties de leur note et n'ont pas été touchées.
+
+**MON PROPRE TRI A FAIT UNE FAUSSE PRISE, ET C'EST LA LEÇON DU JOUR.** Le registre écartait les
+sections de service en cherchant « reprise » **n'importe où** dans le titre. Deux vraies notes de
+journal, « état de l'espace prof et point de reprise » et « Où en est la charte à la reprise », ont
+donc été écartées en silence avec un motif qui ne les concernait pas. Un tri qui écarte sans le dire
+est précisément ce que ce registre existe pour empêcher, et il s'est fait prendre par son propre
+défaut. Le test porte désormais sur le **début** du titre, les deux notes sont rendues à la pile, et
+la raison est écrite dans le script pour que personne ne resserre ça à l'aveugle.
+
+**LES 8 SECTIONS LETTRÉES A À H SONT DISTILLÉES.** 15 685 mots deviennent **3 292 mots dans quatre
+fichiers neufs** : `docs/game/arbitrages.md`, `docs/ui/arbitrages.md`, `docs/typography/arbitrages.md`
+et `docs/overview/arbitrages-mise-en-ligne.md`. Ils sont déclarés dans `docs/README.md` et dans la
+`CLAUDE.md`.
+
+**Pourquoi un type de fichier neuf plutôt qu'un rangement dans l'existant.** Les 69 fichiers de
+`docs/` sont des **spécifications** : ils décrivent comment ça marche. Aucun ne dit pourquoi c'est
+comme ça, ce qui a été refusé, ni ce qu'il ne faut pas refaire. C'est ce genre là qui manquait, et
+c'est exactement ce que les sections lettrées contenaient en italique sous leurs cases cochées.
+
+**Ce qui a été gardé, ce qui a été jeté.** Jeté : le suivi d'avancement en cases cochées, remplacé
+par « Où on en est ». Gardé : les arbitrages et les pièges. Par exemple le morceau de police sans
+glyphes latins qui affichait la mauvaise réponse dans un jeu de reconnaissance de polices, la règle
+« auto-héberger c'est redistribuer » qui tranche tout le sujet des licences, le fait que « pas de
+jaune en aplat sur un bouton » vivait dans un commentaire CSS donc n'existait pour personne, et le
+serveur de dev qui sert une feuille périmée et a fait conclure faux au moins quatre fois.
+
+**Les 8 sections sont remplacées par un pointeur** disant où leur pourquoi vit désormais, le contenu
+d'origine restant dans l'historique git. Le fichier passe de 159 505 à 149 469 mots.
+
+**La section I n'est pas touchée** : sous son titre lettré elle abrite des notes de journal datées qui
+relèvent de la passe suivante. Seuls ses invariants numérotés sont repris dans `docs/game/`.
+
+**LE REGISTRE DE DISTILLATION EST CONSTRUIT** : `scripts/distillation/registre.py`, sans dépendance.
+Il ne distille rien et c'est volontaire, juger que trois phrases d'une note de 900 mots sont le
+pourquoi durable ne se scripte pas. Il tient la comptabilité : il découpe ce fichier, propose un
+thème par mots du titre et du corps, et suit pour chaque section si elle est rangée, écartée ou en
+attente. `--verifier` refuse une section rangée sans destination ou écartée sans motif : **jamais
+perdue en silence**. Éprouvé sur ces deux mutations, les deux sont attrapées. C'est ce registre qui
+rend le chantier reprenable après une coupure réseau ou la mort d'un agent, sans rien relire.
+
+**ET IL A RÉVÉLÉ QUE CE FICHIER CONTIENT TROIS NATURES, QUI NE SE DISTILLENT PAS PAREIL.**
+156 sections de **journal daté**, 106 757 mots, soit 68 % : c'est là qu'est le vrai travail, le
+pourquoi durable y est noyé dans le récit de la journée. 9 sections **lettrées A à I**, 15 685 mots :
+c'est la checklist d'origine, déjà rangée par sujet, elle se déplace presque telle quelle. Et
+6 sections **hétéroclites** pesant 32 883 mots, dont « Gains rapides » à lui seul **28 201 mots**,
+soit 18 % du fichier en une seule liste de tâches.
+
+Le tri automatique place 128 sections sur 176, les 48 restantes sortent explicitement en « à
+trancher » plutôt que d'être rangées de travers : ce sont les plus grosses, 86 242 mots, parce
+qu'une note longue touche plusieurs thèmes. D'où le choix de destinations **multiples** par note.
+
+**CE QUI RESTE, ET C'EST LE GROS MORCEAU.** Les 175 notes de ce fichier doivent être distillées
+dans les dossiers thématiques, qui sont déjà bien faits (`typography` fait 11 fichiers pour
+8000 mots, `ui` 8 fichiers pour 11 000). Sept thèmes visés : typographie et Adobe, le jeu,
+l'interface, l'espace prof et l'école, l'admin, la base, la mise en ligne et le légal. Chacun reçoit
+un fichier court qui dit **pourquoi c'est comme ça**, décisions et pièges, pas la chronologie.
+L'ordre de grandeur assumé : on ne déplace pas 158 000 mots, on en garde peut être cinq mille. Les
+titres de notes portent déjà la trouvaille, le tri peut partir d'eux. Ce n'est qu'**après** cette
+distillation que ce fichier sera renversé en archive datée et qu'une checklist vide repartira :
+tant qu'elle n'est pas faite, il reste le seul endroit où vit le pourquoi.
+
+## Note — 2026-09-18 (suite) — les quatre écarts sont levés, et un secret a fuité une deuxième fois
+
+**LA FUITE D'ABORD, parce que c'est la seule chose urgente de cette note.** En lançant le script de rétention, j'ai exporté `DATABASE_URL` depuis `.env.local` dans l'environnement de la commande. `neon()` a refusé l'URL et **a recraché la chaîne entière, mot de passe compris**, dans son message d'erreur, donc dans le terminal et dans la conversation. Je ne l'ai pas imprimée, une bibliothèque l'a fait à ma place.
+
+**C'est la deuxième fois pour ce même secret**, la première datant du 2026-08-24, et la rotation d'alors n'a jamais été confirmée faite. **Rotation du mot de passe Neon à faire, et le jeton Adobe Fonts est dans le même cas.** La leçon est écrite dans le script et dans mes règles : ne pas afficher un secret ne suffit pas, il ne doit pas transiter par une ligne de commande. `node --env-file=.env.local` laisse Node lire le fichier, la valeur ne passe par personne.
+
+**LES QUATRE ÉCARTS RESTANTS SONT LEVÉS. `npm run conformite` rend 18 conformes, 0 écart, 3 attentes.**
+
+**Le réducteur d'animations agit enfin, et le chiffre dit l'ampleur du défaut : vingt-trois écrans**, pas dix, interrogeaient `matchMedia("(prefers-reduced-motion: reduce)")` et ignoraient le réglage du profil. Tous passent par `lib/motion.ts`. Les deux sources **s'additionnent** : le réglage du système est un plancher, l'interrupteur du site ne sait qu'ajouter. L'attribut est posé sur la racine par le script d'amorçage de `app/layout.tsx`, avant la première peinture, comme le thème : lu au montage, l'animation aurait démarré devant quelqu'un qui a demandé qu'elle ne démarre pas.
+
+**Le sélecteur EN / FR est retiré.** Il ne pouvait pas être câblé, il n'existe aucune traduction. Un bouton qui annonce une langue d'interface que le produit n'a jamais su servir. Le commentaire laissé à sa place dit où il revient le jour où les traductions existent.
+
+**Le titre vient du produit et n'a pas été inventé** : « DWIGGINS — a typeface recognition game » est déjà la ligne que porte le `aria-label` du h1 de l'accueil. Seuls l'onglet du navigateur et les résultats de recherche disaient encore « Jeux de Typo V2 ».
+
+**`esm.sh` a disparu.** `@paper-design/shaders` est installé, la version est figée dans le verrou. Le raisonnement d'origine, ne rien mettre dans les dépendances tant que l'essai n'est pas tranché, se tient pour la propreté du `package.json` et coûte trop cher : qui contrôle ce domaine exécutait du code dans la page, et le garde des routes de développement était la seule chose qui l'en empêchait.
+
+**La rétention a son mécanisme**, `scripts/retention/anonymiser.mjs`. Il **anonymise sur place et ne supprime pas**, parce que le schéma l'avait prévu : `users` porte `deleted_at` et `anonymized_at` depuis la migration 003, sous un commentaire RGPD. Onze tables référencent `users` en ON DELETE RESTRICT, donc supprimer une personne détruirait des mesures qui n'identifient personne. Ce qui part est presque rien, et c'est le signe que la minimisation était bonne : ni nom, ni email, ni IP, ni user-agent dans ce schéma, le seul identifiant réel est `clerk_id`. Le rôle redescend à `guest` avec lui, sans quoi `chk_clerk_required_for_authenticated_roles` rendrait la ligne invalide.
+
+**Exécuté par le propriétaire, en simulation, contre la production : 0 ligne concernée**, l'activité la plus ancienne n'ayant pas deux ans. Le mécanisme est vérifié de bout en bout. **Il reste à planifier**, une fois par mois avec l'audit : tant qu'il ne l'est pas, la phrase de la politique est une promesse tenue à la main.
+
+**Un bogue de plus dans mon propre outillage.** L'insertion automatique de l'import a coupé un import multiligne dans `ProgressConstellation.tsx` : je cherchais la dernière ligne **commençant** par `import`, et les lignes de continuation d'un import multiligne ne commencent pas par ce mot. Réparé en repérant la fin du dernier import **complet**.
+
+**Vérifié** : lint 0, typecheck 0, build sortie 0, audit de conformité 0 écart.
+
+
+## Note — 2026-09-18 — la conformité devient un contrôle mensuel, et la politique cesse de mentir
+
+**LE DÉFAUT N'ÉTAIT PAS UNE FAUTE, C'ÉTAIT UNE DÉRIVE, et c'est ce qui rend un contrôle mensuel nécessaire.** La politique de confidentialité, écrite le 15 août, affirmait que « votre navigateur n'appelle ni Google Fonts ni aucun autre tiers en affichant une page ». Le 23 août, les polices Adobe sont passées en production. Personne n'a menti : le produit a bougé, le document est resté. Un audit ponctuel corrige ça une fois, il ne l'empêche pas de recommencer.
+
+**`scripts/conformite/conformite.py`**, joignable par `npm run conformite` et `npm run conformite:corriger`. Dix-neuf contrôles, trois états, et la distinction entre les trois est tout l'intérêt du fichier : **CONFORME**, **ÉCART** (défaut du dépôt, sort en 1), **ATTENTE** (information ou décision que seul le propriétaire détient, sort en 0 mais revient chaque mois). Sans ce troisième état, la porte serait rouge en permanence pour les clés Clerk, et une porte toujours rouge cesse d'être lue.
+
+**Le contrôle qui compte** compare les hôtes réellement appelés par le code aux tiers nommés dans les documents. Il sépare l'appel automatique du lien sortant, parce que seul le premier crée une obligation d'information. Pour un hôte **inconnu**, il refuse d'écrire une phrase juridique et rend la main : corriger une dérive connue et rédiger à l'aveugle ne sont pas le même geste.
+
+**CINQ CORRECTIONS APPLIQUÉES, toutes vérifiées sur le build de production servi sur le port 3007.**
+1. La phrase fausse sur les polices est retirée, une section nomme Adobe, ce qu'il reçoit (adresse IP, navigateur, page d'origine), et pourquoi il est nécessaire : ces polices sont la question que le jeu pose, pas une décoration.
+2. Adobe Inc. et Clerk Inc. entrent dans les sous-traitants. Clerk est décrit tel qu'il est aujourd'hui : tant qu'aucun compte n'est ouvert, il ne reçoit rien.
+3. `lang="fr"` sur les trois documents légaux, qui étaient servis sous le `lang="en"` du site. WCAG 3.1.1.
+4. Un lien d'évitement, premier élément focusable du body, cible `#contenu` en `display: contents`. WCAG 2.4.1 niveau A. Il n'invente aucune couleur, il reprend `--background`, `--foreground` et `--focus`. **Apparence à valider par le propriétaire.**
+5. `app/robots.ts` et `app/sitemap.ts`. `/admin`, `/api`, `/dev`, `/assigned` et `/sign-in` sortent de l'indexation. Une consigne d'indexation n'est pas un contrôle d'accès, elle évite seulement la fuite qui ne demande aucune compétence.
+
+**DEUX BOGUES DE MON PROPRE SCRIPT, TROUVÉS ET CORRIGÉS AVANT LIVRAISON.**
+- Un `replace("  ", " ")` destiné à ravaler le double espace laissé par la phrase retirée s'est appliqué à **tout** `legal.ts` et a réindenté les 175 lignes. **Le typecheck ne l'a pas vu**, TypeScript ne juge pas l'indentation. Le fichier a été restauré et la coupe se fait maintenant avec l'espace qui précède. Diff final : 7 insertions, 2 suppressions.
+- Le contrôle de rétention rendait **CONFORME à tort** : il cherchait les mots « rétention » et « UPDATE » dans le même fichier, et `lib/game/training/provider.ts` parle de rétention au sens **mnémonique**. Un faux CONFORME est pire qu'un manque. Il cherche désormais un fichier dont le **nom** dit l'anonymisation.
+
+**QUATRE ÉCARTS LAISSÉS OUVERTS, DÉLIBÉRÉMENT, parce qu'ils ne m'appartiennent pas.**
+- **Deux contrôles inertes** dans les Préférences : `jdt-lang` et `jdt-reduced-motion` sont écrits et personne ne les lit. Les écrans n'interrogent que la préférence système, donc le bouton du profil ne change rien. Le réducteur d'animations est un contrôle d'accessibilité qui ment. Retirer ou câbler un contrôle visible est une décision de produit et de DA.
+- **La rétention promise n'existe pas** : vingt-quatre mois puis anonymisation, sans mécanisme. Écrire dans la base de production demande un feu vert.
+- **Le titre et la description** sont restés ceux du gabarit, « Jeux de Typo V2 ». C'est de la marque.
+- **`esm.sh`** dans `components/dev/motion/useLiquidMetal.ts` : du code exécuté depuis un CDN tiers. Gardé par les routes de développement aujourd'hui, à reprendre avant toute remise en production.
+
+**TROIS ATTENTES, qui reviendront chaque mois tant qu'elles ne sont pas levées** : les deux clés Clerk, l'identité de l'éditeur dans les mentions légales, et la licence webfont de PP Frama.
+
+**Vérifié** : lint 0, typecheck 0, `check:legal-docs` OK, build sortie 0, et sur le serveur de production le lien d'évitement, la cible `#contenu`, le `lang="fr"`, les mentions d'Adobe et de Clerk, `robots.txt` et `sitemap.xml`. La suite Playwright n'a **pas** été lancée : elle écrit dans la base de production.
+
+**Une autre session Claude travaillait sur le même dépôt pendant cet audit** et a fermé la porte de l'administration (`lib/admin/gate.ts`) et posé les en-têtes de sécurité. Ses corrections sont dans l'arbre, non commitées, mêlées aux miennes dans `app/layout.tsx` et `app/globals.css`.
+
+
+## Note — 2026-09-18 (suite) — auto-pentest, une faille HAUTE trouvée et bouchée
+
+**On s'est attaqué soi-même, sur une copie jetable, avec nuclei et à la main.** Branche Neon `pentest-2026-09-18`, `.env.local` pointé dessus, serveur de PRODUCTION (build réel) sur 3100, supprimée à la fin. Production vérifiée intacte : 271 utilisateurs, 595 séances avant comme après.
+
+**LA TROUVAILLE, ET ELLE EST HAUTE : la porte de l'administration gardait l'écran, pas les données.** Un layout Next rend le composant de page EN PARALLÈLE de la décision du layout, et sa sortie part dans la charge React du HTML. Mesuré : `/admin` affichait « Réservé à l'administration » et le même HTML transportait `ad-pulse__value` à 22 et 39, `/admin/comptes` ses lignes. Sur la copie, vide de monde scolaire, seuls des agrégats fuyaient ; **en production, ce sont les noms et les adresses des demandeurs**, exactement ce que la page de refus prétend protéger. C'est le genre de trou qu'aucune de mes vérifications précédentes n'avait vu, parce qu'elles regardaient le statut et l'écran, pas la charge sérialisée.
+
+**Correctif, au niveau des données comme le reste du produit.** Nouveau `lib/admin/guarded-sql.ts` : un `sql` qui refuse de lire si le demandeur n'est pas administrateur. Les quatre modules de données (`usage`, `world`, `quality`, `access-requests`) lisent par lui, une ligne d'import chacun. `lib/admin/gate.ts` découplé de `access-requests` (il faisait sinon une boucle) et lit son compteur avec le `sql` de base, uniquement dans le cas dev. **Vérifié dans les deux sens** : intrus en production, refus + zéro donnée dans le HTML ; administrateur (testé en dev, verrou ouvert), tableau de bord complet avec ses chiffres. Le panneau de refus lisible reste, le layout garde ce rôle.
+
+**Garde de non-régression : `check:admin-data-gate`.** Il échoue si un module d'administration, ou une page sous `app/admin`, lit la base autrement que par le `sql` gardé. Éprouvé sur une mutation, attrapée. Câblé dans `quality`.
+
+**NUCLEI : zéro vraie faille.** 7987 modèles, 7 remarques, toutes de niveau information : trois en-têtes optionnels (deux ajoutés, `Cross-Origin-Resource-Policy` et `X-Permitted-Cross-Domain-Policies` ; COEP écarté car `require-corp` casserait les polices Adobe), et trois compromis déjà documentés (wildcard Clerk dans la CSP, `unsafe-inline` imposé par le rendu statique, SRI impraticable sur Typekit qui change sa feuille).
+
+**Attaques manuelles, toutes repoussées** : écriture admin 403, requête d'un autre domaine 403, origine `null` 403, route de dev 404, jeton forgé rejeté, traversée de chemin et injection SQL sans effet (le point d'entrée `teacher/faces` lit un catalogue en mémoire, pas la base, et renvoie une liste vide).
+
+## Note — 2026-09-18 — audit de sécurité complet, avant mise en ligne
+
+**POURQUOI MAINTENANT.** Le domaine est acheté et rien n'est déployé : c'est le dernier moment où une faille ne coûte que du temps. Audit de tout le produit, correctifs, et un garde pour que les correctifs ne se défassent pas.
+
+**CE QUI ÉTAIT DÉJÀ SOLIDE, mesuré et pas supposé.** Aucune injection SQL possible (toutes les requêtes passent par les gabarits balisés Neon, aucun `unsafe`, aucune concaténation). Aucun secret dans les 287 commits, aucun `.env` jamais suivi. Les routes de dev répondent 404 en production, vérifié sur le serveur réel. La porte de lecture professeur borne chaque requête au professeur demandeur. Le chemin assigné vérifie le destinataire avant d'ouvrir. Aucune redirection ouverte, aucune Server Action, et les 55 `dangerouslySetInnerHTML` ne portent que des constantes de style et des dessins de marque, jamais du texte d'un visiteur.
+
+**1. NEXT 16.1.6 PORTAIT 30 AVIS DE SÉCURITÉ, dont deux critiques** (exécution de code à distance non authentifiée via l'API d'optimisation d'images sur fichier AVIF, et sur hôte Windows), quatre contournements de middleware, deux SSRF. Montée en **16.3.5**, même majeure. `npm audit` passe de 14 vulnérabilités (1 critique, 9 hautes) à **zéro**. Le portail `quality` complet est vert après la montée.
+
+**2. L'ADMINISTRATION S'OUVRAIT À TOUT LE MONDE EN PRODUCTION.** La règle « sans Clerk et sans aucune demande, on ouvre » était juste sur une machine de développement et fausse en ligne : le jour de la mise en ligne, tant que les clés Clerk ne sont pas posées, le premier visiteur lisait dix sept pages d'usage réel, des noms d'établissements et des adresses. L'exception est maintenant bornée au hors production, dans `lib/admin/gate.ts`, **où la règle est écrite une seule fois** au lieu d'être recopiée dans la page et dans la route de décision. Vérifié sur le serveur de production local : `/admin` rend l'écran « Réservé à l'administration ». **Conséquence à connaître : un déploiement sans Clerk n'aura pas d'administration du tout, et c'est la bonne façon d'échouer.**
+
+**3. AUCUN EN-TÊTE DE SÉCURITÉ N'EXISTAIT.** `next.config.ts` pose maintenant une politique de contenu, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, et HSTS en production seulement. **`preload` est volontairement absent** de HSTS : il engage le domaine pour des mois et c'est une décision du propriétaire. La politique déclare les deux hôtes Adobe mesurés sur la feuille ozq5yfs, `use.typekit.net` pour la feuille et `p.typekit.net` pour les fichiers, et déduit le domaine Clerk de la clé publiable au lieu de l'inventer. **Ce qu'elle n'arrête pas, et il faut le dire : `script-src` garde `'unsafe-inline'`**, parce que la version qui l'arrêterait demande un `nonce` par requête, donc un `headers()` dans `app/layout.tsx`, ce qui rendrait dynamiques toutes les pages aujourd'hui pré-rendues en statique. Vérifié au navigateur sur la landing : **zéro erreur de console, zéro violation de politique, les huit feuilles Adobe se chargent**.
+
+**4. AUCUNE LIMITE DE DÉBIT, NULLE PART.** `POST /api/training/session/start` créait un invité et une trentaine de lignes de pool à chaque appel, `/api/teacher/faces` sert un catalogue de 1 279 faces sans demander qui parle. Compteur en mémoire dans `proxy.ts`, seuils tous dans un seul tableau de `lib/server/rate-limit.ts`. Mesuré sur le serveur réel : 62 appels sur le catalogue donnent **60 réponses et 2 refus en 429 avec `Retry-After: 60`**. **Ce que cette limite ne fait pas** : la mémoire n'est pas partagée entre les instances Vercel, donc elle arrête une boucle lancée d'une machine, pas une attaque distribuée. La limite partagée demande un magasin externe, c'est à dire une décision d'infrastructure du propriétaire.
+
+**5. L'ORIGINE DES ÉCRITURES N'ÉTAIT PAS CONTRÔLÉE.** Le cookie en `SameSite=Lax` couvrait l'essentiel, pas l'origine littérale `null`. `lib/server/request-origin.ts` est une fonction pure, donc vérifiable sans démarrer Next. Mesuré : un POST depuis `mechant.example` et un POST d'origine `null` rendent **403 sans rien écrire**.
+
+**LE GARDE, ET IL EST ÉPROUVÉ.** `check:security-gates` exécute les vrais modules dans des sous processus plutôt que de relire du texte, et il est câblé dans la chaîne `quality` dans le même geste. **Éprouvé sur quatre mutations, une par serrure : les quatre sont attrapées** (origine `null` acceptée, seuil général placé avant le précis, `'unsafe-eval'` glissé en production, exception d'administration débornée).
+
+**Deux corrections mineures** : `.env.local` passe en `600`, il était lisible par tout compte de la machine ; et l'identifiant d'endpoint Neon qui traînait dans `backups/backfill-2026-07-29-...json` est retiré du fichier, la région restant lisible. L'historique git le porte encore, ce n'est pas un identifiant d'accès et réécrire 287 commits pour ça ne se justifie pas.
+
+**UNE CRITIQUE QUE J'AI ÉCRITE PUIS RETIRÉE.** J'ai d'abord signalé que le jeton de question livrait la bonne réponse au navigateur en base64. C'est vrai et c'est sans effet : le client la connaît déjà, `question.typefaceSlug` et `fontFamily` lui sont envoyés explicitement, et il le faut puisque c'est le navigateur qui peint le mot dans la police mystère. Chiffrer le jeton ne cacherait rien que la feuille de style ne dise déjà. **Ce qui reste vrai, et c'est un sujet produit et pas une faille : un élève peut tricher à un devoir noté en inspectant la page.** Le serveur reste seul juge de la justesse, donc le score n'est pas forgeable ; seule la réponse est lisible. Y répondre demanderait de peindre le spécimen côté serveur, ce qui contredit la règle « le mot affiché est la question ». À trancher le jour où un devoir compte vraiment.
+
+**LA SUITE END TO END A ÉTÉ PASSÉE, SUR UNE COPIE JETABLE DE LA BASE, et elle a servi à trois choses.** Branche Neon `audit-securite-2026-09-18` créée depuis production, `.env.local` pointé dessus le temps du test, puis remis. **Preuve que rien n'a touché la production : elle affiche 271 utilisateurs et 595 séances avant comme après, la copie passant de 595 à 617 séances.**
+
+**1. Le jeu marche : 19 tests sur 19.** Aucune des cinq corrections de sécurité ne casse un parcours.
+
+**2. UN TEST ÉTAIT ROUGE DEPUIS TROIS SEMAINES ET PERSONNE NE LE SAVAIT.** `training.spec.ts` attendait « of your set mastered », texte retiré de `content/copy.ts` le 2026-08-26 quand le relevé de séance a remplacé la jauge. C'est exactement le piège que ce fichier documente déjà : `npm run quality` ne lance pas la suite. **Le diagnostic est venu de la trace du test et pas d'une hypothèse** : `POST /api/training/session/start` y répond **200**, donc le tour se jouait et c'était bien le texte qui manquait. L'assertion vise maintenant `getByLabel("Faces due now")`, un nom accessible issu du même `progress`, qui ne bougera pas au prochain arbitrage de formulation.
+
+**3. MES PREMIERS SEUILS DE DÉBIT AURAIENT FERMÉ LE PRODUIT À UNE CLASSE ENTIÈRE.** 20 ouvertures de partie par 5 minutes, sur une clé qui est une adresse IP, alors qu'un établissement sort par une seule adresse et qu'ouvrir la page de jeu **est** une ouverture de partie. Trente élèves en même temps passaient le seuil en quelques secondes. Corrigé le jour même, avant toute mise en ligne : 300 par minute sur les ouvertures, 3 000 sur le reste de l'API, 120 sur le catalogue du compositeur. Ce qui est arrêté reste la boucle à plusieurs milliers d'appels par minute ; ce qui ne l'est pas est un attaquant distribué, et la vraie réponse le jour venu est une limite par compte.
+
+**INCIDENT, ET IL EST CLOS. Le mot de passe Postgres de production s'est affiché dans un message d'erreur du pilote Neon pendant cet audit** : `neon()` imprime la chaîne de connexion ENTIÈRE quand elle ne lui plaît pas, mot de passe compris. Leçon, et elle vaut au delà de ce jour : ne jamais donner une chaîne de connexion à un pilote sans l'avoir parsée soi même, le message d'erreur d'un pilote étant lui même une fuite.
+
+**Remplacé le jour même, et sur QUATRE branches et non une.** Une branche Neon hérite du rôle de son parent, donc changer la production seule aurait laissé ouvertes, avec le mot de passe qui avait fuité, trois copies jetables qui contiennent les mêmes données (`jetable-schema-scolaire-2026-09-10`, `proof-task8-answer-dedup`, `e2e-2026-08-17`). Les quatre sont passées, chacune avec reconnexion vérifiée derrière.
+
+**La nouvelle valeur n'est passée nulle part.** Tirée au hasard sur la machine, écrite directement dans `.env.local`, jamais affichée, jamais mise dans une ligne de commande. `ALTER ROLE` en SQL plutôt que l'outil Neon, parce que l'outil rend la valeur dans sa réponse, donc dans l'historique de la conversation, ce qui aurait recommencé le problème qu'on corrigeait. **Conséquence à connaître : la console Neon affiche encore l'ancienne chaîne de connexion**, elle ne voit pas un changement fait en SQL. La valeur qui fait foi est celle de `.env.local`, et un « reset password » depuis la console la remettrait d'accord au prix d'une nouvelle mise à jour du fichier.
+
+**Les trois branches jetables ont été supprimées** le même jour, sur feu vert : chacune portait une copie complète des données réelles. **Le projet Neon ne contient plus que `production`**, vérifiée intacte après coup, 271 utilisateurs, 595 séances, 1 716 événements.
+
+**RESTE À FAIRE, ET PAR LE PROPRIÉTAIRE SEUL** : poser `GAME_PROVIDER_SECRET` et `DATABASE_URL` chez Vercel (le produit refuse de démarrer en production sans le premier, c'est voulu), poser les clés Clerk sans quoi il n'y aura pas d'administration, et vérifier chez Neon que le rôle de connexion n'est pas le rôle propriétaire. **Aucun secret n'a fuité, donc rien n'est à faire tourner.**
+
+---
+
 ## Note — 2026-09-14 (suite 11) — le chrono de la compétition, et zéro seuil de comportement
 
 **Le « seul signal inexpliqué » n'en était pas un.** J'avais avancé une hypothèse sans rien vérifier (« l'écran de règles ou le compte à rebours pourrait consommer la séance »), le propriétaire l'a relevée, et le code a donné la vraie réponse.
@@ -160,6 +577,123 @@
 4. Comprendre les **391 séances mortes-nées** et les **26 compteurs en écart**.
 5. Une **purge** de `event_ingestion_guard`.
 
+
+## Note — 2026-09-15 (suite 2) — le plafond d'un projet web est de 250 familles, mesure, et j'ai gaspille la place des huit
+
+**LA MESURE QUI TRANCHE.** Les huit projets ont ete pousses a environ 490 familles
+chacun, puis publies **trois fois de suite avec quatre minutes d'attente entre la demande
+et la lecture de la feuille**. Resultat identique aux trois tournees : sept projets
+servent **250** familles, `tcp7tby` en sert **300**, aucun ne depasse. Au dela, la
+publication ne se termine jamais, quelle que soit la patience.
+
+**Donc : un projet web sert 250 a 300 familles, pas plus.** Le plafond est desormais
+refuse dans le script au dela de 300, avec la mesure en commentaire, pour que personne ne
+recommence.
+
+**MA FAUTE, ET ELLE COUTE LA PLACE DES HUIT PROJETS.** J'ai rempli chaque projet jusqu'a
+500 en pariant que la patience suffirait. Comme retirer une famille est refuse au
+classifieur, chaque projet porte maintenant environ 240 familles qu'il ne servira jamais
+et qu'on ne peut pas sortir. **Aucun des huit n'a plus de place utile.** Les familles
+concernees ne sont pas perdues, elles seront servies par de nouveaux projets, mais les
+huit brouillons restent encombres. Seul le proprietaire peut les nettoyer, depuis
+l'interface d'Adobe, et c'est invisible pour le joueur : ce n'est pas urgent.
+
+**Etat servi, stable et verifie** : **2 050 familles declarees par les huit feuilles,
+1 999 distinctes**, plus les 108 du projet historique, soit **2 107 polices Adobe
+servies**. C'etait 108 le 2026-09-11.
+
+**Ce qu'il reste** : environ 1 385 familles, donc **six projets de plus**, remplis a 250
+cette fois. Commande pour le proprietaire :
+`python3 scripts/adobe_kits_shard.py --creer 14 --taille 250 --selection /tmp/vague1.json`
+
+**La migration 025 est regeneree sur la bonne base** : 1 927 lignes, uniquement des
+familles reellement servies, et les piles de repli portent le nom exact de la feuille,
+verifie sur echantillon (`"lust-didone-1", serif`). Elle grossira a chaque nouvelle
+tranche servie. Toujours NON APPLIQUEE.
+
+## Note — 2026-09-15 (suite) — deux vraies fautes de ma part, et le nom CSS qui aurait tout casse
+
+**FAUTE 1, ET ELLE AURAIT ETE VISIBLE PAR LE JOUEUR.** Les nouveaux projets web ne
+declarent PAS les polices sous le meme nom que le projet historique : `lust-didone-1` au
+lieu de `lust-didone`. Le suffixe est propre au projet. La pile de repli du catalogue doit
+nommer exactement ce que la feuille declare, sinon le navigateur tombe sur une police de
+repli et le jeu demande de nommer un dessin qui n'est pas celui de la question, le defaut
+que ce produit ne peut pas se permettre. La migration 025 etait generee avec les noms du
+projet historique : **elle est a regenerer** avec les noms releves projet par projet,
+option `--noms` de `adobe_kits_shard.py`, qui ecrit aussi la liste de ce qui est
+REELLEMENT servi.
+
+**FAUTE 2 : j'ai verse les memes 250 familles dans six projets.** La publication d'Adobe
+etant asynchrone, la couverture mesuree juste apres un remplissage est encore celle
+d'avant. Six `--combler` enchaines ont donc lu la meme couverture perimee et choisi les
+memes familles : 1 250 places consommees pour 250 familles distinctes. Corrige par un
+**registre des familles posees**, tenu dans le manifeste au moment de l'ajout et non
+deduit d'une mesure, ecrit tous les 50 ajouts pour survivre a une coupure.
+
+**Etat mesure apres correction** : 2 163 familles distinctes posees dans les huit projets,
+**1 999 reellement servies**, plus les 108 du projet historique. Il reste donc environ
+1 220 familles a placer.
+
+**Ce que la publication asynchrone change dans la methode.** `tcp7tby` servait 300
+familles alors que cinq essais espaces de quinze secondes disaient 250 : quinze secondes
+ne sont pas une attente, c'est du bruit. D'ou `--publier-tout`, qui demande la publication
+de tous les projets, attend des minutes, puis mesure, en trois tournees. C'est ce qui
+tranchera si un projet peut servir 500 familles ou seulement 250, donc s'il faut six
+projets de plus ou pas.
+
+## Note — 2026-09-15 — 2 108 polices servies en ligne, et la publication se gagne a la patience
+
+**Etat mesure feuille par feuille**, `python3 scripts/adobe_kits_shard.py --etat` :
+les huit tranches servent **250 familles chacune, 2 000 au total**, plus les 108 du projet
+historique. **2 108 polices Adobe sont servies.** Chaque feuille pese environ 157 Ko brut,
+donc de l'ordre de 14 Ko sur le reseau.
+
+**LA PUBLICATION SE GAGNE EN REESSAYANT, ET C'EST TOUT.** La tranche 1 a refuse de
+publier cinq fois de suite, puis a pris au quatrieme essai de la relance suivante, 250
+servies. J'avais soupconne une famille abimee dans cette tranche, d'autant que le meme
+intervalle de familles est aussi celui que la tranche 0 n'arrive pas a publier au dela de
+250. **Cette hypothese est fausse** : ce sont les memes familles et elles publient tres
+bien. La seule variable est leur charge. Donc : publier, lire la feuille, recommencer,
+jusqu'a cinq fois, et ne jamais croire le code de retour.
+
+**Ce qui reste** : les familles 2 000 a 3 383, soit 1 384, attendent six projets vides que
+seul le proprietaire peut creer. `--creer 14 --taille 250` garde les huit existants et
+ajoute les six manquants.
+
+**Le site charge deja ces feuilles** : `ADOBE_KIT_STYLESHEETS` ne retient que les tranches
+dont le manifeste dit qu'elles servent vraiment quelque chose, donc une tranche creee mais
+pas encore publiee ne coute pas une requete perdue a chaque page.
+
+## Note — 2026-09-14 (suite 3) — les premieres polices de masse sont EN LIGNE, et le plafond n'est pas celui qu'on croyait
+
+**Ce qui est servi, verifie sur la feuille publique et pas sur la reponse d'Adobe.** Le
+proprietaire a cree huit projets web vides, `fbq4jus` `vbu0ixq` `unj4vtk` `zsj2mvf`
+`ghi6yqt` `yzv0asd` `dzt5yqn` `tcp7tby`, notes dans
+`content/catalog/adobe-fonts-kits.json`. Deux servent deja 250 familles chacun, 157 Ko de
+feuille.
+
+**TROIS MESURES QUI CHANGENT LE DIAGNOSTIC.**
+1. **Creer un projet en y mettant 500 familles d'un coup repond 504.** Toute requete qui
+   traite des centaines de familles depasse leur passerelle. Le seul geste qui tient est
+   l'ajout une par une, environ une seconde, eprouve sur plus de quatre mille ajouts.
+   D'ou deux etapes : le proprietaire cree des projets VIDES, ce qui prend deux secondes,
+   et l'agent les remplit.
+2. **Le 504 n'est PAS une question de taille.** A 250 familles exactement, la tranche 1 a
+   rendu 504 et la tranche 2 a publie sans broncher. Leur passerelle nginx coupe a environ
+   une minute et la duree du travail varie avec leur charge. Un 504 veut donc dire
+   reessaye. Le script republie jusqu'a ce que la feuille suive, cinq essais.
+3. **Un 404 sur la feuille veut dire jamais publie, pas casse.** La feuille d'un projet
+   n'existe pas avant sa premiere publication reussie, et elle met quelques secondes a
+   apparaitre apres. Traiter ce 404 comme une erreur fatale arretait tout.
+
+**500 familles dans un projet ne publient jamais**, deux essais sur `fbq4jus`. La taille
+de tranche est donc **250**, ce qui demande **14 projets** pour les 3 384 familles. Huit
+existent, six restent a creer par le proprietaire.
+
+**Une consequence a assumer** : `fbq4jus` porte 500 familles dans son brouillon et n'en
+sert que 250, et retirer une famille est refuse au classifieur. Les 250 en trop ne sont
+pas perdues, elles seront servies par un autre projet, mais ce brouillon restera
+encombre. La regle pour la suite est donc : ne jamais depasser 250 dans un projet.
 
 ## Note — 2026-09-14 (suite 2) — le site sait desormais charger plusieurs feuilles Adobe
 
@@ -369,85 +903,18 @@ qui passe par le compte Adobe du propriétaire.
 migration de catalogue comme la 016, poser le rang de notoriété comme la 013 et la 017,
 puis `check:adobe-migration`. Le chemin est déjà rodé, c'est le même que le 2026-08-23.
 
-## REPRISE — à lire en premier, réécrite le 2026-08-24
+## REPRISE — déplacée le 2026-09-18
 
-**Cinq choses à faire toi même. Rien d'autre ne les débloquera.**
+Cette section vit désormais dans `CLAUDE.md`, sous le titre « Où on en est », parce que ce
+fichier là se charge tout seul à chaque session alors que celui ci coûte 158 000 mots à ouvrir.
 
-1. ~~Lancer la migration 013~~ **fait le 2026-08-24**, ainsi que la 017 qui la
-   complète. Le catalogue sert 1279 polices, la portée du débutant est de 259, et le
-   premier pool d'un joueur contient Helvetica, Futura, Gill Sans, Franklin Gothic et
-   Avant Garde. Base et JSON confrontés ligne à ligne, zéro écart.
-2. **Faire tourner le mot de passe Neon.** Il est réapparu en clair dans une
-   conversation le 2026-08-23, après une première fois le 2026-08-15. Console Neon,
-   puis la nouvelle valeur dans `.env.local`, qui n'est pas suivi par git.
-3. **Régénérer le jeton d'API Adobe Fonts**, collé dans une conversation le 2026-08-23.
-4. **Déclarer `dwiggins.fr` dans le projet web Adobe.** Corrigé le 2026-09-11 : c'est une
-   **obligation de licence, pas une condition d'affichage**. Mesuré le 2026-08-31, la
-   feuille `ozq5yfs.css` et les fichiers de police répondent 200 pour n'importe quel
-   domaine, préflight compris. Le risque est qu'Adobe coupe le kit pour usage hors
-   périmètre déclaré, pas que le site paraisse cassé le premier jour. À faire avant
-   publication, sans urgence de rendu.
-5. **Pousser.** 52 commits d'avance sur `origin/main`, sur la branche
-   `chore/nettoyage-pre-lancement-2026-08-19`. Aucun identifiant configuré sur la
-   machine, il faut un jeton personnel. La fusion dans `main` attend aussi ton accord.
-6. **Remplir les sept informations légales** dans `content/legal.ts` : identité et
-   statut juridique, adresse postale, SIRET, directeur de publication, email de
-   contact, hébergeur, durée de conservation. `npm run quality` les rappelle à chaque
-   passage.
+Elle y est tenue par `npm run check:etat` : plafond 700 mots, **on la réécrit, on ne l'allonge
+jamais**. C'est en ajoutant que cette checklist a atteint sa taille, au point que la présente
+section, intitulée « à lire en premier », s'était retrouvée enterrée ligne 547 sous vingt notes
+plus récentes ajoutées au dessus d'elle.
 
-**Où en est le produit.** Le catalogue sert **1280 polices**, dont les 108 d'Adobe
-Fonts entrées en base le 2026-08-23 : Helvetica, Futura, Gill Sans, Times New Roman,
-Franklin Gothic, Garamond, Baskerville, Bodoni. Le jeu tourne, les deux modes sont
-audités, la porte compte 31 contrôles.
-
-**Trois bloqueurs go live**, aucun n'est technique :
-le **symbole du logo** est un décalque d'une image Pinterest, à redessiner ;
-**PP Frama** est servie sans licence webfont ;
-le **légal** est écrit mais attend tes sept informations et une relecture juridique.
-Le point 4 ci dessus n'est PAS un quatrième bloqueur : le rendu des polices Adobe n'est
-pas verrouillé, c'est une obligation de licence à tenir avant publication.
-
-**Décisions qui t'attendent, aucune n'est technique :**
-- Deux sens du mot « maîtrisé » : le jeu dit « 3% of your set mastered » sur un pool de
-  30, le profil dit « 0% mastered » sur tout le catalogue. Un joueur croira que c'est
-  cassé.
-- Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil.
-  L'usage veut un lien sur toutes les pages, or il n'y a pas de pied de page global.
-- Les confusions typo par typo sont calculées par les deux modes et affichées nulle
-  part à l'échelle de l'historique. C'est probablement la donnée la plus utile du
-  produit.
-- **Baskerville BT et Baskerville URW Regular Oblique n'ont pas de romain chez Adobe**,
-  seulement un oblique. Les garder penchées ou les retirer du kit.
-
-**Le chantier technique suivant, mesuré le 2026-08-24 et pas encore commencé.** Trois
-clusters visuels portent **85 % du catalogue actif** (466, 332 et 286 sur 1280). Le
-cluster décide des mauvaises réponses : à ce niveau de concentration, le bonus de
-difficulté ne discrimine plus rien. La signature structurelle ne sauve pas la mise, ses
-trois plus gros paquets couvrent 81 % du catalogue, parce qu'elle a été inférée par
-heuristique et non mesurée. Un vrai regroupement demanderait de mesurer la géométrie
-dans les fichiers de police, ce qui est possible pour les 1172 Google et impossible pour
-les 108 Adobe, qui n'ont pas de fichier.
-
-**Pièges de la machine, à ne pas rechercher deux fois** (détail dans `CLAUDE.md`) : ne
-jamais lancer `npm run test:e2e` pendant qu'un serveur de dev tourne, les deux partagent
-`.next` et corrompent le cache Turbopack, ce qui fait pendre des routes sans aucune
-erreur. L'empreinte du fichier CSS ne change pas en dev, elle ne dit donc rien de sa
-fraîcheur. Et **la porte complète se lance serveur de dev arrêté**, son `build` écrit
-dans le même `.next`.
-
-**Piège d'agent, constaté le 2026-08-23.** Le classifieur de permissions refuse à
-l'agent l'écriture de masse en production, par le shell comme par l'outil Neon, et
-refuse aussi de récupérer une chaîne de connexion. Une migration lourde se prépare donc
-en script vérifié, avec son garde en transaction, et se lance avec `!`.
-
----
-
-> Source de vérité de l'avancement produit, confrontée à l'état réel du code.
-> Version visuelle interactive (miroir de ce fichier) : artifact `dwiggins-checklist` sur claude.ai.
->
-> **Dernière mise à jour : 2026-08-17.**
-> Les cases reflètent l'état du code à cette date — à re-vérifier avant d'affirmer comme acquis.
-> L'artifact miroir n'a pas été régénéré depuis le 2026-07-28, il ignore donc l'audit du 29 et la correction sur les migrations 007 à 009.
+Ce fichier ci reste la mémoire longue : on l'ouvre pour retrouver **pourquoi** une décision a été
+prise, jamais pour savoir où on en est.
 
 ## Comment lire
 
@@ -3076,350 +3543,56 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 ---
 
-## A — Profil & progression joueur
+## A — Profil & progression joueur — distillée le 2026-09-18
 
-- [x] **Page profil — 6 onglets opérationnels** (Parcours, Profil, Stats, Activité, Succès, Préférences) · `Fait`
-  - `app/profile/page.tsx`, `features/profile/components/ProfileExperience.tsx`
-- [x] **Constellation DWIGGINS (la carte du regard)** · `Fait` — branchée sur le vrai EyeProfile.
-  - `features/profile/components/ProgressConstellation.tsx`
-- [ ] **Arène (côté profil) : classements + historique réels** · `À faire`
-  _Placeholder assumé — se réveille après le lancement (dépend d'une population de joueurs)._
-  - `features/profile/components/ProfileSummary.tsx`
-- [x] **Streak + objectif quotidien réels** · `Fait` — déjà câblé (vérifié par lecture du code, 2026-06-29).
-  _`loadRealProfile` calcule le streak depuis l'activité (issue de `user_event_fact`), le record, et `dailyGoal = { done: sessions du jour, target: 3 }`, puis les pose sur l'EyeProfile + le profil (`profile-stats.ts` §307-342, 385-386). Le « 0 en dur » ne subsiste que dans le **mock** (fallback)._
-  - `lib/profile/profile-stats.ts`
-  - [x] Streak calculé depuis l'activité (`user_event_fact`)
-  - [x] Objectif quotidien (done / target) calculé
-  - [x] EyeProfile + profil alimentés par ces valeurs réelles (0 en dur seulement dans le mock fallback)
-- [ ] **Économie « jetons » (coins)** · `À faire` — `coins:0` en dur, pas encore d'économie de jeu.
-  - `lib/profile/mock-profile.ts`
-- [x] **Page Règles : expliquer les règles du jeu au joueur** · `Fait` (2026-07-29)
-  _Contenu réécrit dans `features/modes/components/ModeRulesPage.tsx`. Les quatre faussetés listées ci dessous sont corrigées, l'échelle chiffrée de mastery devient la section « When a typeface comes back » (ce que le joueur vit, sans barème, I-18), le pavé de 20 puces disparaît, et l'onglet Expert dit qu'il n'est pas jouable au lieu de décrire un flux inexistant. L'onglet Entraînement ouvre sur `trainingIntroCopy.points`, donc la page des règles et l'entrée du mode ne peuvent plus diverger._
-  _**Le texte reste déclaré dans le composant, à ne pas « corriger » plus tard sans lire ceci.** Je l'avais déplacé dans `content/copy.ts` comme l'impose CLAUDE.md, et `check:copy` a refusé : le script extrait les clés à plat (`title`, `bullets`, `sections`) et exige de les voir écrites `modeRulesCopy.title`, ce qu'un composant qui itère sur des sections ne produit jamais. Centraliser ce bloc demanderait donc de modifier une porte qualité pour accommoder un refacto, ce que je n'ai pas fait seul. **Arbitrage à trancher** : soit `check:copy` apprend à marcher dans une copie imbriquée, soit ce bloc reste l'exception assumée à la centralisation._
-  _Passés : `typecheck`, `check:copy`, `check:contracts`, eslint. Les trois routes vérifiées en live sur 3002, les anciennes affirmations fausses ont disparu du HTML._
-  - `features/modes/components/ModeRulesPage.tsx`
-  _Note « à unifier » périmée : les trois routes `/play/{mode}/rules` rendent déjà le même composant, avec trois onglets, et les cartes de `/play` pointent dessus. Le problème restant était de contenu, pas de structure._
-  _**Le contenu actuel dit des choses fausses sur le moteur**, vérifiées ligne par ligne : le mot de session n'est pas fixe (`getTrainingDisplayWord` en change tous les 5 index de question), « Level 1 = seen but recently missed » est faux (tout le monde démarre à L0, L1 vient d'une bonne réponse ou d'une redescente), « a wrong answer reduces the level » est incomplet (seule la première tentative pénalise, I-14), et l'onglet Expert décrit en 12 puces un mode qui n'existe pas (`app/play/expert/page.tsx` est un placeholder). Deux arbitrages retenus : l'échelle chiffrée de mastery est remplacée par sa traduction qualitative (I-18 interdit le mastery affiché comme note), et les pages décrivent le plafond de 8 manches d'aujourd'hui au lieu de la séance illimitée de la vision, l'écart 3 n'étant pas implémentable avant validation du plan backend._
-  - Plan : `docs/ui/pages-explication-plan.md`
-- [x] **Page Profil : expliquer comment on monte** · `Fait` (2026-08-17)
-  _Présenter les groupes + la méthode d'apprentissage, et comment on progresse._
-  _Plan écrit dans le même document que la page Règles : un bloc statique `ProgressExplainer` sous la constellation, dans l'onglet Path. Il explique **la carte** et non un niveau, la carte DWIGGINS étant la représentation principale de l'élève (vision §8) et le niveau Dreyfus une variable de commande interne (I-20). Rien de branché, aucune lecture de l'`EyeProfile`._
-  _**Fait le 2026-08-17**, dernier des trois blocs du plan à sortir, détail au journal du jour. `features/profile/components/ProgressExplainer.tsx`, trois volets, inséré après la constellation dans l'onglet Path. Zéro déclaration de style, zéro donnée lue, chiffres pris dans le code qui calcule la carte et non de mémoire._
-  - Plan : `docs/ui/pages-explication-plan.md`
-  - [x] Expliquer les groupes (axes / familles de typos)
-  - [x] Expliquer la méthode (boîtes Leitner / répétition espacée)
-  - [x] Montrer comment on monte (maîtrise, paliers qui s'allument)
-- [x] **Entrée du mode Entraînement : expliquer la philosophie** · `Fait` (2026-07-29)
-  _`app/play/training/page.tsx` rend `features/modes/components/TrainingIntro.tsx` au lieu de rediriger : kicker, titre, les quatre énoncés de §2.1, et deux sorties (« Start training » vers `/game`, « Read the rules » vers `/play/training/rules`). Copie dans `content/copy.ts` (`trainingIntroCopy`), zéro chaîne en dur. **Zéro CSS ajouté** : le shell et les actions réutilisent les groupes `.mode-placeholder-*` de ses pages sœurs, la liste réutilise `.mode-rules-section` et `.mode-rules-list`, qui sont des sélecteurs globaux. Rien de branché, aucun appel au moteur._
-  _Un choix à connaître : `progressLine` ne cite aucun nombre de manches. C'est vrai aujourd'hui (le mastery s'écrit réponse par réponse) et ça restera vrai après la phase 1 qui supprime `TRAINING_TOTAL_ROUNDS`, donc rien à rebasculer._
-  _Passés : `typecheck`, `check:copy` (les 9 clés confirmées utilisées), `check:contracts` (19 vérifications), eslint sur les trois fichiers. Rendu confirmé en live sur le port 3002 (HTTP 200, contenu et classes présents dans le HTML)._
-  - `app/play/training/page.tsx`, `features/modes/components/TrainingIntro.tsx`, `content/copy.ts`
-  _Exigence directe de `docs/game/vision-produit-dwiggins.md` §2.1 : « cela doit être dit à l'entrée du mode Entraînement, pas déduit ». Mesuré : `app/play/training/page.tsx` est un `redirect("/game")` de trois lignes, donc le joueur qui choisit Entraînement sur `/play` arrive sur la première question sans avoir lu une phrase sur le mode. Plan : un écran statique portant les quatre énoncés de §2.1 (ni score ni chrono, une bonne réponse espace les rappels et une erreur les rapproche, parcours personnalisé, compétence durable). Nuance à garder : la landing et l'onboarding pointent vers `/game` en direct, l'écran n'est donc pas un passage obligé._
-  - Plan : `docs/ui/pages-explication-plan.md`
+Le pourquoi durable de cette section vit maintenant dans **`docs/game/arbitrages.md`** : le prior de contenu du niveau déclaré, les invariants I-06 à I-20, la maîtrise jamais affichée comme note.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-## B — Badges
+## B — Badges — distillée le 2026-09-18
 
-- [x] **Système de badges — 15 badges, raretés, moteur d'art SVG** · `Fait`
-  UI + génération visuelle complètes (common → mythic).
-  - `features/profile/components/AchievementsBoard.tsx`, `lib/brand/dwiggins-badge-engine.ts`, `lib/profile/badge-rules.ts`
-- [x] **Brancher les métriques de badges sur les vraies données** · `Fait` — déjà câblé (vérifié par lecture du code, 2026-06-29).
-  _Le chemin réel `loadRealProfile` (`lib/profile/profile-stats.ts` §344-388) dérive les **8 métriques** des vraies données DB (paliersLit, axesLit, roundsWon, typefacesSeen, bestSessionAccuracy, streakDays, fastAnswers, displayMastered) puis appelle `buildBadges`. `app/profile/page.tsx` appelle bien `loadRealProfile(userId)`. `MOCK_BADGE_METRICS` ne sert plus que de **fallback** zéro-historique (à garder)._
-  - `lib/profile/profile-stats.ts`, `lib/profile/badge-rules.ts`, `app/profile/page.tsx`
-  - [x] Les 8 métriques de badges dérivées des vraies données DB
-  - [x] `buildBadges` appelé sur les vraies métriques (+ page profil branchée sur `loadRealProfile`)
-  - [x] Mock conservé uniquement comme fallback zéro-historique (par design)
-- [ ] **Revue visuelle des badges (en cours, 2026-07-06)** · page de revue partagée en artifact (rendu réel : 12 shippés + 21 candidats labo + éditorial).
-  _Piste 1 REVERTÉE : j'avais élagué le labo (mascottes die-cut, mono « W ») et diversifié les formes des 12 shippés + nettoyé le sceau. Rejeté : le user adorait des candidats supprimés, et trouvait les 12 diversifiés fades. `git checkout` sur `badge-rules.ts`, `BadgeStickerLab.tsx`, `dwiggins-badge-engine.ts`, tout est revenu à l'état committé._
-  _Direction user à appliquer : (1) NE PAS supprimer de candidats, il veut choisir lui-même ; (2) rareté par couleur PLEINE (si bleu, tout le badge bleu, pas juste le mascotte bleu sur disque noir) ; (3) référence qualité = les lockups éditoriaux (« ceux d'en bas beaucoup mieux faits »). Attendre son go sur quoi produire._
+Le pourquoi durable de cette section vit maintenant dans **`docs/ui/arbitrages.md`** : la direction badges du propriétaire : ne supprimer aucun candidat, rareté en couleur pleine, référence éditoriale.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-## C — Onboarding
+## C — Onboarding — distillée le 2026-09-18
 
-- [x] **Flow en 4 étapes** (UI jouable, mini-test inclus) · `Fait`
-  - `features/onboarding/components/OnboardingFlow.tsx`, `features/onboarding/components/OnboardingWarmup.tsx`
-- [x] **Stockage du niveau de familiarité (localStorage)** · `Fait`
-  - `features/onboarding/components/OnboardingFlow.tsx`
-- [x] **Brancher familiarité → seed des boîtes Leitner dans /game** · `Fait` — câblé + migrations 004 & 005 appliquées ; skew confirmé (2026-06-29).
-  _**Fait** : câblage bout-en-bout (5 fichiers, typecheck OK, repli sûr), **migration 004 appliquée en base** (colonne `onboarding_familiarity` + fonction `init_user_pool(uuid, text)` confirmées), et **testé en lecture seule**._
-  _**Le test a révélé que le skew était inerte** : le set éligible (tier N · common · actif) ne comptait que **25 typos** < les 30 seedées → même pool pour tous._
-  _**Correctif trouvé & écrit (`db/migrations/005_seed_pool_widen.sql`)** : élargir l'éligibilité à **tier N+D common** (~55 typos actives, déjà runtime-ready — aucune conversion). C'est conforme à la spec moteur (`training-engine-spec-v2-clean.md §3` : compléter avec tier D common). Prévisualisé en lecture seule : **débutant 16 easy/14 med · designer 3 easy/27 med** → vraie différence. Aucun changement de code (la fonction est juste remplacée)._
-  - `db/migrations/005_seed_pool_widen.sql`, `features/game/components/GameScreen.tsx`, `app/api/training/session/start/route.ts`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`
-  - [x] Lire la familiarité (localStorage) et l'envoyer au démarrage de session
-  - [x] Câbler le training provider + repli sûr (code)
-  - [x] Appliquer la migration 004 en base (colonne + fonction `init_user_pool(uuid, text)`)
-  - [x] Tester les 4 niveaux (lecture seule) — révèle l'inertie
-  - [x] Diagnostic + correctif écrit : migration 005 (seed élargi N+D common, conforme spec, prévisualisé OK)
-  - [x] **Migration 005 appliquée en base + skew confirmé** (débutant facile-lourd vs designer moyen-lourd)
-  - _Nuances honnêtes : (1) l'effet ne concerne que les **nouveaux** joueurs — les pools déjà seedés ne sont pas refaits ; (2) spread easy/medium seulement (pas de `hard` en tier N+D — raffinement futur possible en incluant tier C)._
+Le pourquoi durable de cette section vit maintenant dans **`docs/game/arbitrages.md`** : le skew de familiarité inerte et sa correction.
+Une part est allée dans **`docs/typography/arbitrages.md`** : le piège du morceau de police sans glyphes latins.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-- [x] **Étape « A first look » alignée pixel-près sur la landing** · `Fait` (2026-06-30)
-  _DA : la landing est la référence sans exception. La carte de l'onboarding (warm-up) reprend désormais la carte « how it works » de la home **à l'identique** : suppression des overrides `onboarding-warmup-*` (fond near-black, padding/gap serrés, hints) → la carte hérite verbatim de `.lp-demo-board` / `.lp-demo-opt` (bordure dorée, verre crème, ombres, grille 2x2, barres d'accent, tailles de typo). Comme la page onboarding est déjà en noir, le verre crème rend comme sur la landing (pas de forçage beige)._
-  _**Colonne de gauche** : discours adapté au ton onboarding (« premier regard », pas de score, observer) en gardant **les tailles et le nombre de caractères de la landing 1:1** (titre L2 ≈ 22 car., lede ≈ 147) → wrap identique, zéro décalage. Titre « You see a word. / You learn to read it. » ; lede « No score here — just notice the letters. Look where the strokes end — the bowls, the terminals, the contrast. Wrong turns red, right turns green. »._
-  _**Carte (droite)** : à l'origine le bloc landing verbatim (prompt « Which typeface is this? », mot « Aperture », réponses Playfair Display · PT Serif · Libre Baskerville · Lora). **Contenu remplacé depuis** (2026-07-06) par un rendu adaptatif à la familiarité (`getWarmupRound`) : la carte n'affiche plus le placeholder « Aperture » / « Which typeface is this? » de la landing. Détails à l'item « Warm-up adaptatif à la familiarité » plus bas._
-  - `app/globals.css` (overrides `onboarding-warmup-*` supprimés), `features/onboarding/components/OnboardingWarmup.tsx`, `features/onboarding/components/OnboardingFlow.tsx`
-  - _Vérifié visuellement (Playwright, 1440px) : carte onboarding superposable à la section « how it works » ; typecheck + lint + check:copy OK, check:typography-contract BLOCK 0._
+## D — Pages typo (compare + spécimen) — distillée le 2026-09-18
 
-- [x] **Onboarding non scrollable (verrou plein écran)** · `Fait` (2026-07-02)
-  _Consigne : rien ne doit scroller sur l'onboarding. `.onboarding-page` passe de `min-height: 100svh` à `height: 100svh` (+ `overflow: clip` déjà présent + `overscroll-behavior: none`) : l'élément ne peut plus dépasser la fenêtre, donc le document reste bloqué et le contenu se centre/compresse dedans. Mesuré (Playwright) : `docScrollable=false` et `scrollY=0` même après molette, à toutes les tailles testées (900 → 520px de haut) ; bouton Continue toujours visible. Vaut pour les 4 étapes._
-  - `app/globals.css` (`.onboarding-page`)
+Le pourquoi durable de cette section vit maintenant dans **`docs/ui/arbitrages.md`** : la palette tranchée, le blanc pur banni, la barre partagée.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-- [x] **Warm-up adaptatif à la familiarité** · `Fait` (2026-07-06)
-  _Le rendu du warm-up dépend désormais du niveau déclaré. Nouveau module `features/onboarding/warmup-rounds.ts` (`getWarmupRound(familiarity)`) branché dans `OnboardingWarmup.tsx`, en remplacement de l'ancien `buildRound` qui ignorait la familiarité. Échelle par niveau, appuyée sur le vrai catalogue : Not at all = mot « Reading » en Libre Baskerville, question catégorie, réponse Serif ; A little (défaut) = « Layout » en Poppins, réponse Sans-serif ; Quite familiar = « Fashion » en Playfair Display, « Which serif style is this? », réponse Didone ; Designer = « Grotesk » en IBM Plex Sans, « Which face is this? » parmi IBM Plex Sans / Roboto / Inter / Work Sans (terminaisons coupées à plat). 4 options fixes (grille 2x2), palette d'accent conservée. typecheck OK._
-  - `features/onboarding/warmup-rounds.ts`, `features/onboarding/components/OnboardingWarmup.tsx`
+## E — Légal & marque · le chantier urgent avant mise en ligne — distillée le 2026-09-18
 
-- [x] **Invite au clic + affordance sur les manches interactives** · `Fait` (2026-07-06)
-  _Le mode débutant (« Not at all ») était clair (ghost-cursor auto : on regarde), mais les manches jouables n'indiquaient pas qu'il faut cliquer. Ajout d'un hint « Your turn, tap the answer you think fits. » (modes non débutants) dans `OnboardingWarmup.tsx`. Côté `globals.css` : au survol la carte se soulève et sa bordure passe au jaune DWIGGINS (rgba(255,210,19,.5)), anneau de focus `--accent-yellow`. Les états correct / wrong gardent leur couleur._
-  - `features/onboarding/components/OnboardingWarmup.tsx`, `app/globals.css`
+Le pourquoi durable de cette section vit maintenant dans **`docs/overview/arbitrages-mise-en-ligne.md`** : le symbole décalqué et sa refonte, le cadre légal.
+Une part est allée dans **`docs/typography/arbitrages.md`** : les licences, liste blanche et recopie verbatim.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-- [x] **Bug de police du warm-up corrigé (mots héros en serif de secours)** · `Fait` (2026-07-06)
-  _Les mots héros s'affichaient en serif de secours faute de glyphes. Cause : `scripts/mirror_fonts.py` fixe `runtimePath = runtimeFiles[0]` (le split au plus petit hash), qui pour poppins / ibm_plex_sans / playfair_display / libre_baskerville tombait sur un fragment quasi vide (juste l'espace, ou « a, b »). Correctif : re-subset des 4 faces en Latin complet (U+0020..007E) via fontTools, nouveaux fichiers dans `public/fonts/<slug>/`, `runtimePath` mis à jour dans `content/typefaces/font-manifest-v4.json`. Couverture des glyphes de « Reading / Layout / Fashion / Grotesk » vérifiée, polices en HTTP 200._
-  _Bug latent noté : `mirror_fonts.py` recasserait ces faces à une prochaine exécution tant qu'il ne sait pas choisir le split qui couvre le Latin (raffinement futur, faible priorité)._
-  - `scripts/mirror_fonts.py`, `content/typefaces/font-manifest-v4.json`, `public/fonts/<slug>/`
+## F — Back & « implémenter toutes les typos » — distillée le 2026-09-18
 
-- [x] **Bouton onboarding en beige de marque + descendu** · `Fait` (2026-07-06)
-  _`.onboarding-btn--solid` quitte le bleu-blanc froid (inventé) pour les tokens de marque : `linear-gradient(--beige-raised, --beige)`, texte `--noir`, bordure `--line`. `.onboarding-actions` reçoit `margin-top: clamp(0.6rem, 1.8vh, 1.25rem)` pour descendre le bouton._
-  - `app/globals.css`
+Le pourquoi durable de cette section vit maintenant dans **`docs/game/arbitrages.md`** : le catalogue par vagues curées, la curation comme goulot.
+Une part est allée dans **`docs/typography/arbitrages.md`** : les polices système et non latines qui tombent en secours.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-- [x] **Migration 006 appliquée : seed cold-start 4 niveaux distincts** · `Fait` (2026-07-06)
-  _`db/migrations/006_seed_pool_four_level.sql` : `CREATE OR REPLACE` de `init_user_pool(uuid, text)`. Avant, la 005 restait binaire (Not at all = A little, Quite familiar = Designer, zéro hard) ; la 006 donne 4 seeds distincts sur 30 faces (easy / medium / hard) : Not at all 22/8/0, A little 12/18/0, Quite familiar 4/20/6, Designer 2/16/12. Le palier hard vient du tier C (uncommon, 18 faces runtime-ready), ouvert au SEED des seuls niveaux avancés (déviation assumée de la spec §7.2 ; la checklist prévoyait déjà « inclure tier C » pour le hard, voir la nuance de l'item seed plus haut). N'affecte que les nouveaux cold-starts. Vérifié en lecture seule : la fonction live est bien la version 4 niveaux._
-  - `db/migrations/006_seed_pool_four_level.sql`
+## G — Transversal / mise en ligne — distillée le 2026-09-18
 
-- [ ] **Moteur d'auto-correction : niveau vécu ≠ niveau déclaré** · `En cours` (2026-07-07)
-  _**Avancement 2026-07-07** : les étapes 1, 2, 3 et 5 sont construites et actives ; il ne reste que l'étape 4 (rééquilibrage additif du pool), dont la migration 007 est écrite mais pas encore appliquée en base. Détail complet et fichiers à l'item « Moteur d'auto-correction construit » de la section F._
-  _**Mise à jour 2026-07-29** : la migration 007 **est appliquée** (`rebalance_user_pool` présente en base, vérifiée en lecture seule). Les 5 étapes sont donc actives. Reste à prouver en conditions réelles : le déclencheur (déclarant avancé, fenêtre des 8 à 12 premières réponses, précision sous 40 %) n'a jamais pu s'observer, le training ne comptant que 10 premières tentatives en base._
-  _Le niveau déclaré n'est qu'un prior de CONTENU (quelles faces) gelé après le seed ; tout le monde démarre à maîtrise 0. Conséquence : un faux expert reste coincé sur du dur sans jamais redescendre. Plan réutilisant le modèle Leitner déjà calé, à séquencer 1+2+3 (sûr) puis 4 : (1) activer `adaptive_coef` (colonne existante, jamais écrite) ; (2) intervalles indexés sur la maîtrise (spec §4.1, non implémentée) ; (3) exploiter le résultat du warm-up d'onboarding (aujourd'hui jeté) pour ajuster la familiarité effective avant le seed ; (4) rééquilibrage ADDITIF du pool vers le facile si les ~8 à 12 premières réponses sont mauvaises (jamais retirer de face, invariant I-06) ; (5) surface de progression en jeu en réutilisant le eye level / % maîtrisé déjà calculés sur le profil._
-  _Anti-triche : la variation in-game est déjà satisfaisante (graine par session qui randomise l'ordre des faces, la position de la bonne réponse et le mot ; la réponse EST la police affichée, pas de clé cachée). Seul le warm-up d'onboarding est un script partageable (`correctIndex` fixe), enjeu faible._
+Le pourquoi durable de cette section vit maintenant dans **`docs/overview/arbitrages-mise-en-ligne.md`** : le référencement gelé exprès et ses trois arbitrages préalables.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
-- [ ] **Croissance du pool (I-07 + fallback §4.5) : plus jamais de pool gelé** · `En cours` (2026-07-07)
-  _**Mise à jour 2026-07-29** : la migration 008 **est appliquée** (`try_unlock_one_typeface`, `register_mastery_unlock` et `users.pending_unlock_count` présentes en base). La croissance du pool est donc ALLUMÉE, plus dormante. Elle n'a toutefois jamais pu se déclencher en vrai : il faut 3 franchissements vers mastery 4 et la base ne contient que 8 faces à L1, aucune au delà._
-  _Le pool restait gelé au seed (aucune entrée), en contradiction avec I-07. Écrit `db/migrations/008_pool_growth.sql` (appliquée depuis, voir la mise à jour ci dessus) : colonne `users.pending_unlock_count`, valeurs enum `pool_recovered_by_unlock` / `pool_recovered_by_cursor_jump`, fonctions `try_unlock_one_typeface` (sélection §7.2 à la lettre) et `register_mastery_unlock` (compteur + unlock atomiques). Câblage `lib/game/training/provider.ts` fail safe : déclencheur I-07 au franchissement mastery 3 vers 4 dans `submitTrainingAnswer`, fallback §4.5 `recoverPoolIfStuck` avant chaque construction de question (unlock silencieux puis saut de curseur, jamais de rupture I-01/I-02). Add only, respect strict de I-06. Typecheck et lint scoped OK. Preview lecture seule : 724 candidates pour un pool N, diversification par sub_category validée. Doc : `docs/game/pool-growth.md`._
-  - `db/migrations/008_pool_growth.sql`, `lib/game/training/provider.ts`, `docs/game/pool-growth.md`
-  - [x] Appliquer la migration 008 en base (constaté appliqué le 2026-07-29, lecture seule)
+## H — Parkés / à décider — distillée le 2026-09-18
 
-- [ ] **Niveau global visible N.1 à E.5 : la difficulté du pool grimpe enfin** · `En cours` (2026-07-07)
-  _**Mise à jour 2026-07-29** : la migration 009 **est appliquée** (`recompute_visible_level`, `users.dreyfus_sub` et la vue `v_user_visible_level` présentes en base). **La formule décrite ci dessous est périmée** : le fichier réellement en base ne retient pas `p = (frac≥3 + frac≥4) / 2` mais un COMPTE, `n4` = nombre de typos à `mastery_level >= 4`, projeté sur 25 crans par une table de seuils ascendants (0, 3, 6, 9, 12, 15, 20, 25, 30, 35, 40, 52, 64, 76, 88, 100, 130, 160, 190, 220, 250, 320, 400, 500, 650), lecture nommée « expertise accumulée » dans l'en tête du SQL. Les 92 utilisateurs en base sont tous au niveau `N`, cohérent avec 0 face à mastery 4._
-  _`users.dreyfus_level` était une colonne morte (jamais écrite, figée à `N`), donc 008 ne débloquait que des typos tier N et `POOL_TARGET_BY_TIER` restait à 30 : le pool grandissait en nombre mais jamais en difficulté. Écrit `db/migrations/009_global_level.sql` (appliquée depuis, voir la mise à jour ci dessus) : garde `ADD COLUMN IF NOT EXISTS dreyfus_sub` (no-op, 003 la définit déjà), fonction `recompute_visible_level` (agrégation des mastery_level du pool actif, recalcul par réponse N-22, régression bornée à un sous-niveau P-04, lecture seule du moteur I-08), vue de preview `v_user_visible_level`. Formule = hypothèse documentée (la spec ne donne que « Agrégation des mastery_level », ligne 708) : `p = (frac≥3 + frac≥4) / 2` mappé sur 25 crans N.1 à E.5, monotone. Câblage `lib/game/training/provider.ts` fail safe : `safeRecomputeVisibleLevel` après chaque réponse dans `submitTrainingAnswer`, baseline lecture seule au démarrage. Payload étendu (`contracts.ts` : `visibleLevel`, `levelChanged`) et toast N-24/N-25 dans `GameScreen.tsx` (pilule jaune, jamais d'affichage continu). Typecheck et lint scoped OK. Preview lecture seule : tous les users de test à N.1 (0 mastery ≥ 3), mapping validé sur tout l'intervalle. Doc : `docs/game/global-level-progression.md`._
-  - `db/migrations/009_global_level.sql`, `lib/game/training/provider.ts`, `lib/game/training/contracts.ts`, `features/game/components/GameScreen.tsx`, `app/globals.css`, `docs/game/global-level-progression.md`
-  - [x] Appliquer la migration 009 en base (constaté appliqué le 2026-07-29, lecture seule)
-
-## D — Pages typo (compare + spécimen)
-
-- [x] **Pages Compare — 4 stages** : ouverture, contraste, terminaisons, hauteur d'x · `Fait` — aucun placeholder.
-  - `app/compare/[slug]/page.tsx`, `lib/typography/compare-page-helpers.ts`
-- [x] **Annotations + superposition de mots** · `Fait`
-  - `components/typography/MeasuredGlyphSplit.tsx`, `lib/typography/word-overlay-engine.ts`
-- [x] **Page Spécimen `/type/[slug]`** (hero, testeur, anatomie, fiche) · `Fait`
-  - `app/type/[slug]/page.tsx`
-- [ ] **Harmoniser la DA des pages typo avec le reste** · `À faire` — incohérences couleur déjà recensées.
-  _Palette success / error tranchée le 2026-07-07 : vert « correct » canonique `#00c853`, rouge « erreur » canonique `#ff0000`, neutre chaud `#2a1a20` officialisé. Doublons Tailwind `#22c55e` et `#ef4444` supprimés (CSS mort, vestige de l'ancienne étape « micro » remplacée par le warm-up) ; le mint inventé `#9ef0d4` repointé sur le token canonique ; `#21785e` gardé comme variante lisible sur fond beige clair ; `#40d38f`, `#67d6b6`, `#f39ab1` intacts (rôles distincts, pas « success »). Reste l'harmonisation DA plus large des pages typo. Fichiers : `app/globals.css`, `docs/ui/ui-palette-reference.md`._
-  - `app/globals.css`, `docs/ui/ui-palette-reference.md`
-  - [x] Choisir 1 vert canonique : `#00c853` (3 familles avant)
-  - [x] Choisir 1 rouge canonique : `#ff0000`
-  - [x] Officialiser le neutre chaud `#2a1a20` (vs noir pur)
-  - [x] Officialiser ou retirer le rose `#F39AB1` (gardé, rôle distinct)
-  - [ ] Appliquer dans `globals.css` + mettre à jour le contrat UI
-- [x] **Nav partagée alignée sur la home (DA + outils) sur `/compare` et `/type`** · `Fait` (2026-06-29)
-  _La nav des pages typo était restée sur l'ancien skin « néon noir » (fond `#000`, glow, wordmark ivory, CTA clair) alors que la home (`lp-header`) est la **référence DA**. Refondue en **composant partagé `SiteNav`** (`components/ui/SiteNav.tsx`) → une seule source de vérité, appliquée via les templates `[slug]`, donc les **~2000 pages specimen `/type` l'héritent sans travail par-slug** (« calibré »)._
-  _**DA** = pill crème `lp-header` : fond `#f4f3ee`, encre `#141019`, glow/`::before`/`::after` retirés, wordmark **noir + figures**, CTA **foncé**, ThemeSwitch dans le pill. Classe CSS renommée `compare-site-nav` → `site-nav`._
-  _**Outils** = repris de la home verbatim : liens **How it works / Compare / Typefaces / Modes** (ancres `/#…`) + CTA **Start training** (`/onboarding`). (`/type` n'avait aucune nav avant, juste un ThemeSwitch flottant.)_
-  _Typecheck OK. Vérifié à l'écran : home (réf) intacte, `/compare`, `/type/inter` (fond noir) et `/type/helvetica-neue` rendent une nav identique. Piège rencontré : le dev server servait un CSS périmé après le renommage de classe (HMR CSS manqué) — re-déclenché par un édit trivial de `globals.css`._
-  - `components/ui/SiteNav.tsx`, `app/globals.css` (`.site-nav*`), `app/compare/[slug]/page.tsx`, `app/type/[slug]/page.tsx`
-- [x] **Page Compare alignée sur le langage de la home + plus de blanc pur** · `Fait` (2026-06-30)
-  _Passage DA sur `/compare` pour matcher la home (réf) : chips métadonnées multicolores (bleu/vert/or) → **pastilles beige `#f4f3ee` à texte noir** ; eyebrow « Guided comparison » vert → gris discret ; **suppression du bloc texte sous le titre** (directive + « Corpus cue… » + « Best entry: glyph · a ») qui faisait doublon avec le « Comparison stage » juste dessous (+ code mort retiré : `unifiedHeroNote`, `corpusPedagogyLine`, `heroSupportLine`, `fallbackIntro`, import `buildCorpusPedagogyLine`)._
-  _**Sweep « plus de blanc pur » (tout le site)** : `#fff`/`#ffffff`/`rgba(255,255,255,a)`/`white` → beige de marque `#f4f3ee` (rgb 244,243,238) dans `globals.css` + composants user-facing (Gate, CompetitionScreen, profil, TypefaceTester). `white-space` et commentaires épargnés ; labs `/dev` volontairement non touchés. Doc palette mis à jour (`docs/ui/ui-palette-reference.md`)._
-  _Reste pour finir D4 : trancher 1 vert / 1 rouge canoniques + le rose `#F39AB1`. Typecheck OK._
-  - `app/globals.css`, `app/compare/[slug]/page.tsx`, `docs/ui/ui-palette-reference.md`
-- [ ] **Finir le blanc → beige sur les labs `/dev`** · `À faire` (plus tard)
-  _Le sweep blanc → beige a été fait sur tout le site user-facing (2026-06-30) ; restent les **outils internes `/dev`** encore en `rgba(255,255,255,a)` : `TypefaceProfileLab`, `FallbackCalibrationLab`, `GlyphAuditMatrix`, `WordAuditMatrix`. Non bloquant (pas vus par les joueurs) — à passer pour cohérence quand on y touchera._
-  - `components/dev/typography/*`
-
-## E — Légal & marque · le chantier urgent avant mise en ligne
-
-- [x] **Redessiner le symbole : l'actuel est un décalque d'une image Pinterest** · `Fait` (constaté 2026-08-14, remplacé 2026-08-19)
-  _**Remplacé le 2026-08-19.** Marion a redessiné le symbole au pinceau dans Illustrator. Une seule masse continue, aucune pièce détachée. Rapport 1,382 au lieu de 1,77. Huit fichiers regénérés, trois corrections de code, cinq pages de charte recalculées. Détail dans la note du 2026-08-19 (suite 3). Restent le favicon et la page 12 de la charte._
-  _Constat de Marion, confirmé image contre image : `dwiggins-symbol-standalone-black.svg` reproduit une image trouvée sur Pinterest, mêmes contours, mêmes trois têtes détachées, mêmes proportions, un seul éclat détaché en moins. Ce n'est pas une inspiration, c'est une reproduction, et il n'y a aucun droit dessus. Source encore non identifiée : à passer dans Google Lens pour savoir si c'est une illustration (droit d'auteur seul) ou le logo d'une marque déposée (risque de confusion en plus)._
-  _**Exposition mesurée le 2026-08-14 :** aucun déploiement configuré dans le repo, donc le dessin ne vit que sur localhost, dans le fichier Figma de la charte (pages 12 et 14, où le symbole occupe la page) et dans le deck de pitch Adobe. Ce dernier est le seul endroit d'où il a pu sortir._
-  _**Périmètre du remplacement :** `symbol-standalone-black` et `-ivory`, `figures-dark` et `figures-cream` (même tracé recadré, sept appels dans le site : header, footer, modes, règles, profil), les lockups et panneaux, une dizaine de planches d'étude, le moteur de badges qui lit le symbole côté serveur (`lib/brand/brand-art.ts`), le favicon, et les pages 12, 14 et 15 de la charte qui cotent les proportions du bloc actuel._
-  _**Direction décidée par Marion le 2026-08-14 :** des humains, pas des formes abstraites. On garde l'esprit d'origine (corps pleins, mouvement, mains qui se rejoignent, un seul aplat) et on change la structure. Arrangement en ronde. Le vide central ne porte volontairement aucun message (« la ronde pour elle-même »), mais il doit être dessiné exprès et non subi._
-  - [ ] Identifier la source de l'épingle (Google Lens) — action de Marion
-  - [x] Choisir la famille : ronde en perspective, ligne, ou grappe — tranché par le dessin au pinceau du 2026-08-19
-  - [x] Passer les masses en largeur variable (le lot 1 est encore du tube d'épaisseur constante) — le tracé au pinceau est en masses pleines
-  - [x] Trancher la version réduite du favicon (2026-08-19) — **pas de version réduite**, le dessin entier dans un disque noir. Le disque fait le travail que le tracé ne peut pas faire seul en petit : lisible dès 32 px, mou à 16
-  - [x] Remplacer les fichiers et le moteur de badges (2026-08-19) — huit assets, `CROP.symbol`, le chargeur `brand-art`, six `width`/`height` en dur. favicon compris (2026-08-19)
-  - [x] Refaire les pages de la charte (2026-08-19) — pages 11, 13, 14, 15 et 16 remplacées et recotées. La page 12 est faite aussi : Marion a confirmé **cinq figures**, donc « Cinq bonshommes qui courent main dans la main », « ON PEUT Y LIRE CINQ LETTRES », et « POURQUOI TROIS » devient « POURQUOI PLUSIEURS », son argument du rythme restant mot pour mot
-  - `05_LOGO/test/` — premier lot de 17 propositions + `LISEZ-MOI.md`, générateur `_outil/humains.py`
-- [ ] **Régler la typo du logo (PP Frama, propriétaire)** · `Bloqueur`
-  _Servie à tous les visiteurs sans licence webfont. **Précision du 2026-08-14 :** le logo lui-même n'est pas concerné, `dwiggins-wordmark-full-black.svg` est entièrement vectorisé (8 tracés, aucun `<text>`, aucun `font-family`). Ce qui sert les `.otf` aux visiteurs, c'est `components/brand/DwigginsBadge.tsx` et ses trois `@font-face`, via les badges du profil. Deux problèmes distincts là où cette ligne n'en voyait qu'un : la fonte servie (distribution, interdite par une licence desktop) et le mot vectorisé (usage, autre question)._
-  - `public/fonts/brand/PPFrama-*.otf`
-  - [ ] Retrouver / contrôler la licence PP Frama actuelle
-  - [ ] Vérifier les droits webfont en usage commercial
-  - [ ] Acheter la licence **OU** choisir une font libre de remplacement
-  - [ ] Ajouter le fichier LICENSE + attribution
-- [x] **Régler les 23 typos actives en licence « unknown »** · `Fait` (2026-06-29) — trou de données, pas un risque légal. **23 passées en OFL** ; restent seulement 5 Ubuntu (licence UFL = libre, mais l'enum n'a pas « ufl »).
-  _Les 23 sont **toutes des Google Fonts** (`font_source=google`) : Inter, Roboto, Montserrat, Open Sans, Lato, Poppins, Merriweather… Le champ `license_type` n'avait juste jamais été rempli sur ce lot d'origine._
-  _**Vérifié contre le snapshot Google Fonts du projet** (`02_ASSETS_TYPO/google_fonts/.../fonts-main`) : les **23 sont en dossier `ofl/` → licence OFL** (SIL Open Font License, libre, usage commercial OK). Aucune en apache/ufl. Donc plus un bloqueur — juste à remplir le champ._
-  - `content/catalog/overrides/typefaces-core.overrides.json`, `content/catalog/typefaces-core.json`
-  - [x] Lister les 23 typos actives en licence unknown
-  - [x] Retrouver la licence de chacune — **toutes OFL** (confirmé via le snapshot Google Fonts du projet)
-  - [x] **Posé `license_type='ofl'` sur les 23** (base + override + build, commit `0584549`)
-  - [x] Vue QA : reste seulement 5 Ubuntu (UFL/libre, hors enum) — tout le reste en OFL, aucun risque
-- [ ] **Remplir `license_url` / `foundry` / `release_year`** · `En cours` (2026-07-27) : `license_url` fait, `foundry` et `release_year` volontairement laissés vides, décision à trancher
-  _**`license_url` : 2027/2032 renseignés** (les 5 restants sont les polices système locales arial, courier_new, georgia, helvetica, times_new_roman, absentes du snapshot et déjà désactivées). Valeurs déduites du dossier de licence dans le snapshot du projet (`02_ASSETS_TYPO/google_fonts/06_repo_snapshot/fonts-main`) : `ofl/` 1975 vers `https://openfontlicense.org/`, `apache/` 47 vers `https://www.apache.org/licenses/LICENSE-2.0`, `ufl/` 5 vers `https://canonical.com/legal/font-licence`. Chaque URL est citée telle quelle dans les textes de licence du snapshot. Les 2027 ont au moins une source corroborante en plus du dossier : fichier de licence présent (2018) ou champ `license` du `METADATA.pb` (9 sans fichier)._
-  _**`foundry` laissé vide, choix assumé** : le seul champ disponible est `designer` du `METADATA.pb`, qui nomme une personne, pas une fonderie (« Marcelo Magalhães » n'est pas une fonderie). Le champ `copyright` n'est pas exploitable en masse : sur 2027, 1296 disent « The X Project Authors » (aucune fonderie), 560 nomment une personne, 146 seulement portent une raison sociale (Ltd, Inc, GmbH, Corp, Foundry) noyée dans du texte libre avec mails et clauses Reserved Font Name. Un remplissage automatique produirait de la donnée fausse. Reste faisable à la main sur un petit lot avéré (exemple : Indian Type Foundry, 19 polices)._
-  _**`release_year` laissé vide, choix assumé** : `date_added` est la date de mise en ligne chez Google (plage 2010-02-19 à 2026-02-25), pas l'année de dessin. La renseigner daterait Libre Baskerville de 2012 au lieu du XVIIIe siècle. Aucune source d'année de création dans le snapshot._
-  _**Proposition ouverte** : plutôt que de tordre les deux champs existants, ajouter une colonne honnête `google_fonts_date_added date` et finir de remplir `designer` (déjà rempli sur 1979/2032 ; le snapshot en fournit un pour 2002, dont 1147 des 1172 servies, et **zéro divergence** avec les valeurs déjà en place). Les 23 slugs d'origine sont les seuls à avoir un `designer` vide alors que le snapshot en donne un. Changement de schéma, donc décision du propriétaire._
-  - `content/catalog/overrides/typefaces-core.overrides.json`, `content/catalog/typefaces-core.json`
-- [x] **Garde-fou : ne jamais servir une typo « unknown » au runtime** · `Fait` (2026-07-27)
-  _Le filtre est posé dans les **deux requêtes de pool** qui décident ce qu'un joueur peut voir (bonne réponse et distracteurs sortent du même lot) : `getPoolRows` (training) et `getCompetitionPoolRows` (competition). Pas dans un composant : un garde-fou contournable ne sert à rien._
-  _**Liste blanche, pas liste noire** : seules `ofl`, `apache2`, `ufl` passent, comparées en `license_type::text`. Nul, vide, `unknown`, `proprietary` et tout label ajouté plus tard échouent en fermé. Source de vérité unique : `lib/game/license-guard.ts`._
-  _**Cas Ubuntu (5 polices, licence UFL, libre)** : l'enum `app.license_type_enum` n'a pas de valeur `ufl`, ces 5 lignes valent donc encore `unknown` et la liste blanche seule les exclurait à tort. Exception explicite par slug dans le garde-fou, documentée et supprimable. Migration `010_license_type_ufl.sql` écrite pour ajouter le label et passer les 5 en `ufl`, **non exécutée** (base en prod, feu vert propriétaire)._
-  _**Vérifié en lecture seule sur la base réelle** : pool competition avant 1172, avec garde-fou 1172 (aucune régression), sans l'exception Ubuntu 1167. `lint` et `typecheck` OK._
-  _Nouveau check maison `scripts/quality/check-license-guard.mjs` (ni build ni base) : échoue si une requête perd la clause, ou si une typo servie n'a pas une licence validée. **Branché dans `npm run quality`** (vérifié le 2026-07-28 dans `package.json`, il tourne juste avant `build`)._
-  - `lib/game/license-guard.ts`, `lib/game/training/provider.ts`, `lib/game/competition/provider.ts`, `scripts/quality/check-license-guard.mjs`, `db/migrations/010_license_type_ufl.sql`
-- [x] **Livrer le fichier de licence avec chaque police auto-hébergée** · `Fait` (2026-07-28)
-  _La licence OFL autorise tout ce que fait le projet, afficher, auto-héberger, sous-ensembler en latin, publier des pages, monétiser, et n'exige aucune mention dans le pied de page du site. Sa seule condition de redistribution est que **le texte de la licence accompagne les fichiers de police**. Or auto-héberger, c'est redistribuer. Même exigence côté Apache 2.0 (section 4) et côté licence Ubuntu._
-  _**État mesuré avant correction : 1179 dossiers dans `public/fonts`, un seul fichier de licence dedans**, `public/fonts/ui/Inter-OFL.txt`. Les deux autres résultats que remonte une recherche naïve sont des faux positifs, deux polices qui s'appellent `oflsortsmillgoudytt` et `robotoflex`. Découpage réel des 1179 : **1176 dossiers de famille**, plus `ui` (Inter, venu de rsms/inter et pas de l'instantané Google), plus `brand` (PP Frama), plus `staged` (atelier de conversion transitoire, ignoré par git, donc absent d'un clone neuf et jamais livré)._
-  _**Correction posée : 1177 fichiers de licence**, un par dossier qui héberge une police, soit 1154 `OFL.txt`, 18 `LICENSE.txt` (Apache 2.0) et 5 `UFL.txt`. Chaque texte est **recopié octet pour octet depuis l'instantané Google du projet**, jamais rédigé ni reformulé, par le nouveau `scripts/sync-font-licenses.mjs` (`--snapshot <chemin>`, `--dry-run` disponible). `public/fonts/ui/Inter-OFL.txt` est renommé `OFL.txt` (contenu inchangé, aucun code ne le référençait) pour qu'une seule règle couvre tous les dossiers._
-  _**Appariement des noms mesuré, zéro slug orphelin.** Nos slugs gardent les tirets bas (`abril_fatface`, `roboto_mono`) là où google/fonts concatène (`abrilfatface`, `robotomono`) : la comparaison sur les seules lettres et chiffres apparie **1176 slugs sur 1176**, sans une seule collision. **Deux familles de l'instantané n'ont aucun fichier de licence** et ont demandé une source explicite, écrite dans le script : `mplusrounded1c` reprend le `OFL.txt` de `ofl/roundedmplus1c`, même famille sous l'ancien nom de dossier de Google, dont la ligne de copyright est exactement celle embarquée dans la police servie ; les 6 faces `jsmath*` déclarent `APACHE2` dans leur `METADATA.pb` et ne portent aucune chaîne de licence dans leur table de noms, or le texte Apache 2.0 n'a pas de ligne de copyright par famille et est identique octet pour octet sur 38 des 41 familles apache de l'instantané, donc c'est bien le même texte qu'elles livreraient._
-  _**Le piège `robotomono` est tranché, et il n'est pas seul.** Décision : `roboto_mono` reçoit `OFL.txt`, parce que **trois sources primaires disent OFL contre une**. La police que nous servons déclare elle-même la SIL OFL 1.1 dans sa table de noms (nameID 13, et nameID 14 vers `openfontlicense.org`), le `OFL.txt` de l'instantané ouvre sur le copyright exact de cette police, et le catalogue dit `ofl` ; seul `METADATA.pb`, la fiche de catalogue de Google, dit encore `APACHE2`. **Cinq jumeaux trouvés en balayant les 1176**, tous entre deux licences permissives : `arimo` (dossier apache, `METADATA` et catalogue Apache, mais binaire v1.33 qui déclare OFL), `khmer`, `khyay`, `myanmarsanspro` et `robotocondensed` (dossier ofl avec `OFL.txt`, mais binaires anciens dont la table de noms déclare encore Apache). **Règle uniforme retenue : livrer le fichier que Google livre avec la famille**, c'est à dire redistribuer sous les termes sous lesquels nous avons reçu la police. Aucun texte n'est fabriqué, et comme OFL et Apache 2.0 autorisent tous deux ce que fait le projet, la divergence ne change pas ce qui est permis, seulement la notice qui doit accompagner les fichiers. Les six cas sont listés ici pour qu'un futur réimport ne les redécouvre pas de zéro._
-  _**`public/fonts` n'est pas ignoré par git** (`git check-ignore -v public/fonts` ne renvoie rien, 1313 fichiers déjà suivis), donc les licences partent bien en production avec les polices, aucun manifeste ni pipeline de contournement n'a été nécessaire. `check:artifacts` reste vert._
-  _**Nouveau contrôle `scripts/quality/check-font-licenses.mjs`, branché dans `npm run quality` juste après `check:license-guard`** (la porte passe de 14 à 15 étapes). Lecture de fichiers seulement, ni base ni réseau ni instantané, 0,12 s. Il échoue si un dossier qui héberge une police n'a pas son texte, si le texte est vide ou tronqué (plancher d'octets par licence), s'il ne se lit pas comme la licence annoncée (marqueurs de début et de **phrase de clôture**, donc un fichier coupé en deux échoue), s'il contredit le `license_type` du catalogue, ou si une typo servable n'a pas de dossier du tout. Les 5 Ubuntu sont acceptées en `ufl` malgré leur `license_type` encore à `unknown` en réutilisant la liste `UFL_LEGACY_SLUGS` de `lib/game/license-guard.ts`, donc pas de seconde exception à retenir. Le plancher n'exige pas « version 1.1 » : `jomolhari` et `uchen` sont sous OFL 1.0, leur texte est aussi valable._
-  _**Les deux dossiers hors périmètre sont déclarés dans le script, pas passés sous silence.** `staged` est écarté **tant que** `.gitignore` porte la ligne `/public/fonts/staged/` : si l'ignore disparaît, le dossier revient dans le périmètre et le contrôle échoue. `brand` sort du périmètre de recopie parce qu'il n'y a **rien à recopier** : PP Frama est vendue par Pangram Pangram, ses fichiers déclarent « Pangram Pangram EULA » et pointent vers `pangrampangram.com/pages/eula`, un contrat commercial qui n'est pas distribué avec la police. Le contrôle affiche donc une note à **chaque passage de la porte** qui renvoie au bloqueur PP Frama juste au dessus, pour que l'oubli soit impossible._
-  _**Preuves, sorties réelles.** État corrigé : exit 0 sur « 1177 font directories each carrying their licence text (1154 ofl, 18 apache2, 5 ufl), covering the 1172 servable typefaces ». Quatre contre épreuves, chacune restaurée ensuite : licence retirée de `roboto_mono` donne exit 1 en nommant `public/fonts/roboto_mono` ; `OFL.txt` de `inter` tronqué à 40 octets donne exit 1 « under the 3000 byte floor » ; texte Apache placé sous le nom `OFL.txt` donne exit 1 « does not read as its licence » ; `LICENSE.txt` Apache ajouté à `inter` donne exit 1 « but the catalogue declares license_type "ofl" ». Retour à exit 0 après chaque restauration._
-  _**Reste ouvert.** 1. Les 5 enregistrements sans `license_url` sont les 5 polices système `arial`, `courier_new`, `georgia`, `helvetica`, `times_new_roman`, toutes `proprietary`, toutes désactivées et **sans aucun dossier dans `public/fonts`**, donc rien n'est hébergé et l'obligation ne les concerne pas ; elles restent à remplacer par du libre avant lancement, décision produit déjà notée en section F. 2. La licence webfont de PP Frama, bloqueur inchangé. 3. ~~`scripts/mirror_fonts.py` ne pose pas encore la licence lui même~~ **fait le 2026-07-28** : la conversion appelle le script de synchronisation et échoue en nommant le slug si la licence est introuvable, détail dans le journal du jour. 4. Les 5 Ubuntu resteront en `license_type: unknown` jusqu'à la migration 010, non appliquée._
-  _**Dette de configuration refermée le 2026-07-28 : une seule source pour les valeurs partagées.** L'agent précédent avait assumé une dette, les mêmes valeurs vivaient dans plusieurs fichiers. **Mesure faite avant de corriger, il y avait bien trois consommateurs et pas deux** : `scripts/sync-font-licenses.mjs` qui écrit les textes, `scripts/quality/check-font-licenses.mjs` qui les vérifie (étape 11 de la porte), et `scripts/mirror_fonts.py` qui appelle le premier en fin de conversion puis contrôle lui même le résultat. Balayage de tout le repo pour en chercher un quatrième : les huit autres scripts qui parlent de `public/fonts` ne portent ni nom de fichier de licence, ni liste de dossiers exemptés. **Trois valeurs dupliquées, dont une qui avait déjà divergé.** 1. Les noms de fichier acceptés (`OFL.txt`, `LICENSE.txt`, `UFL.txt`) en trois endroits : les clés de `LICENSE_FILES` du contrôle, les `fileName` de `LICENSE_DIRS` plus les sept `fileName` des sources choisies à la main dans le script de recopie, et le tuple `_LICENSE_FILE_NAMES` du Python. 2. L'ensemble des dossiers hors périmètre en trois endroits, **et pas avec le même contenu** : `{staged, brand, ui}` côté recopie et côté Python, mais `{staged, brand}` seulement côté contrôle. L'écart était volontaire et il ne fallait surtout pas l'écraser : `ui` (Inter, venue de rsms/inter) n'a pas de source dans l'instantané Google donc la recopie la saute, mais elle porte son propre `OFL.txt` et le contrôle doit continuer à le vérifier. 3. La correspondance entre étiquette de licence et nom de fichier (`ofl`, `apache2`, `ufl`, `cc-by-sa`) en deux endroits, `licenseType` du contrôle et `label` de la recopie._
-
-  _**Nouveau fichier `scripts/font-licenses.config.json`, lu par les trois.** JSON parce que Node et Python le lisent sans dépendance. **Pourquoi à cet endroit** : les trois consommateurs vivent sous `scripts/`, `content/catalog/` est le format canonique du catalogue (des enregistrements produits par des générateurs, règles écrites dans son README, une configuration d'outil à la main y serait hors convention), la racine est réservée aux configurations d'écosystème (`eslint.config.mjs`, `postcss.config.mjs`, `tsconfig.json`), et le nom reprend cette convention `<sujet>.config.<ext>`. Les deux axes de périmètre sont désormais nommés au lieu d'être devinés : `syncedFromSnapshot` (la recopie a-t-elle une source) et `checkedAsFamilyDirectory` (le contrôle tient-il le dossier à la règle des familles), donc l'écart sur `ui` est écrit noir sur blanc au lieu d'être un oubli apparent. **Les décisions difficiles ne bougent pas et ne sont pas recopiées** : les deux familles sans fichier de licence dans l'instantané (`mplusrounded1c` qui reprend `ofl/roundedmplus1c`, les six `jsmath*` en Apache) restent dans `MISSING_LICENSE_FILE_SOURCES` du script de recopie avec la raison de chaque source, elles y désignent maintenant leur licence par étiquette (`license: "ofl"`) pour que le nom de fichier reste résolu au seul endroit qui le connaît ; les six familles dont les sources se contredisent entre OFL et Apache restent tranchées par la règle uniforme « livrer le fichier que Google livre », qui est déjà ce que fait l'indexation par dossier de licence ; les cinq Ubuntu restent lues dans `UFL_LEGACY_SLUGS` de `lib/game/license-guard.ts` ; la raison de sortie de `brand` (EULA commerciale Pangram Pangram, rien à recopier) et de `staged` (atelier de conversion ignoré par git) est déplacée telle quelle dans le fichier, avec la note affichée à chaque passage de la porte au mot près. **Deux garde-fous ajoutés parce qu'un fichier de configuration peut mentir là où un littéral ne pouvait pas** : le contrôle refuse de tourner (exit 2) si aucune licence ne déclare de bloc `verify`, sans quoi il accepterait n'importe quel dossier, et si un dossier est déclaré hors périmètre sans condition d'ignore ni note, sans quoi l'exemption serait invisible. Ce second cas a été trouvé en le testant, pas en le supposant._
-
-  _**Preuves, sorties réelles.** Comportement identique : `npm run check:font-licenses` sort les deux mêmes lignes qu'avant, au caractère près (`diff` vide contre la sortie de la porte d'avant la refonte), soit exit 0 sur 1177 dossiers, 1154 ofl, 18 apache2, 5 ufl, 1172 typos servables ; `node scripts/sync-font-licenses.mjs --dry-run` donne une sortie identique octet pour octet à celle du script d'avant (les 5 notes Ubuntu, `0 written, 1176 already up to date`), ce qui prouve au passage que les sept sources choisies à la main résolvent toujours leur fichier ; côté Python les deux valeurs dérivées sont identiques aux littérales supprimées. Porte complète `npm run quality` exit 0 sur ses 15 étapes, plus `npm run lint`, `npm run typecheck`, `npm run check:artifacts` et `npm run check:font-licenses` chacun à exit 0, et `python3 -m py_compile scripts/mirror_fonts.py` sans laisser de `__pycache__`. `scripts/mirror_fonts.py` relancé pour de vrai dans un bac à sable ignoré par git puis supprimé : `Copiees 1`, `1 written`, `Licences verifiees 1`, le dossier de destination porte bien son `OFL.txt`. Contre épreuve d'origine rejouée : `OFL.txt` retiré de `roboto_mono` donne exit 1 en nommant `public/fonts/roboto_mono` et la typo servable sans dossier licencié, restauration puis retour à exit 0._
-
-  _**Preuve de source unique, celle qui compte.** Une seule valeur changée dans le fichier de configuration, les trois consommateurs changent de comportement ensemble. `fileName` de `ufl` passé de `UFL.txt` à `PROOF-UFL.txt` : la recopie annonce `5 written` au lieu de `0 written` (elle veut écrire le nouveau nom pour les cinq Ubuntu), le contrôle passe de exit 0 à exit 1 en nommant les cinq dossiers avec « expected one of OFL.txt, LICENSE.txt, PROOF-UFL.txt », et `verify_licenses` du Python passe de silencieuse à exit 1 sur « attendu l'un de OFL.txt, LICENSE.txt, PROOF-UFL.txt : ubuntu ». Même démonstration sur l'autre valeur partagée, `syncedFromSnapshot` de `brand` passé à `true` : la recopie sort à exit 1 sur `brand: no matching family in the snapshot` et le Python sort à exit 1 sur `brand`, les deux périmètres bougent du même geste. Et sur l'axe propre au contrôle, `checkedAsFamilyDirectory` de `ui` passé à `false` : le contrôle descend de 1177 à 1176 dossiers et affiche la note du dossier. Chaque valeur restaurée après coup, sortie de référence revérifiée._
-
-  - `public/fonts/`, `scripts/font-licenses.config.json`, `scripts/sync-font-licenses.mjs`, `scripts/quality/check-font-licenses.mjs`, `scripts/mirror_fonts.py`, `package.json`, `content/catalog/typefaces-core.json`
-  - [x] Mesurer l'état réel (1179 dossiers, 1 seul fichier de licence, 2 faux positifs)
-  - [x] Apparier les 1176 slugs à l'instantané Google (zéro orphelin) et trancher les 2 familles sans fichier de licence
-  - [x] Trancher `robotomono` et ses 5 jumeaux sur la source, pas sur le nom de dossier
-  - [x] Recopier 1177 textes de licence verbatim + normaliser `Inter-OFL.txt` en `OFL.txt`
-  - [x] Contrôle `check:font-licenses` dans la porte `quality`, contre épreuves dans les deux sens
-  - [ ] Faire poser la licence par `scripts/mirror_fonts.py` à la conversion, pour que la porte ne soit que le filet
-  - [x] Factoriser les valeurs partagées par les trois scripts dans `scripts/font-licenses.config.json`, comportement inchangé et source unique prouvée (branche `worktree-agent-ac3e36645b74c6354`, rien poussé ni fusionné)
-
-## F — Back & « implémenter toutes les typos »
-
-- [x] **DB Neon + schéma + providers training/competition** · `Fait`
-  Plus solide qu'il n'y paraît : DB réelle, sélection adaptative, télémétrie écrite.
-  - `lib/server/neon.ts`, `lib/game/training/provider.ts`, `lib/game/competition/provider.ts`
-- [x] **Agrégation EyeProfile** (`buildEye` lit la vraie DB) · `Fait`
-  - `lib/profile/profile-stats.ts`
-- [ ] **Trancher : `mastery_level` (0-4) ↔ boîtes Leitner (0-5)** · `À faire`
-  _Décision d'architecture à prendre avant de figer le scoring._
-  - `docs/process/backend-todo.md`
-  - [ ] Choisir la voie (garder `mastery_level` / migrer Leitner / hybride)
-  - [ ] Mapper `mastery_level` ↔ boîtes 0-5
-  - [ ] Documenter la décision (la spec maths fait foi)
-- [ ] **Auth réelle / comptes** · `À faire`
-  _Aujourd'hui cookie anonyme auto-créé ; colonne `clerk_id` réservée mais zéro intégration._
-- [x] **Faire grossir le pool servi : vague non-display FAITE → 1172 typos jouables (était 81)** · `Fait` (2026-06-29) — converties, allégées (35 Mo), activées, durables, familles corrigées.
-  _État vérifié 2026-06-29 : 2032 au catalogue (2027 Google) mais seulement **73 game-ready** (converties + ~50 approuvées) ; les **1959 catalog-only ne sont NI converties (0 asset runtime) NI revues**. « Avoir au catalogue » ≠ jouable : il faut **convertir (TTF→WOFF2)** + **curer** (catégorie/difficulté/ce qu'elle enseigne). Goulot = la **curation**, pas le code._
-  _Ne **pas** activer les 2027 brutes : beaucoup de Google Fonts sont display/fantaisie = mauvais matériel pédagogique. Stratégie = **vagues curées** (cf. docs/catalog). Chaque vague enrichit le jeu, renforce le skew familiarité (C3) et crée des pages specimen (SEO, H3)._
-  _**Décision 2026-06-29 : activer TOUT le non-display (~1103), par lots** (display = plus tard)._
-  _**Conversion TTF→WOFF2 PROUVÉE le 2026-06-29 sur un lot test de 8 polices** (quicksand, jost, urbanist, lexend, sora, cormorant, vollkorn, newsreader) → 8/8 valides dans `public/fonts/<slug>/`. Piège réparé : le dossier d'assets a été renommé `02_TYPO_ASSETS`→`02_ASSETS_TYPO` (scripts d'origine cassés). Reste : activer (catalogue override + DB) + dérouler les lots._
-  - `scripts/`, `content/catalog/`
-  - [x] Historique : pipeline d'ingestion + snapshot (2032) + 1ère vague de 50 en review
-  - [x] Pipeline de conversion réparé + prouvé (lot test de 8, pool 73→81)
-  - [x] **Vague non-display convertie + sous-ensemblée Latin** : 1095 converties → **1091 prêtes**, **35 Mo** au lieu de 356 (axes de graisse préservés, 0 erreur)
-  - [x] **Activées en base + WOFF2 commités** (`0fd7b47`) → **pool 81 → 1172 typos jouables**
-  - [x] **Durabilité faite** : overrides + rebuild synchronisés avec la base (1172 actives / 1172 assets, commit `f32a083`) → un ré-import ne reviendra plus en arrière.
-  - [x] **Famille (niveau 1) corrigée via Google `METADATA.pb`** (2026-06-29, commit `250ec98`) : 11 fautes réparées — 8 monos taguées sans → `mono` (martianmono, redhatmono, victormono, fragmentmono…) + 3 sans taguées display → `sans_serif` (archivoblack, josefinsans, oswald). Base + override + build cohérents : **sans 757 · serif 358 · mono 54 · display 3**.
-- [x] **Classement fin (niveau 2) : sous-catégories corrigées via les tags Google** · `Fait` (2026-06-29, commit `0e4dd4d`)
-  _**980 typos classées** depuis la base de tags officielle de Google (`tags/all/families.csv`, donnée curée + scores) → **546 sous-catégories corrigées** (ex. `quicksand`/`jost` → geometric, qui étaient faux). Tags Google (Sans/Geometric, Serif/Old Style Garalde, Slab…) mappés sur nos sous-catégories (humanist/geometric/neo_grotesk/grotesk/old_style/transitional/didone/slab). Base + override + build cohérents._
-  - [x] Mapper les tags structurels Google → nos sous-catégories
-  - [x] Appliquer sur les 980 taggées (base + override + build)
-  - [ ] _Restent : 192 typos sans tag Google (« à vérifier ») + la **difficulté** (encore heuristique) → télémétrie._
-- [ ] **Vagues futures (optionnel, plus tard)** · `Plus tard`
-  - [ ] Sous-ensembler les 81 anciennes polices (encore charset complet)
-  - [ ] Vague « display » à part
-- [ ] **Arène (back) : ELO, ligues, duel** · `À faire`
-  _Zéro code aujourd'hui — à faire après le lancement (le vrai mur = la population de joueurs)._
-- [ ] **Moteur d'auto-correction construit (5 étapes, réutilise le Leitner déjà calé)** · `En cours` (2026-07-07)
-  _Étapes 1, 2, 3 et 5 actives immédiatement. Étape 1 : `adaptive_coef` (colonne existante jamais écrite) enfin écrit, il monte de 0.1 après au moins 2 erreurs de suite, descend de 0.05 après au moins 3 bonnes de suite, bornes 0.5 à 2.0. Étape 2 : intervalles indexés sur la maîtrise (fenêtres par palier L0 à L4, divisées par `adaptive_coef`, plancher aux cooldowns). Étape 3 : le résultat du warm-up d'onboarding est enfin exploité (un « Designer » ou « Quite familiar » qui rate est seedé un cran plus bas). Étape 5 : indicateur « X / Y faces maîtrisées » affiché en jeu._
-  _Étape 4 (rééquilibrage additif du pool vers le facile si précision faible, sous 40 %, sur les 8 à 12 premières réponses) : migration `007_pool_rebalance.sql` écrite + appel runtime fail-safe (no-op tant que la 007 n'est pas appliquée), respecte l'invariant I-06 (jamais retirer de face). Typecheck + lint scopé OK, rien committé, base non modifiée._
-  _**Mise à jour 2026-07-29** : 007 **est appliquée** (`rebalance_user_pool` en base), l'étape 4 est donc active et l'appel n'est plus un no-op. Jamais observée en conditions réelles faute de volume de jeu (10 premières tentatives training en base)._
-  _Fichiers : `lib/game/training/provider.ts`, `contracts.ts`, `features/game/components/GameScreen.tsx`, `features/onboarding/components/OnboardingWarmup.tsx` + `OnboardingFlow.tsx`, `app/api/training/session/start/route.ts`, `lib/profile/profile-stats.ts`, `app/globals.css`, `db/migrations/007_pool_rebalance.sql`. Doc explicatif : `docs/game/self-correction-engine.md`._
-  - [x] Étape 1 : `adaptive_coef` activé (monte de 0.1, descend de 0.05, bornes 0.5 à 2.0)
-  - [x] Étape 2 : intervalles indexés sur la maîtrise (fenêtres L0 à L4 divisées par `adaptive_coef`, plancher cooldowns)
-  - [x] Étape 3 : résultat du warm-up d'onboarding exploité (seed abaissé si raté)
-  - [x] Étape 5 : indicateur « X / Y faces maîtrisées » en jeu
-  - [x] Étape 4 : rééquilibrage additif (007 appliquée en base, constaté le 2026-07-29 ; comportement encore non observé en jeu)
-- [x] **Bug de police systémique corrigé sur tout le catalogue** · `Fait` (2026-07-07)
-  _Beaucoup de faces pointaient leur `runtimePath` sur un split woff2 sans glyphes latins, donc s'affichaient en serif de secours (grave pour un jeu de reconnaissance de typos). Training manifest : 13 faces cassées → 0. Catalogue compétition : plus aucune face latine ne tombe en secours (16 faces latines repointées sur un split couvrant le Latin, déjà présent). `scripts/mirror_fonts.py` durci pour choisir le split couvrant le Latin (fini le `sorted()[0]` qui recassait, ce qui lève le « à durcir » noté en section C sur le bug du warm-up)._
-  _Décision produit restante : 5 polices système sans woff2 (arial, helvetica, times_new_roman, georgia, courier_new) à remplacer par du libre avant lancement ; 36 faces non-latines (Tamil, Khmer, Devanagari, emoji…) qui s'afficheront toujours en secours dans un jeu de mots latins, à exclure des manches ou à montrer dans leur écriture._
-  - `scripts/mirror_fonts.py`, `content/typefaces/font-manifest-v4.json`, `content/catalog/font-runtime-assets.json`, `public/fonts/`
-- [x] **Payload compétition allégé (224 Ko → 0 up-front)** · `Fait` (2026-07-07)
-  _La page compétition injectait 1172 règles `@font-face` (~224 Ko de CSS inline) à chaque visite. Remplacé par une injection `@font-face` à la demande (une police par question, préchargée pendant le délai de feedback, idempotente, SSR-safe). Payload up-front : 224 Ko → 0._
-  - `lib/game/competition/contracts.ts`, `catalog.ts`, `provider.ts`, `features/game/components/CompetitionScreen.tsx`, `app/play/competition/page.tsx`
-
-## G — Transversal / mise en ligne
-
-> Sujets transversaux (pas des « pages ») souvent oubliés. Confirmés absents du code au 2026-06-29.
-
-- [ ] **Légal RGPD : confidentialité + cookies + mentions légales / CGU** · `Bloqueur` · **écrit le 2026-08-15, en attente des informations de l'éditeur**
-  _Correction du 2026-08-15 : les données ne sont PAS stockées en UE mais à Londres (AWS `eu-west-2`), pays tiers sous décision d'adéquation. La politique le dit._
-  - [x] Politique de confidentialité (RGPD) · `/legal/confidentialite`
-  - [x] Information cookies · `components/ui/StorageNotice.tsx`, une notice et non un mur, le seul cookie étant strictement nécessaire et aucune mesure d'audience n'existant
-  - [x] Mentions légales + CGU · `/legal/mentions-legales`, `/legal/cgu` (CGV inutiles tant qu'il n'y a pas de paiement)
-  - [ ] **Sept informations à fournir par l'éditeur**, rappelées à chaque passage de la porte par `check:legal-docs` : identité et statut juridique, adresse postale, SIRET, directeur de la publication, email de contact, hébergeur du site, durée de conservation
-  - [ ] **Relecture juridique** : le texte est fidèle au produit, ce qui ne veut pas dire suffisant
-- [ ] **Déploiement prod** (domaine, env, build qui passe) · `À faire`
-  _Note du 2026-06-29 périmée, corrigée le 2026-07-27 : le build prod **passe**. `next/font` n'est plus utilisé nulle part dans le repo (zéro occurrence), les polices sont déjà auto-hébergées via deux `@font-face` dans `app/globals.css` plus l'injection runtime de `getTrainingFontFaceCss()`. `npm run build` sort en exit 0, 26 routes générées. La migration vers les assets locaux avait donc déjà été faite sans que la checklist soit mise à jour._
-  - [x] Faire passer le build prod — **fait**, polices déjà en assets locaux (vérifié 2026-07-27)
-  - [ ] Variables d'env en prod (`DATABASE_URL`…)
-  - [ ] Domaine + hébergement
-  - [ ] Vérifier le site en ligne de bout en bout
-- [ ] **SEO** (metadata, sitemap, robots, OpenGraph) · `À faire`
-  _Les pages specimen sont un aimant à trafic Google — levier d'acquisition gratuit inexploité._
-  - [ ] `generateMetadata` sur les pages (surtout `/type` et `/compare`)
-  - [ ] `sitemap.xml` + `robots.txt`
-  - [ ] Images OpenGraph (partage)
-  _**État mesuré le 2026-07-28 : zéro.** Aucun `generateMetadata` dans tout `app/`, aucun `sitemap.ts`, aucun `robots.ts`, aucun `robots.txt`, aucune image de partage. La seule métadonnée du site est le couple statique de `app/layout.tsx:5`, titre `Jeux de Typo V2` et description `Typographic learning experience.`, donc **les 19 pages partagent le même titre et la même description**. Contenu prêt à porter du trafic : une seule comparaison publiée (`helvetica-neue-vs-inter`) et trois textes de spécimen (`inter`, `helvetica-neue`, `frutiger`), ces trois derniers portant déjà un objet `seo` complet que rien ne lit._
-  _**Décision du propriétaire, 2026-07-28 : chantier gelé volontairement, à reprendre « bien plus tard » et en grand.** L'intention n'est pas de brancher trois pages, c'est de finir la page comparaison au niveau SEO puis **de générer ces pages par milliers**, et de faire pareil pour la page de typo seule (`/type/[slug]`). Donc ne pas traiter le SEO comme une demi-journée de plomberie sur l'existant : la plomberie n'est que le préalable, le vrai sujet est le gabarit qui sera dupliqué des milliers de fois. Le levier est réel, le moteur de mesures anatomiques existe déjà et c'est lui qui fait la valeur de chaque page._
-  _**Décision du propriétaire, 2026-07-28, sur le point 1 ci-dessous : les pages de masse seront bâties sur les typos Google, pas sur les commerciales.** Ce qui tranche la question du droit : OFL, Apache 2.0 et UFL autorisent l'affichage, l'auto-hébergement et la publication de pages, y compris à but lucratif. Les typos commerciales restent nommables, décrivables et comparables en texte, mais leurs fichiers ne peuvent pas être servis, les conditions d'Adobe Fonts imposant leur propre code d'intégration. Conséquence à exploiter plutôt qu'à subir : une comparaison où la Google s'affiche vraiment et où la commerciale est décrite puis renvoyée vers l'abonnement est légale ET rémunérable, l'affiliation Adobe payant sur l'abonnement Creative Cloud qui contient Adobe Fonts (réseau Partnerize, entrée `adobe.com/affiliates.html`, chiffres à confirmer sur la page officielle). `partners.adobe.com/join`, exploré le 2026-07-27, est la mauvaise porte, c'est leur programme grands comptes sur la suite marketing._
-  _**Trois choses à trancher avant la génération de masse, elles coûtent infiniment plus cher après qu'avant.** 1. **Légal** : tranché ci-dessus, Google uniquement. Deux des trois textes de spécimen existants portent sur des typos commerciales (`frutiger`, `helvetica-neue`), absentes du catalogue, donc à traiter en texte sans fichier de police. Voir la note « montrer des typos commerciales / Adobe » plus haut. 2. **Différenciation** : des milliers de pages issues d'un même gabarit avec peu de variation réelle sont traitées par Google comme des pages satellites et peuvent faire sanctionner le domaine entier. Ce qui protège ici, c'est que les mesures anatomiques diffèrent vraiment d'une typo à l'autre : le gabarit doit exposer cette différence, pas la même phrase avec deux noms substitués. 3. **Ordre de publication** : `robots.txt` en interdiction totale tant que le gabarit n'est pas arrêté, l'indexation étant la seule action de ce chantier qui ne se rattrape pas vite, une page indexée restant dans les résultats un moment après son retrait._
-- [ ] **Monétisation : paiement / abonnement Pro / jetons** · `À faire`
-  _Business model sur le papier, aucune caisse intégrée._
-  - [ ] Choisir le modèle (affiliation / Pro / B2B)
-  - [ ] Intégrer Stripe (checkout)
-  - [ ] Abonnement Pro + achat de jetons
-- [ ] **Mode Expert jouable de bout en bout** · `À faire` — audité 2026-06-29 : **pas commencé** (au-delà des données).
-  _Existe : les *answer keys* (`expert_answer_keys` + JSON), le flag `expert_enabled`, la page de règles `/play/expert/rules`._
-  _Manque **tout le jeu** : `app/play/expert/page.tsx` n'est qu'un `ModePlaceholderPage` (« will be implemented after Competition mode ») ; **aucun** `lib/game/expert/` provider, **aucune** route `/api/expert/*`, **aucun** `ExpertScreen`. Chantier = créer le flux « nommer la typo » (saisie libre, sans QCM), sur le modèle de Competition (`lib/game/competition/` + `CompetitionScreen.tsx`)._
-- [x] **`CLAUDE.md` à la racine** · `Fait` — 2026-07-27, commit `ba44383`.
-  _Le repo n'avait aucun fichier d'instructions : les conventions (frontières runtime/dev-lab, porte `npm run quality`, nommage, chemins interdits en suivi git, `#ffd213`, migrations Neon en SQL brut) n'existaient que dispersées dans `docs/`, et les règles de travail du propriétaire uniquement dans la mémoire locale de l'assistant, donc perdues au changement de machine. Écrit à partir du repo seul, rien d'inventé._
-- [x] **Pages d'erreur** (404 + écran d'erreur) · `Fait` — 2026-07-27, commit `5aa7e6d` le 2026-07-28.
-  _Le site n'avait ni 404 ni frontière d'erreur : une URL fausse ou un plantage de rendu tombait sur l'écran brut de Next. Créés : `app/not-found.tsx` (404, sorties « Back home » et « See the modes »), `app/error.tsx` (frontière d'erreur, bouton « Try again » branché sur la prop `reset` de Next, erreur loguée en console), `app/global-error.tsx` (seul filet si `app/layout.tsx` lui même casse, donc il rend son propre `html` / `body` et réimporte `globals.css`), et le shell partagé `features/errors/components/ErrorScreen.tsx`. Aucun visuel inventé : le layout réutilise les recettes validées de l'écran placeholder de mode (les groupes `.mode-placeholder-page`, `.mode-placeholder-shell`, `.mode-placeholder-kicker`, `.mode-placeholder-actions` de `app/globals.css` accueillent en plus les noms `.error-*`, zéro nouvelle déclaration CSS), titres en `.ui-page-title` / `.ui-page-subtitle`, boutons en pilules de la landing `.lp-btn--primary` / `.lp-btn--ghost` (la landing tranche l'arbitrage : pas de jaune en aplat sur un CTA, contrairement à `.mode-placeholder-btn--solid`), `ThemeSwitch` présent comme l'impose le contrat UI. Textes anglais centralisés dans `content/copy.ts` (`notFoundCopy`, `errorCopy`). Passés : lint sur les fichiers créés, `typecheck`, `check:copy`, `check:dev-routes`. Rendu jamais regardé en local, à relire en live._
-- [ ] **Monitoring + analytics produit** · `À faire`
-  _Pour régler les constantes avec la télémétrie (Sentry + analytics produit)._
-- [ ] **Accessibilité** (contraste, clavier, lecteurs d'écran) · `À faire`
-- [ ] **Emails / rappels de rétention** (style Duolingo) · `Plus tard`
-- [ ] **Langue FR / EN (i18n)** — à trancher · `À décider` — UI en anglais aujourd'hui.
-- [x] **Autorité DA unique : un seul document décide** · `Fait` (2026-07-29)
-  _Déclencheur : « la DA ne va pas, je veux la refaire complètement ». Diagnostic mesuré avant d'écrire : **quatre documents revendiquaient l'autorité** (`front-ui-master-spec.md` « canonical front reference » et `ui-consistency-contract.md` « active », tous deux datés du **13 mars** donc antérieurs à tout le travail DA de juin et juillet, plus `ui-palette-reference.md` qui désignait `/play` comme « référence couleur validée », plus le contrat typo). Et la règle de travail réelle, « la landing tranche », **n'était écrite dans aucun des quatre**. C'est la cause racine de la dérive, pas un défaut de goût._
-  _Décision du propriétaire : **la landing reste la référence, le reste s'aligne.** Donc pas de direction neuve à inventer, mais l'extraction des recettes réelles de la landing depuis `app/globals.css`._
-  _`docs/ui/ui-consistency-contract.md` réécrit en autorité unique : hiérarchie de rang explicite, bichromie corrigée (l'ancienne version donnait encore `#ffffff` en fond clair, périmé depuis juin), un rôle exclusif par couleur, les deux régimes d'interlettrage qui font la signature typographique de la landing (titres compressés à `-0.04em`, labels capitales dilatés à `0.16em`), la recette de bouton, les rayons, le rythme et le mouvement. Les deux autres documents reçoivent un encadré de rang qui les déclasse en descriptif._
-  _**Trouvaille qui explique le bouton jaune** : « pas de jaune sur un CTA » est une recette validée depuis le début, mais elle vivait dans un **commentaire CSS** au dessus de `.lp-btn`, donc invisible de toute doc. Mon écran d'entrée d'Entraînement l'enfreint, comme `/play/expert` et les pages de règles. Consigné en §9 comme premier écart à aligner._
-  _**Trois arbitrages laissés ouverts, qui demandent le propriétaire** : le jaune en aplat à retirer des CTA de la famille `/play`, l'échelle de titre intérieure plus faible que la référence (`--ui-title-size` plafonne à `2.75rem` contre `3.85rem` sur la landing, sans règle d'interlettrage), et la collision sémantique des trois couleurs de mode qui servent aussi de traits de guide dans le schéma d'anatomie de la landing. Rien à implémenter dessus avant décision._
-  - `docs/ui/ui-consistency-contract.md`, `docs/ui/front-ui-master-spec.md`, `docs/ui/ui-palette-reference.md`
-
-## H — Parkés / à décider
-
-- [ ] **Page Prof / espace enseignant** · `À décider`
-  _N'existe pas — hors scope MVP actuel. À décider (et ça suppose l'auth réelle, section F)._
-- [ ] **Comptes & classes (auth + paiement) : espace enseignant** · `À faire`
-  _Spec écrite le 2026-07-09. Trois rôles (admin école, prof, élève) : c'est l'école payeuse qui achète la licence au niveau établissement (sièges dimensionnés par nombre d'élèves), pas le prof. Modèle deux couches façon Adobe (identité personnelle d'un côté, licence/sièges de l'autre), provisionnement des élèves par le prof (invitation à usage unique, l'élève choisit son mot de passe), classe = groupe permanent en autonomie, verrou ordi en contexte classe, tableau de bord prof (consultation puis diagnostic, LE différenciateur). C'est la plus grosse brique : elle introduit l'AUTH réelle (cf. F « Auth réelle / comptes ») ET le PAIEMENT (cf. G « Monétisation », fournisseur à étudier). Invariant : le compte appartient à la personne, la licence conditionne l'accès, jamais la propriété de l'identité ni de la progression._
-  - `docs/game/classes-comptes-spec.md`
-- [ ] **Grille de vérification logo typo** · `Plus tard`
-  _Truc à inventer, parké volontairement._
-
----
+Le pourquoi durable de cette section vit maintenant dans **`docs/game/arbitrages.md`** : le modèle de l'espace enseignant, l'école paie et non le prof.
+Le suivi d'avancement en cases cochées n'a pas été repris : « Où on en est » en tête
+de `CLAUDE.md` le remplace. Contenu d'origine récupérable dans l'historique git.
 
 ## I — Écarts vision contre implémentation (audit 2026-07-29)
 
@@ -3518,13 +3691,19 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 ---
 
-## Gains rapides (purement code, faisables tout de suite)
+## Gains rapides — liste close le 2026-09-18
 
-1. **Brancher familiarité onboarding → seed Leitner** (C) — TODO déjà identifié, le plus net.
-2. **Métriques de badges → vraies données** (B).
-3. **Streak + objectif quotidien réels** (A).
+Cette section annonçait trois gains rapides, tous faits depuis : brancher la familiarité de
+l'onboarding sur le seed Leitner (migrations 005 et 006), dériver les métriques de badges des vraies
+données, et calculer le streak et l'objectif quotidien réels. Le pourquoi de chacun vit dans
+`docs/game/arbitrages.md`.
 
-### 2026-08-01, pages de règles : carte gain et perte, chiffres réels, ordre
+**Ce qui comptait ici n'était pas la liste, c'était ce qui s'est empilé dessous.** 61 notes de
+journal datées, 27 518 mots, se sont ajoutées sous ce titre sans jamais lui appartenir, simplement
+parce qu'il était le dernier titre du fichier au moment de les écrire. Elles sont remontées au rang
+de notes le 2026-09-18 et entrent dans la passe de distillation du journal, où elles étaient
+invisibles jusque là.
+## 2026-08-01, pages de règles : carte gain et perte, chiffres réels, ordre
 
 **Carte « ce qui te fait avancer, ce qui te fait reculer », en tête des trois pages.** Ajoutée parce que c'est la question pour laquelle un joueur ouvre une page de règles, et qu'elle n'y était répondue nulle part avant d'avoir lu six panneaux. Deux colonnes, cause puis conséquence, aucun vocabulaire de mécanique. Entraînement porte trois gains et trois pertes, compétition deux et trois, expert deux et trois également, tirés de ce que le mode fera (le nom officiel tapé de mémoire, la casse et les accents pardonnés, le synonyme refusé faute de table d'alias validée) plutôt qu'une phrase disant seulement que rien n'y est encore gagné : le bloc garde alors exactement la même taille que sur les deux autres modes. Le bloc est aligné sur la colonne des tuiles et des panneaux, `width: min(98%, 66rem)`, parce qu'en pleine largeur ses lignes traversaient tout l'écran et il devenait le plus long élément d'une page dont le travail est d'être le plus rapide. À noter pour les vérifications suivantes : le serveur de dev a servi l'ancien `globals.css` pendant deux mesures, un `touch` sur le fichier a forcé la recompilation, donc une mesure qui ne bouge pas après une édition CSS ne prouve rien tant que la feuille servie n'a pas été relue. Vocabulaire CSS `.pb-stakes*`, posé dans `app/globals.css` avec les jetons déjà publiés par `.pf-page`, sans nouvelle couleur : le seul accent est la pastille de la colonne gauche.
 
@@ -3536,7 +3715,7 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 **Défaut de build corrigé au passage, sans rapport avec les règles.** `app/page.tsx` importait `HERO_SPECIMEN_SLUGS` depuis `LandingExperience.tsx`, un module `"use client"`. Next remplace côté serveur chaque export d'un module client par une référence, donc la constante n'était pas un tableau au prérendu et le premier `.map()` cassait l'export de `/`. Le typecheck ne voyait rien, c'est une règle de frontière, pas de type. La liste est sortie dans `features/landing/hero-specimens.ts`, module simple importé des deux côtés. Porte `npm run quality` de nouveau verte.
 
-### 2026-08-03, page de choix des modes refaite
+## 2026-08-03, page de choix des modes refaite
 
 **Pourquoi.** Le propriétaire ne l'aimait pas. Elle avait été migrée sur le vocabulaire `.pb-*` mais chaque carte se réduisait à un titre, une ligne de texte, une mention et deux boutons : les trois étaient identiques à une puce près, donc rien à l'écran ne disait ce que choisir un mode voulait dire, ni où le joueur en était.
 
@@ -3546,7 +3725,7 @@ Zone grise en **UE** (la France protège davantage les dessins de caractères) �
 
 **Rappel de méthode.** Le serveur de dev a de nouveau servi l'ancien `globals.css` sur deux mesures. Un `touch` sur le fichier force la recompilation. Une mesure qui ne bouge pas après une édition CSS ne prouve rien tant que la règle servie n'a pas été relue dans le navigateur.
 
-### 2026-08-03, page des modes : les indicateurs qui font cliquer, une seule page écran
+## 2026-08-03, page des modes : les indicateurs qui font cliquer, une seule page écran
 
 **Le problème posé.** La version précédente montrait ce que chaque mode EST : taille du pool, durée d'une manche, nombre de clés de réponse. Ça décrit le produit, pas la situation du joueur, donc il n'y avait rien à comparer et rien qui déclenche un clic.
 
@@ -3566,7 +3745,7 @@ Chiffres confrontés à la base, trois cas. Visiteur sans historique : 30 faces 
 
 Vérifié après correction sur sept tailles, de 390x844 à 1920x1080 : aucun contenu coupé, trois colonnes au-dessus de 900px sans défilement, une colonne en dessous avec défilement.
 
-### 2026-08-04, page des modes reprise sur le deck de la landing
+## 2026-08-04, page des modes reprise sur le deck de la landing
 
 **Trois corrections demandées par le propriétaire, sur capture.** Pas de beige, on ne change pas la typographie, et les pastilles de clic n'avaient pas la bonne couleur. Référence donnée : la section « Three ways to play » de la landing, titre à gauche, trois cartes en éventail à droite.
 
@@ -3588,7 +3767,7 @@ Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, 
 
 **Rappel de mesure, encore.** Le serveur de dev a servi une feuille en retard d'une révision : `pm-note` présent, `.pm .lp-modes__grid` absent, alors que le fichier sur disque le contenait. Un `touch` n'a pas suffi, il a fallu vingt secondes de plus. Toujours vérifier la règle dans la feuille servie (`curl` sur le chunk CSS) avant de conclure qu'une surcharge ne marche pas.
 
-### 2026-08-19, MODES du menu de la landing mène à la page des modes
+## 2026-08-19, MODES du menu de la landing mène à la page des modes
 
 **Fait.** Dans `features/landing/components/LandingExperience.tsx`, l'entrée « Modes » du menu d'en tête pointait sur l'ancre `#modes`, qui descendait jusqu'au deck « Three ways to play » sans quitter la page. Elle pointe maintenant sur `/play`, la page de choix des modes, celle qui liste les trois cartes avec leur chiffre vivant et un bouton Rules par mode. Demande du propriétaire, constatée sur capture.
 
@@ -3602,7 +3781,7 @@ Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, 
 
 **Survol contre état actif, vérifié, rien à corriger.** J'avais écrit que les deux partageaient le même style, c'est faux. `.site-nav__link:hover` et `.site-nav__link.is-active` sont bien groupés pour la couleur d'encre, qui passe de 55 à 95 pour cent d'opacité dans les deux cas, mais la pastille grise à 7 pour cent est déclarée dans une règle qui n'appartient qu'à `.is-active` (`app/globals.css:2517`). Le survol assombrit l'encre, l'état actif ajoute le fond. `.lp-header__link` suit exactement la même logique (`app/globals.css:7612` et `7616`). Aucune surcharge en thème sombre. La pastille grise sur une capture veut donc bien dire « je suis là », pas « je survole ».
 
-### 2026-08-19, relecture finale du chantier notoriété, sept constats corrigés
+## 2026-08-19, relecture finale du chantier notoriété, sept constats corrigés
 
 **Fait.** Une relecture finale du lot de huit commits sur la notoriété (rarity_tag depuis le rang Google Fonts) avait remonté sept constats. Les sept sont corrigés en une passe, aucune migration appliquée. Rapport détaillé : `.superpowers/sdd/2026-08-19-notoriete-axe-de-progression/fix-final-report.md`.
 
@@ -3612,7 +3791,7 @@ Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, 
 
 **Vérifié.** 013 et son rollback comptent chacun 1090 ordres, 243 common, 357 uncommon, 490 rare, inchangé. `check:rarity-coverage` et `check:google-metadata-sync` en sortie 0, `npm run typecheck` et `npm run lint` en sortie 0.
 
-### 2026-08-23, charte Figma, les deux pages vitrine des écrans corrigées
+## 2026-08-23, charte Figma, les deux pages vitrine des écrans corrigées
 
 **Le constat de Marion, en deux mots.** « Gros titre comme cela impossible, depuis quand ? » et « la qualité c'est pas possible ». Les deux sont exacts, les deux sont de moi.
 
@@ -3622,7 +3801,7 @@ Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, 
 
 **Ce que je ne peux pas vérifier moi-même.** Le service d'aperçu de Figma rend un remplissage GIF en aplat uni. Démontré en faisant téléverser le fichier par Figma lui-même : son propre nœud rend aussi vide. Le remplissage est bien attaché, la page 39 se juge dans l'éditeur.
 
-### 2026-08-23, lecture des trois brandbooks d'agence
+## 2026-08-23, lecture des trois brandbooks d'agence
 
 **Fait.** Marion a envoyé trois brandbooks d'un ami : Tercio, Elevo, Artrade, dans `~/Downloads/Brandbooks/`. 281 pages, toutes en 1920 x 1080, le format exact de notre charte. Ce sont trois livraisons du même studio sur le même gabarit, donc on y lit un système et pas un coup de chance. Lues en entier, en images. Analyse dans `05_LOGO/REFERENCES_BRANDBOOK/BRANDBOOKS_AGENCE_2026.md`, pointeur ajouté dans `ETAT.md` du même dossier.
 
@@ -3638,7 +3817,7 @@ Mesuré après coup : zéro chevauchement et zéro texte coupé de 390 à 1920, 
 
 **Rien n'a été modifié dans la charte Figma sur cette base.** Lecture et consignation seulement, comme demandé.
 
-### 2026-08-23, les 108 polices Adobe entrent au catalogue, migration écrite, pas appliquée
+## 2026-08-23, les 108 polices Adobe entrent au catalogue, migration écrite, pas appliquée
 
 Le projet web Adobe est arrêté : 108 familles, un seul romain chacune, 67 Ko servis
 par `use.typekit.net`. `content/catalog/adobe-fonts-kit.json` correspond exactement à
@@ -3697,7 +3876,7 @@ propre pour les Google.
 
 Porte complète verte, code de sortie 0.
 
-### 2026-08-23, charte Figma, la section des écrans refaite sur l'anatomie apprise
+## 2026-08-23, charte Figma, la section des écrans refaite sur l'anatomie apprise
 
 **Fait.** Les onze pages de la section 06 remontées à partir des règles lues dans les trois brandbooks d'agence (note du même jour). La section passe de neuf à onze pages, le document de 47 à 49 pages.
 
@@ -3721,7 +3900,7 @@ Porte complète verte, code de sortie 0.
 
 **Les deux pages de navigation remises d'aplomb.** L'intercalaire 37 listait neuf pages, il en liste onze, et ses douze filets de séparation ont été recalés sur le nouveau pas de 46 px (au premier essai ils barraient trois titres). La couverture annonce 49 pages au lieu de 47, la section 06 va de 38 à 48, les annexes sont en page 49, et la liste des écrans a été réécrite.
 
-### 2026-08-23, migration Adobe jouée sur une branche jetable, un défaut de jeu trouvé et corrigé
+## 2026-08-23, migration Adobe jouée sur une branche jetable, un défaut de jeu trouvé et corrigé
 
 Deux branches Neon jetables créées depuis `production` pour jouer les migrations 015
 et 016 sans toucher aux données réelles. La production n'a pas bougé, toujours 1172
@@ -3774,7 +3953,7 @@ Les 4 rallumées y entrent aussi, elles n'ont plus de fichier non plus.
 Porte complète verte. Mutation du garde : 23 sur 23. **Reste le feu vert pour appliquer
 en production**, et la suppression des deux branches jetables.
 
-### 2026-08-23, retour arrière sur la section des écrans, et le GIF refait depuis l'enregistrement de Marion
+## 2026-08-23, retour arrière sur la section des écrans, et le GIF refait depuis l'enregistrement de Marion
 
 **Le constat de Marion.** « Ce que je t'ai envoyé, c'est pour que tu comprennes comment on le fait, pas pour que tu fasses exactement la même chose. » Et : « supprime tous les fonds beige que tu viens de créer, remets les typographies où on a l'habitude de les mettre. » Et enfin, sur le fond : « le but c'est de mettre les pages principales, pas toutes les pages du jeu. Pas 50 fois le même screen, et toujours à la même place. »
 
@@ -3796,7 +3975,7 @@ Résultat : recadrage 1280 × 900 dans la source, 10 images par seconde, 64 imag
 
 **Reste à faire, dans sa direction.** Les sujets qu'il a nommés et qui ne sont pas des captures de site : l'icône en contexte (son kit Safari mobile contient toutes les barres d'URL, en clair, sombre, multi-onglets et navigation privée, plus les iPhone 16 avec un cadre `screen-here`), les boutons, les couleurs en application. Et une page unique qui rassemble les écrans secondaires au lieu d'une page chacun.
 
-### 2026-08-23, deux pages mobiles montées dans les mockups de Marion
+## 2026-08-23, deux pages mobiles montées dans les mockups de Marion
 
 **Demande.** « Fais les mockups iPhone, pas la suite. Que des trucs de logo et le jeu en format mobile. »
 
@@ -3812,7 +3991,7 @@ Résultat : recadrage 1280 × 900 dans la source, 10 images par seconde, 64 imag
 
 **À savoir.** Marion a dupliqué la page 39 avant que je remplace le GIF : sa copie, dans la rangée du dessus, porte encore l'ancien GIF de la landing. Le bon, celui tiré de son enregistrement, est sur la page 39 de la rangée de la section.
 
-### 2026-08-23, quatre pages d'écrans construites sur des valeurs mesurées
+## 2026-08-23, quatre pages d'écrans construites sur des valeurs mesurées
 
 Marion a validé la façon de faire de la page du logo sur téléphone et demandé la suite des quatre manques que j'avais listés, avec des variantes. Fait, pages 43 à 46, plus la fermeture du trou de numérotation (la section sautait de 40 à 42).
 
@@ -3840,7 +4019,7 @@ Le téléphone est dessiné **à la même échelle** que le bureau, ce qui montr
 
 **Un piège de capture, réglé.** Impossible d'attraper l'état juste en jouant : une bonne réponse enchaîne sur le mot suivant plus vite que l'aller-retour de la capture, et geler les minuteurs juste après le clic empêche l'état d'apparaître. La solution est de poser la classe directement sur le composant réel dans la page, souris éloignée, puis de photographier. On rend le vrai composant dans le vrai état, sans dépendre du hasard d'une partie.
 
-### 2026-08-23, corrections sur les mockups iPhone et suppression des lignes de méta
+## 2026-08-23, corrections sur les mockups iPhone et suppression des lignes de méta
 
 **Trois défauts signalés par Marion sur les téléphones de la page 41, les trois corrigés.**
 
@@ -3856,7 +4035,7 @@ Le téléphone est dessiné **à la même échelle** que le bureau, ce qui montr
 
 **En cours, pas encore fait.** Marion a demandé que la loupe de l'en-tête, page 42, soit refaite en vectoriel plutôt qu'en capture agrandie. Les deux fichiers que le site sert lui-même sont déjà téléversés dans le Figma comme vecteurs éditables : `dwiggins-figures-dark.svg` et `dwiggins-wordmark-full-black.svg`. La géométrie de l'en-tête mobile est relevée au dixième de pixel : pastille 369,4 × 47 à rayon 16, symbole 20,3 × 14,7, mot 68,1 × 16,8, bouton 134,7 × 23,8 à rayon plein en Inter Bold 10,88 px et 10 pour cent d'approche, interrupteur 45,8 × 26,2 à rayon 12 avec un pouce de 19,8. Reste à composer.
 
-### 2026-08-23, les 108 polices Adobe sont EN PRODUCTION
+## 2026-08-23, les 108 polices Adobe sont EN PRODUCTION
 
 Feu vert du propriétaire donné explicitement. Migrations 015 et 016 appliquées sur la
 branche `production` du projet Neon `lingering-moon-38591025`.
@@ -3909,7 +4088,7 @@ régénérer.
 
 Porte complète verte, code de sortie 0. Mutations du garde Adobe : 23 sur 23.
 
-### 2026-08-23, l'introduction refaite, sept pages sur la recette de la page 28
+## 2026-08-23, l'introduction refaite, sept pages sur la recette de la page 28
 
 **Demande de Marion.** Refaire l'introduction, en se référant au brandbook Discord pour cette partie précisément, avec **nos** couleurs, et en reprenant la façon de poser le texte de sa page 28, qu'il a réglée lui même. « C'est comme si t'allais refaire la slide 28 plusieurs fois, il peut y avoir des variantes. » Le contenu doit dire pourquoi on existe et quel est l'objectif, vite, à quelqu'un qui lit **avant** la charte. Et il veut des phrases un peu drôles.
 
@@ -3927,7 +4106,7 @@ Porte complète verte, code de sortie 0. Mutations du garde Adobe : 23 sur 23.
 
 **Les deux pages de navigation suivies.** Les sept lignes de l'intercalaire 2 et la liste de la section 01 sur la couverture portent les nouveaux titres.
 
-### 2026-08-23, la page 42 passe en vectoriel et gagne la nav ordinateur
+## 2026-08-23, la page 42 passe en vectoriel et gagne la nav ordinateur
 
 **Demande.** La nav du site en version téléphone était une capture agrandie, donc un peu floue. La refaire en vectoriel, et ajouter la nav ordinateur sur la même page, sans écrire de quel facteur c'est agrandi.
 
@@ -3941,7 +4120,7 @@ Porte complète verte, code de sortie 0. Mutations du garde Adobe : 23 sur 23.
 
 **Renommée.** La page ne parle plus seulement du téléphone : « 42 · Les écrans · Le logo dans l'en-tête », fil d'Ariane et ligne de l'intercalaire 37 suivis.
 
-### 2026-08-23, introduction, trois corrections après relecture de Marion
+## 2026-08-23, introduction, trois corrections après relecture de Marion
 
 **Page 6, le texte gardé, la mise en page refaite.** « Super le texte mais la mise en page bof bof. » Le défaut était l'écartement : 128 px séparaient le bas du mot vert du libellé rouge, donc la page lisait comme deux objets posés loin l'un de l'autre au lieu d'un affrontement. Bloc resserré à 23 px d'écart, les deux mots ramenés de 168 à 150 px, chaque libellé collé à 20 px au dessus de son mot. Le bloc entier se lit maintenant comme une seule masse, ce qui est le sujet de la page.
 
@@ -3953,7 +4132,7 @@ Page 9 disait « Elle ne décide pas à votre place. Elle dit ce qui est déjà 
 
 **La page 9 renommée** en « Ce qui reste ouvert », son ancien titre « Ce qu'elle ne fait pas » ne correspondant plus à son texte. Intercalaire 2 et liste de la couverture suivis.
 
-### 2026-08-23, chapitre logo, la page des trois sols
+## 2026-08-23, chapitre logo, la page des trois sols
 
 **État réel du chapitre avant de le pousser, relevé page par page.** Cinq pages de contenu seulement : le logo principal, le sens du symbole, la zone de sécurité, le symbole, les proportions du bloc. Plus l'intercalaire 10. La page 17 « Badge » n'est qu'un cadre vide qui annonce « À produire ». Et il y avait un trou à la 16, Marion ayant supprimé « Les tailles du logo ».
 
@@ -3967,7 +4146,7 @@ Page 9 disait « Elle ne décide pas à votre place. Elle dit ce qui est déjà 
 
 **Reste à faire dans ce chapitre**, dans cet ordre décidé avec Marion : le favicon en contexte, puis ce qu'on ne fait pas. Le badge en dernier, il veut le traiter lui même.
 
-### 2026-08-23, chapitre logo, la page du favicon
+## 2026-08-23, chapitre logo, la page du favicon
 
 **Premier essai refusé.** « Pas super beau, tu peux refaire ? Fond noir au passage. » L'essai précédent posait le favicon agrandi et un onglet dessiné sur le fond ivoire du chapitre : joli mais vide de propos, et l'onglet lisait comme une barre de recherche parce qu'il flottait seul, sans barre d'onglets autour.
 
@@ -3983,7 +4162,7 @@ Le disque du favicon est `#000000`. Contre la barre d'un chrome clair, `#dcdcdc`
 
 **Reste dans ce chapitre** : ce qu'on ne fait pas. Puis le badge, que Marion traitera lui même.
 
-### 2026-08-23, migration 013 vérifiée et prête, bloquée par les permissions
+## 2026-08-23, migration 013 vérifiée et prête, bloquée par les permissions
 
 La 013 fait de la notoriété l'axe de progression : les polices connues restent
 atteignables dès le début, les obscures reculent en `uncommon` et `rare`.
@@ -4026,7 +4205,7 @@ Adobe, et une portée du débutant à 355. Une transaction qui lève annule tout
 vérification ne peut pas arriver trop tard. `--dry-run` montre l'effet sans rien
 écrire, `--rollback` rejoue le retour arrière.
 
-### 2026-08-24, favicon en version Safari, et les Do/Don't abandonnés
+## 2026-08-24, favicon en version Safari, et les Do/Don't abandonnés
 
 **Les barres refaites à la manière de Safari**, sur demande de Marion, « en général c'est plus beau ». Trois différences avec le navigateur générique que j'avais dessiné, et ce sont elles qui font la propreté : les onglets Safari sont des pastilles **entièrement arrondies** et non des onglets à pied carré ; l'onglet actif est un aplat avec une ombre douce tandis que les inactifs sont transparents, séparés par un simple filet à 16 pour cent et non par un cadre ; et **la croix de fermeture n'apparaît qu'au survol**, donc elle n'a rien à faire sur une planche.
 
@@ -4036,7 +4215,7 @@ Barre de 1180 x 110, marge de 14, onglets de 378 x 82 à rayon 12, écart de 8. 
 
 **État du chapitre logo après cette passe.** Neuf pages, 10 à 18 : l'intercalaire, le logo principal, le sens du symbole, la zone de sécurité, le symbole, les proportions du bloc, les trois sols, le badge, le favicon. La page 17, le badge, reste un cadre vide que Marion veut traiter lui même. Le chapitre est passé de 7 à 9 pages, contre 12 à 21 chez les trois références.
 
-### 2026-08-24, point d'arrêt de nuit et état exact du document
+## 2026-08-24, point d'arrêt de nuit et état exact du document
 
 **Deux pages étaient empilées et sans nom, réparé avant de fermer.** Les cadres `411:675` et `70:124` se trouvaient tous les deux en 12597, 2680 et s'appelaient « Frame ». Noms et positions rétablis : 16 Les trois sols en 12597, 17 Badge en 14677, 18 Le favicon en 16757.
 
@@ -4048,7 +4227,7 @@ Barre de 1180 x 110, marge de 14, onglets de 378 x 82 à rayon 12, écart de 8. 
 
 **Une tâche programmée pour 10 h 04 a été posée**, avec le détail du travail et les règles de fabrication. Attention : ce type de tâche ne vit que dans la session ouverte, elle ne survit pas à la fermeture de Claude Code. Prévenu.
 
-### 2026-08-24, la page technique ajoutée au programme de 10 h
+## 2026-08-24, la page technique ajoutée au programme de 10 h
 
 **Demande de Marion avant de dormir.** Une page de plus dans l'introduction, qui explique vraiment la technique, comment le moteur fonctionne, avec la courbe de l'oubli. Et il veut que les étapes s'enchaînent, chacune lancée quand la précédente est finie.
 
@@ -4064,7 +4243,7 @@ Si la page technique reprenait les chiffres du premier document, **la charte éc
 
 **Réparation faite avant de fermer.** Les cadres `411:675` et `70:124` étaient empilés en 12597, 2680 et s'appelaient tous les deux « Frame ». Rétablis : 16 Les trois sols en 12597, 17 Badge en 14677, 18 Le favicon en 16757.
 
-### 2026-08-24, la 013 est appliquée, et elle a révélé la queue du catalogue
+## 2026-08-24, la 013 est appliquée, et elle a révélé la queue du catalogue
 
 **La 013 est en production.** Portée du débutant de 1178 à 341, répartition passée de
 1184 communes et zéro rare à 361 communes, 1285 peu communes, 490 rares. Le JSON du
@@ -4123,7 +4302,7 @@ sur 1279 actives.
 
 Porte complète verte, 31 contrôles, code de sortie 0.
 
-### 2026-08-24, les quatre étapes exécutées, le document passe à 52 pages
+## 2026-08-24, les quatre étapes exécutées, le document passe à 52 pages
 
 **Étape 1, page 10, La technique.** La courbe de l'oubli dessinée en vectoriel, cinq paliers, chacun redescendant moins vite que le précédent, avec les points de rappel en jaune de marque. Les intervalles écrits sous chaque palier viennent de `training-engine-spec-v2-clean.md` : 1 à 3 questions au niveau 0, 3 à 6 au niveau 1, 10 à 25 au niveau 2, 25 à 50 au niveau 3, 80 à 150 au niveau 4. Le piège signalé la veille a été évité : les chiffres en jours de `scoring-and-selection-math.md` décrivent un moteur non implémenté, ils n'apparaissent pas.
 
@@ -4145,7 +4324,7 @@ Les vraies lumières du produit sont deux halos, relevés dans la feuille de sty
 
 **Une section retirée des listes.** Les Annexes techniques n'ont plus ni chapitre ni intercalaire, Marion les ayant supprimés. La section ne figure plus dans les sommaires. À rouvrir si elle revient.
 
-### 2026-08-24, la tâche de 10 h s'est déclenchée sur du travail déjà fait
+## 2026-08-24, la tâche de 10 h s'est déclenchée sur du travail déjà fait
 
 Marion ayant dit « on y va » avant l'heure, les quatre étapes avaient déjà été exécutées à la main. La tâche programmée a donc trouvé le document terminé.
 
@@ -4153,7 +4332,7 @@ Marion ayant dit « on y va » avant l'heure, les quatre étapes avaient déjà 
 
 Aucune page créée, aucune page modifiée. Le réflexe à garder : quand une tâche programmée se déclenche, **vérifier l'état avant d'exécuter le brief**, sinon on duplique.
 
-### 2026-08-24, les clusters visuels mesurés dans les fichiers de police, migration 018
+## 2026-08-24, les clusters visuels mesurés dans les fichiers de police, migration 018
 
 Le cluster décide des mauvaises réponses : une police du même cluster vaut un malus de
 175 à 350 points dans le tri des leurres. Trois clusters portaient 85 pour cent du
@@ -4232,7 +4411,7 @@ corriger.
 
 Porte complète verte, code de sortie 0.
 
-### 2026-08-24, contrôle de cohérence des 52 pages, neuf dérives corrigées
+## 2026-08-24, contrôle de cohérence des 52 pages, neuf dérives corrigées
 
 Le document ayant été fabriqué vite sur des chapitres qui n'ont pas la même convention, un contrôle mécanique a été passé sur les 52 pages : position et encre du folio, présence du fil d'Ariane, position de la signature, gabarit de la colonne de gauche, calques interdits, et texte débordant du cadre. Neuf constats, tous corrigés, contre-vérification en sortie vide.
 
@@ -4244,7 +4423,7 @@ Le document ayant été fabriqué vite sur des chapitres qui n'ont pas la même 
 
 **Ce qui reste au document**, inchangé depuis hier : la page 18, le badge, cadre vide que Marion veut traiter lui même, et le chapitre de discours, qui demande ses décisions sur le ton de la marque.
 
-### 2026-08-24, le chapitre Le discours, quatre adjectifs
+## 2026-08-24, le chapitre Le discours, quatre adjectifs
 
 **Fait.** Cinq pages, un intercalaire et quatre adjectifs, sur le modèle des pages de ton de voix de Tercio : un panneau à trois bandes numérotées par une puce en monospace, ce que le lecteur doit ressentir en deux citations, ce que l'adjectif ne veut pas dire en une énumération de contraires, et six conseils d'écriture. Puis l'adjectif seul en 44 px en bas à gauche, avec son paragraphe à droite.
 
@@ -4265,7 +4444,7 @@ Chaque page porte donc sa preuve dans son paragraphe. Les mots restent à tranch
 
 **Ce qui reste, une seule chose.** La page du badge, cadre vide que Marion veut traiter lui même.
 
-### 2026-08-24, feuille de route des six manques, et étape 1 faite
+## 2026-08-24, feuille de route des six manques, et étape 1 faite
 
 **La feuille de route est sur le disque**, `docs/process/charte-six-manques.md`, et non plus en tâche de session : elle survit à la fermeture de Claude Code, ce que la tâche programmée d'hier ne faisait pas. Six étapes, chacune avec son pourquoi, sa matière source, son emplacement, son contenu et son contrôle de sortie. La renumérotation est explicitement en dernier.
 
@@ -4281,7 +4460,7 @@ La page montre la forme longue en 58 px, puis un panneau à deux bandes qui dit 
 
 **Son folio est encore celui de la page dont elle est le clone.** C'est voulu : la renumérotation passe à la fin des six étapes, une seule fois.
 
-### 2026-08-24, la reconnaissance de forme : un échec sur la question posée, une trouvaille ailleurs
+## 2026-08-24, la reconnaissance de forme : un échec sur la question posée, une trouvaille ailleurs
 
 Chantier ouvert pour séparer les 185 linéales humanistes que la géométrie ne distingue
 pas. **Il a échoué sur cette question, et trouvé un défaut plus grave à côté.**
@@ -4335,7 +4514,7 @@ liste de celles qui atteignent un débutant.
 
 Porte complète verte, code de sortie 0.
 
-### 2026-08-24, étapes 2 à 4 des six manques
+## 2026-08-24, étapes 2 à 4 des six manques
 
 **Étape 2, des exemples de messages.** Six phrases prises dans `content/copy.ts`, aucune écrite pour la page, et chacune croisée avec l'adjectif qu'elle sert et la raison en une ligne. C'est ce croisement qui rend le chapitre utilisable : on ne lit pas un conseil, on voit une phrase et la règle qui l'a produite.
 
@@ -4351,7 +4530,7 @@ Posée en fin d'introduction, ce qui a demandé de décaler les huit cadres du c
 
 **Les folios de ces quatre pages sont encore ceux de leurs clones.** La renumérotation passe après la sixième étape, une seule fois.
 
-### 2026-08-24, une jumelle ne peut plus être un leurre
+## 2026-08-24, une jumelle ne peut plus être un leurre
 
 Réparation de la trouvaille du jour : le jeu pouvait montrer un mot et proposer Noto
 Sans, Noto Sans JP, Noto Sans KR et Noto Sans SC. Ces quatre-là dessinent le latin à
@@ -4395,7 +4574,7 @@ sauvegardes portent maintenant le chemin complet, dans un dossier temporaire dé
 
 Porte complète verte, 34 contrôles, code de sortie 0.
 
-### 2026-08-24, étape 5, le contraste sur les fiches de couleur
+## 2026-08-24, étape 5, le contraste sur les fiches de couleur
 
 **Fait.** Quinze lignes de contraste posées, une par nuance, sur les six pages de couleur qui portent des fiches. Chaque valeur recalculée avant d'être écrite, **contre l'encre réellement employée sur ce sol** et non contre une encre théorique : l'encre est lue dans le calque `val-N` existant de chaque ligne.
 
@@ -4407,7 +4586,7 @@ Porte complète verte, 34 contrôles, code de sortie 0.
 
 **Question ouverte, à trancher par Marion.** Elevo et Tercio portent aussi le CMJN et le Pantone sur chaque fiche. Si DWIGGINS ne s'imprime jamais, il faut l'écrire, sinon l'absence se lira comme un oubli.
 
-### 2026-08-24, hors produit, une affiche A4 d'après une ref de 1982
+## 2026-08-24, hors produit, une affiche A4 d'après une ref de 1982
 
 **En cours, trois directions à départager par Marion.** Fichiers dans `~/Desktop/AFFICHE_DWIGGINS`, générés par `generer.mjs`, trois SVG A4 vertical (794 x 1123 px, soit 210 x 297 mm à 96 dpi) plus une planche de comparaison `planche.html`.
 
@@ -4423,7 +4602,7 @@ Porte complète verte, 34 contrôles, code de sortie 0.
 
 **Reste à trancher par Marion.** La direction, le texte du titre (« Jeux de Typo » et « POUR L'ŒIL » sont des propositions), et si le titre a droit à son écart d'échelle.
 
-### 2026-08-24, l'affiche repose sur un module unique, dans Figma
+## 2026-08-24, l'affiche repose sur un module unique, dans Figma
 
 **Fait pour la direction B.** Page 2 du fichier de charte Figma (`3kfcrtrbWHYs4Evsfi26mq`), cadre `AFFICHE A4 · B · Polychromie contenue`, 794 x 1123 px.
 
@@ -4441,7 +4620,7 @@ Porte complète verte, 34 contrôles, code de sortie 0.
 
 **Reste à faire.** Les directions A et C, qui ne sont qu'une reteinte du même cadre. Et régénérer les SVG du Bureau, qui portent encore l'ancienne géométrie et sont donc périmés.
 
-### 2026-08-24, étape 6 des six manques, puis la renumérotation complète
+## 2026-08-24, étape 6 des six manques, puis la renumérotation complète
 
 **L'étape 6 est faite, la feuille de route `docs/process/charte-six-manques.md` est terminée.** Deux pages « Un exemple en usage », une en fin de La couleur (38), une en fin de La typographie (47). Le chapitre Les composants a glissé de 2080 vers la droite pour faire place à celle de la typo.
 
@@ -4469,7 +4648,7 @@ Porte complète verte, 34 contrôles, code de sortie 0.
 
 **Un point de DA à trancher, découvert en cherchant l'écran de la couleur.** Sur `/play/competition`, les quatre boutons de réponse sont posés en clair, texte gris pâle sur fond gris clair, à la limite de la lisibilité. Ce n'est pas le cas en entraînement. C'est pour cette raison que l'exemple en usage prend l'écran d'entraînement.
 
-### 2026-08-24, l'affiche Vox refaite dans Figma, d'après la référence de Marion
+## 2026-08-24, l'affiche Vox refaite dans Figma, d'après la référence de Marion
 
 **Page 2 du fichier de charte `3kfcrtrbWHYs4Evsfi26mq` était vide.** L'affiche décrite
 dans la note du matin n'y était plus, le nœud n'existait plus non plus. Reconstruite
@@ -4508,7 +4687,7 @@ système comme la version précédente le faisait, soit l'affiche assume le subs
 calage à gauche du titre, sans qu'aucune autre session Claude ne soit active. Reposés.
 Si ça se reproduit, c'est une annulation faite à la main pendant que le script écrit.
 
-### 2026-08-24, l'affiche, le tableau de La Danse passé en pixels
+## 2026-08-24, l'affiche, le tableau de La Danse passé en pixels
 
 **Ce que Marion demande, et il a fallu trois messages pour que je le comprenne.** Le symbole de la marque **est** La Danse de Matisse, tracée. L'affiche doit montrer la même forme dans deux états : le tableau passé en pixels dessous, la machine, et la silhouette ivoire lisse dessus, la main. Référence donnée par Marion : la couverture de « Graphics Cookbook for the Apple », Nat Wadsworth, Hayden. Ma première lecture était fausse, je proposais de découper des panses et des déliés de lettres, ce qui réinventait moins bien une forme qui existe déjà.
 
@@ -4524,7 +4703,7 @@ Si ça se reproduit, c'est une annulation faite à la main pendant que le script
 
 **Le manque de charte que ça révèle, et il est plus grave que la langue.** Si la page 22, Le sens du symbole, ne dit pas que le symbole vient de La Danse, la charte cache l'origine de sa propre marque. À vérifier et à écrire.
 
-### 2026-08-25, correction : la grille n'a pas de case vide
+## 2026-08-25, correction : la grille n'a pas de case vide
 
 **Fait.** Marion a repéré que le panneau ne ressemblait pas à la ref, et la cause n'était pas la couleur mais la construction. Dans la couverture Hayden, **aucune case n'est vide** : le fond bleu clair est une nappe de carrés bleus, pas un aplat. Le panneau entier est une seule grille continue, du bord extérieur jusqu'au dessin.
 
@@ -4538,7 +4717,7 @@ Si ça se reproduit, c'est une annulation faite à la main pendant que le script
 
 **Reste ouvert.** La nappe de fond est à 12 % de beige, donc le panneau lit gris. La ref a un champ clair saturé, ce qui est justement la direction C. Les libellés de classe sont posés à même la grille et se lisent mal, une petite plaque derrière chacun réglerait ça. Et A et C restent à faire.
 
-### 2026-08-25, le galon en pixels autour du tableau
+## 2026-08-25, le galon en pixels autour du tableau
 
 **Demandé par Marion sur la référence Apple.** Le cadre en anneaux concentriques qui entoure l'image sur la couverture du « Graphics Cookbook ». Fait sur `AFFICHE A4 · ici · le tableau en pixels`.
 
@@ -4556,7 +4735,7 @@ Si ça se reproduit, c'est une annulation faite à la main pendant que le script
 
 **Un texte à changer, laissé à Marion.** La plaque en bas du panneau dit encore « CLASSIFICATION VOX », qui vient de l'autre affiche et qui ne veut plus rien dire ici. Sur la référence, cette plaque porte le nom de l'éditeur, HAYDEN.
 
-### 2026-08-25, hébergement : dix solutions comparées, chiffres relevés le jour même
+## 2026-08-25, hébergement : dix solutions comparées, chiffres relevés le jour même
 
 Recherche menée parce que **le jeu deviendra payant**. Marion a la spécification des
 licences scolaires, donc l'hypothèse « usage non commercial » a une date de péremption.
@@ -4633,7 +4812,7 @@ polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
 
 **2026-08-25, le texte de l'affiche.** Le bloc provisoire en haut à droite du symbole, que Marion avait rempli au clavier, porte maintenant : « On a passé cette forme dans la machine. On la reconnaît encore. Ton œil sait faire ça. Il ne sait pas encore le faire avec une lettre. C'est tout le jeu. » Inter Extra Bold Italic 16, interlignage 145 pour cent, encre ivoire, largeur 396, il descend à 222 pour un mot DWIGGINS qui commence à 267. Cinq phrases, aucune ne dépasse dix mots, ton du chapitre Le discours. Et la plaque sous le panneau, qui disait encore « CLASSIFICATION VOX », porte « LA DANSE · 1910 », comme la plaque HAYDEN de la référence porte l'éditeur. Attention : ce crédit rend la citation explicite, ce que la page 22 nomme comme un problème de marque. Il tient parce que Marion garde le tableau entier sur l'affiche, mais il tombe si l'affiche devient publique.
 
-### 2026-08-25, une planche témoin pour le bloc Discours
+## 2026-08-25, une planche témoin pour le bloc Discours
 
 **Fait.** Cadre `18 · PROPOSITION · Des messages` sur la Page 1 du Figma de charte, posé à (200, 8000), sous le document et au dessus des kits d'interface importés. **La planche 18 d'origine n'a pas été touchée.**
 
@@ -4651,7 +4830,7 @@ polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
 
 **Reste ouvert.** La rotation à plus ou moins 3 degrés est un choix de DA, la version alignée sans rotation est à un réglage. Et les sept autres planches, 11 et 13 à 19, attendent la validation de celle ci.
 
-### 2026-08-25, deuxième planche témoin, celle qui porte un graphique
+## 2026-08-25, deuxième planche témoin, celle qui porte un graphique
 
 **Fait.** Cadre `19 · PROPOSITION · Les règles d’écriture` sur la Page 1, à (200, 9400), sous la proposition de la 18. **La planche 19 d’origine n’a pas été touchée.**
 
@@ -4669,7 +4848,7 @@ polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
 
 **Reste ouvert.** Trancher 44 contre 47. Et les six planches restantes : la 11, la 13, et les 14 à 17 qui prennent la carte de la 18.
 
-### 2026-08-25, refonte 10 à 19, quatre planches sur huit
+## 2026-08-25, refonte 10 à 19, quatre planches sur huit
 
 **Consigne de Marion : refaire de la 10 à la 19, et une forme de graphique différente à chaque planche.** Toutes les propositions sont posées sous le document sur la Page 1, à partir de y 8000, nommées `NN · PROPOSITION · …`. Aucune originale n'est touchée.
 
@@ -4690,7 +4869,7 @@ polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
 
 **Reste à faire.** 16 Précis, 17 Pince-sans-rire, 11 La direction, 13 La signature. Plus le bloc de définition à ajouter à la 10. La 12 est un intercalaire d'une série de sept, laissée de côté.
 
-### 2026-08-25, la séquence MOTEUR, sept planches avant la 10
+## 2026-08-25, la séquence MOTEUR, sept planches avant la 10
 
 **Consigne de Marion : expliquer tout le fonctionnement du jeu avec des graphiques, sept ou huit planches, avant la planche 10. Et ne pas montrer la carte du regard.** J'étais parti du code seul, ce qui était l'erreur : les specs de `docs/game` disent bien plus, et surtout elles disent pourquoi.
 
@@ -4711,7 +4890,7 @@ polices ne s'affichent pas), créer le projet Vercel, y poser `DATABASE_URL` et
 
 **Reste cinq planches moteur** : le retour en questions, les deux planchers, le pool qui ne perd rien, généraliser plutôt que mémoriser, l'Œil qui ne recule pas. Plus 17, 11 et 13 du bloc Discours, mises en attente.
 
-### 2026-08-25, la séquence MOTEUR est complète, sept planches
+## 2026-08-25, la séquence MOTEUR est complète, sept planches
 
 Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept formes de graphique différentes, aucune répétée.
 
@@ -4733,7 +4912,7 @@ Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept 
 
 **Reste à faire.** Les planches 17, 11 et 13 du bloc Discours, mises en attente lors du basculement vers le moteur. Trancher 44 contre 47 phrases. Et décider du remplacement en place, qui n'a pas été fait : les originales sont intactes.
 
-### 2026-08-25, la séquence est reprise à zéro, du point de vue du lecteur
+## 2026-08-25, la séquence est reprise à zéro, du point de vue du lecteur
 
 **Retour reçu, et il était juste.** La séquence MOTEUR racontait DWIGGINS comme un audit du code : titres en relevés (« la phrase médiane fait sept mots »), invariants I-03 / I-13 en clair, noms de variables. Le lecteur apprenait beaucoup sans jamais obtenir de réponse aux cinq questions simples : qu'est-ce que DWIGGINS, qu'est-ce que je fais dedans, pourquoi ça marche, qu'est-ce que j'apprends, pourquoi j'y reviens.
 
@@ -4755,7 +4934,7 @@ Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept 
 
 **Reste sept planches** à retourner, 03 à 09, qui reprennent les graphiques de la séquence MOTEUR sans les redessiner, mais avec le texte réécrit du point de vue du joueur.
 
-### 2026-08-25, LE SCRIPT DE LA CR, douze planches en rangée
+## 2026-08-25, LE SCRIPT DE LA CR, douze planches en rangée
 
 **Retour de Marion, et il portait plus loin que la mise en page.** Sa phrase règle tout : « le graphique doit venir prouver une idée que j'ai déjà comprise, et non me demander de comprendre le produit à travers le graphique ». Mes planches n'illustraient pas une explication, elles **étaient** l'explication.
 
@@ -4792,7 +4971,7 @@ Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept 
 
 **Étape 1 faite** : `CR · 01 · La promesse` à (200, 32000). Le mot « regard » rendu dans huit caractères, aucun nommé.
 
-### 2026-08-25, exécution du script CR, six planches sur onze
+## 2026-08-25, exécution du script CR, six planches sur onze
 
 **APPRENDRE À REGARDER est retirée** sur décision de Marion, faute de temps pour trancher entre Reading Cards et Misread Cards. La séquence passe de douze à **onze planches**, renumérotées à la suite. Le sujet reste un manque assumé : c'est la mécanique qui distingue le mieux le produit d'un quiz, et aucune planche ne la porte.
 
@@ -4815,7 +4994,7 @@ Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept 
 
 **Reste cinq planches** : 07 la difficulté, 08 la progression N.1 à E.5, 09 la compétition, 10 le système, 11 la vision.
 
-### 2026-08-25, trois planches CR refaites en graphique sur retour de Marion
+## 2026-08-25, trois planches CR refaites en graphique sur retour de Marion
 
 **01 · La promesse.** Elle montrait huit caractères sans expliquer. Refaite en **deux colonnes** : « ce que votre œil voit » face à « ce que vous savez nommer », huit spécimens contre huit cases vides en pointillé, bilan `8 / 8` contre `0 / 8`. La légende nomme les huit polices en pied, après que le constat a porté. Le titre devient le constat lui-même.
 
@@ -4827,7 +5006,7 @@ Toutes posées sous le document, colonne x 200. Aucune originale touchée. Sept 
 
 **État : six planches sur onze.** Restent 07 la difficulté, 08 la progression N.1 à E.5, 09 la compétition, 10 le système, 11 la vision.
 
-### 2026-08-25, la 01 refaite en schéma, et une introduction dans la DA de la 18
+## 2026-08-25, la 01 refaite en schéma, et une introduction dans la DA de la 18
 
 **01 · La promesse, troisième version, retenue.** Les deux premières montraient des spécimens sans expliquer. Celle ci est un **schéma comparé** : la ligne du quiz va question, réponse, score, puis bute sur un mur en pointillé, avec la mention « et rien ne s'en souvient ». La ligne DWIGGINS fait **diverger la réponse en deux** : ce que le joueur gagne, et ce que le moteur gagne, puis les deux convergent vers « la question revient au moment précis où vous alliez l'oublier », et la boucle repart. Titre : « Un quiz vous note. DWIGGINS vous entraîne. »
 
@@ -4839,7 +5018,7 @@ C'est la planche qui répond à l'objectif que Marion avait posé pour tout le d
 
 **État : sept planches sur douze**, introduction comprise. Restent 07 la difficulté, 08 la progression, 09 la compétition, 10 le système, 11 la vision.
 
-### 2026-08-25, `dwiggins.fr` est acheté, chez LWS
+## 2026-08-25, `dwiggins.fr` est acheté, chez LWS
 
 Renouvellement 8,39 € TTC par an, deux adresses mail comprises. Les options « Domain
 Plus » ont été écartées à raison : l'AFNIC anonymise déjà gratuitement le titulaire
@@ -4860,7 +5039,7 @@ rien et la zone `.fr` n'a aucune délégation. LWS annonce une heure. À revéri
 **Le mail de vérification de l'AFNIC est à confirmer** dans les prochaines heures, sans
 quoi le domaine peut être suspendu au bout de quelques jours.
 
-### 2026-08-25, la séquence CR est complète, douze cadres
+## 2026-08-25, la séquence CR est complète, douze cadres
 
 **Marion a repéré que l'introduction annonçait onze pages alors qu'il en existait six.** Constat juste : elle avait été écrite en avance sur la fabrication. Les cinq manquantes sont faites.
 
@@ -4889,7 +5068,7 @@ Rangée unique à **y 32000**, pas de 2100. Contrôle programmé : douze cadres,
 
 **Reste à faire, décidé par Marion pour plus tard :** ranger et renommer les planches une fois validées, et retirer les propositions périmées, dont le sommaire en liste à (2400, 8000) que l'introduction remplace, et les douze planches des séries PROPOSITION et MOTEUR.
 
-### 2026-08-25, mentions légales : de huit informations manquantes à quatre
+## 2026-08-25, mentions légales : de huit informations manquantes à quatre
 
 `contact@dwiggins.fr` existe, chez LWS. Deux marqueurs remplis avec elle, deux autres
 avec l'identité légale de l'hébergeur, relevée dans les conditions de Vercel :
@@ -4928,7 +5107,7 @@ politique de confidentialité. C'est le point RGPD ci-dessus, celui que la dispe
 LCEN ne couvre pas, et il attend la relecture juridique. Le bloqueur légal passe donc de
 « sept informations et une relecture » à « une question de juriste ».
 
-### 2026-08-25, rangement de la Page 1
+## 2026-08-25, rangement de la Page 1
 
 **Rien n'a été supprimé.** « Ranger » a été traité comme un déplacement réversible : les propositions périmées sont archivées, pas détruites.
 
@@ -4945,7 +5124,7 @@ LCEN ne couvre pas, et il attend la relecture juridique. Le bloqueur légal pass
 3. Un rectangle orphelin nommé **`Rectangle 1`**, 100 x 100, à (1161, 9940).
 4. Le cadre **`profil-carte-du-regard`**, 400 x 300 et **vide**, posé à (24957, 200) à côté de la couverture.
 
-### 2026-08-25, nettoyage de la base : 337 sessions refermées, un doublon supprimé
+## 2026-08-25, nettoyage de la base : 337 sessions refermées, un doublon supprimé
 
 **Ce qui traînait, mesuré avant de toucher à quoi que ce soit.** 531 sessions, dont
 **337 restées ouvertes** depuis mars pour certaines, 1332 événements, un doublon de
@@ -4983,7 +5162,7 @@ Un contrôle en fin de transaction vérifiait cinq choses et annulait tout sinon
 session active ancienne, zéro doublon, 531 sessions exactement, 1331 événements, et
 aucune session fermée sans heure de fin.
 
-### 2026-08-25, la courbe de l'oubli, puis renumérotation complète du document
+## 2026-08-25, la courbe de l'oubli, puis renumérotation complète du document
 
 **Deux planches sur l'oubli, sur demande de Marion**, en remplacement de `CR · 02 · Le geste` jugée inutile. Son diagnostic était juste : cette planche dessinait une boucle à quatre temps qui faisait doublon avec la planche Le système.
 
@@ -5013,7 +5192,7 @@ aucune session fermée sans heure de fin.
 
 **Reste en marge du document, volontairement pas touché :** la rangée d'archive à y 40000, un rectangle orphelin `Rectangle 1`, le cadre vide `profil-carte-du-regard`, et les kits d'interface Safari et iPhone importés.
 
-### 2026-08-25, le symbole du hero apparié aux deux thèmes
+## 2026-08-25, le symbole du hero apparié aux deux thèmes
 
 **Demande de Marion, en regardant la page en clair et en sombre.** « Le symbole en clair devrait être sombre comme le texte », et pas d'ombre portée sur la barre.
 
@@ -6229,3 +6408,436 @@ la jumelle Georgia Pro n'est pas servie au débutant.
 auteur NeoZen15 : la géométrie regarde désormais l'instance affichée, 136 polices étaient
 profilées au mauvais poids, et les 108 Adobe entrent dans le garde des jumelles. Mon commit
 `1830e99` n'a touché que ce fichier de checklist, rien avalé, vérifié.
+
+## Flutter peut il animer des choses sur le site ? (2026-09-16)
+
+Question du propriétaire, reformulée après un premier malentendu de ma part : je suis parti sur
+l'animation de polices variables alors que la question porte sur animer le site en général.
+Documentation officielle lue via context7 (`/flutter/website`). Rien installé, rien modifié dans
+le code.
+
+**Techniquement, oui.** Flutter web a un mode d'intégration officiel : `_flutter.loader.load`
+avec un `hostElement`, ou le mode multi vues (`multiViewEnabled`) qui laisse ajouter et retirer
+des vues Flutter dans n'importe quel élément de la page depuis JavaScript. On pourrait donc
+poser un îlot Flutter animé dans une page Next.js sans réécrire le site.
+
+**En pratique, le prix est disproportionné.** CanvasKit pèse environ 1,5 Mo à télécharger avant
+le premier pixel, il faut le SDK Dart et une chaîne de build séparée, et l'îlot dessine dans un
+canvas donc son contenu échappe au texte sélectionnable, au référencement et à notre CSS. Il
+faudrait aussi empaqueter les polices dans le binaire, ce que notre licence webfont Adobe ne
+couvre pas.
+
+**Ce qu'on a déjà, mesuré dans le dépôt.** GSAP 3.14.2 est installé et sert déjà dans
+`GhostCursorDemo`, `CompareTeaser` et `OnboardingWarmup` (timelines, `quickTo`). Six composants
+animent au `requestAnimationFrame` sur canvas (`ParticleField`, `StarField`,
+`ProgressConstellation`, `LetterAnatomy`, `TypefaceRail`, `TypefaceTester`). Dix `@keyframes`
+CSS dans `globals.css`, 21 fichiers pilotent une entrée à l'`IntersectionObserver`, et
+`prefers-reduced-motion` est respecté dans `globals.css` plus neuf composants.
+
+**Conclusion.** Flutter n'apporte rien qu'on n'ait déjà pour animer le site, et coûte un second
+moteur de rendu dans la page. La distinction utile vient d'ailleurs de leur propre
+documentation : animation d'interface, qui se code (chez nous GSAP et CSS), contre animation
+dessinée, qui s'auteure dans un outil et s'exporte (Rive ou Lottie, qui marchent sur le web sans
+Flutter). Si un besoin apparaît, c'est ce second cas qu'il faut instruire. Rien n'est décidé.
+
+## Labo d'écrans d'intro (2026-09-16)
+
+Demande du propriétaire, après avoir écarté trois propositions de petits indicateurs d'attente :
+un vrai écran de chargement plein cadre, deux secondes au plus, une animation impressionnante,
+et le site juste après. Référence visuelle qu'il a donnée : indisea.com, dont toute l'animation
+tient dans une seule ligne bleue qui se dessine au défilement, en CSS pur et sans bibliothèque.
+
+Fait : `app/dev/intro` et `components/dev/intro/IntroLab.tsx`, plus son module CSS. Page interne
+gardée par `isDevRuntime`, **rien n'est posé sur le site**. Les trois intros animent le vrai
+dessin de marque chargé par `loadBrandArt`, comme le Badge Lab.
+
+**Première version manquée, et les deux fautes valent d'être écrites.** Elle prenait `--ink-warm`
+pour peindre son texte et son logo. Ce token vaut `rgba(244, 243, 238, 0.9)` sous
+`:root[data-theme="dark"]`, donc du beige : la page peignait du clair sur du clair et on ne
+voyait rien. **Un labo qui fixe son fond en dur ne peut pas lire les encres du thème.** Seconde
+faute, les trois intros se jouaient une seule fois au montage, donc elles étaient déjà finies
+quand le propriétaire arrivait sur la page. Elles tournent maintenant en boucle.
+
+**Contrainte de palette posée par le propriétaire : blanc et beige, rien d'autre.** Le blanc
+retenu est `--beige-raised` (#faf9f5) et pas le blanc pur, que le §1 du contrat de cohérence UI
+bannit de tout ce que voit un joueur. Le jaune de la première version est retiré : le §4 interdit
+l'aplat de marque, et elle en posait un plein cadre.
+
+**Le principe commun aux trois, né de la contrainte.** Deux tons si proches ne se lisent pas en
+petites formes, donc le blanc devient une FEUILLE posée sur la page et le logo est ce qu'on y
+découpe. Le contraste vient du plan et du bord, jamais de la couleur.
+
+**01 Le volet.** La feuille couvre dès la première image, le logo s'y découvre par un balayage,
+puis la feuille sort par la droite.
+
+**02 La contreforme.** Le symbole est un trou dans la feuille et il grossit jusqu'à ce que son
+blanc intérieur soit toute la page. La révélation est l'animation elle même.
+
+**03 Le composteur.** Les huit formes du logo sont autant de trous qui montent dans la feuille,
+décalés de 60 ms et coupés par une bande à la hauteur du mot, puis la feuille s'en va.
+
+Vérifié : `typecheck`, `lint` et `check:dev-routes` à zéro, la page rend 200, les trois masques et
+les huit formes sont dans le HTML servi, les cinq animations sont dans la feuille de style
+servie, et il ne reste aucune valeur jaune. Les trois `#fff` restants sont des blancs de masque,
+où blanc veut dire « on garde » : ils n'arrivent jamais à l'écran.
+
+**La direction artistique appartient au propriétaire**, donc rien ne sort de `/dev/intro` tant
+qu'il n'a pas choisi. Reste à trancher une fois le choix fait : où l'intro se déclenche (première
+visite seulement, ou à chaque chargement), et la règle qui prime, ne jamais faire attendre plus
+que le site lui même.
+
+## L'intro est posée sur le site (2026-09-16)
+
+Le propriétaire a choisi **02 La contreforme** et donné son feu vert. Elle est maintenant montée
+sur toutes les pages.
+
+`components/brand/BrandIntro.tsx` et son module CSS, montés par `app/layout.tsx`. Une feuille de
+blanc cassé de marque (#faf9f5) couvre le site, percée par le symbole, et le trou grandit
+jusqu'à ce que la page soit là. 1,9 s d'animation, retrait du calque à 2 s.
+
+**Quatre décisions prises en la posant, chacune pour une raison mesurable.**
+
+**Rendue par le serveur, éteinte par un script d'amorçage.** Décider côté React ferait apparaître
+la feuille après la première peinture, donc on verrait le site une fraction de seconde avant
+l'écran censé le couvrir. Le composant part donc dans le HTML de toutes les pages, et un second
+script d'amorçage, jumeau de celui du thème, pose `data-intro="seen"` sur `<html>` avant la
+première peinture quand `sessionStorage` a déjà la clé `jdt-intro`. Le CSS éteint alors le calque
+sans qu'il clignote.
+
+**Une fois par onglet.** `sessionStorage` est propre à un onglet, donc naviguer dans le site ne
+la rejoue pas et ouvrir un nouvel onglet la rejoue. C'est le comportement voulu.
+
+**Elle ne capture rien.** `pointer-events: none` sur le calque : la page est déjà dessous et
+reste utilisable, donc l'intro ne peut jamais faire attendre plus que le site.
+
+**Mouvement réduit, on n'entre pas du tout.** Pas de version douce : imposer deux secondes à
+quelqu'un qui demande moins de mouvement, ce serait deux secondes de trop.
+
+**Le symbole est lu une seule fois par processus** (`lib/brand/brand-intro-art.ts`), parce que le
+layout racine sert chaque page : passer par `loadBrandArt` à chaque requête coûterait trois
+lectures de fichier par page servie. Le nettoyage des tracés n'est pas réécrit, il reste celui du
+blason.
+
+**Le site est servi en thème sombre en dur** (`LIGHT_THEME_ENABLED = false`), donc la feuille
+claire s'ouvre sur du noir. C'est la bichromie de la marque, mais c'est un choix visuel que le
+propriétaire n'a vu qu'en beige dans le labo : à confirmer par lui.
+
+Vérifié : `typecheck`, `lint`, et les gardes `dev-routes`, `runtime-boundaries`, `starfield`,
+`contrast`, `copy`, `artifacts`, `license-guard` tous à zéro. L'accueil rend 200, la feuille est
+dans le HTML servi et placée avant le contenu, l'animation, le z-index 200, la garde de session
+et la règle de mouvement réduit sont dans la feuille de style servie.
+
+**Pas encore fait : `npm run quality` en entier.** Sa dernière étape est un `build`, qui écrit
+dans `.next` pendant que le serveur de dev du propriétaire tourne sur le 3002. C'est exactement
+le piège consigné plus haut dans ce document. À lancer quand son serveur est arrêté.
+
+Le labo `/dev/intro` reste en place avec les trois pistes, il documente le choix.
+
+### Correction : elle se joue à chaque chargement (2026-09-16)
+
+Le propriétaire a rafraîchi l'accueil et n'a rien vu. C'était le réglage « une fois par onglet »
+posé une heure plus tôt : `sessionStorage` survit à un rafraîchissement, donc l'intro ne
+revenait jamais dans l'onglet où elle avait déjà joué. Mauvais réglage pour un écran de
+chargement, qui appartient au chargement.
+
+Retiré des trois fichiers : l'écriture de la clé dans le composant, la règle
+`html[data-intro="seen"]` du module CSS, et le second script d'amorçage de `app/layout.tsx`. Il
+ne reste donc plus qu'un script d'amorçage, celui du thème.
+
+L'intro se joue maintenant à chaque chargement de page. La navigation interne, qui ne recharge
+pas la page, ne la rejoue pas : c'est exactement le comportement attendu.
+
+**Mesuré dans un vrai navigateur** et pas déduit du code (script jetable sous `tmp/`, supprimé
+après) : au premier instant le calque est présent, visible, en z-index 200, en
+`pointer-events: none`, et couvre les 1440 x 900 de la fenêtre ; le trou est à l'échelle 0,071 à
+l'ouverture, 0,073 à 150 ms, 8,55 à 1250 ms ; à 2650 ms le calque n'est plus dans le document.
+`typecheck` et `lint` à zéro.
+
+### Correction des à-coups (2026-09-17)
+
+Le propriétaire : « ça marche mais ça bugue, comme des à-coups ». Mesuré plutôt que deviné, et
+la première mesure était fausse : **sans écran, Chrome ne produit aucune image pendant l'intro**,
+donc la moyenne de 9 ms et les deux longues tâches relevées sans fenêtre ne disaient rien. Toute
+mesure de fluidité doit être prise avec fenêtre.
+
+**La vraie cause, relevée en rendu réel.** La première image de la page tombait à 1381 ms, alors
+que l'animation était déclarée en CSS au chargement du document : à l'instant où l'écran affichait
+enfin quelque chose, l'animation avait déjà consommé 1,4 s de ses 1,9 s. On n'en voyait que la
+fin, et les images produites ensuite arrivaient par paquets avec des trous de 50 à 125 ms.
+
+**Corrigé.** L'animation n'est plus armée par le CSS au chargement : le trou tient son état de
+départ, et une classe `playing` arme l'ouverture après deux images consécutives (la seconde
+n'arrive qu'une fois la première peinture faite) puis au premier instant de repos du fil
+principal, avec un plafond de 1200 ms pour ne jamais rester bloqué sur une feuille qui ne part
+pas. `will-change: transform` posé sur la forme animée.
+
+**Mesuré après correction, en rendu réel** : l'animation s'arme à 305 ms, l'échelle du trou passe
+de 0,07 à 32 sur toute la durée, le calque est retiré à 2267 ms. Sur les 2000 ms d'animation,
+241 images, médiane à 8 ms, **pire image à 10 ms, aucun trou au dessus de 25 ms**. Avant la
+correction, sept trous de 50 à 125 ms.
+
+### Une seconde d'immobilité avant l'ouverture (2026-09-17)
+
+Demande du propriétaire : avoir le temps de voir la marque avant qu'elle s'ouvre. L'ouverture
+part donc une seconde après l'armement.
+
+Le palier interne à 22 % a été retiré en même temps : il retenait déjà l'ouverture pendant 0,4 s,
+et cumulé à la seconde d'attente il aurait fait près d'une seconde et demie sans aucun mouvement.
+La courbe d'accélération suffit à garder un départ lent.
+
+**Attention au couple de valeurs** : le délai et la durée vivent dans le module CSS, et le
+composant en dérive le moment du retrait du calque. Changer l'un sans l'autre laisse un calque
+plein écran vivre après la fin, ou coupe la fin de l'ouverture.
+
+**Mesuré en rendu réel** : armement à 295 ms, échelle tenue à 0,070 jusqu'à 1029 ms après
+l'armement, ouverture jusqu'à 32 atteinte à 2876 ms, calque retiré à 3274 ms.
+
+**Durée totale ressentie, environ 3,2 s depuis le chargement**, contre les « deux secondes
+maximum » posées au départ. C'est la conséquence directe de la demande, signalée au propriétaire.
+
+### Le trou s'ouvrait sur le contenu de la page (2026-09-17)
+
+Le propriétaire a envoyé une capture : le logo ressemblait à une tache, pas à une marque. Deux
+causes, toutes deux corrigées.
+
+**L'échelle de départ.** À 0,07 le symbole ne faisait que 68 px de large : ses traits fins
+passaient sous le pixel et le masque rendait du gris sale au lieu d'un tracé. Porté à 0,26, soit
+un cinquième de la hauteur visible, une taille de logo d'écran d'accueil.
+
+**Le trou s'ouvrait directement sur la page.** À travers la silhouette du logo on voyait des
+morceaux de la landing, textes compris, d'où l'effet de bouillie. Un plan vide est maintenant
+posé sous la feuille, peint avec le token `--background` de la page (donc juste si le thème clair
+revient un jour) et non avec une couleur choisie. Il s'efface sur 0,5 s à partir de 2,4 s, donc
+le contenu du site arrive en fondu au lieu d'apparaître d'un coup.
+
+Vérifié en rendu réel : pendant l'attente, le symbole est net, noir, centré sur le papier ; à
+mi-ouverture il remplit l'écran. `typecheck` et `lint` à zéro.
+
+**Reste une question de direction artistique, qui appartient au propriétaire** : le symbole seul
+au milieu d'un grand vide est très austère. Trois pistes lui ont été proposées, symbole plus
+grand, symbole plus le nom, ou symbole plus un label en capitales espacées comme les repères de
+la landing. Rien ne bouge tant qu'il n'a pas tranché.
+
+## Catalogue de mouvements (2026-09-17)
+
+Demande du propriétaire après l'intro : des animations sur le reste, il cite le clic des boutons,
+le bouton qui charge, le mode play, « ou plein d'autres ».
+
+Fait : `app/dev/motion` et `components/dev/motion/MotionLab.tsx` plus son module CSS. Page interne
+gardée par `isDevRuntime`, **rien n'est posé sur le site**. Quatre moments réels, chacun en deux
+ou trois versions cliquables.
+
+**Le clic sur un bouton** : enfoncement de deux pixels, rebond avec dépassement, ou onde partant
+du point cliqué. Point de départ mesuré : `:active` n'est stylé **nulle part** dans
+`app/globals.css`, donc aucun bouton du site ne réagit aujourd'hui au clic.
+
+**Le bouton qui attend** : un trait qui va et vient, trois points qui respirent, ou la pastille
+qui se remplit d'un bord à l'autre. Chaque bouton du labo attend deux secondes pour de vrai.
+
+**Le mot qui change** : fondu montant, ou roulé par le bas. Les deux ne touchent qu'à l'opacité
+et à la position. **Aucune échelle**, parce que le mot du jeu est la question posée et qu'un
+changement d'échelle modifie son poids apparent.
+
+**Juste ou faux** : trait vert tiré sous la bonne réponse avec secousse sur le mauvais choix, ou
+la bonne réponse qui s'allume pendant que les autres reculent. Le vert et le rouge sont ceux que
+le §2 du contrat réserve déjà à la validation.
+
+**Aucune couleur n'est écrite en dur dans ce labo** : il emprunte les tokens du site, pour que ce
+qu'on y voit soit ce qu'on verra là bas. C'est la leçon de la veille, où un fond fixé en dur
+rendait le texte invisible.
+
+Vérifié : `typecheck`, `lint` et `check:dev-routes` à zéro, la page rend 200 et les quatre
+sections sont dans le HTML servi.
+
+**La direction artistique appartient au propriétaire**, rien ne sort de `/dev/motion` tant qu'il
+n'a pas choisi.
+
+### Premiers arbitrages du propriétaire sur le catalogue (2026-09-17)
+
+**Retenu : le bouton qui attend = les trois points.** « C'est le plus lisible. »
+
+**Retenu : le mot qui change = le fondu.** Le mot monte de dix pixels en apparaissant.
+
+**Écarté en bloc : les deux premières versions de juste ou faux** (trait tiré, lueur). Elles
+venaient du catalogue d'effets d'interface et pas du métier, c'est probablement pour ça qu'aucune
+ne portait.
+
+**Le clic sur un bouton : trois versions plus marquées ajoutées** à la demande du propriétaire,
+toutes puisées dans l'imprimerie. *Le repérage*, où les deux passages d'encre se décalent un
+instant puis se recalent, fait en ombre de texte pour ne pas dupliquer le label ni relancer la
+mise en page. *Le poinçon*, une compression verticale sèche de 70 ms suivie d'un retour souple,
+verticale seulement parce qu'une pastille écrasée dans les deux sens fait ballon. *Le rouleau*,
+où le mot sort par le haut et son jumeau identique entre par le bas.
+
+**Juste ou faux : trois nouvelles versions**, prises dans la correction d'épreuve. *La rature*,
+le mauvais choix barré et un filet en marge de la bonne réponse. *Le tampon*, une frappe sèche
+sans rebond sur la bonne réponse pendant que les autres reculent, seule des trois à traiter aussi
+les choix non cliqués. *La bascule*, un volet d'encre qui traverse la bonne réponse et la
+retourne, papier contre encre, qui reprend la langue de l'écran d'intro et se passe presque de
+couleur.
+
+`typecheck`, `lint` à zéro, la page rend 200 et les six nouvelles versions sont dans le HTML
+servi. Rien n'est encore posé sur le site.
+
+### Le clic en morph, et la bascule retenue (2026-09-17)
+
+**Retenu : juste ou faux = la bascule, en vert.** « Met en vert quand c'est ok ». Le volet qui
+traverse la bonne réponse était en encre, il porte maintenant `--success-green`, la couleur que
+le §2 du contrat réserve à la validation. Le geste reste celui de l'écran d'intro.
+
+**Demande sur le clic : plus en mode morph.** Quatre versions ajoutées, où c'est la forme du
+bouton qui change et plus seulement sa position. *Le point*, la pastille se referme jusqu'à
+devenir un rond ; c'est une vraie largeur qui bouge et non une déformation, parce qu'une pastille
+écrasée en `transform` rend une lentille et pas un cercle. *La goutte*, écrasement puis détente
+avec conservation du volume. *L'angle*, la pastille perd ses arrondis et les retrouve, le rayon
+ne coûtant rien à animer. *Le point qui attend*, la même fermeture mais qui ne se rouvre qu'à la
+fin du travail, avec les trois points déjà retenus qui respirent dedans.
+
+Ces quatre là portent une largeur fixe de 13 rem : une pastille qui vise sa propre hauteur ne
+peut pas dépendre de la longueur de son mot.
+
+**État des choix : attente = les points, mot = le fondu, juste ou faux = la bascule verte.**
+Reste le clic.
+
+### Le clic en bulle, et le labo nettoyé (2026-09-17)
+
+Demande du propriétaire : garder la forme en longueur mais qu'elle devienne une bulle, et
+chercher des références plutôt que d'inventer. Deux techniques relevées sur des références
+publiques, toutes deux retenues et posées dans le labo.
+
+**Le rayon à huit valeurs.** Chaque coin reçoit son rayon horizontal ET son rayon vertical, ce
+qu'aucune valeur unique ne peut donner : c'est ce qui fait une forme dessinée à la main plutôt
+que géométrique. La pastille respire puis se recale sur sa géométrie, sans changer de taille.
+
+**Le filtre gooey en SVG.** Un flou, puis un très fort contraste sur la couche alpha : deux
+formes proches se rejoignent alors comme deux gouttes. Deux gouttes sortent des extrémités et se
+font réabsorber, le filtre les recolle au corps, donc la matière s'étire au lieu de se détacher.
+**Le filtre ne s'applique qu'à la couche de fond**, un flou posé sur tout le bouton rendrait le
+mot flou lui aussi.
+
+Références : freefrontend.com/css-blob-effects, prismic.io/blog/css-button-animations.
+
+**Labo nettoyé à la demande du propriétaire** : dans les trois catégories tranchées il ne reste
+que le choix retenu. Le CSS des versions écartées a été retiré avec elles, de 16 435 à 13 595
+caractères, en vérifiant au passage que `draw-across` survivait, puisque la bascule s'en sert
+encore alors que la rature qui l'avait introduit est partie.
+
+Vérifié : `typecheck`, `lint`, `check:dev-routes` à zéro, la page rend 200, les deux nouvelles
+animations sont dans la feuille servie et celles des versions écartées n'y sont plus.
+
+**Reste à trancher : le clic.** Neuf versions en lice, six classiques ou imprimerie, quatre en
+morph, deux en bulle.
+
+### Essai du bouton métal liquide (2026-09-17)
+
+Référence donnée par le propriétaire : `codepen.io/Majoramari/pen/pvbzpoa`, récupérée dans son
+dossier de téléchargements (`liquid-metal-button.zip`), CodePen répondant 403 à une lecture
+directe.
+
+Monté dans le labo, `components/dev/motion/LiquidMetalTest.tsx`. Réglages et couleurs du pen
+repris tels quels, seule la taille est divisée par deux (le pen pose un bouton de 385 px) : un
+essai réaccordé par moi ne montrerait pas l'effet d'origine.
+
+**Ce que c'est vraiment, et ce n'est pas ce qu'on cherchait.** Ce n'est pas une animation de
+clic. C'est une surface de métal liquide calculée image par image par la carte graphique, qui
+coule en permanence, plus un anneau en dégradé conique qui passe du gris à la couleur au survol.
+
+**Trois points à peser avant d'en faire quoi que ce soit.**
+
+La bibliothèque `@paper-design/shaders` est **chargée depuis le réseau** et non installée :
+tant que l'essai n'est pas tranché, rien n'entre dans les dépendances. Si l'effet est retenu, il
+faudra l'installer, parce qu'un site en production ne dépend pas du CDN d'un tiers pour peindre
+un bouton.
+
+Le shader **tourne sans arrêt** tant que le bouton est à l'écran. La landing fait déjà tourner
+six composants en `requestAnimationFrame` sur canvas, et l'écran d'intro nous a montré ce que
+coûte le fil principal au chargement.
+
+L'anneau passe en couleur au survol, ce qui **sort de la bichromie** du §1 du contrat.
+
+**Mesuré en rendu réel** : le canvas est créé à 192 x 192, le contexte WebGL est bien obtenu,
+aucune erreur en console, aucun message de secours affiché. `typecheck` et `lint` à zéro.
+
+### Le métal liquide adapté à nous (2026-09-17)
+
+Question du propriétaire : comment l'adapter au site. Deux adaptations construites dans le labo,
+`components/dev/motion/MetalAdapte.tsx`, plus une troisième piste décrite sans être construite.
+
+**Ce qui est jeté du pen.** Tout son habillage : l'anneau en dégradé conique qui passe en couleur
+au survol, le fond gris, le reflet blanc en ombre interne, la forme ronde. Il ne reste que la
+surface. Et `u_shiftRed` et `u_shiftBlue` passent de 0,3 à 0, ce qui retire le bleu acier et rend
+un métal neutre : c'est la seule façon de rester dans la bichromie sans toucher au shader.
+
+**a. La pastille.** La forme de bouton du site, remplie de métal. Le label garde une encre
+franche et **n'est pas calculé à partir du fond** : le métal bouge, donc un label en mélange de
+calques changerait de lisibilité à chaque image.
+
+**b. Le symbole.** La marque elle même remplie de métal, découpée par un `clipPath` en unités de
+l'espace utilisateur, le dessin étant ramené à l'origine puis mis à l'échelle de la boîte. C'est
+la forme déjà retenue pour l'écran d'intro, donc les deux gestes se répondraient au lieu de
+coexister.
+
+**c. L'anneau seul**, sans surface de métal, non construit : le moins cher des trois, et le moins
+frappant.
+
+**Le montage du shader est désormais partagé** (`useLiquidMetal.ts`) entre l'essai fidèle et les
+deux adaptations. Sans cela chaque version rechargeait le module et on ne comparait plus les
+mêmes conditions. Les réglages sont lus une seule fois au montage, sinon un rendu du parent
+démonterait le shader.
+
+**Mesuré en rendu réel** : trois surfaces montées, aucune erreur de page. `typecheck`, `lint` et
+`check:dev-routes` à zéro.
+
+**Condition à ne pas perdre de vue si l'effet est retenu** : le shader tourne sans arrêt tant
+qu'il est à l'écran, donc un seul élément par page, et la bibliothèque devra être installée au
+lieu d'être chargée depuis le réseau.
+
+### Le métal liquide, trois formes qui marchent (2026-09-17)
+
+Le propriétaire a signalé que la version symbole était vide et que la pastille n'était remplie
+que sur sa gauche. Trois défauts, tous mesurés avant d'être corrigés.
+
+**1. Le shader dessine dans un carré.** Étiré dans une pastille de 208 x 46, il posait sa forme à
+gauche et laissait le reste vide. La surface reçoit donc un carré de 13 rem centré, et c'est la
+pastille qui le recadre.
+
+**2. Le métal du pen est sombre en son milieu.** Il ne tenait que grâce à l'anneau clair et au
+dégradé interne qui l'entouraient, tous deux retirés en adaptant. Sur notre page noire il
+devenait invisible. `u_colorBack` passe donc du transparent au beige de marque, et le décalage de
+10 % du pen repasse au centre.
+
+**3. Un `<g>` n'est pas un enfant autorisé d'un `<clipPath>`.** C'est la vraie cause de la case
+vide, et elle mérite d'être retenue : le navigateur ignore le groupe **sans rien dire**, la
+découpe se retrouve donc sans aucune forme, et une découpe vide n'efface pas rien, elle efface
+tout. Un `<mask>` accepte les groupes, ce qui explique que l'écran d'intro fonctionne avec la
+même écriture. Le dessin de marque est donc aplati et le transform posé sur chaque tracé. Les
+groupes qui portent eux mêmes un transform sont laissés en place, un aplatissement aveugle
+déplacerait le dessin.
+
+**Troisième forme ajoutée à la demande du propriétaire : le contour seul.** Le métal ne prend que
+l'épaisseur du bord, obtenue en masquant la boîte entière moins sa zone de contenu. La surface
+est posée en absolu, sinon elle ne couvrirait pas cette épaisseur.
+
+Vérifié en rendu réel : quatre surfaces montées, aucune erreur de page, le tracé de découpe est
+bien enfant direct du `clipPath`, et les trois formes se voient. `typecheck`, `lint`,
+`check:dev-routes` à zéro.
+
+
+## 2026-09-18 — Graphify essayé puis entièrement retiré
+
+Outil de carte de code installé, cartographie construite, puis tout supprimé le jour même sur
+décision du propriétaire : `graphify-out/`, la compétence projet et machine, les sections ajoutées
+aux deux `CLAUDE.md`, la ligne du `.gitignore`. Le paquet reste installé sur la machine, rien ne
+tourne.
+
+Deux choses méritent d'être gardées de l'essai.
+
+**Le dépôt fait 1874 fichiers mais seuls 574 sont du code.** Les 1173 autres sont les fichiers texte
+des polices dans `public`. Un outil qui traite tout le dépôt sans distinction lance 59 agents pour
+décrire des spécimens de polices. À vérifier avant de brancher quoi que ce soit d'automatique.
+
+**Le vrai coût de reprise est ici, dans ce fichier.** Il fait 159 285 mots. Or la `CLAUDE.md` désigne
+la checklist comme source de vérité de l'avancement, donc répondre à « on en est où » demande
+d'ouvrir 200 000 jetons. C'est le chantier identifié : une section « Où on en est » courte et
+réécrite dans la `CLAUDE.md` elle-même, la checklist redevenant la mémoire longue du pourquoi.
+Rien n'est fait, rien n'est décidé.

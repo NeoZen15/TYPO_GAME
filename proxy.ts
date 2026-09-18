@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { isClerkConfigured } from "@/lib/server/clerk-availability";
+import { cleDAppelant, consommer, seuilPour } from "@/lib/server/rate-limit";
+import { origineAcceptee } from "@/lib/server/request-origin";
 
 // `proxy.ts` ET NON `middleware.ts`. Next 16 a renomme la convention : le
 // serveur de dev le dit lui meme, « The "middleware" file convention is
@@ -20,7 +22,50 @@ import { isClerkConfigured } from "@/lib/server/clerk-availability";
 // est destinataire. Un middleware qui garderait `/teacher` sans ces bornes
 // donnerait une fausse impression de securite ; avec elles, il ne sert qu'a
 // etablir la session, ce que fait `clerkMiddleware` seul.
+//
+// DEUX CONTROLES S'Y SONT AJOUTES LE 2026-09-18, ET AUCUN DES DEUX N'EST UNE
+// AUTORISATION. Ils ne disent pas qui a le droit de faire quoi, ce qui reste le
+// travail des donnees ; ils bornent le RYTHME et l'ORIGINE des appels a l'API.
+// C'est ce qui manquait : n'importe qui pouvait boucler sur une route d'ecriture
+// autant qu'il voulait, depuis n'importe ou.
+
 export default async function middleware(request: NextRequest) {
+  const chemin = request.nextUrl.pathname;
+
+  if (chemin.startsWith("/api/")) {
+    const origineOk = origineAcceptee({
+      methode: request.method,
+      origine: request.headers.get("origin"),
+      hote: request.headers.get("x-forwarded-host") ?? request.headers.get("host"),
+    });
+
+    if (!origineOk) {
+      return NextResponse.json({ error: "origine refusee" }, { status: 403 });
+    }
+
+    const seuil = seuilPour(chemin);
+    if (seuil) {
+      const verdict = consommer(
+        `${cleDAppelant(request.headers)}|${seuil.prefixe}`,
+        seuil.limite,
+        seuil.fenetreMs,
+      );
+
+      if (!verdict.ok) {
+        // 429 avec `Retry-After` : un client correct attend, un client qui boucle
+        // se fait dire en clair combien de temps. Le corps ne dit rien de plus que
+        // le code, il n'a pas a expliquer les seuils a qui les cogne.
+        return NextResponse.json(
+          { error: "trop de requetes" },
+          {
+            status: 429,
+            headers: { "Retry-After": String(verdict.reessayerDansSecondes) },
+          },
+        );
+      }
+    }
+  }
+
   if (!isClerkConfigured()) {
     return NextResponse.next();
   }

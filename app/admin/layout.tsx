@@ -3,9 +3,7 @@ import Link from "next/link";
 
 import AdminSidebar from "@/features/admin/components/AdminSidebar";
 import { BOARD_SYSTEM_CSS, CREAM } from "@/features/profile/components/board-system";
-import { accessRequestCounts } from "@/lib/admin/access-requests";
-import { isClerkConfigured } from "@/lib/server/clerk-availability";
-import { getCurrentIdentity } from "@/lib/server/current-user";
+import { isAdminAccessAllowed } from "@/lib/admin/gate";
 
 export const metadata: Metadata = {
   title: "Administration",
@@ -18,17 +16,15 @@ export const metadata: Metadata = {
 // une page est ajoutee, elle est gardee parce qu'elle est sous ce dossier, sans
 // que personne ait a y penser.
 //
-// L'EXCEPTION QUI SE REFERME TOUTE SEULE, inchangee : on n'ouvre sans compte que
-// si Clerk n'est pas configure ET qu'aucune demande n'existe. Aucune donnee
-// personnelle ne peut donc atteindre un visiteur non authentifie, et la porte
-// redevient la porte des qu'une vraie demande arrive ou que les cles sont posees.
-// Les routes d'ecriture portent la meme regle de leur cote : une page gardee
-// derriere une route ouverte ne garde rien.
+// LA REGLE ELLE MEME A DEMENAGE, dans `lib/admin/gate.ts`, et elle y est ecrite
+// une seule fois : la page garde la lecture, la route de decision garde
+// l'ecriture, et toutes deux posent maintenant la meme question au meme endroit.
+// Depuis l'audit du 2026-09-18, l'exception « sans Clerk et sans aucune demande »
+// ne s'ouvre plus qu'en dehors de la production. Une page gardee derriere une
+// route ouverte ne garde rien, donc les deux appellent la fonction.
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [identity, requests] = await Promise.all([getCurrentIdentity(), accessRequestCounts()]);
-  const total = requests.pending + requests.approved + requests.rejected;
-  const allowed = identity.role === "admin" || (!isClerkConfigured() && total === 0);
+  const allowed = await isAdminAccessAllowed();
 
   if (!allowed) {
     return (
