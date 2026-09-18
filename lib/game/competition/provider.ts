@@ -5,7 +5,6 @@ import crypto from "node:crypto";
 import {
   COMPETITION_ENGINE_VERSION,
   COMPETITION_FAST_BONUS_THRESHOLD_MS,
-  COMPETITION_OVERHEAD_TOLERANCE_MS,
   COMPETITION_TOTAL_DURATION_MS,
   getCompetitionDisplayWord,
 } from "@/lib/game/competition/catalog";
@@ -29,6 +28,7 @@ import {
   verifyQuestionToken,
   type TrainingQuestionTokenPayload,
 } from "@/lib/game/training/question-token";
+import { awardPointsFor, serverElapsedFor } from "@/lib/game/competition/scoring";
 import { normalizeAttemptId, type Locale } from "@/lib/game/training/contracts";
 import { GameRequestError } from "@/lib/game/request-error";
 import {
@@ -235,27 +235,6 @@ const getCompetitionPoolRows = async (userId: string) => {
 // existed, and null means "no server measurement", which is the old behaviour:
 // tokens in flight across a deploy must answer, not crash.
 // See COMPETITION_OVERHEAD_TOLERANCE_MS for why the bound is where it is.
-const awardPointsFor = (
-  isCorrect: boolean,
-  responseTimeMs: number,
-  serverElapsedMs: number | null = null
-) => {
-  if (!isCorrect) return 0;
-  if (responseTimeMs >= COMPETITION_FAST_BONUS_THRESHOLD_MS) return 1;
-
-  const exchangeWasImplausiblyLong =
-    serverElapsedMs !== null &&
-    serverElapsedMs >=
-      COMPETITION_FAST_BONUS_THRESHOLD_MS + COMPETITION_OVERHEAD_TOLERANCE_MS;
-
-  return exchangeWasImplausiblyLong ? 1 : 2;
-};
-
-// How long the SERVER waited between building this question and reading its
-// answer. Not the player's thinking time: it also holds two network legs, the
-// render and any font download. Null when the token predates the stamp.
-const serverElapsedFor = (issuedAtMs: number | undefined) =>
-  typeof issuedAtMs === "number" ? Math.max(0, Date.now() - issuedAtMs) : null;
 
 const roundFeedbackText = (isCorrect: boolean, awardedPoints: number) =>
   isCorrect ? (awardedPoints === 2 ? "+2 fast" : "+1 correct") : "+0 wrong";

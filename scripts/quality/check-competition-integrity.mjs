@@ -37,6 +37,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const PROVIDER = "lib/game/competition/provider.ts";
+const SCORING = "lib/game/competition/scoring.ts";
 const ROUTE = "app/api/competition/session/start/route.ts";
 const SCREEN = "features/game/components/CompetitionScreen.tsx";
 
@@ -584,6 +585,10 @@ if (rawSetStats !== 1) {
 //     every word, verified against the running server on 2026-08-17.
 // ---------------------------------------------------------------------------
 const providerCode = stripJsComments(provider);
+// Le calcul du score a ete extrait dans un module pur le 2026-09-18 (durcissement
+// du bonus + testabilite). La borne nommee y vit desormais ; les deux autres
+// exigences restent dans le provider, qui monte le tampon et appelle le calcul.
+const scoringCode = stripJsComments(read(SCORING));
 
 requireIn(
   providerCode,
@@ -601,10 +606,21 @@ requireIn(
 );
 
 requireIn(
-  providerCode,
+  scoringCode,
   "COMPETITION_OVERHEAD_TOLERANCE_MS",
-  PROVIDER,
+  SCORING,
   "the bound has to be the named, documented tolerance, not a number typed at the call site."
+);
+
+// Durci le 2026-09-18 : le bonus se decide sur la mesure serveur, donc le calcul
+// doit BRANCHER sur serverElapsedMs. Sans cette branche, le score retombe sur la
+// seule declaration du client, ce que l'auto-pentest a montre exploitable.
+requireIn(
+  scoringCode,
+  "serverElapsedMs !== null",
+  SCORING,
+  "the bonus must be decided on the server's measured elapsed time; without that branch the score " +
+    "falls back to the client's claim, which the pentest showed a body of responseTimeMs:0 could inflate."
 );
 
 // ---------------------------------------------------------------------------
