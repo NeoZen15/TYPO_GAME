@@ -361,6 +361,16 @@ tant qu'elle n'est pas faite, il reste le seul endroit où vit le pourquoi.
 **Une autre session Claude travaillait sur le même dépôt pendant cet audit** et a fermé la porte de l'administration (`lib/admin/gate.ts`) et posé les en-têtes de sécurité. Ses corrections sont dans l'arbre, non commitées, mêlées aux miennes dans `app/layout.tsx` et `app/globals.css`.
 
 
+## Note — 2026-09-18 (suite 2) — second auto-pentest, un en-tete bavard retire
+
+**Relance complete du pentest sur une copie neuve** (branche `pentest-2026-09-18-b`, supprimee, production intacte a 271 / 595). Tout ce qui avait ete corrige tient : fuite admin a zero, ecriture admin 403, cross-origin 403, origine `null` 403, routes de dev 404, jeton forge rejete, session et devoir d'autrui 401, neuf en-tetes presents, limite de debit qui coupe a 120 sur `/api/teacher/` puis 429. Pas de source map, pas de trace de pile, page d'erreur propre.
+
+**Une trouvaille mineure, nouvelle : `X-Powered-By: Next.js`.** L'en-tete annoncait la techno, ce qui aide surtout un attaquant a choisir quels avis essayer. Retire par `poweredByHeader: false` dans `next.config.ts`, verifie absent apres rebuild. `check:security-gates` echoue desormais s'il revient (mutation eprouvee).
+
+**Nuclei, severite low et plus : zero.** Les seules remarques restent de niveau information, toutes des choix documentes.
+
+---
+
 ## Note — 2026-09-18 (suite) — auto-pentest, une faille HAUTE trouvée et bouchée
 
 **On s'est attaqué soi-même, sur une copie jetable, avec nuclei et à la main.** Branche Neon `pentest-2026-09-18`, `.env.local` pointé dessus, serveur de PRODUCTION (build réel) sur 3100, supprimée à la fin. Production vérifiée intacte : 271 utilisateurs, 595 séances avant comme après.

@@ -203,6 +203,12 @@ if (enDeveloppement) {
 //
 // Textuel, et c'est assume : la fonction lit la base, donc l'executer ici
 // demanderait une connexion. Ce que le texte peut prouver, il le prouve.
+// 3 bis. La techno ne s'annonce pas : X-Powered-By desactive dans la config.
+const configTxt = lire("next.config.ts");
+if (!/poweredByHeader:\s*false/.test(configTxt)) {
+  echecs.push("next.config.ts : poweredByHeader n'est pas a false, l'en-tete X-Powered-By reannonce la techno");
+}
+
 const gate = lire("lib/admin/gate.ts");
 if (!gate.includes("isDevRuntime()")) {
   echecs.push(

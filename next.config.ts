@@ -144,6 +144,11 @@ const nextConfig: NextConfig = {
     root: projectRoot,
   },
 
+  // ON N'ANNONCE PAS LA TECHNO. `X-Powered-By: Next.js` ne sert qu'a dire a un
+  // attaquant quels avis de securite essayer en premier. Retire le 2026-09-18,
+  // deuxieme passe de l'auto-pentest.
+  poweredByHeader: false,
+
   async headers() {
     return [{ source: "/:chemin*", headers: enTetes }];
   },
