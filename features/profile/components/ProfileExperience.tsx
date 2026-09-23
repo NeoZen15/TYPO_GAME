@@ -61,6 +61,9 @@ type ProfileExperienceProps = {
   eye?: EyeProfile;
   arena?: ArenaProfile;
   art: Art;
+  // No play history yet: the boards render at zero. The banner that invited a
+  // first round was removed on 2026-09-23 at the owner's request.
+  empty?: boolean;
 };
 
 export default function ProfileExperience({
