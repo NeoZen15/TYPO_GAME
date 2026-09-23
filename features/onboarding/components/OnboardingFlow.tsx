@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import OnboardingWarmup from "@/features/onboarding/components/OnboardingWarmup";
+import { markOnboarded } from "@/features/onboarding/onboarded-cookie";
 import ParticleField from "@/features/landing/components/ParticleField";
 
 // ---------------------------------------------------------------------------
@@ -167,6 +168,11 @@ export default function OnboardingFlow() {
 
   useEffect(() => {
     optionRefs.current = [];
+  }, [step.id]);
+
+  // Reaching the last screen counts as done: the next visit skips to /game.
+  useEffect(() => {
+    if (step.id === "launch") markOnboarded();
   }, [step.id]);
 
   // The split step ("A first look") reuses the LANDING block classes verbatim

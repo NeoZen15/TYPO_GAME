@@ -26,6 +26,7 @@ import {
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
 import { CARD_COLORS } from "@/lib/game/card-colors";
+import { markOnboarded } from "@/features/onboarding/onboarded-cookie";
 
 // Synthetic figures for ?preview=complete. Deliberately plausible rather than
 // round, so the page is judged on real-looking data, and deliberately never
@@ -113,6 +114,8 @@ const readOnboarding = (): { familiarity: string | null; warmupCorrect: boolean 
     const raw = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
     if (!raw) return { familiarity: null, warmupCorrect: null };
     const parsed = JSON.parse(raw) as { familiarity?: string; warmupCorrect?: boolean };
+    // Players who finished the onboarding before the cookie existed get it here.
+    if (parsed.familiarity) markOnboarded();
     return {
       familiarity: parsed.familiarity ?? null,
       // Only forward a real boolean; a missing value means "no downgrade" downstream.

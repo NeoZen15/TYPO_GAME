@@ -1,7 +1,7 @@
 -- ============================================================
 -- MIGRATION 024 : une case honnete pour les polices dessinees
 -- Genere par scripts/build_adobe_mass_catalog_migration.py le 2026-09-15
--- NON APPLIQUEE. Elle demande le feu vert explicite du proprietaire.
+-- APPLIQUEE EN PRODUCTION le 2026-09-23, sur feu vert explicite du proprietaire.
 -- TESTEE le 2026-09-23 sur la branche jetable br-broad-bar-abxfygwz, avec la 025.
 -- A appliquer AVANT la 025, et dans sa propre transaction.
 -- Retour arriere : 024_sub_category_display.rollback.sql

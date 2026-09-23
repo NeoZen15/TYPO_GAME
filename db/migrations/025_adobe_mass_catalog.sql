@@ -1,7 +1,7 @@
 -- ============================================================
 -- MIGRATION 025 : 1927 familles Adobe de plus au catalogue
 -- Genere par scripts/build_adobe_mass_catalog_migration.py le 2026-09-15
--- NON APPLIQUEE. Elle demande le feu vert explicite du proprietaire.
+-- APPLIQUEE EN PRODUCTION le 2026-09-23, sur feu vert explicite du proprietaire.
 -- TESTEE le 2026-09-23 sur la branche jetable br-broad-bar-abxfygwz : 2136 -> 4063 lignes,
 -- 1279 -> 3206 actives, 108 -> 2035 Adobe, zero conflit ; le retour arriere rend l etat exact.
 -- Les 1927 noms CSS sont tous servis par les 9 feuilles Adobe (mesure du meme jour).

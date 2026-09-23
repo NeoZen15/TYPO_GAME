@@ -4,7 +4,7 @@ Expérience d'apprentissage typographique interactive. Next.js 16 (App Router), 
 
 ## Où on en est
 
-**Réécrite le 2026-09-18. Cette section se réécrit, elle ne s'allonge jamais. Plafond 700 mots,
+**Réécrite le 2026-09-23. Cette section se réécrit, elle ne s'allonge jamais. Plafond 700 mots,
 tenu par `npm run check:etat`. Trois fichiers d'état sont déjà morts dans ce projet, deux périmés
 et un obèse : c'est la réécriture qui empêche le quatrième de mourir.**
 
@@ -34,16 +34,20 @@ relecture juridique, et les clés Clerk.
 **Décisions qui t'attendent, aucune n'est technique.** Le mot « maîtrisé » a deux sens, le jeu dit
 3 % sur un pool de 30 et le profil dit 0 % sur tout le catalogue, un joueur croira que c'est cassé.
 Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil, faute de pied de
-page global. Deux contrôles des Préférences sont inertes, la langue et la réduction d'animations :
-les câbler ou les retirer. Le titre et la description du site sont restés ceux du gabarit, « Jeux de
-Typo V2 », c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page, sujet
-produit et non faille, à trancher le jour où un devoir compte. **Et le bonus de vitesse en compétition
-repose sur la durée que le navigateur déclare** : qui annonce zéro double ses points tant qu'il répond
-sous sept secondes réelles, question d'équité à arbitrer. Et l'apparence du lien d'évitement
-ajouté le 2026-09-18 attend ton œil.
+page global. Le titre et la description du site sont restés ceux du gabarit, « Jeux de Typo V2 »,
+c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page, sujet produit et non
+faille, à trancher le jour où un devoir compte. Et l'apparence du lien d'évitement ajouté le
+2026-09-18 attend ton œil.
 
-**État de l'arbre.** 49 fichiers modifiés non commités, dont des corrections d'une autre session
-Claude mêlées aux miennes dans `app/layout.tsx` et `app/globals.css`.
+**État de l'arbre, et c'est là que vit la vérité du projet.** 74 fichiers non commités, dernier
+commit le 2026-09-18. Trois décisions listées ici comme en attente étaient en fait déjà prises dans
+ce travail non commité, et cette section les a portées cinq jours de trop : le bonus de vitesse en
+compétition (décidé par l'horloge du serveur, `check:competition-timing`), la réduction d'animations
+(câblée dans `lib/motion.ts`, lue par vingt-trois écrans) et le sélecteur de langue (retiré, il
+annonçait une langue que le produit ne sait pas servir). Le travail du 2026-09-21 n'est ni commité
+ni consigné : un cron quotidien de balayage des séances abandonnées (`vercel.json`,
+`app/api/cron/sweep`, `lib/game/session-sweep.ts`, `npm run balayer-sessions`). Devant un doute sur
+l'état, lire l'arbre avant de lire cette section.
 
 ## Commandes
 
