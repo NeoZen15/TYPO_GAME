@@ -1,0 +1,36 @@
+# Perimetre de la carte. Meme syntaxe que .gitignore.
+#
+# Mesure du 2026-09-18 : 1874 fichiers dans le depot, 574 de code. Les 1277
+# fichiers texte des polices dans public/ sont des licences et des specimens,
+# pas de la connaissance : sans cette ligne, l'outil lance des dizaines
+# d'agents pour les decrire. La checklist archivee (159 000 mots de journal)
+# sort aussi : son pourquoi durable vit dans les sept fiches arbitrages, qui
+# restent dedans.
+node_modules/
+.next/
+.venv/
+.git/
+.claude/
+.superpowers/
+public/
+tmp/
+backups/
+test-results/
+playwright-report/
+docs/archive/
+data/typography-profiles/diffs/
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.lock
+package-lock.json
+# Les PDF partent : quatre agents sont morts au watchdog le 2026-08-11 en lisant des PDF.
+*.pdf
+# Conclusion du 2026-09-18, mesuree : 35 % de la carte etait scripts/, de
+# l'outillage qu'on trouve en un saut (le garde qui casse nomme son fichier).
+# content/ et data/ sont des fichiers de donnees qu'on lit directement.
+# La carte ne garde que les rebonds : le moteur, les ecrans, la base, les docs.
+scripts/
+content/
+data/

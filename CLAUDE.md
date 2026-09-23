@@ -218,3 +218,22 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## graphify
+
+La carte du code vit dans `graphify-out/`, construite par Graphify le 2026-09-23 sur feu vert du
+propriétaire. Elle est faite pour l'assistant, pas pour lui : elle sert aux **rebonds**, ce qui se
+trouve au bout de quatre sauts (une route qui appelle un moteur qui lit une table remplie par une
+migration). Ce qui se trouve en un coup se cherche à la main.
+
+- Pour une question sur le code, d'abord `graphify query "<question>"`. Pour un lien entre deux
+  choses, `graphify path "<A>" "<B>"`. Pour un nœud, `graphify explain "<X>"`. Pour l'impact d'un
+  changement, `graphify affected "<X>"`.
+- `graphify-out/GRAPH_REPORT.md` ne se lit que pour une revue d'architecture.
+- Le périmètre est dans `.graphifyignore` et il est mesuré : ni `public/` (1277 fichiers de
+  polices), ni `scripts/`, ni `content/`, ni `data/`, ni `docs/archive/`, ni PDF. Ne pas l'élargir
+  sans mesurer d'abord.
+- **Une carte périmée est pire qu'une carte absente**, règle du propriétaire. Le hook post-commit
+  la refait à chaque commit. En début de session, si l'arbre a bougé : `graphify update .`, sans
+  LLM, quelques secondes. Le lot `docs/game` (20 specs) manque encore dans la couche sémantique et
+  sera repris par cette même commande, avec un seul agent et une limite de temps.

@@ -55,3 +55,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# carte du code (graphify), refaite a la demande, jamais commitee
+/graphify-out/
