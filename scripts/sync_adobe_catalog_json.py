@@ -15,21 +15,28 @@ Il derive tout du meme endroit que la migration : le SQL genere. Les deux ne
 peuvent donc pas diverger sans que check:adobe-migration le voie.
 
 Usage :
-    ./.venv/bin/python scripts/sync_adobe_catalog_json.py
+    ./.venv/bin/python scripts/sync_adobe_catalog_json.py          # la 016
+    ./.venv/bin/python scripts/sync_adobe_catalog_json.py 025      # la 025, 1927 familles
 """
 
 from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 
-MIGRATION = "db/migrations/016_adobe_catalog_rows.sql"
+MIGRATIONS = {
+    "016": "db/migrations/016_adobe_catalog_rows.sql",
+    "025": "db/migrations/025_adobe_mass_catalog.sql",
+}
+NUMERO = sys.argv[1] if len(sys.argv) > 1 else "016"
+MIGRATION = MIGRATIONS[NUMERO]
 CATALOGUE = "content/catalog/typefaces-core.json"
 
 NOTES = [
     "servie par le projet web Adobe Fonts, aucun fichier chez nous",
-    "champs editoriaux derives par regle, voir la migration 016",
+    f"champs editoriaux derives par regle, voir la migration {NUMERO}",
     "qa_status review : aucun oeil humain n'est encore passe",
 ]
 
