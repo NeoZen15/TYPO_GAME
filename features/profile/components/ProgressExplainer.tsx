@@ -24,35 +24,50 @@ import { BOARD_SYSTEM_CSS } from "@/features/profile/components/board-system";
 // player's own state; this block carries the rules of the map. The Dreyfus level
 // is never named (I-20: internal command variable of the engine, not a grade),
 // and no mastery ladder is printed (I-18).
+//
+// FOLDED, 2026-09-23, at the owner's request: the head stays visible, the three
+// sections only open on a click. A native <details> and not a React state, like
+// SiteNav: it works before hydration and needs no script. The marker is the
+// browser's own, its look is an art direction call left to the owner.
 export default function ProgressExplainer() {
   return (
     <section className="st" aria-labelledby="progress-explainer-title">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
 
-      <header className="st-intro">
-        <span className="st-kicker">{progressionExplainerCopy.kicker}</span>
-        <h2 className="st-title" id="progress-explainer-title">
-          {progressionExplainerCopy.title}
-        </h2>
-        <p className="st-lede">{progressionExplainerCopy.lede}</p>
-      </header>
+      <details>
+        <summary>
+          <header className="st-intro">
+            <span className="st-kicker">{progressionExplainerCopy.kicker}</span>
+            <h2 className="st-title" id="progress-explainer-title">
+              {progressionExplainerCopy.title}
+            </h2>
+            <p className="st-lede">{progressionExplainerCopy.lede}</p>
+          </header>
+        </summary>
 
-      <div className="st-prose">
-        <section aria-label={progressionExplainerCopy.groupsTitle}>
-          <h3 className="st-panel__title">{progressionExplainerCopy.groupsTitle}</h3>
-          <p>{progressionExplainerCopy.groupsBody}</p>
-        </section>
+        <div className="st-prose">
+          <section aria-label={progressionExplainerCopy.groupsTitle}>
+            <h3 className="st-panel__title">
+              {progressionExplainerCopy.groupsTitle}
+            </h3>
+            <p>{progressionExplainerCopy.groupsBody}</p>
+          </section>
 
-        <section aria-label={progressionExplainerCopy.methodTitle}>
-          <h3 className="st-panel__title">{progressionExplainerCopy.methodTitle}</h3>
-          <p>{progressionExplainerCopy.methodBody}</p>
-        </section>
+          <section aria-label={progressionExplainerCopy.methodTitle}>
+            <h3 className="st-panel__title">
+              {progressionExplainerCopy.methodTitle}
+            </h3>
+            <p>{progressionExplainerCopy.methodBody}</p>
+          </section>
 
-        <section aria-label={progressionExplainerCopy.climbTitle}>
-          <h3 className="st-panel__title">{progressionExplainerCopy.climbTitle}</h3>
-          <p>{progressionExplainerCopy.climbBody}</p>
-        </section>
-      </div>
+          <section aria-label={progressionExplainerCopy.climbTitle}>
+            <h3 className="st-panel__title">
+              {progressionExplainerCopy.climbTitle}
+            </h3>
+            <p>{progressionExplainerCopy.climbBody}</p>
+          </section>
+        </div>
+      </details>
     </section>
   );
 }
