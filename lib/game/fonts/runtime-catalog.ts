@@ -1,6 +1,7 @@
 import "server-only";
 
 import adobeKit from "@/content/catalog/adobe-fonts-kit.json";
+import adobeKits from "@/content/catalog/adobe-fonts-kits.json";
 import runtimeCatalog from "@/content/catalog/font-runtime-assets.json";
 import { type GameFontFace } from "@/lib/game/fonts/contracts";
 
@@ -81,6 +82,33 @@ const adobeBySlug = new Map<string, string>(
 
 /** L'adresse de la feuille du projet web Adobe, chargee une fois par la coquille. */
 export const ADOBE_KIT_STYLESHEET = adobeKit.meta.stylesheet;
+
+/**
+ * Toutes les feuilles Adobe a charger, le projet historique d'abord.
+ *
+ * POURQUOI PLUSIEURS. Un projet web ne publie plus au dela de quelques milliers
+ * de familles : mesure du 2026-09-12, un projet a 3 492 familles accepte les
+ * ajouts mais sa publication repond 504, et la feuille publique reste a l'etat
+ * d'avant sans que rien ne le signale. Les familles de masse sont donc reparties
+ * sur plusieurs projets, un par tranche, declares dans
+ * content/catalog/adobe-fonts-kits.json.
+ *
+ * Tant que ce fichier ne porte aucune tranche, cette liste vaut exactement la
+ * feuille historique et le site se charge comme avant.
+ */
+export const ADOBE_KIT_STYLESHEETS: string[] = [
+  adobeKit.meta.stylesheet,
+  ...Object.values(
+    (adobeKits as {
+      tranches: Record<string, { css: string; familles_servies?: number }>;
+    }).tranches,
+  )
+    // ON NE CHARGE QUE LES FEUILLES QUI SERVENT VRAIMENT QUELQUE CHOSE. La feuille
+    // d'un projet cree mais pas encore publie repond 404 : la declarer ferait payer
+    // une requete perdue a chaque page pour rien.
+    .filter((t) => (t.familles_servies ?? 0) > 0)
+    .map((t) => t.css),
+];
 
 /** Vrai quand la police vient du projet Adobe et non d'un fichier que nous servons. */
 export const isAdobeFace = (slug: string) => adobeBySlug.has(slug);

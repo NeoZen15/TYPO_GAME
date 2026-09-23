@@ -1,0 +1,10 @@
+-- ============================================================
+-- RETOUR ARRIERE de la migration 025
+-- Genere par scripts/build_adobe_mass_catalog_migration.py le 2026-09-15
+-- ============================================================
+--
+-- IL N'Y EN A PAS, et ce fichier existe pour le dire. PostgreSQL ne sait pas
+-- retirer une valeur d'un enum. 'display' reste donc dans le type, sans gener
+-- personne tant qu'aucune ligne ne la porte : la 025 se retire, elle, ligne par
+-- ligne. Retirer vraiment la valeur demanderait de recreer le type et toutes les
+-- colonnes qui s'en servent, ce qui est hors de proportion avec le probleme.
