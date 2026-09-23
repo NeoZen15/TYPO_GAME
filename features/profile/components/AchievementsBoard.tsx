@@ -5,6 +5,7 @@ import { DwigginsBadge, DwigginsBadgeDefs } from "@/components/brand/DwigginsBad
 import type { Art, Badge } from "@/lib/brand/dwiggins-badge-engine";
 import type { PlayerProfile, ProfileBadge } from "@/lib/profile/mock-profile";
 import { badgeRule, type BadgeRule } from "@/lib/profile/badge-rules";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Achievements — badges (profile-tabs-spec §5). They render with the REAL
@@ -36,7 +37,7 @@ export default function AchievementsBoard({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

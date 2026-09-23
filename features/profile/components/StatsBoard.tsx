@@ -7,6 +7,7 @@ import {
   MODE_ACCENT,
 } from "@/features/profile/components/board-system";
 import { MOCK_ARENA, type EyeProfile, type PlayerProfile } from "@/lib/profile/mock-profile";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Stats — same DA as the DWIGGINS map (black + beige, mono, fixed starfield),
@@ -43,7 +44,7 @@ export default function StatsBoard({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

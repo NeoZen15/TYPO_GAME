@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { CARD_COLORS } from "@/lib/game/card-colors";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Block 2 demo — the game board, auto-played by a ghost cursor:
@@ -28,7 +29,7 @@ export default function GhostCursorDemo() {
     const fb = feedbackRef.current;
     if (!root || !cursor) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = prefersReducedMotion();
 
     const clearStates = () =>
       optionRefs.current.forEach((el) => el?.classList.remove("is-wrong", "is-correct"));

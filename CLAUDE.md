@@ -2,6 +2,49 @@
 
 Expérience d'apprentissage typographique interactive. Next.js 16 (App Router), React 19, Tailwind 4, GSAP, Neon Postgres en serverless.
 
+## Où on en est
+
+**Réécrite le 2026-09-18. Cette section se réécrit, elle ne s'allonge jamais. Plafond 700 mots,
+tenu par `npm run check:etat`. Trois fichiers d'état sont déjà morts dans ce projet, deux périmés
+et un obèse : c'est la réécriture qui empêche le quatrième de mourir.**
+
+**Ce que toi seul peux débloquer.** Pousser : 128 commits d'avance sur `origin/main`, branche
+`chore/nettoyage-pre-lancement-2026-08-19`, aucun identifiant sur la machine, il faut un jeton
+personnel. Poser `GAME_PROVIDER_SECRET` et `DATABASE_URL` chez Vercel, le produit refuse de démarrer
+sans le premier et c'est voulu. Poser les clés Clerk, sans elles il n'y a aucune administration en
+production. Vérifier chez Neon que le rôle de connexion n'est pas le rôle propriétaire. Remplir les
+sept informations légales de `content/legal.ts`. Déclarer `dwiggins.fr` dans le projet web Adobe,
+obligation de licence et non condition d'affichage. Et deux rotations demandées le 2026-08-24 dont
+personne n'a confirmé qu'elles sont faites : le mot de passe Neon et le jeton Adobe Fonts, tous deux
+apparus en clair dans une conversation.
+
+**Où en est le produit.** Le domaine est acheté, rien n'est déployé. Le catalogue sert 2108 polices
+en ligne. Mesuré le 2026-09-15 : un projet web Adobe plafonne à 250 ou 300 familles, jamais plus, la
+montée passe donc par plusieurs projets. Le jeu tourne dans ses deux modes, l'espace prof est
+complet et l'admin est un poste d'observation. Migrations 021, 022 et 023 en production ; pour
+toutes les autres, le bandeau en tête de chaque fichier de `db/migrations` est la seule source
+fiable. Audit de sécurité complet le 2026-09-18 : Next monté en 16.3.5, `npm audit` à zéro,
+administration fermée en production, en-têtes posés, limite de débit, contrôle d'origine, le tout
+tenu par `check:security-gates`. La conformité est devenue un contrôle mensuel, `npm run conformite`.
+
+**Bloqueurs de mise en ligne.** Un seul est technique et il n'est pas résolu : **PP Frama est servie
+sans licence webfont**. Les deux autres t'appartiennent : les sept informations légales et une
+relecture juridique, et les clés Clerk.
+
+**Décisions qui t'attendent, aucune n'est technique.** Le mot « maîtrisé » a deux sens, le jeu dit
+3 % sur un pool de 30 et le profil dit 0 % sur tout le catalogue, un joueur croira que c'est cassé.
+Les documents légaux ne sont atteignables que depuis le pied de page de l'accueil, faute de pied de
+page global. Deux contrôles des Préférences sont inertes, la langue et la réduction d'animations :
+les câbler ou les retirer. Le titre et la description du site sont restés ceux du gabarit, « Jeux de
+Typo V2 », c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page, sujet
+produit et non faille, à trancher le jour où un devoir compte. **Et le bonus de vitesse en compétition
+repose sur la durée que le navigateur déclare** : qui annonce zéro double ses points tant qu'il répond
+sous sept secondes réelles, question d'équité à arbitrer. Et l'apparence du lien d'évitement
+ajouté le 2026-09-18 attend ton œil.
+
+**État de l'arbre.** 49 fichiers modifiés non commités, dont des corrections d'une autre session
+Claude mêlées aux miennes dans `app/layout.tsx` et `app/globals.css`.
+
 ## Commandes
 
 ```bash
@@ -126,7 +169,8 @@ Neon Postgres via `@neondatabase/serverless`. Pas d'ORM : les migrations sont du
 
 `docs/README.md` est le sommaire, rangé par thème. Les entrées à connaître :
 
-- `docs/process/checklist.md` : « Où on en est ». Avancement produit par sujet, confronté à l'état réel du code. **C'est la source de vérité de l'avancement.**
+- **Les sept fiches d'arbitrages** (`docs/game/` en porte trois, moteur, espace prof et écritures ; `docs/ui/` en porte deux, direction artistique et système de jetons ; plus `docs/typography/` et `arbitrages-mise-en-ligne.md` dans `docs/overview/`) : **pourquoi c'est comme ça**, ce qui a été refusé, et les pièges à ne pas redécouvrir. Les spécifications voisines décrivent le fonctionnement, ceux ci décrivent les décisions. À ouvrir avant de contredire un choix existant.
+- `docs/process/checklist.md` : le **journal de bord**, rouvert vide le 2026-09-18. Mémoire longue du **quand** : ce qui a été fait tel jour et vérifié tel jour. Ni l'état courant, qui est en tête de ce fichier, ni le pourquoi, qui est dans les fiches d'arbitrages. L'ancien journal, 154 000 mots, est archivé dans `docs/archive/checklist-2026-03-19-a-2026-09-18.md`.
 - `docs/game/NIVEAU.rtf` : vision joueur, le pourquoi et le ton (DWIGGINS, l'entraînement du regard). Document de référence textuelle uniquement, les visuels sont sur le site.
 - `docs/ui/ui-consistency-contract.md` : contrat de cohérence UI, typo, espacement, casse, thème.
 - `docs/ui/motion.md` : règles d'animation et de timing. **Plus aucun garde ne les vérifie depuis le 2026-08-15** : `check:contracts` inspectait `Gate.tsx`, l'ancienne landing, remplacée le 2026-06-07 et supprimée avec lui. Ses 19 contrats décrivaient une page que plus personne ne rendait, donc ils passaient au vert sans rien protéger. Réécrire un garde sur la landing actuelle est un chantier ouvert.
@@ -139,7 +183,13 @@ Neon Postgres via `@neondatabase/serverless`. Pas d'ORM : les migrations sont du
 
 Ces règles viennent du propriétaire du projet et valent pour tout le travail sur ce repo.
 
-**Consigner l'avancement.** Chaque action, finie ou en cours, se note dans `docs/process/checklist.md` avec une phrase qui explique pourquoi. C'est ce qui évite de se perdre entre deux sessions.
+**Consigner l'avancement.** Chaque action, finie ou en cours, se note dans `docs/process/checklist.md` avec une phrase qui explique pourquoi. Si l'action change **où on en est**, mettre à jour la section « Où on en est » de ce fichier en la **réécrivant**. Si elle tranche un **pourquoi**, le fondre dans la fiche d'arbitrages du thème. Les trois ne se remplacent pas.
+
+**Committer souvent, parce qu'une session qui meurt ne prévient personne.** Trois incidents le
+disent : une journée entière restée en copie de travail, deux agents emportés par une coupure réseau
+dont le travail a dormi cinq jours sur le disque, et une unification de rayons rattrapée le lendemain
+par hasard. À chaque fois **rien n'était cassé et personne ne le savait**, et un `git checkout`
+malheureux aurait tout emporté.
 
 **Pas d'emojis.** Nulle part : ni dans le code, ni dans les docs, ni dans la checklist, ni dans les messages de commit.
 
@@ -154,3 +204,13 @@ Ce qui reste ouvert sans accord préalable : penser l'interface sous un angle **
 **Pas de captures d'écran de vérification.** Le propriétaire regarde le site en live. Vérifier autrement : `typecheck`, `curl`, inspection du code, ou pilotage du navigateur via le plugin `playwright`.
 
 **Décider et avancer.** Ne pas demander validation à chaque étape. Faire le travail, puis montrer le résultat. Les seules exceptions sont les migrations en base et tout ce qui touche à la DA.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

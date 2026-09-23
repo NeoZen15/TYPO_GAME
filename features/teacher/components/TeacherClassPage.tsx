@@ -14,6 +14,7 @@ import {
   studentRows,
 } from "@/lib/teacher/teacher-derive";
 import { closedLabel, dueLabel, opensLabel } from "@/lib/teacher/teacher-time";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — one class.
@@ -57,7 +58,7 @@ export default function TeacherClassPage({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

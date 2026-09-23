@@ -58,7 +58,12 @@ const PALETTES = [
   {
     name: "comparison stage, light",
     block: ".compare-stage-shell",
-    ground: "#fefbf7",
+    // #fefbf7 etait le fond que la coquille peignait elle meme. Elle ne peint
+    // plus rien depuis le 2026-09-14, pour retirer une surface bordee posee
+    // autour d'une autre surface bordee : ses encres se posent donc sur le fond
+    // de la page typo. Un ground fige qui ne correspond plus au fond reel rend
+    // ce garde faux sans le faire echouer, ce qui est pire que de le casser.
+    ground: "#f6f3ee",
     tokens: [
       "--compare-stage-ink",
       "--compare-stage-ink-soft",

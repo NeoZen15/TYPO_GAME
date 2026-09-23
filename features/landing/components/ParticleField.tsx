@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Hero background — a calm monochrome dot field. Each dot twinkles on its
@@ -18,7 +19,7 @@ export default function ParticleField() {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !parent || !ctx) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = prefersReducedMotion();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const gap = 30; // px between dots
     const falloff = 150; // px radius of the pointer halo

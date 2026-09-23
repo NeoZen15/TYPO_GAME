@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Block 3 — "Read the structure". A constructed letterform: the glyph sits
@@ -23,7 +24,7 @@ export default function LetterAnatomy() {
     if (!section || !guidesSvg) return;
 
     // Reduced motion: leave everything as the default visible state.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     // Robust path length: getTotalLength() is unreliable for <rect>/<line>
     // (Safari and some engines return 0), so fall back to geometry.

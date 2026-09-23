@@ -6,6 +6,7 @@ import TeacherBack from "@/features/teacher/components/TeacherBack";
 import type { TeacherClass, TeacherProfile } from "@/lib/teacher/mock-teacher";
 import { studentDetail } from "@/lib/teacher/teacher-derive";
 import { closedLabel, dueLabel } from "@/lib/teacher/teacher-time";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — one student.
@@ -46,7 +47,7 @@ export default function TeacherStudentPage({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

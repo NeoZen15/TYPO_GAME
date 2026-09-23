@@ -5,8 +5,19 @@
 -- PostgreSQL 13+ (Neon)
 -- ============================================================
 --
--- NON APPLIQUEE. Ce fichier n'a PAS ete execute. La base Neon est en production,
--- l'application demande le feu vert explicite du proprietaire du projet.
+-- APPLIQUEE EN PRODUCTION le 2026-09-21, branche par defaut br-crimson-union-abwblcwc,
+-- sur feu vert explicite du proprietaire, apres un essai complet sur la branche
+-- jetable br-little-frost-abe3f20o creee pour l'occasion.
+--
+-- CE QUI A ETE MESURE, AVANT ET APRES, des deux cotes. Avant : 4 partitions
+-- (2026-03, 04, 05, default) et 1305 des 1716 evenements, soit 76 %, coinces dans
+-- uef_default, repartis en juin 17, juillet 24, aout 1263, septembre 1. Apres :
+-- 10 partitions, uef_default VIDE, et le meme total de 1716 lignes reparti en
+-- 2026-03 399, 04 10, 05 2, 06 17, 07 24, 08 1263, 09 1. Aucune ligne perdue,
+-- verifie par somme des deux cotes.
+--
+-- LE PIEGE DE LA COLONNE GENEREE, decrit plus bas a l'etape 3, n'a pas eu lieu :
+-- la liste de colonnes explicite etait deja dans ce fichier et l'a evite.
 --
 -- POURQUOI. user_event_fact est partitionnee par RANGE (event_ts_utc) et la
 -- migration 001 ne declare que uef_2026_03, uef_2026_04, uef_2026_05, plus la

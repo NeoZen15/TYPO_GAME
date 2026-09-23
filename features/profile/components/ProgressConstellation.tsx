@@ -10,6 +10,7 @@ import {
   type PerceptualAxisId,
 } from "@/lib/profile/mock-profile";
 
+import { prefersReducedMotion } from "@/lib/motion";
 // ---------------------------------------------------------------------------
 // The map of seeing — the DWIGGINS galaxy map (docs/game/handoff-page-parcours.md).
 //
@@ -188,7 +189,7 @@ export default function ProgressConstellation({ eye }: { eye: EyeProfile }) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

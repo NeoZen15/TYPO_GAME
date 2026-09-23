@@ -15,6 +15,7 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 **Les documents de recherche sont hors de cette chaîne. Ils inspirent le produit, ils ne le gouvernent jamais.** Une idée de recherche ne peut être développée qu'après avoir été réévaluée au regard de la vision, reformulée si nécessaire, puis intégrée explicitement dans une spécification de rang 2 ou 3. Sont classés recherche : [`game/scoring-and-selection-math.md`](game/scoring-and-selection-math.md) et [`game/scoring-implementation-contract.md`](game/scoring-implementation-contract.md). Détail et raison en [vision §13](game/vision-produit-dwiggins.md).
 
 ## overview/ — vue d'ensemble
+- [`overview/arbitrages-mise-en-ligne.md`](overview/arbitrages-mise-en-ligne.md) — **ce qui engage le projet vers l'extérieur** : le symbole décalqué et sa refonte, le cadre légal et pourquoi la conformité est devenue mensuelle, le référencement gelé exprès avec ses trois arbitrages à trancher avant toute génération de masse, et la bonne porte de l'affiliation Adobe.
 - [`project-onboarding-2026-07-30.md`](overview/project-onboarding-2026-07-30.md) — document d'accueil complet en 8 parties, pour une personne qui ne connaît pas le projet : produit et vision, système typographique, moteur, interface, backend, catalogue et licences, façon de travailler, puis l'état réel au 2026-07-30. **Décrit, ne décide rien**, aucune autorité normative, subordonné à la chaîne ci-dessus et à `process/checklist.md`.
 - [`getting-started.md`](overview/getting-started.md) — porte d'entrée simple pour comprendre le projet quand on découvre le repo.
 - [`site-system-overview.md`](overview/site-system-overview.md) — fiche de transmission rapide : ce que fait le site, structure, données, pipeline.
@@ -26,6 +27,9 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 - [`naming.md`](overview/naming.md) — conventions de nommage.
 
 ## game/ — moteur de jeu & pédagogie
+- [`game/arbitrages.md`](game/arbitrages.md) — **pourquoi le moteur est comme il est** : le niveau déclaré n'est qu'un prior de contenu gelé au seed, les invariants I-06 à I-20, la formule de niveau global documentée qui était fausse, l'anti-triche déjà résolu par le dessin du jeu, et le modèle de l'espace enseignant. Distillé des sections lettrées de la checklist.
+- [`game/arbitrages-espace-prof.md`](game/arbitrages-espace-prof.md) — **pourquoi l'espace professeur est comme il est** : le compositeur écrit une intention et jamais vingt questions (I-25), le mur à sens unique entre le professeur et l'élève et sa contrepartie, une fiche Élève n'est pas un profil en plus petit, et l'administration qui observe sans juger.
+- [`game/arbitrages-ecritures.md`](game/arbitrages-ecritures.md) — **comment les écritures tiennent** : un refus n'est pas une panne, les trois règles de toute route qui sert une séance, les six propriétés d'un écrivain et la facture de leur oubli, l'invariant « une seule session active » qui n'est plus imposé, et trois pièges de concurrence qui ne lèvent aucune erreur.
 - [`architecture-backend.md`](game/architecture-backend.md) — **architecture backend proposée (2026-07-29)** : trois axes de session (mode, contexte, politique de progression), écriture du mastery portée par la base, porte de lecture professeur, quatre natures de données, séquencement.
 - [`vision-produit-dwiggins.md`](game/vision-produit-dwiggins.md) — **vision produit figée (2026-07-29), document de rang supérieur** : en cas de contradiction avec un autre doc, c'est lui qui fait foi. Moteur d'entraînement du regard, séance contre progression, vérité pédagogique unique, étanchéité élève / professeur, invariants I-15 à I-27 (dont I-25 l'adaptation individuelle d'un exercice assigné, I-26 le parcours personnel autonome et I-27 la symétrie des recommandations, 2026-09-10), et registre des contradictions documentaires.
 - [`NIVEAU.rtf`](game/NIVEAU.rtf) — **vision joueur** (le pourquoi, le ton) : DWIGGINS, l'entraînement du regard.
@@ -49,6 +53,7 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 - [`spec-creation-exercice.md`](product/spec-creation-exercice.md) — **spécification fermée de la création d'exercice (2026-09-10)**, rang 4 : le professeur donne un **contrat** commun à sa classe, le moteur **adapte** à l'intérieur (I-25). Couvre le parcours entier et tous les cas : trois recommandations et la création libre, sélection par familles et par typographies imposées, confusions ciblées et arbitrées, quatre crans d'exigence traduits en similarité de distracteurs, adaptation par élève, mix et son repli, classe sans historique, Exercice contre Contrôle contre Compétition, budget de questions et justesse au premier essai, destinataires, fenêtre, preview, puis ce qui devient immuable à la publication. Chaque point donne ce que le code sait faire, ce qui manque, la règle et ses conséquences. Cinq arbitrages restent listés en §20.
 
 ## typography/ — moteur typographique (mesure, compare, specimen)
+- [`typography/arbitrages.md`](typography/arbitrages.md) — **pourquoi les polices sont servies comme elles le sont** : le piège du morceau sans glyphes latins, la liste blanche de licences posée dans les deux requêtes de pool, « auto-héberger c'est redistribuer » et les 1177 textes recopiés verbatim, les deux champs laissés vides exprès, et le plafond Adobe mesuré à 250 familles.
 - [`typography-system-contract.md`](typography/typography-system-contract.md) — contrat de référence du système typo.
 - [`anatomy-metrics-system.md`](typography/anatomy-metrics-system.md) — système de métriques d'anatomie.
 - [`specimen-layer-strategy.md`](typography/specimen-layer-strategy.md) — stratégie de la couche specimen.
@@ -63,6 +68,8 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 - [`google-fonts-api-strategy.md`](catalog/google-fonts-api-strategy.md) — stratégie radar Google Fonts API.
 
 ## ui/ — front, design system, motion
+- [`ui/arbitrages.md`](ui/arbitrages.md) — **pourquoi l'interface est comme elle est** : la landing tranche et pourquoi quatre documents s'en disputaient l'autorité, la palette canonique, le verrou de page écran et sa borne, le piège du serveur de dev qui sert une feuille périmée (il a menti quatre fois), et les trois arbitrages DA ouverts.
+- [`ui/arbitrages-systeme.md`](ui/arbitrages-systeme.md) — **le système qui dessine** : il n'y a pas une palette mais quatre, un garde de jetons et jamais de pixels, un jeton se nomme par ce qu'il sert, **un rayon déclaré n'est pas un rayon peint** (le navigateur re-plafonne à la moitié du plus petit côté), et les pièges de mesure du front dont le serveur de dev qui sert une feuille périmée.
 - [`front-ui-master-spec.md`](ui/front-ui-master-spec.md) — spec maître du front.
 - [`ui-consistency-contract.md`](ui/ui-consistency-contract.md) — contrat de cohérence UI (typo/espacement/casse/thème).
 - [`ui-palette-reference.md`](ui/ui-palette-reference.md) — référence couleurs + texte, checklist d'incohérences.
@@ -72,7 +79,7 @@ Une seule chaîne fait autorité. Chaque rang est subordonné à celui du dessus
 - [`pages-explication-plan.md`](ui/pages-explication-plan.md) — plan des pages qui expliquent DWIGGINS au joueur : entrée du mode Entraînement (exigence de la vision §2.1), réécriture des règles, bloc explicatif du profil. **Plan de réalisation front, pas une source de vérité** : il traduit `game/vision-produit-dwiggins.md` en interface sans redéfinir aucune règle.
 
 ## process/ — workflow, qualité, plans
-- [`checklist.md`](process/checklist.md) — **« Où on en est »** : avancement produit par sujet, confronté à l'état réel du code (source de vérité).
+- [`checklist.md`](process/checklist.md) — **journal de bord**, rouvert vide le 2026-09-18 : la mémoire longue du **quand**. L'état courant est en tête de `CLAUDE.md`, le pourquoi dans les fiches `arbitrages`. Ancien journal archivé dans [`archive/checklist-2026-03-19-a-2026-09-18.md`](archive/checklist-2026-03-19-a-2026-09-18.md), 154 000 mots, rien supprimé.
 - [`safety-workflow.md`](process/safety-workflow.md) — workflow de sauvegarde / checkpoints.
 - [`worktree-stabilization.md`](process/worktree-stabilization.md) — note de stabilisation du worktree.
 - [`test-plan.md`](process/test-plan.md) — plan de test.

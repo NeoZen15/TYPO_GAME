@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BOARD_SYSTEM_CSS, CREAM, MODE_ACCENT } from "@/features/profile/components/board-system";
 import TeacherBack from "@/features/teacher/components/TeacherBack";
+import { TEACHER_STEPS_CSS } from "@/features/teacher/components/teacher-steps";
 import { familyOf } from "@/lib/teacher/mock-teacher";
 import type { TeacherClass, TeacherExercise, TeacherProfile } from "@/lib/teacher/mock-teacher";
 import { exerciseDetail } from "@/lib/teacher/teacher-derive";
 import { closedLabel, dueLabel, opensLabel, windowLabel } from "@/lib/teacher/teacher-time";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — one exercise.
@@ -53,7 +55,7 @@ export default function TeacherExercisePage({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(
@@ -77,6 +79,19 @@ export default function TeacherExercisePage({
 
   const accent = MODE_ACCENT[ex.mode] ?? "var(--pf-cream)";
   const families = ex.typefaces.length;
+  // LA LISTE COMPLETE SE REPLIE, ET ELLE N'EST PAS FUSIONNEE AVEC LES GROUPES.
+  //
+  // Elle faisait 1 220 px sur une page de 2 545, soit la moitie. La fusionner
+  // avec « Worth a word » aurait ete le reflexe, et c'est le commentaire de
+  // cette section qui l'interdit : l'ordre est celui du trombinoscope, jamais
+  // celui des resultats, parce qu'une classe triee par ses resultats est un
+  // classement et que cet espace n'en fait pas. Les deux sections disent deux
+  // choses differentes, le triage et la liste neutre.
+  //
+  // Elle se replie donc, comme le bloc du contrat dans le compositeur : la
+  // ligne dit ce qu'elle contient, un clic l'ouvre, et rien n'est cache
+  // derriere une reponse.
+  const [roster, setRoster] = useState(false);
   const notOpened = ex.assigned - ex.started;
   const startedOnly = ex.started - ex.finished;
 
@@ -101,8 +116,9 @@ export default function TeacherExercisePage({
   const others = detail.otherCount === 1 ? "the one other" : `the ${detail.otherCount} others`;
 
   return (
-    <div ref={rootRef} className="st tc--exop">
+    <div ref={rootRef} className="st tc-steps tc--exop">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: TEACHER_STEPS_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: EXOP_CSS }} />
 
       <TeacherBack label={backLabel} onClick={onBack} />
@@ -155,8 +171,8 @@ export default function TeacherExercisePage({
 
       {/* ── 1. Where it stands, and it is a different question in each state ── */}
       {ex.state === "scheduled" && (
-        <section className="st-panel st-sec" aria-label="Waiting to open">
-          <h2 className="st-panel__title">Waiting to open</h2>
+        <section className="tc-step st-sec" aria-label="Waiting to open">
+          <h2 className="tc-step__title tc-exop__lone">Waiting to open</h2>
           <p className="st-empty">
             It {opensLabel(ex.opensInHours ?? 0)} and stays open for{" "}
             {windowLabel(ex.openedForHours)}. {ex.assigned} students will find it
@@ -167,10 +183,10 @@ export default function TeacherExercisePage({
       )}
 
       {ex.state === "running" && detail.pace && (
-        <section className="st-panel st-sec" aria-label="Against its deadline">
-          <div className="st-panel__head">
-            <h2 className="st-panel__title">Against its deadline</h2>
-            <span className="st-panel__meta">the mark is where the time is</span>
+        <section className="tc-step st-sec" aria-label="Against its deadline">
+          <div className="tc-step__head">
+            <h2 className="tc-step__title">Against its deadline</h2>
+            <span className="tc-step__meta">the mark is where the time is</span>
           </div>
 
           {/* TWO SHARES ON ONE BAR, the list's own device: how much of the class
@@ -216,8 +232,8 @@ export default function TeacherExercisePage({
       )}
 
       {ex.state === "done" && (
-        <section className="st-panel st-sec" aria-label="What came back">
-          <h2 className="st-panel__title">What came back</h2>
+        <section className="tc-step st-sec" aria-label="What came back">
+          <h2 className="tc-step__title tc-exop__lone">What came back</h2>
           <div className="st-ringwrap">
             <svg className="st-ring" viewBox="0 0 140 140" aria-hidden="true">
               <circle className="st-ring__track" cx="70" cy="70" r="52" />
@@ -235,7 +251,7 @@ export default function TeacherExercisePage({
             </svg>
 
             <div className="tc-exop__block">
-              <span className="st-panel__title">Who got to the end</span>
+              <span className="tc-step__sub">Who got to the end</span>
               <span
                 className="st-seg st-seg--mode"
                 role="img"
@@ -278,10 +294,10 @@ export default function TeacherExercisePage({
       )}
 
       {/* ── 2. The faces. The subject of the page, not an illustration. ── */}
-      <section className="st-panel st-sec" aria-label="What it asked">
-        <div className="st-panel__head">
-          <h2 className="st-panel__title">What it asked</h2>
-          <span className="st-panel__meta">
+      <section className="tc-step st-sec" aria-label="What it asked">
+        <div className="tc-step__head">
+          <h2 className="tc-step__title">What it asked</h2>
+          <span className="tc-step__meta">
             {ex.state === "done" ? "in the order you built it" : `${families} named`}
           </span>
         </div>
@@ -332,10 +348,10 @@ export default function TeacherExercisePage({
 
       {/* ── 3. Who to chase, grouped by reason. Nothing before it opens. ── */}
       {ex.state !== "scheduled" && (
-        <section className="st-panel st-sec" aria-label="Worth a word">
-          <div className="st-panel__head">
-            <h2 className="st-panel__title">Worth a word</h2>
-            <span className="st-panel__meta">out of <em>{ex.assigned}</em></span>
+        <section className="tc-step st-sec" aria-label="Worth a word">
+          <div className="tc-step__head">
+            <h2 className="tc-step__title">Worth a word</h2>
+            <span className="tc-step__meta">out of <em>{ex.assigned}</em></span>
           </div>
           {detail.groups.length === 0 ? (
             <p className="st-empty">
@@ -363,15 +379,30 @@ export default function TeacherExercisePage({
 
       {/* ── 4. Everyone on it, in roster order, each name a way in ── */}
       {ex.state !== "scheduled" && (
-        <section className="st-panel st-sec" aria-label="Everyone on it">
-          <div className="st-panel__head">
-            <h2 className="st-panel__title">Everyone on it</h2>
+        <section className="tc-step st-sec" aria-label="Everyone on it">
+          <div className="tc-step__head">
+            <h2 className="tc-step__title">Everyone on it</h2>
             {/* ROSTER ORDER, NEVER SORTED BY RESULT. Sorting a class by its
                 results is a ranking, and this space does not make one. The
                 groups above are how you find who to look at. */}
-            <span className="st-panel__meta">roster order</span>
+            <span className="tc-step__meta">roster order</span>
           </div>
-          <ul className="st-lines">
+
+          <button
+            type="button"
+            className="tc-exop__rosterline"
+            aria-expanded={roster}
+            aria-controls="tc-exop-roster"
+            onClick={() => setRoster((was) => !was)}
+          >
+            <span className="tc-exop__rostersaid">
+              <em>{ex.assigned}</em> students · <em>{ex.finished}</em> finished ·{" "}
+              <em>{startedOnly}</em> started · <em>{notOpened}</em> not opened
+            </span>
+            <span className="tc-exop__rostertoggle">{roster ? "Hide" : "Show each one"}</span>
+          </button>
+
+          <ul className="st-lines" id="tc-exop-roster" hidden={!roster}>
             {detail.rows.map((r) => (
               <li key={r.student.id}>
                 <button type="button" className="st-line" onClick={() => onOpenStudent(r.student.id)}>
@@ -401,6 +432,25 @@ export default function TeacherExercisePage({
 
 /* Only what belongs to this screen. Everything else reads the site's system. */
 const EXOP_CSS = `
+  .tc-exop__rosterline {
+    appearance: none; width: 100%; cursor: pointer; text-align: left;
+    display: flex; align-items: baseline; justify-content: flex-start; gap: 0.5rem 0.75rem; flex-wrap: wrap;
+    border: none; background: transparent; padding: 0; font: inherit;
+  }
+  .tc-exop__rostersaid { font-size: 0.92rem; line-height: 1.45; color: rgb(${CREAM} / 0.6); font-variant-numeric: tabular-nums; }
+  .tc-exop__rostersaid em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
+  .tc-exop__rostertoggle {
+    flex: none; border: 1px solid rgb(${CREAM} / 0.3); border-radius: var(--radius-pill);
+    padding: 0.22rem 0.7rem;
+    font-family: var(--pf-mono); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: rgb(${CREAM} / 0.7);
+    transition: border-color 140ms ease, color 140ms ease, background-color 140ms ease;
+  }
+  .tc-exop__rosterline:hover .tc-exop__rostertoggle { border-color: rgb(${CREAM} / 0.6); color: var(--pf-cream); background: rgb(${CREAM} / 0.06); }
+  .tc-exop__rosterline:focus-visible { outline: 1px solid rgb(${CREAM} / 0.5); outline-offset: 4px; border-radius: var(--radius); }
+  .st-lines[hidden] { display: none; }
+  .tc-exop__rosterline + .st-lines { margin-top: 1.1rem; }
+
   /* The identity line: mode, how long the window is, and the clock. */
   .tc-exop__id { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem 0.8rem; margin: 0.2rem 0 0; }
   .tc-exop__meta { font-family: var(--pf-mono); font-size: 0.6rem; letter-spacing: 0.02em; color: rgb(${CREAM} / 0.42); }
@@ -413,7 +463,7 @@ const EXOP_CSS = `
   .tc-exop__seg { margin-top: 0.2rem; }
 
   .tc-exop__block { flex: 1; display: grid; gap: 0.5rem; align-content: start; min-width: 0; }
-  .tc-exop__block .st-panel__title { margin: 0; }
+
   .tc-exop__block .st-seg { margin-bottom: 0.2rem; }
   .tc-exop__vs { margin: 0.5rem 0 0; max-width: 52ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
   .tc-exop__vs em { font-style: normal; font-weight: 640; color: var(--pf-cream); }

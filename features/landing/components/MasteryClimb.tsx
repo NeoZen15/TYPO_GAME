@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Progression block — "Watch your eye sharpen".
@@ -52,7 +53,7 @@ export default function MasteryClimb() {
     if (!root) return;
 
     // Reduced motion: leave the CSS-default final state untouched.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     // Arm: blur everything out / hide the names (instant, no transition).
     root.classList.add("lp-climb--armed");

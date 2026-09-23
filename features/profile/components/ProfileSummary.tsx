@@ -5,6 +5,7 @@ import Link from "next/link";
 import { DwigginsBadge, DwigginsBadgeDefs } from "@/components/brand/DwigginsBadge";
 import type { Art, Badge, Tier } from "@/lib/brand/dwiggins-badge-engine";
 import type { ArenaProfile, ArenaRank, EyeProfile, PlayerProfile, RankedMatchMode } from "@/lib/profile/mock-profile";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Profile — the identity tab. TWO visually distinct blocks (perceptual-spec §6,
@@ -74,7 +75,7 @@ export default function ProfileSummary({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

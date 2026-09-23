@@ -59,6 +59,18 @@
   --mode-training: #40d38f;
   --mode-competition: #ff934a;
   --mode-expert: #58a9ff;
+  /* LE CONTRÔLE N'EST PAS DE L'ENTRAÎNEMENT, et il ne peut donc pas en porter
+     la couleur. Demande de Marion le 2026-09-12, provisoire de son propre aveu
+     (« pour le moment on va le mettre en violet »). C'est un mode de l'espace
+     enseignant et non du jeu, mais il se déclare ici parce que c'est le bloc
+     canonique des couleurs nommées, et qu'une quatrième valeur écrite ailleurs
+     est exactement ce que le commentaire de `.game-v2-hud` a dû défaire une fois.
+
+     CHOISI PAR MESURE et non à l'œil : sa luminance tombe dans la bande des
+     trois autres, 8,7 de contraste sur noir, entre l'expert à 8,5 et la
+     compétition à 9,5. Un violet doit être plus clair en HSL que ses voisins
+     pour peser autant, le bleu et le rouge ne portant pas de vert. */
+  --mode-control: #b794ff;
   --card-1: #8ea2ff;
   --card-2: #67d6b6;
   --card-3: #f5bf6a;
@@ -4168,14 +4180,21 @@ svg {
   --compare-control-line-active: rgba(17, 17, 20, 0.55);
   --compare-stage-switch-bg: color-mix(in srgb, var(--typo-shell-bg) 88%, rgba(244, 243, 238, 0.76));
   --compare-stage-switch-line: color-mix(in srgb, var(--typo-shell-border) 76%, rgba(17, 17, 20, 0.12));
+  /* LA COQUILLE NE PEINT PLUS, ELLE NE FAIT QUE DECLARER.
+     Elle portait un cadre arrondi et un fond, et `.compare-stage` en peint un
+     second a l'interieur : deux surfaces bordees imbriquees autour de la meme
+     chose, ce qui enfoncait le moindre bouton de la scene sous quatre
+     conteneurs peints. La scene elle meme garde son cadre, c'est le dispositif
+     qu'on regarde ; la coquille n'etait qu'un contenant de plus.
+
+     LES JETONS RESTENT ICI, et c'est tout ce que ce bloc fait desormais : il
+     est la palette de la scene, lue par `check:contrast`. Le fond sur lequel
+     ces encres se posent devient donc `--typo-page-bg`, et le garde a ete
+     corrige en consequence. Mesure avant de toucher, seuil 4,5 : l'encre forte
+     passe de 19,76 a 18,41, les deux encres douces de 6,45 a 6,30, l'encre de
+     controle active de 16,31 a 15,36. Les quatre passent. */
   display: grid;
   gap: 0.78rem;
-  padding: clamp(1rem, 1.6vw, 1.2rem);
-  border-radius: var(--radius);
-  border: 1px solid color-mix(in srgb, var(--typo-positive-line) 42%, var(--typo-shell-border));
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--typo-positive-soft) 26%, transparent), transparent 28%),
-    color-mix(in srgb, var(--typo-shell-bg) 42%, rgba(244, 243, 238, 0.08));
 }
 
 :root[data-theme="dark"] .compare-stage-shell {
@@ -6580,10 +6599,18 @@ svg {
   line-height: 1.45;
 }
 
+/* PLUS DE CARTES SOUS LA SCÈNE. Même règle que partout ailleurs depuis le
+   2026-09-11 : `.lp-section` de la landing n'a ni bordure, ni fond, ni rayon,
+   elle sépare avec de l'espace et un titre. Les deux blocs du bas étaient deux
+   surfaces teintées posées dans une page qui en a déjà une, la scène, et c'est
+   ce qui enfonçait le moindre bouton sous quatre conteneurs peints.
+
+   La gouttière remplace les contours, donc elle passe de 0,72 rem à une valeur
+   qui sépare réellement deux colonnes de texte nues. */
 .compare-bottom-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.2fr);
-  gap: 0.72rem;
+  gap: clamp(1.6rem, 4vw, 3rem);
 }
 
 .compare-help-widget {
@@ -6867,20 +6894,26 @@ svg {
   display: grid;
   gap: 0.42rem;
   align-content: start;
-  padding: 0.96rem 1rem;
-  border-radius: var(--radius);
-  border: 1px solid color-mix(in srgb, var(--typo-shell-border) 72%, transparent);
-  background: color-mix(in srgb, var(--typo-shell-bg) 72%, rgba(244, 243, 238, 0.18));
+  padding: 0;
+  border: none;
+  background: none;
 }
 
-.compare-concept-card {
-  border-color: color-mix(in srgb, var(--typo-warning-line) 62%, transparent);
-  background: color-mix(in srgb, var(--typo-warning-soft) 34%, rgba(244, 243, 238, 0.12));
+/* LE SIGNAL DES DEUX BLOCS SURVIT À LA SUPPRESSION DE LEUR FOND, et il change
+   seulement de support : ce qui teintait la surface tient maintenant un filet
+   court au-dessus du titre. Le concept gardait son ambre, la suite son vert ;
+   les retirer sans rien mettre aurait supprimé une distinction, pas une boîte. */
+.compare-concept-card::before,
+.compare-next-card::before {
+  content: "";
+  width: 2rem;
+  height: 2px;
+  border-radius: 2px;
+  margin-bottom: 0.32rem;
 }
 
-.compare-next-card {
-  border-color: color-mix(in srgb, var(--typo-positive-line) 52%, transparent);
-}
+.compare-concept-card::before { background: var(--typo-warning-line); }
+.compare-next-card::before { background: var(--typo-positive-line); }
 
 .compare-next-card .typo-actions {
   gap: 0.58rem;
@@ -11684,4 +11717,26 @@ svg {
 
 :root[data-theme="dark"] .mark--page-light {
   display: none;
+}
+
+/* LIEN D'EVITEMENT, pose par scripts/conformite/conformite.py.
+   WCAG 2.4.1, niveau A. Hors de l'ecran tant qu'il n'a pas le focus, visible des
+   qu'on l'atteint au clavier. Il n'invente aucune couleur : il reprend les
+   jetons de fond, d'encre et de focus de la page, donc il suit le theme et la
+   charte sans decider quoi que ce soit a leur place. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  padding: 0.75rem 1.25rem;
+  background: var(--background);
+  color: var(--foreground);
+  text-decoration: underline;
+}
+
+.skip-link:focus {
+  left: 0;
+  outline: 2px solid var(--focus, currentColor);
+  outline-offset: 2px;
 }

@@ -1,0 +1,116 @@
+/* Le métal liquide ramené à nos formes. Rien n'est repris du pen côté habillage :
+ * ni son anneau en dégradé conique, qui passe en couleur au survol et sort de la
+ * bichromie, ni son fond gris, ni son ombre interne blanche. Il ne reste que la
+ * surface, découpée à nos formes à nous. */
+
+.wrap {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+}
+
+.clipDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.surface {
+  position: absolute;
+  inset: 0;
+}
+
+/* Le shader dessine sa forme dans un CARRÉ. Étiré dans une pastille large et
+   basse, il la pose à gauche et laisse le reste vide, ce qui est exactement ce
+   qu'on a vu au premier essai. On lui donne donc un carré au moins aussi grand
+   que la pastille, centré, et c'est la pastille qui le recadre. */
+.carre {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 13rem;
+  height: 13rem;
+  transform: translate(-50%, -50%);
+}
+
+/* a. La pastille : la forme de bouton du site, remplie de métal. Le label reste
+   au dessus et garde son encre, sinon il disparaîtrait dans les reflets. */
+.pastille {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  padding: 0.82rem 1.4rem;
+  width: 13rem;
+  border-radius: var(--radius-pill, 999px);
+  overflow: hidden;
+  background: var(--ink-strong);
+}
+
+.pastille .surface > canvas {
+  border-radius: inherit;
+}
+
+.label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.96rem;
+  font-weight: 620;
+  line-height: 1;
+  /* Encre franche et non un mélange de calques : le métal bouge, donc un label
+     qui se calculerait à partir de lui changerait de lisibilité à chaque image. */
+  color: #0d0b08;
+}
+
+/* b. Le symbole : la marque elle même remplie de métal. C'est la forme que le
+   propriétaire a déjà retenue pour l'écran d'intro, donc les deux gestes se
+   répondraient au lieu de coexister. */
+.symbole {
+  position: relative;
+  width: 320px;
+  height: 243px;
+  clip-path: url("#metal-symbol-clip");
+}
+
+/* c. Le contour : le métal ne prend que l'épaisseur du bord. Le masque garde la
+   boîte entière et retire sa zone de contenu, il ne reste donc que l'anneau. */
+.contour {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  padding: 0.82rem 1.4rem;
+  width: 13rem;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--surface-strong);
+}
+
+.anneau {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  padding: 2px;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.labelContour {
+  position: relative;
+  z-index: 1;
+  font-size: 0.96rem;
+  font-weight: 620;
+  line-height: 1;
+  color: var(--ink-strong);
+}
+
+.note {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  margin: 0;
+}

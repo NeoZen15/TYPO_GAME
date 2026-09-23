@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { getTypefaceFontFamily } from "@/lib/game/training/catalog";
 import { getWarmupRound, type WarmupRound } from "@/features/onboarding/warmup-rounds";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Adaptive warm-up — "A first look", built on the LANDING demo's exact recipe
@@ -57,7 +58,7 @@ export default function OnboardingWarmup({ familiarity, onResolvedChange }: Prop
     if (!auto) return;
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     const stage = root.parentElement; // the .lp-demo-stagewrap (holds --gx/--gy)
     const tiltX = gsap.quickTo(root, "rotationX", { duration: 0.5, ease: "power3" });
@@ -100,7 +101,7 @@ export default function OnboardingWarmup({ familiarity, onResolvedChange }: Prop
     const fb = feedbackRef.current;
     if (!root || !cursor) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = prefersReducedMotion();
     const correct = round.correctIndex;
     const wrong = correct === 0 ? 1 : 0;
 

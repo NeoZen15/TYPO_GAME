@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BOARD_SYSTEM_CSS, CREAM } from "@/features/profile/components/board-system";
 import { classActivityLabel } from "@/lib/teacher/mock-teacher";
 import type { TeacherClass, TeacherProfile } from "@/lib/teacher/mock-teacher";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — Classes. The list, and only the list: creating one, finding one,
@@ -41,7 +42,7 @@ export default function TeacherClasses({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

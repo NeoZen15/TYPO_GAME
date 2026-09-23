@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import { LIGHT_THEME_ENABLED } from "@/lib/theme-availability";
 import type { EyeProfile, PlayerProfile } from "@/lib/profile/mock-profile";
+import { applyReducedMotion, prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Preferences — settings (profile-tabs-spec §6). Kept light for the test.
@@ -14,7 +15,6 @@ import type { EyeProfile, PlayerProfile } from "@/lib/profile/mock-profile";
 
 const CREAM = "from var(--pf-cream) r g b"; // theme-adaptive ink (flips beige<->warm-noir)
 const RM_KEY = "jdt-reduced-motion";
-const LANG_KEY = "jdt-lang";
 
 export default function PreferencesBoard({
   profile,
@@ -29,16 +29,12 @@ export default function PreferencesBoard({
     if (typeof window === "undefined") return false;
     return window.localStorage.getItem(RM_KEY) === "1";
   });
-  const [lang, setLang] = useState<"en" | "fr">(() => {
-    if (typeof window === "undefined") return "en";
-    return window.localStorage.getItem(LANG_KEY) === "fr" ? "fr" : "en";
-  });
   const [goal, setGoal] = useState(eye.dailyGoal.target);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(
@@ -58,17 +54,17 @@ export default function PreferencesBoard({
     };
   }, []);
 
+  // L'INTERRUPTEUR AGIT, depuis le 2026-09-18. Il ecrivait la preference et
+  // personne ne la lisait : les vingt-trois ecrans animes n'interrogeaient que
+  // le reglage du systeme. `applyReducedMotion` pose l'attribut sur la racine,
+  // que `prefersReducedMotion` lit partout ailleurs. Voir lib/motion.ts.
   const toggleReducedMotion = () => {
     setReducedMotion((prev) => {
       const next = !prev;
       window.localStorage.setItem(RM_KEY, next ? "1" : "0");
+      applyReducedMotion(next);
       return next;
     });
-  };
-
-  const pickLang = (l: "en" | "fr") => {
-    setLang(l);
-    window.localStorage.setItem(LANG_KEY, l);
   };
 
   return (
@@ -127,16 +123,12 @@ export default function PreferencesBoard({
             <button type="button" className="pr-stepper__btn" aria-label="Raise goal" disabled={goal >= 10} onClick={() => setGoal((g) => Math.min(10, g + 1))}>+</button>
           </div>
         </div>
-        <div className="pr-row">
-          <div className="pr-row__text">
-            <span className="pr-row__label">Language</span>
-            <span className="pr-row__help">Interface language.</span>
-          </div>
-          <div className="pr-seg" role="group" aria-label="Language">
-            <button type="button" className={`pr-seg__btn${lang === "en" ? " is-active" : ""}`} aria-pressed={lang === "en"} onClick={() => pickLang("en")}>EN</button>
-            <button type="button" className={`pr-seg__btn${lang === "fr" ? " is-active" : ""}`} aria-pressed={lang === "fr"} onClick={() => pickLang("fr")}>FR</button>
-          </div>
-        </div>
+        {/* LE SELECTEUR EN / FR EST PARTI le 2026-09-18, et c'est une correction
+            et non un retrait de fonction. Il ecrivait `jdt-lang` que personne ne
+            lisait, et il ne pouvait pas faire autrement : il n'existe aucune
+            traduction. Le bouton annoncait donc une langue d'interface que le
+            produit n'a jamais su servir. Le jour ou les traductions existent,
+            c'est ici qu'il revient, avec un lecteur en face. */}
       </section>
 
       {/* ── Account ── */}

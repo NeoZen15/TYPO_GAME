@@ -41,7 +41,7 @@ type LegalPageProps = {
 
 export default function LegalPage({ current, kicker, title, updated, intro, sections }: LegalPageProps) {
   return (
-    <main className="st pf-page">
+    <main className="st pf-page" lang="fr">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
 
       <ThemeSwitch />

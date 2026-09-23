@@ -50,6 +50,7 @@
     "check:security-gates": "node scripts/quality/check-security-gates.mjs",
     "check:admin-data-gate": "node scripts/quality/check-admin-data-gate.mjs",
     "check:competition-timing": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/quality/check-competition-timing.mjs",
+    "balayer-sessions": "node --env-file=.env.local scripts/maintenance/balayer-sessions.mjs",
     "conformite": "python3 scripts/conformite/conformite.py",
     "conformite:corriger": "python3 scripts/conformite/conformite.py --corriger",
     "test:e2e": "playwright test",

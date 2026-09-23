@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 type Specimen = { slug: string; name: string; cat: string };
 
@@ -20,7 +21,7 @@ export default function TypefaceRail({ specimens }: { specimens: readonly Specim
     const rail = railRef.current;
     if (!rail) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = prefersReducedMotion();
     reducedRef.current = reduced;
 
     let raf = 0;

@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { BOARD_SYSTEM_CSS, CREAM, MODE_ACCENT } from "@/features/profile/components/board-system";
+import { TEACHER_STEPS_CSS } from "@/features/teacher/components/teacher-steps";
 import { completionByClass, paceOfOpen } from "@/lib/teacher/teacher-derive";
 import type { ExerciseState, TeacherProfile } from "@/lib/teacher/mock-teacher";
 import { closedLabel, dueLabel, opensLabel, participation, urgencyOf } from "@/lib/teacher/teacher-time";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — Exercises. The list, and only the list: find an exercise, see where
@@ -58,7 +60,7 @@ export default function TeacherExercises({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(
@@ -118,8 +120,9 @@ export default function TeacherExercises({
   const pace = useMemo(() => paceOfOpen(teacher.exercises), [teacher.exercises]);
 
   return (
-    <div ref={rootRef} className="st tc--exos">
+    <div ref={rootRef} className="st tc-steps tc--exos">
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: TEACHER_STEPS_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: EXOS_CSS }} />
 
       <header className="st-intro st-sec">
@@ -131,8 +134,8 @@ export default function TeacherExercises({
         </p>
       </header>
 
-      <section className="st-panel st-sec" aria-label="Exercises">
-        <div className="st-panel__head">
+      <section className="tc-step st-sec" aria-label="Exercises">
+        <div className="tc-step__head">
           <div className="st-choice" role="group" aria-label="Show">
             {GROUPS.map((g) => (
               <button
@@ -147,7 +150,7 @@ export default function TeacherExercises({
             ))}
           </div>
 
-          <span className="st-panel__meta">
+          <span className="tc-step__meta">
             {group === "running" && "soonest first"}
             {group === "scheduled" && "next to open first"}
             {group === "done" && "most recent first"}
@@ -304,10 +307,10 @@ export default function TeacherExercises({
           reads next to a two-week one for 31. The whole reading is one gap: has
           the fill reached the mark. */}
       {pace.length > 0 && (
-        <section className="st-panel st-sec" aria-label="Open exercises against their deadline">
-          <div className="st-panel__head">
-            <h2 className="st-panel__title">Racing the deadline</h2>
-            <span className="st-panel__meta">the mark is where the time is · most behind first</span>
+        <section className="tc-step st-sec" aria-label="Open exercises against their deadline">
+          <div className="tc-step__head">
+            <h2 className="tc-step__title">Racing the deadline</h2>
+            <span className="tc-step__meta">the mark is where the time is · most behind first</span>
           </div>
 
           <ul className="tc-pace">
@@ -343,10 +346,10 @@ export default function TeacherExercises({
         </section>
       )}
 
-      <section className="st-panel st-sec tc-comp" aria-label="Who does the work">
-        <div className="st-panel__head">
-          <h2 className="st-panel__title">Who does the work</h2>
-          <span className="st-panel__meta">finished, out of everything set</span>
+      <section className="tc-step st-sec tc-comp" aria-label="Who does the work">
+        <div className="tc-step__head">
+          <h2 className="tc-step__title">Who does the work</h2>
+          <span className="tc-step__meta">finished, out of everything set</span>
         </div>
         <ul className="st-axes">
           {completion.map((c) => {

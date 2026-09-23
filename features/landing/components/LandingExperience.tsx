@@ -12,6 +12,7 @@ import CompareTeaser from "@/features/landing/components/CompareTeaser";
 import TypefaceRail from "@/features/landing/components/TypefaceRail";
 import MasteryClimb from "@/features/landing/components/MasteryClimb";
 import { HERO_SPECIMENS } from "@/features/landing/hero-specimens";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * New main landing page — built section by section.
@@ -95,7 +96,7 @@ export default function LandingExperience() {
 
   // Cycle the hero word through real typefaces (the live specimen).
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     const id = window.setInterval(() => {
       setSpecimenIndex((prev) => (prev + 1) % HERO_SPECIMENS.length);
     }, 2400);
@@ -133,7 +134,7 @@ export default function LandingExperience() {
   useEffect(() => {
     const grid = modesRef.current;
     if (!grid) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     grid.classList.add("lp-modes--armed");
     const io = new IntersectionObserver(
       (entries) => {

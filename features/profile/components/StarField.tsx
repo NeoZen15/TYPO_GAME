@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Quiet beige starfield (canvas). Inspired by the orbiting-stars CodePen the
@@ -30,7 +31,7 @@ export default function StarField({ density = 0.0003 }: { density?: number }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduce = !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const reduce = !!prefersReducedMotion();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     // Cached soft dot (gentle falloff to transparent — no hard edge). Its ink is

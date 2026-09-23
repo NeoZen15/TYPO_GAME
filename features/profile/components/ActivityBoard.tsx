@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { EyeProfile, PlayerProfile } from "@/lib/profile/mock-profile";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Activity — consistency (profile-tabs-spec §4): streak + record, a ~30-day
@@ -40,7 +41,7 @@ export default function ActivityBoard({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(

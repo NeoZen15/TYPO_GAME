@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { CREAM } from "@/features/profile/components/board-system";
+import Why from "@/features/teacher/components/TeacherWhy";
 import {
   DUE_SHORTCUTS,
   OPENS_SHORTCUTS,
@@ -20,13 +21,11 @@ import {
   shortMoment,
   spanLabel,
   spellDay,
-  spellMoment,
   stampOf,
   stepMonth,
   withDay,
   withTime,
   type LocalMoment,
-  type Shortcut,
   type WhenWindow,
 } from "@/lib/teacher/when";
 
@@ -172,9 +171,12 @@ export default function TeacherWhen({
         : value.due.day;
 
   return (
-    <section className="st-panel st-sec" aria-label="When">
+    <section className="tc-step st-sec" aria-label="When">
       <style dangerouslySetInnerHTML={{ __html: WHEN_CSS }} />
-      <h2 className="st-panel__title">When</h2>
+      <div className="tc-step__head">
+        <h2 className="tc-step__title">When</h2>
+        <span className="tc-step__meta">local time, to the minute</span>
+      </div>
 
       <div className="tc-new__grid">
         <MomentField
@@ -183,9 +185,6 @@ export default function TeacherWhen({
           note={immediate ? "right away" : undefined}
           aiming={open && next === "opens"}
           onToggle={() => (open && next === "opens" ? setOpen(false) : reveal("opens"))}
-          shortcuts={OPENS_SHORTCUTS}
-          onShortcut={(s) => value && jump("opens", s.resolve(value, now))}
-          shortcutOff={() => false}
         />
         <MomentField
           label="It closes"
@@ -193,9 +192,6 @@ export default function TeacherWhen({
           note={value && value.due.day === value.opens.day ? "same day" : undefined}
           aiming={open && next === "due"}
           onToggle={() => (open && next === "due" ? setOpen(false) : reveal("due"))}
-          shortcuts={DUE_SHORTCUTS}
-          onShortcut={(s) => value && jump("due", s.resolve(value, now))}
-          shortcutOff={(s) => (value === null ? true : stampOf(s.resolve(value, now)) <= stampOf(value.opens))}
         />
       </div>
 
@@ -276,31 +272,8 @@ export default function TeacherWhen({
             </div>
 
             <p className="tw-say">
-              {next === "opens"
-                ? "Click a day to open on."
-                : "Now the day it closes. An earlier day starts again."}
+              {next === "opens" ? "Click a day to open on" : "Now the day it closes"}
             </p>
-
-            {/* Four marks, four meanings, and they no longer trade places: the
-                filled cell is the opening whatever you are about to click. */}
-            <ul className="tw-key">
-              <li>
-                <span className="tw-key__mark is-opens" aria-hidden="true" />
-                opens
-              </li>
-              <li>
-                <span className="tw-key__mark is-due" aria-hidden="true" />
-                closes
-              </li>
-              <li>
-                <span className="tw-key__mark is-band" aria-hidden="true" />
-                open
-              </li>
-              <li>
-                <span className="tw-key__mark is-today" aria-hidden="true" />
-                today
-              </li>
-            </ul>
           </div>
 
           <div className="tw-side">
@@ -317,28 +290,37 @@ export default function TeacherWhen({
               blocked={(hour, minute) => dueTimeBlocked(value, hour, minute)}
               onPick={(t) => pickTime("due", t)}
             />
-            <button type="button" className="st-filter__btn tw-done" onClick={() => setOpen(false)}>
-              Done
-            </button>
+            <div className="tw-quick">
+              {(next === "opens" ? OPENS_SHORTCUTS : DUE_SHORTCUTS).map((shortcut) => (
+                <button
+                  key={shortcut.label}
+                  type="button"
+                  className="st-filter__btn"
+                  disabled={
+                    next === "due" && stampOf(shortcut.resolve(value, now)) <= stampOf(value.opens)
+                  }
+                  onClick={() => jump(next, shortcut.resolve(value, now))}
+                >
+                  {shortcut.label}
+                </button>
+              ))}
+              <button type="button" className="st-filter__btn tw-done" onClick={() => setOpen(false)}>
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      <div className="tc-set tw-span">
-        <div className="tc-set__main">
-          <span className="st-field__label">Open for</span>
-          <strong className="tw-span__value">{value === null ? "—" : spanLabel(minutes)}</strong>
-          {value !== null && (
-            <span className="tw-span__gloss">
-              {immediate ? "Opens right away" : `Opens ${spellMoment(value.opens, thisYear)}`}, closes{" "}
-              {spellMoment(value.due, thisYear)}.
-            </span>
-          )}
-        </div>
-        <p className="tc-set__say">
-          The window is what makes a reading possible: half the class finished
-          says nothing until you know how much of the time has gone.
-        </p>
+      <div className="tw-span">
+        <span className="st-field__label tc-set__row">
+          Open for
+          <Why>
+            The window is what makes a reading possible: half the class finished
+            says nothing until you know how much of the time has gone.
+          </Why>
+        </span>
+        <strong className="tw-span__value">{value === null ? "—" : spanLabel(minutes)}</strong>
       </div>
     </section>
   );
@@ -413,9 +395,6 @@ function MomentField({
   note,
   aiming,
   onToggle,
-  shortcuts,
-  onShortcut,
-  shortcutOff,
 }: {
   label: string;
   moment: LocalMoment | null;
@@ -423,9 +402,6 @@ function MomentField({
   /** True when the next click on the grid lands on this end. */
   aiming: boolean;
   onToggle: () => void;
-  shortcuts: ReadonlyArray<Shortcut>;
-  onShortcut: (shortcut: Shortcut) => void;
-  shortcutOff: (shortcut: Shortcut) => boolean;
 }) {
   return (
     <div className="st-field">
@@ -446,19 +422,6 @@ function MomentField({
         </span>
       </span>
       {note ? <span className="tw-field__note">{note}</span> : null}
-      <div className="tw-field__shortcuts">
-        {shortcuts.map((shortcut) => (
-          <button
-            key={shortcut.label}
-            type="button"
-            className="st-filter__btn"
-            disabled={moment === null || shortcutOff(shortcut)}
-            onClick={() => onShortcut(shortcut)}
-          >
-            {shortcut.label}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
@@ -471,7 +434,6 @@ const WHEN_CSS = `
   .st-select__caret { transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1); }
   .st-selectwrap.is-open .st-select__caret { transform: translateY(-50%) rotate(180deg); }
   .tw-field__note { margin-top: 0.35rem; font-family: var(--pf-mono); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
-  .tw-field__shortcuts { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.55rem; }
   .st-filter__btn:disabled { cursor: default; opacity: 0.35; }
 
   .tw-editor { margin-top: 1.4rem; padding-top: 1.3rem; border-top: 1px solid rgb(${CREAM} / 0.1); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.1rem clamp(1.4rem, 4vw, 2.8rem); align-items: start; }
@@ -517,14 +479,6 @@ const WHEN_CSS = `
   .tw-day.is-opens::after { background: var(--pf-bg); }
 
   .tw-say { margin: 0.35rem 0 0; max-width: 17rem; font-size: 0.72rem; line-height: 1.4; color: rgb(${CREAM} / 0.5); }
-  .tw-key { display: flex; flex-wrap: wrap; gap: 0.25rem 0.8rem; margin: 0.1rem 0 0; padding: 0; list-style: none; }
-  .tw-key li { display: inline-flex; align-items: center; gap: 0.3rem; font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.42); }
-  .tw-key__mark { width: 0.65rem; height: 0.65rem; border-radius: var(--radius-pill); border: 1px solid transparent; }
-  .tw-key__mark.is-opens { background: var(--pf-cream); }
-  .tw-key__mark.is-due { border-color: rgb(${CREAM} / 0.55); }
-  .tw-key__mark.is-band { background: rgb(${CREAM} / 0.12); border-radius: 0; }
-  .tw-key__mark.is-today { position: relative; }
-  .tw-key__mark.is-today::after { content: ""; position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px; border-radius: 50%; background: rgb(${CREAM} / 0.55); }
 
   /* The two hours, side by side. An hour that belonged to whichever end was
      last touched would be a mode, and the mode is what we just removed. */
@@ -536,12 +490,10 @@ const WHEN_CSS = `
   .tw-hour__pair .st-select { padding: 0.42rem 1.6rem 0.42rem 0.75rem; font-size: 0.84rem; font-variant-numeric: tabular-nums; }
   .tw-hour__pair .st-select__caret { right: 0.65rem; }
   .tw-hour__colon { font-family: var(--pf-mono); font-size: 0.8rem; color: rgb(${CREAM} / 0.4); }
-  .tw-done { align-self: end; justify-self: start; }
+  .tw-done { border-color: rgb(${CREAM} / 0.45); color: var(--pf-cream); }
 
-  .tw-span { margin-top: 1.3rem; padding-top: 1.1rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
-  .tw-span .tc-set__main { gap: 0.2rem; }
+  .tw-span { display: grid; justify-items: start; gap: 0.2rem; margin-top: 1.3rem; padding-top: 1.1rem; border-top: 1px solid rgb(${CREAM} / 0.1); }
   .tw-span__value { font-size: clamp(1.2rem, 2.2vw, 1.55rem); font-weight: 660; letter-spacing: -0.03em; line-height: 1.1; color: var(--pf-cream); font-variant-numeric: tabular-nums; }
-  .tw-span__gloss { max-width: 46ch; text-wrap: pretty; font-size: 0.8rem; line-height: 1.5; color: rgb(${CREAM} / 0.5); }
 
   @media (max-width: 420px) {
     .tw-week, .tw-grid__row { grid-template-columns: repeat(7, 1fr); }

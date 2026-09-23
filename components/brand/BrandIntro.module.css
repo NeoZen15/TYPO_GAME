@@ -1,0 +1,91 @@
+/* L'écran d'intro : une feuille de papier de marque posée sur le site, percée
+ * par le symbole, et le trou grandit jusqu'à ce que la page soit là.
+ *
+ * Palette imposée par le propriétaire le 2026-09-16 : blanc et beige, rien
+ * d'autre. Le blanc est le blanc cassé de la marque, le blanc pur étant banni
+ * par le §1 du contrat de cohérence UI. Les valeurs sont écrites en dur : le
+ * site est servi en thème sombre, donc une encre de thème vaudrait du beige ici
+ * et la feuille disparaîtrait. */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  /* Au dessus de tout : le plus haut du site est à 90. */
+  z-index: 200;
+  overflow: hidden;
+  /* La feuille couvre mais ne capture rien : si une image tarde, le joueur garde
+     la main sur la page qui est déjà là dessous. */
+  pointer-events: none;
+}
+
+/* Le trou doit s'ouvrir sur du vide et non sur des morceaux de page.
+   Sans ce plan, on voyait à travers la silhouette du logo des bouts de contenu
+   de la landing, textes compris : ça ne se lisait plus comme une marque mais
+   comme une tache. Ce n'est pas une couleur choisie, c'est le fond de la page
+   elle même, repris par son token pour rester juste si le thème clair revient.
+   Il s'efface à la fin, donc le contenu du site arrive en fondu et non d'un
+   coup. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--background, #000000);
+}
+
+.playing .backdrop {
+  animation: brand-intro-clear 0.5s ease 2.4s forwards;
+}
+
+@keyframes brand-intro-clear {
+  to {
+    opacity: 0;
+  }
+}
+
+.sheet {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.holeShape {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  /* État de départ tenu tant que l'animation n'est pas lancée.
+     0,26 et pas 0,07 : à 7 % le symbole ne faisait que 68 px de large, ses
+     traits fins tombaient sous le pixel et le masque rendait une bouillie grise
+     au lieu d'un logo. À 0,26 il occupe un cinquième de la hauteur visible,
+     c'est une taille de logo d'écran d'accueil et ses traits se lisent. */
+  transform: translate(500px, 500px) scale(0.26);
+  will-change: transform;
+}
+
+/* L'animation n'est armée qu'au moment où la page sait vraiment peindre. Mesuré
+   le 2026-09-17 : la première image de la page arrive à 1,4 s, alors qu'une
+   animation déclarée au chargement a déjà consommé 1,4 s de ses 1,9 s. On ne
+   voyait donc que sa fin, et hachée. */
+.playing .holeShape {
+  animation: brand-intro-open 1.9s cubic-bezier(0.55, 0, 0.85, 0.4) 1s forwards;
+}
+
+/* Le palier à 22 % a sauté quand la seconde d'attente est arrivée : il retenait
+   déjà l'ouverture pendant 0,4 s, et cumulé à l'attente ça faisait presque une
+   seconde et demie sans rien. La courbe suffit à garder un départ lent. */
+@keyframes brand-intro-open {
+  from {
+    transform: translate(500px, 500px) scale(0.26);
+  }
+  to {
+    transform: translate(500px, 500px) scale(32);
+  }
+}
+
+/* Mouvement réduit : pas de version douce, on n'entre pas du tout. Deux secondes
+   imposées à quelqu'un qui demande moins de mouvement, ce serait deux secondes
+   de trop. */
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    display: none;
+  }
+}

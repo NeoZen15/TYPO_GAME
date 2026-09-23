@@ -7,6 +7,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch";
 import { BOARD_SYSTEM_CSS } from "@/features/profile/components/board-system";
 import { sessionEndCopy } from "@/content/copy";
 import type { RecapPanel, RecapView } from "@/lib/game/recap-view";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // The end of a session, for every mode. One screen, no scrolling.
 //
@@ -128,7 +129,7 @@ export default function SessionRecap({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const observer = new IntersectionObserver(

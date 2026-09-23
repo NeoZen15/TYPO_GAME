@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BOARD_SYSTEM_CSS, CREAM, MODE_ACCENT } from "@/features/profile/components/board-system";
+import { BOARD_SYSTEM_CSS, CREAM } from "@/features/profile/components/board-system";
 import { ensureGameFontFace } from "@/lib/game/fonts/inject-font-face";
 import TeacherBack from "@/features/teacher/components/TeacherBack";
 import TeacherContract, {
@@ -10,9 +10,12 @@ import TeacherContract, {
   type ExerciseContract,
 } from "@/features/teacher/components/TeacherContract";
 import TeacherWhen from "@/features/teacher/components/TeacherWhen";
+import Why, { WHY_CSS } from "@/features/teacher/components/TeacherWhy";
+import { TEACHER_STEPS_CSS } from "@/features/teacher/components/teacher-steps";
 import { initialWindow, spellMoment, stampOf, windowContract, type WhenWindow } from "@/lib/teacher/when";
 import type { ExerciseScope, TeacherExercise, TeacherProfile } from "@/lib/teacher/mock-teacher";
 import type { FaceScope, FaceTree, PickableFace } from "@/lib/teacher/faces-contracts";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — the composer. The one screen where a teacher writes instead of reads.
@@ -46,6 +49,29 @@ import type { FaceScope, FaceTree, PickableFace } from "@/lib/teacher/faces-cont
 // ---------------------------------------------------------------------------
 
 const COUNTS = [10, 15, 20, 25, 30];
+
+/**
+ * LA COULEUR DES TROIS FACONS DE JOUER, et le controle a la sienne.
+ *
+ * Il partageait le vert de l'entrainement parce que le moteur le traite comme
+ * tel (`mode` vaut `training` pour lui), mais ce n'est pas ce qu'il EST pour le
+ * professeur : l'entrainement compte dans la progression, le controle est une
+ * mesure qui n'y touche pas. Deux choses differentes ne peuvent pas porter la
+ * meme couleur sur l'ecran ou l'on choisit entre elles.
+ */
+const KIND_ACCENT: Record<"exercise" | "control" | "competition", string> = {
+  exercise: "var(--mode-training)",
+  // LE REPLI N'EST PAS UNE DEUXIEME SOURCE DE VERITE, c'est un filet, et il
+  // n'est pose que sur cette variable la. Les trois autres existent depuis
+  // toujours ; `--mode-control` est nee le 2026-09-12, donc toute feuille de
+  // style compilee avant cette date ne la connait pas. Et une variable absente
+  // dans un `color-mix()` ne degrade pas, elle INVALIDE : l'ecran a perdu d'un
+  // coup ses pastilles, son bouton et son calendrier sur un cache de serveur de
+  // dev qui n'avait pas recompile la feuille. Un defaut qui coute une page
+  // entiere ne se paie pas au prix d'un litteral repete une fois.
+  control: "var(--mode-control, #b794ff)",
+  competition: "var(--mode-competition)",
+};
 
 const scopeKey = (scope: FaceScope) => `${scope.kind}|${scope.key}`;
 
@@ -139,7 +165,7 @@ export default function TeacherComposePage({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(
@@ -164,6 +190,45 @@ export default function TeacherComposePage({
   // it cannot know is only ever reached from an event. Same shape as `getNowMs`
   // in CompetitionScreen, for the same reason.
   const readClock = useCallback(() => Date.now(), []);
+
+  // ── LES ETAPES QU'ON N'A PAS ENCORE ATTEINTES SONT FLOUES ──────────────
+  //
+  // Demande du proprietaire, 2026-09-12 : « mettre un peu plus flou les
+  // questions a partir du moment ou elles sont pas repondues, tu vois le bloc,
+  // mais c'est un petit peu flou, et quand tu scroll il se defloute ». C'est le
+  // contraire d'un enchainement, qu'il avait refuse : rien n'est cache, la
+  // forme entiere de l'exercice reste lisible d'un coup d'oeil, seul le detail
+  // attend qu'on arrive dessus.
+  //
+  // UNE ETAPE NETTE LE RESTE. Re-flouter en remontant reviendrait a brouiller
+  // ses propres reponses, ce qui est la faute que ce genre d'effet commet
+  // presque toujours : l'observateur se detache des qu'il a servi.
+  //
+  // TROIS SORTIES DE SECOURS, parce qu'un flou est une degradation de lecture
+  // avant d'etre un effet : le survol reveille un bloc, le focus clavier aussi,
+  // et 'prefers-reduced-motion' rend tout net d'entree.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const steps = [...root.querySelectorAll<HTMLElement>(".tc-step")];
+    if (prefersReducedMotion()) {
+      steps.forEach((step) => step.classList.add("is-near"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-near");
+          io.unobserve(entry.target);
+        }
+      },
+      // Il faut etre franchement entre dans l'ecran, pas l'effleurer par le bas.
+      { rootMargin: "-12% 0px -22% 0px" },
+    );
+    steps.forEach((step) => io.observe(step));
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const stamp = readClock();
@@ -243,7 +308,20 @@ export default function TeacherComposePage({
   const hits = query.trim().length < 2 ? NO_FACES : fetchedHits;
 
   const cls = classes.find((c) => c.id === classId) ?? null;
-  const accent = MODE_ACCENT[mode] ?? "var(--pf-cream)";
+  // C'EST LA FACON DE JOUER QUI COLORE LA PAGE, et plus le cran d'exigence.
+  //
+  // L'exigence l'a tenue deux jours, pour une bonne raison : c'est la seule
+  // echelle ordonnee de l'ecran. Mais elle a cesse d'etre visible le jour ou le
+  // bloc du contrat s'est replie par defaut, et un reglage qu'on ne voit pas ne
+  // peut pas commander la couleur de tout le reste. La facon de jouer est le
+  // premier controle de la page, et c'est le fait le plus lourd de l'exercice :
+  // l'exercice compte dans la progression, le controle mesure sans y toucher,
+  // la competition court apres le chrono. On clique Control, la page devient
+  // violette.
+  //
+  // L'echelle d'exigence garde ses quatre teintes SUR SES QUATRE PASTILLES,
+  // dans son propre groupe, ou elle continue de se lire comme une echelle.
+  const accent = KIND_ACCENT[kind];
 
   const addSlug = useCallback((slug: string) => {
     setSlugs((prev) => (prev.includes(slug) ? prev : [...prev, slug]));
@@ -319,9 +397,17 @@ export default function TeacherComposePage({
   const closesSentence = when === null ? "…" : spellMoment(when.due);
 
   return (
-    <div ref={rootRef} className="st tc--new">
+    // L'ACCENT DE LA PAGE EST CELUI DU MODE, et il n'y en a pas d'autre.
+    // '#40d38f' pour l'entrainement, '#ff934a' pour la competition : deux
+    // valeurs que le produit peint deja (MODE_ACCENT), utilisees ici avec le
+    // meme dosage qu'ailleurs, en 'color-mix' et jamais en aplat. Rien n'est
+    // colore par logique semantique : la seule chose qui prend la couleur est
+    // ce que le professeur a CHOISI, et elle change avec ce qu'il fabrique.
+    <div ref={rootRef} className="st tc-steps tc--new" style={{ "--st-accent": accent } as React.CSSProperties}>
       <style dangerouslySetInnerHTML={{ __html: BOARD_SYSTEM_CSS }} />
       <style dangerouslySetInnerHTML={{ __html: NEW_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: TEACHER_STEPS_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: WHY_CSS }} />
 
       <TeacherBack label={backLabel} onClick={onBack} />
 
@@ -335,8 +421,11 @@ export default function TeacherComposePage({
       </header>
 
       {/* ── 1. Who, and how it is played ── */}
-      <section className="st-panel st-sec" aria-label="Who it is for">
-        <h2 className="st-panel__title">Who it is for</h2>
+      <section className="tc-step st-sec" aria-label="Who it is for">
+        <div className="tc-step__head">
+          <h2 className="tc-step__title">Who it is for</h2>
+          <span className="tc-step__meta">the envelope of the exercise</span>
+        </div>
         <div className="tc-new__grid">
           <label className="st-field">
             <span className="st-field__label">Class</span>
@@ -364,36 +453,49 @@ export default function TeacherComposePage({
           </label>
 
           <div className="st-field">
-            <span className="st-field__label">How it is played</span>
-            <div className="st-choice" role="group" aria-label="Type">
+            <span className="st-field__label tc-set__row">
+              How it is played
+              <Why>
+                <em>Exercise</em>: they can retry a question until they read it
+                right, and it counts towards their progress. <em>Control</em>:
+                they can retry, but it does not touch their progress, it is a
+                measurement. <em>Competition</em>: one answer each, two minutes,
+                no effect on their progress.
+              </Why>
+            </span>
+            <div className="st-choice" role="group" aria-label="How it is played">
+              {/* Chaque mode porte SA teinte, celle qu'il a partout ailleurs
+                  dans le produit. Le controle est de l'entrainement pour le
+                  moteur, donc il en prend le vert : inventer une quatrieme
+                  couleur pour lui serait la seule valeur nouvelle de l'ecran. */}
               {([
-                ["exercise", "Exercice"],
-                ["control", "Contrôle"],
-                ["competition", "Compétition"],
+                ["exercise", "Exercise"],
+                ["control", "Control"],
+                ["competition", "Competition"],
               ] as const).map(([id, label]) => (
                 <button
                   key={id}
                   type="button"
                   className={`st-choice__btn${kind === id ? " is-active" : ""}`}
                   aria-pressed={kind === id}
+                  style={{ "--st-accent": KIND_ACCENT[id] } as React.CSSProperties}
                   onClick={() => setKind(id)}
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <span className="tc-new__hint">
-              {kind === "exercise"
-                ? "They can retry a question until they read it right, and it counts towards their progress."
-                : kind === "control"
-                  ? "They can retry, but it does not touch their progress: this one is a measurement."
-                  : "One answer each, two minutes, and no effect on their progress."}
-            </span>
           </div>
 
           {mode === "training" ? (
             <label className="st-field">
-              <span className="st-field__label">How long</span>
+              <span className="st-field__label tc-set__row">
+                How long
+                <Why>
+                  The same number for everyone. Who gets which faces is decided
+                  below; the length never is.
+                </Why>
+              </span>
               <span className="st-selectwrap">
                 <select
                   className="st-select"
@@ -406,40 +508,43 @@ export default function TeacherComposePage({
                 </select>
                 <span className="st-select__caret" aria-hidden="true">▾</span>
               </span>
-              <span className="tc-new__hint">
-                The same number for everyone. Who gets which faces is decided
-                below, the length never is.
-              </span>
             </label>
           ) : (
             <div className="st-field">
-              <span className="st-field__label">How long</span>
+              <span className="st-field__label tc-set__row">
+                How long
+                <Why>
+                  A competition is not a number of questions, it is a window: as
+                  many as they can read in the time.
+                </Why>
+              </span>
               {/* Two minutes for everyone: it is what makes the mode comparable,
                   so it is stated and not offered as a setting (spec §20). */}
               <span className="tc-new__fixed">Two minutes, the same for everyone</span>
-              <span className="tc-new__hint">
-                A competition is not a number of questions, it is a window: as
-                many as they can read in the time.
-              </span>
             </div>
           )}
         </div>
       </section>
 
       {/* ── 2. The ground, and the compulsory stops ── */}
-      <section className="st-panel st-sec" aria-label="What it asks about">
-        <div className="st-panel__head">
-          <h2 className="st-panel__title">What it asks about</h2>
-          <span className="st-panel__meta">
+      <section className="tc-step st-sec" aria-label="What it asks about">
+        <div className="tc-step__head">
+          <h2 className="tc-step__title">What it asks about</h2>
+          <span className="tc-step__meta">
             <em>{total}</em> playable faces · only what the product can really serve
           </span>
         </div>
 
         {/* The ground */}
-        <div className="tc-set">
-          <div className="tc-set__main">
-            <span className="st-field__label">The ground</span>
-            <div className="tc-new__branches">
+        <div className="tc-set tc-set--wide">
+          <span className="st-field__label tc-set__row">
+            The ground
+            <Why>
+              Point at families. The engine draws from there, and the count on
+              each one tells you how much you just opened.
+            </Why>
+          </span>
+          <div className="tc-new__branches">
           {tree.map((branch) => {
             const isOn = scopes.some((s) => scopeKey(s) === scopeKey(branch.scope));
             const isOpen = openBranch === branch.scope.key;
@@ -487,21 +592,21 @@ export default function TeacherComposePage({
                 );
               })}
             </div>
-          </div>
-          <p className="tc-set__say">
-            Point at families. The engine draws from there, and the count on each
-            one tells you how much you just opened.
-          </p>
         </div>
 
         {/* The stops */}
-        <div className="tc-set">
-          <div className="tc-set__main tc-new__stops">
-            {/* ONE label, not two. "Faces you want for sure" sat above a second
-                label reading "Search the catalogue", on the same field: the
-                placeholder says what to type, so the inner one was noise. */}
-            <span className="st-field__label">Faces you want for sure</span>
-            <div className="tc-new__addrow">
+        <div className="tc-set tc-set--wide">
+          {/* ONE label, not two. "Faces you want for sure" sat above a second
+              label reading "Search the catalogue", on the same field: the
+              placeholder says what to type, so the inner one was noise. */}
+          <span className="st-field__label tc-set__row">
+            Faces you want for sure
+            <Why>
+              Named here, asked to every student, whatever the families above
+              draw.
+            </Why>
+          </span>
+          <div className="tc-new__addrow">
               <input
                 className="st-input tc-new__add"
                 type="search"
@@ -522,12 +627,8 @@ export default function TeacherComposePage({
                 >
                   Add the pair they keep missing
                 </button>
-              )}
-            </div>
+            )}
           </div>
-          <p className="tc-set__say">
-            Named here, asked to every student, whatever the families above draw.
-          </p>
         </div>
 
         {hits.length > 0 && (
@@ -554,20 +655,25 @@ export default function TeacherComposePage({
           </ul>
         )}
 
-        {picks.length === 0 && scopes.length === 0 ? (
-          <p className="st-empty">
-            Nothing chosen yet. A family is enough to start: the three wrong
-            answers come from the whole catalogue, not from your selection.
-          </p>
-        ) : (
-          <>
-            {scopes.length > 0 && (
-              <p className="tc-new__ground">
-                Drawing from <em>{scopes.map(scopeName).join(", ")}</em>, that is{" "}
-                <em>{groundCount}</em> {faceWord(groundCount)}.
-              </p>
-            )}
-            {picks.length > 0 && (
+        <div className="tc-set tc-set--wide tc-new__chosen">
+          <span className="st-field__label tc-set__row">
+            Chosen so far
+            <Why>
+              A family is enough to start: the three wrong answers come from the
+              whole catalogue, not from your selection.
+            </Why>
+          </span>
+          {picks.length === 0 && scopes.length === 0 ? (
+            <p className="st-empty tc-new__none">Nothing yet.</p>
+          ) : (
+            <>
+              {scopes.length > 0 && (
+                <p className="tc-new__ground">
+                  Drawing from <em>{scopes.map(scopeName).join(", ")}</em>, that is{" "}
+                  <em>{groundCount}</em> {faceWord(groundCount)}.
+                </p>
+              )}
+              {picks.length > 0 && (
               <ul className="st-faces tc-new__picks">
                 {picks.map((face) => (
                   <li key={face.slug} className="st-face tc-new__pick">
@@ -585,11 +691,12 @@ export default function TeacherComposePage({
                       ×
                     </button>
                   </li>
-                ))}
-              </ul>
-            )}
-          </>
-        )}
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </div>
 
         {/* MEASURED IN THE FILES, and the only judgement this screen makes. */}
         {picks.length >= 2 && (
@@ -639,77 +746,60 @@ export default function TeacherComposePage({
       {/* ── 3. When ── */}
       <TeacherWhen value={when} now={now} onChange={setWhen} />
 
-      {/* ── 4. What is about to go out, in one sentence ── */}
-      <section className="st-panel st-sec tc-new__recap" aria-label="About to go out">
-        <div className="st-panel__head">
-          <h2 className="st-panel__title">About to go out</h2>
-          <span className="st-panel__meta">read it back, then give it</span>
-        </div>
-        <p className="tc-new__sentence">
-          <em>{mode === "competition" ? "Two minutes" : `${count} questions`}</em> on{" "}
-          {scopes.length > 0 ? <em>{scopes.map(scopeName).join(", ")}</em> : null}
-          {scopes.length > 0 && picks.length > 0 ? " with " : null}
-          {picks.length > 0 ? <em>{picks.length} named faces</em> : null}
-          {scopes.length === 0 && picks.length === 0 ? <em>nothing yet</em> : null} for{" "}
-          <em>{cls?.name ?? "no class yet"}</em>, {cls ? `${cls.studentCount} students, ` : ""}
-          played as{" "}
-          <span
-            className="st-session__mode tc-new__mode"
-            style={{
-              borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
-              color: `color-mix(in srgb, ${accent} 62%, var(--pf-cream))`,
-            }}
-          >
-            {mode}
-          </span>
-          . It opens <em>{opensSentence}</em> and closes <em>{closesSentence}</em>.
-        </p>
+      {/* ── 4. Ce qui va partir, et ca flotte ────────────────────────────
+          Le recap etait la cinquieme etape, tout en bas, donc invisible pendant
+          qu'on remplit les quatre autres. Le proprietaire : « je trouve ca cool
+          de pouvoir voir son ensemble avant de valider, meme si on l'a a la fin,
+          mais peut etre le faire flotter ».
 
-        {/* L'APERCU, ET IL NE PROMET QUE CE QUE LE CONTRAT PORTE. Pas les vingt
-            questions exactes : le moteur les compose au moment ou l'eleve joue, et
-            avec l'adaptation elles ne sont meme pas les memes pour tout le monde.
-            Ce qui est montre est ce qui est decide ici. */}
-        <p className="tc-new__preview">
-          <span>{cls ? `${cls.studentCount} students` : "no class yet"}</span>
-          <span>{kind === "competition" ? "2 minutes" : `${count} questions`}</span>
-          <span>{EXIGENCE_WORD[terms.exigence]}{terms.adaptive ? ", tuned per student" : ""}</span>
-          {scopes.length > 0 && <span>{scopes.map(scopeName).join(", ")}</span>}
-          {picks.length > 0 && <span>{picks.length} {faceWord(picks.length)} asked for sure</span>}
-          {keptPairs.length > 0 && (
+          'position: sticky' et non 'fixed' : la barre se decolle du bas de
+          l'ecran quand la page se termine et reprend sa place naturelle, donc
+          elle ne recouvre jamais la fin du formulaire et n'oblige a reserver
+          aucune marge sous la page. Elle porte aussi ce qui manque, de sorte
+          qu'on n'a plus besoin de chercher pourquoi le bouton est eteint. */}
+      <div className="tc-bar" role="region" aria-label="About to go out">
+        <div className="tc-bar__in">
+          <p className="tc-new__preview tc-bar__preview">
+            <span>{cls ? `${cls.studentCount} students` : "no class yet"}</span>
+            <span>{kind === "competition" ? "2 minutes" : `${count} questions`}</span>
+            <span>{EXIGENCE_WORD[terms.exigence]}{terms.adaptive ? ", tuned per student" : ""}</span>
+            {scopes.length > 0 && <span>{scopes.map(scopeName).join(", ")}</span>}
+            {picks.length > 0 && <span>{picks.length} {faceWord(picks.length)} asked for sure</span>}
+            {keptPairs.length > 0 && (
+              <span>
+                {keptPairs.length} confusion{keptPairs.length > 1 ? "s" : ""} targeted
+              </span>
+            )}
             <span>
-              {keptPairs.length} confusion{keptPairs.length > 1 ? "s" : ""} targeted
+              {when === null ? "…" : `opens ${opensSentence}, closes ${closesSentence}`}
             </span>
-          )}
-        </p>
+            <span
+              className="st-session__mode tc-new__mode"
+              style={{
+                borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
+                color: `color-mix(in srgb, ${accent} 62%, var(--pf-cream))`,
+              }}
+            >
+              {kind}
+            </span>
+          </p>
 
-        {picks.length > 0 && (
-          <ul className="st-faces tc-new__previewfaces">
-            {picks.slice(0, 6).map((face) => (
-              <li key={face.slug} className="st-face">
-                {/* Rien que la taille sur cet element : le reste vient du fichier
-                    de police, sinon ce n'est pas un specimen. */}
-                <span className="st-face__glyph" style={{ fontFamily: face.fontFamily }}>Aa</span>
-                <span className="st-face__name">{face.name}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <div className="tc-new__actions">
-          <button
-            type="button"
-            className="st-action st-action--primary"
-            disabled={!ready}
-            onClick={give}
-          >
-            {cls ? `Give it to ${cls.name}` : "Give it"}
-          </button>
-          <button type="button" className="st-action st-action--compact" onClick={onBack}>
-            Cancel
-          </button>
+          <div className="tc-bar__actions">
+            {!ready && <span className="tc-bar__missing">{missing}</span>}
+            <button type="button" className="st-action st-action--compact" onClick={onBack}>
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="st-action st-action--primary"
+              disabled={!ready}
+              onClick={give}
+            >
+              {cls ? `Give it to ${cls.name}` : "Give it"}
+            </button>
+          </div>
         </div>
-        {!ready && <span className="tc-new__hint">{missing}</span>}
-      </section>
+      </div>
     </div>
   );
 }
@@ -719,33 +809,27 @@ const NEW_CSS = `
   .tc-new__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem) clamp(0.9rem, 2vw, 1.4rem); align-items: start; }
   @media (max-width: 760px) { .tc-new__grid { grid-template-columns: 1fr; } }
 
-  /* ── THE ANATOMY OF A SETTING, and the reason this screen was redone ──
-     A panel is 1011 px wide inside and a readable line of this text is 440.
-     Prose left-aligned in a box that wide leaves fifty-five per cent void
-     beside every sentence, which is what "everything is stuck to the left,
-     it makes no sense" was pointing at. So a setting is two columns: what you
-     touch on the left, what it means on the right, both starting on the same
-     line. Declared here and used by TeacherContract and TeacherWhen too: the
-     composer is their parent and is always mounted, so one declaration is
-     enough and the three panels cannot drift apart. */
-  .tc-set { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 0.55rem clamp(1.5rem, 3.2vw, 2.8rem); align-items: start; }
-  .tc-set + .tc-set { margin-top: 1.75rem; }
-  @media (max-width: 780px) {
-    .tc-set { grid-template-columns: 1fr; }
-    .tc-set + .tc-set { margin-top: 1.45rem; }
-  }
-  .tc-set__main { display: grid; gap: 0.5rem; justify-items: start; min-width: 0; }
-  .tc-set__main > .st-choice, .tc-set__main > .tc-new__branches, .tc-set__main > .tc-ct__pairs { margin: 0; }
-  .tc-set__say { margin: 0; max-width: 60ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.55; color: rgb(${CREAM} / 0.45); }
-  .tc-set__say em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
-  /* On a narrow screen the explanation follows its control instead of sitting
-     in a column of its own, so it must not keep the two-column top gap. */
-  @media (max-width: 780px) { .tc-set__say { margin-top: -0.15rem; } }
+  /* ── THE SHAPE OF A SETTING, and it is block 1's, which the owner kept ──
+     A label, its control across the width, and NOTHING ELSE. The explanation
+     used to sit permanently beside it, which turned a creation form into a
+     document to read; it now waits under the marker next to the label (see
+     TeacherWhy). A teacher in a hurry never reads a word, a teacher unsure of
+     one puts the cursor on it.
+
+     Declared here because the composer is the parent of TeacherContract and
+     TeacherWhen and is always mounted: one declaration, three panels that
+     cannot drift apart. */
+  .tc-set { display: grid; gap: 0.5rem; justify-items: start; min-width: 0; }
+  .tc-set + .tc-set { margin-top: 1.5rem; }
+  .tc-set > .st-choice, .tc-set > .tc-new__branches { margin: 0; }
+  /* A control that carries a bar, a wrapping field or a shelf of pills takes
+     the whole width: half a bar reads as a half-full gauge. */
+  .tc-set--wide { justify-items: stretch; }
+  .tc-set__row { display: flex; align-items: baseline; gap: 0.1rem; }
   @media (max-width: 460px) {
-    .tc-set__main > .st-choice { max-width: 100%; flex-wrap: wrap; border-radius: var(--radius); }
+    .tc-set > .st-choice { max-width: 100%; flex-wrap: wrap; border-radius: var(--radius); }
   }
   .tc-new__hint { display: block; margin-top: 0.45rem; max-width: 56ch; text-wrap: pretty; font-size: 0.78rem; line-height: 1.5; color: rgb(${CREAM} / 0.45); }
-  .st-panel .st-empty { margin-top: 1.5rem; }
   .tc-new__fixed { font-size: 0.9rem; color: var(--pf-cream); padding: 0.6rem 0; }
 
 
@@ -757,7 +841,7 @@ const NEW_CSS = `
   .tc-new__more:hover { color: var(--pf-cream); }
   .tc-new__leaves { display: flex; flex-wrap: wrap; gap: 0.4rem; max-width: 26rem; }
   .st-filter__btn em { font-style: normal; font-variant-numeric: tabular-nums; opacity: 0.55; }
-  .tc-new__ground { margin: 1.5rem 0 0; font-size: 0.84rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
+  .tc-new__ground { margin: 0; font-size: 0.84rem; line-height: 1.5; color: rgb(${CREAM} / 0.55); }
   .tc-new__ground em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
 
   .tc-new__addrow { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; width: 100%; }
@@ -774,7 +858,9 @@ const NEW_CSS = `
   .tc-new__hitname { font-size: 1.15rem; line-height: 1.25; color: var(--pf-cream); }
   .tc-new__hitmeta { font-family: var(--pf-mono); font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(${CREAM} / 0.38); }
 
-  .tc-new__picks { grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); margin-top: 1.5rem; }
+  .tc-new__chosen { margin-top: 1.5rem; }
+  .tc-new__none { margin: 0; }
+  .tc-new__picks { grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); margin-top: 0.3rem; }
   .tc-new__pick { position: relative; align-content: start; }
   .tc-new__diff { font-family: var(--pf-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.32); }
   .tc-new__rm { position: absolute; top: -0.35rem; right: -0.35rem; }
@@ -782,7 +868,6 @@ const NEW_CSS = `
   .tc-new__read { margin: 1.5rem 0 0; max-width: 62ch; text-wrap: pretty; font-size: 0.82rem; line-height: 1.55; color: rgb(${CREAM} / 0.55); }
   .tc-new__read em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
 
-  .tc-new__recap { border-color: rgb(${CREAM} / 0.22); }
   /* L'apercu : des faits separes, lisibles d'un coup d'oeil, jamais une phrase. */
   .tc-new__preview { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin: 0 0 1.1rem; font-family: var(--pf-mono); font-size: 0.62rem; letter-spacing: 0.04em; text-transform: uppercase; color: rgb(${CREAM} / 0.5); }
   .tc-new__preview span + span::before { content: "·"; margin-right: 0.9rem; color: rgb(${CREAM} / 0.3); }
@@ -790,6 +875,37 @@ const NEW_CSS = `
   .tc-new__sentence { margin: 0 0 1.1rem; max-width: 62ch; text-wrap: pretty; font-size: 0.95rem; line-height: 1.6; color: rgb(${CREAM} / 0.6); }
   .tc-new__sentence em { font-style: normal; font-weight: 640; color: var(--pf-cream); }
   .tc-new__mode { display: inline-block; vertical-align: 0.05em; }
-  .tc-new__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-  .tc-new__actions + .tc-new__hint { margin-top: 1.1rem; }
+  /* LA BARRE, collee en bas tant que la page defile. */
+  /* LA BARRE EST NOIRE, PAS GRISE. Elle etait peinte en noir melange a douze
+     pour cent de creme, ce qui ne donne ni l'un ni l'autre mais une dalle grise,
+     et la charte n'a que deux couleurs, le creme et le noir. Elle reprend donc
+     le fond de la page, opaque, et ce qui la detache n'est pas une teinte mais
+     un filet et un voile : au dessus d'elle, un degrade du transparent vers le
+     fond de la page eteint ce qui passe dessous au lieu de le trancher net. */
+  .tc-bar { position: sticky; bottom: 0; z-index: 30; width: 100%; margin-top: 0.5rem; }
+  .tc-bar::before {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 2.25rem;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, var(--pf-bg));
+  }
+  .tc-bar__in {
+    position: relative;
+    width: min(98%, 66rem); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.7rem 1.4rem; flex-wrap: wrap;
+    padding: 0.75rem clamp(0.9rem, 2vw, 1.2rem);
+    border-top: 1px solid rgb(${CREAM} / 0.16);
+    background: var(--pf-bg);
+  }
+  .tc-bar__preview { margin: 0; flex: 1 1 22rem; min-width: 0; }
+  .tc-bar__actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .tc-bar__missing { font-family: var(--pf-mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(${CREAM} / 0.45); }
+  /* Sur telephone la barre faisait 205 px, soit le quart de l'ecran, parce que
+     le recap se deroulait sur six lignes. Il garde ses premiers faits et se
+     coupe : la barre existe pour porter le bouton et dire ce qui manque, pas
+     pour tout relire. */
+  @media (max-width: 620px) {
+    .tc-bar__in { justify-content: stretch; gap: 0.5rem; padding: 0.6rem 0.8rem; }
+    .tc-bar__actions { width: 100%; justify-content: flex-end; }
+    .tc-bar__preview { flex: 1 1 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  }
 `;

@@ -1,0 +1,4664 @@
+[
+  {
+    "id": 1,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 — l'état courant quitte ce fichier, et un garde l'empêche de regonfler",
+    "mots": 4064,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 42,
+      "jeu": 53,
+      "interface": 42,
+      "prof-ecole": 68,
+      "admin": 18,
+      "base": 16,
+      "mise-en-ligne": 50
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "meta sur la checklist elle-meme, pas sur le produit ; son pourquoi (la taille decide si on reecrit ou si on ajoute) est deja pose dans CLAUDE.md et dans les commentaires de scripts/quality/check-etat.mjs",
+    "destinations": []
+  },
+  {
+    "id": 2,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 (suite) — les quatre écarts sont levés, et un secret a fuité une deuxième fois",
+    "mots": 629,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 8,
+      "interface": 8,
+      "prof-ecole": 5,
+      "base": 20,
+      "mise-en-ligne": 42
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 3,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 — la conformité devient un contrôle mensuel, et la politique cesse de mentir",
+    "mots": 755,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 19,
+      "jeu": 9,
+      "interface": 11,
+      "prof-ecole": 11,
+      "admin": 18,
+      "base": 8,
+      "mise-en-ligne": 73
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 4,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 (suite 3) — passe profonde : IDOR entre joueurs, et le bonus de vitesse",
+    "mots": 395,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 4,
+      "jeu": 38,
+      "interface": 3,
+      "prof-ecole": 21,
+      "admin": 9,
+      "base": 12,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-ecritures.md",
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 5,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 (suite 2) — second auto-pentest, un en-tete bavard retire",
+    "mots": 133,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "jeu": 3,
+      "prof-ecole": 5,
+      "admin": 9,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "second auto-pentest de confirmation ; sa seule trouvaille, un en-tete qui annonce la techno, est corrigee et tenue par check:security-gates, donc le garde est sa memoire",
+    "destinations": []
+  },
+  {
+    "id": 6,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 (suite) — auto-pentest, une faille HAUTE trouvée et bouchée",
+    "mots": 401,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "jeu": 9,
+      "interface": 5,
+      "prof-ecole": 5,
+      "admin": 27,
+      "base": 28,
+      "mise-en-ligne": 31
+    },
+    "nature": "journal",
+    "theme_retenu": "admin",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 7,
+    "date": "2026-09-18",
+    "titre": "Note — 2026-09-18 — audit de sécurité complet, avant mise en ligne",
+    "mots": 1542,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 19,
+      "jeu": 28,
+      "interface": 8,
+      "prof-ecole": 58,
+      "admin": 27,
+      "base": 44,
+      "mise-en-ligne": 88
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 8,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite 11) — le chrono de la compétition, et zéro seuil de comportement",
+    "mots": 341,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 56,
+      "interface": 3,
+      "prof-ecole": 11,
+      "admin": 27,
+      "base": 16,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 9,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite 11) — la fiche Exercice et la page Comparer perdent leurs boîtes",
+    "mots": 460,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "interface": 39,
+      "prof-ecole": 53,
+      "admin": 9,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 10,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite 10) — le vocabulaire des séances est corrigé, le jeu n'a pas bougé",
+    "mots": 327,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 44,
+      "interface": 5,
+      "admin": 27
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 11,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite 9) — les 445 séances vides : une séance est créée au chargement de la page",
+    "mots": 530,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 50,
+      "interface": 3,
+      "admin": 18,
+      "base": 12,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 12,
+    "date": "2026-09-12",
+    "titre": "Note — 2026-09-12 (suite 8) — l'accueil devient un cockpit, et un signal s'est révélé faux",
+    "mots": 491,
+    "theme_propose": "admin",
+    "scores": {
+      "jeu": 22,
+      "interface": 5,
+      "prof-ecole": 11,
+      "admin": 100,
+      "base": 8,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 13,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 7) — audit de l'Admin, et quatre chiffres faux corrigés",
+    "mots": 678,
+    "theme_propose": "admin",
+    "scores": {
+      "typographie": 23,
+      "jeu": 44,
+      "interface": 3,
+      "prof-ecole": 21,
+      "admin": 73,
+      "base": 8,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 14,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 6) — l'Admin a sa carte, et ses contrôles ont trouvé du vrai",
+    "mots": 702,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 23,
+      "jeu": 41,
+      "interface": 5,
+      "prof-ecole": 53,
+      "admin": 73,
+      "base": 32,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 15,
+    "date": "2026-09-15",
+    "titre": "Note — 2026-09-15 (suite 2) — le plafond d'un projet web est de 250 familles, mesure, et j'ai gaspille la place des huit",
+    "mots": 303,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 42,
+      "jeu": 3,
+      "base": 12,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 16,
+    "date": "2026-09-15",
+    "titre": "Note — 2026-09-15 (suite) — deux vraies fautes de ma part, et le nom CSS qui aurait tout casse",
+    "mots": 315,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 19,
+      "jeu": 6,
+      "interface": 3,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 17,
+    "date": "2026-09-15",
+    "titre": "Note — 2026-09-15 — 2 108 polices servies en ligne, et la publication se gagne a la patience",
+    "mots": 225,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 42,
+      "base": 4,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 18,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite 3) — les premieres polices de masse sont EN LIGNE, et le plafond n'est pas celui qu'on croyait",
+    "mots": 312,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 38,
+      "jeu": 6,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 19,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite 2) — le site sait desormais charger plusieurs feuilles Adobe",
+    "mots": 134,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 27,
+      "base": 4,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "branchement technique du chargement de plusieurs feuilles, aucune decision ni piege durable ; la correction du commentaire perime (le domaine n'est pas une condition d'affichage) est deja dans docs/typography/arbitrages.md et dans « Ou on en est »",
+    "destinations": []
+  },
+  {
+    "id": 20,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite) — toutes les sorties sont fermees sauf une, et elle part de son clavier",
+    "mots": 177,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 15,
+      "jeu": 3,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 21,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 — les migrations 024 et 025 sont ecrites, et trois pieges attrapes en les ecrivant",
+    "mots": 446,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 27,
+      "jeu": 12,
+      "base": 72,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md",
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 22,
+    "date": "2026-09-12",
+    "titre": "Note — 2026-09-12 — les 3 492 familles sont dans le kit, mais Adobe refuse de publier",
+    "mots": 283,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 65,
+      "base": 4,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 23,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 7) — première vague en cours d'injection dans le kit Adobe",
+    "mots": 219,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 50,
+      "interface": 3,
+      "prof-ecole": 5,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu d'injection ; le seul point vivant, la rotation du jeton Adobe passe en clair dans une conversation, est un reste a faire deja porte par « Ou on en est » dans CLAUDE.md",
+    "destinations": []
+  },
+  {
+    "id": 24,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 6) — la bibliothèque Adobe entière est relevée, 6 001 familles prêtes à entrer",
+    "mots": 504,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 73,
+      "jeu": 6,
+      "prof-ecole": 5,
+      "base": 12,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 25,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 5) — le kit Adobe s'arrête à la priorité 1, 28 grands noms manquent",
+    "mots": 182,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 50,
+      "base": 12
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "etat d'avancement du kit a une date donnee, perime depuis : 2108 polices sont servies aujourd'hui contre les 108 de cette note. La liste des 28 grands noms manquants vit dans docs/typography/adobe-fonts-candidates.md, qui est sa place",
+    "destinations": []
+  },
+  {
+    "id": 26,
+    "date": "2026-09-18",
+    "titre": "REPRISE — déplacée le 2026-09-18",
+    "mots": 118,
+    "theme_propose": "structurelle",
+    "scores": {},
+    "nature": "structurelle",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "section de service (notation, pointeur), aucun pourquoi durable a distiller",
+    "destinations": []
+  },
+  {
+    "id": 27,
+    "date": "",
+    "titre": "Comment lire",
+    "mots": 64,
+    "theme_propose": "structurelle",
+    "scores": {},
+    "nature": "structurelle",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "section de service (notation, pointeur), aucun pourquoi durable a distiller",
+    "destinations": []
+  },
+  {
+    "id": 28,
+    "date": "",
+    "titre": "En résumé",
+    "mots": 293,
+    "theme_propose": "structurelle",
+    "scores": {},
+    "nature": "structurelle",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "section de service (notation, pointeur), aucun pourquoi durable a distiller",
+    "destinations": []
+  },
+  {
+    "id": 29,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 (suite) — c'est la façon de jouer qui colore la page, plus le cran d'exigence",
+    "mots": 230,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 8,
+      "jeu": 34,
+      "interface": 13,
+      "prof-ecole": 5
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 30,
+    "date": "2026-09-14",
+    "titre": "Note — 2026-09-14 — « le violet ne marche pas et ça a tout cassé » : la feuille de style du serveur de dev était périmée",
+    "mots": 347,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 16
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 31,
+    "date": "2026-09-12",
+    "titre": "Note — 2026-09-12 (suite 3) — le contrôle a sa couleur, et elle est mesurée",
+    "mots": 356,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 16,
+      "interface": 29,
+      "prof-ecole": 47
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md",
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 32,
+    "date": "2026-09-12",
+    "titre": "Note — 2026-09-12 (suite 2) — le bouton d'ouverture revient près de son texte, et la barre redevient noire",
+    "mots": 285,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 26
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 33,
+    "date": "2026-09-12",
+    "titre": "Note — 2026-09-12 (suite) — les étapes qu'on n'a pas atteintes sont floues",
+    "mots": 319,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 12,
+      "interface": 13,
+      "prof-ecole": 5
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 34,
+    "date": "2026-09-12",
+    "titre": "Note — 2026-09-12 — le récap flotte, le contrat se replie, et la page perd une étape",
+    "mots": 434,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 12,
+      "interface": 24,
+      "prof-ecole": 21
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 35,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 5) — la couleur passe du mode au cran d'exigence",
+    "mots": 440,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 28,
+      "interface": 26,
+      "prof-ecole": 16,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 36,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 4) — une couleur, celle du mode, et la sélection retrouve une place",
+    "mots": 362,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 6,
+      "interface": 29,
+      "prof-ecole": 21,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 37,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 3) — plus de cartes : le compositeur se lit comme la landing",
+    "mots": 445,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "jeu": 19,
+      "interface": 32,
+      "prof-ecole": 42
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 38,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 2) — le compositeur devient un formulaire et non un document",
+    "mots": 543,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 4,
+      "jeu": 6,
+      "interface": 16,
+      "prof-ecole": 26
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md",
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 39,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite) — passe entière sur le compositeur, mesurée et non jugée à l'œil",
+    "mots": 601,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 12,
+      "interface": 26,
+      "prof-ecole": 26,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 40,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 — le bloc QUAND du compositeur devient un vrai calendrier",
+    "mots": 1364,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "interface": 26,
+      "prof-ecole": 42,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 41,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 4) — l'Admin devient un poste d'observation, et le premier relevé fait mal",
+    "mots": 509,
+    "theme_propose": "admin",
+    "scores": {
+      "typographie": 8,
+      "jeu": 31,
+      "interface": 3,
+      "prof-ecole": 26,
+      "admin": 73
+    },
+    "nature": "journal",
+    "theme_retenu": "admin",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 42,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 3) — deux principes posés, et une mesure qui corrige ma correction",
+    "mots": 421,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 22,
+      "prof-ecole": 21,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 43,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite 2) — le tableau de bord des demandes d'accès",
+    "mots": 457,
+    "theme_propose": "admin",
+    "scores": {
+      "jeu": 3,
+      "interface": 3,
+      "prof-ecole": 21,
+      "admin": 82,
+      "base": 20,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "admin",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 44,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 (suite) — le compositeur porte enfin le contrat entier",
+    "mots": 424,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 19,
+      "jeu": 25,
+      "interface": 8,
+      "prof-ecole": 58
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md",
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 45,
+    "date": "2026-09-11",
+    "titre": "Note — 2026-09-11 — 023 est en production, et la table des demandes attend son tableau de bord",
+    "mots": 290,
+    "theme_propose": "?",
+    "scores": {
+      "interface": 3,
+      "prof-ecole": 11,
+      "admin": 82,
+      "base": 72,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "base",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 46,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 11) — Clerk branché en mode tolérant, et le modèle d'accès enseignant arrêté",
+    "mots": 566,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 3,
+      "interface": 3,
+      "prof-ecole": 63,
+      "admin": 27,
+      "base": 24,
+      "mise-en-ligne": 35
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 47,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 10) — l'identité passe par un seul endroit, et le choix du fournisseur est posé",
+    "mots": 369,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "jeu": 9,
+      "prof-ecole": 11,
+      "admin": 9,
+      "base": 20,
+      "mise-en-ligne": 42
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 48,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 9) — 021 et 022 sont EN PRODUCTION",
+    "mots": 439,
+    "theme_propose": "base",
+    "scores": {
+      "jeu": 16,
+      "interface": 3,
+      "prof-ecole": 37,
+      "base": 88,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu d'application des migrations 021 et 022 ; la methode (branche jetable d'abord, production sur feu vert explicite, instantane avant, bandeau dans le fichier) est deja la regle ecrite dans CLAUDE.md",
+    "destinations": []
+  },
+  {
+    "id": 49,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 8) — les routes, l'écran du devoir, et la couture des écrans prof",
+    "mots": 687,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 8,
+      "jeu": 25,
+      "interface": 11,
+      "prof-ecole": 84,
+      "admin": 9,
+      "base": 28,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md",
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 50,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 7) — l'écrivain de la séance assignée, avec ses six propriétés dès la première ligne",
+    "mots": 639,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 38,
+      "prof-ecole": 68,
+      "base": 28,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 51,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 6) — points 4 et 5 : le cran d'exigence existe enfin, et la séance assignée sait s'ouvrir",
+    "mots": 583,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "jeu": 53,
+      "interface": 3,
+      "prof-ecole": 68,
+      "base": 24,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 52,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 5) — point 3 : la porte de lecture professeur, et un garde qui mord",
+    "mots": 578,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 4,
+      "jeu": 25,
+      "interface": 3,
+      "prof-ecole": 84,
+      "admin": 9,
+      "base": 32
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 53,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 4) — point 2 fait sur branche jetable : le monde scolaire et les trois axes",
+    "mots": 592,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 34,
+      "prof-ecole": 74,
+      "base": 64,
+      "mise-en-ligne": 23
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu du schema scolaire sur branche jetable ; le seul point durable, l'ecole porte la licence et les sieges et jamais le professeur, est deja dans docs/game/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 54,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 3) — les quatre contextes moteur, verrouillés avant tout schéma",
+    "mots": 654,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 50,
+      "prof-ecole": 63,
+      "base": 36,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 55,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite 2) — spec fermée sur les cinq arbitrages, et le compositeur passe au vrai catalogue",
+    "mots": 743,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 35,
+      "jeu": 22,
+      "interface": 8,
+      "prof-ecole": 53,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 56,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 (suite) — la création d'exercice passe en spécification fermée, et I-25 entre dans la vision",
+    "mots": 565,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 12,
+      "jeu": 28,
+      "prof-ecole": 68,
+      "admin": 9,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 57,
+    "date": "2026-09-10",
+    "titre": "Note — 2026-09-10 — brief produit de la création d'exercice",
+    "mots": 458,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 15,
+      "jeu": 34,
+      "prof-ecole": 63,
+      "admin": 9,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 58,
+    "date": "2026-09-08",
+    "titre": "Note — 2026-09-08 (suite 4) — le devoir arrive dans le profil de l'élève, et la boucle est fermée",
+    "mots": 596,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 12,
+      "jeu": 16,
+      "interface": 13,
+      "prof-ecole": 111,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 59,
+    "date": "2026-09-08",
+    "titre": "Note — 2026-09-08 (suite 3) — le compositeur, et l'espace prof est complet",
+    "mots": 705,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 27,
+      "interface": 11,
+      "prof-ecole": 79,
+      "admin": 18,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md",
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 60,
+    "date": "2026-09-08",
+    "titre": "Note — 2026-09-08 (suite 2) — le fond étoilé quitte tout le site, sauf la constellation",
+    "mots": 773,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 6,
+      "interface": 50,
+      "prof-ecole": 16,
+      "base": 8,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 61,
+    "date": "2026-09-08",
+    "titre": "Note — 2026-09-08 (suite) — la fiche Exercice, et les faces qui deviennent le sujet",
+    "mots": 500,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 15,
+      "jeu": 3,
+      "interface": 8,
+      "prof-ecole": 68
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 62,
+    "date": "2026-09-08",
+    "titre": "Note — 2026-09-08 — la fiche Élève est construite, et ce qu'elle refuse de dire",
+    "mots": 684,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 4,
+      "jeu": 31,
+      "interface": 11,
+      "prof-ecole": 79,
+      "admin": 18,
+      "base": 16
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 63,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (fin de journée) — état de l'espace prof et point de reprise",
+    "mots": 296,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 8,
+      "jeu": 3,
+      "interface": 18,
+      "prof-ecole": 68,
+      "admin": 18,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "point d'arret de fin de journee sur l'espace prof, perime : les trois ecrans qu'il annonce comme restant a construire (fiche Eleve, fiche Exercice, creation) sont faits depuis",
+    "destinations": []
+  },
+  {
+    "id": 64,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 22) — la composition du Home prend enfin la figure de la landing",
+    "mots": 280,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "jeu": 3,
+      "interface": 29,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 65,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 21) — plus un seul bloc sur le Home",
+    "mots": 258,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 19,
+      "jeu": 9,
+      "interface": 39
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 66,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 20) — le Home passe à deux fonctions, au rythme de la landing",
+    "mots": 299,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 6,
+      "interface": 47,
+      "prof-ecole": 11,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 67,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 19) — la composition du Home, trois rectangles empilés deviennent un rythme",
+    "mots": 251,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "interface": 55
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 68,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 18) — passe d'allègement du Home : une seule chose bouge",
+    "mots": 271,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 12,
+      "interface": 26,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 69,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 17) — audit du Home contre la DA existante, quatre valeurs inventées retirées",
+    "mots": 306,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "interface": 16,
+      "prof-ecole": 5,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 70,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 16) — le Home prof devient un cockpit, et les spécimens sont enfin vrais",
+    "mots": 460,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 50,
+      "jeu": 3,
+      "interface": 29,
+      "prof-ecole": 53,
+      "admin": 45
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 71,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 15) — « Racing the deadline », et pourquoi la frise a été jetée",
+    "mots": 359,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 3,
+      "interface": 8,
+      "prof-ecole": 42,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 72,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 14) — la page Exercices gagne le temps, et « What you give » est supprimé",
+    "mots": 324,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 12,
+      "interface": 16,
+      "prof-ecole": 53,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 73,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 13) — deux visualisations sous la liste des exercices, et ce qui a été écarté",
+    "mots": 361,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 3,
+      "interface": 13,
+      "prof-ecole": 63,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 74,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 12) — la couleur de la page Exercices, et pourquoi il n'y en a qu'une",
+    "mots": 333,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 8,
+      "jeu": 12,
+      "interface": 13,
+      "prof-ecole": 53,
+      "base": 4,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 75,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 11) — relevé des couleurs réellement peintes, et retrait de tout ce qui n'en venait pas",
+    "mots": 415,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 12,
+      "interface": 26,
+      "prof-ecole": 16,
+      "admin": 9
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 76,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 10) — le fil d'Ariane devient une flèche, et la couleur redescend d'un cran",
+    "mots": 383,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 3,
+      "interface": 32,
+      "prof-ecole": 37,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 77,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 9) — le retour, repris des deux patrons existants, et le bouton Précédent réparé",
+    "mots": 426,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 8,
+      "jeu": 3,
+      "interface": 8,
+      "prof-ecole": 37
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 78,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 8) — la fiche Classe passe en visualisation, et la couleur revient par son sens",
+    "mots": 626,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 8,
+      "jeu": 22,
+      "interface": 21,
+      "prof-ecole": 53
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 79,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 7) — la fiche Classe, page centrale, et la frontière avec la fiche Exercice",
+    "mots": 559,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 15,
+      "jeu": 9,
+      "interface": 8,
+      "prof-ecole": 79,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de construction de la fiche Classe ; la frontiere entre fiche Classe et fiche Exercice est decrite dans docs/game/espace-prof-architecture.md, qui est sa place, et le critere qui la fonde (ne montrer que ce qu'aucune autre page ne peut montrer) est deja distille",
+    "destinations": []
+  },
+  {
+    "id": 80,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 6) — l'espace prof rentre dans le système du site, et la bascule Learn / Teach",
+    "mots": 582,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 6,
+      "interface": 24,
+      "prof-ecole": 63,
+      "admin": 9,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 81,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 5) — les rayons de l'espace prof, mesurés puis alignés",
+    "mots": 294,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 32,
+      "prof-ecole": 21,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "releve de rayons a un instant donne ; la methode qui le fonde (relever ce qui est reellement peint avant d'aligner, jamais choisir au juge) est deja dans docs/ui/arbitrages.md, et les valeurs vivent dans ui-consistency-contract.md",
+    "destinations": []
+  },
+  {
+    "id": 82,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 4) — audit des données de l'espace prof, quatre incohérences supprimées",
+    "mots": 514,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 12,
+      "interface": 3,
+      "prof-ecole": 53,
+      "admin": 9,
+      "base": 8,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 83,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 3) — la liste des exercices, et une barre qui disait deux choses",
+    "mots": 414,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 6,
+      "interface": 18,
+      "prof-ecole": 58,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 84,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite 2) — la liste des classes, et le premier champ de saisie du produit",
+    "mots": 527,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 4,
+      "interface": 26,
+      "prof-ecole": 58,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "prof-ecole",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-espace-prof.md"
+    ]
+  },
+  {
+    "id": 85,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 (suite) — l'accueil de l'espace prof est construit, sur données factices",
+    "mots": 629,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 9,
+      "interface": 16,
+      "prof-ecole": 58,
+      "admin": 18,
+      "base": 16,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de construction de l'accueil prof sur donnees factices ; le fait que tout l'espace tourne sur un mock est distille dans docs/game/arbitrages-espace-prof.md",
+    "destinations": []
+  },
+  {
+    "id": 86,
+    "date": "2026-09-04",
+    "titre": "Note — 2026-09-04 — l'espace prof est arrêté sur le papier, rien n'est construit",
+    "mots": 451,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "jeu": 19,
+      "interface": 8,
+      "prof-ecole": 63,
+      "admin": 9,
+      "base": 20
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "decision d'architecture prise en conversation puis consignee dans docs/game/espace-prof-architecture.md, qui est le document de rang superieur sur ce sujet ; cette note ne fait qu'annoncer son ecriture",
+    "destinations": []
+  },
+  {
+    "id": 87,
+    "date": "2026-08-19",
+    "titre": "Note — 2026-08-19 (suite 2) — la notoriété devient l'axe de progression, et Adobe trouve son étagère",
+    "mots": 1114,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 46,
+      "jeu": 28,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 20,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 88,
+    "date": "2026-08-19",
+    "titre": "Note — 2026-08-19 (suite 4) — le chapitre typographie de la charte passe de deux pages à dix",
+    "mots": 764,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 38,
+      "jeu": 9,
+      "interface": 8,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "production de quatre planches de la charte Figma ; releve de valeurs typographiques qui appartient au document de charte et non au depot, et la methode (aucune valeur inventee, tout mesure sur globals.css) est deja une regle etablie",
+    "destinations": []
+  },
+  {
+    "id": 89,
+    "date": "2026-08-19",
+    "titre": "Note — 2026-08-19 (suite 3) — le symbole est remplacé partout, du dessin de Marion jusqu'aux badges",
+    "mots": 858,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 28,
+      "interface": 16,
+      "prof-ecole": 5,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 90,
+    "date": "2026-08-26",
+    "titre": "Note — 2026-08-26 — PP Frama : mesuré, le site ne la télécharge jamais, l'exposition est ailleurs",
+    "mots": 385,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 12,
+      "jeu": 9,
+      "interface": 8,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 91,
+    "date": "2026-08-24",
+    "titre": "Note — 2026-08-24 (suite 5) — la fusion vers `main` est prête, et ce qu'il reste avant de déployer",
+    "mots": 428,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 12,
+      "interface": 3,
+      "base": 12,
+      "mise-en-ligne": 31
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "etat de la fusion vers main a une date donnee, perime : la branche est aujourd'hui a 128 commits d'avance, et le fait qu'il reste a pousser est porte par « Ou on en est » dans CLAUDE.md",
+    "destinations": []
+  },
+  {
+    "id": 92,
+    "date": "2026-08-24",
+    "titre": "Note — 2026-08-24 (suite 4) — le thème clair passe en réserve, il n'est pas proposé au lancement",
+    "mots": 438,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 9,
+      "interface": 18,
+      "prof-ecole": 5
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 93,
+    "date": "2026-08-24",
+    "titre": "Note — 2026-08-24 (suite 3) — cartes de mode en noir, points retirés du clair, deux orphelines",
+    "mots": 443,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 26,
+      "admin": 9
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "trois corrections de rendu sur les cartes de mode en theme clair ; la cause commune (il n'y a pas une palette mais quatre, donc une correction sur l'une ne corrige rien ailleurs) est distillee dans docs/ui/arbitrages-systeme.md",
+    "destinations": []
+  },
+  {
+    "id": 94,
+    "date": "2026-08-24",
+    "titre": "Note — 2026-08-24 (suite 2) — le pied de page passe en noir, et le logo apprend à s'inverser",
+    "mots": 550,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 50,
+      "prof-ecole": 11,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 95,
+    "date": "2026-08-24",
+    "titre": "Note — 2026-08-24 (suite) — les ombres : 99 déclarations, 18 retirées, et une troisième barre retrouvée",
+    "mots": 610,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 12,
+      "jeu": 6,
+      "interface": 47,
+      "prof-ecole": 16,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 96,
+    "date": "2026-08-24",
+    "titre": "Note — 2026-08-24 — un garde sur la palette, pour que le clair ne dérive plus",
+    "mots": 425,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 6,
+      "interface": 32,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 4,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 97,
+    "date": "2026-08-23",
+    "titre": "Note — 2026-08-23 (suite) — le thème clair est calibré : 97 textes illisibles deviennent 0",
+    "mots": 598,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 3,
+      "interface": 47,
+      "prof-ecole": 5,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 98,
+    "date": "2026-08-23",
+    "titre": "Note — 2026-08-23 — audit du thème clair : 97 textes illisibles, une seule cause",
+    "mots": 724,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "jeu": 9,
+      "interface": 42,
+      "prof-ecole": 16,
+      "admin": 9,
+      "base": 8,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 99,
+    "date": "2026-08-21",
+    "titre": "Note — 2026-08-21 — les rayons proches sont généralisés : 36 peints deviennent 23",
+    "mots": 899,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 6,
+      "interface": 32,
+      "prof-ecole": 11,
+      "base": 8,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 100,
+    "date": "2026-08-19",
+    "titre": "Note — 2026-08-19 (suite 2) — audit des rayons : 2 jetons déclarés, 36 rayons peints",
+    "mots": 757,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 12,
+      "jeu": 9,
+      "interface": 29,
+      "prof-ecole": 11,
+      "base": 4,
+      "mise-en-ligne": 35
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 101,
+    "date": "2026-08-19",
+    "titre": "Note — 2026-08-19 (suite) — le chemin de réponse d'entraînement passe de 15 à 11 allers-retours",
+    "mots": 857,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "jeu": 47,
+      "interface": 11,
+      "prof-ecole": 5,
+      "base": 32,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 102,
+    "date": "2026-08-19",
+    "titre": "Note — 2026-08-19 — nettoyage avant mise en ligne, 40 Mo sortis du déploiement et cinq modules morts",
+    "mots": 890,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 12,
+      "jeu": 3,
+      "interface": 11,
+      "prof-ecole": 16,
+      "mise-en-ligne": 38
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de nettoyage avant lancement ; le constat qui le fonde, le code n'etait pas le probleme, est un resultat d'audit date et non une regle, et la discipline de mesure qui en decoule est deja distillee",
+    "destinations": []
+  },
+  {
+    "id": 103,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite 7) — la compétition répond 41 pour cent plus vite, mesuré sur un build de production",
+    "mots": 826,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 41,
+      "interface": 3,
+      "admin": 9,
+      "base": 20,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 104,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite 6) — le build et la suite de tests passent, et le labo interne est bien fermé en production",
+    "mots": 550,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 8,
+      "jeu": 6,
+      "interface": 5,
+      "prof-ecole": 5,
+      "base": 32,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de deux verifications vertes a une date donnee ; le seul point durable, arreter le serveur de dev avant un build parce qu'ils partagent le meme dossier de sortie, est deja dans CLAUDE.md",
+    "destinations": []
+  },
+  {
+    "id": 105,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite 5) — deuxième chasse, un vrai défaut d'autorisation et trois mesures de lenteur",
+    "mots": 1077,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 38,
+      "jeu": 53,
+      "interface": 3,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 12,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "chasse aux defauts sur les chemins longs ; le defaut trouve est corrige et garde, et la regle qui en sort, distinguer un refus d'une panne, est distillee dans docs/game/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 106,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite 4) — les quatre points restants de l'audit, sauf ceux qui ne m'appartiennent pas",
+    "mots": 1118,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 12,
+      "jeu": 31,
+      "interface": 5,
+      "prof-ecole": 5,
+      "base": 20,
+      "mise-en-ligne": 23
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 107,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite 3) — les quatre mécaniques du plan double démarrage sont portées sur la compétition",
+    "mots": 1385,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 38,
+      "interface": 3,
+      "base": 28,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "portage des quatre mecaniques du plan double demarrage sur la competition ; les proprietes qu'il installe sont deja decrites comme « les six proprietes d'un ecrivain » dans docs/game/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 108,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite 2) — audit du back des deux modes de jeu avant mise en ligne, sept constats, rien corrigé",
+    "mots": 978,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 8,
+      "jeu": 31,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 36,
+      "mise-en-ligne": 54
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "liste de sept constats d'audit, tous traites par les notes suivantes ; un audit date n'est pas un pourquoi durable",
+    "destinations": []
+  },
+  {
+    "id": 109,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 (suite) — trois corrections demandées par Marion sur l'audit ci dessous",
+    "mots": 1431,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 35,
+      "jeu": 12,
+      "interface": 29,
+      "prof-ecole": 11,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 110,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 — audit responsive de tout le site, mesuré au navigateur, rien corrigé",
+    "mots": 1169,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 19,
+      "jeu": 9,
+      "interface": 37,
+      "prof-ecole": 16,
+      "admin": 9,
+      "base": 4,
+      "mise-en-ligne": 27
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 111,
+    "date": "2026-08-17",
+    "titre": "Note — 2026-08-17 — la carte du regard explique enfin ce qui l'allume",
+    "mots": 887,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 12,
+      "jeu": 28,
+      "interface": 24,
+      "prof-ecole": 21,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "construction du bloc explicatif du profil ; le plan qui le fonde vit dans docs/ui/pages-explication-plan.md, qui est sa place",
+    "destinations": []
+  },
+  {
+    "id": 112,
+    "date": "2026-08-15",
+    "titre": "Note — 2026-08-15 — cinq défauts signalés par Marion en jouant, tous vérifiés, aucun corrigé",
+    "mots": 6866,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 42,
+      "jeu": 72,
+      "interface": 61,
+      "prof-ecole": 16,
+      "admin": 45,
+      "base": 44,
+      "mise-en-ligne": 35
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 113,
+    "date": "2026-08-15",
+    "titre": "Note — 2026-08-15 — l'échelle de rayons du 14 août entre dans l'historique, un jour après",
+    "mots": 306,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "jeu": 6,
+      "interface": 21,
+      "prof-ecole": 5,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": "process",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "CLAUDE.md"
+    ]
+  },
+  {
+    "id": 114,
+    "date": "2026-08-09",
+    "titre": "Note — 2026-08-09 — les tâches 7 et 8 du plan double démarrage sortent du purgatoire, cinq jours après",
+    "mots": 596,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 12,
+      "prof-ecole": 5,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "process",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "CLAUDE.md"
+    ]
+  },
+  {
+    "id": 115,
+    "date": "2026-08-04",
+    "titre": "Note — 2026-08-04 — la journée du 3 août entre dans l'historique, douze chemins non suivis classés",
+    "mots": 989,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 12,
+      "jeu": 25,
+      "interface": 3,
+      "prof-ecole": 42,
+      "admin": 9,
+      "base": 16,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "process",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "CLAUDE.md"
+    ]
+  },
+  {
+    "id": 116,
+    "date": "2026-08-03",
+    "titre": "Note — 2026-08-03 — tâche 7 du plan double démarrage, le client frappe enfin l'identifiant",
+    "mots": 1883,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 19,
+      "interface": 8,
+      "prof-ecole": 11,
+      "base": 20,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-ecritures.md"
+    ]
+  },
+  {
+    "id": 117,
+    "date": "2026-08-01",
+    "titre": "Note — 2026-08-01 — tâche 6 du plan double démarrage, une tentative égale un identifiant",
+    "mots": 1679,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 25,
+      "interface": 5,
+      "prof-ecole": 5,
+      "base": 28,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-ecritures.md"
+    ]
+  },
+  {
+    "id": 118,
+    "date": "2026-08-01",
+    "titre": "Note — 2026-08-01 — tâche 4 du plan double démarrage, invariant perdu à ne pas redécouvrir",
+    "mots": 84,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 9
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 119,
+    "date": "2026-08-01",
+    "titre": "Note — 2026-08-01 — tâche 5 du plan double démarrage, les deux écrivains d'événements deviennent atomiques",
+    "mots": 701,
+    "theme_propose": "base",
+    "scores": {
+      "jeu": 16,
+      "interface": 3,
+      "admin": 9,
+      "base": 32
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "les deux ecrivains d'evenements deviennent atomiques ; la propriete est deja decrite comme l'une des six proprietes d'un ecrivain dans docs/game/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 120,
+    "date": "2026-08-01",
+    "titre": "Journal — 2026-08-01 — tâche 3 du plan double démarrage : sérialisation du pool par utilisateur",
+    "mots": 1556,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "jeu": 22,
+      "interface": 3,
+      "admin": 9,
+      "base": 32,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-ecritures.md"
+    ]
+  },
+  {
+    "id": 121,
+    "date": "2026-07-31",
+    "titre": "Journal — 2026-07-31 — tâche 2 du plan double démarrage : les compteurs s'incrémentent en base",
+    "mots": 301,
+    "theme_propose": "base",
+    "scores": {
+      "jeu": 22,
+      "base": 56
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages-ecritures.md"
+    ]
+  },
+  {
+    "id": 122,
+    "date": "2026-07-31",
+    "titre": "Journal — 2026-07-31 — tâche 1 du plan double démarrage : la progression quotidienne quitte le comptage de sessions",
+    "mots": 498,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 38,
+      "prof-ecole": 5,
+      "base": 8,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 123,
+    "date": "2026-08-01",
+    "titre": "Journal — 2026-08-01 — le commerce approfondi, et l'étude de marché retournée",
+    "mots": 1640,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "typographie": 23,
+      "jeu": 19,
+      "interface": 16,
+      "prof-ecole": 37,
+      "admin": 18,
+      "base": 20,
+      "mise-en-ligne": 23
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "lecture approfondie de l'etude de marche B2B ; son contenu appartient a docs/overview/business-model.md et au document lui meme, pas a une fiche d'arbitrages",
+    "destinations": []
+  },
+  {
+    "id": 124,
+    "date": "2026-08-01",
+    "titre": "Journal — 2026-08-01 — trois correctifs appliqués",
+    "mots": 440,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 23,
+      "jeu": 12,
+      "interface": 8,
+      "base": 32,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "trois correctifs courts sans arbitrage, dont le lien des cartes de mode ; aucune decision ni piege durable",
+    "destinations": []
+  },
+  {
+    "id": 125,
+    "date": "2026-08-01",
+    "titre": "Journal — 2026-08-01 — audit de la page d'accueil : pourquoi 92 comptes ne donnent que 21 joueurs",
+    "mots": 698,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 15,
+      "jeu": 47,
+      "interface": 21,
+      "base": 8,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 126,
+    "date": "2026-08-01",
+    "titre": "Journal — 2026-08-01 — l'étude de marché B2B entre dans la carte",
+    "mots": 376,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 19,
+      "interface": 11,
+      "prof-ecole": 21,
+      "admin": 27,
+      "base": 4,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "premiere lecture de l'etude de marche B2B, meme motif que la note d'approfondissement",
+    "destinations": []
+  },
+  {
+    "id": 127,
+    "date": "2026-08-01",
+    "titre": "Journal — 2026-08-01 — vérification en base réelle, trois affirmations corrigées",
+    "mots": 571,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 8,
+      "jeu": 28,
+      "interface": 5,
+      "base": 44,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "base",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 128,
+    "date": "2026-07-31",
+    "titre": "Journal — 2026-07-31 — audit des garde-fous et des migrations, un défaut bloquant dans 011",
+    "mots": 697,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 8,
+      "jeu": 22,
+      "interface": 8,
+      "prof-ecole": 5,
+      "base": 72,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "audit des gardes et des migrations ; le defaut bloquant de la migration 011 est un reste a faire, deja porte par les notes de l'Admin et par le bandeau du fichier de migration lui meme, qui est sa source de verite",
+    "destinations": []
+  },
+  {
+    "id": 129,
+    "date": "2026-07-31",
+    "titre": "Journal — 2026-07-31 — audit de l'identité et de l'onboarding, un défaut critique",
+    "mots": 689,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "jeu": 22,
+      "interface": 21,
+      "prof-ecole": 11,
+      "admin": 9,
+      "base": 12,
+      "mise-en-ligne": 35
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "audit de l'identite et de l'onboarding ; le defaut critique est corrige et sa lecon, l'identite se pose a un seul endroit, est distillee dans docs/overview/arbitrages-mise-en-ligne.md",
+    "destinations": []
+  },
+  {
+    "id": 130,
+    "date": "2026-07-31",
+    "titre": "Journal — 2026-07-31 — audit de la progression et du système typographique, treize défauts, aucun corrigé",
+    "mots": 1345,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 38,
+      "jeu": 53,
+      "interface": 18,
+      "prof-ecole": 5,
+      "base": 36,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "audit de treize defauts sur la progression et le systeme typographique, tous traites depuis ; un audit date liste des ecarts, il n'enonce pas de regle",
+    "destinations": []
+  },
+  {
+    "id": 131,
+    "date": "2026-07-31",
+    "titre": "Journal — 2026-07-31 — audit des deux écrans de jeu, quatorze défauts, aucun corrigé",
+    "mots": 971,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 19,
+      "jeu": 47,
+      "interface": 13,
+      "prof-ecole": 5,
+      "base": 24,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "audit de quatorze defauts sur les deux ecrans de jeu, meme motif",
+    "destinations": []
+  },
+  {
+    "id": 132,
+    "date": "2026-07-30",
+    "titre": "Journal — 2026-07-30 — audit du catalogue depuis les fichiers, trois défauts nouveaux",
+    "mots": 635,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 19,
+      "jeu": 16,
+      "base": 8,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 133,
+    "date": "2026-07-30",
+    "titre": "Journal — 2026-07-30 — document d'accueil complet, et onze écarts documentaires trouvés en le rédigeant",
+    "mots": 1016,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 15,
+      "jeu": 31,
+      "interface": 8,
+      "prof-ecole": 5,
+      "base": 20,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 134,
+    "date": "2026-07-29",
+    "titre": "Journal — 2026-07-29 (suite du jour) — vision produit figée, deux écarts tranchés",
+    "mots": 2959,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "jeu": 72,
+      "interface": 26,
+      "prof-ecole": 63,
+      "admin": 36,
+      "base": 28,
+      "mise-en-ligne": 23
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "figeage de la vision produit dans docs/game/vision-produit-dwiggins.md, document de rang superieur ; les invariants qu'il ajoute vivent la-bas et la hierarchie de decision est dans docs/README.md",
+    "destinations": []
+  },
+  {
+    "id": 135,
+    "date": "2026-07-29",
+    "titre": "Journal — 2026-07-29 (audit vision produit contre code, six écarts, aucune modification de code)",
+    "mots": 1649,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 23,
+      "jeu": 50,
+      "interface": 5,
+      "prof-ecole": 32,
+      "admin": 9,
+      "base": 20,
+      "mise-en-ligne": 27
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 136,
+    "date": "2026-07-28",
+    "titre": "Journal — 2026-07-28 (mise en commits de la journée du 27, plan Ralph)",
+    "mots": 2791,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 42,
+      "jeu": 25,
+      "interface": 21,
+      "prof-ecole": 5,
+      "base": 40,
+      "mise-en-ligne": 31
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "mise en commits de la journee du 27 juillet ; la lecon, committer souvent parce qu'une session qui meurt ne previent personne, est montee dans CLAUDE.md a l'iteration precedente",
+    "destinations": []
+  },
+  {
+    "id": 137,
+    "date": "2026-07-27",
+    "titre": "Journal — 2026-07-27 (outillage, licences, mise en ligne)",
+    "mots": 777,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "jeu": 22,
+      "interface": 16,
+      "base": 24,
+      "mise-en-ligne": 27
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 138,
+    "date": "2026-06-29",
+    "titre": "Journal — 2026-06-29 (grosse session)",
+    "mots": 132,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 19,
+      "jeu": 9,
+      "base": 12,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "resume d'une session de juin ; tout son contenu (familiarite vers le seed, mode Expert coquille, les 23 licences inconnues) est distille ailleurs ou perime",
+    "destinations": []
+  },
+  {
+    "id": 139,
+    "date": "",
+    "titre": "NOTE HYPER IMPORTANTE — montrer des typos commerciales / Adobe (légal + business)",
+    "mots": 579,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 50,
+      "jeu": 3,
+      "interface": 5,
+      "admin": 9,
+      "mise-en-ligne": 19
+    },
+    "nature": "autre",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 140,
+    "date": "2026-09-18",
+    "titre": "A — Profil & progression joueur — distillée le 2026-09-18",
+    "mots": 58,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 25,
+      "prof-ecole": 16
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 141,
+    "date": "2026-09-18",
+    "titre": "B — Badges — distillée le 2026-09-18",
+    "mots": 56,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 28,
+      "interface": 3
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 142,
+    "date": "2026-09-18",
+    "titre": "C — Onboarding — distillée le 2026-09-18",
+    "mots": 64,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 19
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md",
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 143,
+    "date": "2026-09-18",
+    "titre": "D — Pages typo (compare + spécimen) — distillée le 2026-09-18",
+    "mots": 50,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 23,
+      "interface": 3
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 144,
+    "date": "2026-09-18",
+    "titre": "E — Légal & marque · le chantier urgent avant mise en ligne — distillée le 2026-09-18",
+    "mots": 63,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "typographie": 4,
+      "mise-en-ligne": 31
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md",
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 145,
+    "date": "2026-09-18",
+    "titre": "F — Back & « implémenter toutes les typos » — distillée le 2026-09-18",
+    "mots": 66,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 27
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md",
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 146,
+    "date": "2026-09-18",
+    "titre": "G — Transversal / mise en ligne — distillée le 2026-09-18",
+    "mots": 49,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "mise-en-ligne": 12
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 147,
+    "date": "2026-09-18",
+    "titre": "H — Parkés / à décider — distillée le 2026-09-18",
+    "mots": 51,
+    "theme_propose": "prof-ecole",
+    "scores": {
+      "prof-ecole": 16
+    },
+    "nature": "lettree",
+    "theme_retenu": "lettree",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 148,
+    "date": "2026-07-29",
+    "titre": "I — Écarts vision contre implémentation (audit 2026-07-29)",
+    "mots": 5160,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 23,
+      "jeu": 62,
+      "interface": 16,
+      "prof-ecole": 53,
+      "admin": 27,
+      "base": 64,
+      "mise-en-ligne": 42
+    },
+    "nature": "lettree",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "sommaire de la section lettree I, qui n'est qu'un bandeau de priorites ; ses invariants numerotes sont distilles dans docs/game/arbitrages.md et ses sous-notes datees sont traitees une par une",
+    "destinations": []
+  },
+  {
+    "id": 149,
+    "date": "2026-09-18",
+    "titre": "Gains rapides — liste close le 2026-09-18",
+    "mots": 116,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 9,
+      "base": 8
+    },
+    "nature": "autre",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 150,
+    "date": "2026-08-01",
+    "titre": "2026-08-01, pages de règles : carte gain et perte, chiffres réels, ordre",
+    "mots": 497,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 8,
+      "jeu": 25,
+      "interface": 16,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 151,
+    "date": "2026-08-03",
+    "titre": "2026-08-03, page de choix des modes refaite",
+    "mots": 331,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 19,
+      "interface": 11,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "refonte de la page de choix des modes ; ses decisions durables (les cartes ecartees et non en eventail, ce qui fait cliquer n'est pas ce que le mode est mais ou le joueur en est) sont deja distillees dans docs/ui/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 152,
+    "date": "2026-08-03",
+    "titre": "2026-08-03, page des modes : les indicateurs qui font cliquer, une seule page écran",
+    "mots": 715,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 19,
+      "jeu": 38,
+      "interface": 16,
+      "prof-ecole": 16,
+      "base": 8,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "refonte de la page de choix des modes ; ses decisions durables (les cartes ecartees et non en eventail, ce qui fait cliquer n'est pas ce que le mode est mais ou le joueur en est) sont deja distillees dans docs/ui/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 153,
+    "date": "2026-08-04",
+    "titre": "2026-08-04, page des modes reprise sur le deck de la landing",
+    "mots": 736,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "jeu": 6,
+      "interface": 18,
+      "prof-ecole": 11,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "refonte de la page de choix des modes ; ses decisions durables (les cartes ecartees et non en eventail, ce qui fait cliquer n'est pas ce que le mode est mais ou le joueur en est) sont deja distillees dans docs/ui/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 154,
+    "date": "2026-08-19",
+    "titre": "2026-08-19, MODES du menu de la landing mène à la page des modes",
+    "mots": 437,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 6,
+      "interface": 24
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "correction d'un lien du menu de la landing vers la page des modes ; aucune decision ni piege durable",
+    "destinations": []
+  },
+  {
+    "id": 155,
+    "date": "2026-08-19",
+    "titre": "2026-08-19, relecture finale du chantier notoriété, sept constats corrigés",
+    "mots": 335,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "jeu": 16,
+      "base": 20,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/typography/arbitrages.md"
+    ]
+  },
+  {
+    "id": 156,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, charte Figma, les deux pages vitrine des écrans corrigées",
+    "mots": 344,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 157,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, lecture des trois brandbooks d'agence",
+    "mots": 473,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 12,
+      "jeu": 12,
+      "interface": 13,
+      "admin": 9,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 158,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, les 108 polices Adobe entrent au catalogue, migration écrite, pas appliquée",
+    "mots": 572,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 73,
+      "jeu": 22,
+      "admin": 9,
+      "base": 28,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de l'entree des 108 polices Adobe au catalogue ; la methode qui en sort (ne jamais croire la reponse de l'interface, verifier la feuille servie) est deja distillee dans docs/typography/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 159,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, charte Figma, la section des écrans refaite sur l'anatomie apprise",
+    "mots": 697,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "jeu": 16,
+      "interface": 21,
+      "prof-ecole": 5,
+      "base": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 160,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, migration Adobe jouée sur une branche jetable, un défaut de jeu trouvé et corrigé",
+    "mots": 509,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 31,
+      "jeu": 22,
+      "base": 44
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de l'entree des 108 polices Adobe au catalogue ; la methode qui en sort (ne jamais croire la reponse de l'interface, verifier la feuille servie) est deja distillee dans docs/typography/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 161,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, retour arrière sur la section des écrans, et le GIF refait depuis l'enregistrement de Marion",
+    "mots": 682,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 12,
+      "jeu": 9,
+      "interface": 29,
+      "prof-ecole": 5,
+      "admin": 9
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 162,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, deux pages mobiles montées dans les mockups de Marion",
+    "mots": 389,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "interface": 21,
+      "prof-ecole": 5,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 163,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, quatre pages d'écrans construites sur des valeurs mesurées",
+    "mots": 850,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "jeu": 19,
+      "interface": 24,
+      "prof-ecole": 5,
+      "admin": 9,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 164,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, corrections sur les mockups iPhone et suppression des lignes de méta",
+    "mots": 483,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 3,
+      "interface": 13,
+      "prof-ecole": 11,
+      "admin": 9,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 165,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, les 108 polices Adobe sont EN PRODUCTION",
+    "mots": 503,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 54,
+      "jeu": 9,
+      "interface": 8,
+      "admin": 9,
+      "base": 36,
+      "mise-en-ligne": 15
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "compte rendu de l'entree des 108 polices Adobe au catalogue ; la methode qui en sort (ne jamais croire la reponse de l'interface, verifier la feuille servie) est deja distillee dans docs/typography/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 166,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, l'introduction refaite, sept pages sur la recette de la page 28",
+    "mots": 601,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 16,
+      "interface": 29,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 167,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, la page 42 passe en vectoriel et gagne la nav ordinateur",
+    "mots": 341,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 24,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 168,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, introduction, trois corrections après relecture de Marion",
+    "mots": 339,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 3,
+      "interface": 18
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; les regles d'anatomie de page qui le fondent sont consignees la-bas, et ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 169,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, chapitre logo, la page des trois sols",
+    "mots": 347,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 3,
+      "interface": 32,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 170,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, chapitre logo, la page du favicon",
+    "mots": 405,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 9,
+      "interface": 24
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 171,
+    "date": "2026-08-23",
+    "titre": "2026-08-23, migration 013 vérifiée et prête, bloquée par les permissions",
+    "mots": 321,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 15,
+      "jeu": 12,
+      "prof-ecole": 5,
+      "base": 44
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "application de la migration 013 ; la decision qu'elle porte, la notoriete comme axe de progression, est distillee dans docs/game/arbitrages.md, et l'etat des migrations se lit dans le bandeau de chaque fichier de db/migrations",
+    "destinations": []
+  },
+  {
+    "id": 172,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, favicon en version Safari, et les Do/Don't abandonnés",
+    "mots": 283,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 26,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 173,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, point d'arrêt de nuit et état exact du document",
+    "mots": 250,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 174,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, la page technique ajoutée au programme de 10 h",
+    "mots": 287,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 4,
+      "jeu": 25,
+      "interface": 8,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 175,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, la 013 est appliquée, et elle a révélé la queue du catalogue",
+    "mots": 618,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 31,
+      "jeu": 16,
+      "interface": 3,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 36
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "application de la migration 013 ; la decision qu'elle porte, la notoriete comme axe de progression, est distillee dans docs/game/arbitrages.md, et l'etat des migrations se lit dans le bandeau de chaque fichier de db/migrations",
+    "destinations": []
+  },
+  {
+    "id": 176,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, les quatre étapes exécutées, le document passe à 52 pages",
+    "mots": 593,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 8,
+      "jeu": 28,
+      "interface": 16,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 177,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, la tâche de 10 h s'est déclenchée sur du travail déjà fait",
+    "mots": 123,
+    "theme_propose": "?",
+    "scores": {},
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 178,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, les clusters visuels mesurés dans les fichiers de police, migration 018",
+    "mots": 790,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 42,
+      "jeu": 19,
+      "interface": 5,
+      "base": 20
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 179,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, contrôle de cohérence des 52 pages, neuf dérives corrigées",
+    "mots": 321,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 4,
+      "jeu": 3,
+      "interface": 11,
+      "prof-ecole": 11
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 180,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, le chapitre Le discours, quatre adjectifs",
+    "mots": 362,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 4,
+      "jeu": 16,
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 181,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, feuille de route des six manques, et étape 1 faite",
+    "mots": 308,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 182,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, la reconnaissance de forme : un échec sur la question posée, une trouvaille ailleurs",
+    "mots": 553,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 27,
+      "jeu": 25,
+      "interface": 3,
+      "prof-ecole": 5,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 183,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, étapes 2 à 4 des six manques",
+    "mots": 330,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 184,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, une jumelle ne peut plus être un leurre",
+    "mots": 421,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 19,
+      "jeu": 22,
+      "prof-ecole": 11,
+      "base": 4,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "jeu",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 185,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, étape 5, le contraste sur les fiches de couleur",
+    "mots": 317,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 24,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 186,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, hors produit, une affiche A4 d'après une ref de 1982",
+    "mots": 389,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 23,
+      "interface": 13,
+      "prof-ecole": 11
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "affiche hors produit, fichiers sur le Bureau et dans le Figma de la charte ; sans rapport avec le depot",
+    "destinations": []
+  },
+  {
+    "id": 187,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, l'affiche repose sur un module unique, dans Figma",
+    "mots": 407,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 27,
+      "interface": 5
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "affiche hors produit, fichiers sur le Bureau et dans le Figma de la charte ; sans rapport avec le depot",
+    "destinations": []
+  },
+  {
+    "id": 188,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, étape 6 des six manques, puis la renumérotation complète",
+    "mots": 938,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 12,
+      "jeu": 19,
+      "interface": 37,
+      "prof-ecole": 5,
+      "base": 12,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma et dans 05_LOGO/REFERENCES_BRANDBOOK ; ce depot ne documente pas la charte",
+    "destinations": []
+  },
+  {
+    "id": 189,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, l'affiche Vox refaite dans Figma, d'après la référence de Marion",
+    "mots": 387,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 23,
+      "interface": 11
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 190,
+    "date": "2026-08-24",
+    "titre": "2026-08-24, l'affiche, le tableau de La Danse passé en pixels",
+    "mots": 560,
+    "theme_propose": "?",
+    "scores": {
+      "interface": 16,
+      "base": 16
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 191,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, correction : la grille n'a pas de case vide",
+    "mots": 342,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 15,
+      "interface": 11,
+      "prof-ecole": 5
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 192,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, le galon en pixels autour du tableau",
+    "mots": 444,
+    "theme_propose": "?",
+    "scores": {
+      "interface": 18,
+      "base": 16
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 193,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, hébergement : dix solutions comparées, chiffres relevés le jour même",
+    "mots": 924,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 19,
+      "jeu": 12,
+      "interface": 5,
+      "prof-ecole": 16,
+      "admin": 27,
+      "base": 20,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 194,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, une planche témoin pour le bloc Discours",
+    "mots": 466,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "interface": 29
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 195,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, deuxième planche témoin, celle qui porte un graphique",
+    "mots": 380,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 12,
+      "interface": 8,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 196,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, refonte 10 à 19, quatre planches sur huit",
+    "mots": 424,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 12,
+      "interface": 3,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 197,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, la séquence MOTEUR, sept planches avant la 10",
+    "mots": 430,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 12,
+      "jeu": 34,
+      "interface": 8,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 198,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, la séquence MOTEUR est complète, sept planches",
+    "mots": 429,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 12,
+      "jeu": 22,
+      "interface": 11,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 199,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, la séquence est reprise à zéro, du point de vue du lecteur",
+    "mots": 346,
+    "theme_propose": "jeu",
+    "scores": {
+      "jeu": 19,
+      "interface": 5,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 200,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, LE SCRIPT DE LA CR, douze planches en rangée",
+    "mots": 717,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 8,
+      "jeu": 41,
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 201,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, exécution du script CR, six planches sur onze",
+    "mots": 434,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 15,
+      "jeu": 25,
+      "interface": 8,
+      "prof-ecole": 5
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 202,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, trois planches CR refaites en graphique sur retour de Marion",
+    "mots": 292,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 23,
+      "jeu": 19,
+      "interface": 3,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 203,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, la 01 refaite en schéma, et une introduction dans la DA de la 18",
+    "mots": 275,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 22,
+      "interface": 13,
+      "base": 16
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 204,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, `dwiggins.fr` est acheté, chez LWS",
+    "mots": 203,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": "mise-en-ligne",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/overview/arbitrages-mise-en-ligne.md"
+    ]
+  },
+  {
+    "id": 205,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, la séquence CR est complète, douze cadres",
+    "mots": 471,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 19,
+      "jeu": 31,
+      "interface": 11,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 206,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, mentions légales : de huit informations manquantes à quatre",
+    "mots": 393,
+    "theme_propose": "mise-en-ligne",
+    "scores": {
+      "jeu": 9,
+      "interface": 3,
+      "prof-ecole": 11,
+      "mise-en-ligne": 42
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "remplissage des mentions legales a une date donnee ; les informations restantes sont portees par « Ou on en est » dans CLAUDE.md et rappelees par check:legal-docs",
+    "destinations": []
+  },
+  {
+    "id": 207,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, rangement de la Page 1",
+    "mots": 210,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 11,
+      "prof-ecole": 5
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 208,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, nettoyage de la base : 337 sessions refermées, un doublon supprimé",
+    "mots": 367,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 12,
+      "jeu": 16,
+      "base": 28
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "nettoyage de la base a une date donnee ; la cause des sessions restees ouvertes est distillee dans docs/game/arbitrages-ecritures.md",
+    "destinations": []
+  },
+  {
+    "id": 209,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, la courbe de l'oubli, puis renumérotation complète du document",
+    "mots": 452,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "interface": 13,
+      "prof-ecole": 5,
+      "base": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 210,
+    "date": "2026-08-25",
+    "titre": "2026-08-25, le symbole du hero apparié aux deux thèmes",
+    "mots": 345,
+    "theme_propose": "?",
+    "scores": {
+      "interface": 18,
+      "prof-ecole": 16,
+      "admin": 9
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "appariement du symbole aux deux themes ; la regle qui le fonde, les jetons qui s'inversent contre la page, est dans docs/ui/arbitrages-systeme.md",
+    "destinations": []
+  },
+  {
+    "id": 211,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — La grille « texte à gauche » posée et propagée",
+    "mots": 371,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 12,
+      "interface": 8
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 212,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Grille « texte à gauche » propagée aux blocs logo, composants et écrans",
+    "mots": 487,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "interface": 39,
+      "admin": 9,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 213,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Titres posés sur les planches qui n'en avaient pas",
+    "mots": 342,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 8,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 214,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Bloc couleur, planches 29 à 38",
+    "mots": 536,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "interface": 45,
+      "base": 12
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma ou l'affiche, qui vivent dans le fichier Figma et sur le Bureau ; ce depot ne les documente pas",
+    "destinations": []
+  },
+  {
+    "id": 215,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Passe sur tous les textes, deux planches de plus, renumérotation",
+    "mots": 484,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 23,
+      "jeu": 9,
+      "interface": 11
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 216,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Titres du bloc typographie",
+    "mots": 373,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 27,
+      "interface": 16,
+      "admin": 9
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 217,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Passe sur le bloc écrans, planches 54 à 62",
+    "mots": 287,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 21
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 218,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Passe sur le bloc composants, planches 50 à 53",
+    "mots": 257,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 18
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 219,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Passe Inter seul",
+    "mots": 354,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 27,
+      "jeu": 12,
+      "interface": 5,
+      "prof-ecole": 5,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 220,
+    "date": "2026-08-25",
+    "titre": "2026-08-25 — Où en est la charte à la reprise",
+    "mots": 255,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 19,
+      "interface": 5
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 221,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Planche 56, le trou de contenu est bouché",
+    "mots": 340,
+    "theme_propose": "?",
+    "scores": {
+      "jeu": 3,
+      "interface": 3
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 222,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Les cinq tables couleur repartent du même trait",
+    "mots": 356,
+    "theme_propose": "base",
+    "scores": {
+      "typographie": 4,
+      "interface": 16,
+      "admin": 9,
+      "base": 28,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 223,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Planche 11, les cases deviennent des dossiers",
+    "mots": 589,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 6,
+      "interface": 13,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 224,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Planche neuve : la typographie du mot",
+    "mots": 869,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 46,
+      "jeu": 3,
+      "interface": 8,
+      "prof-ecole": 11,
+      "base": 16,
+      "mise-en-ligne": 12
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 225,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Deux planches sur le mot, et un relevé des trois dessins",
+    "mots": 4876,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 35,
+      "jeu": 53,
+      "interface": 39,
+      "prof-ecole": 11,
+      "admin": 9,
+      "base": 20,
+      "mise-en-ligne": 38
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 226,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — La charte devient une présentation qui se joue",
+    "mots": 1125,
+    "theme_propose": "?",
+    "scores": {
+      "typographie": 8,
+      "jeu": 28,
+      "interface": 34,
+      "prof-ecole": 11,
+      "base": 12,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 227,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Planche 52, Les boutons, refaite",
+    "mots": 356,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 18
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 228,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Compétition, 803 ms par réponse ramenés à 123",
+    "mots": 710,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 8,
+      "jeu": 56,
+      "interface": 5,
+      "prof-ecole": 5,
+      "base": 20
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "gain de vitesse mesure en competition ; la discipline qui l'encadre, mesurer sur un vrai build et chercher le poids la ou il est, est distillee dans docs/ui/arbitrages-systeme.md",
+    "destinations": []
+  },
+  {
+    "id": 229,
+    "date": "2026-08-26",
+    "titre": "2026-08-26 — Entraînement, 2060 ms par réponse ramenés à 566",
+    "mots": 556,
+    "theme_propose": "jeu",
+    "scores": {
+      "typographie": 8,
+      "jeu": 50,
+      "prof-ecole": 5,
+      "base": 20
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 230,
+    "date": "2026-08-29",
+    "titre": "2026-08-29 — check:recap-view remise au vert, les 31 gardes passent",
+    "mots": 303,
+    "theme_propose": "interface",
+    "scores": {
+      "interface": 13,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages-systeme.md"
+    ]
+  },
+  {
+    "id": 231,
+    "date": "2026-08-29",
+    "titre": "2026-08-29 — Kit de pastilles sorti à côté, la planche 53 n'est pas touchée",
+    "mots": 394,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 15,
+      "interface": 26
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "travail sur la charte Figma, qui vit dans le fichier Figma ; ce depot ne la documente pas",
+    "destinations": []
+  },
+  {
+    "id": 232,
+    "date": "2026-08-29",
+    "titre": "2026-08-29 — Le bloc composants doit présenter, pas spécifier",
+    "mots": 761,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 8,
+      "jeu": 6,
+      "interface": 24
+    },
+    "nature": "journal",
+    "theme_retenu": "interface",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/ui/arbitrages.md"
+    ]
+  },
+  {
+    "id": 233,
+    "date": "2026-08-31",
+    "titre": "2026-08-31 — Polices Adobe, état réel, et un bloqueur que j'annonçais à tort",
+    "mots": 348,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 77,
+      "jeu": 3,
+      "interface": 3,
+      "base": 12,
+      "mise-en-ligne": 19
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "releve d'etat des polices Adobe a une date donnee ; le bloqueur annonce a tort y est demenagi, et ce point est deja dans docs/typography/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 234,
+    "date": "2026-08-31",
+    "titre": "2026-08-31 (suite) — Le profil géométrique décrit une police que le joueur ne voit pas",
+    "mots": 1577,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 65,
+      "jeu": 22,
+      "interface": 8,
+      "prof-ecole": 26,
+      "base": 8,
+      "mise-en-ligne": 8
+    },
+    "nature": "journal",
+    "theme_retenu": "typographie",
+    "etat": "rangee",
+    "motif": null,
+    "destinations": [
+      "docs/game/arbitrages.md"
+    ]
+  },
+  {
+    "id": 235,
+    "date": "2026-08-31",
+    "titre": "2026-08-31 — 019 appliquée en production, le débutant reçoit 23 Adobe sur 30",
+    "mots": 140,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 23,
+      "jeu": 3,
+      "interface": 3,
+      "base": 12
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "application de la migration 019 ; l'etat des migrations se lit dans le bandeau de chaque fichier de db/migrations",
+    "destinations": []
+  },
+  {
+    "id": 236,
+    "date": "2026-08-31",
+    "titre": "2026-08-31 — Les jumelles, décidées famille par famille",
+    "mots": 286,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 38,
+      "jeu": 3,
+      "prof-ecole": 5,
+      "base": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "document de decisions jumelle par jumelle, docs/catalogue/jumelles-decisions.md, qui est sa place ; la regle qui le fonde est dans docs/game/arbitrages.md",
+    "destinations": []
+  },
+  {
+    "id": 237,
+    "date": "2026-09-16",
+    "titre": "Flutter peut il animer des choses sur le site ? (2026-09-16)",
+    "mots": 293,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 15,
+      "jeu": 6,
+      "interface": 5,
+      "mise-en-ligne": 4
+    },
+    "nature": "autre",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "reponse a une question d'outillage, Flutter n'anime pas un site existant ; aucune decision prise ni piege durable",
+    "destinations": []
+  },
+  {
+    "id": 238,
+    "date": "2026-09-16",
+    "titre": "Labo d'écrans d'intro (2026-09-16)",
+    "mots": 504,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 6,
+      "interface": 26
+    },
+    "nature": "autre",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "laboratoire d'ecrans d'intro ; propositions ecartees au profit d'une seule, la decision finale etant consignee par la note de mise en ligne de l'intro",
+    "destinations": []
+  },
+  {
+    "id": 239,
+    "date": "2026-09-16",
+    "titre": "L'intro est posée sur le site (2026-09-16)",
+    "mots": 1339,
+    "theme_propose": "interface",
+    "scores": {
+      "jeu": 3,
+      "interface": 29,
+      "prof-ecole": 5,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "autre",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "mise en place de l'intro sur le site ; description d'un composant livre, qui releve du code et non d'un arbitrage",
+    "destinations": []
+  },
+  {
+    "id": 240,
+    "date": "2026-09-17",
+    "titre": "Catalogue de mouvements (2026-09-17)",
+    "mots": 1967,
+    "theme_propose": "interface",
+    "scores": {
+      "typographie": 4,
+      "jeu": 9,
+      "interface": 58,
+      "admin": 9,
+      "base": 4
+    },
+    "nature": "autre",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "catalogue de mouvements sous app/dev/motion, qui est lui meme le document de reference des animations",
+    "destinations": []
+  },
+  {
+    "id": 241,
+    "date": "2026-09-18",
+    "titre": "2026-09-18 — Graphify essayé puis entièrement retiré",
+    "mots": 177,
+    "theme_propose": "typographie",
+    "scores": {
+      "typographie": 15,
+      "mise-en-ligne": 4
+    },
+    "nature": "journal",
+    "theme_retenu": null,
+    "etat": "ecartee",
+    "motif": "essai puis retrait complet de l'outil de carte de code ; les deux constats qui survivent sont deja ecrits dans cette meme note et en memoire",
+    "destinations": []
+  }
+]

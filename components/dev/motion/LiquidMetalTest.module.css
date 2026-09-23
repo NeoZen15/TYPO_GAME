@@ -1,0 +1,93 @@
+/* Essai fidèle du pen donné en référence. Les dimensions sont divisées par deux
+ * par rapport à l'original, qui pose un bouton de 385 px : il doit tenir dans
+ * une cellule du catalogue à côté des autres. Le reste, couleurs de l'anneau
+ * comprises, est repris tel quel, sinon l'essai ne montre pas l'effet d'origine.
+ *
+ * Ces couleurs ne sont PAS conformes à la charte du site, qui est en deux tons.
+ * C'est assumé le temps de l'essai, et c'est le propriétaire qui tranche. */
+
+.wrap {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+}
+
+.clipDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.metal {
+  position: relative;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+}
+
+.metal > canvas {
+  border-radius: inherit;
+  clip-path: url("#liquid-metal-canvas-clip");
+}
+
+.metal::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10.9rem;
+  height: 10.9rem;
+  background: linear-gradient(#444, #000);
+  border-radius: 50%;
+  box-shadow: inset 0 0.2rem 0.2rem 0.2rem rgba(255, 255, 255, 0.3);
+}
+
+.outline {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12.2rem;
+  height: 12.2rem;
+  border-radius: 50%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 0.35rem;
+  border-radius: inherit;
+  background: conic-gradient(from 180deg, blue, purple, red, purple, blue);
+  filter: grayscale(1);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: filter 0.3s ease;
+}
+
+.outline:hover::before {
+  filter: grayscale(0);
+}
+
+.icon {
+  width: 3.1rem;
+  fill: #65616f;
+  transform: rotate(-45deg);
+}
+
+.note {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0;
+  max-width: 34ch;
+  text-align: center;
+}

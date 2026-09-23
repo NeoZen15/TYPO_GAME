@@ -1,0 +1,606 @@
+/* Catalogue de mouvements, à choisir.
+ *
+ * Aucune couleur n'est écrite en dur : la page emprunte les tokens du site pour
+ * que ce qu'on voit ici soit exactement ce qu'on verra là bas. La leçon du
+ * 2026-09-16 tient : un labo qui fixe son fond ne peut pas lire les encres du
+ * thème, alors celui ci ne fixe rien.
+ *
+ * Les durées suivent le contrat de cohérence UI, §6 : 180 ms pour un changement
+ * d'état, 0,6 s en cubic-bezier(0.4, 0, 0.2, 1) pour une entrée. */
+
+.page {
+  min-height: 100vh;
+  padding: clamp(2.5rem, 6vh, 4rem) clamp(1.5rem, 5vw, 3rem) 6rem;
+  color: var(--ink-strong);
+}
+
+.head {
+  max-width: 62rem;
+  margin: 0 auto clamp(2rem, 5vh, 3rem);
+}
+
+.kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 0.9rem;
+}
+
+.title {
+  font-size: clamp(2.2rem, 5vw, 3.85rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-weight: 650;
+  text-wrap: balance;
+  margin: 0 0 0.9rem;
+}
+
+.lede {
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 46ch;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.sections {
+  max-width: 62rem;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(2.5rem, 6vh, 4rem);
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+
+.sectionNote {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0 0 1.4rem;
+  max-width: 52ch;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.cell {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card, 1.04rem);
+  padding: 1.1rem;
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.cellName {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.cellNote {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+/* La pastille du site, recette du §4 : primaire = l'inverse de la page. */
+.pill {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.9rem;
+  padding: 0.82rem 1.4rem;
+  border: 0;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--ink-strong);
+  color: var(--background);
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 620;
+  line-height: 1;
+  cursor: pointer;
+  justify-self: start;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+/* ------------------------------------------------- 1. le clic sur un bouton */
+
+.pressSink:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.pressBounce:active {
+  transform: scale(0.955);
+}
+
+.pressBounce {
+  transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 999px;
+  background: var(--background);
+  opacity: 0.28;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  animation: ripple-out 520ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes ripple-out {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Trois versions plus marquées, toutes puisées dans l'imprimerie plutôt que
+   dans le catalogue d'effets d'interface. Aucune ne touche à la couleur : le
+   contrat n'autorise que l'encre et le papier sur un bouton. */
+
+/* a. Le repérage : les deux passages d'encre se décalent une fraction de
+   seconde puis se recalent, comme une machine mal calée qui se rattrape. Fait
+   en ombre de texte, donc sans dupliquer le label ni relancer la mise en page. */
+.pressRegister:active {
+  transform: translateY(1px);
+}
+
+.registering .registerLabel {
+  animation: register-slip 340ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes register-slip {
+  0% {
+    text-shadow: none;
+  }
+  30% {
+    text-shadow:
+      3px 0 0 color-mix(in srgb, var(--background) 55%, transparent),
+      -3px 0 0 color-mix(in srgb, var(--background) 30%, transparent);
+  }
+  100% {
+    text-shadow: none;
+  }
+}
+
+/* b. Le poinçon : la pastille s'écrase d'un coup sec et se relève, comme un
+   caractère qu'on frappe. La compression est verticale seulement, une pastille
+   qui s'écrase dans les deux sens fait ballon. */
+.pressPunch {
+  transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pressPunch:active {
+  transform: scaleY(0.88) translateY(2px);
+  transition-duration: 70ms;
+  transition-timing-function: ease-out;
+}
+
+/* c. Le rouleau : le label sort par le haut et son jumeau entre par le bas. Les
+   deux copies sont identiques, donc le retour à zéro ne se voit pas. */
+.rollWindow {
+  display: block;
+  overflow: hidden;
+  height: 1em;
+  line-height: 1;
+}
+
+.rollStack {
+  display: block;
+}
+
+.rolling .rollStack {
+  animation: roll-over 460ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes roll-over {
+  to {
+    transform: translateY(-1em);
+  }
+}
+
+/* ---------------------------------------------- 1 bis. le clic en morph */
+
+/* Ces quatre là changent la FORME du bouton et pas seulement sa position. Elles
+   portent donc une largeur fixe : une pastille qui se referme en point doit
+   pouvoir viser sa propre hauteur, et sans largeur déclarée cette hauteur
+   dépendrait de la longueur du mot. */
+.morph {
+  width: 13rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.morphLabel {
+  transition: opacity 140ms ease;
+}
+
+/* a. Le point : la pastille se referme sur elle même jusqu'à devenir un rond,
+   puis se rouvre. C'est une vraie largeur qui bouge et pas une déformation :
+   une pastille écrasée en transform rendrait une lentille et pas un cercle. */
+.morphDot {
+  transition:
+    width 300ms cubic-bezier(0.65, 0, 0.35, 1),
+    transform 180ms ease;
+}
+
+.morphing.morphDot {
+  width: 2.9rem;
+}
+
+.morphing .morphLabel {
+  opacity: 0;
+}
+
+/* b. La goutte : elle s'écrase, se détend, se recale. Le volume se conserve,
+   c'est ce qui donne la sensation de matière. */
+.morphing.morphDrop {
+  animation: drop-squash 520ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+@keyframes drop-squash {
+  0% {
+    transform: scale(1, 1);
+  }
+  28% {
+    transform: scale(1.07, 0.88);
+  }
+  58% {
+    transform: scale(0.96, 1.06);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+/* c. L'angle : la pastille perd ses arrondis, devient une plaque, et les
+   retrouve. Le rayon ne coûte rien à animer, il ne touche pas à la mise en
+   page. */
+.morphCorner {
+  transition: border-radius 260ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.morphing.morphCorner {
+  border-radius: 0.35rem;
+}
+
+/* d. Le point qui attend : la même fermeture que a., mais elle ne se rouvre
+   qu'une fois le travail fini, et les trois points respirent dedans. C'est la
+   suite logique du choix du propriétaire sur l'attente. */
+.morphWait {
+  transition: width 300ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.morphing.morphWait {
+  width: 2.9rem;
+}
+
+/* ------------------------------------------- 1 ter. le clic, version bulle */
+
+/* Demande du propriétaire : garder la forme en longueur, mais qu'elle devienne
+   une bulle. Deux techniques, relevées sur des références publiques.
+   La première est le rayon à HUIT valeurs : chaque coin reçoit son rayon
+   horizontal et son rayon vertical, ce qu'aucune valeur unique ne peut donner,
+   et c'est ce qui rend une forme dessinée à la main plutôt que géométrique.
+   La seconde est le filtre gooey en SVG, un flou suivi d'un fort contraste sur
+   la couche alpha : deux formes proches se rejoignent alors comme deux gouttes.
+
+   Les deux gardent la largeur du bouton : rien ici ne touche à sa longueur. */
+
+.bubble {
+  width: 13rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* a. La bulle : la pastille respire, ses quatre coins se déforment chacun de
+   leur côté, puis tout se recale sur la géométrie. */
+.morphing.bubbleBlob {
+  animation: blob-wobble 680ms cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+@keyframes blob-wobble {
+  0% {
+    border-radius: 999px;
+  }
+  32% {
+    border-radius: 62% 38% 44% 56% / 72% 62% 38% 28%;
+  }
+  64% {
+    border-radius: 41% 59% 61% 39% / 33% 42% 58% 67%;
+  }
+  100% {
+    border-radius: 999px;
+  }
+}
+
+/* b. Le liquide : la pastille reste entière et deux gouttes sortent par ses
+   extrémités puis se font réabsorber. Le filtre les recolle au corps, donc la
+   matière a l'air de s'étirer au lieu de se détacher.
+   Le filtre ne s'applique QU'À LA COUCHE DE FOND : un flou posé sur tout le
+   bouton rendrait aussi le mot flou. */
+.liquidBtn {
+  background: transparent;
+  isolation: isolate;
+}
+
+.liquidLayer {
+  position: absolute;
+  inset: 0;
+  filter: url(#motion-goo);
+  pointer-events: none;
+}
+
+.liquidBody {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--foreground);
+}
+
+.liquidDrop {
+  position: absolute;
+  top: 50%;
+  width: 2.1rem;
+  height: 2.1rem;
+  margin-top: -1.05rem;
+  border-radius: 999px;
+  background: var(--foreground);
+  transform: translateX(0) scale(0.2);
+  opacity: 0;
+}
+
+.liquidDrop[data-side="left"] {
+  left: 0;
+}
+
+.liquidDrop[data-side="right"] {
+  right: 0;
+}
+
+.morphing .liquidDrop[data-side="left"] {
+  animation: drop-left 620ms cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+.morphing .liquidDrop[data-side="right"] {
+  animation: drop-right 620ms cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+@keyframes drop-left {
+  0% {
+    transform: translateX(0) scale(0.2);
+    opacity: 0;
+  }
+  45% {
+    transform: translateX(-1.5rem) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes drop-right {
+  0% {
+    transform: translateX(0) scale(0.2);
+    opacity: 0;
+  }
+  45% {
+    transform: translateX(1.5rem) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.liquidLabel {
+  position: relative;
+  z-index: 1;
+  color: var(--background);
+}
+
+/* ------------------------------------------------- 2. le bouton qui attend */
+
+.waitLabel {
+  transition: opacity 180ms ease;
+}
+
+.waiting .waitLabel {
+  opacity: 0;
+}
+
+/* b. trois points qui respirent à la place du texte */
+.waitDots {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.34rem;
+}
+
+.waiting .waitDots {
+  display: flex;
+}
+
+.dot {
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 999px;
+  background: var(--background);
+  animation: dot-breathe 1s ease-in-out infinite;
+}
+
+@keyframes dot-breathe {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ------------------------------------------------ 3. le mot qui change */
+
+.wordStage {
+  display: grid;
+  place-items: center;
+  min-height: 7rem;
+  overflow: hidden;
+}
+
+/* La TAILLE est la seule propriété typographique permise sur le mot du jeu :
+   il est la question posée, tout le reste doit venir du fichier de police. Ces
+   deux entrées ne touchent donc que l'opacité et la position, jamais l'échelle,
+   qui changerait le poids apparent. */
+.word {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  color: var(--ink-warm);
+  line-height: 1;
+}
+
+.wordFade {
+  animation: word-fade 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes word-fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------------ 4. juste ou faux */
+
+.options {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.option {
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  min-height: 3.4rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-soft, 0.94rem);
+  background: var(--surface-strong);
+  color: var(--ink-strong);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+/* Les deux premières versions ont été écartées par le propriétaire. Celles ci
+   ne cherchent plus dans les effets d'interface mais dans la correction
+   d'épreuve, qui est le geste du métier. */
+
+.optionLabel {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes draw-across {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* c. La bascule, retenue par le propriétaire le 2026-09-17, en VERT et non en
+   encre : « met en vert quand c'est ok ». Le geste reste celui de l'écran
+   d'intro, un volet qui traverse et retourne la surface, mais il porte
+   maintenant la couleur que le §2 du contrat réserve à la validation. */
+.flip[data-state="correct"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--success-green);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: draw-across 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.flip[data-state="correct"] .optionLabel {
+  animation: label-invert 0.01s linear 0.2s forwards;
+}
+
+@keyframes label-invert {
+  to {
+    color: var(--background);
+  }
+}
+
+.flip[data-state="wrong"] {
+  animation: flip-out 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes flip-out {
+  to {
+    background: transparent;
+    border-color: var(--error-red);
+    opacity: 0.75;
+  }
+}
+
+.replay {
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 620;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink-strong);
+  cursor: pointer;
+  justify-self: start;
+  transition: transform 180ms ease;
+}
+
+.replay:hover {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

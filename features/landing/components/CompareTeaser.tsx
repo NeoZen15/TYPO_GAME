@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import MeasuredGlyphSplit from "@/components/typography/MeasuredGlyphSplit";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Block 4 teaser for /compare. A ghost cursor (block-2 technique) auto-drives
@@ -38,7 +39,7 @@ export default function CompareTeaser() {
     const cursor = cursorRef.current;
     if (!root || !cursor) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       gsap.set(cursor, { autoAlpha: 0 });
       return;
     }

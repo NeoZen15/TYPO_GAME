@@ -44,7 +44,12 @@ export const privacyCopy = {
     },
     {
       title: "Ce que nous ne collectons pas",
-      body: "Ni nom, ni adresse email, ni mot de passe : il n'y a pas de compte. Aucune adresse IP ni identifiant d'appareil n'est conservé dans notre base. Aucune mesure d'audience, aucun traceur publicitaire, aucun réseau social. Les polices de caractères sont hébergées sur notre propre serveur : votre navigateur n'appelle ni Google Fonts ni aucun autre tiers en affichant une page.",
+      body: "Pour jouer : ni nom, ni adresse email, ni mot de passe, il n'y a aucun compte à créer. Un compte n'existe que pour un enseignant ou un administrateur, et il est alors décrit plus bas. Aucune adresse IP ni identifiant d'appareil n'est conservé dans notre base. Aucune mesure d'audience, aucun traceur publicitaire, aucun réseau social.",
+    },
+
+    {
+      title: "Les polices, et le seul tiers que votre navigateur contacte",
+      body: "La très grande majorité des polices du jeu sont hébergées sur notre propre serveur. Une partie du catalogue appartient en revanche à Adobe, qui interdit de télécharger ses fichiers : ces polices restent chez lui, et votre navigateur les demande à use.typekit.net et p.typekit.net en affichant une page. Adobe Inc., société américaine, reçoit alors votre adresse IP, le type de votre navigateur et la page depuis laquelle la demande part. Ce n'est pas un traceur et cela ne dépose aucun cookie chez vous, mais c'est bien un appel à un tiers, et vous devez le savoir. Il est nécessaire au service : ces polices ne sont pas une décoration, elles sont la question que le jeu vous pose.",
     },
     {
       title: "Pourquoi",
@@ -64,7 +69,7 @@ export const privacyCopy = {
     },
     {
       title: "Sous-traitants",
-      body: "Neon, pour l'hébergement de la base de données. Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis, pour la mise en ligne des pages. Aucun autre prestataire ne reçoit vos données.",
+      body: "Neon, pour l'hébergement de la base de données. Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis, pour la mise en ligne des pages. Adobe Inc., États-Unis, pour les polices de caractères qu'il ne permet pas d'héberger, décrites plus haut. Clerk Inc., États-Unis, pour l'authentification des comptes enseignants et administrateurs : ce prestataire conserve l'adresse email du titulaire d'un compte, et tant qu'aucun compte n'est ouvert il ne reçoit rien. Aucun autre prestataire ne reçoit vos données.",
     },
     {
       title: "Vos droits",

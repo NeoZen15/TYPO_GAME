@@ -6,6 +6,7 @@ import { familyOf } from "@/lib/teacher/mock-teacher";
 import type { TeacherProfile } from "@/lib/teacher/mock-teacher";
 import { familiesInPlay, paceOfOpen, topConfusions } from "@/lib/teacher/teacher-derive";
 import { dueLabel } from "@/lib/teacher/teacher-time";
+import { prefersReducedMotion } from "@/lib/motion";
 
 // ---------------------------------------------------------------------------
 // Teacher — Home. A cockpit, not a smaller copy of the other two tabs.
@@ -58,7 +59,7 @@ export default function TeacherHome({
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     root.classList.add("is-armed");
     const reveal = () => root.classList.add("is-in");
     const io = new IntersectionObserver(
@@ -81,7 +82,7 @@ export default function TeacherHome({
   // The specimen band, on the landing hero's own interval.
   useEffect(() => {
     if (live.length < 2) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     const id = window.setInterval(() => setSpecimen((i) => (i + 1) % live.length), SPECIMEN_MS);
     return () => window.clearInterval(id);
   }, [live.length]);
