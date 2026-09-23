@@ -25,13 +25,36 @@ const REMOVE_AFTER_MS = 1000 + 1900 + 100;
 // n'a jamais eu un instant de repos.
 const START_TIMEOUT_MS = 1200;
 
+// Lu aussi par le script de tête de app/layout.tsx, sous le même nom.
+const SEEN_KEY = "jdt-intro-seen";
+
+function alreadySeen(): boolean {
+  try {
+    return window.localStorage.getItem(SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+// Posé au départ de l'animation et non à sa fin : quelqu'un qui quitte la page
+// pendant l'ouverture l'a vue, il ne doit pas la revoir.
+function markSeen() {
+  try {
+    window.localStorage.setItem(SEEN_KEY, "1");
+  } catch {
+    // Stockage bloqué : l'intro se rejouera, c'est le seul coût.
+  }
+}
+
 export default function BrandIntro({ symbol }: { symbol: string }) {
   // Rendue dès le HTML du serveur : décider côté client la ferait arriver APRÈS
   // la première peinture, donc on verrait le site avant l'écran qui le couvre.
   //
-  // Elle se joue à CHAQUE chargement de page. La première version ne la montrait
-  // qu'une fois par onglet, et un rafraîchissement ne la rejouait donc jamais :
-  // c'est un écran de chargement, il appartient au chargement.
+  // Elle ne se joue qu'UNE FOIS par visiteur, à sa toute première ouverture du
+  // site, quelle que soit la page d'entrée. Décision du propriétaire le
+  // 2026-09-23 : la rejouer à chaque retour sur l'accueil était un enfer. Le
+  // drapeau vit dans localStorage ; le script de tête de app/layout.tsx le lit
+  // avant la première peinture et cache la feuille par CSS.
   const [playing, setPlaying] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -41,11 +64,17 @@ export default function BrandIntro({ symbol }: { symbol: string }) {
   // instant de repos du fil principal, faute de quoi l'ouverture se joue pendant
   // l'hydratation et saute.
   useEffect(() => {
+    // Déjà vue : on ne démarre rien. La feuille est déjà cachée par la règle
+    // CSS data-intro-seen, comme pour le mouvement réduit.
+    if (alreadySeen()) return;
+
     let cancelled = false;
     let idleHandle = 0;
 
     const start = () => {
-      if (!cancelled) setPlaying(true);
+      if (cancelled) return;
+      markSeen();
+      setPlaying(true);
     };
 
     const frame = window.requestAnimationFrame(() => {

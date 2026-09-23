@@ -89,3 +89,9 @@
     display: none;
   }
 }
+
+/* Déjà vue : le script de tête pose data-intro-seen avant la première peinture,
+   sinon le visiteur qui revient verrait la feuille couvrir le site un instant. */
+:global(html[data-intro-seen]) .overlay {
+  display: none;
+}

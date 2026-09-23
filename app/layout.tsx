@@ -46,6 +46,12 @@ const themeBootstrapScript = `
     if (localStorage.getItem("jdt-reduced-motion") === "1") {
       root.dataset.reducedMotion = "1";
     }
+    // L'intro du logo ne se joue qu'une fois par visiteur. Pose avant la
+    // premiere peinture, sinon la feuille couvrirait le site un instant.
+    // Voir components/brand/BrandIntro.tsx.
+    if (localStorage.getItem("jdt-intro-seen") === "1") {
+      root.dataset.introSeen = "1";
+    }
   } catch {
     document.documentElement.dataset.theme = "dark";
     document.documentElement.style.colorScheme = "dark";
