@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 
 import { getCurrentUserId, GUEST_COOKIE_NAME } from "@/lib/server/current-user";
 
-import { normalizeAttemptId, normalizeFamiliarity } from "@/lib/game/training/contracts";
+import {
+  normalizeAttemptId,
+  normalizeFamiliarity,
+  normalizeFocus,
+} from "@/lib/game/training/contracts";
 import { startTrainingSession } from "@/lib/game/training/provider";
 
 // Le nom vient du module d'identite : un renommage doit rester une seule ligne.
@@ -14,6 +18,7 @@ export async function POST(request: Request) {
       familiarity?: string;
       warmupCorrect?: boolean;
       attemptId?: string;
+      focus?: unknown;
     };
     // PAR LE MODULE D'IDENTITE, et il apporte plus qu'une factorisation : la
     // valeur du cookie est validee avant d'etre utilisee. Lue brute, une valeur
@@ -35,6 +40,9 @@ export async function POST(request: Request) {
       // mints its own, so a stale or hostile body can never answer 500. The
       // identity above stays out of the body, it comes from the httpOnly cookie.
       attemptId: normalizeAttemptId(body.attemptId),
+      // La consigne d'un objectif du Path. Mal formee, elle vaut null et la
+      // seance est ordinaire : une orientation perdue ne merite jamais un refus.
+      focus: normalizeFocus(body.focus),
     });
 
     const response = NextResponse.json(result.payload);

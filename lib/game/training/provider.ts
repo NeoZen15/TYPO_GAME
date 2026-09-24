@@ -16,10 +16,12 @@ import {
   type Locale,
   type TrainingAnswerResponse,
   type TrainingEndResponse,
+  type TrainingFocus,
   type TrainingQuestion,
   type TrainingStartInput,
   type TrainingStartResponse,
   normalizeAttemptId,
+  normalizeFocus,
 } from "@/lib/game/training/contracts";
 import {
   buildTrainingSessionSummary,
@@ -42,6 +44,7 @@ import {
 } from "@/lib/game/training/question-shape";
 import { GameRequestError } from "@/lib/game/request-error";
 import { buildMissHint } from "@/lib/game/training/miss-hint";
+import { PALIER_TAXONOMY } from "@/lib/profile/palier-taxonomy";
 import { loadTrainingProgress } from "@/lib/profile/profile-stats";
 import { sql } from "@/lib/server/neon";
 import { isIndistinguishableFrom } from "@/lib/game/twin-guard";
@@ -59,6 +62,13 @@ type PoolRow = {
   visual_cluster_id: string;
   difficulty_base: string;
   rarity_tag: string;
+  // Les trois attributs que lisent les predicats d'etape
+  // (lib/profile/palier-taxonomy.ts), pour la consigne d'Allumer. NOT NULL en
+  // base. Seul getPoolRows les lit : la ligne d'etat du chemin de reponse ne sert
+  // jamais a choisir une question.
+  sub_category?: string;
+  aperture_profile?: string;
+  contrast_profile?: string;
   display_name: string;
 };
 
@@ -94,11 +104,39 @@ const queryRows = async <T>(query: Promise<unknown>) => (await query) as T[];
 // servira pas, l'ordre réel dépendant des réponses.
 const UPCOMING_FACE_COUNT = 3;
 
+// La consigne traduite pour question-shape.ts : quelles faces passent devant,
+// quelles faces sont privilegiees en leurre. Une etape sans predicat ne donne
+// aucune consigne : on n'oriente pas vers une mecanique qui n'existe pas.
+const focusBias = (
+  focus: TrainingFocus | null | undefined
+): { prefers?: (row: PoolRow) => boolean; preferredDistractors?: string[] } => {
+  if (!focus) return {};
+  if (focus.kind === "palier") {
+    const predicate = PALIER_TAXONOMY[focus.id];
+    if (!predicate) return {};
+    return {
+      prefers: (row) =>
+        predicate({
+          primary: row.primary_category,
+          sub: row.sub_category ?? "",
+          aperture: row.aperture_profile ?? "",
+          contrast: row.contrast_profile ?? "",
+        }),
+    };
+  }
+  const slugs = new Set(focus.slugs);
+  return {
+    prefers: (row) => slugs.has(row.typeface_slug),
+    preferredDistractors: focus.slugs,
+  };
+};
+
 const buildQuestion = (
   sessionId: string,
   user: UserRow,
   sessionSeed: string,
-  pool: PoolRow[]
+  pool: PoolRow[],
+  focus?: TrainingFocus | null
 ): TrainingQuestion => {
   // FAIL CLOSED on the rendering chain. The correct answer is the face the player
   // must recognise, so it can only be a face the screen can actually declare. A
@@ -111,7 +149,13 @@ const buildQuestion = (
   // side only, breaks loudly here instead of silently degrading the question.
   const renderablePool = pool.filter((row) => hasRuntimeFace(row.typeface_slug));
 
-  const correct = pickEligibleTypeface(renderablePool, user.global_q_index, sessionSeed);
+  const { prefers, preferredDistractors } = focusBias(focus);
+  const correct = pickEligibleTypeface(
+    renderablePool,
+    user.global_q_index,
+    sessionSeed,
+    prefers
+  );
   if (!correct) {
     throw new Error(
       pool.length > 0
@@ -125,7 +169,9 @@ const buildQuestion = (
     correct,
     user.global_q_index,
     sessionSeed,
-    isIndistinguishableFrom
+    isIndistinguishableFrom,
+    undefined,
+    preferredDistractors
   );
   const optionRows = orderOptionsForDisplay(correct, distractors);
 
@@ -142,6 +188,9 @@ const buildQuestion = (
     typefaceSlug: correct.typeface_slug,
     displayWord: getTrainingDisplayWord(sessionSeed, user.global_q_index),
     options: options.map((option) => option.slug),
+    // Recopiee dans chaque jeton construit avec elle : c'est ce qui la fait
+    // passer a la question suivante sans rien ecrire en base.
+    ...(focus ? { focus } : {}),
   };
 
   // Les trois faces les plus proches de leur échéance après celle ci : ce sont
@@ -405,6 +454,9 @@ const getPoolRows = async (userId: string) =>
       tc.visual_cluster_id,
       tc.difficulty_base::text AS difficulty_base,
       tc.rarity_tag::text AS rarity_tag,
+      tc.sub_category::text AS sub_category,
+      tc.aperture_profile::text AS aperture_profile,
+      tc.contrast_profile::text AS contrast_profile,
       tc.display_name
     FROM user_typeface_state uts
     JOIN typefaces_core tc
@@ -822,7 +874,10 @@ const WRONG_FEEDBACK = "Incorrect. Try again.";
 const duplicateAnswerResponse = async (
   session: SessionRow,
   user: UserRow,
-  questionId: string
+  questionId: string,
+  // Relue du jeton verifie, comme sur le chemin normal, pour que la question
+  // rendue ici garde la meme orientation que celle qu'elle remplace.
+  focus?: TrainingFocus
 ): Promise<TrainingAnswerResponse> => {
   const [recorded] = await queryRows<{
     recorded_is_correct: boolean | null;
@@ -865,7 +920,8 @@ const duplicateAnswerResponse = async (
         session.session_id,
         { ...user, global_q_index: recorded.global_q_index },
         session.seed,
-        await getPoolRows(user.user_id)
+        await getPoolRows(user.user_id),
+        focus
       );
     } catch (error) {
       console.warn("duplicate answer: no next question available.", error);
@@ -911,6 +967,7 @@ export const startTrainingSession = async ({
   familiarity = null,
   warmupCorrect = null,
   attemptId = null,
+  focus = null,
 }: TrainingStartInput): Promise<{
   payload: TrainingStartResponse;
   guestUserId: string;
@@ -1123,7 +1180,22 @@ export const startTrainingSession = async ({
     pool
   );
   const recoveredUser: UserRow = { ...user, global_q_index: recovery.globalQIndex };
-  const question = buildQuestion(session.session_id, recoveredUser, session.seed, recovery.pool);
+  // La consigne vient de CETTE requete, validee encore ici pour la meme raison
+  // que attemptId ci dessus. LIMITE CONNUE : la ligne de seance ne la garde pas.
+  // Une seance rejointe (rechargement de page, meme identifiant de tentative)
+  // repart donc avec la consigne que le client renvoie, et sans consigne s'il
+  // n'en renvoie aucune, l'orientation de la premiere ouverture etant perdue. La
+  // suite de la seance, elle, la relit dans le jeton signe. Ce qui leverait la
+  // limite est la colonne sessions.focus de la migration 026 (spec des objectifs
+  // du joueur, section 5, decision 2), non faite : elle attend le feu vert du
+  // proprietaire.
+  const question = buildQuestion(
+    session.session_id,
+    recoveredUser,
+    session.seed,
+    recovery.pool,
+    normalizeFocus(focus)
+  );
   const progressAggregate = await safeTrainingProgress(user.user_id);
   // Baseline visible level (read-only, no recompute) so the client has a value to
   // display and a reference for the first change. levelChanged is deliberately
@@ -1405,7 +1477,7 @@ export const submitTrainingAnswer = async ({
   // pedagogical, the three mastery branches, the mastery unlock, the two
   // counter UPDATEs and the pool rebalance, sits below this checkpoint.
   if (written.length === 0) {
-    return duplicateAnswerResponse(session, user, payload.questionId);
+    return duplicateAnswerResponse(session, user, payload.questionId, payload.focus);
   }
 
   // Both values come from the statement that just wrote the fact, never from a
@@ -1646,7 +1718,15 @@ export const submitTrainingAnswer = async ({
     ...user,
     global_q_index: recovery.globalQIndex,
   };
-  const nextQuestion = buildQuestion(sessionId, nextUser, session.seed, recovery.pool);
+  // La consigne relue dans le jeton VERIFIE plus haut, jamais dans le corps de la
+  // requete : c'est la seule source que le client ne peut pas reecrire.
+  const nextQuestion = buildQuestion(
+    sessionId,
+    nextUser,
+    session.seed,
+    recovery.pool,
+    payload.focus
+  );
 
   return {
     result: "correct",

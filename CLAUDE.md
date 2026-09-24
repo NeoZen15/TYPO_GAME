@@ -39,7 +39,7 @@ c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page
 faille, à trancher le jour où un devoir compte. Et l'apparence du lien d'évitement ajouté le
 2026-09-18 attend ton œil.
 
-**Chantier en cours depuis le 2026-09-23 : les objectifs du joueur, tranche 1 sur 4 faite** (le choix, `lib/profile/objectives.ts`, gardé par `check:objectives`, éprouvé sur huit mutations). Trois cartes sur le Path,
+**Chantier en cours depuis le 2026-09-23 : les objectifs du joueur, tranches 1 et 2 sur 4 faites** (le choix, `lib/profile/objectives.ts`, gardé par `check:objectives`, éprouvé sur huit mutations). Trois cartes sur le Path,
 Allumer, Corriger, Mission du jour, qui orientent l'entraînement normal par une consigne et jamais
 par la porte des assignations (elle marquerait les faces `in_active_pool = false`). Spec
 `docs/product/spec-objectifs-joueur.md`, une journée en quatre tranches ; trois décisions
@@ -70,7 +70,7 @@ npm run quality    # la porte complète, à passer avant de merger
 
 **Plus aucun garde hors de la porte depuis le 2026-08-04** : les 38 fichiers `check-*.mjs` de `scripts/quality` ont tous leur entrée `check:*` et sont tous dans la chaîne. Les sept derniers câblés viennent du plan double démarrage et sont groupés après `check:session-lifecycle`, dans l'ordre du plan, pour qu'un échec se lise comme une famille et non comme un contrôle isolé. Un garde ajouté doit désormais partir avec sa ligne de chaîne dans le même commit : un `package.json` qui nomme un script absent rend l'historique non reconstructible, et personne ne le voit avant le prochain clone.
 
-Neuf gardes lisent un module `.ts` directement, donc ils portent `--disable-warning=MODULE_TYPELESS_PACKAGE_JSON` (`check:session-lifecycle`, `check:day-keys`, `check:answer-position`, `check:distractor-ladder`, `check:assigned-contract`, `check:objectives`, `check:when-window`, `check:mastery-gauge` et `check:recap-view`). Le dernier passe en plus par `scripts/typography/alias-loader.mjs`, parce que les adaptateurs de récap importent en `@/` et que Node ne résout pas cet alias seul. C'est la contrepartie assumée : le module qu'ils gardent doit rester sans import de runtime, sinon Node ne peut pas le charger et le garde devient aveugle. Ne **pas** régler cette alerte en posant `"type": "module"` dans `package.json` comme le suggère Node, cela changerait la résolution de modules de tout le projet Next.
+Dix gardes lisent un module `.ts` directement, donc ils portent `--disable-warning=MODULE_TYPELESS_PACKAGE_JSON` (`check:session-lifecycle`, `check:day-keys`, `check:answer-position`, `check:distractor-ladder`, `check:assigned-contract`, `check:objectives`, `check:focus-bias`, `check:when-window`, `check:mastery-gauge` et `check:recap-view`). Le dernier passe en plus par `scripts/typography/alias-loader.mjs`, parce que les adaptateurs de récap importent en `@/` et que Node ne résout pas cet alias seul. C'est la contrepartie assumée : le module qu'ils gardent doit rester sans import de runtime, sinon Node ne peut pas le charger et le garde devient aveugle. Ne **pas** régler cette alerte en posant `"type": "module"` dans `package.json` comme le suggère Node, cela changerait la résolution de modules de tout le projet Next.
 
 **Piège de mesure, à ne pas refaire.** `npm run quality | tail` rend le code de sortie de `tail` et non celui de la porte, zsh n'ayant pas `pipefail` par défaut. Rediriger vers un fichier puis lire `$?`, sinon une porte rouge passe pour verte.
 

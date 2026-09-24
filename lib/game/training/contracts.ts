@@ -1,4 +1,9 @@
 import { type GameFontFace } from "@/lib/game/fonts/contracts";
+import { type TrainingFocus } from "@/lib/game/training/focus";
+
+// Validation de la consigne d'orientation, dans un module pur pour que
+// check:focus-bias puisse l'exercer avec Node. Voir lib/game/training/focus.ts.
+export { normalizeFocus, type TrainingFocus } from "@/lib/game/training/focus";
 
 export type Locale = "fr" | "en";
 
@@ -187,4 +192,8 @@ export type TrainingStartInput = {
   familiarity?: Familiarity | null;
   warmupCorrect?: boolean | null;
   attemptId?: string | null;
+  // La consigne d'un objectif du Path (Allumer, Corriger), deja passee par
+  // normalizeFocus. Elle oriente le choix des questions sans jamais le
+  // restreindre ; absente, la seance est celle d'avant.
+  focus?: TrainingFocus | null;
 };

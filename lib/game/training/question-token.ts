@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
 
+import type { TrainingFocus } from "@/lib/game/training/focus";
+
 export type TrainingQuestionTokenPayload = {
   sessionId: string;
   userId: string;
@@ -24,6 +26,15 @@ export type TrainingQuestionTokenPayload = {
   // them into a crash instead of an answer. Absent means "no server measurement
   // available", which is exactly the old behaviour.
   issuedAtMs?: number;
+  // La consigne d'orientation de la seance (spec des objectifs du joueur, section
+  // 4). Elle voyage ICI et pas en base : aucune colonne ne la porte tant que la
+  // migration 026 n'est pas decidee, et le jeton signe est le seul etat que le
+  // chemin de reponse relit a coup sur. Signee avec le reste, donc un client ne
+  // peut ni l'ajouter ni la changer en cours de seance.
+  //
+  // OPTIONNELLE, pour la raison exacte donnee sur issuedAtMs : un jeton emis
+  // avant ce champ ne le porte pas, et absent veut dire seance ordinaire.
+  focus?: TrainingFocus;
 };
 
 // Signing secret, fail closed in production.

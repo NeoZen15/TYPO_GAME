@@ -56,13 +56,23 @@ const difficultyRank = (value: string) => DIFFICULTY_RANK[value] ?? 1;
 const RARITY_RANK: Record<string, number> = { common: 0, uncommon: 1, rare: 2 };
 const rarityRank = (value: string | undefined) => RARITY_RANK[value ?? "common"] ?? 0;
 
+// UNE ORIENTATION, JAMAIS UNE RESTRICTION (spec des objectifs du joueur, section
+// 4). `prefers` porte la consigne d'Allumer ou de Corriger. Il ne joue QUE parmi
+// les faces dues : celles qui y repondent passent devant, puis le tri d'origine
+// decide entre elles. Aucune face due n'y repond, ou aucune face n'est due : le
+// choix est exactement celui sans consigne. Le repli sur tout le pool n'est donc
+// jamais biaise, sinon une consigne servirait une face encore en fenetre
+// d'attente et casserait l'espacement des revisions. Garde : check:focus-bias.
 export const pickEligibleTypeface = <Row extends QuestionShapeRow>(
   pool: Row[],
   globalQIndex: number,
-  seed: string
+  seed: string,
+  prefers?: (row: Row) => boolean
 ): Row | undefined => {
   const eligible = pool.filter((row) => row.next_due_after_q <= globalQIndex);
-  const source = eligible.length > 0 ? eligible : pool;
+  const preferred = prefers ? eligible.filter(prefers) : [];
+  const source =
+    preferred.length > 0 ? preferred : eligible.length > 0 ? eligible : pool;
 
   return [...source].sort((left, right) => {
     if (left.next_due_after_q !== right.next_due_after_q) {
@@ -147,6 +157,8 @@ const withoutTwins = <Row extends QuestionShapeRow>(
  */
 export type Proximity = "far" | "family" | "cluster" | "micro";
 
+const PREFERRED_DISTRACTOR_BONUS = 2000;
+
 export const pickDistractors = <Row extends QuestionShapeRow>(
   pool: Row[],
   correct: QuestionShapeRow,
@@ -158,17 +170,33 @@ export const pickDistractors = <Row extends QuestionShapeRow>(
    * devoir, ou le contrat decide et ou deux eleves du meme cran doivent recevoir
    * la meme difficulte de leurres.
    */
-  proximity?: Proximity
+  proximity?: Proximity,
+  /**
+   * Absent hors consigne. Pour l'objectif Corriger, les faces des paires
+   * confondues : la jumelle de la paire est servie en leurre quand elle est dans
+   * le pool, c'est tout l'objet de l'objectif. Un bonus et non une place reservee,
+   * donc le nombre de leurres et le retrait des jumelles ne bougent pas.
+   */
+  preferred?: readonly string[]
 ): Row[] => {
   const others = withoutTwins(
     pool.filter((row) => row.typeface_slug !== correct.typeface_slug),
     correct,
     sontJumelles
   );
+  const preferredSlugs = new Set(preferred ?? []);
+  // Plus fort que tout ecart de proximite possible (quelques centaines), donc une
+  // face privilegiee passe devant quel que soit le cran. Jamais pour une jumelle :
+  // le repli de withoutTwins peut en remettre une, le bonus ne l'y pousse pas.
+  const preferredBonus = (row: QuestionShapeRow) =>
+    preferredSlugs.has(row.typeface_slug) &&
+    !sontJumelles(correct.typeface_slug, row.typeface_slug)
+      ? PREFERRED_DISTRACTOR_BONUS
+      : 0;
 
   return others
     .map((row) => {
-      let score = 1000;
+      let score = 1000 - preferredBonus(row);
       const sameCategory = row.primary_category === correct.primary_category;
       const sameCluster = row.visual_cluster_id === correct.visual_cluster_id;
 
