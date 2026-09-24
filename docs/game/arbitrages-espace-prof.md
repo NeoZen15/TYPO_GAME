@@ -120,3 +120,17 @@ qui s'affiche, jamais la charge sérialisée.
 **Le correctif se pose au niveau des données, pas de l'écran** : un client SQL qui refuse de lire si
 le demandeur n'est pas administrateur, et tous les modules de données passent par lui. L'écran de
 refus garde son rôle, qui est d'expliquer, pas de protéger.
+
+## La porte des assignations n'est pas une porte pour le joueur
+
+Le 2026-09-23, pour donner au joueur ses propres objectifs (spec `product/spec-objectifs-joueur.md`),
+la piste évidente était de fabriquer un contrat personnel et de le passer par `/assigned`, la seule
+porte qui sait ouvrir une séance sur des faces choisies. Mesuré dans le code, elle coûte trois
+choses : elle exige une vraie classe et un vrai professeur (clés étrangères de `assignments`),
+elle étiquette la séance `teacher_assignment` par contrainte (migration 022), et elle écrit la
+maîtrise avec `in_active_pool = false`, ce qui interdit ensuite à ces faces d'entrer dans le pool
+personnel par `try_unlock_one_typeface`. Le joueur aurait donc joué pour abîmer sa propre carte.
+
+**Règle** : le parcours personnel s'oriente par une consigne donnée au moteur d'entraînement, qui
+réordonne les candidates dues sans en ajouter ni en retirer. La porte des assignations reste celle
+du professeur, et le mur (I-25) ne se traverse pas pour économiser une consigne.

@@ -18,12 +18,12 @@ obligation de licence et non condition d'affichage. Et deux rotations demandées
 personne n'a confirmé qu'elles sont faites : le mot de passe Neon et le jeton Adobe Fonts, tous deux
 apparus en clair dans une conversation.
 
-**Où en est le produit.** Le domaine est acheté, rien n'est déployé. Le catalogue sert 2108 polices
-en ligne. Mesuré le 2026-09-15 : un projet web Adobe plafonne à 250 ou 300 familles, jamais plus, la
-montée passe donc par plusieurs projets. Le jeu tourne dans ses deux modes, l'espace prof est
-complet et l'admin est un poste d'observation. Migrations 021, 022 et 023 en production ; pour
-toutes les autres, le bandeau en tête de chaque fichier de `db/migrations` est la seule source
-fiable. Audit de sécurité complet le 2026-09-18 : Next monté en 16.3.5, `npm audit` à zéro,
+**Où en est le produit.** Le domaine est acheté, rien n'est déployé. Le catalogue sert **3206
+polices actives dont 2035 Adobe** depuis le 2026-09-23 : migrations 024 et 025 appliquées en
+production après test sur branche jetable, JSON en miroir, neuf projets web Adobe parce qu'un projet
+plafonne à 250 ou 300 familles. Le jeu tourne dans ses deux modes, l'espace prof est complet et
+l'admin est un poste d'observation. Migrations 021 à 025 en production ; pour toutes les autres, le
+bandeau en tête de chaque fichier de `db/migrations` est la seule source fiable. Audit de sécurité complet le 2026-09-18 : Next monté en 16.3.5, `npm audit` à zéro,
 administration fermée en production, en-têtes posés, limite de débit, contrôle d'origine, le tout
 tenu par `check:security-gates`. La conformité est devenue un contrôle mensuel, `npm run conformite`.
 
@@ -39,13 +39,18 @@ c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page
 faille, à trancher le jour où un devoir compte. Et l'apparence du lien d'évitement ajouté le
 2026-09-18 attend ton œil.
 
-**État de l'arbre, et c'est là que vit la vérité du projet.** 74 fichiers non commités, dernier
-commit le 2026-09-18. Trois décisions listées ici comme en attente étaient en fait déjà prises dans
-ce travail non commité, et cette section les a portées cinq jours de trop : le bonus de vitesse en
-compétition (décidé par l'horloge du serveur, `check:competition-timing`), la réduction d'animations
-(câblée dans `lib/motion.ts`, lue par vingt-trois écrans) et le sélecteur de langue (retiré, il
-annonçait une langue que le produit ne sait pas servir). Le travail du 2026-09-21 n'est ni commité
-ni consigné : un cron quotidien de balayage des séances abandonnées (`vercel.json`,
+**Chantier décidé le 2026-09-23, non commencé : les objectifs du joueur.** Trois cartes sur le Path,
+Allumer, Corriger, Mission du jour, qui orientent l'entraînement normal par une consigne et jamais
+par la porte des assignations (elle marquerait les faces `in_active_pool = false`). Spec
+`docs/product/spec-objectifs-joueur.md`, une journée en quatre tranches ; trois décisions
+t'attendent : cible de la mission (15 proposé), trace `focus` sur la séance (migration 026), DA de
+la carte. Défaut relevé au passage : le Play it du bandeau devoir en maquette pointe vers `e1`, que
+le moteur convertit en uuid et refuse, 500 d'après le code. Le même jour : l'intro du logo ne se
+joue plus qu'une fois par visiteur, le bandeau « Nothing here yet » du profil est retiré, le texte
+« Reading your map » se replie.
+
+**État de l'arbre.** Tout est commité au 2026-09-23, rien en attente. Le travail du 2026-09-21 est
+commité mais sans fiche : un cron quotidien de balayage des séances abandonnées (`vercel.json`,
 `app/api/cron/sweep`, `lib/game/session-sweep.ts`, `npm run balayer-sessions`). Devant un doute sur
 l'état, lire l'arbre avant de lire cette section.
 
