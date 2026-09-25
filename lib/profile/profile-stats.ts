@@ -242,7 +242,7 @@ function buildEye(
 
 export async function loadRealProfile(
   userId: string,
-): Promise<{ profile: PlayerProfile; eye: EyeProfile } | null> {
+): Promise<{ profile: PlayerProfile; eye: EyeProfile; played: boolean } | null> {
   const [
     modeRows,
     answerAgg,
@@ -377,9 +377,9 @@ export async function loadRealProfile(
   const totals = masteryRow[0] ?? { mastered: 0, catalog_total: 2000 };
   const totalGames = modeRows.reduce((s, r) => s + r.games, 0);
 
-  // No play history at all → let the UI fall back to the mock so the page never
-  // reads as broken for someone who literally hasn't played.
-  if (totalGames === 0 && agg.first_tries === 0) return null;
+  // No play history: the same page as everyone, built from zeros, never the
+  // mock. A new player must not read someone else's numbers as their own.
+  const played = totalGames > 0 || agg.first_tries > 0;
 
   const modeGames = (m: ProfileMode) => modeRows.find((r) => r.mode === m)?.games ?? 0;
   const bestScore = Math.max(0, ...modeRows.map((r) => r.best_score));
@@ -491,7 +491,7 @@ export async function loadRealProfile(
     badges: buildBadges(badgeMetrics),
   };
 
-  return { profile, eye };
+  return { profile, eye, played };
 }
 
 // ---------------------------------------------------------------------------
