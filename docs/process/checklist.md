@@ -78,3 +78,17 @@ intacte a 271 utilisateurs et 595 seances a chaque fois. Copies supprimees.
 
 **Reste au proprietaire :** poser `DATABASE_URL`, `GAME_PROVIDER_SECRET` et les cles Clerk
 chez Vercel ; sans Clerk, pas d'administration, c'est voulu.
+
+## 2026-09-24, page des modes : proposition sur /dev/modes
+
+**En cours, attend l'oeil de Marion.** Elle trouve `/play` vieille et sans envie de jouer. Proposition
+posee sur `/dev/modes` (route dev, fermee en production), `/play` n'est pas touchee. Chaque carte montre
+son mode au lieu de le decrire : une scene joue le mot comme le mode (Training change de face lentement,
+Competition vite avec une barre qui se vide, Expert tient le mot sans le nommer), et le chiffre vivant
+passe en grand. Arbitrages gardes : carte noire, couleur du mode sur pastille et contour seulement,
+bouton creme. Fichiers : `features/modes/components/ModeSelectPreview.tsx`, `app/dev/modes/page.tsx`,
+styles `pm2-` en fin de `app/globals.css`. Si GO : remplacer le corps de `ModeSelectPage`.
+
+**Meme jour, fait :** l'onboarding ne se joue qu'une fois (cookie `jdt-onboarded`, `?replay=1` pour le
+revoir) ; le menu mene aux pages (Compare vers `/compare`, How it works vers les regles, Profile ajoute) ;
+le profil d'un nouveau joueur est la vraie page a zero au lieu de la maquette.
