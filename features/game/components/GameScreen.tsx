@@ -272,7 +272,8 @@ export default function GameScreen() {
   // docs/product/spec-objectifs-joueur.md). Parsed once, on arrival, and a
   // malformed value is ignored, never refused: the session is then ordinary.
   // It belongs to the session this page opens and to that one only: "Play
-  // again" drops it (see startSession), so it never leaks into the next one.
+  // again" and the close of that session drop it (see clearPendingFocus), so it
+  // never leaks into the next one.
   const pendingFocusRef = useRef<TrainingFocus | null>(parseFocusParam(searchParams.get("focus")));
   const [isRoundLocked, setIsRoundLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -395,6 +396,19 @@ export default function GameScreen() {
     [clearAdvanceTimer, flushAdvance]
   );
 
+  // Drops the Path focus and its URL parameter together, or a reload would
+  // rebuild the ref from the URL and hand the focus to a brand new session.
+  // Called by "Play again" and by the close of the promised session.
+  const clearPendingFocus = useCallback(() => {
+    if (!pendingFocusRef.current) return;
+    pendingFocusRef.current = null;
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("focus");
+      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+  }, []);
+
   // `fresh` decides whether this is the same attempt or a new one. A retry
   // replays the identifier already stored, because a retry is the same attempt;
   // only a closed session and "Play again" mint a new one. The parameter has a
@@ -420,17 +434,9 @@ export default function GameScreen() {
     verrouiller(false);
 
     // A fresh start is "Play again" from the recap: a new session the player
-    // chose by hand, not the one the Path button promised. The focus goes, and
-    // so does its parameter, or a reload of that new session would bring it back.
+    // chose by hand, not the one the Path button promised. The focus goes.
     // A retry keeps it, because a retry is the same attempt.
-    if (fresh && pendingFocusRef.current) {
-      pendingFocusRef.current = null;
-      if (typeof window !== "undefined") {
-        const url = new URL(window.location.href);
-        url.searchParams.delete("focus");
-        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
-      }
-    }
+    if (fresh) clearPendingFocus();
     const focus = fresh ? null : pendingFocusRef.current;
 
     try {
@@ -477,7 +483,7 @@ export default function GameScreen() {
       setIsLoading(false);
       inFlightRef.current = false;
     }
-  }, [beginQuestion, clearAdvanceTimer, verrouiller]);
+  }, [beginQuestion, clearAdvanceTimer, clearPendingFocus, verrouiller]);
 
   // Voluntary end of a session (I-17). A training session has no round cap any
   // more, so nothing closes it on its own: without this call the row stays
@@ -517,6 +523,9 @@ export default function GameScreen() {
       // keeps the identifier, so the next load rejoins the same session rather
       // than opening a second one next to a session still open.
       dropAttemptId();
+      // The promised session is over: its focus must not reach the next one,
+      // which a reload of this recap would otherwise open with it.
+      clearPendingFocus();
     } catch (endError) {
       console.error(endError);
       // Its own state, never the one the render gates on: a refused close leaves
@@ -525,7 +534,7 @@ export default function GameScreen() {
     } finally {
       endInFlightRef.current = false;
     }
-  }, [clearAdvanceTimer, sessionId, verrouiller]);
+  }, [clearAdvanceTimer, clearPendingFocus, sessionId, verrouiller]);
 
   // L'HORLOGE DE SÉANCE. Elle démarre à la PREMIÈRE question affichée et non au
   // montage : l'attente du serveur, la police qui charge et un démarrage en échec

@@ -49,7 +49,7 @@ le moteur convertit en uuid et refuse, 500 d'après le code. Le même jour : l'i
 joue plus qu'une fois par visiteur, le bandeau « Nothing here yet » du profil est retiré, le texte
 « Reading your map » se replie.
 
-**État de l'arbre.** Tout est commité au 2026-09-23, rien en attente. Le travail du 2026-09-21 est
+**État de l'arbre.** Rien en attente sur main, la branche `objectifs-tranche3` attend sa fusion. Le travail du 2026-09-21 est
 commité mais sans fiche : un cron quotidien de balayage des séances abandonnées (`vercel.json`,
 `app/api/cron/sweep`, `lib/game/session-sweep.ts`, `npm run balayer-sessions`). Devant un doute sur
 l'état, lire l'arbre avant de lire cette section.
