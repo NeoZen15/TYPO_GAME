@@ -39,7 +39,7 @@ c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page
 faille, à trancher le jour où un devoir compte. Et l'apparence du lien d'évitement ajouté le
 2026-09-18 attend ton œil.
 
-**Chantier en cours depuis le 2026-09-23 : les objectifs du joueur, tranches 1, 2 et 3 sur 4 faites** (le choix, la consigne dans le moteur, puis la carte et `?focus=` vers `/game`). La tranche 3 attend sa fusion sur la branche `objectifs-tranche3`. Trois cartes sur le Path,
+**Chantier en cours depuis le 2026-09-23 : les objectifs du joueur, tranches 1, 2 et 3 sur 4 faites** (le choix, la consigne dans le moteur, puis la carte et `?focus=` vers `/game`). La tranche 3 est fusionnée. Trois cartes sur le Path,
 Allumer, Corriger, Mission du jour, qui orientent l'entraînement normal par une consigne et jamais
 par la porte des assignations (elle marquerait les faces `in_active_pool = false`). Spec
 `docs/product/spec-objectifs-joueur.md`, une journée en quatre tranches ; trois décisions
@@ -49,7 +49,7 @@ le moteur convertit en uuid et refuse, 500 d'après le code. Le même jour : l'i
 joue plus qu'une fois par visiteur, le bandeau « Nothing here yet » du profil est retiré, le texte
 « Reading your map » se replie.
 
-**État de l'arbre.** Rien en attente sur main, la branche `objectifs-tranche3` attend sa fusion. Le travail du 2026-09-21 est
+**État de l'arbre.** Rien en attente, la tranche 3 est fusionnée le 2026-09-25. Le travail du 2026-09-21 est
 commité mais sans fiche : un cron quotidien de balayage des séances abandonnées (`vercel.json`,
 `app/api/cron/sweep`, `lib/game/session-sweep.ts`, `npm run balayer-sessions`). Devant un doute sur
 l'état, lire l'arbre avant de lire cette section.
