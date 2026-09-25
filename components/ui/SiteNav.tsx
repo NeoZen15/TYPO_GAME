@@ -15,8 +15,8 @@ export type SiteNavItem = {
  * (and the ~2000 `/type/[slug]` specimens) carries identical nav controls.
  */
 const HOME_NAV_ITEMS: SiteNavItem[] = [
-  { label: "How it works", href: "/#how" },
-  { label: "Compare", href: "/#compare" },
+  { label: "How it works", href: "/play/training/rules" },
+  { label: "Compare", href: "/compare" },
   { label: "Typefaces", href: "/#typefaces" },
   // D4, 2026-08-15. Was `/#modes`, the landing's own section anchor. On the
   // landing that anchor is right, the section is a few screens down. Everywhere
@@ -26,6 +26,7 @@ const HOME_NAV_ITEMS: SiteNavItem[] = [
   // landing keeps the anchor through its own NAV array in LandingExperience, so
   // this default only changes the pages where it was misleading.
   { label: "Modes", href: "/play" },
+  { label: "Profile", href: "/profile" },
 ];
 
 type SiteNavProps = {

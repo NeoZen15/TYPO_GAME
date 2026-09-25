@@ -37,8 +37,8 @@ const HERO_WORD = "Character";
 type NavItem = { id: string; label: string; href?: string };
 
 const NAV: readonly NavItem[] = [
-  { id: "how", label: "How it works" },
-  { id: "compare", label: "Compare" },
+  { id: "how", label: "How it works", href: "/play/training/rules" },
+  { id: "compare", label: "Compare", href: "/compare" },
   { id: "typefaces", label: "Typefaces" },
   // 2026-08-19, owner's call. Was the `#modes` anchor, which only scrolled to the
   // "Three ways to play" deck, and that deck sends straight into a mode. The one
@@ -46,6 +46,8 @@ const NAV: readonly NavItem[] = [
   // and a Rules button per mode, is /play, and it already exists. Same
   // destination as the header of every sub-page now: one word, one page.
   { id: "modes", label: "Modes", href: "/play" },
+  // The player's own space; the student / teacher switch lives inside it.
+  { id: "profile", label: "Profile", href: "/profile" },
 ];
 
 // The 3 game modes — accent stays on the contour only (validated /play).
