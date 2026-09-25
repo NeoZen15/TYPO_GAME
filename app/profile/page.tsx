@@ -5,6 +5,7 @@ import { loadBrandArt } from "@/lib/brand/brand-art";
 import { getTrainingFontFaceCss } from "@/lib/game/training/catalog";
 import { getCurrentUserId } from "@/lib/server/current-user";
 import { loadRealProfile } from "@/lib/profile/profile-stats";
+import { loadObjectives } from "@/lib/profile/objectives-data";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -33,12 +34,15 @@ export default async function ProfilePage({
   // figure comes back at zero while the catalog total stays the real one.
   const userId = (await getCurrentUserId()) ?? NIL_UUID;
   let real: Awaited<ReturnType<typeof loadRealProfile>> = null;
+  let objectives: Awaited<ReturnType<typeof loadObjectives>> = null;
   if (preview !== "mock") {
     try {
       real = await loadRealProfile(userId);
     } catch (error) {
       console.error("[profile] failed to load real profile, using mock:", error);
     }
+    // The Path's three objectives, on the eye just read. Never throws: null hides the band.
+    if (real) objectives = await loadObjectives(userId, real.eye);
   }
 
   return (
@@ -52,6 +56,7 @@ export default async function ProfilePage({
           profile={real?.profile}
           eye={real?.eye}
           empty={real ? !real.played : false}
+          objectives={objectives}
         />
       </Suspense>
     </>

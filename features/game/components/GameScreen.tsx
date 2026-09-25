@@ -25,6 +25,7 @@ import {
   type TrainingSessionSummary,
   type TrainingStartResponse,
 } from "@/lib/game/training/contracts";
+import { parseFocusParam, type TrainingFocus } from "@/lib/game/training/focus";
 import { CARD_COLORS } from "@/lib/game/card-colors";
 import { markOnboarded } from "@/features/onboarding/onboarded-cookie";
 
@@ -265,7 +266,14 @@ export default function GameScreen() {
   // ?preview=complete paints the end of a session without playing one, the same
   // affordance the competition screen already had. Read-only: it writes nothing,
   // starts no session, and the figures below are visibly synthetic.
-  const previewComplete = useSearchParams().get("preview") === "complete";
+  const searchParams = useSearchParams();
+  const previewComplete = searchParams.get("preview") === "complete";
+  // ?focus= is the promise of a Play it button on the Path (Light or Fix, see
+  // docs/product/spec-objectifs-joueur.md). Parsed once, on arrival, and a
+  // malformed value is ignored, never refused: the session is then ordinary.
+  // It belongs to the session this page opens and to that one only: "Play
+  // again" drops it (see startSession), so it never leaks into the next one.
+  const pendingFocusRef = useRef<TrainingFocus | null>(parseFocusParam(searchParams.get("focus")));
   const [isRoundLocked, setIsRoundLocked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -411,6 +419,20 @@ export default function GameScreen() {
     setInlineFeedback(null);
     verrouiller(false);
 
+    // A fresh start is "Play again" from the recap: a new session the player
+    // chose by hand, not the one the Path button promised. The focus goes, and
+    // so does its parameter, or a reload of that new session would bring it back.
+    // A retry keeps it, because a retry is the same attempt.
+    if (fresh && pendingFocusRef.current) {
+      pendingFocusRef.current = null;
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("focus");
+        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+      }
+    }
+    const focus = fresh ? null : pendingFocusRef.current;
+
     try {
       const onboarding = readOnboarding();
       const attemptId = takeAttemptId({ fresh });
@@ -427,6 +449,8 @@ export default function GameScreen() {
           // database arbitrates two concurrent starts on it, so a reload that
           // sends it back rejoins its own session instead of opening a second.
           attemptId,
+          // Only when there is one: an absent focus is today's session, unchanged.
+          ...(focus ? { focus } : {}),
         }),
       });
 

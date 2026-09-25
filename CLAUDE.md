@@ -39,7 +39,7 @@ c'est de la marque. Un élève peut lire la bonne réponse en inspectant la page
 faille, à trancher le jour où un devoir compte. Et l'apparence du lien d'évitement ajouté le
 2026-09-18 attend ton œil.
 
-**Chantier en cours depuis le 2026-09-23 : les objectifs du joueur, tranches 1 et 2 sur 4 faites** (le choix, `lib/profile/objectives.ts`, gardé par `check:objectives`, éprouvé sur huit mutations). Trois cartes sur le Path,
+**Chantier en cours depuis le 2026-09-23 : les objectifs du joueur, tranches 1, 2 et 3 sur 4 faites** (le choix, la consigne dans le moteur, puis la carte et `?focus=` vers `/game`). La tranche 3 attend sa fusion sur la branche `objectifs-tranche3`. Trois cartes sur le Path,
 Allumer, Corriger, Mission du jour, qui orientent l'entraînement normal par une consigne et jamais
 par la porte des assignations (elle marquerait les faces `in_active_pool = false`). Spec
 `docs/product/spec-objectifs-joueur.md`, une journée en quatre tranches ; trois décisions

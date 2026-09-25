@@ -160,3 +160,41 @@ export const errorCopy = {
   retryLabel: "Try again",
   homeLabel: "Back home",
 } as const;
+
+/**
+ * The three objectives on the Path (`ObjectivesBand`, under the teacher's band).
+ * Spec: docs/product/spec-objectifs-joueur.md, section 6.
+ *
+ * A PROPOSAL, written on 2026-09-25 for tranche 3 and judged by the owner on
+ * screen, not on paper (decision 3 of the spec). Two rules are not proposals:
+ * the state is said in words, never in a colour, and a step never names a
+ * typeface. The pairs of Fix do name typefaces, they are not steps.
+ *
+ * Flat keys on purpose, for `check:copy` (see `progressionExplainerCopy`). The
+ * lines that carry a figure are functions, so the figure and its words cannot
+ * drift apart in two places.
+ */
+export const objectivesCopy = {
+  bandLabel: "Your objectives",
+  title: "What to play now",
+  meta: "three ways in, pick one",
+  lightChip: "Light",
+  maintainChip: "Keep lit",
+  lightMeta: (id: string, mastered: number, target: number, pct: number) =>
+    `step ${id} · ${mastered} of ${target} faces settled · ${pct}% right`,
+  maintainMeta: (id: string, mastered: number, target: number, pct: number) =>
+    `keep it lit · step ${id} · ${mastered} of ${target} faces settled · ${pct}% right`,
+  lightEmptyTitle: "Your first step",
+  lightEmptyMeta: "Play a round and the map picks one",
+  fixChip: "Fix",
+  fixTitle: (asked: string, answered: string) => `${asked} vs ${answered}`,
+  fixMeta: (count: number, pairs: number) =>
+    `confused ${count} times · ${pairs} ${pairs === 1 ? "pair" : "pairs"}`,
+  fixEmptyTitle: "Nothing to fix yet",
+  fixEmptyMeta: "Your mix ups will show up here",
+  missionChip: "Daily",
+  missionTitle: (target: number) => `${target} right answers today`,
+  missionMeta: (done: number, target: number) => `${done} of ${target}`,
+  missionDoneMeta: (done: number, target: number) => `done for today · ${done} of ${target}`,
+  playLabel: "Play it",
+} as const;

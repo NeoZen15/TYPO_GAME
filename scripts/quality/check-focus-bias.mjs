@@ -16,7 +16,9 @@
 //   - si aucune face due ne repond, le choix est celui sans consigne, repli
 //     compris ;
 //   - les leurres privilegies passent parmi les leurres, jamais une jumelle ;
-//   - normalizeFocus ignore toute consigne mal formee au lieu de la refuser.
+//   - normalizeFocus ignore toute consigne mal formee au lieu de la refuser ;
+//   - le parametre d'URL ?focus= fait l'aller retour intact, et tout parametre
+//     mal forme vaut null.
 //
 // Les deux modules doivent rester sans import de runtime pour que Node puisse en
 // effacer les types. Sinon ce garde devient aveugle.
@@ -40,7 +42,7 @@ const load = (path) =>
   });
 
 const { pickEligibleTypeface, pickDistractors, hashScore } = await load(SHAPE);
-const { normalizeFocus } = await load(FOCUS);
+const { normalizeFocus, focusToParam, parseFocusParam } = await load(FOCUS);
 
 // --- La reference : le tri d'origine, fige ici ---------------------------------
 // Recopie volontaire du comportement d'avant la consigne. C'est la seule facon de
@@ -264,6 +266,81 @@ expect(preferredServed > 50, `la consigne n'a ete exercee que ${preferredServed}
   // Rien d'autre que la forme validee ne traverse : un champ en trop est lache.
   const extra = normalizeFocus({ kind: "palier", id: "2.1", slugs: ["x", "y"], evil: true });
   expect(same(extra, { kind: "palier", id: "2.1" }), `normalizeFocus laisse passer des champs en trop : ${JSON.stringify(extra)}`);
+}
+
+// --- Le parametre d'URL ------------------------------------------------------------
+// Le bouton Play it du Path porte la consigne dans ?focus=, que /game relit au
+// demarrage (tranche 3). Deux promesses : l'aller retour rend exactement la
+// consigne, encodage d'URL compris, et tout ce qui n'est pas la forme exacte
+// vaut null, jamais une exception.
+{
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  if (typeof focusToParam !== "function" || typeof parseFocusParam !== "function") {
+    failures.push("focus.ts n'exporte pas focusToParam et parseFocusParam");
+  } else {
+    const roundTrips = [
+      { kind: "palier", id: "2.6" },
+      { kind: "palier", id: "3.1" },
+      { kind: "faces", slugs: ["helvetica", "arial"] },
+      { kind: "faces", slugs: ["a_1", "b_2", "c_3", "d_4", "e_5", "f_6"] },
+    ];
+    for (const focus of roundTrips) {
+      let back;
+      try {
+        const param = focusToParam(focus);
+        back = parseFocusParam(decodeURIComponent(encodeURIComponent(param)));
+        expect(typeof param === "string", `focusToParam(${JSON.stringify(focus)}) ne rend pas une chaine`);
+      } catch (error) {
+        back = `exception ${error.message}`;
+      }
+      expect(same(back, focus), `aller retour de ${JSON.stringify(focus)} rend ${JSON.stringify(back)}`);
+    }
+    expect(focusToParam({ kind: "palier", id: "2.6" }) === "palier:2.6", "focusToParam palier n'ecrit pas palier:2.6");
+    expect(
+      focusToParam({ kind: "faces", slugs: ["slug_a", "slug_b"] }) === "faces:slug_a,slug_b",
+      "focusToParam faces n'ecrit pas faces:slug_a,slug_b"
+    );
+
+    const malformed = [
+      null,
+      undefined,
+      "",
+      "palier",
+      "palier:",
+      "palier:2.10",
+      "palier:26",
+      "palier:2.6:x",
+      " palier:2.6",
+      "palier:2.6 ",
+      "PALIER:2.6",
+      "other:2.6",
+      ":2.6",
+      "faces:",
+      "faces:a",
+      "faces:a,a",
+      "faces:a,,b",
+      "faces:a,b,",
+      "faces:,a,b",
+      "faces:A,b",
+      "faces:a,b-c",
+      "faces:a,b,c,d,e,f,g",
+      `faces:a,${"x".repeat(81)}`,
+      "faces:a%2Cb",
+      "{\"kind\":\"palier\",\"id\":\"2.6\"}",
+      42,
+      ["palier:2.6"],
+      { kind: "palier", id: "2.6" },
+    ];
+    for (const value of malformed) {
+      let got;
+      try {
+        got = parseFocusParam(value);
+      } catch (error) {
+        got = `exception ${error.message}`;
+      }
+      expect(got === null, `parseFocusParam(${JSON.stringify(value)}) rend ${JSON.stringify(got)} au lieu de null`);
+    }
+  }
 }
 
 if (failures.length > 0) {

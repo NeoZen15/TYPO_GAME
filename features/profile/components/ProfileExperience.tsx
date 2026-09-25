@@ -9,12 +9,14 @@ import ProgressBoard from "@/features/profile/components/ProgressBoard";
 import ProgressConstellation from "@/features/profile/components/ProgressConstellation";
 import ProgressExplainer from "@/features/profile/components/ProgressExplainer";
 import AssignedBand from "@/features/profile/components/AssignedBand";
+import ObjectivesBand from "@/features/profile/components/ObjectivesBand";
 import StatsBoard from "@/features/profile/components/StatsBoard";
 import ProfileSummary from "@/features/profile/components/ProfileSummary";
 import ActivityBoard from "@/features/profile/components/ActivityBoard";
 import AchievementsBoard from "@/features/profile/components/AchievementsBoard";
 import PreferencesBoard from "@/features/profile/components/PreferencesBoard";
 import type { Art } from "@/lib/brand/dwiggins-badge-engine";
+import type { ObjectivesData } from "@/lib/profile/objectives-data";
 import {
   MOCK_ARENA,
   MOCK_EYE,
@@ -64,6 +66,9 @@ type ProfileExperienceProps = {
   // No play history yet: the boards render at zero. The banner that invited a
   // first round was removed on 2026-09-23 at the owner's request.
   empty?: boolean;
+  // The Path's three objectives, read server-side. Null or absent (a read
+  // failure, ?preview=mock) hides the band and nothing else.
+  objectives?: ObjectivesData | null;
 };
 
 export default function ProfileExperience({
@@ -71,6 +76,7 @@ export default function ProfileExperience({
   eye = MOCK_EYE,
   arena = MOCK_ARENA,
   art,
+  objectives,
 }: ProfileExperienceProps) {
   // ADDRESSABLE VIEWS, 2026-08-15. The board was chosen in React state alone, so
   // /profile always opened on the constellation and no link could reach a tab:
@@ -239,6 +245,9 @@ export default function ProfileExperience({
                 are going; a deadline is today, so it is read first. Renders
                 nothing at all when nothing is set. */}
             <AssignedBand />
+            {/* The three objectives, under the devoir when there is one and in
+                its place otherwise. The devoir has a deadline, these do not. */}
+            <ObjectivesBand data={objectives} />
             <div className="pf-constellation-stage">
               <ProgressConstellation eye={eye} />
             </div>

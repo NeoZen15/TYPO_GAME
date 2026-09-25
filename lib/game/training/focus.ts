@@ -44,3 +44,29 @@ export const normalizeFocus = (value: unknown): TrainingFocus | null => {
 
   return null;
 };
+
+// LE PASSAGE PAR L'URL (tranche 3). Le bouton Play it du Path mene a /game avec
+// la consigne dans ?focus=, sous une forme courte et lisible : "palier:2.6" ou
+// "faces:slug_a,slug_b". L'appelant encode pour l'URL ; searchParams.get rend la
+// chaine deja decodee, que parseFocusParam lit.
+//
+// La lecture ne fait confiance a rien : la chaine doit etre exactement de cette
+// forme, puis elle repasse par normalizeFocus, seule autorite sur ce qu'une
+// consigne peut contenir. Tout le reste vaut null, jamais une exception.
+
+const FOCUS_PARAM_PATTERN = /^(palier|faces):([a-z0-9_.,]{1,600})$/;
+
+export const focusToParam = (focus: TrainingFocus): string =>
+  focus.kind === "palier" ? `palier:${focus.id}` : `faces:${focus.slugs.join(",")}`;
+
+export const parseFocusParam = (value: unknown): TrainingFocus | null => {
+  if (typeof value !== "string") return null;
+  const match = FOCUS_PARAM_PATTERN.exec(value);
+  if (!match) return null;
+  const [, kind, rest] = match;
+  if (kind === "palier") return normalizeFocus({ kind: "palier", id: rest });
+  const slugs = rest.split(",");
+  // Un slug vide ("a,,b", "a,b,") est une chaine abimee, pas une liste plus courte.
+  if (slugs.some((slug) => slug.length === 0)) return null;
+  return normalizeFocus({ kind: "faces", slugs });
+};
